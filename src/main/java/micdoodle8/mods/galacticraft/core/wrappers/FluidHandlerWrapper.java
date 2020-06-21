@@ -37,18 +37,18 @@ public class FluidHandlerWrapper implements IFluidHandler
     }
 
     @Override
-    public int fill(FluidStack resource, boolean doFill)
+    public int fill(FluidStack resource, IFluidHandler.FluidAction action)
     {
         if (wrapper.canFill(side, resource != null ? resource.getFluid() : null))
         {
-            return wrapper.fill(side, resource, doFill);
+            return wrapper.fill(side, resource, action);
         }
 
         return 0;
     }
 
     @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain)
+    public FluidStack drain(FluidStack resource, IFluidHandler.FluidAction action)
     {
         if (wrapper.canDrain(side, resource != null ? resource.getFluid() : null))
         {
@@ -59,7 +59,7 @@ public class FluidHandlerWrapper implements IFluidHandler
     }
 
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain)
+    public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
     {
         if (wrapper.canDrain(side, null))
         {

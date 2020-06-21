@@ -1,31 +1,38 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import sun.misc.GC;
 
 import java.util.Random;
 
 public class RoomSpawner extends RoomEmpty
 {
-    public RoomSpawner()
+    public RoomSpawner(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public RoomSpawner(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomSpawner(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
+        super(type, configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
     {
-        if (super.addComponentParts(worldIn, random, boundingBox))
+        if (super.addComponentParts(worldIn, random, boundingBox, chunkPos))
         {
             for (int i = 1; i <= this.sizeX - 1; ++i)
             {
@@ -35,21 +42,21 @@ public class RoomSpawner extends RoomEmpty
                     {
                         if (random.nextFloat() < 0.05F)
                         {
-                            this.setBlockState(worldIn, Blocks.WEB.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.COBWEB.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                 }
             }
 
-            this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), 1, 0, 1, boundingBox);
-            this.setBlockState(worldIn, Blocks.MOB_SPAWNER.getDefaultState(), this.sizeX - 1, 0, this.sizeZ - 1, boundingBox);
+            this.setBlockState(worldIn, Blocks.SPAWNER.getDefaultState(), 1, 0, 1, boundingBox);
+            this.setBlockState(worldIn, Blocks.SPAWNER.getDefaultState(), this.sizeX - 1, 0, this.sizeZ - 1, boundingBox);
 
             BlockPos blockpos = new BlockPos(this.getXWithOffset(1, 1), this.getYWithOffset(0), this.getZWithOffset(1, 1));
             MobSpawnerTileEntity spawner = (MobSpawnerTileEntity) worldIn.getTileEntity(blockpos);
 
             if (spawner != null)
             {
-                spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
+                spawner.getSpawnerBaseLogic().setEntityType(getMob(random));
             }
 
             blockpos = new BlockPos(this.getXWithOffset(this.sizeX - 1, this.sizeZ - 1), this.getYWithOffset(0), this.getZWithOffset(this.sizeX - 1, this.sizeZ - 1));
@@ -57,7 +64,7 @@ public class RoomSpawner extends RoomEmpty
 
             if (spawner != null)
             {
-                spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
+                spawner.getSpawnerBaseLogic().setEntityType(getMob(random));
             }
 
             return true;
@@ -66,19 +73,19 @@ public class RoomSpawner extends RoomEmpty
         return false;
     }
 
-    private static ResourceLocation getMob(Random rand)
+    private static EntityType<?> getMob(Random rand)
     {
         switch (rand.nextInt(4))
         {
         case 0:
-            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_spider");
+            return GCEntities.EVOLVED_SPIDER.get();
         case 1:
-            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_creeper");
+            return GCEntities.EVOLVED_CREEPER.get();
         case 2:
-            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_skeleton");
+            return GCEntities.EVOLVED_SKELETON.get();
         case 3:
         default:
-            return new ResourceLocation(Constants.MOD_ID_CORE, "evolved_zombie");
+            return GCEntities.EVOLVED_ZOMBIE.get();
         }
     }
 }

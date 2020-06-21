@@ -28,9 +28,9 @@ public class GuiSolarArrayController extends GuiContainerGC
     private Button buttonEnableSolar;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiSolarArrayController(PlayerInventory par1InventoryPlayer, TileEntitySolarArrayController solarController)
+    public GuiSolarArrayController(PlayerInventory playerInv, TileEntitySolarArrayController solarController)
     {
-        super(new ContainerSolarArrayController(par1InventoryPlayer, solarController));
+        super(new ContainerSolarArrayController(playerInv, solarController));
         this.solarController = solarController;
         this.ySize = 209;
         this.xSize = 176;

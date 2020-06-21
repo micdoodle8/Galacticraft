@@ -15,9 +15,9 @@ public class GuiCrashedProbe extends GuiContainerGC
 
     private final TileEntityCrashedProbe geothermalGenerator;
 
-    public GuiCrashedProbe(PlayerInventory par1InventoryPlayer, TileEntityCrashedProbe geothermalGenerator)
+    public GuiCrashedProbe(PlayerInventory playerInv, TileEntityCrashedProbe geothermalGenerator)
     {
-        super(new ContainerCrashedProbe(par1InventoryPlayer, geothermalGenerator));
+        super(new ContainerCrashedProbe(playerInv, geothermalGenerator));
         this.geothermalGenerator = geothermalGenerator;
         this.ySize = 133;
         this.xSize = 176;

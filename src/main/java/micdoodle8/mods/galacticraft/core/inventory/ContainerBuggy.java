@@ -1,33 +1,49 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerBuggy extends Container
 {
-    private final IInventory lowerChestInventory;
-    private final IInventory spaceshipInv;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.BUGGY)
+    public static ContainerType<ContainerBuggy> TYPE;
 
-    public ContainerBuggy(IInventory par1IInventory, IInventory par2IInventory, int type, PlayerEntity player)
+    private final IInventory playerInv;
+    private final IInventory buggyInv;
+
+    public EntityBuggy.BuggyType buggyType;
+
+    public ContainerBuggy(int containerId, PlayerInventory playerInv, EntityBuggy.BuggyType type)
     {
-        this.lowerChestInventory = par1IInventory;
-        this.spaceshipInv = par2IInventory;
-        par2IInventory.openInventory(player);
+        this(containerId, playerInv, new Inventory(type.getInvSize()), type);
+    }
+
+    public ContainerBuggy(int containerId, PlayerInventory playerInv, IInventory buggyInv, EntityBuggy.BuggyType type)
+    {
+        super(TYPE, containerId);
+        this.playerInv = playerInv;
+        this.buggyInv = buggyInv;
+        this.buggyType = type;
+        buggyInv.openInventory(playerInv.player);
 
         int var4;
         int var5;
 
-        if (type != 0)
+        if (type != EntityBuggy.BuggyType.NO_INVENTORY)
         {
-            for (var4 = 0; var4 < type * 2; ++var4)
+            for (int i = 0; i < type.getInvSize(); ++i)
             {
-                for (var5 = 0; var5 < 9; ++var5)
-                {
-                    this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
-                }
+                int row = i / 9;
+                this.addSlot(new Slot(this.buggyInv, i, 8 + row * 18, 50 + row * 18));
             }
         }
 
@@ -35,20 +51,20 @@ public class ContainerBuggy extends Container
         {
             for (var5 = 0; var5 < 9; ++var5)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 49 + var4 * 18 + 14 + type * 36));
+                this.addSlot(new Slot(this.playerInv, var5 + var4 * 9 + 9, 8 + var5 * 18, 49 + var4 * 18 + 14 + type.ordinal() * 36));
             }
         }
 
         for (var4 = 0; var4 < 9; ++var4)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 107 + 14 + type * 36));
+            this.addSlot(new Slot(this.playerInv, var4, 8 + var4 * 18, 107 + 14 + type.ordinal() * 36));
         }
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.spaceshipInv.isUsableByPlayer(par1EntityPlayer);
+        return this.buggyInv.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -99,14 +115,14 @@ public class ContainerBuggy extends Container
     public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
-        this.lowerChestInventory.closeInventory(par1EntityPlayer);
+        this.playerInv.closeInventory(par1EntityPlayer);
     }
 
     /**
      * Return this chest container's lower chest inventory.
      */
-    public IInventory getLowerChestInventory()
+    public IInventory getPlayerInv()
     {
-        return this.lowerChestInventory;
+        return this.playerInv;
     }
 }

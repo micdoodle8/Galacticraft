@@ -1,21 +1,29 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerIngotCompressor extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.INGOT_COMPRESSOR)
+    public static ContainerType<ContainerIngotCompressor> TYPE;
+
     private TileEntityIngotCompressor tileEntity;
 
-    public ContainerIngotCompressor(PlayerInventory par1InventoryPlayer, TileEntityIngotCompressor tileEntity)
+    public ContainerIngotCompressor(int containerId, PlayerInventory playerInv, TileEntityIngotCompressor tileEntity)
     {
+        super(TYPE, containerId);
         this.tileEntity = tileEntity;
         tileEntity.compressingCraftMatrix.eventHandler = this;
 
@@ -23,31 +31,31 @@ public class ContainerIngotCompressor extends Container
         {
             for (int y = 0; y < 3; y++)
             {
-                this.addSlotToContainer(new Slot(tileEntity.compressingCraftMatrix, y + x * 3, 19 + y * 18, 18 + x * 18));
+                this.addSlot(new Slot(tileEntity.compressingCraftMatrix, y + x * 3, 19 + y * 18, 18 + x * 18));
             }
         }
 
         // Coal slot
-        this.addSlotToContainer(new Slot(tileEntity, 0, 55, 75));
+        this.addSlot(new Slot(tileEntity, 0, 55, 75));
 
         // Smelting result
-        this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 1, 138, 38));
+        this.addSlot(new FurnaceResultSlot(playerInv.player, tileEntity, 1, 138, 38));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 110 + var3 * 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 110 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 168));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 168));
         }
 
-        tileEntity.playersUsing.add(par1InventoryPlayer.player);
+        tileEntity.playersUsing.add(playerInv.player);
     }
 
     @Override
@@ -99,7 +107,7 @@ public class ContainerIngotCompressor extends Container
             }
             else
             {
-                if (FurnaceTileEntity.getItemBurnTime(var4) > 0)
+                if (ForgeHooks.getBurnTime(var4) > 0)
                 {
                     if (!this.mergeItemStack(var4, 9, 10, false))
                     {

@@ -64,7 +64,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftW
     }
 
     /**
-     * Whether or not to render vanilla sunset (can be overridden with custom sky provider)
+     * Whether or not to render vanilla sunset (can be overridden with custom sky dimension)
      */
     public abstract boolean hasSunset();
 

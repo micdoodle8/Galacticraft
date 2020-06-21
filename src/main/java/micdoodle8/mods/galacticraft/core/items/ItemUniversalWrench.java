@@ -1,74 +1,68 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class ItemUniversalWrench extends Item implements ISortableItem
 {
     public ItemUniversalWrench(Item.Properties properties)
     {
         super(properties);
-        this.setUnlocalizedName(assetName);
-        this.setMaxStackSize(1);
-        this.setMaxDamage(256);
+//        this.setUnlocalizedName(assetName);
+//        this.setMaxStackSize(1);
+//        this.setMaxDamage(256);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
-    @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
-    public boolean canWrench(PlayerEntity player, Hand hand, ItemStack wrench, RayTraceResult rayTrace)
-    {
-        return true;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
-    public void wrenchUsed(PlayerEntity player, Hand hand, ItemStack wrench, RayTraceResult rayTrace)
-    {
-        ItemStack stack = player.inventory.getCurrentItem();
-
-        if (!stack.isEmpty())
-        {
-            stack.damageItem(1, player);
-
-            if (stack.getItemDamage() >= stack.getMaxDamage())
-            {
-                stack.shrink(1);
-            }
-
-            if (stack.getCount() <= 0)
-            {
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-            }
-        }
-    }
+//    @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
+//    public boolean canWrench(PlayerEntity player, Hand hand, ItemStack wrench, RayTraceResult rayTrace)
+//    {
+//        return true;
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
+//    public void wrenchUsed(PlayerEntity player, Hand hand, ItemStack wrench, RayTraceResult rayTrace)
+//    {
+//        ItemStack stack = player.inventory.getCurrentItem();
+//
+//        if (!stack.isEmpty())
+//        {
+//            stack.damageItem(1, player);
+//
+//            if (stack.getItemDamage() >= stack.getMaxDamage())
+//            {
+//                stack.shrink(1);
+//            }
+//
+//            if (stack.getCount() <= 0)
+//            {
+//                player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+//            }
+//        }
+//    }
 
     public void wrenchUsed(PlayerEntity entityPlayer, BlockPos pos)
     {
@@ -88,8 +82,15 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
+//    @Override
+//    public boolean doesSneakBypassUse(ItemStack stack, IBlockReader world, BlockPos pos, PlayerEntity player)
+//    {
+//        return true;
+//    }
+
+
     @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockReader world, BlockPos pos, PlayerEntity player)
+    public boolean doesSneakBypassUse(ItemStack stack, IWorldReader world, BlockPos pos, PlayerEntity player)
     {
         return true;
     }
@@ -104,29 +105,28 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Override
-    public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand)
+    public ActionResultType onItemUseFirst(ItemStack stackIn, ItemUseContext context)
     {
-        if (world.isRemote || player.isSneaking())
+        if (context.getWorld().isRemote || context.getPlayer().isSneaking())
         {
             return ActionResultType.PASS;
         }
 
-        BlockState state = world.getBlockState(pos);
+        BlockState state = context.getWorld().getBlockState(context.getPos());
 
         if (state.getBlock() instanceof BlockAdvanced)
         {
-            if (((BlockAdvanced) state.getBlock()).onUseWrench(world, pos, player, hand, player.getHeldItem(hand), side, hitX, hitY, hitZ))
+            if (((BlockAdvanced) state.getBlock()).onUseWrench(context.getWorld(), context.getPos(), context.getPlayer(), context.getHand(), context.getItem(), new BlockRayTraceResult(context.getHitVec(), context.getFace(), context.getPos(), context.func_221533_k())))
             {
                 return ActionResultType.SUCCESS;
             }
         }
 
-        for (Map.Entry<IProperty<?>, Comparable<?>> entry : state.getProperties().entrySet())
+        for (IProperty<?> entry : state.getProperties())
         {
-            IProperty<?> iProperty = entry.getKey();
-            if (iProperty instanceof PropertyEnum && iProperty.getName().equals("facing") && state.get(iProperty) instanceof Direction)
+            if (entry instanceof DirectionProperty && entry.getName().equals("facing") && state.get(entry) instanceof Direction)
             {
-                EnumProperty<Direction> property = (EnumProperty<Direction>) iProperty;
+                DirectionProperty property = (DirectionProperty) entry;
                 Collection<Direction> values = property.getAllowedValues();
                 if (values.size() > 0)
                 {
@@ -139,7 +139,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                         Direction newFacing = currentFacing.rotateY();
                         if (values.contains(newFacing))
                         {
-                            world.setBlockState(pos, state.with(property, newFacing));
+                            context.getWorld().setBlockState(context.getPos(), state.with(property, newFacing));
                             done = true;
                         }
                     }
@@ -149,16 +149,16 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                         List<Direction> list = Arrays.asList(values.toArray(new Direction[0]));
                         int i = list.indexOf(currentFacing) + 1;
                         Direction newFacing = list.get(i >= list.size() ? 0 : i);
-                        world.setBlockState(pos, state.with(property, newFacing));
+                        context.getWorld().setBlockState(context.getPos(), state.with(property, newFacing));
                     }
 
-                    ItemStack stack = player.getHeldItem(hand).copy();
-                    stack.damageItem(1, player);
-                    player.setHeldItem(hand, stack);
+                    ItemStack stack = context.getPlayer().getHeldItem(context.getHand()).copy();
+                    stack.damageItem(1, context.getPlayer(), (entity) -> {});
+                    context.getPlayer().setHeldItem(context.getHand(), stack);
 
-                    TileEntity tile = world.getTileEntity(pos);
-                    if (tile instanceof TileBaseUniversalElectrical)
-                        ((TileBaseUniversalElectrical) tile).updateFacing();
+                    TileEntity tile = context.getWorld().getTileEntity(context.getPos());
+//                    if (tile instanceof TileBaseUniversalElectrical)
+//                        ((TileBaseUniversalElectrical) tile).updateFacing(); TODO Ic2 support
 
                     return ActionResultType.SUCCESS;
                 }

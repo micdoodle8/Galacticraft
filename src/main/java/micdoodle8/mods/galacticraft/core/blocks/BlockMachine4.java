@@ -82,7 +82,7 @@
 //        }
 //
 //        @Override
-//        public String getUnlocalizedName()
+//        public String getTranslationKey()
 //        {
 //            return this.blockName;
 //        }
@@ -103,7 +103,7 @@
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        Direction enumfacing = Direction.getHorizontal(meta % 4);
+//        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
 //        EnumMachineAdvancedType type = (EnumMachineAdvancedType) typeBase.fromMetadata(meta);
 //        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
 //    }

@@ -1,31 +1,57 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMachineSides
 {
+    public static class TileEntityElectricFurnaceT1 extends TileEntityElectricFurnace
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.furnaceElectric)
+        public static TileEntityType<TileEntityElectricFurnaceT1> TYPE;
+
+        public TileEntityElectricFurnaceT1()
+        {
+            super(TYPE);
+            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 45);
+        }
+    }
+
+    public static class TileEntityElectricFurnaceT2 extends TileEntityElectricFurnace
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.furanceArc)
+        public static TileEntityType<TileEntityElectricFurnaceT2> TYPE;
+
+        public TileEntityElectricFurnaceT2()
+        {
+            super(TYPE);
+            setTier2();
+        }
+    }
+
     //The electric furnace is 50% faster than a vanilla Furnace
     //but at a cost of some inefficiency:
     //It uses 46800 gJ to smelt 8 ingots quickly
@@ -35,39 +61,27 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 
     public static int PROCESS_TIME_REQUIRED = 130;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTimeRequired = PROCESS_TIME_REQUIRED;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
 
     public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
 
     private boolean initialised = false;
 
-    public TileEntityElectricFurnace()
-    {
-        this(1);
-    }
-
     /*
      * @param tier: 1 = Electric Furnace  2 = Electric Arc Furnace
      */
-    public TileEntityElectricFurnace(int tier)
+    public TileEntityElectricFurnace(TileEntityType<?> type)
     {
-        super(tier == 1 ? "tile.machine.2.name" : "tile.machine.7.name");
+        super(type);
         this.initialised = true;
 	    this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
-        if (tier == 1)
-        {
-            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 45);
-            return;
-        }
-
-        this.setTier2();
     }
 
-    private void setTier2()
+    protected void setTier2()
     {
         this.storage.setCapacity(25000);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
@@ -76,25 +90,24 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
-            int metadata = this.getBlockMetadata();
-            //for version update compatibility
-            Block b = this.world.getBlockState(this.getPos()).getBlock();
-            if (b == GCBlocks.machineBase)
-            {
-                this.world.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState()/*,s 4*/, 2);
-            }
-            else if (metadata >= 8)
-            {
-                this.setTier2();
-            }
+            //for version tick compatibility
+//            Block b = this.world.getBlockState(this.getPos()).getBlock();
+//            if (b == GCBlocks.machineBase)
+//            {
+//                this.world.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState()/*,s 4*/, 2);
+//            }
+//            else if (metadata >= 8)
+//            {
+//                this.setTier2();
+//            }
             this.initialised = true;
         }
 
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -154,12 +167,18 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             return false;
         }
-        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
-        if (result.isEmpty())
+        IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).orElse(null);
+        if (irecipe == null)
         {
-            int burnable = FurnaceTileEntity.getItemBurnTime(stack);
-            if (burnable >= 200 && burnable < 400) result = new ItemStack(MarsItems.carbonFragments);   //this includes most wooden tools, doors, stairs, boats etc but not saplings and sticks
-            else return false;
+            return false;
+        }
+        ItemStack result = irecipe.getRecipeOutput();
+        if (!result.isEmpty())
+        {
+            int burnable = ForgeHooks.getBurnTime(stack);
+//            if (burnable >= 200 && burnable < 400 && GalacticraftCore.isPlanetsLoaded) result = new ItemStack(MarsItems.carbonFragments);   //this includes most wooden tools, doors, stairs, boats etc but not saplings and sticks TODO Planets
+//            else return false;
+            return false;
         }
 
 
@@ -196,12 +215,14 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         if (this.canProcess())
         {
-            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.getInventory().get(1));
+            IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).orElse(null);
+//            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.getInventory().get(1));
+            ItemStack resultItemStack = irecipe.getRecipeOutput();
             boolean doubleResult = false;
             if (this.tierGC > 1)
             {
-                String nameSmelted = this.getInventory().get(1).getUnlocalizedName().toLowerCase();
-                if ((resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") || resultItemStack.getItem() == Items.QUARTZ) && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
+                String nameSmelted = this.getInventory().get(1).getTranslationKey().toLowerCase();
+                if ((resultItemStack.getTranslationKey().toLowerCase().contains("ingot") || resultItemStack.getItem() == Items.QUARTZ) && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
                 {
                     doubleResult = true;
                 }
@@ -255,9 +276,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         if (this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
             this.setTier2();
@@ -273,13 +294,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
             this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
         }
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("smeltingTicks", this.processTicks);
 
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
@@ -304,7 +325,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             return false;
         }
-        return slotID == 1 ? !FurnaceRecipes.instance().getSmeltingResult(itemStack).isEmpty() : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+        return slotID == 1 ? true/*!FurnaceRecipes.instance().getSmeltingResult(itemStack).isEmpty() TODO Furnace slots */ : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override
@@ -335,11 +356,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         return this.canProcess();
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public Direction getFront()
@@ -364,6 +385,16 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         default:
             return getFront().rotateY();
         }
+    }
+
+    @Override
+    public void openInventory(PlayerEntity player) {
+        playersUsing.add(player);
+    }
+
+    @Override
+    public void closeInventory(PlayerEntity player) {
+        playersUsing.remove(player);
     }
 
     //------------------
@@ -409,7 +440,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachineTiered.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

@@ -14,7 +14,7 @@ public class ElectricItemHelper
      * Recharges an electric item.
      *
      * @param joules - The joules being provided to the electric item
-     * @return The total amount of joules provided by the provider.
+     * @return The total amount of joules provided by the dimension.
      */
     public static float chargeItem(ItemStack itemStack, float joules)
     {
@@ -33,7 +33,7 @@ public class ElectricItemHelper
      * Decharges an electric item.
      *
      * @param joules - The joules being withdrawn from the electric item
-     * @return The total amount of joules the provider received.
+     * @return The total amount of joules the dimension received.
      */
     public static float dischargeItem(ItemStack itemStack, float joules)
     {

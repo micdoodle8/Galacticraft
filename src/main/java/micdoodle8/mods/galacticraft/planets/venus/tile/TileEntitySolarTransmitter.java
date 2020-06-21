@@ -29,7 +29,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
 //        if (!BlockFluidPipe.ignoreDrop)
         {
@@ -40,14 +40,14 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
 //            this.setNetwork(null);
 //        }
 
-        super.invalidate();
+        super.remove();
     }
 
     @Override
-    public void onChunkUnload()
+    public void onChunkUnloaded()
     {
-        super.invalidate();
-        super.onChunkUnload();
+        super.remove();
+        super.onChunkUnloaded();
     }
 
 //    @Override
@@ -80,7 +80,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -91,7 +91,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
             }
         }
 
-        super.update();
+        super.tick();
     }
 
     protected void resetNetwork()
@@ -137,7 +137,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
             this.adjacentConnections = null;
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (Direction side : Direction.VALUES)
+            for (Direction side : Direction.values())
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
@@ -173,11 +173,11 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
          */
         if (this.adjacentConnections == null)
         {
-            this.adjacentConnections = new TileEntity[Direction.VALUES.length];
+            this.adjacentConnections = new TileEntity[Direction.values().length];
 
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (Direction direction : Direction.VALUES)
+            for (Direction direction : Direction.values())
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, direction);
 

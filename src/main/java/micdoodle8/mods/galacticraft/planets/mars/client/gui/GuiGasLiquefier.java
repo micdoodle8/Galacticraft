@@ -40,9 +40,9 @@ public class GuiGasLiquefier extends GuiContainerGC
     private GuiElementInfoRegion gasTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiGasLiquefier(PlayerInventory par1InventoryPlayer, TileEntityGasLiquefier tileEntity)
+    public GuiGasLiquefier(PlayerInventory playerInv, TileEntityGasLiquefier tileEntity)
     {
-        super(new ContainerGasLiquefier(par1InventoryPlayer, tileEntity, Minecraft.getInstance().player));
+        super(new ContainerGasLiquefier(playerInv, tileEntity, Minecraft.getInstance().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }
@@ -112,7 +112,7 @@ public class GuiGasLiquefier extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getName(), 40, 5, 4210752);
+        this.fontRenderer.drawString(this.title.getFormattedText(), 40, 5, 4210752);
         String displayText = "";
         int yOffset = -18;
 
@@ -128,7 +128,7 @@ public class GuiGasLiquefier extends GuiContainerGC
         {
             displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
         }
-        else if (this.tileEntity.gasTank.getFluid() == null || this.tileEntity.gasTank.getFluidAmount() <= 0)
+        else if (this.tileEntity.gasTank.getFluid() == FluidStack.EMPTY || this.tileEntity.gasTank.getFluidAmount() <= 0)
         {
             displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas.name");
         }

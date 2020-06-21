@@ -190,7 +190,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D));
 
             final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-            particleMap.put(new Vector3(), new Vector3(x1, y1 + this.getMotion().y / 2, z1));
+            particleMap.put(new Vector3(), new Vector3((float)x1, (float)(y1 + this.getMotion().y / 2), (float)z1));
             LivingEntity passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
             this.world.addParticle(new EntityParticleData(GCParticles.LANDER_FLAME, passenger != null ? passenger.getUniqueID() : getUniqueID()),
                     this.posX, this.posY + 1D + this.getMotion().y / 2, this.posZ,
@@ -265,7 +265,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             this.setMotion(this.getMotion().x, this.getInitialMotionY(), this.getMotion().z);
         }
 
-        return new Vector3(this.getMotion().x, this.ticks < 40 ? 0 : this.getMotion().y, this.getMotion().z);
+        return new Vector3((float)this.getMotion().x, (float)(this.ticks < 40 ? 0 : this.getMotion().y), (float)this.getMotion().z);
     }
 
     @Override

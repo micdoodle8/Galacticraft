@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockThermalAir;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -21,7 +22,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -37,10 +40,11 @@ public class GuiOxygenSealer extends GuiContainerGC
     private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiOxygenSealer(PlayerInventory playerInv, TileEntityOxygenSealer sealer)
+    public GuiOxygenSealer(ContainerOxygenSealer container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerOxygenSealer(playerInv, sealer), playerInv, new StringTextComponent(sealer.getName()));
-        this.sealer = sealer;
+        super(container, playerInv, title);
+//        super(new ContainerOxygenSealer(playerInv, sealer), playerInv, new TranslationTextComponent("container.oxygensealer.name"));
+        this.sealer = container.getSealer();
         this.ySize = 200;
     }
 
@@ -87,7 +91,7 @@ public class GuiOxygenSealer extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.sealer.getName(), 8, 10, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();

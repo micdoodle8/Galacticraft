@@ -12,7 +12,7 @@
 //
 //
 ///**
-// * A Biome Provider for Galacticraft planets (and other bodies!) which only have 1 biome
+// * A Biome dimension for Galacticraft planets (and other bodies!) which only have 1 biome
 // *
 // * Makes use of Galacticraft's BiomeAdaptive so that only one Biome is registered in Forge
 // * (this BiomeProvider in combination with BiomeAdaptive makes sure the correct actual biome is seen)

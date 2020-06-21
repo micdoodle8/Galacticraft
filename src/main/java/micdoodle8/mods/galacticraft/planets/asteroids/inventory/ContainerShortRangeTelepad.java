@@ -14,11 +14,11 @@ public class ContainerShortRangeTelepad extends Container
 {
     private final TileEntityShortRangeTelepad tileEntity;
 
-    public ContainerShortRangeTelepad(PlayerInventory par1InventoryPlayer, TileEntityShortRangeTelepad tileEntity, PlayerEntity player)
+    public ContainerShortRangeTelepad(PlayerInventory playerInv, TileEntityShortRangeTelepad tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
 
         int var6;
         int var7;
@@ -27,13 +27,13 @@ public class ContainerShortRangeTelepad extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 127 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 127 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 185));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 185));
         }
 
         tileEntity.openInventory(player);

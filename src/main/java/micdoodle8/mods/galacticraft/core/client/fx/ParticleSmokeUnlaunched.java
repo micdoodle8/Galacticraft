@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleSmokeUnlaunched extends ParticleLaunchSmoke
 {
-    public ParticleSmokeUnlaunched(World world, Vector3 position, Vector3 motion, float size, IAnimatedSprite sprite)
+    public ParticleSmokeUnlaunched(World world, double posX, double posY, double posZ, double motX, double motY, double motZ, float size, IAnimatedSprite sprite)
     {
-        super(world, position, motion, size, false, sprite);
+        super(world, posX, posY, posZ, motX, motY, motZ, size, false, sprite);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -26,7 +26,7 @@ public class ParticleSmokeUnlaunched extends ParticleLaunchSmoke
         }
 
         public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ParticleSmokeUnlaunched(worldIn, new Vector3(x, y, z), new Vector3(xSpeed, ySpeed, zSpeed), 1.0F, this.spriteSet);
+            return new ParticleSmokeUnlaunched(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteSet);
         }
     }
 }

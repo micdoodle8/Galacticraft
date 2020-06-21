@@ -1,25 +1,31 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerFuelLoader extends Container
 {
-    private TileBaseElectricBlock tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.FUEL_LOADER)
+    public static ContainerType<ContainerFuelLoader> TYPE;
 
-    public ContainerFuelLoader(PlayerInventory par1InventoryPlayer, TileEntityFuelLoader fuelLoader)
+    private TileEntityFuelLoader fuelLoader;
+
+    public ContainerFuelLoader(int containerId, PlayerInventory playerInv, TileEntityFuelLoader fuelLoader)
     {
-        this.tileEntity = fuelLoader;
-        this.addSlotToContainer(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
-        this.addSlotToContainer(new Slot(fuelLoader, 1, 7, 12));
+        super(TYPE, containerId);
+        this.fuelLoader = fuelLoader;
+        this.addSlot(new SlotSpecific(fuelLoader, 0, 51, 55, IItemElectric.class));
+        this.addSlot(new Slot(fuelLoader, 1, 7, 12));
 
         int var6;
         int var7;
@@ -30,20 +36,25 @@ public class ContainerFuelLoader extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 31 + 58 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 31 + 58 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 31 + 116));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 31 + 116));
         }
+    }
+
+    public TileEntityFuelLoader getFuelLoader()
+    {
+        return fuelLoader;
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.fuelLoader.isUsableByPlayer(var1);
     }
 
     @Override

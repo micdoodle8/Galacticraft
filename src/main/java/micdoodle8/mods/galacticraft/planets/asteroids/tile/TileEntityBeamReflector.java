@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
@@ -16,9 +16,9 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     private EnergyStorage storage = new EnergyStorage(10, 1);
 
 //    @Override
-//    public void update()
+//    public void tick()
 //    {
-//        super.update();
+//        super.tick();
 //    }
 
     public TileEntityBeamReflector()

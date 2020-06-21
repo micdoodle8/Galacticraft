@@ -24,7 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -32,15 +32,15 @@ import java.util.Set;
 public class TileEntitySolarArrayController extends TileBaseUniversalElectricalSource implements IDisableableMachine, IInventoryDefaults, ISidedInventory, IConnector
 {
     private int solarStrength = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean disabled = false;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int disableCooldown = 0;
     public static final int MAX_GENERATE_WATTS = 1000;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int generateWatts = 0;
     private Set<ITransmitter> solarArray = Sets.newHashSet();
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int connectedInfo = 0;
 
     private boolean initialised = false;
@@ -56,7 +56,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
@@ -111,7 +111,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
             }
         }
 
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -221,9 +221,9 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.storage.setCapacity(nbt.getFloat("maxEnergy"));
         this.setDisabled(0, nbt.getBoolean("disabled"));
         this.disableCooldown = nbt.getInt("disabledCooldown");
@@ -232,12 +232,12 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
+        super.write(nbt);
+        nbt.putFloat("maxEnergy", this.getMaxEnergyStoredGC());
         nbt.putInt("disabledCooldown", this.disableCooldown);
-        nbt.setBoolean("disabled", this.getDisabled(0));
+        nbt.putBoolean("disabled", this.getDisabled(0));
 
         return nbt;
     }

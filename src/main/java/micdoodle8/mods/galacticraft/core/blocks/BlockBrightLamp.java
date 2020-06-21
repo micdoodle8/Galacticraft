@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -25,7 +24,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 
-public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription, ISortableBlock
+public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing");
 //    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -121,7 +120,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    @Override
 //    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
 //    {
-//        for (Direction side : Direction.VALUES)
+//        for (Direction side : Direction.values())
 //        {
 //            BlockPos offsetPos = pos.offset(side);
 //            BlockState state = worldIn.getBlockState(offsetPos);
@@ -252,11 +251,11 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //        return state.with(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
 //    }
 //
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.MACHINE;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)

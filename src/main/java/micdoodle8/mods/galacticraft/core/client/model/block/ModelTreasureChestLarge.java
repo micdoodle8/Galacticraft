@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.model.block;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.tileentity.model.LargeChestModel;
 
-public class ModelTreasureChestLarge extends ModelLargeChest
+public class ModelTreasureChestLarge extends LargeChestModel
 {
     public RendererModel keyParts[] = new RendererModel[6];
 
@@ -45,23 +45,24 @@ public class ModelTreasureChestLarge extends ModelLargeChest
         this.keyParts[5].rotationPointZ = 15.0F;
     }
 
-    public void renderAll(boolean withKey)
+    @Override
+    public void renderAll()
     {
-        if (withKey)
+//        if (withKey)
+//        {
+        for (final RendererModel nmtmr : this.keyParts)
         {
-            for (final RendererModel nmtmr : this.keyParts)
+            if (!nmtmr.equals(this.keyParts[5]))
             {
-                if (!nmtmr.equals(this.keyParts[5]))
-                {
-                    nmtmr.rotationPointX = 16.0F;
-                    nmtmr.rotationPointY = 7.0F;
-                    nmtmr.rotationPointZ = -2.0F;
-                    nmtmr.rotateAngleY = 3 * Constants.halfPI;
-                    nmtmr.rotateAngleX = -this.chestLid.rotateAngleX;
-                    nmtmr.render(0.0625F);
-                }
+                nmtmr.rotationPointX = 16.0F;
+                nmtmr.rotationPointY = 7.0F;
+                nmtmr.rotationPointZ = -2.0F;
+                nmtmr.rotateAngleY = 3 * Constants.halfPI;
+                nmtmr.rotateAngleX = -this.getLid().rotateAngleX;
+                nmtmr.render(0.0625F);
             }
         }
+//        }
 
         this.keyParts[5].rotationPointX = 16.0F;
         this.keyParts[5].rotationPointY = 7.0F;

@@ -19,9 +19,9 @@ public class GuiSchematicCargoRocket extends GuiPositionedContainer implements I
 
     private int pageIndex;
 
-    public GuiSchematicCargoRocket(PlayerInventory par1InventoryPlayer, BlockPos pos)
+    public GuiSchematicCargoRocket(PlayerInventory playerInv, BlockPos pos)
     {
-        super(new ContainerSchematicCargoRocket(par1InventoryPlayer, pos), pos);
+        super(new ContainerSchematicCargoRocket(playerInv, pos), pos);
         this.ySize = 220;
     }
 

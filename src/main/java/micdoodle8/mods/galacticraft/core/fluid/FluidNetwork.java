@@ -18,19 +18,20 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.PacketFluidNetworkUpdate;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -81,9 +82,10 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     {
                         if (buffer.getFluid() == network.buffer.getFluid())
                         {
-                            buffer.amount += network.buffer.amount;
+                            buffer.setAmount(buffer.getAmount() + network.buffer.getAmount());
+//                            buffer.amount += network.buffer.amount;
                         }
-                        else if (network.buffer.amount > buffer.amount)
+                        else if (network.buffer.getAmount() > buffer.getAmount())
                         {
                             this.buffer = network.buffer.copy();
                         }
@@ -155,34 +157,37 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     {
         FluidStack stack = transmitter.getBuffer();
 
-        if (stack == null || stack.getFluid() == null || stack.amount == 0)
+        if (stack == null || stack == FluidStack.EMPTY || stack.getAmount() == 0)
         {
             // Nothing to do
             return;
         }
 
-        if (buffer == null || buffer.getFluid() == null || buffer.amount == 0)
+        if (buffer == null || buffer == FluidStack.EMPTY || buffer.getAmount() == 0)
         {
             // Set transmitter buffer to network buffer
             buffer = stack.copy();
-            stack.amount = 0;
+            stack.setAmount(0);
             return;
         }
 
         if (buffer.isFluidEqual(stack))
         {
             // Add transmitter fluid to network buffer
-            buffer.amount += stack.amount;
+            buffer.setAmount(buffer.getAmount() + stack.getAmount());
+//            buffer.amount += stack.amount;
         }
 
-        stack.amount = 0;
+//        stack.amount = 0;
+        stack.setAmount(0);
     }
 
     public void clamp()
     {
-        if (buffer != null && buffer.amount > getCapacity())
+        if (buffer != null && buffer.getAmount() > getCapacity())
         {
-            buffer.amount = this.capacity;
+//            buffer.amount = this.capacity;
+            buffer.setAmount(this.capacity);
         }
     }
 
@@ -203,10 +208,10 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     public int getRequest()
     {
-        return getCapacity() - (buffer != null ? buffer.amount : 0);
+        return getCapacity() - (buffer != null ? buffer.getAmount() : 0);
     }
 
-    private int emitToAcceptors(FluidStack toSend, boolean doTransfer)
+    private int emitToAcceptors(FluidStack toSend, IFluidHandler.FluidAction action)
     {
         List<Pair<BlockPos, Map<Direction, IFluidHandler>>> available = new ArrayList<>();
         available.addAll(this.getAcceptors(toSend));
@@ -218,8 +223,8 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         if (!available.isEmpty())
         {
             int divider = available.size();
-            int remainder = toSend.amount % divider;
-            int each = (toSend.amount - remainder) / divider;
+            int remainder = toSend.getAmount() % divider;
+            int each = (toSend.getAmount() - remainder) / divider;
 
             for (Pair<BlockPos, Map<Direction, IFluidHandler>> pair : available)
             {
@@ -241,8 +246,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     if (acceptor != null)
                     {
                         FluidStack copy = toSend.copy();
-                        copy.amount = currentSend;
-                        totalSend += acceptor.fill(copy, doTransfer);
+//                        copy.amount = currentSend;
+                        copy.setAmount(currentSend);
+                        totalSend += acceptor.fill(copy, action);
                     }
 
                     if (totalSend > prev)
@@ -254,7 +260,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             }
         }
 
-        if (doTransfer && totalSend > 0 && GCCoreUtil.getEffectiveSide().isServer())
+        if (action.execute() && totalSend > 0 && GCCoreUtil.getEffectiveSide().isServer())
         {
             this.didTransfer = true;
             this.transferDelay = 2;
@@ -263,27 +269,27 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         return totalSend;
     }
 
-    public int emitToBuffer(FluidStack toSend, boolean doTransfer)
+    public int emitToBuffer(FluidStack toSend, IFluidHandler.FluidAction action)
     {
         if (toSend == null || (buffer != null && buffer.getFluid() != toSend.getFluid()))
         {
             return 0;
         }
 
-        int toUse = Math.min(getRequest(), toSend.amount);
+        int toUse = Math.min(getRequest(), toSend.getAmount());
 
-        if (doTransfer)
+        if (action.execute())
         {
             if (buffer == null)
             {
                 // Copy
                 buffer = toSend.copy();
-                buffer.amount = toUse;
+                buffer.setAmount(toUse);
             }
             else
             {
                 // Add
-                buffer.amount += toUse;
+                buffer.setAmount(buffer.getAmount() + toUse);
             }
         }
 
@@ -343,7 +349,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 if (this.updateDelay == 0)
                 {
                     BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(this.world), pos.getX(), pos.getY(), pos.getZ(), 30.0));
+                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 30.0, GCCoreUtil.getDimensionID(this.world)));
                     this.firstUpdate = false;
                     this.pipesAdded.clear();
                     this.needsUpdate = true;
@@ -361,7 +367,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 this.transferDelay--;
             }
 
-            int stored = buffer != null ? buffer.amount : 0;
+            int stored = buffer != null ? buffer.getAmount() : 0;
 
             if (stored != this.prevBufferAmount)
             {
@@ -373,7 +379,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             if (this.didTransfer != this.prevTransfer || this.needsUpdate)
             {
                 BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(GCCoreUtil.getDimensionID(this.world), pos, this.buffer, this.didTransfer), new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(this.world), pos.getX(), pos.getY(), pos.getZ(), 20.0));
+                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(GCCoreUtil.getDimensionID(this.world), pos, this.buffer, this.didTransfer), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 20.0, GCCoreUtil.getDimensionID(this.world)));
                 this.needsUpdate = false;
             }
 
@@ -381,12 +387,13 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
             if (buffer != null)
             {
-                this.prevTransferAmount = this.emitToAcceptors(buffer, true);
+                this.prevTransferAmount = this.emitToAcceptors(buffer, IFluidHandler.FluidAction.EXECUTE);
                 if (buffer != null)
                 {
-                    buffer.amount -= this.prevTransferAmount;
+//                    buffer.amount -= this.prevTransferAmount;
+                    buffer.setAmount(buffer.getAmount() - this.prevTransferAmount);
 
-                    if (buffer.amount <= 0)
+                    if (buffer.getAmount() <= 0)
                     {
                         this.buffer = null;
                     }
@@ -421,14 +428,14 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             return 0.0F;
         }
 
-        return Math.min(1.0F, this.buffer.amount / (float) this.getCapacity());
+        return Math.min(1.0F, this.buffer.getAmount() / (float) this.getCapacity());
     }
 
     public List<Pair<BlockPos, Map<Direction, IFluidHandler>>> getAcceptors(FluidStack toSend)
     {
         List<Pair<BlockPos, Map<Direction, IFluidHandler>>> toReturn = new LinkedList<>();
 
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
         {
             return toReturn;
         }
@@ -458,14 +465,14 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
             Map<Direction, IFluidHandler> handlers = Maps.newHashMap();
 
-            IFluidHandler handler;
+            LazyOptional<IFluidHandler> handler;
             Fluid fluidToSend = toSend.getFluid();
             for (Direction side : sides)
             {
                 handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
-                if (handler != null && handler.fill(new FluidStack(fluidToSend, 1), false) > 0)
+                if (handler.isPresent() && handler.orElse(null).fill(new FluidStack(fluidToSend, 1), IFluidHandler.FluidAction.SIMULATE) > 0)
                 {
-                    handlers.put(side, handler);
+                    handlers.put(side, handler.orElse(null));
                 }
             }
 
@@ -521,7 +528,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         }
         catch (Exception e)
         {
-            FMLLog.severe("Failed to refresh liquid pipe network.");
+            GCLog.severe("Failed to refresh liquid pipe network.");
             e.printStackTrace();
         }
     }
@@ -563,8 +570,8 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     if (!(acceptor instanceof IBufferTransmitter) && acceptor != null)
                     {
                         Direction facing = Direction.byIndex(i).getOpposite();
-                        IFluidHandler handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-                        if (handler != null)
+                        LazyOptional<IFluidHandler> handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+                        if (handler.isPresent())
                         {
                             BlockPos acceptorPos = tile.getPos().offset(facing.getOpposite());
                             EnumSet<Direction> facingSet = this.acceptorDirections.get(acceptorPos);
@@ -576,7 +583,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                             {
                                 facingSet = EnumSet.of(facing);
                             }
-                            this.acceptors.put(acceptorPos, handler);
+                            this.acceptors.put(acceptorPos, handler.orElse(null));
                             this.acceptorDirections.put(acceptorPos, facingSet);
                         }
                     }
@@ -586,7 +593,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         }
         catch (Exception e)
         {
-            FMLLog.severe("Failed to refresh liquid acceptors");
+            GCLog.severe("Failed to refresh liquid acceptors");
             e.printStackTrace();
         }
     }

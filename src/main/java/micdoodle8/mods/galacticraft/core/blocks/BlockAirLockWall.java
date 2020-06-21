@@ -15,7 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockAirLockWall extends Block implements IPartialSealableBlock, ISortableBlock
+public class BlockAirLockWall extends Block implements IPartialSealableBlock
 {
     public static final EnumProperty<EnumAirLockSealConnection> CONNECTION_TYPE = EnumProperty.create("connection", EnumAirLockSealConnection.class);
     protected static final VoxelShape AABB_X = Block.makeCuboidShape(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
@@ -105,11 +105,11 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock, IS
 //        return null;
 //    }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.MACHINE;
+//    }
 
     public static EnumAirLockSealConnection getConnection(IBlockReader worldIn, BlockPos pos)
     {

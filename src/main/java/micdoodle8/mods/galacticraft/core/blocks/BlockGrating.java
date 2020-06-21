@@ -214,7 +214,7 @@
 //
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
-//    public BlockRenderLayer getBlockLayer()
+//    public BlockRenderLayer getRenderLayer()
 //    {
 //         return BlockRenderLayer.CUTOUT;
 //    }
@@ -263,7 +263,7 @@
 //    }
 //    
 //    @Override
-//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 //    {
 //        return new ItemStack(Item.getItemFromBlock(GCBlocks.grating), 1, 0);
 //    }
@@ -454,7 +454,7 @@
 //    //---------------From BlockDynamicLiquid
 //    
 //    @Override
-//    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
+//    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
 //    {
 //        if (!this.blockMaterial.isLiquid()) return;
 //        if (this.forgeFluid)
@@ -469,7 +469,7 @@
 //        int i = ((Integer)state.get(BlockLiquid.LEVEL)).intValue();
 //        int j = 1;
 //
-//        if (this.blockMaterial == Material.LAVA && !worldIn.provider.doesWaterVaporize())
+//        if (this.blockMaterial == Material.LAVA && !worldIn.dimension.doesWaterVaporize())
 //        {
 //            j = 2;
 //        }
@@ -542,7 +542,7 @@
 //                {
 //                    state = state.with(BlockLiquid.LEVEL, Integer.valueOf(i1));
 //                    worldIn.setBlockState(pos, state, 2);
-//                    worldIn.scheduleUpdate(pos, this, k);
+//                    worldIn.getPendingBlockTicks().scheduleTick(pos, this, k);
 //                    worldIn.notifyNeighborsOfStateChange(pos, this, false);
 //                }
 //            }
@@ -650,7 +650,7 @@
 //
 //    private int getSlopeFindDistance(World worldIn)
 //    {
-//        return this.blockMaterial == Material.LAVA && !worldIn.provider.doesWaterVaporize() ? 2 : 4;
+//        return this.blockMaterial == Material.LAVA && !worldIn.dimension.doesWaterVaporize() ? 2 : 4;
 //    }
 //
 //    /**
@@ -735,11 +735,11 @@
 //    //---------------From BlockLiquid etc
 //    
 //    @Override
-//    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
+//    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
 //    {
 //        if (this.blockMaterial.isLiquid())
 //        {
-//            worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+//            worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 //        }
 //    }
 //    
@@ -748,7 +748,7 @@
 //    {
 //        if (this.blockMaterial.isLiquid())
 //        {
-//            worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+//            worldIn.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(worldIn));
 //        }
 //    }
 //    
@@ -759,7 +759,7 @@
 //        {
 //            return this.forgeBlock.tickRate(worldIn);
 //        }
-//        return this.blockMaterial == Material.WATER ? 5 : (this.blockMaterial == Material.LAVA ? (worldIn.provider.isNether() ? 10 : 30) : 0);
+//        return this.blockMaterial == Material.WATER ? 5 : (this.blockMaterial == Material.LAVA ? (worldIn.dimension.isNether() ? 10 : 30) : 0);
 //    }
 //    
 //    protected int getDepth(BlockState p_189542_1_)
@@ -824,7 +824,7 @@
 //                else
 //                {
 //                    world.setBlockState(pos, state.with(BlockFluidBase.LEVEL, quantaPerBlock - expQuanta), 2);
-//                    world.scheduleUpdate(pos, this, tickRate);
+//                    worldIn.getPendingBlockTicks().scheduleTick(pos, this, tickRate);
 //                    world.notifyNeighborsOfStateChange(pos, this.forgeBlock, false);
 //                }
 //            }

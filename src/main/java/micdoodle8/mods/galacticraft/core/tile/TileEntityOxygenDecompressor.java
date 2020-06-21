@@ -1,33 +1,40 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
 public class TileEntityOxygenDecompressor extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDecompressor)
+    public static TileEntityType<TileEntityOxygenDecompressor> TYPE;
+
     public static final int OUTPUT_PER_TICK = 100;
     private boolean usingEnergy = false;
 
     public TileEntityOxygenDecompressor()
     {
-        super("container.oxygendecompressor.name", 1200, 0);
+        super(TYPE, 1200, 0);
         inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -36,17 +43,17 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
 
             if (!tank1.isEmpty() && this.hasEnoughEnergyToRun && this.getOxygenStored() < this.getMaxOxygenStored())
             {
-                if (tank1.getItem() instanceof ItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
+                if (tank1.getItem() instanceof ItemOxygenTank && tank1.getDamage() < tank1.getMaxDamage())
                 {
-                    tank1.setItemDamage(tank1.getItemDamage() + 1);
-                    this.receiveOxygen(1, true);
+                    tank1.setDamage(tank1.getDamage() + 1); // TODO Test: Shouldn't damage only be done if receieve was successful?
+                    this.receiveOxygen(1, IFluidHandler.FluidAction.EXECUTE);
                     this.usingEnergy = true;
                 }
-                else if (tank1.getItem() instanceof ItemCanisterOxygenInfinite)
-                {
-                    this.receiveOxygen(1, true);
-                    this.usingEnergy = true;
-                }
+//                else if (tank1.getItem() instanceof ItemCanisterOxygenInfinite)
+//                {
+//                    this.receiveOxygen(1, IFluidHandler.FluidAction.EXECUTE);
+//                    this.usingEnergy = true;
+//                } TODO Oxygen canisters
             }
 
             this.produceOxygen();
@@ -75,7 +82,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
             switch (slotID)
             {
             case 0:
-                return itemstack.getItemDamage() < itemstack.getMaxDamage();
+                return itemstack.getDamage() < itemstack.getMaxDamage();
             case 1:
                 return ItemElectricBase.isElectricItemCharged(itemstack);
             default:
@@ -93,7 +100,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
             switch (slotID)
             {
             case 0:
-                return itemstack.getItemDamage() == itemstack.getMaxDamage();
+                return itemstack.getDamage() == itemstack.getMaxDamage();
             case 1:
                 return ItemElectricBase.isElectricItemEmpty(itemstack);
             default:

@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ModelBox;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 public class ModelRendererGC extends RendererModel
@@ -16,7 +15,7 @@ public class ModelRendererGC extends RendererModel
     private boolean compiled;
     private int displayList;
 
-    public ModelRendererGC(ModelBase par1ModelBase, int par2, int par3)
+    public ModelRendererGC(Model par1ModelBase, int par2, int par3)
     {
         super(par1ModelBase, par2, par3);
     }
@@ -112,9 +111,9 @@ public class ModelRendererGC extends RendererModel
         GL11.glNewList(this.displayList, GL11.GL_COMPILE);
         Tessellator tessellator = Tessellator.getInstance();
 
-        for (int i = 0; i < this.cubeList.size(); ++i)
+        for (ModelBox modelBox : this.cubeList)
         {
-            ((ModelBox) this.cubeList.get(i)).render(tessellator.getBuffer(), par1);
+            modelBox.render(tessellator.getBuffer(), par1);
         }
 
         GL11.glEndList();

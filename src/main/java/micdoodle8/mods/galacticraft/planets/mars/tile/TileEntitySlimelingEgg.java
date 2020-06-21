@@ -12,14 +12,14 @@ import net.minecraft.world.World;
 
 import java.util.UUID;
 
-public class TileEntitySlimelingEgg extends TileEntity implements ITickable
+public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileEntity
 {
     public int timeToHatch = -1;
     public String lastTouchedPlayerUUID = "";
     public String lastTouchedPlayerName = "";
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -66,15 +66,15 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
                 slimeling.setAttackTarget((LivingEntity) null);
                 slimeling.setHealth(20.0F);
 
-                this.world.setBlockToAir(this.getPos());
+                this.world.removeBlock(this.getPos(), false);
             }
         }
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.timeToHatch = nbt.getInt("TimeToHatch");
 
         String uuid;
@@ -96,12 +96,12 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("TimeToHatch", this.timeToHatch);
-        nbt.setString("OwnerUUID", this.lastTouchedPlayerUUID);
-        nbt.setString("OwnerUsername", this.lastTouchedPlayerName);
+        nbt.putString("OwnerUUID", this.lastTouchedPlayerUUID);
+        nbt.putString("OwnerUsername", this.lastTouchedPlayerName);
         return nbt;
     }
 

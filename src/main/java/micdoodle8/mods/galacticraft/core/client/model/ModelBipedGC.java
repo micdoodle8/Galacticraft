@@ -8,9 +8,11 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,7 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ModelBipedGC
 {
-    public static void setRotationAngles(ModelBiped biped, float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
+    public static void setRotationAngles(BipedModel<?> biped, float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
         if (!(par7Entity instanceof PlayerEntity)) return;
         final PlayerEntity player = (PlayerEntity) par7Entity;
@@ -33,7 +35,7 @@ public class ModelBipedGC
             float speedModifier = 0.1162F * 2;
 
             float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
-            float rightMod = biped.rightArmPose == ModelBiped.ArmPose.ITEM ? 1 : 2;
+            float rightMod = biped.rightArmPose == BipedModel.ArmPose.ITEM ? 1 : 2;
             biped.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + floatPI) * rightMod * par2 * 0.5F;
             biped.bipedLeftArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
             biped.bipedRightArm.rotateAngleX += -angularSwingArm * 4.0F * par2 * 0.5F;
@@ -114,7 +116,7 @@ public class ModelBipedGC
             }
         }
 
-        for (Entity e : player.world.loadedEntityList)
+        for (Entity e : ((ClientWorld) player.world).getAllEntities())
         {
             if (e instanceof EntityTieredRocket && e.getDistanceSq(player) < 200)
             {
@@ -129,7 +131,7 @@ public class ModelBipedGC
             }
         }
 
-        if (player.isPlayerSleeping() && GalacticraftCore.isPlanetsLoaded)
+        if (player.isSleeping() && GalacticraftCore.isPlanetsLoaded)
         {
             RenderPlayerGC.RotatePlayerEvent event = new RenderPlayerGC.RotatePlayerEvent((AbstractClientPlayerEntity) player);
             MinecraftForge.EVENT_BUS.post(event);
@@ -148,6 +150,6 @@ public class ModelBipedGC
             }
         }
 
-        ModelBiped.copyModelAngles(biped.bipedHead, biped.bipedHeadwear);
+        ClientUtil.copyModelAngles(biped.bipedHead, biped.bipedHeadwear);
     }
 }

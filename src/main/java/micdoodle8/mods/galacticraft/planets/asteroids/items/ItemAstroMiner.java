@@ -2,12 +2,11 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -17,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -77,9 +75,9 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
             {
                 tile = worldIn.getTileEntity(pos);
 
-                if (tile instanceof TileEntityMulti)
+                if (tile instanceof TileEntityFake)
                 {
-                    tile = ((TileEntityMulti) tile).getMainBlockTile();
+                    tile = ((TileEntityFake) tile).getMainBlockTile();
                 }
             }
 
@@ -96,7 +94,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                     return ActionResultType.FAIL;
                 }
                 
-                if (worldIn.provider instanceof DimensionSpaceStation)
+                if (worldIn.dimension instanceof DimensionSpaceStation)
                 {
                     playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
                     return ActionResultType.FAIL;

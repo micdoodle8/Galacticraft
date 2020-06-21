@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.PlayerEntity;
@@ -7,23 +8,29 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class ContainerBuggyBench extends Container
+public class ContainerSchematicBuggy extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SCHEMATIC_BUGGY)
+    public static ContainerType<ContainerSchematicBuggy> TYPE;
+
     public InventoryBuggyBench craftMatrix = new InventoryBuggyBench(this);
     public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerBuggyBench(PlayerInventory par1InventoryPlayer, BlockPos pos, PlayerEntity player)
+    public ContainerSchematicBuggy(int containerId, PlayerInventory playerInv)
     {
+        super(TYPE, containerId);
         final int change = 27;
-        this.world = par1InventoryPlayer.player.world;
-        this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 79 + change));
+        this.world = playerInv.player.world;
+        this.addSlot(new SlotRocketBenchResult(playerInv.player, this.craftMatrix, this.craftResult, 0, 142, 79 + change));
         int var6;
         int var7;
 
@@ -32,7 +39,7 @@ public class ContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 3; ++var7)
             {
-                this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, pos, par1InventoryPlayer.player));
+                this.addSlot(new SlotBuggyBench(this.craftMatrix, var7 * 4 + var6 + 1, 39 + var7 * 18, 14 + var6 * 18 + change, playerInv.player));
             }
         }
 
@@ -40,14 +47,14 @@ public class ContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 2; ++var7)
             {
-                this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, pos, par1InventoryPlayer.player));
+                this.addSlot(new SlotBuggyBench(this.craftMatrix, var7 * 2 + var6 + 13, 21 + var7 * 72, 14 + var6 * 54 + change, playerInv.player));
             }
         }
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlotToContainer(new SlotBuggyBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, pos, par1InventoryPlayer.player));
+            this.addSlot(new SlotBuggyBench(this.craftMatrix, 17 + var8, 93 + var8 * 26, -15 + change, playerInv.player));
         }
 
         // Player inv:
@@ -56,13 +63,13 @@ public class ContainerBuggyBench extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 111 + var6 * 18 + change));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 111 + var6 * 18 + change));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 169 + change));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 169 + change));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);
@@ -107,7 +114,7 @@ public class ContainerBuggyBench extends Container
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        final Slot slot = this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -130,7 +137,7 @@ public class ContainerBuggyBench extends Container
             else
             {
                 Item i = var4.getItem();
-                if (i == GCItems.heavyPlatingTier1 || i == GCItems.partBuggy)
+                if (i == GCItems.heavyPlatingTier1 || i == GCItems.buggyMaterialWheel || i == GCItems.buggyMaterialSeat || i == GCItems.buggyMaterialStorage)
                 {
                     for (int j = 1; j < 20; j++)
                     {

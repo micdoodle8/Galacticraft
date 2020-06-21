@@ -48,7 +48,7 @@ public class CommonProxyCore
         return null;
     }
 
-//    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object[] otherInfo)
+//    public void addParticle(String particleID, Vector3 position, Vector3 motion, Object[] otherInfo)
 //    {
 //    }
 

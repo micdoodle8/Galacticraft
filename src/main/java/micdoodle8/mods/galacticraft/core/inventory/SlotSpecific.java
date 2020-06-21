@@ -36,32 +36,32 @@ public class SlotSpecific extends Slot
         super(par2IInventory, par3, par4, par5);
         if (validClasses != null && Arrays.asList(validClasses).contains(IItemElectric.class))
         {
-            try
-            {
-                if (EnergyConfigHandler.isRFAPILoaded())
-                {
-                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
-                    existing.add(cofh.redstoneflux.api.IEnergyContainerItem.class);
-                    validClasses = existing.toArray(new Class[existing.size()]);
-                }
-                if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-                {
-                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
-                    existing.add(ic2.api.item.IElectricItem.class);
-                    existing.add(ic2.api.item.ISpecialElectricItem.class);
-                    validClasses = existing.toArray(new Class[existing.size()]);
-                }
-                if (EnergyConfigHandler.isMekanismLoaded())
-                {
-                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
-                    existing.add(mekanism.api.energy.IEnergizedItem.class);
-                    validClasses = existing.toArray(new Class[existing.size()]);
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+//            try
+//            {
+//                if (EnergyConfigHandler.isRFAPILoaded())
+//                {
+//                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
+//                    existing.add(cofh.redstoneflux.api.IEnergyContainerItem.class);
+//                    validClasses = existing.toArray(new Class[existing.size()]);
+//                }
+//                if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+//                {
+//                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
+//                    existing.add(ic2.api.item.IElectricItem.class);
+//                    existing.add(ic2.api.item.ISpecialElectricItem.class);
+//                    validClasses = existing.toArray(new Class[existing.size()]);
+//                }
+//                if (EnergyConfigHandler.isMekanismLoaded())
+//                {
+//                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
+//                    existing.add(mekanism.api.energy.IEnergizedItem.class);
+//                    validClasses = existing.toArray(new Class[existing.size()]);
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//                e.printStackTrace();
+//            }
         }
         this.setClasses(validClasses);
     }

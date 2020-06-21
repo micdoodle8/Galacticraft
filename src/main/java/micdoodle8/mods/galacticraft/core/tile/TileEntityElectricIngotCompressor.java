@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine4;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
@@ -25,8 +26,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,44 +36,60 @@ import java.util.Random;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
+    public static class TileEntityElectricIngotCompressorT1 extends TileEntityElectricIngotCompressor
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.ingotCompressorElectric)
+        public static TileEntityType<TileEntityElectricIngotCompressorT1> TYPE;
+
+        public TileEntityElectricIngotCompressorT1()
+        {
+            super(TYPE);
+            this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE;
+            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
+            this.setTierGC(2);
+            inventory = NonNullList.withSize(3, ItemStack.EMPTY);
+        }
+    }
+
+    public static class TileEntityElectricIngotCompressorT2 extends TileEntityElectricIngotCompressor
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.ingotCompressorElectricAdvanced)
+        public static TileEntityType<TileEntityElectricIngotCompressorT2> TYPE;
+
+        public TileEntityElectricIngotCompressorT2()
+        {
+            super(TYPE);
+            this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
+            this.processTimeRequired = processTimeRequiredBase;
+            this.advanced = true;
+            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
+            this.setTierGC(3);
+            inventory = NonNullList.withSize(3, ItemStack.EMPTY);
+        }
+    }
+
     private static final int PROCESS_TIME_REQUIRED_BASE = 200;
-    private int processTimeRequiredBase;
-    @NetworkedField(targetSide = Side.CLIENT)
+    protected int processTimeRequiredBase;
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
     private ItemStack producingStack = ItemStack.EMPTY;
-    private long ticks;
     private static final int[] allSlots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-    private boolean advanced;
+    protected boolean advanced;
 
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     private static Random randnum = new Random();
 
-    public TileEntityElectricIngotCompressor()
+    public TileEntityElectricIngotCompressor(TileEntityType<?> type)
     {
-        super("tile.machine2.4.name");
-        this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE; 
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
-        this.setTierGC(2);
-        inventory = NonNullList.withSize(3, ItemStack.EMPTY);
-    }
-
-    public TileEntityElectricIngotCompressor(boolean advanced)
-    {
-        super("tile.machine4.11.name");
-        this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
-        this.processTimeRequired = processTimeRequiredBase;
-        this.advanced = true;
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
-        this.setTierGC(3);
-        inventory = NonNullList.withSize(3, ItemStack.EMPTY);
+        super(type);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -111,8 +129,6 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 this.markDirty();
             }
         }
-
-        this.ticks++;
     }
 
     private boolean canCompress()
@@ -133,7 +149,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         int contents1 = this.getInventory().get(1).getCount();
         int contents2 = this.getInventory().get(2).getCount();
         int result = itemstack.getCount();
-        if (ConfigManagerCore.quickMode && itemstack.getItem().getUnlocalizedName(itemstack).contains("compressed"))
+        if (ConfigManagerCore.quickMode && itemstack.getItem().getTranslationKey(itemstack).contains("compressed"))
         {
             result += result;
         }
@@ -170,7 +186,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             ItemStack resultItemStack = this.producingStack.copy();
             if (ConfigManagerCore.quickMode)
             {
-                if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+                if (resultItemStack.getItem().getTranslationKey(resultItemStack).contains("compressed"))
                 {
                     resultItemStack.grow(resultItemStack.getCount());
                 }
@@ -217,9 +233,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.advanced = nbt.getBoolean("adv");
         if (this.advanced)  {
             this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
@@ -238,11 +254,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
             if (j >= 0 && j < this.inventory.size())
             {
-                this.inventory.set(j, new ItemStack(nbttagcompound));
+                this.inventory.set(j, ItemStack.read(nbttagcompound));
             }
             else if (j < this.inventory.size() + this.compressingCraftMatrix.getSizeInventory())
             {
-                this.compressingCraftMatrix.setInventorySlotContents(j - this.inventory.size(), new ItemStack(nbttagcompound));
+                this.compressingCraftMatrix.setInventorySlotContents(j - this.inventory.size(), ItemStack.read(nbttagcompound));
             }
         }
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
@@ -250,10 +266,10 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("adv", this.advanced);
+        super.write(nbt);
+        nbt.putBoolean("adv", this.advanced);
         nbt.putInt("smeltingTicks", this.processTicks);
         ListNBT items = new ListNBT();
         int i;
@@ -263,9 +279,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             if (!this.inventory.get(i).isEmpty())
             {
                 CompoundNBT var4 = new CompoundNBT();
-                var4.setByte("Slot", (byte) i);
-                this.inventory.get(i).writeToNBT(var4);
-                items.appendTag(var4);
+                var4.putByte("Slot", (byte) i);
+                this.inventory.get(i).write(var4);
+                items.add(var4);
             }
         }
 
@@ -274,9 +290,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty())
             {
                 CompoundNBT var4 = new CompoundNBT();
-                var4.setByte("Slot", (byte) (i + this.inventory.size()));
-                this.compressingCraftMatrix.getStackInSlot(i).writeToNBT(var4);
-                items.appendTag(var4);
+                var4.putByte("Slot", (byte) (i + this.inventory.size()));
+                this.compressingCraftMatrix.getStackInSlot(i).write(var4);
+                items.add(var4);
             }
         }
         nbt.put("Items", items);
@@ -329,7 +345,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             }
             else
             {
-                var3 = this.inventory.get(par1).splitStack(par2);
+                var3 = this.inventory.get(par1).split(par2);
 
                 if (this.inventory.get(par1).isEmpty())
                 {
@@ -452,55 +468,55 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 	return true;
                 }
             }
-            else if (recipe instanceof ShapelessOreRecipeGC)
-            {
-                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
-                
-                Iterator<Object> req = required.iterator();
-
-                int match = 0;
-
-                while (req.hasNext())
-                {
-                    Object next = req.next();
-
-                    if (next instanceof ItemStack)
-                    {
-                        if ( OreDictionary.itemMatches((ItemStack)next, stack, false)) match++;
-                    }
-                    else if (next instanceof List)
-                    {
-                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
-                        while (itr.hasNext())
-                        {
-                            if (OreDictionary.itemMatches(itr.next(), stack, false))
-                            {
-                            	match++;
-                            	break;
-                            }
-                        }
-                    }
-                }
-                
-                if (match == 0) continue;
-                
-                if (match == 1) return true;
-                
-                //Shapeless recipe can go into (match) number of slots
-                int slotsFilled = 0;
-                for (int i = 3; i < 12; i++)
-                {
-                	ItemStack inMatrix = this.getStackInSlot(i); 
-                	if (!inMatrix.isEmpty() && inMatrix.isItemEqual(stack))
-                		slotsFilled++;
-                }
-                if (slotsFilled < match)
-                {
-                	return this.getStackInSlot(id + 3).isEmpty();
-                }
-                	
-                return randnum.nextInt(match) == 0;
-            }
+//            else if (recipe instanceof ShapelessOreRecipeGC)
+//            {
+//                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
+//
+//                Iterator<Object> req = required.iterator();
+//
+//                int match = 0;
+//
+//                while (req.hasNext())
+//                {
+//                    Object next = req.next();
+//
+//                    if (next instanceof ItemStack)
+//                    {
+//                        if (OreDictionary.itemMatches((ItemStack)next, stack, false)) match++;
+//                    }
+//                    else if (next instanceof List)
+//                    {
+//                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
+//                        while (itr.hasNext())
+//                        {
+//                            if (OreDictionary.itemMatches(itr.next(), stack, false))
+//                            {
+//                            	match++;
+//                            	break;
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if (match == 0) continue;
+//
+//                if (match == 1) return true;
+//
+//                //Shapeless recipe can go into (match) number of slots
+//                int slotsFilled = 0;
+//                for (int i = 3; i < 12; i++)
+//                {
+//                	ItemStack inMatrix = this.getStackInSlot(i);
+//                	if (!inMatrix.isEmpty() && inMatrix.isItemEqual(stack))
+//                		slotsFilled++;
+//                }
+//                if (slotsFilled < match)
+//                {
+//                	return this.getStackInSlot(id + 3).isEmpty();
+//                }
+//
+//                return randnum.nextInt(match) == 0;
+//            } TODO Ore recipes
         }
 
         return false;
@@ -676,7 +692,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return this.advanced ? BlockMachine4.MACHINESIDES_RENDERTYPE : BlockMachine2.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

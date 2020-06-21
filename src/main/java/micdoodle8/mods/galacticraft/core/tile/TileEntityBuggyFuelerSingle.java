@@ -1,21 +1,30 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
-import net.minecraft.block.BlockState;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ITickable;
-import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 
-public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
+public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickableTileEntity
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.buggyPad)
+    public static TileEntityType<TileEntityBuggyFuelerSingle> TYPE;
+
     private int corner = 0;
 
+    public TileEntityBuggyFuelerSingle()
+    {
+        super(TYPE);
+    }
+
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote && this.corner == 0)
         {
@@ -38,18 +47,18 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
             {
                 for (final TileEntity tile : attachedLaunchPads)
                 {
-                    this.world.markTileEntityForRemoval(tile);
+                    this.world.removeTileEntity(tile.getPos());
                     ((TileEntityBuggyFuelerSingle)tile).corner = 1;
                 }
 
-                this.world.setBlockState(this.getPos(), GCBlocks.landingPadFull.getStateFromMeta(BlockLandingPadFull.EnumLandingPadFullType.BUGGY_PAD.getMeta()), 2);
+                this.world.setBlockState(this.getPos(), GCBlocks.buggyPad.getDefaultState(), 2);
             }
         }
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
 }

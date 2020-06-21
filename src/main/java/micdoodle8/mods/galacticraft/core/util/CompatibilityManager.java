@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.ModList;
 
 
 public class CompatibilityManager
@@ -27,32 +28,32 @@ public class CompatibilityManager
     public final static String modBCraftTransport = "buildcrafttransport";
     public final static String modBCraftEnergy = "buildcraftenergy";
     	
-    public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
-    public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
+    public static boolean PlayerAPILoaded = ModList.get().isLoaded("PlayerAPI");
+    public static boolean RenderPlayerAPILoaded = ModList.get().isLoaded("RenderPlayerAPI");
 
-    public static boolean modJEILoaded = Loader.isModLoaded("jei");
-    private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
+    public static boolean modJEILoaded = ModList.get().isLoaded("jei");
+    private static boolean modIc2Loaded = ModList.get().isLoaded(modidIC2);
     private static boolean modICClassicLoaded;
-    public static boolean modBCraftLoaded = Loader.isModLoaded(modidBuildcraft);
-	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded(modBCraftEnergy);
+    public static boolean modBCraftLoaded = ModList.get().isLoaded(modidBuildcraft);
+	private static boolean modBCraftEnergyLoaded = ModList.get().isLoaded(modBCraftEnergy);
     private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
-    private static boolean modTELoaded = Loader.isModLoaded("thermalexpansion");
-    private static boolean modMekLoaded = Loader.isModLoaded(modidMekanism);
+    private static boolean modTELoaded = ModList.get().isLoaded("thermalexpansion");
+    private static boolean modMekLoaded = ModList.get().isLoaded(modidMekanism);
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
-    private static boolean modBOPLoaded = Loader.isModLoaded("biomesoplenty");
-    private static boolean modEIOLoaded = Loader.isModLoaded("enderio");
-    public static boolean modAALoaded = Loader.isModLoaded("actuallyadditions");
+    private static boolean modBOPLoaded = ModList.get().isLoaded("biomesoplenty");
+    private static boolean modEIOLoaded = ModList.get().isLoaded("enderio");
+    public static boolean modAALoaded = ModList.get().isLoaded("actuallyadditions");
     private static boolean spongeLoaded;
     private static boolean modMatterOverdriveLoaded;
     private static boolean wailaLoaded;
-    public static boolean isMFRLoaded = Loader.isModLoaded("minefactoryreloaded");
-    public static boolean isSmartMovingLoaded = Loader.isModLoaded("smartmoving");
-    public static boolean isTConstructLoaded = Loader.isModLoaded("tconstruct");
-    public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
+    public static boolean isMFRLoaded = ModList.get().isLoaded("minefactoryreloaded");
+    public static boolean isSmartMovingLoaded = ModList.get().isLoaded("smartmoving");
+    public static boolean isTConstructLoaded = ModList.get().isLoaded("tconstruct");
+    public static boolean isWitcheryLoaded = ModList.get().isLoaded("witchery");
     public static boolean isCubicChunksLoaded;
 //    public static int isBG2Loaded = 0;
 
@@ -79,7 +80,7 @@ public class CompatibilityManager
 	
     public static void checkForCompatibleMods()
     {
-        if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("gregtech_addon"))
+        if (ModList.get().isLoaded("gregtech") || ModList.get().isLoaded("gregtech_addon"))
         {
             CompatibilityManager.modGTLoaded = true;
         }
@@ -167,21 +168,21 @@ public class CompatibilityManager
                 }
                 if (classIC2cable != null)
                 {
-                    try
-                    {
-                        BlockEnclosed.onBlockNeighbourChangeIC2a = classIC2cable.getMethod("onNeighborChange", Block.class);
-                    }
-                    catch (Exception e)
-                    {
-                        try
-                        {
-                            BlockEnclosed.onBlockNeighbourChangeIC2b = classIC2cable.getMethod("onNeighborChange", Block.class, BlockPos.class);
-                        }
-                        catch (Exception e1)
-                        {
-                            BlockEnclosed.onBlockNeighbourChangeIC2a = classIC2cable.getMethod("onBlockUpdate", Block.class);
-                        }
-                    }
+//                    try
+//                    {
+//                        BlockEnclosed.onBlockNeighbourChangeIC2a = classIC2cable.getMethod("onNeighborChange", Block.class);
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        try
+//                        {
+//                            BlockEnclosed.onBlockNeighbourChangeIC2b = classIC2cable.getMethod("onNeighborChange", Block.class, BlockPos.class);
+//                        }
+//                        catch (Exception e1)
+//                        {
+//                            BlockEnclosed.onBlockNeighbourChangeIC2a = classIC2cable.getMethod("onBlockUpdate", Block.class);
+//                        }
+//                    } TODO IC2 support
                     
                     Constructor<?>[] constructors = classIC2cable.getDeclaredConstructors();
                     for (Constructor<?> constructor2 : constructors)
@@ -202,7 +203,7 @@ public class CompatibilityManager
 
         }
 
-        if (Loader.isModLoaded(modBCraftTransport))
+        if (ModList.get().isLoaded(modBCraftTransport))
         {
             CompatibilityManager.modBCraftTransportLoaded = true;
 
@@ -216,7 +217,7 @@ public class CompatibilityManager
                 e.printStackTrace();
             }
 
-            BlockEnclosed.initialiseBC();
+//            BlockEnclosed.initialiseBC(); TODO BC Support
 
             if (CompatibilityManager.classBCTransportPipeTile == null)
             {
@@ -238,36 +239,36 @@ public class CompatibilityManager
             } catch (Exception e) { e.printStackTrace(); }
         }
 
-        if (Loader.isModLoaded("aetherii"))
+        if (ModList.get().isLoaded("aetherii"))
         {
             CompatibilityManager.modAetherIILoaded = true;
             GCLog.info("Galacticraft: activating AetherII compatibility feature.");
         }
 
-        if (Loader.isModLoaded("basiccomponents"))
+        if (ModList.get().isLoaded("basiccomponents"))
         {
             CompatibilityManager.modBasicComponentsLoaded = true;
         }
 
-        if (Loader.isModLoaded("appliedenergistics2"))
+        if (ModList.get().isLoaded("appliedenergistics2"))
         {
             CompatibilityManager.modAppEngLoaded = true;
             GCLog.info("Galacticraft: activating AppliedEnergistics2 compatibility features.");
         }
 
-        if (Loader.isModLoaded("pneumaticcraft"))
+        if (ModList.get().isLoaded("pneumaticcraft"))
         {
             CompatibilityManager.modPneumaticCraftLoaded = true;
             GCLog.info("Galacticraft: activating PneumaticCraft compatibility features.");
         }
 
-        if (Loader.isModLoaded("waila"))
+        if (ModList.get().isLoaded("waila"))
         {
             CompatibilityManager.wailaLoaded = true;
             GCLog.info("Galacticraft: activating WAILA compatibility features.");
         }
 
-        if (Loader.isModLoaded("sponge")) {
+        if (ModList.get().isLoaded("sponge")) {
             try {
                 Class clazz = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer");
                 spongeOverrideSet = clazz.getMethod("setForceChunkRequests", boolean.class);
@@ -283,7 +284,7 @@ public class CompatibilityManager
             }
         }
 
-        if (Loader.isModLoaded("cubicchunks"))
+        if (ModList.get().isLoaded("cubicchunks"))
         {
             CompatibilityManager.isCubicChunksLoaded = true;
         }
@@ -301,7 +302,7 @@ public class CompatibilityManager
 //        {
 //        }
 
-        if (Loader.isModLoaded("matteroverdrive"))
+        if (ModList.get().isLoaded("matteroverdrive"))
         {
             try {
                 Class<?> androidPlayer = Class.forName("matteroverdrive.entity.android_player.AndroidPlayer");

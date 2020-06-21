@@ -377,7 +377,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     {
                         if (passenger instanceof ServerPlayerEntity)
                         {
-                            WorldUtil.forceMoveEntityToPos(passenger, (ServerWorld) this.world, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
+//                            WorldUtil.forceMoveEntityToPos(passenger, (ServerWorld) this.world, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false); TODO Force load chunk when tp in same dimension?
                             this.setWaitForPlayer(true);
                             GCLog.debug("Rocket repositioned, waiting for player");
                         }

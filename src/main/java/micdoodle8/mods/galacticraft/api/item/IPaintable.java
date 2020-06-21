@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.api.item;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Direction;
+import net.minecraftforge.fml.LogicalSide;
 
 public interface IPaintable
 {
-    int setColor(int color, PlayerEntity player, Direction side);
+    int setColor(int color, PlayerEntity player);
 }

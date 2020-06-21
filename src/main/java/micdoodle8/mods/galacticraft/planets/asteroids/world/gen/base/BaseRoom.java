@@ -67,8 +67,8 @@ public class BaseRoom extends SizedPiece
         super.writeStructureToNBT(tagCompound);
 
         int details = this.deckTier + (this.nearEnd ? 16 : 0) + (this.farEnd ? 32 : 0);
-        tagCompound.setInteger("brT", type.ordinal());
-        tagCompound.setInteger("brD", details);
+        tagCompound.putInt("brT", type.ordinal());
+        tagCompound.putInt("brD", details);
     }
 
     @Override
@@ -393,7 +393,7 @@ public class BaseRoom extends SizedPiece
                 if (x == maxX)
                     state = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
                 else if (x == maxX - 1)
-                    state = GCBlocks.brightLamp.getStateFromMeta(facingLamp);
+                    state = GCBlocks.arcLamp.getStateFromMeta(facingLamp);
             }
             break;
         case CREW:

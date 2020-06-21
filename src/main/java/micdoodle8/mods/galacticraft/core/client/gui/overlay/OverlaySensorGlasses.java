@@ -1,28 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import com.mojang.blaze3d.platform.GLX;
 import micdoodle8.mods.galacticraft.api.item.ISensorGlassesArmor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.ScaledResolution;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Iterator;
@@ -41,30 +37,33 @@ public class OverlaySensorGlasses extends Overlay
     /**
      * Render the GUI that displays sensor glasses
      */
-    public static void renderSensorGlassesMain(ItemStack stack, PlayerEntity player, ScaledResolution resolution, float partialTicks)
+    public static void renderSensorGlassesMain(ItemStack stack, PlayerEntity player, float partialTicks)
     {
         OverlaySensorGlasses.zoom++;
 
         final float f = MathHelper.sin(OverlaySensorGlasses.zoom / 80.0F) * 0.1F + 0.1F;
 
-        final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
-        final int i = scaledresolution.getScaledWidth();
-        final int k = scaledresolution.getScaledHeight();
-        OverlaySensorGlasses.minecraft.entityRenderer.setupOverlayRendering();
+//        final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
+//        final int i = scaledresolution.getScaledWidth();
+//        final int k = scaledresolution.getScaledHeight();
+//        OverlaySensorGlasses.minecraft.entityRenderer.setupOverlayRendering();
+        Minecraft mc = Minecraft.getInstance();
+        int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
+        int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        Minecraft.getInstance().textureManager.bindTexture(OverlaySensorGlasses.hudTexture);
+        mc.textureManager.bindTexture(OverlaySensorGlasses.hudTexture);
         final Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(i / 2 - k - f * 80, k + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
-        worldRenderer.pos(i / 2 + k + f * 80, k + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
-        worldRenderer.pos(i / 2 + k + f * 80, 0.0D - f * 40, -90D).tex(1.0D, 0.0D).endVertex();
-        worldRenderer.pos(i / 2 - k - f * 80, 0.0D - f * 40, -90D).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(width / 2 - height - f * 80, height + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
+        worldRenderer.pos(width / 2 + height + f * 80, height + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(width / 2 + height + f * 80, 0.0D - f * 40, -90D).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(width / 2 - height - f * 80, 0.0D - f * 40, -90D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
 
         GL11.glDepthMask(true);
@@ -73,7 +72,7 @@ public class OverlaySensorGlasses extends Overlay
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderSensorGlassesValueableBlocks(ItemStack stack, PlayerEntity player, ScaledResolution resolution, float partialTicks)
+    public static void renderSensorGlassesValueableBlocks(ItemStack stack, PlayerEntity player, float partialTicks)
     {
         final Iterator<BlockVec3> var51 = ClientProxyCore.valueableBlocks.iterator();
         double var52;
@@ -94,9 +93,12 @@ public class OverlaySensorGlasses extends Overlay
             var20 = Math.sqrt(var52 * var52 + var58 * var58 + var59 * var59) * 0.5D;
             var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
 
-            final ScaledResolution var5 = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
-            final int var6 = var5.getScaledWidth();
-            final int var7 = var5.getScaledHeight();
+            Minecraft mc = Minecraft.getInstance();
+            int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
+            int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+//            final ScaledResolution var5 = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
+//            final int var6 = var5.getScaledWidth();
+//            final int var7 = var5.getScaledHeight();
 
             boolean var2 = false;
 
@@ -108,7 +110,7 @@ public class OverlaySensorGlasses extends Overlay
                 var2 = stats.isUsingAdvancedGoggles();
             }
 
-            OverlaySensorGlasses.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
+            OverlaySensorGlasses.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), width / 2 - 50, 4, 0x03b88f);
 
             try
             {
@@ -121,7 +123,7 @@ public class OverlaySensorGlasses extends Overlay
                     GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
                     GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);
-                    Overlay.drawCenteringRectangle(var6 / 2, var7 / 2, 1.0D, 8.0D, 8.0D);
+                    Overlay.drawCenteringRectangle(width / 2, height / 2, 1.0D, 8.0D, 8.0D);
                 }
             }
             finally
@@ -143,7 +145,8 @@ public class OverlaySensorGlasses extends Overlay
         int i = 15728880;
         int j = i % 65536;
         int k = i / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j, (float)k);
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
         GL11.glTranslatef(0.0F, 0.045F, 0.0F);
         GL11.glScalef(1.07F, 1.035F, 1.07F);
     }

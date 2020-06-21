@@ -236,7 +236,7 @@ public class WorldProviderAsteroids extends DimensionSpace implements ISolarLeve
         {
             CompoundNBT tag = new CompoundNBT();
             coords.writeToNBT(tag);
-            coordList.appendTag(tag);
+            coordList.add(tag);
         }
         nbt.put("coords", coordList);
         this.datafile.markDirty();
@@ -247,7 +247,7 @@ public class WorldProviderAsteroids extends DimensionSpace implements ISolarLeve
         ListNBT coordList = nbt.getList("coords", 10);
         CompoundNBT tag = new CompoundNBT();
         coords.writeToNBT(tag);
-        coordList.appendTag(tag);
+        coordList.add(tag);
         nbt.put("coords", coordList);
         this.datafile.markDirty();
     }
@@ -478,29 +478,29 @@ public class WorldProviderAsteroids extends DimensionSpace implements ISolarLeve
 
         public CompoundNBT writeToNBT(CompoundNBT tag)
         {
-            tag.setInteger("x", this.centre.x);
-            tag.setInteger("y", this.centre.y);
-            tag.setInteger("z", this.centre.z);
-            tag.setInteger("coreAndFlag", this.coreAndSpawnedFlag);
-            tag.setInteger("sizeAndFlag", this.sizeAndLandedFlag);
+            tag.putInt("x", this.centre.x);
+            tag.putInt("y", this.centre.y);
+            tag.putInt("z", this.centre.z);
+            tag.putInt("coreAndFlag", this.coreAndSpawnedFlag);
+            tag.putInt("sizeAndFlag", this.sizeAndLandedFlag);
             return tag;
         }
 
         public static AsteroidData readFromNBT(CompoundNBT tag)
         {
             BlockVec3 tempVector = new BlockVec3();
-            tempVector.x = tag.getInteger("x");
-            tempVector.y = tag.getInteger("y");
-            tempVector.z = tag.getInteger("z");
+            tempVector.x = tag.getInt("x");
+            tempVector.y = tag.getInt("y");
+            tempVector.z = tag.getInt("z");
 
             AsteroidData roid = new AsteroidData(tempVector);
-            if (tag.hasKey("coreAndFlag"))
+            if (tag.contains("coreAndFlag"))
             {
-                roid.coreAndSpawnedFlag = tag.getInteger("coreAndFlag");
+                roid.coreAndSpawnedFlag = tag.getInt("coreAndFlag");
             }
-            if (tag.hasKey("sizeAndFlag"))
+            if (tag.contains("sizeAndFlag"))
             {
-                roid.sizeAndLandedFlag = tag.getInteger("sizeAndFlag");
+                roid.sizeAndLandedFlag = tag.getInt("sizeAndFlag");
             }
 
             return roid;

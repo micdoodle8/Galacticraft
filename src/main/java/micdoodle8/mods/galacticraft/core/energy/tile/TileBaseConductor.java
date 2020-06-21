@@ -9,14 +9,12 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * This tile entity pre-fabricated for all conductors.
@@ -30,6 +28,11 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
 
     public TileEntity[] adjacentConnections = null;
 
+    public TileBaseConductor(TileEntityType<?> type)
+    {
+        super(type);
+    }
+
     @Override
     public void validate()
     {
@@ -41,21 +44,21 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
         if (!this.world.isRemote)
         {
             this.getNetwork().split(this);
         }
 
-        super.invalidate();
+        super.remove();
     }
 
     @Override
-    public void onChunkUnload()
+    public void onChunkUnloaded()
     {
-        super.invalidate();
-        super.onChunkUnload();
+        super.remove();
+        super.onChunkUnloaded();
     }
 
     @Override
@@ -87,7 +90,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
             this.getNetwork().refresh();
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (Direction side : Direction.VALUES)
+            for (Direction side : Direction.values())
             {
             	TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
@@ -166,9 +169,9 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
         return true;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
 }

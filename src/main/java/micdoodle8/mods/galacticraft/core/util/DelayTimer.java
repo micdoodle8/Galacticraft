@@ -24,7 +24,7 @@ public class DelayTimer
             return false;
         }
 
-        long currentTime = world.getTotalWorldTime();
+        long currentTime = world.getGameTime();
 
         if (currentTime < lastMark)
         {

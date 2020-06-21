@@ -5,12 +5,14 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
@@ -32,13 +34,14 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
     private final PlayerInventory playerInv;
     private final EnumRocketType rocketType;
 
-    public GuiRocketInventory(PlayerInventory playerInv, EntityTieredRocket rocket, EnumRocketType rocketType)
+    public GuiRocketInventory(ContainerRocketInventory container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerRocketInventory(playerInv, rocket, rocketType, Minecraft.getInstance().player), playerInv, rocket.getName());
+        super(container, playerInv, title);
+//        super(new ContainerRocketInventory(playerInv, rocket, rocketType, Minecraft.getInstance().player), playerInv, rocket.getName());
         this.playerInv = playerInv;
         this.passEvents = false;
+        this.rocketType = container.getRocketType();
         this.ySize = rocketType.getInventorySpace() <= 3 ? 132 : 145 + rocketType.getInventorySpace() * 2;
-        this.rocketType = rocketType;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
     {
         this.font.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
-        this.font.drawString(this.playerInv.getName().getFormattedText(), 8, 34 + 2 + 3, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, 34 + 2 + 3, 4210752);
 
         if (this.minecraft.player != null && this.minecraft.player.getRidingEntity() != null && this.minecraft.player.getRidingEntity() instanceof EntitySpaceshipBase)
         {

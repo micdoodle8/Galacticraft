@@ -10,12 +10,12 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class TileEntitySpout extends TileEntity implements ITickable
+public class TileEntitySpout extends TileEntity implements ITickableTileEntity
 {
     private final Random rand = new Random(System.currentTimeMillis());
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.world.isRemote)
         {
@@ -29,7 +29,7 @@ public class TileEntitySpout extends TileEntity implements ITickable
                     double posZ = (double)pos.getZ() + 0.45 + rand.nextDouble() * 0.1;
                     for (int i = 0; i < 4 + rand.nextInt(4); ++i)
                     {
-                        GalacticraftPlanets.spawnParticle("acidVapor", new Vector3(posX, posY, posZ), new Vector3(rand.nextDouble() * 0.5 - 0.25, rand.nextDouble() * 0.5 + 0.5, rand.nextDouble() * 0.5 - 0.25));
+                        GalacticraftPlanets.addParticle("acidVapor", new Vector3(posX, posY, posZ), new Vector3(rand.nextDouble() * 0.5 - 0.25, rand.nextDouble() * 0.5 + 0.5, rand.nextDouble() * 0.5 - 0.25));
                     }
                 }
             }

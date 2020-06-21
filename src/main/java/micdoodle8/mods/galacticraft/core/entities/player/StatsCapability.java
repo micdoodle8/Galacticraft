@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -18,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.dimension.DimensionType;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -103,7 +103,7 @@ public class StatsCapability extends GCPlayerStats
     public double coordsTeleportedFromX;
     public double coordsTeleportedFromZ;
 
-    public HashMap<Integer, Integer> spaceStationDimensionData = Maps.newHashMap();
+    public HashMap<DimensionType, DimensionType> spaceStationDimensionData = Maps.newHashMap();
 
     public boolean oxygenSetupValid;
     public boolean lastOxygenSetupValid;
@@ -754,13 +754,13 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
-    public HashMap<Integer, Integer> getSpaceStationDimensionData()
+    public HashMap<DimensionType, DimensionType> getSpaceStationDimensionData()
     {
         return spaceStationDimensionData;
     }
 
     @Override
-    public void setSpaceStationDimensionData(HashMap<Integer, Integer> spaceStationDimensionData)
+    public void setSpaceStationDimensionData(HashMap<DimensionType, DimensionType> spaceStationDimensionData)
     {
         this.spaceStationDimensionData = spaceStationDimensionData;
     }
@@ -1063,7 +1063,7 @@ public class StatsCapability extends GCPlayerStats
         {
             if (data != null)
             {
-                astroList.add(data.writeToNBT(new CompoundNBT()));
+                astroList.add(data.write(new CompoundNBT()));
             }
         }
         nbt.put("AstroData", astroList);
@@ -1081,7 +1081,7 @@ public class StatsCapability extends GCPlayerStats
 //            {
 //                TileEntityPanelLight.writeBlockState(stateNBT, bs);
 //            }
-//            panelList.appendTag(stateNBT);
+//            panelList.add(stateNBT);
 //        } TODO Panel Lighting
 //        nbt.put("PanLi", panelList);
         
@@ -1112,14 +1112,14 @@ public class StatsCapability extends GCPlayerStats
             // (if there was no offline load, then the dontload flag in doLoad()
             // will make sure nothing happens)
             ServerPlayerEntity p = this.player.get();
-            if (p != null)
-            {
-                ItemStack[] saveinv = CommandGCInv.getSaveData(PlayerUtil.getName(p).toLowerCase());
-                if (saveinv != null)
-                {
-                    CommandGCInv.doLoad(p);
-                }
-            }
+//            if (p != null)
+//            {
+//                ItemStack[] saveinv = CommandGCInv.getSaveData(PlayerUtil.getName(p).toLowerCase());
+//                if (saveinv != null)
+//                {
+//                    CommandGCInv.doLoad(p);
+//                }
+//            } TODO Commands
 
             if (nbt.contains("SpaceshipTier"))
             {
@@ -1236,7 +1236,7 @@ public class StatsCapability extends GCPlayerStats
                 for (int i = 0; i < astroList.size(); ++i)
                 {
                     final CompoundNBT nbttagcompound = astroList.getCompound(i);
-                    BlockVec3 data = BlockVec3.readFromNBT(nbttagcompound);
+                    BlockVec3 data = BlockVec3.read(nbttagcompound);
                     this.activeAstroMinerChunks.add(data);
                 }
 //                if (GalacticraftCore.isPlanetsLoaded)

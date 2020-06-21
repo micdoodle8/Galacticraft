@@ -22,7 +22,7 @@ import java.util.List;
 
 public class BubbleRenderer
 {
-    private static IBakedModel sphere;
+    public static IBakedModel sphere;
     private static final List<IBubbleProviderColored> bubbleProviders = Lists.newArrayList();
 
     public static void clearBubbles()
@@ -35,18 +35,6 @@ public class BubbleRenderer
         bubbleProviders.add(tile);
     }
 
-    private static void updateModels()
-    {
-        try
-        {
-            sphere = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "sphere.obj"), ImmutableList.of("Sphere"));
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void renderBubbles(PlayerEntity player, float partialTicks)
     {
         if (bubbleProviders.isEmpty())
@@ -57,11 +45,6 @@ public class BubbleRenderer
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
         double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
         double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-
-        if (sphere == null)
-        {
-            updateModels();
-        }
 
         Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
@@ -82,10 +65,10 @@ public class BubbleRenderer
 //        float lightMapSaveY = OpenGlHelper.lastBrightnessY; TODO Does this need saved in 1.14.4+ ?
         GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 
-        for (IBubbleProviderColored provider : bubbleProviders)
+        for (IBubbleProviderColored dimension : bubbleProviders)
         {
-            TileEntity tile = (TileEntity) provider;
-            if (!provider.getBubbleVisible())
+            TileEntity tile = (TileEntity) dimension;
+            if (!dimension.getBubbleVisible())
             {
                 continue;
             }
@@ -97,9 +80,9 @@ public class BubbleRenderer
             float z = (float) (tile.getPos().getZ() - interpPosZ);
 
             GL11.glTranslatef(x + 0.5F, y + 1.0F, z + 0.5F);
-            GL11.glScalef(provider.getBubbleSize(), provider.getBubbleSize(), provider.getBubbleSize());
+            GL11.glScalef(dimension.getBubbleSize(), dimension.getBubbleSize(), dimension.getBubbleSize());
 
-            Vector3 colorVec = provider.getColor();
+            Vector3 colorVec = dimension.getColor();
             int color = ColorUtil.to32BitColor(30, (int)(colorVec.z * 255), (int)(colorVec.y * 255), (int)(colorVec.x * 255));
             ClientUtil.drawBakedModelColored(sphere, color);
 

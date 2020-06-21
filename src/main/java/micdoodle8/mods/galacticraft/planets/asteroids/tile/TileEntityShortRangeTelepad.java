@@ -36,7 +36,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumSet;
@@ -59,18 +59,18 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public static final int TELEPORTER_RANGE = 256;
     public static final int ENERGY_USE_ON_TELEPORT = 2500;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int address = -1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean addressValid = false;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int targetAddress = -1;
     public EnumTelepadSearchResult targetAddressResult = EnumTelepadSearchResult.NOT_FOUND;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int teleportTime = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public String owner = "";
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean teleporting;
     private AxisAlignedBB renderAABB;
 
@@ -105,7 +105,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.ticks % 40 == 0 && !this.world.isRemote)
         {
@@ -220,13 +220,13 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             }
         }
 
-        super.update();
+        super.tick();
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(nbt, this.getInventory());
@@ -240,14 +240,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         ItemStackHelper.saveAllItems(nbt, this.getInventory());
 
         nbt.putInt("TargetAddress", this.targetAddress);
         nbt.putInt("Address", this.address);
-        nbt.setString("Owner", this.owner);
+        nbt.putString("Owner", this.owner);
         return nbt;
     }
 

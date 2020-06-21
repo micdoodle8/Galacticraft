@@ -19,7 +19,7 @@ public interface IInventoryGC extends IInventory
 
     /**
      * Make the implementing inventory a copy of the specified extended inventory.
-     * @param par1InventoryPlayer  The inventory to copy
+     * @param playerInv  The inventory to copy
      */
-    void copyInventory(IInventoryGC par1InventoryPlayer);
+    void copyInventory(IInventoryGC playerInv);
 }

@@ -391,6 +391,34 @@ public class BlockVec3 implements Cloneable
         return vec;
     }
 
+    public BlockVec3 newVecSide(Direction direction)
+    {
+        final BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
+        vec.sideDoneBits = (1 << (direction.getIndex() ^ 1)) + (direction.getIndex() << 6);
+        switch (direction)
+        {
+        case DOWN:
+            vec.y--;
+            return vec;
+        case UP:
+            vec.y++;
+            return vec;
+        case NORTH:
+            vec.z--;
+            return vec;
+        case SOUTH:
+            vec.z++;
+            return vec;
+        case WEST:
+            vec.x--;
+            return vec;
+        case EAST:
+            vec.x++;
+            return vec;
+        }
+        return vec;
+    }
+
     public BlockVec3 modifyPositionFromSide(Direction side)
     {
         return this.modifyPositionFromSide(side, 1);
@@ -574,7 +602,7 @@ public class BlockVec3 implements Cloneable
 //        return state.getBlock().getMetaFromState(state);
 //    }
 
-    public static BlockVec3 readFromNBT(CompoundNBT nbtCompound)
+    public static BlockVec3 read(CompoundNBT nbtCompound)
     {
         final BlockVec3 tempVector = new BlockVec3();
         tempVector.x = nbtCompound.getInt("x");
@@ -599,7 +627,7 @@ public class BlockVec3 implements Cloneable
         return var2 * var2 + var4 * var4 + var6 * var6;
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT par1NBTTagCompound)
+    public CompoundNBT write(CompoundNBT par1NBTTagCompound)
     {
         par1NBTTagCompound.putInt("x", this.x);
         par1NBTTagCompound.putInt("y", this.y);
@@ -614,7 +642,7 @@ public class BlockVec3 implements Cloneable
         this.z = par1NBTTagCompound.getInt("z");
     }
 
-    public CompoundNBT writeToNBT(CompoundNBT par1NBTTagCompound, String prefix)
+    public CompoundNBT write(CompoundNBT par1NBTTagCompound, String prefix)
     {
         par1NBTTagCompound.putInt(prefix + "_x", this.x);
         par1NBTTagCompound.putInt(prefix + "_y", this.y);
@@ -622,14 +650,12 @@ public class BlockVec3 implements Cloneable
         return par1NBTTagCompound;
     }
 
-    public static BlockVec3 readFromNBT(CompoundNBT par1NBTTagCompound, String prefix)
+    public static BlockVec3 read(CompoundNBT nbt, String prefix)
     {
-        Integer readX = par1NBTTagCompound.getInt(prefix + "_x");
-        if (readX == null) return null;
-        Integer readY = par1NBTTagCompound.getInt(prefix + "_y");
-        if (readY == null) return null;
-        Integer readZ = par1NBTTagCompound.getInt(prefix + "_z");
-        if (readZ == null) return null;
+        if (!nbt.contains(prefix + "_x") || !nbt.contains(prefix + "_y") || !nbt.contains(prefix + "_z")) return null;
+        int readX = nbt.getInt(prefix + "_x");
+        int readY = nbt.getInt(prefix + "_y");
+        int readZ = nbt.getInt(prefix + "_z");
         return new BlockVec3(readX, readY, readZ);
     }
 
@@ -672,6 +698,6 @@ public class BlockVec3 implements Cloneable
 
     public Vector3 midPoint()
     {
-        return new Vector3(this.x + 0.5, this.y + 0.5, this.z + 0.5);
+        return new Vector3(this.x + 0.5F, this.y + 0.5F, this.z + 0.5F);
     }
 }

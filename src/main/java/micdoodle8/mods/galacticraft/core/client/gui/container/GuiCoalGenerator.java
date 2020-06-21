@@ -2,12 +2,15 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 public class GuiCoalGenerator extends GuiContainerGC<ContainerCoalGenerator>
@@ -16,16 +19,17 @@ public class GuiCoalGenerator extends GuiContainerGC<ContainerCoalGenerator>
 
     private TileEntityCoalGenerator coalGenerator;
 
-    public GuiCoalGenerator(PlayerInventory playerInv, TileEntityCoalGenerator coalGenerator)
+    public GuiCoalGenerator(ContainerCoalGenerator container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerCoalGenerator(playerInv, coalGenerator), playerInv, new StringTextComponent(coalGenerator.getName()));
+        super(container, playerInv, title);
+//        super(new ContainerCoalGenerator(playerInv, coalGenerator), playerInv, new TranslationTextComponent("tile.machine.0.name"));
         this.coalGenerator = coalGenerator;
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        this.font.drawString(this.coalGenerator.getName(), 55, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 55, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.status.generating.name");
 
         if (this.coalGenerator.heatGJperTick <= 0 || this.coalGenerator.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)

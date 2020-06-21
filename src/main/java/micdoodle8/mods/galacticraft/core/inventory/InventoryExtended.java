@@ -74,17 +74,17 @@ public class InventoryExtended implements IInventoryGC
         this.markDirty();
     }
 
-    @Override
-    public String getName()
-    {
-        return "Galacticraft Player Inventory";
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return "Galacticraft Player Inventory";
+//    }
+//
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public int getInventoryStackLimit()
@@ -147,7 +147,7 @@ public class InventoryExtended implements IInventoryGC
         {
             final CompoundNBT nbttagcompound = par1NBTTagList.getCompound(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = new ItemStack(nbttagcompound);
+            final ItemStack itemstack = ItemStack.read(nbttagcompound);
 
             if (!itemstack.isEmpty())
             {
@@ -167,7 +167,7 @@ public class InventoryExtended implements IInventoryGC
         {
             final CompoundNBT nbttagcompound = tagList.getCompound(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = new ItemStack(nbttagcompound);
+            final ItemStack itemstack = ItemStack.read(nbttagcompound);
 
             if (!itemstack.isEmpty())
             {
@@ -185,9 +185,9 @@ public class InventoryExtended implements IInventoryGC
             if (!this.stacks.get(i).isEmpty())
             {
                 nbttagcompound = new CompoundNBT();
-                nbttagcompound.setByte("Slot", (byte) i);
-                this.stacks.get(i).writeToNBT(nbttagcompound);
-                tagList.appendTag(nbttagcompound);
+                nbttagcompound.putByte("Slot", (byte) i);
+                this.stacks.get(i).write(nbttagcompound);
+                tagList.add(nbttagcompound);
             }
         }
 
@@ -195,32 +195,31 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public void copyInventory(IInventoryGC par1InventoryPlayer)
+    public void copyInventory(IInventoryGC playerInv)
     {
-        InventoryExtended toCopy = (InventoryExtended) par1InventoryPlayer;
+        InventoryExtended toCopy = (InventoryExtended) playerInv;
         for (int i = 0; i < this.stacks.size(); ++i)
         {
             this.stacks.set(i, toCopy.stacks.get(i).copy());
         }
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public void clear()
@@ -228,9 +227,9 @@ public class InventoryExtended implements IInventoryGC
 
     }
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return null;
+//    }
 }

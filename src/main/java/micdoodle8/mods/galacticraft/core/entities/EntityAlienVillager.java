@@ -212,7 +212,7 @@
 //    public void writeEntityToNBT(CompoundNBT tagCompound)
 //    {
 //        super.writeAdditional(tagCompound);
-//        tagCompound.setInteger("Riches", this.wealth);
+//        tagCompound.putInt("Riches", this.wealth);
 //
 //        if (this.buyingList != null)
 //        {
@@ -227,7 +227,7 @@
 //
 //            if (!itemstack.isEmpty())
 //            {
-//                nbttaglist.appendTag(itemstack.writeToNBT(new CompoundNBT()));
+//                nbttaglist.add(itemstack.writeToNBT(new CompoundNBT()));
 //            }
 //        }
 //
@@ -240,9 +240,9 @@
 //        super.readAdditional(tagCompund);
 //        this.wealth = tagCompund.getInteger("Riches");
 //
-//        if (tagCompund.hasKey("Offers", 10))
+//        if (tagCompund.contains("Offers", 10))
 //        {
-//            CompoundNBT nbttagcompound = tagCompund.getCompoundTag("Offers");
+//            CompoundNBT nbttagcompound = tagCompund.getCompound("Offers");
 //            this.buyingList = new MerchantRecipeList(nbttagcompound);
 //        }
 //
@@ -515,7 +515,7 @@
 //            double d0 = this.rand.nextGaussian() * 0.02D;
 //            double d1 = this.rand.nextGaussian() * 0.02D;
 //            double d2 = this.rand.nextGaussian() * 0.02D;
-//            this.world.spawnParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
+//            this.world.addParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
 //        }
 //    }
 //

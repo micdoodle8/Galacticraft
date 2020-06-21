@@ -7,18 +7,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.*;
-import net.minecraft.world.gen.feature.Structure;
-import net.minecraft.world.gen.feature.StructureIO;
-import net.minecraft.world.gen.feature.StructurePiece;
-import net.minecraft.world.gen.feature.StructureStart;
-import net.minecraft.world.gen.structure.*;
+import net.minecraft.world.gen.feature.structure.MineshaftConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenDungeon extends Structure
+public class MapGenDungeon extends Structure<DungeonFeatureConfig>
 {
     private static boolean initialized;
     private DungeonConfiguration configuration;

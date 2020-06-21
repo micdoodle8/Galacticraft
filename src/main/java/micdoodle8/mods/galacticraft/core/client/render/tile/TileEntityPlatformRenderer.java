@@ -1,28 +1,31 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.relauncher.Side;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPlatform>
 {
-    public class ModelPlatform extends ModelBase
+    public class ModelPlatform extends Model
     {
         RendererModel panelMain;
 
@@ -63,19 +66,20 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
     private static float lastPartialTicks = -1F;
 
     @Override
-    public void render(TileEntityPlatform tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
+//    public void render(TileEntityPlatform tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
+    public void render(TileEntityPlatform tileEntity, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if (f != lastPartialTicks)
+        if (partialTicks != lastPartialTicks)
         {
-            lastPartialTicks = f;
+            lastPartialTicks = partialTicks;
             lastYMap.clear();
         }
-        BlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
-        float yOffset = tileEntity.getYOffset(f);
-        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
+        BlockState state = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        float yOffset = tileEntity.getYOffset(partialTicks);
+        if (state.getBlock() == GCBlocks.platform && state.get(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             GlStateManager.pushMatrix();
-            GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+            GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
             GlStateManager.rotatef(90F, 0, 1F, 0F);
             GlStateManager.translatef(-0.5F, -0.5F, 0.5F);
             RenderHelper.disableStandardItemLighting();
@@ -83,24 +87,24 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
 
             // Render a moving platform
             boolean renderPlatformForThisTE = false;
-            float newY = (float) d1 + yOffset;
+            float newY = (float) y + yOffset;
             int xz = tenLSB(tileEntity.getPos().getX()) << 10;
             xz += tenLSB(tileEntity.getPos().getZ());
             Float lastYF = lastYMap.get(xz);
             float lastY = lastYF == null ? -1 : lastYF;
-            if (!tileEntity.isMoving() || Math.abs(newY - lastY) > 0.001F || Math.abs(f - lastPartialTicks) > 0.001F)
+            if (!tileEntity.isMoving() || Math.abs(newY - lastY) > 0.001F || Math.abs(partialTicks - lastPartialTicks) > 0.001F)
             {
                 renderPlatformForThisTE = true;
                 lastYMap.put(xz, newY);
                 GlStateManager.pushMatrix();
                 if (tileEntity.isMoving())
                 {
-                    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, tileEntity.getMeanLightX(yOffset), tileEntity.getMeanLightZ(yOffset));
+                    GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, tileEntity.getMeanLightX(yOffset), tileEntity.getMeanLightZ(yOffset));
                 }
                 else
                 {
                     int light = tileEntity.getBlendedLight();
-                    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(light % 65536), (float)(light / 65536));
+                    GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)(light % 65536), (float)(light / 65536));
                 }
                 GlStateManager.translatef(0F, 0.79F + yOffset, 0F);
                 this.bindTexture(TileEntityPlatformRenderer.platformTexture);
@@ -110,10 +114,10 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
 
             if (tileEntity.lightEnabled() || tileEntity.isMoving())
             {
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
                 GlStateManager.disableLighting();
                 GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.disableTexture2D();
+                GlStateManager.disableTexture();
 
                 this.bindTexture(TileEntityPlatformRenderer.lightTexture);
                 final Tessellator tess = Tessellator.getInstance();
@@ -125,7 +129,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                 {
                     GlStateManager.pushMatrix();
                     GlStateManager.translatef(0F, 0.26F + yOffset, 0F);
-                    GlStateManager.color(1.0F, 0.84F, 65F / 255F, 1.0F);
+                    GlStateManager.color4f(1.0F, 0.84F, 65F / 255F, 1.0F);
 
                     float frameRadius = 1.126F / 2F;
                     frameB = frameRadius - 0.04F;
@@ -207,9 +211,9 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     float greyLevel = 125F / 255F;
                     switch (tileEntity.lightColor())
                     {
-                    case 1: GlStateManager.color(1.0F, 115F/255F, 115F/255F, 1.0F);
+                    case 1: GlStateManager.color4f(1.0F, 115F/255F, 115F/255F, 1.0F);
                     break;
-                    default: GlStateManager.color(greyLevel, 1.0F, greyLevel, 1.0F);
+                    default: GlStateManager.color4f(greyLevel, 1.0F, greyLevel, 1.0F);
                     }
 
                     float frameY = 0.9376F;
@@ -247,10 +251,10 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                 }
 
                 // Restore the lighting state
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
                 //? need to undo GlStateManager.glBlendFunc()?
                 GlStateManager.enableLighting();
-                GlStateManager.enableTexture2D();
+                GlStateManager.enableTexture();
 //                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
             }
 

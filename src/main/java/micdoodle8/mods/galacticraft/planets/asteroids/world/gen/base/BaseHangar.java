@@ -55,7 +55,7 @@ public class BaseHangar extends SizedPiece
         BlockState blockDesh = MarsBlocks.marsBlock.getStateFromMeta(8);
         BlockState blockRedstone = GCBlocks.concealedRedstone.getDefaultState();
         Block blockStair = GCBlocks.tinStairs2;
-        Block arcLamp = GCBlocks.brightLamp;
+        Block arcLamp = GCBlocks.arcLamp;
         int stairmeta = 1;
         int stairmetaB = 2;
         int lampmeta = 3;

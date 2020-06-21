@@ -43,7 +43,7 @@ public class SchematicCargoRocket implements ISchematicPage
     }
 
     @Override
-    public Container getResultContainer(PlayerEntity player, BlockPos pos)
+    public Container getContainerProvider(PlayerEntity player, BlockPos pos)
     {
         return new ContainerSchematicCargoRocket(player.inventory, pos);
     }

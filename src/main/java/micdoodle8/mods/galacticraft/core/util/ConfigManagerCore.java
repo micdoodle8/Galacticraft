@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
+import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -44,14 +46,14 @@ public class ConfigManagerCore
 //    public static int mapsize;
 
     // DIMENSIONS
-    public static int idDimensionOverworld;
-    public static int idDimensionOverworldOrbit;
-    public static int idDimensionOverworldOrbitStatic;
-    public static int idDimensionMoon;
+//    public static int idDimensionOverworld;
+//    public static int idDimensionOverworldOrbit;
+//    public static int idDimensionOverworldOrbitStatic;
+//    public static int idDimensionMoon;
     public static int biomeIDbase = 102;
     public static boolean disableBiomeTypeRegistrations;
-    public static int[] staticLoadDimensions = {};
-    public static int[] disableRocketLaunchDimensions = { -1, 1 };
+    public static String[] staticLoadDimensions = {};
+    public static String[] disableRocketLaunchDimensions = { DimensionType.THE_NETHER.getRegistryName().toString(), DimensionType.THE_END.getRegistryName().toString() };
     public static boolean disableRocketLaunchAllNonGC;
     public static int otherPlanetWorldBorders = 0;
     public static boolean keepLoadedNewSpaceStations;
@@ -695,21 +697,21 @@ public class ConfigManagerCore
 
             COMMON_BUILDER.push("DIMENSIONS");
 
-            idDimensionOverworld = COMMON_BUILDER.comment("Dimension ID for the Overworld (as seen in the Celestial Map)")
-                    .translation("gc.configgui.id_dimension_overworld")
-                    .defineInRange("iddimensionoverworld", 0, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
-
-            idDimensionMoon = COMMON_BUILDER.comment("Dimension ID for the Moon")
-                    .translation("gc.configgui.id_dimension_moon")
-                    .defineInRange("iddimensionmoon", -28, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
-
-            idDimensionOverworldOrbit = COMMON_BUILDER.comment("WorldProvider ID for Overworld Space Stations (advanced: do not change unless you have conflicts)")
-                    .translation("gc.configgui.id_dimension_overworld_orbit")
-                    .defineInRange("iddimensionoverworldorbit", -27, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
-
-            idDimensionOverworldOrbitStatic = COMMON_BUILDER.comment("WorldProvider ID for Static Space Stations (advanced: do not change unless you have conflicts)")
-                    .translation("gc.configgui.id_dimension_overworld_orbit_static")
-                    .defineInRange("iddimensionoverworldorbitstatic", -26, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//            idDimensionOverworld = COMMON_BUILDER.comment("Dimension ID for the Overworld (as seen in the Celestial Map)")
+//                    .translation("gc.configgui.id_dimension_overworld")
+//                    .defineInRange("iddimensionoverworld", 0, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//
+//            idDimensionMoon = COMMON_BUILDER.comment("Dimension ID for the Moon")
+//                    .translation("gc.configgui.id_dimension_moon")
+//                    .defineInRange("iddimensionmoon", -28, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//
+//            idDimensionOverworldOrbit = COMMON_BUILDER.comment("WorldProvider ID for Overworld Space Stations (advanced: do not change unless you have conflicts)")
+//                    .translation("gc.configgui.id_dimension_overworld_orbit")
+//                    .defineInRange("iddimensionoverworldorbit", -27, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//
+//            idDimensionOverworldOrbitStatic = COMMON_BUILDER.comment("WorldProvider ID for Static Space Stations (advanced: do not change unless you have conflicts)")
+//                    .translation("gc.configgui.id_dimension_overworld_orbit_static")
+//                    .defineInRange("iddimensionoverworldorbitstatic", -26, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
 
             biomeIDbase = COMMON_BUILDER.comment("Biome ID base. GC will use biome IDs from this to this + 3, or more with addons. Allowed 40-250. Default 102.")
                     .translation("gc.configgui.biome_id_base")
@@ -725,7 +727,7 @@ public class ConfigManagerCore
 
             disableRocketLaunchDimensions = COMMON_BUILDER.comment("IDs of dimensions where rockets should not launch - this should always include the Nether.")
                     .translation("gc.configgui.rocket_disabled_dimensions")
-                    .define("dimensions_where_rockets_cannot_launch", new int[]{ 1, -1 }).get();
+                    .define("dimensions_where_rockets_cannot_launch", disableRocketLaunchDimensions).get();
 
             disableRocketsToOverworld = COMMON_BUILDER.comment("If true, rockets will be unable to reach the Overworld (only use this in special modpacks!)")
                     .translation("gc.configgui.rocket_disable_overworld_return")
@@ -832,6 +834,60 @@ public class ConfigManagerCore
             rocketFuelFactor = COMMON_BUILDER.comment("The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.")
                     .translation("gc.configgui.rocket_fuel_factor")
                     .defineInRange("rocket_fuel_factor", 1, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+
+            COMMON_BUILDER.pop();
+
+            COMMON_BUILDER.push("ENERGY_COMPATIBILITY");
+
+            EnergyConfigHandler.IC2_RATIO = COMMON_BUILDER.comment("IndustrialCraft2 Conversion Ratio").defineInRange("ic2_conv_ratio", EnergyConfigHandler.IC2_RATIO, 0.01F, 1000F).get().floatValue();
+            EnergyConfigHandler.RF_RATIO = COMMON_BUILDER.comment("Redstone Flux Conversion Ratio").defineInRange("rf_conv_ratio", EnergyConfigHandler.RF_RATIO, 0.001F, 100.0F).get().floatValue();
+            EnergyConfigHandler.BC_RATIO = COMMON_BUILDER.comment("Buildcraft Conversion Ratio").defineInRange("bc_conv_ratio", EnergyConfigHandler.BC_RATIO, 0.01F, 1000.0F).get().floatValue();
+            EnergyConfigHandler.MEKANISM_RATIO = COMMON_BUILDER.comment("Mekanism Conversion Ratio").defineInRange("mek_conv_ratio", EnergyConfigHandler.MEKANISM_RATIO, 0.001F, 100.0F).get().floatValue();
+            EnergyConfigHandler.conversionLossFactor = COMMON_BUILDER.comment("Loss factor when converting energy as a percentage (100 = no loss, 90 = 10% loss ...)").defineInRange("conv_loss_factor", 100, 5, 100).get();
+
+            EnergyConfigHandler.updateRatios();
+
+            EnergyConfigHandler.displayEnergyUnitsBC = COMMON_BUILDER.comment("If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?").define("display_energy_bc", false).get();
+            EnergyConfigHandler.displayEnergyUnitsIC2 = COMMON_BUILDER.comment("If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?").define("display_energy_ic2", false).get();
+            EnergyConfigHandler.displayEnergyUnitsMek = COMMON_BUILDER.comment("If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?").define("display_energy_mek", false).get();
+            EnergyConfigHandler.displayEnergyUnitsRF = COMMON_BUILDER.comment("Show Galacticraft machines energy in RF instead of gJ?").define("display_energy_rf", false).get();
+
+            EnergyConfigHandler.disableMJinterface = COMMON_BUILDER.comment("Disable old Buildcraft API (MJ) interfacing completely?").define("disable_mj_interface", false).get();
+
+            EnergyConfigHandler.disableBuildCraftInput = COMMON_BUILDER.comment("Disable INPUT of BuildCraft energy").define("disable_input_bc", false).get();
+            EnergyConfigHandler.disableBuildCraftOutput = COMMON_BUILDER.comment("Disable OUTPUT of BuildCraft energy").define("disable_output_bc", false).get();
+            EnergyConfigHandler.disableRFInput = COMMON_BUILDER.comment("Disable INPUT of RF energy").define("disable_input_rf", false).get();
+            EnergyConfigHandler.disableRFOutput = COMMON_BUILDER.comment("Disable OUTPUT of RF energy").define("disable_output_rf", false).get();
+            EnergyConfigHandler.disableFEInput = COMMON_BUILDER.comment("Disable INPUT of Forge Energy to GC machines").define("disable_input_forge", false).get();
+            EnergyConfigHandler.disableFEOutput = COMMON_BUILDER.comment("Disable OUTPUT of Forge Energy from GC machines").define("disable_output_forge", false).get();
+            EnergyConfigHandler.disableIC2Input = COMMON_BUILDER.comment("Disable INPUT of IC2 energy").define("disable_input_ic2", false).get();
+            EnergyConfigHandler.disableIC2Output = COMMON_BUILDER.comment("Disable OUTPUT of IC2 energy").define("disable_output_ic2", false).get();
+            EnergyConfigHandler.disableMekanismInput = COMMON_BUILDER.comment("Disable INPUT of Mekanism energy").define("disable_input_mek", false).get();
+            EnergyConfigHandler.disableMekanismOutput = COMMON_BUILDER.comment("Disable OUTPUT of Mekanism energy").define("disable_output_mek", false).get();
+
+            if (!EnergyConfigHandler.isIndustrialCraft2Loaded())
+            {
+                EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+            }
+            if (!EnergyConfigHandler.isMekanismLoaded())
+            {
+                EnergyConfigHandler.displayEnergyUnitsMek = false;
+            }
+            if (EnergyConfigHandler.displayEnergyUnitsIC2)
+            {
+                EnergyConfigHandler.displayEnergyUnitsBC = false;
+            }
+            if (EnergyConfigHandler.displayEnergyUnitsMek)
+            {
+                EnergyConfigHandler.displayEnergyUnitsBC = false;
+                EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+            }
+            if (EnergyConfigHandler.displayEnergyUnitsRF)
+            {
+                EnergyConfigHandler.displayEnergyUnitsBC = false;
+                EnergyConfigHandler.displayEnergyUnitsIC2 = false;
+                EnergyConfigHandler.displayEnergyUnitsMek = false;
+            }
 
             COMMON_BUILDER.pop();
 
@@ -964,13 +1020,13 @@ public class ConfigManagerCore
         }
     }
     
-    public boolean setLoaded(int newID)
+    public boolean setLoaded(DimensionType newID)
     {
         boolean found = false;
 
-        for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+        for (String staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
         {
-            if (staticLoadDimension == newID)
+            if (staticLoadDimension.equals(newID.getRegistryName().toString()))
             {
                 found = true;
                 break;
@@ -979,11 +1035,11 @@ public class ConfigManagerCore
 
         if (!found)
         {
-            int[] oldIDs = ConfigManagerCore.staticLoadDimensions;
-            ConfigManagerCore.staticLoadDimensions = new int[ConfigManagerCore.staticLoadDimensions.length + 1];
+            String[] oldIDs = ConfigManagerCore.staticLoadDimensions;
+            ConfigManagerCore.staticLoadDimensions = new String[ConfigManagerCore.staticLoadDimensions.length + 1];
             System.arraycopy(oldIDs, 0, staticLoadDimensions, 0, oldIDs.length);
 
-            ConfigManagerCore.staticLoadDimensions[ConfigManagerCore.staticLoadDimensions.length - 1] = newID;
+            ConfigManagerCore.staticLoadDimensions[ConfigManagerCore.staticLoadDimensions.length - 1] = newID.getRegistryName().toString();
             Arrays.sort(ConfigManagerCore.staticLoadDimensions);
 
             COMMON_BUILDER.comment("IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded")
@@ -994,13 +1050,13 @@ public class ConfigManagerCore
         return !found;
     }
 
-    public boolean setUnloaded(int idToRemove)
+    public boolean setUnloaded(DimensionType idToRemove)
     {
         int foundCount = 0;
 
-        for (int staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+        for (String staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
         {
-            if (staticLoadDimension == idToRemove)
+            if (staticLoadDimension.equals(idToRemove.getRegistryName().toString()))
             {
                 foundCount++;
             }
@@ -1008,10 +1064,10 @@ public class ConfigManagerCore
 
         if (foundCount > 0)
         {
-            List<Integer> idArray = new ArrayList<Integer>(Ints.asList(ConfigManagerCore.staticLoadDimensions));
-            idArray.removeAll(Collections.singleton(idToRemove));
+            List<String> idArray = Arrays.asList(ConfigManagerCore.staticLoadDimensions);
+            idArray.remove(idToRemove);
 
-            ConfigManagerCore.staticLoadDimensions = new int[idArray.size()];
+            ConfigManagerCore.staticLoadDimensions = new String[idArray.size()];
 
             for (int i = 0; i < idArray.size(); i++)
             {

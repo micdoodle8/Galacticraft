@@ -2,44 +2,49 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.*;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 
 public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMachineSides
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.circuitFabricator)
+    public static TileEntityType<TileEntityCircuitFabricator> TYPE;
+
     public static final int PROCESS_TIME_REQUIRED = 300;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
     private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
     public TileEntityCircuitFabricator()
     {
-        super("tile.machine2.5.name");
+        super(TYPE);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 40 : 20);
         this.inventory = NonNullList.withSize(7, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         this.updateInput();
 
@@ -115,20 +120,17 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
             ItemStack resultItemStack = this.producingStack.copy();
             if (this.world.getDimension() instanceof IZeroGDimension)
             {
-                if (resultItemStack.getItem() == GCItems.basicItem)
+                if (resultItemStack.getItem() == GCItems.compressedWaferBasic)
                 {
-                    if (resultItemStack.getItemDamage() == ItemBasic.WAFER_BASIC)
-                    {
-                        resultItemStack.setCount(5);
-                    }
-                    else if (resultItemStack.getItemDamage() == 12)  //Solar panels
-                    {
-                        resultItemStack.setCount(15);
-                    }
-                    else
-                    {
-                        resultItemStack.setCount(resultItemStack.getCount() * 2);
-                    }
+                    resultItemStack.setCount(5);
+                }
+                else if (resultItemStack.getItem() == GCItems.compressedWaferSolar)
+                {
+                    resultItemStack.setCount(15);
+                }
+                else
+                {
+                    resultItemStack.setCount(resultItemStack.getCount() * 2);
                 }
             }
 
@@ -158,27 +160,27 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.processTicks = nbt.getInt("smeltingTicks");
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("smeltingTicks", this.processTicks);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
@@ -240,7 +242,8 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return Direction.NORTH; // TODO Fix circuit fabricator direction
+//        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -305,7 +308,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

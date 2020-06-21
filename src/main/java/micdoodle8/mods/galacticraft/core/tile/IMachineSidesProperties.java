@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides.Face;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.IStringSerializable;
 
 /**

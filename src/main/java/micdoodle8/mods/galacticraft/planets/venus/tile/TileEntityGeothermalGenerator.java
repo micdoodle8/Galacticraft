@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.EnumSet;
 
@@ -30,12 +30,12 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     private boolean validSpout;
 
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    @Annotations.NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean disabled = false;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    @Annotations.NetworkedField(targetSide = LogicalSide.CLIENT)
     public int disableCooldown = 0;
 
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    @Annotations.NetworkedField(targetSide = LogicalSide.CLIENT)
     public int generateWatts = 0;
 
     public TileEntityGeothermalGenerator()
@@ -47,14 +47,14 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
             this.receiveEnergyGC(null, this.generateWatts, false);
         }
 
-        super.update();
+        super.tick();
 
         if (this.ticks % 20 == 0)
         {
@@ -84,7 +84,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
             if (this.world.isRemote && this.validSpout != lastValidSpout)
             {
-                // Update active texture
+                // tick active texture
                 BlockState state = this.world.getBlockState(this.getPos());
                 this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
@@ -108,15 +108,15 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 double posX = pos.getX() + 0.5;
                 double posY = pos.getY() + 1.0;
                 double posZ = pos.getZ() + 0.5;
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX, posY, posZ), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.spawnParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX, posY, posZ), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
+                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
             }
         }
 
@@ -191,7 +191,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         {
             if (this.disabled != disabled && this.world.isRemote)
             {
-                // Update active texture
+                // tick active texture
                 BlockState state = this.world.getBlockState(this.getPos());
                 this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }

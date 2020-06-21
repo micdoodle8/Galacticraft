@@ -4,12 +4,9 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
@@ -24,16 +21,17 @@ public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
         }
     }
 
-    private PlayerInventory upperChestInventory;
-    private TileEntityParaChest lowerChestInventory;
+    private PlayerInventory playerInv;
+    private TileEntityParaChest parachest;
 
     private int inventorySlots = 0;
 
-    public GuiParaChest(PlayerInventory playerInv, TileEntityParaChest parachest)
+    public GuiParaChest(ContainerParaChest container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerParaChest(playerInv, parachest, Minecraft.getInstance().player), playerInv, new StringTextComponent(parachest.getName()));
-        this.upperChestInventory = playerInv;
-        this.lowerChestInventory = parachest;
+        super(container, playerInv, title);
+//        super(new ContainerParaChest(playerInv, parachest, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.parachest.name"));
+        this.playerInv = playerInv;
+        this.parachest = container.getParaChest();
         this.passEvents = false;
         this.inventorySlots = parachest.getSizeInventory();
         this.ySize = 146 + this.inventorySlots * 2;
@@ -42,8 +40,8 @@ public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.lowerChestInventory.getName(), 8, 6, 4210752);
-        this.font.drawString(this.upperChestInventory.getName().getFormattedText(), 8, this.ySize - 103 + (this.inventorySlots == 3 ? 2 : 4), 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, this.ySize - 103 + (this.inventorySlots == 3 ? 2 : 4), 4210752);
     }
 
     @Override
@@ -55,9 +53,9 @@ public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
         int l = (this.height - this.ySize) / 2;
         this.blit(k, l, 0, 0, this.xSize, this.ySize);
 
-        if (this.lowerChestInventory instanceof IScaleableFuelLevel)
+        if (this.parachest instanceof IScaleableFuelLevel)
         {
-            int fuelLevel = ((IScaleableFuelLevel) this.lowerChestInventory).getScaledFuelLevel(28);
+            int fuelLevel = ((IScaleableFuelLevel) this.parachest).getScaledFuelLevel(28);
             this.blit(k + 17, l + (this.inventorySlots == 3 ? 40 : 42) - fuelLevel + this.inventorySlots * 2, 176, 28 - fuelLevel, 34, fuelLevel);
         }
     }

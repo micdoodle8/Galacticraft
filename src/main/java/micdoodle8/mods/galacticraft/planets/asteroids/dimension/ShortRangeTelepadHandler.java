@@ -28,7 +28,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         public BlockVec3 position;
         public boolean enabled;
 
-        public TelepadEntry(int dimID, BlockVec3 position, boolean enabled)
+        public TelepadEntry(DimensionType dimID, BlockVec3 position, boolean enabled)
         {
             this.dimensionID = dimID;
             this.position = position;
@@ -63,12 +63,12 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             CompoundNBT nbt2 = tagList.getCompound(i);
             int address = nbt2.getInteger("Address");
-            int dimID = nbt2.getInteger("DimID");
+            DimensionType dimID = nbt2.getInteger("DimID");
             int posX = nbt2.getInteger("PosX");
             int posY = nbt2.getInteger("PosY");
             int posZ = nbt2.getInteger("PosZ");
             boolean enabled = true;
-            if (nbt2.hasKey("Enabled"))
+            if (nbt2.contains("Enabled"))
             {
                 enabled = nbt2.getBoolean("Enabled");
             }
@@ -90,7 +90,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
             nbt2.setInteger("PosY", e.getValue().position.y);
             nbt2.setInteger("PosZ", e.getValue().position.z);
             nbt2.setBoolean("Enabled", e.getValue().enabled);
-            tagList.appendTag(nbt2);
+            tagList.add(nbt2);
         }
 
         nbt.put("TelepadList", tagList);
@@ -103,7 +103,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             if (telepad.addressValid)
             {
-                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimension(), new BlockVec3(telepad), !telepad.getDisabled(0));
+                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().dimension.getDimension(), new BlockVec3(telepad), !telepad.getDisabled(0));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
 
                 if (previous == null || !previous.equals(newEntry))

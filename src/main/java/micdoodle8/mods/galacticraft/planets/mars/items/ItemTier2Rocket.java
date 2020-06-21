@@ -169,7 +169,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
             }
         }
-        else if (stack.hasTag() && stack.getTag().hasKey("RocketFuel"))
+        else if (stack.hasTag() && stack.getTag().contains("RocketFuel"))
         {
             rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTag().getInteger("RocketFuel")), true);
         }
@@ -219,7 +219,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
             tooltip.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
         }
 
-        if (par1ItemStack.hasTag() && par1ItemStack.getTag().hasKey("RocketFuel"))
+        if (par1ItemStack.hasTag() && par1ItemStack.getTag().contains("RocketFuel"))
         {
             EntityAutoRocket rocket;
 

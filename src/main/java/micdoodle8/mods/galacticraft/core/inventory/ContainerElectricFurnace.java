@@ -1,35 +1,44 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.FurnaceResultSlot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerElectricFurnace extends Container
 {
-    private TileEntityElectricFurnace tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ELECTRIC_FURNACE)
+    public static ContainerType<ContainerElectricFurnace> TYPE;
 
-    public ContainerElectricFurnace(PlayerInventory par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
+    private TileEntityElectricFurnace tile;
+
+    public ContainerElectricFurnace(int containerId, PlayerInventory playerInv, TileEntityElectricFurnace tile)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.tile = tile;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 8, 49, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tile, 0, 8, 49, IItemElectric.class));
 
         // To be smelted
-        this.addSlotToContainer(new Slot(tileEntity, 1, 56, 25));
+        this.addSlot(new Slot(tile, 1, 56, 25));
 
         // Smelting result
-        this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
-        if (tileEntity.tierGC == 2)
+        this.addSlot(new FurnaceResultSlot(playerInv.player, tile, 2, 109, 25));
+        if (tile.getSizeInventory() > 2)
         {
-            this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 3, 127, 25));
+            this.addSlot(new FurnaceResultSlot(playerInv.player, tile, 3, 127, 25));
         }
         int var3;
 
@@ -37,29 +46,31 @@ public class ContainerElectricFurnace extends Container
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 142));
         }
 
-        tileEntity.playersUsing.add(par1InventoryPlayer.player);
+        tile.openInventory(playerInv.player);
+//        inventory.playersUsing.add(playerInv.player);
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity entityplayer)
+    public void onContainerClosed(PlayerEntity player)
     {
-        super.onContainerClosed(entityplayer);
-        this.tileEntity.playersUsing.remove(entityplayer);
+        super.onContainerClosed(player);
+        tile.closeInventory(player);
+//        this.inventory.playersUsing.remove(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.tile.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -67,11 +78,11 @@ public class ContainerElectricFurnace extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity player, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         Slot var3 = this.inventorySlots.get(par1);
-        int off = this.tileEntity.tierGC == 2 ? 1 : 0;
+        int off = this.tile.getSizeInventory() > 2 ? 1 : 0;
 
         if (var3 != null && var3.getHasStack())
         {
@@ -96,7 +107,7 @@ public class ContainerElectricFurnace extends Container
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (!FurnaceRecipes.instance().getSmeltingResult(var4).isEmpty())
+                else if (checkRoastable(player.world, var4))
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {
@@ -134,9 +145,13 @@ public class ContainerElectricFurnace extends Container
                 return ItemStack.EMPTY;
             }
 
-            var3.onTake(par1EntityPlayer, var4);
+            var3.onTake(player, var4);
         }
 
         return var2;
+    }
+
+    protected boolean checkRoastable(World world, ItemStack stack) {
+        return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), world).isPresent();
     }
 }

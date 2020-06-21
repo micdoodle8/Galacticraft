@@ -48,16 +48,16 @@ public class RoomBossVenus extends SizedPieceVenus
 
         if (this.exitDirection != null)
         {
-            tagCompound.setInteger("direction_exit", this.exitDirection.ordinal());
+            tagCompound.putInt("direction_exit", this.exitDirection.ordinal());
         }
 
 
         tagCompound.setBoolean("chestPosNull", this.chestPos == null);
         if (this.chestPos != null)
         {
-            tagCompound.setInteger("chestX", this.chestPos.getX());
-            tagCompound.setInteger("chestY", this.chestPos.getY());
-            tagCompound.setInteger("chestZ", this.chestPos.getZ());
+            tagCompound.putInt("chestX", this.chestPos.getX());
+            tagCompound.putInt("chestY", this.chestPos.getY());
+            tagCompound.putInt("chestZ", this.chestPos.getZ());
         }
     }
 
@@ -66,7 +66,7 @@ public class RoomBossVenus extends SizedPieceVenus
     {
         super.readStructureFromNBT(tagCompound, manager);
 
-        if (tagCompound.hasKey("direction_exit"))
+        if (tagCompound.contains("direction_exit"))
         {
             this.exitDirection = Direction.byIndex(tagCompound.getInteger("direction_exit"));
         }
@@ -75,7 +75,7 @@ public class RoomBossVenus extends SizedPieceVenus
             this.exitDirection = null;
         }
 
-        if (tagCompound.hasKey("chestPosNull") && !tagCompound.getBoolean("chestPosNull"))
+        if (tagCompound.contains("chestPosNull") && !tagCompound.getBoolean("chestPosNull"))
         {
             this.chestPos = new BlockPos(tagCompound.getInteger("chestX"), tagCompound.getInteger("chestY"), tagCompound.getInteger("chestZ"));
         }

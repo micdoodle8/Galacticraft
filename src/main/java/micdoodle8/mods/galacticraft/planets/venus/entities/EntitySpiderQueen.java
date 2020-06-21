@@ -386,8 +386,8 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         ListNBT list = new ListNBT();
         for (EntityJuicer juicer : this.juicersSpawned)
         {
-            list.appendTag(new LongNBT(juicer.getPersistentID().getMostSignificantBits()));
-            list.appendTag(new LongNBT(juicer.getPersistentID().getLeastSignificantBits()));
+            list.add(new LongNBT(juicer.getPersistentID().getMostSignificantBits()));
+            list.add(new LongNBT(juicer.getPersistentID().getLeastSignificantBits()));
         }
         tagCompound.setTag("spawned_children", list);
     }
@@ -399,7 +399,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
 
         this.shouldEvade = tagCompound.getBoolean("should_evade");
 
-        if (tagCompound.hasKey("spawned_children"))
+        if (tagCompound.contains("spawned_children"))
         {
             this.spawnedPreload = Lists.newArrayList();
             ListNBT list = tagCompound.getList("spawned_children", 4);

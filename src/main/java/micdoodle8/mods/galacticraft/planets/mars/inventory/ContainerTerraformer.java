@@ -23,13 +23,13 @@ public class ContainerTerraformer extends Container
     private final TileEntityTerraformer tileEntity;
     private static LinkedList<ItemStack> saplingList = null;
 
-    public ContainerTerraformer(PlayerInventory par1InventoryPlayer, TileEntityTerraformer tileEntity, PlayerEntity player)
+    public ContainerTerraformer(PlayerInventory playerInv, TileEntityTerraformer tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET)));
+        this.addSlot(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET)));
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 25, 39, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tileEntity, 1, 25, 39, IItemElectric.class));
 
         int var6;
         int var7;
@@ -58,7 +58,7 @@ public class ContainerTerraformer extends Container
 
             for (var7 = 0; var7 < 4; ++var7)
             {
-                this.addSlotToContainer(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
+                this.addSlot(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
             }
         }
 
@@ -66,13 +66,13 @@ public class ContainerTerraformer extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 155 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 155 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 213));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 213));
         }
 
         tileEntity.openInventory(player);

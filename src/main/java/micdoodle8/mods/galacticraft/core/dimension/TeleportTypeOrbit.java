@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -18,21 +19,21 @@ public class TeleportTypeOrbit implements ITeleportType
     }
 
     @Override
-    public Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
-        return new Vector3(0.5, 65.0, 0.5);
+        return new Vector3D(0.5, 65.0, 0.5);
     }
 
     @Override
-    public Vector3 getEntitySpawnLocation(ServerWorld world, Entity player)
+    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity player)
     {
-        return new Vector3(0.5, 65.0, 0.5);
+        return new Vector3D(0.5, 65.0, 0.5);
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
-        return new Vector3(-8.5D, 90.0, -1.5D);
+        return new Vector3D(-8.5, 90.0, -1.5);
     }
 
     @Override

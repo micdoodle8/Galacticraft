@@ -52,13 +52,13 @@
 //
 //    public static ItemStack fillBucketFrom(IFluidHandler fluidHandler)
 //    {
-//        FluidStack liquid = fluidHandler.drain(Fluid.BUCKET_VOLUME, false);
-//        if (liquid != null && liquid.amount == Fluid.BUCKET_VOLUME)
+//        FluidStack liquid = fluidHandler.drain(1000, false);
+//        if (liquid != null && liquid.amount == 1000)
 //        {
 //        	ItemBucketGC test = ItemBucketGC.getBucketForFluid(liquid.getFluid());
 //        	if (test != null)
 //        	{
-//        		fluidHandler.drain(Fluid.BUCKET_VOLUME, true);
+//        		fluidHandler.drain(1000, true);
 //        		return new ItemStack(test);
 //        	}
 //        }
@@ -67,9 +67,9 @@
 //
 //    public ItemStack drainBucketTo(IFluidHandler fluidHandler)
 //    {
-//    	FluidStack fs = new FluidStack(this.accepts, Fluid.BUCKET_VOLUME);
+//    	FluidStack fs = new FluidStack(this.accepts, 1000);
 //        int transferred = fluidHandler.fill(fs, false);
-//        if (transferred == Fluid.BUCKET_VOLUME)
+//        if (transferred == 1000)
 //        {
 //        	fluidHandler.fill(fs, true);
 //        	return new ItemStack(Items.BUCKET);
@@ -132,7 +132,7 @@
 //        	container.setCount(1);
 //            this.container = container;
 //            this.item = (ItemBucketGC) container.getItem();
-//            this.capacity = Fluid.BUCKET_VOLUME;
+//            this.capacity = 1000;
 //        }
 //
 //        @Nonnull
@@ -159,14 +159,14 @@
 //        }
 //
 //        @Override
-//        public int fill(FluidStack resource, boolean doFill)
+//        public int fill(FluidStack resource, IFluidHandler.FluidAction action)
 //        {
 //        	//This is a full bucket already, can't be filled
 //            return 0;
 //        }
 //
 //        @Override
-//        public FluidStack drain(FluidStack resource, boolean doDrain)
+//        public FluidStack drain(FluidStack resource, IFluidHandler.FluidAction action)
 //        {
 //            if (resource == null || !this.canDrainFluidType(resource))
 //            {
@@ -176,7 +176,7 @@
 //        }
 //
 //        @Override
-//        public FluidStack drain(int maxDrain, boolean doDrain)
+//        public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
 //        {
 //            if (maxDrain < this.capacity)
 //            {

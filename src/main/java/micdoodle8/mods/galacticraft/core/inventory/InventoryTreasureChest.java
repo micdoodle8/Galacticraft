@@ -38,46 +38,46 @@ public class InventoryTreasureChest implements IInventory
     }
 
 
+//    @Override
+//    public String getName()
+//    {
+//        return this.upperChest.hasCustomName() ? this.upperChest.getName() : (this.lowerChest.hasCustomName() ? this.lowerChest.getName() : this.name);
+//    }
+//
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return this.upperChest.hasCustomName() || this.lowerChest.hasCustomName();
+//    }
+
     @Override
-    public String getName()
+    public ItemStack getStackInSlot(int slot)
     {
-        return this.upperChest.hasCustomName() ? this.upperChest.getName() : (this.lowerChest.hasCustomName() ? this.lowerChest.getName() : this.name);
+        return slot >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(slot - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(slot);
     }
 
     @Override
-    public boolean hasCustomName()
+    public ItemStack decrStackSize(int slot, int count)
     {
-        return this.upperChest.hasCustomName() || this.lowerChest.hasCustomName();
+        return slot >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(slot - this.upperChest.getSizeInventory(), count) : this.upperChest.decrStackSize(slot, count);
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_)
+    public ItemStack removeStackFromSlot(int slot)
     {
-        return p_70301_1_ >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(p_70301_1_ - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(p_70301_1_);
+        return slot >= this.upperChest.getSizeInventory() ? this.lowerChest.removeStackFromSlot(slot - this.upperChest.getSizeInventory()) : this.upperChest.removeStackFromSlot(slot);
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_)
+    public void setInventorySlotContents(int slot, ItemStack stack)
     {
-        return p_70298_1_ >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(p_70298_1_ - this.upperChest.getSizeInventory(), p_70298_2_) : this.upperChest.decrStackSize(p_70298_1_, p_70298_2_);
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int p_70304_1_)
-    {
-        return p_70304_1_ >= this.upperChest.getSizeInventory() ? this.lowerChest.removeStackFromSlot(p_70304_1_ - this.upperChest.getSizeInventory()) : this.upperChest.removeStackFromSlot(p_70304_1_);
-    }
-
-    @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_)
-    {
-        if (p_70299_1_ >= this.upperChest.getSizeInventory())
+        if (slot >= this.upperChest.getSizeInventory())
         {
-            this.lowerChest.setInventorySlotContents(p_70299_1_ - this.upperChest.getSizeInventory(), p_70299_2_);
+            this.lowerChest.setInventorySlotContents(slot - this.upperChest.getSizeInventory(), stack);
         }
         else
         {
-            this.upperChest.setInventorySlotContents(p_70299_1_, p_70299_2_);
+            this.upperChest.setInventorySlotContents(slot, stack);
         }
     }
 
@@ -115,7 +115,7 @@ public class InventoryTreasureChest implements IInventory
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_)
+    public boolean isItemValidForSlot(int slot, ItemStack stack)
     {
         return true;
     }
@@ -133,26 +133,26 @@ public class InventoryTreasureChest implements IInventory
         return this.upperChest.isEmpty() && this.lowerChest.isEmpty();
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
+//    }
 }

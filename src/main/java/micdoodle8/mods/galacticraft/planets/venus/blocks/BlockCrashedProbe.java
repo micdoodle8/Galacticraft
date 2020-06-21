@@ -68,11 +68,11 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
     }
 
     @Override
-    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.65, pos.getY() + 1.0, pos.getZ() + 0.9, 0.0, 0.0, 0.0);
-        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.2, pos.getY() + 1.0, pos.getZ() + 0.2, 0.0, 0.0, 0.0);
-        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 1.0, pos.getY() + 0.25, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
+        worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.65, pos.getY() + 1.0, pos.getZ() + 0.9, 0.0, 0.0, 0.0);
+        worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.2, pos.getY() + 1.0, pos.getZ() + 0.2, 0.0, 0.0, 0.0);
+        worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 1.0, pos.getY() + 0.25, pos.getZ() + 0.5, 0.0, 0.0, 0.0);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -92,7 +92,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
             spawnItem(worldIn, pos);
         }
 
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     //Drops a Radioisotope Core as well as the Crashed Probe block

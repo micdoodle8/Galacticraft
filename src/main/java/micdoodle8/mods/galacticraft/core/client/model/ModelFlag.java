@@ -3,15 +3,15 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
-public class ModelFlag extends ModelBase
+public class ModelFlag extends Model
 {
     RendererModel base;
     RendererModel pole;
@@ -34,23 +34,16 @@ public class ModelFlag extends ModelBase
         this.setRotation(this.pole, 0F, 0F, 0F);
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityFlag flag, float scale)
     {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-
-        if (entity instanceof EntityFlag)
-        {
-            EntityFlag flag = (EntityFlag) entity;
-            this.renderPole(flag, f5);
-            this.renderFlag(flag, flag.ticksExisted);
-        }
+        this.renderPole(scale);
+        this.renderFlag(flag, flag.ticksExisted);
     }
 
-    public void renderPole(Entity entity, float f5)
+    public void renderPole(float scale)
     {
-        this.base.render(f5);
-        this.pole.render(f5);
+        this.base.render(scale);
+        this.pole.render(scale);
     }
 
     public void renderFlag(EntityFlag entity, float ticks)

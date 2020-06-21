@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.biome.dimension.BiomeProvider;
 import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
@@ -67,7 +67,7 @@ public class MapGen extends BiomeProvider implements Runnable
     private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private Biome[] biomesGridHeights = null;
     private int[] biomeCount = null;
-    private final int dimID;
+    private final DimensionType dimID;
 
     static
     {

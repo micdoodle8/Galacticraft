@@ -2,26 +2,32 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerOxygenSealer extends Container
 {
-    private TileBaseElectricBlock tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_SEALER)
+    public static ContainerType<ContainerOxygenSealer> TYPE;
 
-    public ContainerOxygenSealer(PlayerInventory par1InventoryPlayer, TileEntityOxygenSealer sealer)
+    private TileEntityOxygenSealer sealer;
+
+    public ContainerOxygenSealer(int containerId, PlayerInventory playerInv, TileEntityOxygenSealer sealer)
     {
-        this.tileEntity = sealer;
-        this.addSlotToContainer(new SlotSpecific(sealer, 0, 33, 27, IItemElectric.class));
-        this.addSlotToContainer(new SlotSpecific(sealer, 1, 10, 27, IItemOxygenSupply.class));
-        this.addSlotToContainer(new SlotSpecific(sealer, 2, 56, 27, new ItemStack(GCItems.basicItem, 1, 20)));
+        super(TYPE, containerId);
+        this.sealer = sealer;
+        this.addSlot(new SlotSpecific(sealer, 0, 33, 27, IItemElectric.class));
+        this.addSlot(new SlotSpecific(sealer, 1, 10, 27, IItemOxygenSupply.class));
+        this.addSlot(new SlotSpecific(sealer, 2, 56, 27, new ItemStack(GCItems.ambientThermalController, 1)));
 
         int var6;
         int var7;
@@ -32,20 +38,25 @@ public class ContainerOxygenSealer extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 46 + 78 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 46 + 78 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 46 + 136));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 46 + 136));
         }
+    }
+
+    public TileEntityOxygenSealer getSealer()
+    {
+        return sealer;
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.sealer.isUsableByPlayer(var1);
     }
 
     @Override
@@ -83,7 +94,7 @@ public class ContainerOxygenSealer extends Container
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (stack.getItem() == GCItems.basicItem && stack.getItemDamage() == 20)
+                else if (stack.getItem() == GCItems.ambientThermalController)
                 {
                     if (!this.mergeItemStack(stack, 2, 3, false))
                     {

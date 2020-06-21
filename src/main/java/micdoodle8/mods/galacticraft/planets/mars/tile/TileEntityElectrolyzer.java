@@ -37,21 +37,21 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper, IOxygenStorage, IOxygenReceiver
 {
     private final int tankCapacity = 4000;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank waterTank = new FluidTank(this.tankCapacity);
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank liquidTank = new FluidTank(this.tankCapacity);
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank liquidTank2 = new FluidTank(this.tankCapacity);
 
     public int processTimeRequired = 3;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
 
     public TileEntityElectrolyzer()
@@ -91,9 +91,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -141,7 +141,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     private void doElectrolysis()
     {
         //Can't be called if the gasTank fluid is null
-        final int waterAmount = this.waterTank.getFluid().amount;
+        final int waterAmount = this.waterTank.getFluid().getAmount();
         if (waterAmount == 0)
         {
             return;
@@ -182,22 +182,22 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     public int getScaledGasLevel(int i)
     {
-        return this.waterTank.getFluid() != null ? this.waterTank.getFluid().amount * i / this.waterTank.getCapacity() : 0;
+        return this.waterTank.getFluid() != FluidStack.EMPTY ? this.waterTank.getFluid().getAmount() * i / this.waterTank.getCapacity() : 0;
     }
 
     public int getScaledFuelLevel(int i)
     {
-        return this.liquidTank.getFluid() != null ? this.liquidTank.getFluid().amount * i / this.liquidTank.getCapacity() : 0;
+        return this.liquidTank.getFluid() != FluidStack.EMPTY ? this.liquidTank.getFluid().getAmount() * i / this.liquidTank.getCapacity() : 0;
     }
 
     public int getScaledFuelLevel2(int i)
     {
-        return this.liquidTank2.getFluid() != null ? this.liquidTank2.getFluid().amount * i / this.liquidTank2.getCapacity() : 0;
+        return this.liquidTank2.getFluid() != FluidStack.EMPTY ? this.liquidTank2.getFluid().getAmount() * i / this.liquidTank2.getCapacity() : 0;
     }
 
     public boolean canProcess()
     {
-        if (this.waterTank.getFluid() == null || this.waterTank.getFluid().amount <= 0 || this.getDisabled(0))
+        if (this.waterTank.getFluid() == FluidStack.EMPTY || this.waterTank.getFluid().getAmount() <= 0 || this.getDisabled(0))
         {
             return false;
         }
@@ -209,44 +209,44 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.processTicks = nbt.getInt("processTicks");
 
         if (nbt.contains("waterTank"))
         {
-            this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
+            this.waterTank.read(nbt.getCompound("waterTank"));
         }
 
         if (nbt.contains("gasTank"))
         {
-            this.liquidTank.readFromNBT(nbt.getCompoundTag("gasTank"));
+            this.liquidTank.read(nbt.getCompound("gasTank"));
         }
         if (nbt.contains("gasTank2"))
         {
-            this.liquidTank2.readFromNBT(nbt.getCompoundTag("gasTank2"));
+            this.liquidTank2.read(nbt.getCompound("gasTank2"));
         }
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("processTicks", this.processTicks);
 
-        if (this.waterTank.getFluid() != null)
+        if (this.waterTank.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
+            nbt.put("waterTank", this.waterTank.write(new CompoundNBT()));
         }
 
-        if (this.liquidTank.getFluid() != null)
+        if (this.liquidTank.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("gasTank", this.liquidTank.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank", this.liquidTank.write(new CompoundNBT()));
         }
-        if (this.liquidTank2.getFluid() != null)
+        if (this.liquidTank2.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("gasTank2", this.liquidTank2.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank2", this.liquidTank2.write(new CompoundNBT()));
         }
 
         return nbt;
@@ -340,18 +340,18 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         if (from == this.getHydrogenOutputDirection())
         {
-            return this.liquidTank2.getFluid() != null && this.liquidTank2.getFluidAmount() > 0;
+            return this.liquidTank2.getFluid() != FluidStack.EMPTY && this.liquidTank2.getFluidAmount() > 0;
         }
         if (from == this.getOxygenOutputDirection())
         {
-            return this.liquidTank.getFluid() != null && this.liquidTank.getFluidAmount() > 0;
+            return this.liquidTank.getFluid() != FluidStack.EMPTY && this.liquidTank.getFluidAmount() > 0;
         }
 
         return false;
     }
 
     @Override
-    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         if (from == this.getHydrogenOutputDirection())
         {
@@ -373,7 +373,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, IFluidHandler.FluidAction action)
     {
         if (from == this.getHydrogenOutputDirection())
         {
@@ -401,13 +401,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int fill(Direction from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         int used = 0;
 
         if (resource != null && this.canFill(from, resource.getFluid()))
         {
-            used = this.waterTank.fill(resource, doFill);
+            used = this.waterTank.fill(resource, action);
         }
 
         return used;
@@ -455,13 +455,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(Direction from, int amount, boolean doTransfer)
     {
-        if (from == this.getHydrogenOutputDirection() && this.liquidTank2.getFluid() != null)
+        if (from == this.getHydrogenOutputDirection() && this.liquidTank2.getFluid() != FluidStack.EMPTY)
         {
             int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
             amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
             return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
         }
-        else if (from == this.getOxygenOutputDirection() && this.liquidTank.getFluid() != null)
+        else if (from == this.getOxygenOutputDirection() && this.liquidTank.getFluid() != FluidStack.EMPTY)
         {
             int amountO = Math.min(8, this.liquidTank.getFluidAmount());
             amountO = this.liquidTank.drain(amountO, doTransfer).amount;

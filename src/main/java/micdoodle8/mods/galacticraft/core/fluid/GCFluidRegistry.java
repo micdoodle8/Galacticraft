@@ -288,7 +288,7 @@ public class GCFluidRegistry
 //
 //                if (rocketPlaced)
 //                {
-//                    stack.splitStack(1);
+//                    stack.split(1);
 //                }
 //                return stack;
 //            }
@@ -315,7 +315,7 @@ public class GCFluidRegistry
 //
 //                    if (rocketPlaced)
 //                    {
-//                        stack.splitStack(1);
+//                        stack.split(1);
 //                    }
 //                    return stack;
 //                }
@@ -340,7 +340,7 @@ public class GCFluidRegistry
 //
 //                    if (rocketPlaced)
 //                    {
-//                        stack.splitStack(1);
+//                        stack.split(1);
 //                    }
 //                    return stack;
 //                }

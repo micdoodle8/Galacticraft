@@ -106,7 +106,7 @@
 //    }
 //
 //    @Override
-//    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
+//    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
 //    {
 //        if (this.getMetaFromState(state) == 0)
 //        {
@@ -115,7 +115,7 @@
 //    }
 //
 //    @Override
-//    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
+//    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
 //    {
 //        int metadata = this.getMetaFromState(state);
 //
@@ -140,9 +140,9 @@
 //
 //        if (!worldIn.isRemote)
 //        {
-//            if (worldIn.provider instanceof WorldProviderSpaceStation)
+//            if (worldIn.dimension instanceof WorldProviderSpaceStation)
 //            {
-//                ((WorldProviderSpaceStation) worldIn.provider).getSpinManager().refresh(baseBlock, true);
+//                ((WorldProviderSpaceStation) worldIn.dimension).getSpinManager().refresh(baseBlock, true);
 //            }
 //        }
 //    }
@@ -159,9 +159,9 @@
 //        }
 //        if (!worldIn.isRemote)
 //        {
-//            if (worldIn.provider instanceof WorldProviderSpaceStation)
+//            if (worldIn.dimension instanceof WorldProviderSpaceStation)
 //            {
-//                ((WorldProviderSpaceStation) worldIn.provider).getSpinManager().refresh(pos, true);
+//                ((WorldProviderSpaceStation) worldIn.dimension).getSpinManager().refresh(pos, true);
 //            }
 //        }
 //    }
@@ -199,13 +199,13 @@
 //
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
-//    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+//    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
 //        //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
 //        //Also make small thrust sounds
-//        if (worldIn.provider instanceof WorldProviderSpaceStation)
+//        if (worldIn.dimension instanceof WorldProviderSpaceStation)
 //        {
-//            if (((WorldProviderSpaceStation) worldIn.provider).getSpinManager().thrustersFiring || rand.nextInt(80) == 0)
+//            if (((WorldProviderSpaceStation) worldIn.dimension).getSpinManager().thrustersFiring || rand.nextInt(80) == 0)
 //            {
 //                final int var6 = this.getMetaFromState(stateIn) & 7;
 //                final double var7 = pos.getX() + 0.5F;
@@ -216,19 +216,19 @@
 //
 //                if (var6 == 1)
 //                {
-//                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+//                    worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, var7 - var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
 //                }
 //                else if (var6 == 2)
 //                {
-//                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
+//                    worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, var7 + var15, var9 + var13, var11, 0.0D, 0.0D, 0.0D);
 //                }
 //                else if (var6 == 3)
 //                {
-//                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
+//                    worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
 //                }
 //                else if (var6 == 0)
 //                {
-//                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
+//                    worldIn.addParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
 //                }
 //            }
 //        }
@@ -262,14 +262,14 @@
 //    }
 //
 //    @Override
-//    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+//    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
 //    {
 //        if (!worldIn.isRemote)
 //        {
 //            final int facing = this.getMetaFromState(state) & 8;
-//            if (worldIn.provider instanceof WorldProviderSpaceStation)
+//            if (worldIn.dimension instanceof WorldProviderSpaceStation)
 //            {
-//                WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) worldIn.provider;
+//                WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) worldIn.dimension;
 //                worldOrbital.getSpinManager().removeThruster(pos, facing == 0);
 //                worldOrbital.getSpinManager().updateSpinSpeed();
 //            }
@@ -285,7 +285,7 @@
 //    @Override
 //    public String getShiftDescription(ItemStack stack)
 //    {
-//        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+//        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
 //    }
 //
 //    @Override
@@ -297,7 +297,7 @@
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        Direction enumfacing = Direction.getHorizontal(meta % 4);
+//        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
 //        return this.getDefaultState().with(FACING, enumfacing).with(ORIENTATION, meta >= 8);
 //    }
 //

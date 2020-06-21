@@ -28,9 +28,9 @@ public class GuiGeothermal extends GuiContainerGC
     private Button buttonEnableSolar;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiGeothermal(PlayerInventory par1InventoryPlayer, TileEntityGeothermalGenerator geothermalGenerator)
+    public GuiGeothermal(PlayerInventory playerInv, TileEntityGeothermalGenerator geothermalGenerator)
     {
-        super(new ContainerGeothermal(par1InventoryPlayer, geothermalGenerator));
+        super(new ContainerGeothermal(playerInv, geothermalGenerator));
         this.geothermalGenerator = geothermalGenerator;
         this.ySize = 201;
         this.xSize = 176;

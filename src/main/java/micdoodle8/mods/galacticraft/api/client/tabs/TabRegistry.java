@@ -26,7 +26,7 @@
 //	{
 //	    try
 //	    {
-//	        //Checks for JEI by looking for this class instead of a Loader.isModLoaded() check
+//	        //Checks for JEI by looking for this class instead of a ModList.get().isLoaded() check
 //	        clazzJEIConfig = Class.forName("mezz.jei.config.Config");
 //	    }
 //	    catch (Exception ignore)

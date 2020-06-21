@@ -8,15 +8,15 @@ package micdoodle8.mods.galacticraft.api.vector;
 
 public class Vector2 implements Cloneable
 {
-    public double x;
-    public double y;
+    public float x;
+    public float y;
 
     public Vector2()
     {
         this(0, 0);
     }
 
-    public Vector2(double x, double y)
+    public Vector2(float x, float y)
     {
         this.x = x;
         this.y = y;
@@ -46,25 +46,25 @@ public class Vector2 implements Cloneable
         return new Vector2(this.x, this.y);
     }
 
-    public static double distance(Vector2 point1, Vector2 point2)
+    public static float distance(Vector2 point1, Vector2 point2)
     {
-        double xDifference = point1.x - point2.x;
-        double yDiference = point1.y - point2.y;
-        return Math.sqrt(xDifference * xDifference + yDiference * yDiference);
+        float xDifference = point1.x - point2.x;
+        float yDiference = point1.y - point2.y;
+        return (float)Math.sqrt(xDifference * xDifference + yDiference * yDiference);
     }
 
-    public static double slope(Vector2 point1, Vector2 point2)
+    public static float slope(Vector2 point1, Vector2 point2)
     {
-        double xDifference = point1.x - point2.x;
-        double yDiference = point1.y - point2.y;
+        float xDifference = point1.x - point2.x;
+        float yDiference = point1.y - point2.y;
         return yDiference / xDifference;
     }
 
-    public double distanceTo(Vector2 target)
+    public float distanceTo(Vector2 target)
     {
-        double xDifference = this.x - target.x;
-        double yDifference = this.y - target.y;
-        return Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+        float xDifference = this.x - target.x;
+        float yDifference = this.y - target.y;
+        return (float)Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     }
 
     public Vector2 add(Vector2 par1)
@@ -74,7 +74,7 @@ public class Vector2 implements Cloneable
         return this;
     }
 
-    public Vector2 add(double par1)
+    public Vector2 add(float par1)
     {
         this.x += par1;
         this.y += par1;
@@ -87,7 +87,7 @@ public class Vector2 implements Cloneable
         return this;
     }
 
-    public Vector2 multiply(double amount)
+    public Vector2 multiply(float amount)
     {
         this.x *= amount;
         this.y *= amount;
@@ -101,12 +101,12 @@ public class Vector2 implements Cloneable
 
     public Vector2 ceil()
     {
-        return new Vector2(Math.ceil(this.x), Math.ceil(this.y));
+        return new Vector2((float)Math.ceil(this.x), (float)Math.ceil(this.y));
     }
 
     public Vector2 floor()
     {
-        return new Vector2(Math.floor(this.x), Math.floor(this.y));
+        return new Vector2((float)Math.floor(this.x), (float)Math.floor(this.y));
     }
 
     @Override

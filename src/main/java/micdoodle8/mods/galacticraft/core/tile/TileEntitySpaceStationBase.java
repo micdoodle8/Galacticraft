@@ -3,26 +3,33 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.LinkedList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
+public class TileEntitySpaceStationBase extends TileEntityFake implements IMultiBlock
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.spaceStationBase)
+    public static TileEntityType<TileEntitySpaceStationBase> TYPE;
+
     public TileEntitySpaceStationBase()
     {
-        super(null);
+        super(TYPE);
     }
 
     private boolean initialised;
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
@@ -79,9 +86,9 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
         {
             BlockState stateAt = this.world.getBlockState(pos);
 
-            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.SPACE_STATION_BASE)
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.get(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.SPACE_STATION_BASE)
             {
-                this.world.setBlockToAir(pos);
+                this.world.removeBlock(pos, false);
             }
         }
         this.world.destroyBlock(this.getPos(), false);

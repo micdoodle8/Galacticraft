@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.model.block;
 
-import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.tileentity.model.ChestModel;
 
-public class ModelParaChestTile extends ModelChest
+public class ModelParaChestTile extends ChestModel
 {
     public RendererModel keyParts[] = new RendererModel[3];
 
@@ -36,15 +36,16 @@ public class ModelParaChestTile extends ModelChest
         this.keyParts[2].rotationPointZ = 7.5F;
     }
 
-    public void renderAll(boolean lidUp)
+    @Override
+    public void renderAll()
     {
-        if (lidUp)
+//        if (lidUp)
+//        {
+        for (RendererModel m : this.keyParts)
         {
-            for (RendererModel m : this.keyParts)
-            {
-                m.render(0.0625F);
-            }
+            m.render(0.0625F);
         }
+//        }
 
         super.renderAll();
     }

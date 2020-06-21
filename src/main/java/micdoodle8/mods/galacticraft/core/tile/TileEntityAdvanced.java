@@ -1,24 +1,22 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.PacketDistributor.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.PacketDistributor.TargetPoint;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
-public abstract class TileEntityAdvanced extends TileEntityInventory implements IPacketReceiver, ITickable
+public abstract class TileEntityAdvanced extends TileEntityInventory implements IPacketReceiver, ITickableTileEntity
 {
     public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
@@ -26,13 +24,13 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
     private Map<Field, Object> lastSentData = new HashMap<Field, Object>(4, 1F);
     private boolean networkDataChanged = false;
 
-    public TileEntityAdvanced(String tileName)
+    public TileEntityAdvanced(TileEntityType<?> type)
     {
-        super(tileName);
+        super(type);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
     	if (this.ticks == 0)
     	{
@@ -47,7 +45,7 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
 
     			if (this.world != null && this.world.isRemote && this.fieldCacheClient.size() > 0)
     			{
-    				//Request any networked information from server on first client update (maybe client just logged on, but server networkdata didn't change recently)
+    				//Request any networked information from server on first client tick (maybe client just logged on, but server networkdata didn't change recently)
     				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
     			}
     		}
@@ -70,7 +68,7 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
     			PacketDynamic packet = new PacketDynamic(this);
     			if (networkDataChanged)
     			{
-    				GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+    				GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange(), GCCoreUtil.getDimensionID(this.world)));
     			}
     		}
     	}
@@ -89,7 +87,7 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
             {
                 NetworkedField f = field.getAnnotation(NetworkedField.class);
 
-                if (f.targetSide() == Side.CLIENT)
+                if (f.targetSide() == LogicalSide.CLIENT)
                 {
                     this.fieldCacheClient.add(field);
                 }
@@ -241,9 +239,9 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
         this.readExtraNetworkedData(buffer);
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
 }

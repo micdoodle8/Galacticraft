@@ -180,7 +180,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             return direction.ordinal();
         }
 
-        for (Direction adjacentDir : Direction.VALUES)
+        for (Direction adjacentDir : Direction.values())
         {
             if (adjacentDir == direction)
             {
@@ -235,17 +235,17 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         Minecraft.getInstance().player.sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -294,7 +294,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

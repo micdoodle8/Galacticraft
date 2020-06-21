@@ -1,21 +1,33 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedDetector;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityPlayerDetector extends TileEntity implements ITickable
+public class TileEntityPlayerDetector extends TileEntity implements ITickableTileEntity
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.concealedDetector)
+    public static TileEntityType<TileEntityPlayerDetector> TYPE;
+
     private int ticks = 24;
     private AxisAlignedBB playerSearch;
     private boolean result = false;
 
+    public TileEntityPlayerDetector()
+    {
+        super(TYPE);
+    }
+
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote && ++this.ticks >= 25) 
         {
@@ -47,9 +59,9 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickable
                 this.playerSearch = new AxisAlignedBB(x - range - hysteresis, y - 6 - hysteresis, z - range / 2 + 0.5D - hysteresis, x + hysteresis, y + 2 + hysteresis, z + range / 2 + 0.5D + hysteresis);
             }
             result = !this.world.getEntitiesWithinAABB(PlayerEntity.class, playerSearch).isEmpty();
-            if (this.getBlockType() instanceof BlockConcealedDetector)
+            if (this.getBlockState().getBlock() instanceof BlockConcealedDetector)
             {
-                ((BlockConcealedDetector) this.blockType).updateState(this.world, this.getPos(), result);
+                ((BlockConcealedDetector) this.getBlockState().getBlock()).updateState(this.world, this.getPos(), result);
             }
         }
     }

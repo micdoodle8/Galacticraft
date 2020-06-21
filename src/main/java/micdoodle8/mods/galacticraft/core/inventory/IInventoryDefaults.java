@@ -29,22 +29,22 @@ public interface IInventoryDefaults extends ISidedInventory
     {
     }
 
-    @Override
-    public default int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public default void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public default int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public default int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public default void setField(int id, int value)
+//    {
+//    }
+//
+//    @Override
+//    public default int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public default void clear()
@@ -57,15 +57,15 @@ public interface IInventoryDefaults extends ISidedInventory
      * ALREADY a localized name e.g. by GCCoreUtil.translate()
      *
      **/
-    @Override
-    public default boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public default boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
-    @Override
-    public default ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
+//    @Override
+//    public default ITextComponent getDisplayName()
+//    {
+//        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
+//    }
 }

@@ -16,16 +16,16 @@ public class ParticleLaunchSmoke extends LaunchParticle
     float smokeParticleScale;
     private final IAnimatedSprite animatedSprite;
 
-    public ParticleLaunchSmoke(World par1World, Vector3 position, Vector3 motion, float size, boolean launched, IAnimatedSprite animatedSprite)
+    public ParticleLaunchSmoke(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, float size, boolean launched, IAnimatedSprite animatedSprite)
     {
-        super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
+        super(par1World, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
         this.motionY *= 0.10000000149011612D;
         this.motionZ *= 0.10000000149011612D;
         this.setSize(0.2F, 0.2F);
-        this.motionX += motion.x;
-        this.motionY += motion.y;
-        this.motionZ += motion.z;
+        this.motionX += motX;
+        this.motionY += motY;
+        this.motionZ += motZ;
         this.particleAlpha = 1.0F;
         this.particleRed = this.particleGreen = this.particleBlue = (float) (Math.random() * 0.30000001192092896D) + 0.6F;
         this.particleScale *= 0.75F;

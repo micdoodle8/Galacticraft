@@ -115,7 +115,7 @@
 //        // if (tile instanceof IChunkLoader)
 //        // {
 //        // IChunkLoader chunkLoader = (IChunkLoader) tile;
-//        // int dimID = world);
+//        // DimensionType dimID = world);
 //        //
 //        // HashSet<IChunkLoader> chunkList = loadedChunks.get(dimID);
 //        //
@@ -319,7 +319,7 @@
 //            {
 //                for (Entry<Integer, HashSet<BlockPos>> dimensionEntry : playerEntry.getValue().entrySet())
 //                {
-//                    int dimID = dimensionEntry.getKey();
+//                    DimensionType dimID = dimensionEntry.getKey();
 //
 //                    if (ChunkLoadingCallback.loadOnLogin)
 //                    {
@@ -337,7 +337,7 @@
 //        // for (Entry<Integer, HashSet<IChunkLoader>> dimEntry :
 //        // loadedChunks.entrySet())
 //        // {
-//        // int dimID = dimEntry.getKey();
+//        // DimensionType dimID = dimEntry.getKey();
 //        //
 //        // for (IChunkLoader loader : new
 //        // ArrayList<IChunkLoader>(dimEntry.getValue()))

@@ -27,17 +27,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SSpawnObjectPacket;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
@@ -58,21 +54,33 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 {
     public enum BuggyType
     {
-        NO_INVENTORY(0),
-        INVENTORY_1(18),
-        INVENTORY_2(36),
-        INVENTORY_3(54);
+        NO_INVENTORY(0, new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggy_0.png")),
+        INVENTORY_1(18, new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggy_1.png")),
+        INVENTORY_2(36, new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggy_2.png")),
+        INVENTORY_3(54, new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggy_3.png"));
 
         private final int invSize;
+        private final ResourceLocation textureLoc;
 
-        BuggyType(int invSize)
+        BuggyType(int invSize, ResourceLocation textureLoc)
         {
             this.invSize = invSize;
+            this.textureLoc = textureLoc;
         }
 
         public int getInvSize()
         {
             return invSize;
+        }
+
+        public static BuggyType byId(int id)
+        {
+            return values()[id];
+        }
+
+        public ResourceLocation getTextureLoc()
+        {
+            return textureLoc;
         }
     }
 
@@ -190,7 +198,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.buggyFuelTank.getFluid() == null ? 0 : this.buggyFuelTank.getFluid().getAmount();
+        final double fuelLevel = this.buggyFuelTank.getFluid() == FluidStack.EMPTY ? 0 : this.buggyFuelTank.getFluid().getAmount();
 
         return (int) (fuelLevel * i / EntityBuggy.tankCapacity);
     }
@@ -487,7 +495,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.timeClimbing = 0;
         }
 
-        if (this.world.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().getAmount() > 0)
+        if (this.world.isRemote && this.buggyFuelTank.getFluid() != FluidStack.EMPTY && this.buggyFuelTank.getFluid().getAmount() > 0)
         {
             this.setMotion(-(this.speed * Math.cos((this.rotationYaw - 90F) / Constants.RADIANS_TO_DEGREES_D)), getMotion().y, -(this.speed * Math.sin((this.rotationYaw - 90F) / Constants.RADIANS_TO_DEGREES_D)));
         }
@@ -567,7 +575,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         nbt.putInt("buggyType", this.buggyType.ordinal());
         final ListNBT var2 = new ListNBT();
 
-        if (this.buggyFuelTank.getFluid() != null)
+        if (this.buggyFuelTank.getFluid() != FluidStack.EMPTY)
         {
             nbt.put("fuelTank", this.buggyFuelTank.writeToNBT(new CompoundNBT()));
         }
@@ -724,11 +732,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public int addFuel(FluidStack liquid, boolean doDrain)
+    public int addFuel(FluidStack liquid, IFluidHandler.FluidAction action)
     {
         if (this.landingPad != null)
         {
-            return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, doDrain);
+            return FluidUtil.fillWithGCFuel(this.buggyFuelTank, liquid, action);
         }
 
         return 0;

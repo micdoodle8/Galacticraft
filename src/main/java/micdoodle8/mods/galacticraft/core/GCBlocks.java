@@ -2,12 +2,14 @@ package micdoodle8.mods.galacticraft.core;
 
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.core.blocks.*;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,22 +30,27 @@ public class GCBlocks
     @ObjectHolder(BlockNames.breatheableAir) public static Block breatheableAir;
     @ObjectHolder(BlockNames.brightAir) public static Block brightAir;
     @ObjectHolder(BlockNames.brightBreatheableAir) public static Block brightBreatheableAir;
-    @ObjectHolder(BlockNames.brightLamp) public static Block brightLamp;
+    @ObjectHolder(BlockNames.arcLamp) public static Block arcLamp;
     @ObjectHolder(BlockNames.treasureChestTier1) public static Block treasureChestTier1;
     @ObjectHolder(BlockNames.landingPad) public static Block landingPad;
+    @ObjectHolder(BlockNames.landingPadFull) public static Block landingPadFull;
+    @ObjectHolder(BlockNames.buggyPad) public static Block buggyPad;
+    @ObjectHolder(BlockNames.buggyPadFull) public static Block buggyPadFull;
     @ObjectHolder(BlockNames.unlitTorch) public static Block unlitTorch;
     @ObjectHolder(BlockNames.unlitTorchLit) public static Block unlitTorchLit;
     @ObjectHolder(BlockNames.oxygenDistributor) public static Block oxygenDistributor;
-    @ObjectHolder(BlockNames.oxygenPipe) public static Block oxygenPipe;
-    @ObjectHolder(BlockNames.oxygenPipePull) public static Block oxygenPipePull;
+    @ObjectHolder(BlockNames.fluidPipe) public static Block fluidPipe;
+    @ObjectHolder(BlockNames.fluidPipePull) public static Block fluidPipePull;
     @ObjectHolder(BlockNames.oxygenCollector) public static Block oxygenCollector;
     @ObjectHolder(BlockNames.oxygenCompressor) public static Block oxygenCompressor;
+    @ObjectHolder(BlockNames.oxygenDecompressor) public static Block oxygenDecompressor;
     @ObjectHolder(BlockNames.oxygenSealer) public static Block oxygenSealer;
     @ObjectHolder(BlockNames.oxygenDetector) public static Block oxygenDetector;
     @ObjectHolder(BlockNames.nasaWorkbench) public static Block nasaWorkbench;
     @ObjectHolder(BlockNames.fallenMeteor) public static Block fallenMeteor;
     @ObjectHolder(BlockNames.basicBlock) public static Block basicBlock;
     @ObjectHolder(BlockNames.airLockFrame) public static Block airLockFrame;
+    @ObjectHolder(BlockNames.airLockController) public static Block airLockController;
     @ObjectHolder(BlockNames.airLockSeal) public static Block airLockSeal;
     @ObjectHolder(BlockNames.spaceGlassClear) public static Block spaceGlassClear;
     @ObjectHolder(BlockNames.spaceGlassVanilla) public static Block spaceGlassVanilla;
@@ -56,21 +63,33 @@ public class GCBlocks
     @ObjectHolder(BlockNames.fuel) public static Block fuel;
     @ObjectHolder(BlockNames.refinery) public static Block refinery;
     @ObjectHolder(BlockNames.fuelLoader) public static Block fuelLoader;
-    @ObjectHolder(BlockNames.landingPadFull) public static Block landingPadFull;
     @ObjectHolder(BlockNames.spaceStationBase) public static Block spaceStationBase;
     @ObjectHolder(BlockNames.fakeBlock) public static Block fakeBlock;
     @ObjectHolder(BlockNames.sealableBlock) public static Block sealableBlock;
     @ObjectHolder(BlockNames.cargoLoader) public static Block cargoLoader;
+    @ObjectHolder(BlockNames.cargoUnloader) public static Block cargoUnloader;
     @ObjectHolder(BlockNames.parachest) public static Block parachest;
     @ObjectHolder(BlockNames.solarPanel) public static Block solarPanel;
+    @ObjectHolder(BlockNames.solarPanelAdvanced) public static Block solarPanelAdvanced;
     @ObjectHolder(BlockNames.radioTelescope) public static Block radioTelescope;
-    @ObjectHolder(BlockNames.machineBase) public static Block machineBase;
-    @ObjectHolder(BlockNames.machineBase2) public static Block machineBase2;
-    @ObjectHolder(BlockNames.machineBase3) public static Block machineBase3;
-    @ObjectHolder(BlockNames.machineBase4) public static Block machineBase4;
-    @ObjectHolder(BlockNames.machineTiered) public static Block machineTiered;
+//    @ObjectHolder(BlockNames.machineBase) public static Block machineBase;
+    @ObjectHolder(BlockNames.ingotCompressor) public static Block ingotCompressor;
+    @ObjectHolder(BlockNames.ingotCompressorElectric) public static Block ingotCompressorElectric;
+    @ObjectHolder(BlockNames.ingotCompressorElectricAdvanced) public static Block ingotCompressorElectricAdvanced;
+    @ObjectHolder(BlockNames.coalGenerator) public static Block coalGenerator;
+    @ObjectHolder(BlockNames.circuitFabricator) public static Block circuitFabricator;
+    @ObjectHolder(BlockNames.oxygenStorageModule) public static Block oxygenStorageModule;
+    @ObjectHolder(BlockNames.deconstructor) public static Block deconstructor;
+    @ObjectHolder(BlockNames.painter) public static Block painter;
+    @ObjectHolder(BlockNames.storageModule) public static Block storageModule;
+    @ObjectHolder(BlockNames.storageCluster) public static Block storageCluster;
+    @ObjectHolder(BlockNames.furnaceElectric) public static Block furnaceElectric;
+    @ObjectHolder(BlockNames.furanceArc) public static Block furanceArc;
     @ObjectHolder(BlockNames.aluminumWire) public static Block aluminumWire;
-    @ObjectHolder(BlockNames.panelLighting) public static Block panelLighting;
+    @ObjectHolder(BlockNames.aluminumWireHeavy) public static Block aluminumWireHeavy;
+    @ObjectHolder(BlockNames.aluminumWireSwitchable) public static Block aluminumWireSwitchable;
+    @ObjectHolder(BlockNames.aluminumWireSwitchableHeavy) public static Block aluminumWireSwitchableHeavy;
+//    @ObjectHolder(BlockNames.panelLighting) public static Block panelLighting;
     @ObjectHolder(BlockNames.glowstoneTorch) public static Block glowstoneTorch;
     @ObjectHolder(BlockNames.blockMoon) public static Block blockMoon;
     @ObjectHolder(BlockNames.cheeseBlock) public static Block cheeseBlock;
@@ -209,56 +228,70 @@ public class GCBlocks
         register(r, new BlockBrightBreathableAir(builder), BlockNames.brightBreatheableAir);
 
         builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(0.1F).sound(SoundType.METAL).lightValue(13);
-        register(r, new BlockBrightLamp(builder), BlockNames.brightLamp);
+        register(r, new BlockBrightLamp(builder), BlockNames.arcLamp);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(100000.0F).sound(SoundType.STONE).lightValue(13);
-//        register(r, new BlockTier1TreasureChest(builder), BlockNames.treasureChestTier1);
+        register(r, new BlockTier1TreasureChest(builder), BlockNames.treasureChestTier1);
 
         builder = Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL);
-//        register(r, new BlockLandingPad(builder), BlockNames.landingPad);
-//        register(r, new BlockLandingPadFull(builder), BlockNames.landingPadFull);
+        register(r, new BlockPad(builder), BlockNames.landingPad);
+        register(r, new BlockPad(builder), BlockNames.buggyPad);
+        register(r, new BlockPadFull(builder), BlockNames.landingPadFull);
+        register(r, new BlockPadFull(builder), BlockNames.buggyPadFull);
 
         builder = Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.0F).lightValue(3).sound(SoundType.WOOD);
-//        register(r, new BlockUnlitTorch(false, builder), BlockNames.unlitTorch);
-//        register(r, new BlockUnlitTorch(true, builder.lightValue(14)), BlockNames.unlitTorchLit);
-//        register(r, new BlockGlowstoneTorch(builder.lightValue(12)), BlockNames.glowstoneTorch);
+        register(r, new BlockUnlitTorch(false, builder), BlockNames.unlitTorch);
+        register(r, new BlockUnlitTorch(true, builder.lightValue(14)), BlockNames.unlitTorchLit);
+        register(r, new BlockGlowstoneTorch(builder.lightValue(12)), BlockNames.glowstoneTorch);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.METAL);
-//        register(r, new BlockOxygenDistributor(builder), BlockNames.oxygenDistributor);
-//        register(r, new BlockOxygenCollector(builder), BlockNames.oxygenCollector);
-//        register(r, new BlockNasaWorkbench(builder), BlockNames.nasaWorkbench);
+        register(r, new BlockOxygenDistributor(builder), BlockNames.oxygenDistributor);
+        register(r, new BlockOxygenCollector(builder), BlockNames.oxygenCollector);
+        register(r, new BlockNasaWorkbench(builder), BlockNames.nasaWorkbench);
         register(r, new BlockAirLockFrame(builder), BlockNames.airLockFrame);
-//        register(r, new BlockMachine(builder), BlockNames.machineBase);
-//        register(r, new BlockMachine2(builder), BlockNames.machineBase2);
-//        register(r, new BlockMachine3(builder), BlockNames.machineBase3);
-//        register(r, new BlockMachine4(builder), BlockNames.machineBase4);
+        register(r, new BlockAirLockController(builder), BlockNames.airLockController);
+        register(r, new BlockIngotCompressor(builder), BlockNames.ingotCompressor);
+        register(r, new BlockIngotCompressorElectric(builder), BlockNames.ingotCompressorElectric);
+        register(r, new BlockIngotCompressorElectricAdvanced(builder), BlockNames.ingotCompressorElectricAdvanced);
+        register(r, new BlockCoalGenerator(builder), BlockNames.coalGenerator);
+        register(r, new BlockCircuitFabricator(builder), BlockNames.circuitFabricator);
+        register(r, new BlockOxygenStorageModule(builder), BlockNames.oxygenStorageModule);
+        register(r, new BlockDeconstructor(builder), BlockNames.deconstructor);
+        register(r, new BlockPainter(builder), BlockNames.painter);
         register(r, new BlockCrafting(builder), BlockNames.crafting);
-//        register(r, new BlockRefinery(builder), BlockNames.refinery);
-//        register(r, new BlockFuelLoader(builder), BlockNames.fuelLoader);
-//        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenCompressor);
-//        register(r, new BlockOxygenSealer(builder), BlockNames.oxygenSealer);
-//        register(r, new BlockOxygenDetector(builder), BlockNames.oxygenDetector);
+        register(r, new BlockRefinery(builder), BlockNames.refinery);
+        register(r, new BlockFuelLoader(builder), BlockNames.fuelLoader);
+        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenCompressor);
+        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenDecompressor);
+        register(r, new BlockOxygenSealer(builder), BlockNames.oxygenSealer);
+        register(r, new BlockOxygenDetector(builder), BlockNames.oxygenDetector);
         register(r, new BlockCargoLoader(builder), BlockNames.cargoLoader);
-//        register(r, new BlockSolar(builder), BlockNames.solarPanel);
+        register(r, new BlockCargoUnloader(builder), BlockNames.cargoUnloader);
+        register(r, new BlockSolar(builder), BlockNames.solarPanel);
+        register(r, new BlockSolar(builder), BlockNames.solarPanelAdvanced);
 //        register(r, new BlockDish(builder), BlockNames.radioTelescope);
-//        register(r, new BlockMachineTiered(builder), BlockNames.machineTiered);
+        register(r, new BlockEnergyStorageModule(builder), BlockNames.storageModule);
+        register(r, new BlockEnergyStorageCluster(builder), BlockNames.storageCluster);
+        register(r, new BlockFurnaceElectric(builder), BlockNames.furnaceElectric);
+        register(r, new BlockFurnaceArc(builder), BlockNames.furanceArc);
 //        register(r, new BlockPanelLighting(builder), BlockNames.panelLighting);
 //        register(r, new BlockSpinThruster(builder), BlockNames.spinThruster);
-//        register(r, new BlockTelemetry(builder), BlockNames.telemetry);
+        register(r, new BlockTelemetry(builder), BlockNames.telemetry);
         register(r, new BlockConcealedRedstone(builder), BlockNames.concealedRedstone);
         register(r, new BlockConcealedRepeater(builder), BlockNames.concealedRepeater);
         register(r, new BlockConcealedDetector(builder), BlockNames.concealedDetector);
+        register(r, new BlockCoalGenerator(builder.tickRandomly()), BlockNames.coalGenerator);
 
         builder = builder.hardnessAndResistance(1000.0F).tickRandomly();
         register(r, new BlockAirLockWall(builder), BlockNames.airLockSeal);
 
         builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS);
-//        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.NORMAL), BlockNames.oxygenPipe);
-//        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.PULL), BlockNames.oxygenPipePull);
+        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.NORMAL), BlockNames.fluidPipe);
+        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.PULL), BlockNames.fluidPipePull);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(40.0F).sound(SoundType.STONE);
-//        register(r, new BlockFallenMeteor(builder), BlockNames.fallenMeteor);
-
+        register(r, new BlockFallenMeteor(builder), BlockNames.fallenMeteor);
+//
 //        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.STONE);
 //        register(r, new BlockBasic(builder), BlockNames.basicBlock);
 
@@ -274,16 +307,16 @@ public class GCBlocks
 //        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong), BlockNames.spaceGlassTinStrong);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops();
-//        register(r, new BlockSpaceStationBase(builder), BlockNames.spaceStationBase);
+        register(r, new BlockSpaceStationBase(builder), BlockNames.spaceStationBase);
 
         builder = Block.Properties.create(machine).hardnessAndResistance(1.0F, 3600000.0F).sound(SoundType.METAL);
-//        register(r, new BlockMulti(builder), BlockNames.fakeBlock);
+        register(r, new BlockMulti(builder), BlockNames.fakeBlock);
 
         builder = Block.Properties.create(Material.CLAY).hardnessAndResistance(0.4F).sound(SoundType.STONE);
 //        register(r, new BlockEnclosed(builder), BlockNames.sealableBlock);
 
         builder = Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F).sound(SoundType.WOOD);
-//        register(r, new BlockParaChest(builder), BlockNames.parachest);
+        register(r, new BlockParaChest(builder), BlockNames.parachest);
 
         builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH);
         register(r, new BlockAluminumWire(builder), BlockNames.aluminumWire);
@@ -295,7 +328,7 @@ public class GCBlocks
         register(r, new BlockCheese(builder), BlockNames.cheeseBlock);
 
         builder = Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F).sound(SoundType.STONE);
-//        register(r, new BlockScreen(builder), BlockNames.screen);
+        register(r, new BlockScreen(builder), BlockNames.screen);
 
         builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(3.0F, 8.0F).sound(SoundType.GLASS);
 //        register(r, new BlockFluidTank(builder), BlockNames.fluidTank);
@@ -418,7 +451,7 @@ public class GCBlocks
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
-        GCBlocks.hiddenBlocks.add(GCBlocks.oxygenPipePull);
+        GCBlocks.hiddenBlocks.add(GCBlocks.fluidPipePull);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
         GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
@@ -704,4 +737,66 @@ public class GCBlocks
 ////        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 ////        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));
 //    }
+
+    @SubscribeEvent
+    public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt) {
+        IForgeRegistry<TileEntityType<?>> r = evt.getRegistry();
+
+
+        register(r, TileEntityType.Builder.create(TileEntityTreasureChest::new, treasureChestTier1).build(null), BlockNames.treasureChestTier1);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenDistributor::new, oxygenDistributor).build(null), BlockNames.oxygenDistributor);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenCollector::new, oxygenCollector).build(null), BlockNames.oxygenCollector);
+        register(r, TileEntityType.Builder.create(TileEntityFluidPipe::new, fluidPipe).build(null), BlockNames.fluidPipe);
+        register(r, TileEntityType.Builder.create(TileEntityAirLock::new, airLockFrame).build(null), BlockNames.airLockFrame);
+        register(r, TileEntityType.Builder.create(TileEntityRefinery::new, refinery).build(null), BlockNames.refinery);
+        register(r, TileEntityType.Builder.create(TileEntityNasaWorkbench::new, nasaWorkbench).build(null), BlockNames.nasaWorkbench);
+        register(r, TileEntityType.Builder.create(TileEntityDeconstructor::new, deconstructor).build(null), BlockNames.deconstructor);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenCompressor::new, oxygenCompressor).build(null), BlockNames.oxygenCompressor);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenDecompressor::new, oxygenDecompressor).build(null), BlockNames.oxygenDecompressor);
+        register(r, TileEntityType.Builder.create(TileEntityFuelLoader::new, fuelLoader).build(null), BlockNames.fuelLoader);
+        register(r, TileEntityType.Builder.create(TileEntityLandingPadSingle::new, landingPad).build(null), BlockNames.landingPad);
+        register(r, TileEntityType.Builder.create(TileEntityLandingPad::new, landingPadFull).build(null), BlockNames.landingPadFull);
+        register(r, TileEntityType.Builder.create(TileEntitySpaceStationBase::new, spaceStationBase).build(null), BlockNames.spaceStationBase);
+        register(r, TileEntityType.Builder.create(TileEntityFake::new, fakeBlock).build(null), BlockNames.fakeBlock);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenSealer::new, oxygenSealer).build(null), BlockNames.oxygenSealer);
+        register(r, TileEntityType.Builder.create(TileEntityDungeonSpawner::new, bossSpawner).build(null), BlockNames.bossSpawner);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenDetector::new, oxygenDetector).build(null), BlockNames.oxygenDetector);
+        register(r, TileEntityType.Builder.create(TileEntityBuggyFueler::new, buggyPadFull).build(null), BlockNames.buggyPad);
+        register(r, TileEntityType.Builder.create(TileEntityBuggyFuelerSingle::new, buggyPad).build(null), BlockNames.buggyPadFull);
+        register(r, TileEntityType.Builder.create(TileEntityCargoLoader::new, cargoLoader).build(null), BlockNames.cargoLoader);
+        register(r, TileEntityType.Builder.create(TileEntityCargoUnloader::new, cargoUnloader).build(null), BlockNames.cargoUnloader);
+        register(r, TileEntityType.Builder.create(TileEntityParaChest::new, parachest).build(null), BlockNames.parachest);
+        register(r, TileEntityType.Builder.create(TileEntitySolar.TileEntitySolarT1::new, solarPanel).build(null), BlockNames.solarPanel);
+        register(r, TileEntityType.Builder.create(TileEntitySolar.TileEntitySolarT2::new, solarPanelAdvanced).build(null), BlockNames.solarPanelAdvanced);
+//        register(r, TileEntityType.Builder.create(TileEntityDish::new, radioTelescope).build(null), BlockNames.radioTelescope);
+        register(r, TileEntityType.Builder.create(TileEntityCrafting::new, crafting).build(null), BlockNames.crafting);
+        register(r, TileEntityType.Builder.create(TileEntityEnergyStorageModule.TileEntityEnergyStorageModuleT1::new, storageModule).build(null), BlockNames.storageModule);
+        register(r, TileEntityType.Builder.create(TileEntityEnergyStorageModule.TileEntityEnergyStorageModuleT2::new, storageCluster).build(null), BlockNames.storageCluster);
+        register(r, TileEntityType.Builder.create(TileEntityCoalGenerator::new, coalGenerator).build(null), BlockNames.coalGenerator);
+        register(r, TileEntityType.Builder.create(TileEntityElectricFurnace.TileEntityElectricFurnaceT1::new, furnaceElectric).build(null), BlockNames.furnaceElectric);
+        register(r, TileEntityType.Builder.create(TileEntityElectricFurnace.TileEntityElectricFurnaceT2::new, furanceArc).build(null), BlockNames.furanceArc);
+        register(r, TileEntityType.Builder.create(TileEntityAluminumWire.TileEntityAluminumWireT1::new, aluminumWire).build(null), BlockNames.aluminumWire);
+        register(r, TileEntityType.Builder.create(TileEntityAluminumWire.TileEntityAluminumWireT2::new, aluminumWireHeavy).build(null), BlockNames.aluminumWireHeavy);
+        register(r, TileEntityType.Builder.create(TileEntityAluminumWireSwitch.TileEntityAluminumWireSwitchableT1::new, aluminumWireSwitchable).build(null), BlockNames.aluminumWireSwitchable);
+        register(r, TileEntityType.Builder.create(TileEntityAluminumWireSwitch.TileEntityAluminumWireSwitchableT2::new, aluminumWireSwitchableHeavy).build(null), BlockNames.aluminumWireSwitchableHeavy);
+//        register(r, TileEntityType.Builder.create(TileEntityAluminumWireSwitch::new, "GC Switchable Aluminum Wire").build(null));
+        register(r, TileEntityType.Builder.create(TileEntityFallenMeteor::new, fallenMeteor).build(null), BlockNames.fallenMeteor);
+        register(r, TileEntityType.Builder.create(TileEntityIngotCompressor::new, ingotCompressor).build(null), BlockNames.ingotCompressor);
+        register(r, TileEntityType.Builder.create(TileEntityElectricIngotCompressor.TileEntityElectricIngotCompressorT1::new, ingotCompressorElectric).build(null), BlockNames.ingotCompressorElectric);
+        register(r, TileEntityType.Builder.create(TileEntityElectricIngotCompressor.TileEntityElectricIngotCompressorT2::new, ingotCompressorElectricAdvanced).build(null), BlockNames.ingotCompressorElectricAdvanced);
+        register(r, TileEntityType.Builder.create(TileEntityCircuitFabricator::new, circuitFabricator).build(null), BlockNames.circuitFabricator);
+        register(r, TileEntityType.Builder.create(TileEntityAirLockController::new, airLockController).build(null), BlockNames.airLockController);
+        register(r, TileEntityType.Builder.create(TileEntityOxygenStorageModule::new, oxygenStorageModule).build(null), BlockNames.oxygenStorageModule);
+        register(r, TileEntityType.Builder.create(TileEntityThruster::new, spinThruster).build(null), BlockNames.spinThruster);
+        register(r, TileEntityType.Builder.create(TileEntityArclamp::new, arcLamp).build(null), BlockNames.arcLamp);
+        register(r, TileEntityType.Builder.create(TileEntityScreen::new, screen).build(null), BlockNames.screen);
+//        register(r, TileEntityType.Builder.create(TileEntityPanelLight::new, panelLighting).build(null), BlockNames.panelLighting);
+        register(r, TileEntityType.Builder.create(TileEntityTelemetry::new, telemetry).build(null), BlockNames.telemetry);
+//        register(r, TileEntityType.Builder.create(TileEntityPainter::new, "GC Painter").build(null));
+        register(r, TileEntityType.Builder.create(TileEntityFluidTank::new, fluidTank).build(null), BlockNames.fluidTank);
+        register(r, TileEntityType.Builder.create(TileEntityPlayerDetector::new, concealedDetector).build(null), BlockNames.concealedDetector);
+        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform);
+        register(r, TileEntityType.Builder.create(TileEntityEmergencyBox::new, emergencyBox).build(null), BlockNames.emergencyBox);
+//        register(r, TileEntityType.Builder.create(TileEntityNull::new, "GC Null Tile").build(null));
+    }
 }

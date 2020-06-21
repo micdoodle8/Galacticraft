@@ -6,47 +6,54 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.world.IWorldReader;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable, ILockable
+public class TileEntityCargoLoader extends TileEntityCargoBase implements ISidedInventory, ILandingPadAttachable, ILockable
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.cargoLoader)
+    public static TileEntityType<TileEntityCargoLoader> TYPE;
+
     public boolean outOfItems;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean targetFull;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean targetNoInventory;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean noTarget;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean locked;
 
     public ICargoEntity attachedFuelable;
 
     public TileEntityCargoLoader()
     {
-        super("container.cargoloader.name");
+        super(TYPE);
         this.storage.setMaxExtract(45);
         this.inventory = NonNullList.withSize(15, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.getWorld().isRemote)
         {
@@ -92,13 +99,13 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
         boolean foundFuelable = false;
 
         BlockVec3 thisVec = new BlockVec3(this);
-        for (final Direction dir : Direction.VALUES)
+        for (final Direction dir : Direction.values())
         {
             final TileEntity pad = thisVec.getTileEntityOnSide(this.getWorld(), dir);
 
-            if (pad != null && pad instanceof TileEntityMulti)
+            if (pad != null && pad instanceof TileEntityFake)
             {
-                final TileEntity mainTile = ((TileEntityMulti) pad).getMainBlockTile();
+                final TileEntity mainTile = ((TileEntityFake) pad).getMainBlockTile();
 
                 if (mainTile instanceof ICargoEntity)
                 {
@@ -122,25 +129,25 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.locked = nbt.getBoolean("locked");
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("locked", this.locked);
+        super.write(nbt);
+        nbt.putBoolean("locked", this.locked);
         return nbt;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     // ISidedInventory Implementation:
 
@@ -292,7 +299,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockReader world, BlockPos pos)
+    public boolean canAttachToLandingPad(IWorldReader world, BlockPos pos)
     {
         return true;
     }

@@ -19,17 +19,17 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public Direction facing = null;
     private int preLoadFacing = -1;
     private float maxRate = 1500;
     private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
 
@@ -39,9 +39,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (this.preLoadFacing != -1)
         {
@@ -362,16 +362,16 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.preLoadFacing = nbt.getInt("FacingSide");
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("FacingSide", this.facing == null ? this.preLoadFacing : this.facing.ordinal());
         return nbt;
     }
@@ -379,7 +379,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
     private AxisAlignedBB renderAABB;

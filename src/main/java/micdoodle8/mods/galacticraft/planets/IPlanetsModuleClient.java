@@ -24,5 +24,5 @@ public interface IPlanetsModuleClient
 
     public Object getGuiElement(Side side, int ID, PlayerEntity player, World world, int x, int y, int z);
 
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData);
+    public void addParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData);
 }

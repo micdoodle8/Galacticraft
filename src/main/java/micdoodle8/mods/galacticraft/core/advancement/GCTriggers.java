@@ -13,6 +13,7 @@ import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.server.ServerWorld;
 
 public class GCTriggers
 {
@@ -48,11 +49,7 @@ public class GCTriggers
                 @Override
                 public boolean test(ServerPlayerEntity player)
                 {
-                    for (Entity entity : player.world.loadedEntityList)
-                    {
-                        return entity instanceof EntitySkeletonBoss && entity.getDistanceSq(player) < 20 * 20;
-                    }
-                    return false;
+                    return ((ServerWorld) player.world).getEntities().filter((entity -> entity instanceof EntitySkeletonBoss && entity.getDistanceSq(player) < 400)).count() >= 1;
                 }
             };
         }

@@ -1,27 +1,40 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityOxygenDetector extends TileEntity implements ITickable
+public class TileEntityOxygenDetector extends TileEntity implements ITickableTileEntity
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDetector)
+    public static TileEntityType<TileEntityOxygenDetector> TYPE;
+
     private int ticks = 49;
     private AxisAlignedBB oxygenSearch;
 
+    public TileEntityOxygenDetector()
+    {
+        super(TYPE);
+    }
+
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote && ++this.ticks == 50) 
         {
             this.ticks = 0;
-            if (this.getBlockType() instanceof BlockOxygenDetector)
+            if (this.getBlockState().getBlock() instanceof BlockOxygenDetector)
             {
                 boolean oxygenFound = false;
                 if (this.world.getDimension() instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.world.getDimension()).hasBreathableAtmosphere())
@@ -30,18 +43,19 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickable
                 }
                 else
                 {
-                    for (Direction side : Direction.VALUES)
+                    for (Direction side : Direction.values())
                     {
                         BlockPos offset = this.pos.offset(side, 1);
                         BlockState bs = this.world.getBlockState(offset);
-                        if (!bs.getBlock().isSideSolid(bs, world, offset, side.getOpposite()))
+                        if (!Block.func_220055_a(world, offset, side.getOpposite())) // TODO Test... Not solid?
+//                        if (!bs.getBlock().isSideSolid(bs, world, offset, side.getOpposite()))
                         {
                             oxygenFound = true;
                             break;
                         }
                     }
                 }
-                ((BlockOxygenDetector) this.blockType).updateOxygenState(this.world, this.getPos(), oxygenFound);
+                this.world.setBlockState(this.pos, this.world.getBlockState(pos).with(BlockOxygenDetector.ACTIVE, oxygenFound));
             }
         }
     }

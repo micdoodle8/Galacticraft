@@ -1,45 +1,37 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
-import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.EnumSet;
-import java.util.List;
 
 public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical implements IDisableableMachine, IConnector
 {
     //	public int energyPerTick = 200;
     //	private final float ueMaxEnergy;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean disabled = false;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int disableCooldown = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean hasEnoughEnergyToRun = false;
     public boolean noRedstoneControl = false;
 
-    public TileBaseElectricBlock(String tileName)
+    public TileBaseElectricBlock(TileEntityType<?> type)
     {
-        super(tileName);
+        super(type);
     }
 
     public boolean shouldPullEnergy()
@@ -100,7 +92,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     //	}
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -128,7 +120,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             }
         }
 
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -148,24 +140,24 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
-        nbt.setBoolean("isDisabled", this.getDisabled(0));
+        nbt.putBoolean("isDisabled", this.getDisabled(0));
         return nbt;
     }
 
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         this.setDisabled(0, nbt.getBoolean("isDisabled"));
     }
@@ -188,31 +180,31 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         return this.disabled;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public Direction getFacing(World world, BlockPos pos)
-    {
-        return this.getFront();
-    }
-
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public boolean setFacing(World world, BlockPos pos, Direction newDirection, PlayerEntity player)
-    {
-        return false;
-    }
-
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public boolean wrenchCanRemove(World world, BlockPos pos, PlayerEntity player)
-    {
-        return false;
-    }
-
-    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public List<ItemStack> getWrenchDrops(World world, BlockPos pos, BlockState state, TileEntity te, PlayerEntity player, int fortune)
-    {
-        List<ItemStack> drops = Lists.newArrayList();
-        drops.add(this.getBlockType().getPickBlock(state, null, this.world, this.getPos(), player));
-        return drops;
-    }
+//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
+//    public Direction getFacing(World world, BlockPos pos)
+//    {
+//        return this.getFront();
+//    }
+//
+//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
+//    public boolean setFacing(World world, BlockPos pos, Direction newDirection, PlayerEntity player)
+//    {
+//        return false;
+//    }
+//
+//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
+//    public boolean wrenchCanRemove(World world, BlockPos pos, PlayerEntity player)
+//    {
+//        return false;
+//    }
+//
+//    @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
+//    public List<ItemStack> getWrenchDrops(World world, BlockPos pos, BlockState state, TileEntity te, PlayerEntity player, int fortune)
+//    {
+//        List<ItemStack> drops = Lists.newArrayList();
+//        drops.add(this.getBlockType().getPickBlock(state, null, this.world, this.getPos(), player));
+//        return drops;
+//    } TODO IC Support
 
     @Override
     public EnumSet<Direction> getElectricalInputDirections()

@@ -6,23 +6,30 @@ import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
+import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -30,17 +37,20 @@ import java.util.List;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBubbleProviderColored
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDistributor)
+    public static TileEntityType<TileEntityOxygenDistributor> TYPE;
+
     public boolean active;
     public boolean lastActive;
 
     public static HashSet<BlockVec3Dim> loadedTiles = new HashSet<>();
     public float bubbleSize;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean shouldRenderBubble = true;
 
     public TileEntityOxygenDistributor()
     {
-        super("container.oxygendistributor.name", 6000, 8);
+        super(TYPE, 6000, 8);
 //        this.oxygenBubble = null;
         this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
@@ -52,14 +62,14 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public void onChunkUnload()
+    public void onChunkUnloaded()
     {
         if (!this.world.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
-        super.onChunkUnload();
+        super.onChunkUnloaded();
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
         if (!this.world.isRemote/* && this.oxygenBubble != null*/)
         {
@@ -82,7 +92,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
 
                         if (state != null && state.getBlock() instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
-                            this.world.scheduleUpdate(new BlockPos(x, y, z), state.getBlock(), 0);
+                            this.world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), state.getBlock(), 0);
                         }
                     }
                 }
@@ -91,7 +101,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
             TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
         }
 
-        super.invalidate();
+        super.remove();
     }
 
     @Override
@@ -110,7 +120,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            if (this.world.getMinecraftServer().isDedicatedServer())
+            if (this.world.getServer().isDedicatedServer())
             {
                 networkedList.add(loadedTiles.size());
                 //TODO: Limit this to ones in the same dimension as this tile?
@@ -121,14 +131,14 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                         networkedList.add(-1);
                         networkedList.add(-1);
                         networkedList.add(-1);
-                        networkedList.add(-1);
+                        networkedList.add("null");
                     }
                     else
                     {
                         networkedList.add(distributor.x);
                         networkedList.add(distributor.y);
                         networkedList.add(distributor.z);
-                        networkedList.add(distributor.dim);
+                        networkedList.add(distributor.dim.getRegistryName().toString());
                     }
                 }
             }
@@ -173,8 +183,13 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                     int i1 = dataStream.readInt();
                     int i2 = dataStream.readInt();
                     int i3 = dataStream.readInt();
-                    int i4 = dataStream.readInt();
-                    if (i1 == -1 && i2 == -1 && i3 == -1 && i4 == -1)
+                    String str = NetworkUtil.readUTF8String(dataStream);
+                    if (str == null || str == "null")
+                    {
+                        continue;
+                    }
+                    DimensionType i4 = DimensionType.byName(new ResourceLocation(str));
+                    if (i1 == -1 && i2 == -1 && i3 == -1 && i4 == null)
                     {
                         continue;
                     }
@@ -194,7 +209,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -211,7 +226,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
             }
         }
 
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -266,7 +281,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                                 else
                                 {
                                     //Do not necessarily extinguish it - it might be inside another oxygen system
-                                    this.world.scheduleUpdate(pos, block, 0);
+                                    this.world.getPendingBlockTicks().scheduleTick(pos, block, 0);
                                 }
                             }
                         }
@@ -279,9 +294,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         if (nbt.contains("bubbleVisible"))
         {
@@ -296,13 +311,13 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
-        nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
-        nbt.setFloat("bubbleSize", this.bubbleSize);
-//        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
+        nbt.putBoolean("bubbleVisible", this.shouldRenderBubble);
+        nbt.putFloat("bubbleSize", this.bubbleSize);
+//        nbt.putBoolean("hasValidBubble", this.hasValidBubble);
         return nbt;
     }
 
@@ -324,7 +339,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
             case 0:
                 return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
-                return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+                return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
             default:
                 return false;
             }
@@ -346,11 +361,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
         }
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)

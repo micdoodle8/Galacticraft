@@ -1,41 +1,46 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
-import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBlock
+import java.util.ArrayList;
+import java.util.List;
+
+public class TileEntityNasaWorkbench extends TileEntityFake implements IMultiBlock
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.nasaWorkbench)
+    public static TileEntityType<TileEntityNasaWorkbench> TYPE;
+
     private boolean initialised;
     
     public TileEntityNasaWorkbench()
     {
-        super(null);
+        super(TYPE);
     }
 
     @Override
     public boolean onActivated(PlayerEntity entityPlayer)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+//        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()); TODO guis
         return true;
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
@@ -100,13 +105,13 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
         {
             BlockState stateAt = this.world.getBlockState(pos);
 
-            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.NASA_WORKBENCH)
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.get(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.NASA_WORKBENCH)
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.05D)
                 {
-                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(thisBlock));
+                    Minecraft.getInstance().particles.addBlockDestroyEffects(pos, this.world.getBlockState(thisBlock));
                 }
-                this.world.setBlockToAir(pos);
+                this.world.removeBlock(pos, false);
             }
         }
         this.world.destroyBlock(thisBlock, true);

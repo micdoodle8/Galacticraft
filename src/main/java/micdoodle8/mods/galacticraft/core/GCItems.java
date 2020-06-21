@@ -17,10 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 
@@ -141,7 +138,7 @@ public class GCItems
 //    public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
-//    public static LinkedList<ItemCanisterGeneric> canisterTypes = new LinkedList<ItemCanisterGeneric>();
+    public static LinkedList<ItemCanisterGeneric> canisterTypes = new LinkedList<ItemCanisterGeneric>();
     public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
     public static HashMap<ItemStack, ItemStack> itemChanges = new HashMap<>(4, 1.0F);
 
@@ -176,7 +173,8 @@ public class GCItems
         register(r, new ItemBase(defaultBuilder()), ItemNames.oxygenFan);
         register(r, new ItemBase(defaultBuilder()), ItemNames.oxygenConcentrator);
         register(r, new ItemBase(defaultBuilder()), ItemNames.heavyPlatingTier1);
-        register(r, new ItemRocketEngineGC(defaultBuilder()), ItemNames.rocketEngine);
+        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketEngineT1);
+        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketBoosterT1);
         register(r, new ItemBase(defaultBuilder()), ItemNames.partFins);
         register(r, new ItemBase(defaultBuilder()), ItemNames.partNoseCone);
         register(r, new ItemBase(defaultBuilder()), ItemNames.sensorLens);
@@ -187,9 +185,9 @@ public class GCItems
         register(r, new ItemFlag(defaultBuilder().maxDamage(0)), ItemNames.flag);
         register(r, new ItemOxygenGear(defaultBuilder()), ItemNames.oxygenGear);
         register(r, new ItemBase(defaultBuilder()), ItemNames.canvas);
-//        register(r, new ItemOilCanister(defaultBuilder()), ItemNames.oilCanister); TODO
-//        register(r, new ItemFuelCanister(defaultBuilder()), ItemNames.fuelCanister);
-//        register(r, new ItemCanisterOxygenInfinite(defaultBuilder()), ItemNames.oxygenCanisterInfinite);
+        register(r, new ItemOilCanister(defaultBuilder()), ItemNames.oilCanister);
+        register(r, new ItemFuelCanister(defaultBuilder()), ItemNames.fuelCanister);
+        register(r, new ItemCanisterOxygenInfinite(defaultBuilder()), ItemNames.oxygenCanisterInfinite);
         register(r, new ItemBase(defaultBuilder()), ItemNames.flagPole);
         register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicBuggy);
         register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicRocketT2);
@@ -199,10 +197,10 @@ public class GCItems
         register(r, new ItemBatteryInfinite(defaultBuilder()), ItemNames.infiniteBatery);
         register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunk);
         register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunkHot);
-        register(r, new ItemUniversalWrench(defaultBuilder()), ItemNames.wrench);
+        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256).maxStackSize(1)), ItemNames.wrench);
         register(r, new Item(defaultBuilder().food((new Food.Builder()).hunger(1).saturation(0.1F).fastToEat().build())), ItemNames.cheeseCurd);
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
-        register(r, new ItemMeteoricIron(defaultBuilder()), ItemNames.meteoricIronRaw);
+        register(r, new ItemBase(defaultBuilder()), ItemNames.meteoricIronRaw);
         register(r, new ItemPreLaunchChecklist(defaultBuilder()), ItemNames.prelaunchChecklist);
         register(r, new ItemBase(defaultBuilder()), ItemNames.dungeonFinder);
 //        register(r, new ItemIC2Compat(defaultBuilder()), ItemNames.ic2compat); TODO
@@ -272,6 +270,9 @@ public class GCItems
 
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
+
+        GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.fuelCanister);
+        GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.oilCanister);
     }
     
 //    public static void oreDictRegistrations()

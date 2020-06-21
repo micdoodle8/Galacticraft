@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
@@ -8,43 +9,38 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.client.FMLClientHandler;
-
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.Project;
 
 import java.lang.reflect.Method;
 import java.util.Random;
 
-public class SkyProviderOverworld extends IRenderHandler
+public class SkyProviderOverworld implements IRenderHandler
 {
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
 
-    private static boolean optifinePresent = false;
+//    private static boolean optifinePresent = false;
 
-    static
-    {
-        try
-        {
-            optifinePresent = Launch.classLoader.getClassBytes("CustomColorizer") != null;
-        }
-        catch (final Exception e)
-        {
-        }
-    }
+//    static
+//    {
+//        try
+//        {
+//            optifinePresent = Launch.classLoader.getClassBytes("CustomColorizer") != null;
+//        }
+//        catch (final Exception e)
+//        {
+//        }
+//    }
 
     private int starGLCallList = GLAllocation.generateDisplayLists(7);
     private int glSkyList;
@@ -122,7 +118,7 @@ public class SkyProviderOverworld extends IRenderHandler
     private final Minecraft minecraft = Minecraft.getInstance();
 
     @Override
-    public void render(float partialTicks, ClientWorld world, Minecraft mc)
+    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc)
     {
         if (!ClientProxyCore.overworldTextureRequestSent)
         {
@@ -135,56 +131,56 @@ public class SkyProviderOverworld extends IRenderHandler
         double pitch = 0.0;
         Method m = null;
 
-        if (!optifinePresent)
-        {
-            try
-            {
-                Class<?> c = mc.entityRenderer.getClass();
-                zoom = mc.entityRenderer.cameraZoom;
-                yaw = mc.entityRenderer.cameraYaw;
-                pitch = mc.entityRenderer.cameraPitch;
-
-                GL11.glMatrixMode(GL11.GL_PROJECTION);
-                GL11.glLoadIdentity();
-
-                if (zoom != 1.0D)
-                {
-                    GL11.glTranslatef((float) yaw, (float) (-pitch), 0.0F);
-                    GL11.glScaled(zoom, zoom, 1.0D);
-                }
-
-                Project.gluPerspective(mc.gameSettings.fovSetting, (float) mc.displayWidth / (float) mc.displayHeight, 0.05F, 1400.0F);
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glLoadIdentity();
-
-                mc.entityRenderer.orientCamera(partialTicks);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
+//        if (!optifinePresent)
+//        {
+//            try
+//            {
+//                Class<?> c = mc.gameRenderer.getClass();
+//                zoom = mc.gameRenderer.cameraZoom;
+//                yaw = mc.gameRenderer.cameraYaw;
+//                pitch = mc.gameRenderer.cameraPitch;
+//
+//                GL11.glMatrixMode(GL11.GL_PROJECTION);
+//                GL11.glLoadIdentity();
+//
+//                if (zoom != 1.0D)
+//                {
+//                    GL11.glTranslatef((float) yaw, (float) (-pitch), 0.0F);
+//                    GL11.glScaled(zoom, zoom, 1.0D);
+//                }
+//
+//                Project.gluPerspective(mc.gameSettings.fov, (float) mc.mainWindow.getWidth() / (float) mc.mainWindow.getHeight(), 0.05F, 1400.0F);
+//                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//                GL11.glLoadIdentity();
+//
+//                mc.gameRenderer.orientCamera(partialTicks);
+//            }
+//            catch (Exception e)
+//            {
+//                e.printStackTrace();
+//            }
+//        } TODO Orient camera
 
         float theta = MathHelper.sqrt(((float) (mc.player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GlStateManager.disableRescaleNormal();
-        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
+        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
         float i = (float) var2.x * var21;
         float x = (float) var2.y * var21;
         float var5 = (float) var2.z * var21;
         float z;
 
-        if (this.minecraft.gameSettings.anaglyph)
-        {
-            final float y = (i * 30.0F + x * 59.0F + var5 * 11.0F) / 100.0F;
-            final float var7 = (i * 30.0F + x * 70.0F) / 100.0F;
-            z = (i * 30.0F + var5 * 70.0F) / 100.0F;
-            i = y;
-            x = var7;
-            var5 = z;
-        }
+//        if (this.minecraft.gameSettings.anaglyph)
+//        {
+//            final float y = (i * 30.0F + x * 59.0F + var5 * 11.0F) / 100.0F;
+//            final float var7 = (i * 30.0F + x * 70.0F) / 100.0F;
+//            z = (i * 30.0F + var5 * 70.0F) / 100.0F;
+//            i = y;
+//            x = var7;
+//            var5 = z;
+//        }
 
         GL11.glColor3f(i, x, var5);
         final Tessellator var23 = Tessellator.getInstance();
@@ -222,15 +218,15 @@ public class SkyProviderOverworld extends IRenderHandler
             size = costh[2] * sunsetModInv;
             float rand3;
 
-            if (this.minecraft.gameSettings.anaglyph)
-            {
-                rand1 = (z * 30.0F + var9 * 59.0F + size * 11.0F) / 100.0F;
-                r = (z * 30.0F + var9 * 70.0F) / 100.0F;
-                rand3 = (z * 30.0F + size * 70.0F) / 100.0F;
-                z = rand1;
-                var9 = r;
-                size = rand3;
-            }
+//            if (this.minecraft.gameSettings.anaglyph)
+//            {
+//                rand1 = (z * 30.0F + var9 * 59.0F + size * 11.0F) / 100.0F;
+//                r = (z * 30.0F + var9 * 70.0F) / 100.0F;
+//                rand3 = (z * 30.0F + size * 70.0F) / 100.0F;
+//                z = rand1;
+//                var9 = r;
+//                size = rand3;
+//            }
 
             worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 
@@ -270,7 +266,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         float threshold;
         Vec3d vec = TransformerHooks.getFogColorHook(this.minecraft.world);
-        threshold = Math.max(0.1F, (float) vec.lengthVector() - 0.1F);
+        threshold = Math.max(0.1F, (float) vec.length() - 0.1F);
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
         var20 = MathHelper.sqrt(var20);
         float bright1 = Math.min(0.9F, var20 * 3);
@@ -392,30 +388,30 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
 
-        if (!optifinePresent)
-        {
-            try
-            {
-                GL11.glMatrixMode(GL11.GL_PROJECTION);
-                GL11.glLoadIdentity();
-
-                if (zoom != 1.0D)
-                {
-                    GL11.glTranslatef((float) yaw, (float) (-pitch), 0.0F);
-                    GL11.glScaled(zoom, zoom, 1.0D);
-                }
-
-                Project.gluPerspective(mc.gameSettings.fovSetting, (float) mc.displayWidth / (float) mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glLoadIdentity();
-
-                mc.entityRenderer.orientCamera(partialTicks);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
+//        if (!optifinePresent)
+//        {
+//            try
+//            {
+//                GL11.glMatrixMode(GL11.GL_PROJECTION);
+//                GL11.glLoadIdentity();
+//
+//                if (zoom != 1.0D)
+//                {
+//                    GL11.glTranslatef((float) yaw, (float) (-pitch), 0.0F);
+//                    GL11.glScaled(zoom, zoom, 1.0D);
+//                }
+//
+//                Project.gluPerspective(mc.gameSettings.fovSetting, (float) mc.displayWidth / (float) mc.displayHeight, 0.05F, this.minecraft.gameSettings.renderDistanceChunks * 16 * 2.0F);
+//                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//                GL11.glLoadIdentity();
+//
+//                mc.gameRenderer.orientCamera(partialTicks);
+//            }
+//            catch (Exception e)
+//            {
+//                e.printStackTrace();
+//            }
+//        } TODO Orient camera
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_BLEND);

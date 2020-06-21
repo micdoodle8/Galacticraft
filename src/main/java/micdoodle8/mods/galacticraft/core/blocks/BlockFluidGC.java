@@ -66,9 +66,9 @@
 //    }
 //
 //    @Override
-//    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+//    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
-//        super.randomDisplayTick(stateIn, worldIn, pos, rand);
+//        super.animateTick(stateIn, worldIn, pos, rand);
 //
 //        if (this.fluidName.startsWith("oil") && rand.nextInt(1200) == 0)
 //        {

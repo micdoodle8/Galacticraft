@@ -4,6 +4,7 @@ import com.google.common.math.DoubleMath;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.tile.FluidTankGC;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -21,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -173,7 +175,7 @@ public class NetworkUtil
 
                 for (int i = 0; i < array.length; i++)
                 {
-                    buffer.writeInt(array[i].dimension);
+                    buffer.writeInt(array[i].dimension.getId());
                     buffer.writeFloat((float) array[i].position.x);
                     buffer.writeFloat((float) array[i].position.y + 1);
                     buffer.writeFloat((float) array[i].position.z);
@@ -281,7 +283,11 @@ public class NetworkUtil
             }
             else if (clazz.equals(Vector3.class))
             {
-                objList.add(new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
+                objList.add(new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
+            }
+            else if (clazz.equals(Vector3D.class))
+            {
+                objList.add(new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
             }
             else if (clazz.equals(FlagData.class))
             {
@@ -323,7 +329,7 @@ public class NetworkUtil
 
                 for (int i = 0; i < size; i++)
                 {
-                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), readUTF8String(buffer), -1));
+                    objList.add(new Footprint(DimensionType.getById(buffer.readInt()), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), readUTF8String(buffer), -1));
                 }
             }
             else if (clazz.equals(Direction.class))
@@ -393,7 +399,11 @@ public class NetworkUtil
         }
         else if (dataValue.equals(Vector3.class))
         {
-            return new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+            return new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+        }
+        else if (dataValue.equals(Vector3D.class))
+        {
+            return new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         }
         else if (dataValue.equals(BlockVec3.class))
         {

@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 
-public class ModelMeteorChunk extends ModelBase
+public class ModelMeteorChunk extends EntityModel<EntityMeteorChunk>
 {
     private RendererModel[] boxes = new RendererModel[6];
 
@@ -52,10 +52,10 @@ public class ModelMeteorChunk extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityMeteorChunk entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 
         for (RendererModel mr : boxes)
         {

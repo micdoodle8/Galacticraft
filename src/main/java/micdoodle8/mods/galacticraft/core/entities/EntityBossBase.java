@@ -62,7 +62,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             final float x = (this.rand.nextFloat() - 0.5F) * this.getWidth();
             final float y = (this.rand.nextFloat() - 0.5F) * (this.getHeight() / 2.0F);
             final float z = (this.rand.nextFloat() - 0.5F) * this.getWidth();
-//            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D); TODO Particles
+//            this.world.addParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D); TODO Particles
         }
 
         int i;

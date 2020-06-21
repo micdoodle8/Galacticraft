@@ -34,9 +34,9 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
     private GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0, this);
 
-    public GuiTerraformer(PlayerInventory par1InventoryPlayer, TileEntityTerraformer terraformer)
+    public GuiTerraformer(PlayerInventory playerInv, TileEntityTerraformer terraformer)
     {
-        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, Minecraft.getInstance().player));
+        super(new ContainerTerraformer(playerInv, terraformer, Minecraft.getInstance().player));
         this.ySize = 237;
         this.terraformer = terraformer;
     }
@@ -144,7 +144,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
         }
 
-        if (this.terraformer.waterTank.getFluid() == null || this.terraformer.waterTank.getFluid().amount <= 0)
+        if (this.terraformer.waterTank.getFluid() == FluidStack.EMPTY || this.terraformer.waterTank.getFluid().getAmount() <= 0)
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_water.name");
         }

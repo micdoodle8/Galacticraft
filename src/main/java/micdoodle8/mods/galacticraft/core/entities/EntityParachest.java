@@ -40,9 +40,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
     private boolean placedChest;
     public DyeColor color = DyeColor.WHITE;
 
-    public EntityParachest(EntityType<EntityParachest> type, World world, NonNullList<ItemStack> cargo, int fuelLevel)
+    public EntityParachest(World world, NonNullList<ItemStack> cargo, int fuelLevel)
     {
-        super(type, world);
+        super(GCEntities.PARA_CHEST.get(), world);
         this.cargo = NonNullList.withSize(cargo.size(), ItemStack.EMPTY);
         Collections.copy(this.cargo, cargo);
         this.placedChest = false;

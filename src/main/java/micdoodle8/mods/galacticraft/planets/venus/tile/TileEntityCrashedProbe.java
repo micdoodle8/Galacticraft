@@ -64,9 +64,9 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         if (nbt.contains("ctd"))
         {
             this.hasCoreToDrop = nbt.getBoolean("ctd");
@@ -84,10 +84,10 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("ctd", this.hasCoreToDrop);
+        super.write(nbt);
+        nbt.putBoolean("ctd", this.hasCoreToDrop);
 
         if (!this.checkLootAndWrite(nbt))
         {
@@ -154,7 +154,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
 
     protected boolean checkLootAndRead(CompoundNBT compound)
     {
-        if (compound.hasKey("LootTable", 8))
+        if (compound.contains("LootTable", 8))
         {
             this.lootTable = new ResourceLocation(compound.getString("LootTable"));
             this.lootTableSeed = compound.getLong("LootTableSeed");

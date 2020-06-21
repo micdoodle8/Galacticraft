@@ -238,15 +238,15 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
     {
         super.writeEntityToNBT(nbt);
         nbt.put("SlimelingInventory", this.slimelingInventory.writeToNBT(new ListNBT()));
-        nbt.setFloat("SlimeRed", this.colorRed);
-        nbt.setFloat("SlimeGreen", this.colorGreen);
-        nbt.setFloat("SlimeBlue", this.colorBlue);
+        nbt.putFloat("SlimeRed", this.colorRed);
+        nbt.putFloat("SlimeGreen", this.colorGreen);
+        nbt.putFloat("SlimeBlue", this.colorBlue);
         nbt.putInt("SlimelingAge", this.age);
-        nbt.setString("SlimelingName", this.slimelingName);
+        nbt.putString("SlimelingName", this.slimelingName);
         nbt.putInt("FavFoodID", this.favFoodID);
-        nbt.setFloat("SlimelingDamage", this.attackDamage);
+        nbt.putFloat("SlimelingDamage", this.attackDamage);
         nbt.putInt("SlimelingKills", this.kills);
-        nbt.setString("OwnerUsername", this.getOwnerUsername());
+        nbt.putString("OwnerUsername", this.getOwnerUsername());
     }
 
     @Override

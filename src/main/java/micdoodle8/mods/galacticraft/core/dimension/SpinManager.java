@@ -72,7 +72,7 @@
 //    private float artificialG;
 //    //Used to make continuous particles + thrust sounds at the spin thrusters in this dimension
 //    //If false, make particles + sounds occasionally in small bursts, just for fun (micro attitude changes)
-//    //see: BlockSpinThruster.randomDisplayTick()
+//    //see: BlockSpinThruster.animateTick()
 //    public boolean thrustersFiring = false;
 //    private boolean dataNotLoaded = true;
 //    private List<Entity> loadedEntities = Lists.newLinkedList();
@@ -80,9 +80,9 @@
 //    private DimensionSpaceStation worldProvider;
 //    private boolean clientSide = true;
 //
-//    public SpinManager(DimensionSpaceStation provider)
+//    public SpinManager(DimensionSpaceStation dimension)
 //    {
-//        this.worldProvider = provider;
+//        this.worldProvider = dimension;
 //    }
 //
 //    /**
@@ -877,11 +877,11 @@
 //
 //    public CompoundNBT writeToNBT(CompoundNBT nbt)
 //    {
-//        nbt.setBoolean("doSpinning", this.doSpinning);
-//        nbt.setFloat("omegaRad", this.angularVelocityRadians);
-//        nbt.setFloat("omegaSky", this.skyAngularVelocity);
-//        nbt.setFloat("omegaTarget", this.angularVelocityTarget);
-//        nbt.setFloat("omegaAcc", this.angularVelocityAccel);
+//        nbt.putBoolean("doSpinning", this.doSpinning);
+//        nbt.putFloat("omegaRad", this.angularVelocityRadians);
+//        nbt.putFloat("omegaSky", this.skyAngularVelocity);
+//        nbt.putFloat("omegaTarget", this.angularVelocityTarget);
+//        nbt.putFloat("omegaAcc", this.angularVelocityAccel);
 //        if (this.oneSSBlock != null)
 //        {
 //            CompoundNBT oneBlock = new CompoundNBT();

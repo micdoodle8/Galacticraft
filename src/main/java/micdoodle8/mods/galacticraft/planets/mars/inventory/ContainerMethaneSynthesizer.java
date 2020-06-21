@@ -18,37 +18,37 @@ public class ContainerMethaneSynthesizer extends Container
 {
     private final TileEntityMethaneSynthesizer tileEntity;
 
-    public ContainerMethaneSynthesizer(PlayerInventory par1InventoryPlayer, TileEntityMethaneSynthesizer tileEntity, PlayerEntity player)
+    public ContainerMethaneSynthesizer(PlayerInventory playerInv, TileEntityMethaneSynthesizer tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 53, 53, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tileEntity, 0, 53, 53, IItemElectric.class));
 
         // Input slot - hydrogen
-        this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
+        this.addSlot(new Slot(tileEntity, 1, 7, 7));
 
         // Input slot - CO2
-        this.addSlotToContainer(new Slot(tileEntity, 2, 28, 7));
+        this.addSlot(new Slot(tileEntity, 2, 28, 7));
 
         // Carbon slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 3, 28, 53, new ItemStack(MarsItems.carbonFragments, 1, 0)));
+        this.addSlot(new SlotSpecific(tileEntity, 3, 28, 53, new ItemStack(MarsItems.carbonFragments, 1, 0)));
 
         // Output slot
-        this.addSlotToContainer(new Slot(tileEntity, 4, 153, 7));
+        this.addSlot(new Slot(tileEntity, 4, 153, 7));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 144));
         }
 
         tileEntity.openInventory(player);

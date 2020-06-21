@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -15,7 +16,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -32,10 +35,11 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
     private GuiElementCheckbox checkboxRenderBubble;
 
-    public GuiOxygenDistributor(PlayerInventory playerInv, TileEntityOxygenDistributor distributor)
+    public GuiOxygenDistributor(ContainerOxygenDistributor container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerOxygenDistributor(playerInv, distributor), playerInv, new StringTextComponent(distributor.getName()));
-        this.distributor = distributor;
+        super(container, playerInv, title);
+//        super(new ContainerOxygenDistributor(playerInv, distributor), playerInv, new TranslationTextComponent("container.oxygendistributor.name"));
+        this.distributor = container.getDistributor();
         this.ySize = 180;
     }
 
@@ -71,14 +75,14 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubble_visible.name"));
+        this.checkboxRenderBubble = new GuiElementCheckbox(this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubble_visible.name"));
         this.buttons.add(this.checkboxRenderBubble);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.distributor.getName(), 8, 10, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();

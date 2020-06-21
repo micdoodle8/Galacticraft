@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
-import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedContainer;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
@@ -682,16 +681,16 @@ public class EventHandlerGC
         if (page != null)
         {
             Screen cs = event.currentGui;
-            int benchX = (int) Minecraft.getInstance().player.posX;
-            int benchY = (int) Minecraft.getInstance().player.posY;
-            int benchZ = (int) Minecraft.getInstance().player.posZ;
-            if (cs instanceof GuiPositionedContainer)
-            {
-                benchX = ((GuiPositionedContainer)cs).getX();
-                benchY = ((GuiPositionedContainer)cs).getY();
-                benchZ = ((GuiPositionedContainer)cs).getZ();
-            }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { page.getPageID(), benchX, benchY, benchZ }));
+//            int benchX = (int) Minecraft.getInstance().player.posX;
+//            int benchY = (int) Minecraft.getInstance().player.posY;
+//            int benchZ = (int) Minecraft.getInstance().player.posZ;
+//            if (cs instanceof GuiPositionedContainer)
+//            {
+//                benchX = ((GuiPositionedContainer)cs).getX();
+//                benchY = ((GuiPositionedContainer)cs).getY();
+//                benchZ = ((GuiPositionedContainer)cs).getZ();
+//            }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { page.getPageID() }));
 //            Minecraft.getInstance().player.openGui(GalacticraftCore.instance, page.getGuiID(), Minecraft.getInstance().player.world, benchX, benchY, benchZ); TODO Gui
         }
     }

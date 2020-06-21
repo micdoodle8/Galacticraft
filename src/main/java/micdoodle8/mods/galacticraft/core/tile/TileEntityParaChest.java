@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
@@ -12,19 +15,25 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IScaleableFuelLevel
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.parachest)
+    public static TileEntityType<TileEntityParaChest> TYPE;
+
     private final int tankCapacity = 5000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
@@ -38,7 +47,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
     public TileEntityParaChest()
     {
-        super("container.parachest.name");
+        super(TYPE);
         this.color = DyeColor.RED;
         inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
@@ -56,7 +65,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().getAmount();
+        final double fuelLevel = this.fuelTank.getFluid() == FluidStack.EMPTY ? 0 : this.fuelTank.getFluid().getAmount();
 
         return (int) (fuelLevel * i / this.tankCapacity);
     }
@@ -81,9 +90,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         int size = nbt.getInt("chestContentLength");
         if ((size - 3) % 18 != 0)
@@ -106,14 +115,14 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
         nbt.putInt("chestContentLength", this.getInventory().size());
         ItemStackHelper.saveAllItems(nbt, this.getInventory());
 
-        if (this.fuelTank.getFluid() != null)
+        if (this.fuelTank.getFluid() != FluidStack.EMPTY)
         {
             nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
@@ -125,7 +134,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
     @Override
@@ -136,9 +145,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
         float f;
 
         if (!this.world.isRemote && this.numUsingPlayers != 0 && (this.ticks + this.getPos().getX() + this.getPos().getY() + this.getPos().getZ()) % 200 == 0)

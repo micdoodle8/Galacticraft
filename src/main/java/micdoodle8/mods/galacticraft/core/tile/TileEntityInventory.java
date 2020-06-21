@@ -1,33 +1,31 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullSupplier;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public abstract class TileEntityInventory extends TileEntity implements ISidedInventory
 {
     public NonNullList<ItemStack> inventory;
-    private HashMap<Direction, IItemHandler> itemHandlers = new HashMap<>();
-    private String tileName;
+    private HashMap<Direction, LazyOptional<IItemHandlerModifiable>> itemHandlers = new HashMap<>();
 
-    public TileEntityInventory(String tileName)
+    public TileEntityInventory(TileEntityType<?> type)
     {
-        this.tileName = tileName;
+        super(type);
     }
 
     public NonNullList<ItemStack> getInventory()
@@ -55,9 +53,9 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public void readFromNBT(CompoundNBT tags)
+    public void read(CompoundNBT tags)
     {
-        super.readFromNBT(tags);
+        super.read(tags);
 
         if (handleInventory())
         {
@@ -68,9 +66,9 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT tags)
+    public CompoundNBT write(CompoundNBT tags)
     {
-        super.writeToNBT(tags);
+        super.write(tags);
 
         if (handleInventory())
         {
@@ -155,29 +153,27 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
         return true;
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(Capability<?> capability, Direction side)
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, side);
-    }
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, Direction side)
-    {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            IItemHandler handler = itemHandlers.get(side);
-            if (handler == null)
-            {
-                handler = new SidedInvWrapper(this, side);
-                itemHandlers.put(side, handler);
+        if (!this.removed && cap == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (!this.itemHandlers.containsKey(side)) {
+                this.itemHandlers.put(side, LazyOptional.of(new NonNullSupplier<IItemHandlerModifiable>()
+                {
+                    @Nonnull
+                    @Override
+                    public IItemHandlerModifiable get()
+                    {
+                        return new SidedInvWrapper(TileEntityInventory.this, side);
+                    }
+                }));
+            } else {
+                return this.itemHandlers.get(side).cast();
             }
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler);
         }
-
-        return super.getCapability(capability, side);
+        return super.getCapability(cap, side);
     }
-
 
     //We don't use these because we use forge containers
     @Override
@@ -192,23 +188,6 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
     public void clear()
     {
         for (int i = 0; i < this.getInventory().size(); ++i)
@@ -216,33 +195,10 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
             this.getInventory().set(i, ItemStack.EMPTY);
         }
     }
-
-    /**
-     * Override this and return true IF the inventory .getName() is
-     * ALREADY a localized name e.g. by GCCoreUtil.translate()
-     *
-     **/
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate(tileName);
-    }
     
     @Override
     public synchronized void handleUpdateTag(CompoundNBT tag)
     {
-        this.readFromNBT(tag);
+        this.read(tag);
     }
 }

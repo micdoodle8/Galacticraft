@@ -13,12 +13,12 @@ import net.minecraftforge.eventbus.api.Cancelable;
  */
 public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
 {
-    public final Dimension provider;
+    public final Dimension dimension;
 
     public GCCoreOxygenSuffocationEvent(LivingEntity entity)
     {
         super(entity);
-        this.provider = entity.world.getDimension();
+        this.dimension = entity.world.getDimension();
     }
 
     /**

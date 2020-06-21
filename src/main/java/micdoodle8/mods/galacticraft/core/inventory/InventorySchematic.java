@@ -87,11 +87,11 @@ public class InventorySchematic implements IInventory
         return true;
     }
 
-    @Override
-    public String getName()
-    {
-        return "container.crafting";
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return "container.crafting";
+//    }
 
     @Override
     public int getInventoryStackLimit()
@@ -128,22 +128,22 @@ public class InventorySchematic implements IInventory
     {
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public void clear()
@@ -151,15 +151,15 @@ public class InventorySchematic implements IInventory
 
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
+//    }
 }

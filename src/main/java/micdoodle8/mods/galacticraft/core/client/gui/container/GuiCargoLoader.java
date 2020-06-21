@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -13,7 +14,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -28,10 +31,10 @@ public class GuiCargoLoader extends GuiContainerGC<ContainerCargoLoader>
     private Button buttonLoadItems;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiCargoLoader(PlayerInventory playerInv, TileEntityCargoLoader cargoLoader)
+    public GuiCargoLoader(ContainerCargoLoader container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerCargoLoader(playerInv, cargoLoader), playerInv, new StringTextComponent(cargoLoader.getName()));
-        this.cargoLoader = cargoLoader;
+        super(container, playerInv, title);
+        this.cargoLoader = (TileEntityCargoLoader) container.getCargoTile();
         this.ySize = 201;
     }
 
@@ -62,7 +65,7 @@ public class GuiCargoLoader extends GuiContainerGC<ContainerCargoLoader>
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.font.drawString(this.cargoLoader.getName(), 60, 12, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 60, 12, 4210752);
         this.buttonLoadItems.active = this.cargoLoader.disableCooldown == 0;
         this.buttonLoadItems.setMessage(!this.cargoLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading.name") : GCCoreUtil.translate("gui.button.loaditems.name"));
         this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);

@@ -2,19 +2,23 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Items;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.FurnaceResultSlot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,35 +26,39 @@ import java.util.List;
 
 public class ContainerCircuitFabricator extends Container
 {
-    private TileEntityCircuitFabricator tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.CIRCUIT_FABRICATOR)
+    public static ContainerType<ContainerCircuitFabricator> TYPE;
 
-    public ContainerCircuitFabricator(PlayerInventory playerInv, TileEntityCircuitFabricator tileEntity)
+    private TileEntityCircuitFabricator fabricator;
+
+    public ContainerCircuitFabricator(int containerId, PlayerInventory playerInv, TileEntityCircuitFabricator fabricator)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.fabricator = fabricator;
 
         // Energy slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 6, 69, IItemElectric.class));
+        this.addSlot(new SlotSpecific(fabricator, 0, 6, 69, IItemElectric.class));
 
         // Diamond
         ArrayList<ItemStack> slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(0);
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 15, 17, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 1, 15, 17, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
         // Silicon
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(1);
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 2, 74, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 2, 74, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(2);
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 3, 74, 64, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 3, 74, 64, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
         // Redstone
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(3);
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 4, 122, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 4, 122, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
         // Optional
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(4);
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 5, 145, 20, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 5, 145, 20, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
         // Smelting result
-        this.addSlotToContainer(new FurnaceResultSlot(playerInv.player, tileEntity, 6, 152, 86));
+        this.addSlot(new FurnaceResultSlot(playerInv.player, fabricator, 6, 152, 86));
 
         int slot;
 
@@ -58,20 +66,25 @@ public class ContainerCircuitFabricator extends Container
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(playerInv, var4 + slot * 9 + 9, 8 + var4 * 18, 110 + slot * 18));
+                this.addSlot(new Slot(playerInv, var4 + slot * 9 + 9, 8 + var4 * 18, 110 + slot * 18));
             }
         }
 
         for (slot = 0; slot < 9; ++slot)
         {
-            this.addSlotToContainer(new Slot(playerInv, slot, 8 + slot * 18, 168));
+            this.addSlot(new Slot(playerInv, slot, 8 + slot * 18, 168));
         }
+    }
+
+    public TileEntityCircuitFabricator getFabricator()
+    {
+        return fabricator;
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.fabricator.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -139,7 +152,7 @@ public class ContainerCircuitFabricator extends Container
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.REPEATER || i == new ItemStack(Blocks.REDSTONE_TORCH).getItem() || i == Items.DYE && i.getDamage(var4) == 4)
+                else if (i == Items.REPEATER || i == new ItemStack(Blocks.REDSTONE_TORCH).getItem() || i == Items.BLUE_DYE)
                 {
                     if (!this.mergeItemStack(var4, 5, 6, false))
                     {
@@ -325,6 +338,6 @@ public class ContainerCircuitFabricator extends Container
 
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return target.isEmpty() || target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.getCount() < target.getMaxStackSize());
+        return target.isEmpty() || target.getItem() == stack.getItem() /*&& (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata())*/ && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.getCount() < target.getMaxStackSize());
     }
 }

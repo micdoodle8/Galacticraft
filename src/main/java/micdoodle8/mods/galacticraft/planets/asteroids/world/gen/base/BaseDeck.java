@@ -142,7 +142,7 @@ public class BaseDeck extends SizedPiece
         super.writeStructureToNBT(tagCompound);
 
         int details = this.deckTier + (this.largeRoomPosA << 4) + (this.largeRoomPosB << 8);
-        tagCompound.setInteger("dD", details);
+        tagCompound.putInt("dD", details);
         if (this.otherDecks != null)
         {
             ListNBT tagList = new ListNBT();
@@ -150,7 +150,7 @@ public class BaseDeck extends SizedPiece
             {
                 CompoundNBT tag1 = new CompoundNBT();
                 deck.writeStructureToNBT(tag1);
-                tagList.appendTag(tag1);
+                tagList.add(tag1);
             }
             tagCompound.setTag("oD", tagList);
         }
@@ -169,7 +169,7 @@ public class BaseDeck extends SizedPiece
             this.roomsOnSide = configuration.getRoomsNo();
             this.roomDepth = configuration.getRoomDepth() + (this.deckTier == 0 ? 1 : 0) - ((this.deckTier & 4) == 4 ? 3 : 0);
             
-            if (tagCompound.hasKey("oD"))
+            if (tagCompound.contains("oD"))
             {
                 ListNBT tagList = tagCompound.getList("oD", 10);
                 this.otherDecks = new ArrayList<BaseDeck>();

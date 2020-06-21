@@ -1,54 +1,98 @@
-//package micdoodle8.mods.galacticraft.core.items;
-//
-//import javax.annotation.Nonnull;
-//import javax.annotation.Nullable;
-//
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.util.Direction;
-//import net.minecraftforge.common.capabilities.Capability;
-//import net.minecraftforge.common.capabilities.ICapabilityProvider;
-//import net.minecraftforge.fluids.*;
-//import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-//import net.minecraftforge.fluids.capability.FluidTankProperties;
-//import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-//import net.minecraftforge.fluids.capability.IFluidTankProperties;
-//
-//public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilityProvider
-//{
-//    @Nonnull
-//    protected ItemStack container;
-//
-//    public ItemCanisterGenericHandler(@Nonnull ItemStack container)
-//    {
-//        this.container = container;
-//    }
-//
-//    @Nonnull
-//    @Override
-//    public ItemStack getContainer()
-//    {
-//    	return container;  //never varies
-//    }
-//
-//    @Nullable
-//    public FluidStack getFluid()
-//    {
-//        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
-//        {
-//        	return ((ItemCanisterGeneric)container.getItem()).getFluid(container);
-//        }
-//    	return null;
-//    }
-//
-//    protected void setFluid(FluidStack fluid)
-//    {
-//        if (this.canFillFluidType(fluid))
-//        {
-//        	((ItemCanisterGeneric)container.getItem()).setDamage(container, ItemCanisterGeneric.EMPTY - fluid.amount);
-//        }
-//    }
-//
-//    @Override
+package micdoodle8.mods.galacticraft.core.items;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import micdoodle8.mods.galacticraft.core.GCItems;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+
+public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilityProvider
+{
+    private final LazyOptional<IFluidHandlerItem> holder = LazyOptional.of(() -> this);
+    @Nonnull
+    protected ItemStack container;
+
+    public ItemCanisterGenericHandler(@Nonnull ItemStack container)
+    {
+        this.container = container;
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getContainer()
+    {
+    	return container;  //never varies
+    }
+
+    @Nonnull
+    public FluidStack getFluid()
+    {
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
+        {
+        	return ((ItemCanisterGeneric)container.getItem()).getFluid(container);
+        }
+    	return FluidStack.EMPTY;
+    }
+
+    protected void setFluid(FluidStack fluid)
+    {
+        if (this.canFillFluidType(fluid))
+        {
+        	((ItemCanisterGeneric)container.getItem()).setDamage(container, ItemCanisterGeneric.EMPTY - fluid.getAmount());
+        }
+    }
+
+    @Override
+    public int getTanks()
+    {
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        return getFluid();
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        return ItemCanisterGeneric.EMPTY - 1;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        int capacityPlusOne = container.getDamage();
+        if (capacityPlusOne >= ItemCanisterGeneric.EMPTY)
+        {
+            for (ItemCanisterGeneric i : GCItems.canisterTypes)
+            {
+                if (stack.getFluid().getRegistryName() == i.getAllowedFluid())
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (stack.getFluid().getRegistryName() == ((ItemCanisterGeneric) container.getItem()).getAllowedFluid())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    //    @Override
 //    public IFluidTankProperties[] getTankProperties()
 //    {
 //        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
@@ -57,71 +101,64 @@
 //        }
 //        return new FluidTankProperties[0];
 //    }
-//
-//    @Override
-//    public int fill(FluidStack resource, boolean doFill)
-//    {
-//        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
-//        {
-//        	return ((ItemCanisterGeneric)container.getItem()).fill(container, resource, doFill);
-//        }
-//        return 0;
-//    }
-//
-//    @Override
-//    public FluidStack drain(int maxDrain, boolean doDrain)
-//    {
-//        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
-//        {
-//        	return ((ItemCanisterGeneric)container.getItem()).drain(container, maxDrain, doDrain);
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    public FluidStack drain(FluidStack resource, boolean doDrain)
-//    {
-//        if (this.canDrainFluidType(resource))
-//        {
-//        	return ((ItemCanisterGeneric)container.getItem()).drain(container, resource.amount, doDrain);
-//        }
-//        return null;
-//    }
-//
-//    public boolean canFillFluidType(FluidStack fluid)
-//    {
-//        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid.getFluid() != null)
-//        {
-//        	return ((ItemCanisterGeneric)container.getItem()).getAllowedFluid().equalsIgnoreCase(fluid.getFluid().getName());
-//        }
-//        return false;
-//    }
-//
-//    public boolean canDrainFluidType(FluidStack fluid)
-//    {
-//        return this.canFillFluidType(fluid);
-//    }
-//
-//    protected void setContainerToEmpty()
-//    {
-//        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
-//        {
-//        	((ItemCanisterGeneric)container.getItem()).setDamage(container, ItemCanisterGeneric.EMPTY);;
-//        }
-//    }
-//
-//    @Override
-//    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing)
-//    {
-//        return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
-//    }
-//
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    @Nullable
-//    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing)
-//    {
-//        return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY ? (T) this : null;
-//    }
-//}
-//
+
+    @Override
+    public int fill(FluidStack resource, IFluidHandler.FluidAction action)
+    {
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
+        {
+        	return ((ItemCanisterGeneric)container.getItem()).fill(container, resource, action);
+        }
+        return 0;
+    }
+
+    @Override
+    public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
+    {
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
+        {
+        	return ((ItemCanisterGeneric)container.getItem()).drain(container, maxDrain, action);
+        }
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(FluidStack resource, IFluidHandler.FluidAction action)
+    {
+        if (this.canDrainFluidType(resource))
+        {
+        	return ((ItemCanisterGeneric)container.getItem()).drain(container, resource.getAmount(), action);
+        }
+        return null;
+    }
+
+    public boolean canFillFluidType(FluidStack fluid)
+    {
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid != FluidStack.EMPTY)
+        {
+        	return ((ItemCanisterGeneric)container.getItem()).getAllowedFluid() == fluid.getFluid().getRegistryName();
+        }
+        return false;
+    }
+
+    public boolean canDrainFluidType(FluidStack fluid)
+    {
+        return this.canFillFluidType(fluid);
+    }
+
+    protected void setContainerToEmpty()
+    {
+        if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
+        {
+        	((ItemCanisterGeneric)container.getItem()).setDamage(container, ItemCanisterGeneric.EMPTY);;
+        }
+    }
+
+    @Override
+    @Nullable
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing)
+    {
+        return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.orEmpty(capability, holder);
+    }
+}
+

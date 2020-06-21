@@ -1,16 +1,12 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMeteoricIron extends Item implements ISortableItem
 {
@@ -20,7 +16,7 @@ public class ItemMeteoricIron extends Item implements ISortableItem
     {
         super(properties);
 //        this.iconName = assetName;
-        this.setUnlocalizedName(assetName);
+//        this.setUnlocalizedName(assetName);
     }
 
     /*@Override

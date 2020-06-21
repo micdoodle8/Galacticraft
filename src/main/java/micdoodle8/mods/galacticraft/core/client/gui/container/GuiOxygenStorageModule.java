@@ -2,12 +2,15 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -19,10 +22,11 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
 
     private TileEntityOxygenStorageModule tileEntity;
 
-    public GuiOxygenStorageModule(PlayerInventory playerInv, TileEntityOxygenStorageModule storageModule)
+    public GuiOxygenStorageModule(ContainerOxygenStorageModule container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerOxygenStorageModule(playerInv, storageModule), playerInv, new StringTextComponent(storageModule.getName()));
-        this.tileEntity = storageModule;
+        super(container, playerInv, title);
+//        super(new ContainerOxygenStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent("tile.machine2.6.name"));
+        this.tileEntity = container.getStorageModule();
     }
 
     @Override

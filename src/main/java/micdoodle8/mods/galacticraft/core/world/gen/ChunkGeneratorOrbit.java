@@ -1,34 +1,54 @@
-//package micdoodle8.mods.galacticraft.core.world.gen;
-//
-//import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
-//import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
-//import micdoodle8.mods.galacticraft.core.GCBlocks;
-//import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-//import net.minecraft.block.FallingBlock;
-//import net.minecraft.entity.EntityClassification;
-//import net.minecraft.tileentity.TileEntity;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.World;
-//import net.minecraft.world.biome.Biome;
-//import net.minecraft.world.biome.Biome.SpawnListEntry;
-//import net.minecraft.world.chunk.Chunk;
-//import net.minecraft.world.chunk.ChunkPrimer;
-//import java.util.List;
-//import java.util.Random;
-//
-//public class ChunkProviderOrbit extends ChunkProviderBase
-//{
+package micdoodle8.mods.galacticraft.core.world.gen;
+
+import micdoodle8.mods.galacticraft.core.dimension.chunk.OrbitGenSettings;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
+import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
+
+import java.util.List;
+
+public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
+{
 //    private final Random rand;
-//
 //    private final World world;
-//
-//    public ChunkProviderOrbit(World par1World, long par2, boolean par4)
-//    {
+
+    public ChunkGeneratorOrbit(IWorld worldIn, BiomeProvider dimension, OrbitGenSettings settingsIn)
+    {
+        super(worldIn, dimension, settingsIn);
 //        this.rand = new Random(par2);
 //        this.world = par1World;
-//    }
-//
-//    @Override
+    }
+
+    @Override
+    public void generateSurface(IChunk chunkIn)
+    {
+
+    }
+
+    @Override
+    public int getGroundHeight()
+    {
+        return this.world.getSeaLevel() + 1;
+    }
+
+    @Override
+    public void makeBase(IWorld worldIn, IChunk chunkIn)
+    {
+
+    }
+
+    @Override
+    public int func_222529_a(int p_222529_1_, int p_222529_2_, Heightmap.Type p_222529_3_)
+    {
+        return 0;
+    }
+
+    //    @Override
 //    public Chunk generateChunk(int par1, int par2)
 //    {
 //        ChunkPrimer chunkprimer = new ChunkPrimer();
@@ -73,15 +93,15 @@
 //        }
 //        FallingBlock.fallInstantly = false;
 //    }
-//
-//    @Override
-//    public List<SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
-//    {
-//        return null;
-//    }
-//
+
+    @Override
+    public List<SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
+    {
+        return null;
+    }
+
 //    @Override
 //    public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_)
 //    {
 //    }
-//}
+}

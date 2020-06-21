@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -16,26 +15,14 @@ import java.util.List;
 
 public class GuiBuggy extends GuiContainerGC<ContainerBuggy>
 {
-    private static ResourceLocation[] sealerTexture = new ResourceLocation[4];
+    private final ResourceLocation textureLoc;
 
-    static
+    public GuiBuggy(ContainerBuggy containerBuggy, PlayerInventory playerInv, ITextComponent title)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            GuiBuggy.sealerTexture[i] = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggy_" + i * 18 + ".png");
-        }
-    }
-
-    private final PlayerInventory playerInv;
-    private final int type;
-
-    public GuiBuggy(PlayerInventory playerInv, EntityBuggy buggy, int type)
-    {
-        super(new ContainerBuggy(playerInv, buggy, type, Minecraft.getInstance().player), playerInv, buggy.getName());
-        this.playerInv = playerInv;
+        super(containerBuggy, playerInv, title);
         this.passEvents = false;
-        this.type = type;
-        this.ySize = 145 + this.type * 36;
+        this.textureLoc = containerBuggy.buggyType.getTextureLoc();
+        this.ySize = 145 + containerBuggy.buggyType.ordinal() * 36;
     }
 
     @Override
@@ -53,7 +40,7 @@ public class GuiBuggy extends GuiContainerGC<ContainerBuggy>
     {
         this.font.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
-        this.font.drawString(this.playerInv.getName().getFormattedText(), 8, this.type == 0 ? 50 : 39, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, this.container.buggyType == EntityBuggy.BuggyType.NO_INVENTORY ? 50 : 39, 4210752);
 
         if (this.minecraft.player != null && this.minecraft.player.getRidingEntity() != null && this.minecraft.player.getRidingEntity() instanceof EntityBuggy)
         {
@@ -68,7 +55,7 @@ public class GuiBuggy extends GuiContainerGC<ContainerBuggy>
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.minecraft.getTextureManager().bindTexture(GuiBuggy.sealerTexture[this.type]);
+        this.minecraft.getTextureManager().bindTexture(textureLoc);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

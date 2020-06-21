@@ -36,7 +36,7 @@ public abstract class DirectionalPieceVenus extends PieceVenus
     {
         super.writeStructureToNBT(tagCompound);
 
-        tagCompound.setInteger("direction", this.direction.ordinal());
+        tagCompound.putInt("direction", this.direction.ordinal());
     }
 
     @Override
@@ -44,7 +44,7 @@ public abstract class DirectionalPieceVenus extends PieceVenus
     {
         super.readStructureFromNBT(tagCompound, manager);
 
-        if (tagCompound.hasKey("direction"))
+        if (tagCompound.contains("direction"))
         {
             this.direction = Direction.byIndex(tagCompound.getInteger("direction"));
         }
@@ -66,7 +66,7 @@ public abstract class DirectionalPieceVenus extends PieceVenus
         int randDir = rand.nextInt(3);
         do
         {
-            randomDir = Direction.getHorizontal((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
+            randomDir = Direction.byHorizontalIndex((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
             MutableBoundingBox extension = getExtension(randomDir, this.configuration.getHallwayLengthMin() + rand.nextInt(this.configuration.getHallwayLengthMax() - this.configuration.getHallwayLengthMin()), 5);
             blockX = extension.minX;
             blockZ = extension.minZ;

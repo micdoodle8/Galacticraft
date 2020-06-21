@@ -6,41 +6,48 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
+public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.landingPadFull)
+    public static TileEntityType<TileEntityLandingPad> TYPE;
+
     public TileEntityLandingPad()
     {
-        super(null);
+        super(TYPE);
     }
 
     private IDockable dockedEntity;
     private boolean initialised;
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
@@ -57,7 +64,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o instanceof IDockable && !((Entity)o).isDead)
+                if (o instanceof IDockable && ((Entity)o).isAlive())
                 {
                     final IDockable fuelable = (IDockable) o;
 
@@ -143,11 +150,11 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
         {
             BlockState stateAt = this.world.getBlockState(pos);
 
-            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.ROCKET_PAD)
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.get(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.ROCKET_PAD)
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                 {
-                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
+                    Minecraft.getInstance().particles.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                 }
                 this.world.destroyBlock(pos, false);
             }
@@ -163,11 +170,11 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
 
     @Override
-    public int addFuel(FluidStack liquid, boolean doFill)
+    public int addFuel(FluidStack liquid, IFluidHandler.FluidAction action)
     {
         if (this.dockedEntity != null)
         {
-            return this.dockedEntity.addFuel(liquid, doFill);
+            return this.dockedEntity.addFuel(liquid, action);
         }
 
         return 0;
@@ -205,22 +212,22 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
     
     private void testConnectedTile(int x, int z, HashSet<ILandingPadAttachable> connectedTiles)
-                    {
+    {
         BlockPos testPos = new BlockPos(x, this.getPos().getY(), z);
-        if (!this.world.isBlockLoaded(testPos, false))
+        if (!this.world.isBlockLoaded(testPos))
             return;
 
         final TileEntity tile = this.world.getTileEntity(testPos);
 
         if (tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.world, this.getPos()))
-                        {
-                            connectedTiles.add((ILandingPadAttachable) tile);
-                            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
-                            {
-                                ((TileEntityLaunchController) tile).setAttachedPad(this);
-                            }
-                        }
-                    }
+        {
+            connectedTiles.add((ILandingPadAttachable) tile);
+//            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
+//            {
+//                ((TileEntityLaunchController) tile).setAttachedPad(this);
+//            } TODO Planets
+        }
+    }
 
     @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
@@ -252,7 +259,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
 
     @Override
-    public boolean isBlockAttachable(IBlockReader world, BlockPos pos)
+    public boolean isBlockAttachable(IWorldReader world, BlockPos pos)
     {
         TileEntity tile = world.getTileEntity(pos);
 

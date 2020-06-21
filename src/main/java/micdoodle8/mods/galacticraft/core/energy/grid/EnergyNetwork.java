@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
-import buildcraft.api.mj.IMjReceiver;
-import cofh.redstoneflux.api.IEnergyReceiver;
-import ic2.api.energy.tile.IEnergySink;
-import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -12,14 +8,12 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.*;
 
@@ -263,38 +257,38 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = ((IElectrical) acceptor).getRequest(sideFrom);
                     }
-                    else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
-                    {
-                        e = (float) (((IStrictEnergyAcceptor) acceptor).acceptEnergy(sideFrom, 1000000D, true) / EnergyConfigHandler.TO_MEKANISM_RATIO);
-                    }
-                    else if (isIC2Loaded && acceptor instanceof IEnergySink)
-                    {
-                        double result = 0;
-                        try
-                        {
-                            result = (Double) EnergyUtil.demandedEnergyIC2.invoke(acceptor);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ConfigManagerCore.enableDebug)
-                            {
-                                ex.printStackTrace();
-                            }
-                        }
-                        //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
-                        result = Math.min(result, this.networkTierGC * 128D);
-                        e = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
-                    }
-                    else if (isBCLoaded && acceptor instanceof IMjReceiver)
-                    {
-                        long bcDemand = ((IMjReceiver)acceptor).getPowerRequested();
-                        bcDemand = Math.min(bcDemand,  this.networkTierGC * this.networkTierGC * 16000000L);  //Capped at 16 MJ/tick for standard Alu wire, 64 for heavy. 
-                        e = (float) bcDemand / EnergyConfigHandler.TO_BC_RATIO;
-                    }
-                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
-                    {
-                        e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
-                    }
+//                    else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+//                    {
+//                        e = (float) (((IStrictEnergyAcceptor) acceptor).acceptEnergy(sideFrom, 1000000D, true) / EnergyConfigHandler.TO_MEKANISM_RATIO);
+//                    }
+//                    else if (isIC2Loaded && acceptor instanceof IEnergySink)
+//                    {
+//                        double result = 0;
+//                        try
+//                        {
+//                            result = (Double) EnergyUtil.demandedEnergyIC2.invoke(acceptor);
+//                        }
+//                        catch (Exception ex)
+//                        {
+//                            if (ConfigManagerCore.enableDebug)
+//                            {
+//                                ex.printStackTrace();
+//                            }
+//                        }
+//                        //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
+//                        result = Math.min(result, this.networkTierGC * 128D);
+//                        e = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
+//                    }
+//                    else if (isBCLoaded && acceptor instanceof IMjReceiver)
+//                    {
+//                        long bcDemand = ((IMjReceiver)acceptor).getPowerRequested();
+//                        bcDemand = Math.min(bcDemand,  this.networkTierGC * this.networkTierGC * 16000000L);  //Capped at 16 MJ/tick for standard Alu wire, 64 for heavy.
+//                        e = (float) bcDemand / EnergyConfigHandler.TO_BC_RATIO;
+//                    }
+//                    else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
+//                    {
+//                        e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+//                    }
                     else if (isFELoaded && acceptor instanceof net.minecraftforge.energy.IEnergyStorage)
                     {
                         net.minecraftforge.energy.IEnergyStorage forgeEnergy = (net.minecraftforge.energy.IEnergyStorage)acceptor;
@@ -394,55 +388,55 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         sentToAcceptor = ((IElectrical) tileEntity).receiveElectricity(sideFrom, currentSending, tierProduced, true);
                     }
-                    else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
-                    {
-                        sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).acceptEnergy(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO, false) / EnergyConfigHandler.TO_MEKANISM_RATIO;
-                    }
-                    else if (isIC2Loaded && tileEntity instanceof IEnergySink)
-                    {
-                        double energySendingIC2 = currentSending * EnergyConfigHandler.TO_IC2_RATIO;
-                        if (energySendingIC2 >= 1D)
-                        {
-                            double result = 0;
-                            try
-                            {
-                                if (EnergyUtil.voltageParameterIC2)
-                                {
-                                    result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom.getOpposite(), energySendingIC2, 120D);
-                                }
-                                else
-                                {
-                                    result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom.getOpposite(), energySendingIC2);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                if (ConfigManagerCore.enableDebug)
-                                {
-                                    ex.printStackTrace();
-                                }
-                            }
-                            sentToAcceptor = currentSending - (float) result / EnergyConfigHandler.TO_IC2_RATIO;
-                            if (sentToAcceptor < 0F)
-                            {
-                                sentToAcceptor = 0F;
-                            }
-                        }
-                        else
-                        {
-                            sentToAcceptor = 0F;
-                        }
-                    }
-                    else if (isBCLoaded && tileEntity instanceof IMjReceiver)
-                    {
-                        long toSendBC = (long) (currentSending * EnergyConfigHandler.TO_BC_RATIO);
-                        sentToAcceptor = (float) (toSendBC - ((IMjReceiver)tileEntity).receivePower(toSendBC, false)) / EnergyConfigHandler.TO_BC_RATIO;
-                    }
-                    else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
-                    {
-                        final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-                        sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
-                    }
+//                    else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
+//                    {
+//                        sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).acceptEnergy(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO, false) / EnergyConfigHandler.TO_MEKANISM_RATIO;
+//                    }
+//                    else if (isIC2Loaded && tileEntity instanceof IEnergySink)
+//                    {
+//                        double energySendingIC2 = currentSending * EnergyConfigHandler.TO_IC2_RATIO;
+//                        if (energySendingIC2 >= 1D)
+//                        {
+//                            double result = 0;
+//                            try
+//                            {
+//                                if (EnergyUtil.voltageParameterIC2)
+//                                {
+//                                    result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom.getOpposite(), energySendingIC2, 120D);
+//                                }
+//                                else
+//                                {
+//                                    result = (Double) EnergyUtil.injectEnergyIC2.invoke(tileEntity, sideFrom.getOpposite(), energySendingIC2);
+//                                }
+//                            }
+//                            catch (Exception ex)
+//                            {
+//                                if (ConfigManagerCore.enableDebug)
+//                                {
+//                                    ex.printStackTrace();
+//                                }
+//                            }
+//                            sentToAcceptor = currentSending - (float) result / EnergyConfigHandler.TO_IC2_RATIO;
+//                            if (sentToAcceptor < 0F)
+//                            {
+//                                sentToAcceptor = 0F;
+//                            }
+//                        }
+//                        else
+//                        {
+//                            sentToAcceptor = 0F;
+//                        }
+//                    }
+//                    else if (isBCLoaded && tileEntity instanceof IMjReceiver)
+//                    {
+//                        long toSendBC = (long) (currentSending * EnergyConfigHandler.TO_BC_RATIO);
+//                        sentToAcceptor = (float) (toSendBC - ((IMjReceiver)tileEntity).receivePower(toSendBC, false)) / EnergyConfigHandler.TO_BC_RATIO;
+//                    }
+//                    else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
+//                    {
+//                        final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+//                        sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
+//                    }
                     else if (isFELoaded && tileEntity instanceof net.minecraftforge.energy.IEnergyStorage)
                     {
                         final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
@@ -457,7 +451,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         if (!this.spamstop)
                         {
-                            FMLLog.info("Energy network: acceptor took too much energy, offered " + currentSending + ", took " + sentToAcceptor + ". " + tileEntity.toString());
+                            GCLog.info("Energy network: acceptor took too much energy, offered " + currentSending + ", took " + sentToAcceptor + ". " + tileEntity.toString());
                             this.spamstop = true;
                         }
                         sentToAcceptor = currentSending;
@@ -612,7 +606,7 @@ public class EnergyNetwork implements IElectricityNetwork
         }
         catch (Exception e)
         {
-            FMLLog.severe("GC Aluminium Wire: Error when testing whether another mod's tileEntity can accept energy.");
+            GCLog.severe("GC Aluminium Wire: Error when testing whether another mod's tileEntity can accept energy.");
             e.printStackTrace();
         }
     }

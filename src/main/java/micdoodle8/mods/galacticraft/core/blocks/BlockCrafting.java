@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCrafting;
+import micdoodle8.mods.galacticraft.core.inventory.GCContainerNames;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -9,6 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
@@ -19,10 +24,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BlockCrafting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription
+public class BlockCrafting extends BlockAdvancedTile implements IShiftDescription
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing");
 
@@ -57,7 +64,8 @@ public class BlockCrafting extends BlockAdvancedTile implements ISortableBlock, 
 
         if (!worldIn.isRemote)
         {
-//            playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ()); TODO
+            INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerCrafting(w, p, (TileEntityCrafting)worldIn.getTileEntity(pos)), new TranslationTextComponent("container.magneticcrafting.name"));
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
         }
         return true;
     }
@@ -141,11 +149,11 @@ public class BlockCrafting extends BlockAdvancedTile implements ISortableBlock, 
         return entityIn.getHorizontalFacing().getOpposite();
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
     
     @Override
     public String getShiftDescription(ItemStack stack)

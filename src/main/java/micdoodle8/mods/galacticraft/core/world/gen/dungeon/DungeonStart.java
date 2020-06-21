@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 
 import java.util.List;
 import java.util.Random;
@@ -15,13 +15,14 @@ public class DungeonStart extends EntranceCrater
     public List<StructurePiece> attachedComponents = Lists.newArrayList();
     public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
-    public DungeonStart()
+    public DungeonStart(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public DungeonStart(World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
+    public DungeonStart(IStructurePieceType type, World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(world, configuration, rand, blockPosX, blockPosZ);
+        super(type, world, configuration, rand, blockPosX, blockPosZ);
     }
 
     @Override

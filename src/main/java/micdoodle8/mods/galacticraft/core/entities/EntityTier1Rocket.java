@@ -252,8 +252,8 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
             if (this.getLaunched())
             {
-                Vector3 motionVec = new Vector3(x1, y1, z1);
-                Object[] rider = new Object[] { riddenByEntity };
+//                Vector3 motionVec = new Vector3((float)x1, (float)y1, (float)z1);
+//                Object[] rider = new Object[] { riddenByEntity };
                 EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity.getUniqueID());
                 this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, x1, y1, z1);
                 this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, x1, y1, z1);
@@ -313,11 +313,11 @@ public class EntityTier1Rocket extends EntityTieredRocket
         return droppedItems;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemstack)

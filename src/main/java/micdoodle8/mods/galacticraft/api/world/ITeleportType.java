@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.world;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
@@ -33,7 +33,7 @@ public interface ITeleportType
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with
      */
-    Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player);
+    Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player);
 
     /**
      * Gets the entity (non-player) spawn location when entering this dimension
@@ -43,7 +43,7 @@ public interface ITeleportType
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with
      */
-    Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity);
+    Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity);
 
     /**
      * Gets the parachest spawn location when entering this dimension. Return
@@ -55,7 +55,7 @@ public interface ITeleportType
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with. Return null for no spawn
      */
-    Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand);
+    Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand);
 
     /**
      * Called when player is transferred to a space dimension

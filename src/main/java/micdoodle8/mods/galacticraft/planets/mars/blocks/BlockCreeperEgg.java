@@ -39,11 +39,11 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
         return DRAGON_EGG_AABB;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
 //    @OnlyIn(Dist.CLIENT)
 //    @Override
@@ -52,11 +52,11 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -78,7 +78,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         return ItemStack.EMPTY;
     }
@@ -130,7 +130,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

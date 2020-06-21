@@ -13,7 +13,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -28,10 +30,11 @@ public class GuiCargoUnloader extends GuiContainerGC<ContainerCargoLoader>
     private Button buttonLoadItems;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiCargoUnloader(PlayerInventory playerInv, TileEntityCargoUnloader unloader)
+    public GuiCargoUnloader(ContainerCargoLoader container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerCargoLoader(playerInv, unloader), playerInv, new StringTextComponent(unloader.getName()));
-        this.cargoUnloader = unloader;
+        super(container, playerInv, title);
+//        super(new ContainerCargoLoader(playerInv, unloader), playerInv, new TranslationTextComponent("container.cargounloader.name"));
+        this.cargoUnloader = (TileEntityCargoUnloader) container.getCargoTile();
         this.ySize = 201;
     }
 
@@ -62,7 +65,7 @@ public class GuiCargoUnloader extends GuiContainerGC<ContainerCargoLoader>
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.font.drawString(this.cargoUnloader.getName(), 60, 12, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 60, 12, 4210752);
         this.buttonLoadItems.active = this.cargoUnloader.disableCooldown == 0;
         this.buttonLoadItems.setMessage(!this.cargoUnloader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stopunloading.name") : GCCoreUtil.translate("gui.button.unloaditems.name"));
         this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);

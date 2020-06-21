@@ -302,13 +302,13 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
     {
         super.writeEntityToNBT(tagCompound);
 
-        tagCompound.setInteger("timeSinceLastJump", this.timeSinceLastJump);
+        tagCompound.putInt("timeSinceLastJump", this.timeSinceLastJump);
         tagCompound.setBoolean("jumpTargetNull", this.jumpTarget == null);
         if (this.jumpTarget != null)
         {
-            tagCompound.setInteger("jumpTargetX", this.jumpTarget.getX());
-            tagCompound.setInteger("jumpTargetY", this.jumpTarget.getY());
-            tagCompound.setInteger("jumpTargetZ", this.jumpTarget.getZ());
+            tagCompound.putInt("jumpTargetX", this.jumpTarget.getX());
+            tagCompound.putInt("jumpTargetY", this.jumpTarget.getY());
+            tagCompound.putInt("jumpTargetZ", this.jumpTarget.getZ());
         }
     }
 

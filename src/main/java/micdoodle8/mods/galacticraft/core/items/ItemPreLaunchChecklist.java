@@ -1,35 +1,36 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiPreLaunchChecklist;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemPreLaunchChecklist extends Item implements ISortableItem
 {
     public ItemPreLaunchChecklist(Item.Properties properties)
     {
         super(properties);
-        this.setUnlocalizedName(assetName);
-        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
+//        this.setMaxStackSize(1);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
@@ -54,11 +55,11 @@ public class ItemPreLaunchChecklist extends Item implements ISortableItem
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack item, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (par1ItemStack != null && this == GCItems.heavyPlatingTier1)
+        if (!item.isEmpty() && this == GCItems.heavyPlatingTier1)
         {
-            tooltip.add(GCCoreUtil.translate("item.tier1.desc"));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.tier1.desc")));
         }
     }
 
@@ -69,7 +70,8 @@ public class ItemPreLaunchChecklist extends Item implements ISortableItem
 
         if (worldIn.isRemote)
         {
-            playerIn.openGui(GalacticraftCore.instance, GuiIdsCore.PRE_LAUNCH_CHECKLIST, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+            Minecraft.getInstance().displayGuiScreen(new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), itemStack.getTag().getCompound("checklistData")));
+//            playerIn.openGui(GalacticraftCore.instance, GuiIdsCore.PRE_LAUNCH_CHECKLIST, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
             return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
         }
 

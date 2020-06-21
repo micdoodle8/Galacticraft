@@ -29,12 +29,12 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
     private boolean spawnSmokeShort;
     private UUID ridingEntity;
 
-    public ParticleLaunchFlame(World par1World, Vector3 position, Vector3 motion, boolean launched, EntityParticleData particleData, IAnimatedSprite animatedSprite)
+    public ParticleLaunchFlame(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, boolean launched, EntityParticleData particleData, IAnimatedSprite animatedSprite)
     {
-        super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
-        this.motionX = motion.x;
-        this.motionY = motion.y;
-        this.motionZ = motion.z;
+        super(par1World, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+        this.motionX = motX;
+        this.motionY = motY;
+        this.motionZ = motZ;
         this.particleRed = 255F / 255F;
         this.particleGreen = 120F / 255F + this.rand.nextFloat() / 3;
         this.particleBlue = 55F / 255F;
@@ -156,7 +156,7 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
         @Override
         public Particle makeParticle(EntityParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
-            return new ParticleLaunchFlame(worldIn, new Vector3(x, y, z), new Vector3(xSpeed, ySpeed, zSpeed), true, typeIn, this.spriteSet);
+            return new ParticleLaunchFlame(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, true, typeIn, this.spriteSet);
         }
     }
 }

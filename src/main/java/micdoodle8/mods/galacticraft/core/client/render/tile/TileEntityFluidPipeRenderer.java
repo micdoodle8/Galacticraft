@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import com.google.common.collect.Maps;
-
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
@@ -11,16 +11,18 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraftforge.fluids.Fluid;
-
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
@@ -28,13 +30,14 @@ import java.util.HashMap;
 public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFluidPipe>
 {
     private static HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
+    public static IBakedModel[] fluidPipeModels = new IBakedModel[6];
 
     private final int stages = 100;
 
     @Override
-    public void render(TileEntityFluidPipe pipe, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntityFluidPipe pipe, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if (pipe.getBlockType() == GCBlocks.oxygenPipePull)
+        if (pipe.getBlockState().getBlock() == GCBlocks.fluidPipePull)
         {
             GL11.glPushMatrix();
 
@@ -55,7 +58,7 @@ public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFl
 
             TileEntity[] adj = OxygenUtil.getAdjacentFluidConnections(pipe);
 
-            for (Direction facing : Direction.VALUES)
+            for (Direction facing : Direction.values())
             {
                 TileEntity sideTile = adj[facing.ordinal()];
 
@@ -78,7 +81,7 @@ public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFl
                             GL11.glTranslatef(-1/16F, 0F, 0F);
                             break;
                         }
-                    ClientUtil.drawBakedModel(EventHandlerClient.fluidPipeModels[facing.ordinal()]);
+                    ClientUtil.drawBakedModel(fluidPipeModels[facing.ordinal()]);
                     GL11.glPopMatrix();
                 }
             }
@@ -127,11 +130,11 @@ public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFl
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             float opacity = 1.0F;
 
-            boolean gas = fluid.isGaseous();
+            boolean gas = fluid.getAttributes().isGaseous();
 
             if (gas)
             {
@@ -142,7 +145,7 @@ public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFl
 
             TileEntity[] connections = OxygenUtil.getAdjacentFluidConnections(pipe);
 
-            for (Direction side : Direction.VALUES)
+            for (Direction side : Direction.values())
             {
                 TileEntity sideTile = connections[side.ordinal()];
                 if (sideTile != null)
@@ -196,7 +199,7 @@ public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFl
             return null;
         }
 
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(fluid.getAttributes().getStillTexture().toString());
         int sideIndex = side == null ? 6 : side.ordinal();
 
         if (cache.containsKey(sideIndex) && cache.get(sideIndex).containsKey(fluid))

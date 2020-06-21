@@ -1,40 +1,53 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.ICraftingRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class ContainerCrafting extends Container
 {
-    public TileEntityCrafting tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.CRAFTING)
+    public static ContainerType<ContainerCrafting> TYPE;
+
+    public TileEntityCrafting tileCrafting;
     public PersistantInventoryCrafting craftMatrix;
     public IInventory craftResult = new CraftResultInventory();
     private NonNullList<ItemStack> memory = NonNullList.withSize(9, ItemStack.EMPTY);
 
-    public ContainerCrafting(PlayerInventory playerInventory, IInventory tile)
+    public ContainerCrafting(int containerId, PlayerInventory playerInv, TileEntityCrafting crafting)
     {
-        this.tileEntity = (TileEntityCrafting) tile;
-        this.craftMatrix = tileEntity.craftMatrix;
-        this.craftMatrix.eventHandler = this;
-        this.addSlotToContainer(new SlotCraftingMemory(playerInventory.player, this.craftMatrix, this.craftResult, 0, 124, 33, this.tileEntity));
+        super(TYPE, containerId);
+        this.tileCrafting = crafting;
+        this.craftMatrix = crafting != null ? this.tileCrafting.craftMatrix : null;
+        if (this.craftMatrix != null)
+        {
+            this.craftMatrix.eventHandler = this;
+        }
+        this.addSlot(new SlotCraftingMemory(playerInv.player, this.craftMatrix, this.craftResult, 0, 124, 33, this.tileCrafting));
 
         for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 3; ++j)
             {
-                this.addSlotToContainer(new Slot(this.craftMatrix, j + i * 3, 30 + j * 18, 17 + i * 18));
+                this.addSlot(new Slot(this.craftMatrix, j + i * 3, 30 + j * 18, 17 + i * 18));
             }
         }
 
@@ -42,18 +55,18 @@ public class ContainerCrafting extends Container
         {
             for (int i1 = 0; i1 < 9; ++i1)
             {
-                this.addSlotToContainer(new Slot(playerInventory, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
+                this.addSlot(new Slot(playerInv, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
             }
         }
 
         for (int l = 0; l < 9; ++l)
         {
-            this.addSlotToContainer(new Slot(playerInventory, l, 8 + l * 18, 142));
+            this.addSlot(new Slot(playerInv, l, 8 + l * 18, 142));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);
     }
-    
+
     @Override
     public NonNullList<ItemStack> getInventory()
     {
@@ -63,10 +76,10 @@ public class ContainerCrafting extends Container
         {
             list.add(this.inventorySlots.get(i).getStack());
         }
-        
-        //Override this method to trick vanilla networking into carrying our memory at end of its packets 
+
+        //Override this method to trick vanilla networking into carrying our memory at end of its packets
         for (int i = 0; i < 9; i++)
-            list.add(this.tileEntity.memory.get(i));
+            list.add(((TileEntityCrafting) this.tileCrafting).memory.get(i));
 
         return list;
     }
@@ -79,8 +92,8 @@ public class ContainerCrafting extends Container
             if (i < 46)
                 this.getSlot(i).putStack(list.get(i));
             else if (i < 55)
-            	//Read memory clientside from the end of the vanilla packet, see getInventory() 
-                this.tileEntity.memory.set(i - 46, list.get(i));
+                //Read memory clientside from the end of the vanilla packet, see getInventory()
+                ((TileEntityCrafting) this.tileCrafting).memory.set(i - 46, list.get(i));
         }
     }
 
@@ -90,7 +103,9 @@ public class ContainerCrafting extends Container
     @Override
     public void onCraftMatrixChanged(IInventory inventoryIn)
     {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.craftMatrix, this.tileEntity.getWorld()));
+        World world = ((TileEntityCrafting) tileCrafting).getWorld();
+        Optional<ICraftingRecipe> optional = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, world);
+        this.craftResult.setInventorySlotContents(0, optional.get().getCraftingResult(this.craftMatrix));
     }
 
     /**
@@ -109,7 +124,7 @@ public class ContainerCrafting extends Container
     @Override
     public boolean canInteractWith(PlayerEntity playerIn)
     {
-        return this.tileEntity.isUsableByPlayer(playerIn);
+        return this.tileCrafting.isUsableByPlayer(playerIn);
     }
 
     /**
@@ -217,7 +232,7 @@ public class ContainerCrafting extends Container
                 }
             }
         }
-        
+
         //First fill any empty slots
         for (Slot slot : acceptSlots)
         {
@@ -232,14 +247,14 @@ public class ContainerCrafting extends Container
                     return false;
                 }
             }
-        }        
-        
+        }
+
         //The stack more than exceeds what the crafting inventory requires
         if (stack.getCount() >= acceptTotal)
         {
             if (acceptTotal == 0)
                 return false;
-            
+
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
@@ -249,20 +264,20 @@ public class ContainerCrafting extends Container
             }
             return true;
         }
-        
+
         int uneven = 0;
         for (int q : acceptQuantity)
         {
             uneven += q - minQuantity;
         }
-        
+
         //Use the whole stack to try to even up the neediest slots
         if (stack.getCount() <= uneven)
         {
             do
             {
                 Slot neediest = null;
-                int smallestStack = 64; 
+                int smallestStack = 64;
                 for (Slot slot : acceptSlots)
                 {
                     ItemStack target = slot.getStack();
@@ -296,7 +311,7 @@ public class ContainerCrafting extends Container
                 slot.onSlotChanged();
             }
         }
-        
+
         //Spread the remaining stack over all slots evenly
         int average = stack.getCount() / acceptSlots.size();
         int modulus = stack.getCount() - average * acceptSlots.size();
@@ -325,34 +340,34 @@ public class ContainerCrafting extends Container
                     break;
             }
         }
-    
+
         return true;
     }
 
     private boolean matchesCrafting(ItemStack itemstack1)
     {
-        if (this.tileEntity.overrideMemory(itemstack1, this.memory))
+        if (((TileEntityCrafting) this.tileCrafting).overrideMemory(itemstack1, this.memory))
         {
             return true;
         }
 
         for (int i = 0; i < 9; i++)
         {
-           if (matchingStacks(itemstack1, this.tileEntity.getMemory(i)) && (this.craftMatrix.getStackInSlot(i).isEmpty() || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
-           {
-               for (int j = 0; j < 9; j++)
-               {
-                   this.memory.set(j, this.tileEntity.getMemory(j));
-               }
-               return true;
-           }
+            if (matchingStacks(itemstack1, ((TileEntityCrafting) this.tileCrafting).getMemory(i)) && (this.craftMatrix.getStackInSlot(i).isEmpty() || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    this.memory.set(j, ((TileEntityCrafting) this.tileCrafting).getMemory(j));
+                }
+                return true;
+            }
         }
         return false;
     }
-    
+
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && RecipeUtil.areItemStackTagsEqual(stack, target) && (!target.isStackable() || target.getCount() < target.getMaxStackSize());
+        return !target.isEmpty() && target.getItem() == stack.getItem() /*&& (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata())*/ && RecipeUtil.areItemStackTagsEqual(stack, target) && (!target.isStackable() || target.getCount() < target.getMaxStackSize());
     }
 
     /**

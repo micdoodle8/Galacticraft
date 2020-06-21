@@ -3,13 +3,16 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -22,9 +25,10 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
-    public GuiElectricIngotCompressor(PlayerInventory playerInv, TileEntityElectricIngotCompressor compressor)
+    public GuiElectricIngotCompressor(ContainerElectricIngotCompressor container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerElectricIngotCompressor(playerInv, compressor), playerInv, new StringTextComponent(compressor.getName()));
+        super(container, playerInv, title);
+//        super(new ContainerElectricIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent(compressor.getTierGC() == 2 ? "tile.machine2.4.name" : "tile.machine4.11.name"));
         this.compressor = compressor;
         this.ySize = 199;
     }
@@ -54,7 +58,7 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.compressor.getName(), 10, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 10, 6, 4210752);
         String displayText;
 
         if (this.compressor.processTicks > 0)

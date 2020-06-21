@@ -3,25 +3,23 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicBuggy;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
-public class GuiSchematicBuggy extends GuiPositionedContainer<ContainerBuggyBench> implements ISchematicResultPage
+public class GuiSchematicBuggy extends GuiContainerGC<ContainerSchematicBuggy> implements ISchematicResultPage
 {
     private static final ResourceLocation buggyBenchTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggybench.png");
 
     private int pageIndex;
 
-    public GuiSchematicBuggy(PlayerInventory playerInv, BlockPos pos)
+    public GuiSchematicBuggy(ContainerSchematicBuggy containerBuggy, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerBuggyBench(playerInv, pos, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("schematic.moonbuggy.name"), pos);
+        super(containerBuggy, playerInv, title);
         this.ySize = 221;
     }
 

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 public abstract class SizedPiece extends DirectionalPiece
@@ -10,13 +11,14 @@ public abstract class SizedPiece extends DirectionalPiece
     protected int sizeY;
     protected int sizeZ;
 
-    public SizedPiece()
+    public SizedPiece(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public SizedPiece(DungeonConfiguration configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
+    public SizedPiece(IStructurePieceType type, DungeonConfiguration configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(configuration, direction);
+        super(type, configuration, direction);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
@@ -27,9 +29,9 @@ public abstract class SizedPiece extends DirectionalPiece
     {
         super.writeStructureToNBT(tagCompound);
 
-        tagCompound.setInteger("sizeX", this.sizeX);
-        tagCompound.setInteger("sizeY", this.sizeY);
-        tagCompound.setInteger("sizeZ", this.sizeZ);
+        tagCompound.putInt("sizeX", this.sizeX);
+        tagCompound.putInt("sizeY", this.sizeY);
+        tagCompound.putInt("sizeZ", this.sizeZ);
     }
 
     @Override

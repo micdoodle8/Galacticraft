@@ -53,11 +53,11 @@ public class BlockMinerBaseFull extends BlockTileGC
         return 1;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -95,7 +95,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -104,7 +104,7 @@ public class BlockMinerBaseFull extends BlockTileGC
             ((TileEntityMinerBase) tileEntity).onBlockRemoval();
         }
 
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         return new ItemStack(Item.getItemFromBlock(AsteroidBlocks.blockMinerBase), 1, 0);
     }
@@ -154,7 +154,7 @@ public class BlockMinerBaseFull extends BlockTileGC
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

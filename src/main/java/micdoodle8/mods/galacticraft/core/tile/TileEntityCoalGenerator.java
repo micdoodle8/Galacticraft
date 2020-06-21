@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
@@ -12,14 +14,19 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
 public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource implements IInventoryDefaults, ISidedInventory, IConnector
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.coalGenerator)
+    public static TileEntityType<TileEntityCoalGenerator> TYPE;
+
     //New energy rates:
     //
     //Tier 1 machine typically consumes 600 gJ/s = 30 gJ/t
@@ -40,28 +47,28 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
     public float prevGenerateWatts = 0;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public float heatGJperTick = 0;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int itemCookTime = 0;
 
     public TileEntityCoalGenerator()
     {
-        super("tile.machine.0.name");
+        super(TYPE);
         this.storage.setMaxExtract(TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK);
         this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote && this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK > 0)
         {
             this.receiveEnergyGC(null, (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK), false);
         }
 
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -98,19 +105,19 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.itemCookTime = nbt.getInt("itemCookTime");
         this.heatGJperTick = nbt.getInt("generateRateInt");
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("itemCookTime", this.itemCookTime);
-        nbt.setFloat("generateRate", this.heatGJperTick);
+        nbt.putFloat("generateRate", this.heatGJperTick);
 
         return nbt;
     }

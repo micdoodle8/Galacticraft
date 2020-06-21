@@ -1,21 +1,28 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerOxygenStorageModule extends Container
 {
-    private TileEntityOxygenStorageModule tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_STORAGE_MODULE)
+    public static ContainerType<ContainerOxygenStorageModule> TYPE;
 
-    public ContainerOxygenStorageModule(PlayerInventory par1InventoryPlayer, TileEntityOxygenStorageModule storageModule)
+    private TileEntityOxygenStorageModule storageModule;
+
+    public ContainerOxygenStorageModule(int containerId, PlayerInventory playerInv, TileEntityOxygenStorageModule storageModule)
     {
-        this.tileEntity = storageModule;
-        this.addSlotToContainer(new SlotSpecific(storageModule, 0, 17, 22, IItemOxygenSupply.class));
+        super(TYPE, containerId);
+        this.storageModule = storageModule;
+        this.addSlot(new SlotSpecific(storageModule, 0, 17, 22, IItemOxygenSupply.class));
 
         int var3;
 
@@ -23,23 +30,28 @@ public class ContainerOxygenStorageModule extends Container
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 142));
         }
 
-        this.tileEntity.playersUsing.add(par1InventoryPlayer.player);
+        this.storageModule.playersUsing.add(playerInv.player);
+    }
+
+    public TileEntityOxygenStorageModule getStorageModule()
+    {
+        return storageModule;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.playersUsing.remove(entityplayer);
+        this.storageModule.playersUsing.remove(entityplayer);
     }
 
     @Override

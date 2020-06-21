@@ -107,7 +107,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        this.fontRenderer.drawString(this.tile.getName(), 7, 6, 4210752);
+        this.fontRenderer.drawString(this.title.getFormattedText(), 7, 6, 4210752);
         this.fontRenderer.drawString(this.getStatus(), 177, 141, 4210752);
 
         if (this.extraLines)
@@ -191,7 +191,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
         BufferBuilder worldRenderer = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         worldRenderer.pos(x + 0, y + height, this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         worldRenderer.pos(x + width, y + height, this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();

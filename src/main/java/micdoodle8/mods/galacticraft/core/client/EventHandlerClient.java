@@ -1,9 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import com.google.common.base.Function;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -11,31 +10,19 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerClient
 {
     public static Minecraft mc = Minecraft.getInstance();
     public static boolean sneakRenderOverride;
-    public static IBakedModel[] fluidPipeModels = new IBakedModel[6];
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)  //Lowest priority to do the PushMatrix last, just before vanilla RenderPlayer - this also means if it gets cancelled first by another mod, this will never be called
+    @SubscribeEvent(priority = EventPriority.LOWEST) //Lowest priority to do the PushMatrix last, just before vanilla RenderPlayer - this also means if it gets cancelled first by another mod, this will never be called
     public void onRenderPlayerPre(RenderPlayerEvent.Pre event)
     {
         GL11.glPushMatrix();
@@ -111,30 +98,6 @@ public class EventHandlerClient
                 mc.textureManager.bindTexture(ClientProxyCore.uranusRingTexture);
                 float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
                 ((GuiCelestialSelection) mc.currentScreen).blit(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 7, 28, false, false, 32, 32);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onTextureStitch(TextureStitchEvent.Post event)
-    {
-        for (Direction facing : Direction.VALUES)
-        {
-            try
-            {
-                // Get the first character of the direction name (n/e/s/w/u/d)
-                Character c = Character.toLowerCase(facing.getName().charAt(0));
-                IModel model;
-                synchronized (ModelLoaderRegistry.class)
-                {
-                    model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID_CORE, "block/fluid_pipe_pull_" + c));
-                }
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = (ResourceLocation location) -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
-                fluidPipeModels[facing.ordinal()] = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
             }
         }
     }

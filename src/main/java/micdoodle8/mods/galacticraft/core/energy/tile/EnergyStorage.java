@@ -42,7 +42,7 @@ public class EnergyStorage implements IEnergyStorageGC
             this.energy = 0;
         }
 
-        nbt.setFloat("EnergyF", Math.min(this.energy, this.capacity));
+        nbt.putFloat("EnergyF", Math.min(this.energy, this.capacity));
         return nbt;
     }
 

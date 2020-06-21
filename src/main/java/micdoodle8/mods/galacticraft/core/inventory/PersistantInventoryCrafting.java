@@ -58,11 +58,11 @@ public class PersistantInventoryCrafting extends CraftingInventory
         return itemstack;
     }
 
-    @Override
-    public ItemStack getStackInRowAndColumn(int row, int column)
-    {
-        return row >= 0 && row < this.inventoryWidth && column >= 0 && column < this.inventoryHeight ? this.getStackInSlot(row + column * this.inventoryWidth) : ItemStack.EMPTY;
-    }
+//    @Override
+//    public ItemStack getStackInRowAndColumn(int row, int column)
+//    {
+//        return row >= 0 && row < this.inventoryWidth && column >= 0 && column < this.inventoryHeight ? this.getStackInSlot(row + column * this.inventoryWidth) : ItemStack.EMPTY;
+//    }
 
     @Override
     public ItemStack removeStackFromSlot(int index)
@@ -113,17 +113,17 @@ public class PersistantInventoryCrafting extends CraftingInventory
         return true;
     }
 
-    @Override
-    public String getName()
-    {
-        return "container.crafting";
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return "container.crafting";
+//    }
+//
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public int getInventoryStackLimit()
@@ -158,23 +158,23 @@ public class PersistantInventoryCrafting extends CraftingInventory
         return true;
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public void clear()
@@ -182,9 +182,9 @@ public class PersistantInventoryCrafting extends CraftingInventory
 
     }
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return null;
+//    }
 }

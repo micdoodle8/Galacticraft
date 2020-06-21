@@ -49,11 +49,11 @@ public class InventoryBuggyBench implements IInventory
         }
     }
 
-    @Override
-    public String getName()
-    {
-        return "container.crafting";
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return "container.crafting";
+//    }
 
     @Override
     public ItemStack removeStackFromSlot(int index)
@@ -121,11 +121,11 @@ public class InventoryBuggyBench implements IInventory
     {
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemstack)
@@ -147,22 +147,22 @@ public class InventoryBuggyBench implements IInventory
         return true;
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public void clear()
@@ -170,9 +170,9 @@ public class InventoryBuggyBench implements IInventory
 
     }
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
+//    }
 }

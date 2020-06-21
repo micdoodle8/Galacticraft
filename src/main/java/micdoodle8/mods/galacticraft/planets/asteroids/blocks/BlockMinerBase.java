@@ -58,11 +58,11 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
         return 1;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -91,7 +91,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -102,7 +102,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

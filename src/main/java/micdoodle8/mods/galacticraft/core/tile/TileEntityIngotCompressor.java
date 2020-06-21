@@ -2,36 +2,45 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
-import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.OreDictionary;
-import java.util.*;
+import net.minecraft.util.SoundEvents;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventoryDefaults, ISidedInventory
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.ingotCompressor)
+    public static TileEntityType<TileEntityIngotCompressor> TYPE;
+
     public static final int PROCESS_TIME_REQUIRED = 200;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int furnaceBurnTime = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int currentItemBurnTime = 0;
     private long ticks;
 
@@ -42,14 +51,14 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
     public TileEntityIngotCompressor()
     {
-        super("tile.machine.3.name");
+        super(TYPE);
         inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -64,7 +73,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             if (this.furnaceBurnTime == 0 && this.canSmelt())
             {
                 ItemStack fuel = this.getInventory().get(0);
-                this.currentItemBurnTime = this.furnaceBurnTime = FurnaceTileEntity.getItemBurnTime(fuel);
+                this.currentItemBurnTime = this.furnaceBurnTime = ForgeHooks.getBurnTime(fuel);
 
                 if (this.furnaceBurnTime > 0)
                 {
@@ -149,56 +158,56 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 for (ItemStack itemstack1 : ((ShapedRecipesGC) recipe).recipeItems)
                 {
-                    if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+                    if (stack.getItem() == itemstack1.getItem() && (itemstack1.getDamage() == 32767 || stack.getDamage() == itemstack1.getDamage()))
                     {
                         return true;
                     }
                 }
             }
-            else if (recipe instanceof ShapelessOreRecipeGC)
-            {
-                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
-
-                Iterator<Object> req = required.iterator();
-
-                int match = 0;
-
-                while (req.hasNext())
-                {
-                    Object next = req.next();
-
-                    if (next instanceof ItemStack)
-                    {
-                        if (OreDictionary.itemMatches((ItemStack) next, stack, false))
-                        {
-                            match++;
-                        }
-                    }
-                    else if (next instanceof List)
-                    {
-                        for (ItemStack itemStack : ((List<ItemStack>) next))
-                        {
-                            if (OreDictionary.itemMatches(itemStack, stack, false))
-                            {
-                                match++;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (match == 0)
-                {
-                    continue;
-                }
-
-                if (match == 1)
-                {
-                    return true;
-                }
-
-                return random.nextInt(match) == 0;
-            }
+//            else if (recipe instanceof ShapelessOreRecipeGC)
+//            {
+//                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
+//
+//                Iterator<Object> req = required.iterator();
+//
+//                int match = 0;
+//
+//                while (req.hasNext())
+//                {
+//                    Object next = req.next();
+//
+//                    if (next instanceof ItemStack)
+//                    {
+//                        if (OreDictionary.itemMatches((ItemStack) next, stack, false))
+//                        {
+//                            match++;
+//                        }
+//                    }
+//                    else if (next instanceof List)
+//                    {
+//                        for (ItemStack itemStack : ((List<ItemStack>) next))
+//                        {
+//                            if (OreDictionary.itemMatches(itemStack, stack, false))
+//                            {
+//                                match++;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if (match == 0)
+//                {
+//                    continue;
+//                }
+//
+//                if (match == 1)
+//                {
+//                    return true;
+//                }
+//
+//                return random.nextInt(match) == 0;
+//            } TODO OreDict recipes
         }
 
         return false;
@@ -211,7 +220,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             ItemStack resultItemStack = this.producingStack;
             if (ConfigManagerCore.quickMode)
             {
-                if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
+                if (resultItemStack.getItem().getTranslationKey(resultItemStack).contains("compressed"))
                 {
                     resultItemStack.grow(resultItemStack.getCount());
                 }
@@ -251,9 +260,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.processTicks = nbt.getInt("smeltingTicks");
         ListNBT var2 = nbt.getList("Items", 10);
 
@@ -268,11 +277,11 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             if (j >= 0 && j < this.getInventory().size())
             {
-                this.getInventory().set(j, new ItemStack(nbttagcompound));
+                this.getInventory().set(j, ItemStack.read(nbttagcompound));
             }
             else if (j < this.getInventory().size() + this.compressingCraftMatrix.getSizeInventory())
             {
-                this.compressingCraftMatrix.setInventorySlotContents(j - this.getInventory().size(), new ItemStack(nbttagcompound));
+                this.compressingCraftMatrix.setInventorySlotContents(j - this.getInventory().size(), ItemStack.read(nbttagcompound));
             }
         }
 
@@ -280,9 +289,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("smeltingTicks", this.processTicks);
         ListNBT var2 = new ListNBT();
         int i;
@@ -292,9 +301,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             if (!this.getInventory().get(i).isEmpty())
             {
                 CompoundNBT tagCompound = new CompoundNBT();
-                tagCompound.setByte("Slot", (byte) i);
-                this.getInventory().get(i).writeToNBT(tagCompound);
-                var2.appendTag(tagCompound);
+                tagCompound.putByte("Slot", (byte) i);
+                this.getInventory().get(i).write(tagCompound);
+                var2.add(tagCompound);
             }
         }
 
@@ -303,9 +312,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty())
             {
                 CompoundNBT tagCompound = new CompoundNBT();
-                tagCompound.setByte("Slot", (byte) (i + this.getInventory().size()));
-                this.compressingCraftMatrix.getStackInSlot(i).writeToNBT(tagCompound);
-                var2.appendTag(tagCompound);
+                tagCompound.putByte("Slot", (byte) (i + this.getInventory().size()));
+                this.compressingCraftMatrix.getStackInSlot(i).write(tagCompound);
+                var2.add(tagCompound);
             }
         }
 
@@ -363,7 +372,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             }
             else
             {
-                var3 = this.getInventory().get(par1).splitStack(par2);
+                var3 = this.getInventory().get(par1).split(par2);
 
                 if (this.getInventory().get(par1).isEmpty())
                 {
@@ -459,7 +468,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         if (slotID == 0)
         {
-            return FurnaceTileEntity.getItemBurnTime(itemStack) > 0;
+            return ForgeHooks.getBurnTime(itemStack) > 0;
         }
         else if (slotID >= 2)
         {

@@ -13,7 +13,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 
 public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
 {
@@ -21,10 +21,10 @@ public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
     TileEntityCrafting tileCrafting;
     List<String> memorySlotDesc = new ArrayList<String>();
     
-    public GuiCrafting(PlayerInventory playerInv, TileEntityCrafting tileCrafting)
+    public GuiCrafting(ContainerCrafting containerCrafting, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerCrafting(playerInv, tileCrafting), playerInv, new StringTextComponent(tileCrafting.getName()));
-        this.tileCrafting = tileCrafting;
+        super(containerCrafting, playerInv, title);
+        this.tileCrafting = (TileEntityCrafting) containerCrafting.tileCrafting;
     }
     
     @Override

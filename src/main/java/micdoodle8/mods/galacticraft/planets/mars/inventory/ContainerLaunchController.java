@@ -14,12 +14,12 @@ public class ContainerLaunchController extends Container
 {
     private final TileEntityLaunchController tileEntity;
 
-    public ContainerLaunchController(PlayerInventory par1InventoryPlayer, TileEntityLaunchController tileEntity, PlayerEntity player)
+    public ContainerLaunchController(PlayerInventory playerInv, TileEntityLaunchController tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
         tileEntity.checkDestFrequencyValid();
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
 
         int var6;
         int var7;
@@ -28,13 +28,13 @@ public class ContainerLaunchController extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 127 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 127 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 185));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 185));
         }
 
         tileEntity.openInventory(player);

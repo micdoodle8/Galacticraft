@@ -9,14 +9,10 @@ import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -24,11 +20,9 @@ import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
-import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -36,22 +30,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraft.network.play.server.SRespawnPacket;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,15 +50,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 public class GCPlayerHandler
 {
@@ -569,8 +557,8 @@ public class GCPlayerHandler
                 lowestThermalStrength = Math.abs(lowestThermalStrength);  //It shouldn't be negative, but just in case!
             }
 
-            IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) player.world.getDimension();
-            float thermalLevelMod = provider.getThermalLevelModifier();
+            IGalacticraftWorldProvider dimension = (IGalacticraftWorldProvider) player.world.getDimension();
+            float thermalLevelMod = dimension.getThermalLevelModifier();
             float absThermalLevelMod = Math.abs(thermalLevelMod);
 
             if (absThermalLevelMod > 0D)
@@ -1179,7 +1167,7 @@ public class GCPlayerHandler
 
     protected void sendPlanetList(ServerPlayerEntity player, GCPlayerStats stats)
     {
-        HashMap<String, Integer> map;
+        HashMap<String, DimensionType> map;
         if (player.ticksExisted % 50 == 0)
         //Check for genuine update - e.g. maybe some other player created a space station or changed permissions
         //CAUTION: possible server load due to dimension loading, if any planets or moons were (contrary to GC default) set to hotload
@@ -1194,7 +1182,7 @@ public class GCPlayerHandler
         String temp = "";
         int count = 0;
 
-        for (Entry<String, Integer> entry : map.entrySet())
+        for (Entry<String, DimensionType> entry : map.entrySet())
         {
             temp = temp.concat(entry.getKey() + (count < map.entrySet().size() - 1 ? "?" : ""));
             count++;
@@ -1223,7 +1211,7 @@ public class GCPlayerHandler
 
     protected void sendDungeonDirectionPacket(ServerPlayerEntity player, GCPlayerStats stats)
     {
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DUNGEON_DIRECTION, GCCoreUtil.getDimensionID(player.world), new Object[] { MapGenDungeon.directionToNearestDungeon(player.world, player.posX + player.motionX, player.posZ + player.motionZ) }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DUNGEON_DIRECTION, GCCoreUtil.getDimensionID(player.world), new Object[] { MapGenDungeon.directionToNearestDungeon(player.world, player.posX + player.getMotion().x, player.posZ + player.getMotion().z) }), player);
     }
 
     public static void sendGearUpdatePacket(ServerPlayerEntity player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType)
@@ -1236,7 +1224,7 @@ public class GCPlayerHandler
         MinecraftServer theServer = player.server;
         if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, PlayerUtil.getName(player)) != null)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, GCCoreUtil.getDimensionID(player.world), new Object[] { PlayerUtil.getName(player), packetType.ordinal(), gearType.ordinal(), gearID }), new TargetPoint(GCCoreUtil.getDimensionID(player.world), player.posX, player.posY, player.posZ, 50.0D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, GCCoreUtil.getDimensionID(player.world), new Object[] { PlayerUtil.getName(player), packetType.ordinal(), gearType.ordinal(), gearID }), new PacketDistributor.TargetPoint(player.posX, player.posY, player.posZ, 50.0, GCCoreUtil.getDimensionID(player.world)));
         }
     }
 
@@ -1253,63 +1241,63 @@ public class GCPlayerHandler
         //This will speed things up a little
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-        if ((ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
-        {
-            if (stats.getStartDimension().length() > 0)
-            {
-                stats.setStartDimension("");
-            }
-            else
-            {
-                //PlayerAPI is installed
-                ServerWorld worldOld = (ServerWorld) player.world;
-                try
-                {
-                    worldOld.getPlayerChunkMap().removePlayer(player);
-                }
-                catch (Exception e)
-                {
-                }
-                worldOld.playerEntities.remove(player);
-                worldOld.updateAllPlayersSleepingFlag();
-                worldOld.loadedEntityList.remove(player);
-                worldOld.onEntityRemoved(player);
-                worldOld.getEntityTracker().untrack(player);
-                if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
-                {
-                    Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
-                    chunkOld.removeEntity(player);
-                    chunkOld.setModified(true);
-                }
-
-                ServerWorld worldNew = WorldUtil.getStartWorld(worldOld);
-                int dimID = GCCoreUtil.getDimensionID(worldNew);
-                player.dimension = dimID;
-                GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
-                player.connection.sendPacket(new SRespawnPacket(dimID, player.world.getDifficulty(), player.world.getWorldInfo().getGenerator(), player.interactionManager.getGameType()));
-
-                if (worldNew.provider instanceof DimensionSpaceStation)
-                {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.world), new Object[] {}), player);
-                }
-                worldNew.addEntity(player);
-                player.setWorld(worldNew);
-                player.server.getPlayerList().preparePlayer(player, (ServerWorld) worldOld);
-            }
-
-            //This is a mini version of the code at WorldUtil.teleportEntity
-            player.interactionManager.setWorld((ServerWorld) player.world);
-            final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.world.getDimension().getClass());
-            Vector3 spawnPos = type.getPlayerSpawnLocation((ServerWorld) player.world, player);
-            ChunkPos pair = player.world.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
-            GCLog.debug("Loading first chunk in new dimension.");
-            ((ServerWorld) player.world).getChunkProvider().loadChunk(pair.x, pair.z);
-            player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
-            type.setupAdventureSpawn(player);
-            type.onSpaceDimensionChanged(player.world, player, false);
-            player.setSpawnPoint(new BlockPos(spawnPos.intX(), spawnPos.intY(), spawnPos.intZ()), true, GCCoreUtil.getDimensionID(player.world));
-            stats.setNewAdventureSpawn(true);
-        }
+//        if ((ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
+//        {
+//            if (stats.getStartDimension().length() > 0)
+//            {
+//                stats.setStartDimension("");
+//            }
+//            else
+//            {
+//                //PlayerAPI is installed
+//                ServerWorld worldOld = (ServerWorld) player.world;
+//                try
+//                {
+//                    worldOld.getPlayerChunkMap().removePlayer(player);
+//                }
+//                catch (Exception e)
+//                {
+//                }
+//                worldOld.playerEntities.remove(player);
+//                worldOld.updateAllPlayersSleepingFlag();
+//                worldOld.loadedEntityList.remove(player);
+//                worldOld.onEntityRemoved(player);
+//                worldOld.getEntityTracker().untrack(player);
+//                if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
+//                {
+//                    Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
+//                    chunkOld.removeEntity(player);
+//                    chunkOld.setModified(true);
+//                }
+//
+//                ServerWorld worldNew = WorldUtil.getStartWorld(worldOld);
+//                DimensionType dimID = GCCoreUtil.getDimensionID(worldNew);
+//                player.dimension = dimID;
+//                GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
+//                player.connection.sendPacket(new SRespawnPacket(dimID, player.world.getDifficulty(), player.world.getWorldInfo().getGenerator(), player.interactionManager.getGameType()));
+//
+//                if (worldNew.dimension instanceof DimensionSpaceStation)
+//                {
+//                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.world), new Object[] {}), player);
+//                }
+//                worldNew.addEntity(player);
+//                player.setWorld(worldNew);
+//                player.server.getPlayerList().preparePlayer(player, (ServerWorld) worldOld);
+//            }
+//
+//            //This is a mini version of the code at WorldUtil.teleportEntity
+//            player.interactionManager.setWorld((ServerWorld) player.world);
+//            final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.world.getDimension().getClass());
+//            Vector3 spawnPos = type.getPlayerSpawnLocation((ServerWorld) player.world, player);
+//            ChunkPos pair = player.world.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
+//            GCLog.debug("Loading first chunk in new dimension.");
+//            ((ServerWorld) player.world).getChunkProvider().loadChunk(pair.x, pair.z);
+//            player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
+//            type.setupAdventureSpawn(player);
+//            type.onSpaceDimensionChanged(player.world, player, false);
+//            player.setSpawnPoint(new BlockPos(spawnPos.intX(), spawnPos.intY(), spawnPos.intZ()), true, GCCoreUtil.getDimensionID(player.world));
+//            stats.setNewAdventureSpawn(true);
+//        } TODO Challenge spawning
         final boolean isInGCDimension = player.world.getDimension() instanceof IGalacticraftWorldProvider;
 
         if (tick >= 25)
@@ -1457,19 +1445,19 @@ public class GCPlayerHandler
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.world), new Object[] {}), player);
             }
 
-            if (player.world.getDimension() instanceof DimensionSpaceStation || player.world.getDimension() instanceof IZeroGDimension || GalacticraftCore.isPlanetsLoaded && player.world.getDimension() instanceof WorldProviderAsteroids)
-            {
-            	this.preventFlyingKicks(player);
-                if (player.world.getDimension() instanceof DimensionSpaceStation && stats.isNewInOrbit())
-                {
-                    ((DimensionSpaceStation) player.world.getDimension()).getSpinManager().sendPackets(player);
-                    stats.setNewInOrbit(false);
-                }
-            }
-            else
-            {
-                stats.setNewInOrbit(true);
-            }
+//            if (player.world.getDimension() instanceof DimensionSpaceStation || player.world.getDimension() instanceof IZeroGDimension || GalacticraftCore.isPlanetsLoaded && player.world.getDimension() instanceof WorldProviderAsteroids)
+//            {
+//            	this.preventFlyingKicks(player);
+//                if (player.world.getDimension() instanceof DimensionSpaceStation && stats.isNewInOrbit())
+//                {
+//                    ((DimensionSpaceStation) player.world.getDimension()).getSpinManager().sendPackets(player);
+//                    stats.setNewInOrbit(false);
+//                }
+//            }
+//            else
+//            {
+//                stats.setNewInOrbit(true);
+//            } TODO Space station
         }
         else
         {
@@ -1532,42 +1520,42 @@ public class GCPlayerHandler
         }
 
         // Player moves and sprints 18% faster with full set of Titanium Armor
-        if (GalacticraftCore.isPlanetsLoaded && tick % 40 == 1 && player.inventory != null)
-        {
-            int titaniumCount = 0;
-            for (ItemStack armorPiece : player.getArmorInventoryList())
-            {
-                if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
-                {
-                    titaniumCount++;
-                }
-            }
-            if (stats.getSavedSpeed() == 0F)
-            {
-                if (titaniumCount == 4)
-                {
-                    float speed = player.abilities.getWalkSpeed();
-                    if (speed < 0.118F)
-                    {
-                        try {
-                            Field f = player.abilities.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "walkSpeed" : "field_75097_g");
-                            f.setAccessible(true);
-                            f.set(player.abilities, 0.118F);
-                            stats.setSavedSpeed(speed);
-                        } catch (Exception e) { e.printStackTrace(); }
-                    }
-                }
-            }
-            else if (titaniumCount < 4)
-            {
-                try {
-                    Field f = player.abilities.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "walkSpeed" : "field_75097_g");
-                    f.setAccessible(true);
-                    f.set(player.abilities, stats.getSavedSpeed());
-                    stats.setSavedSpeed(0F);
-                } catch (Exception e) { e.printStackTrace(); }
-            }
-        }
+//        if (GalacticraftCore.isPlanetsLoaded && tick % 40 == 1 && player.inventory != null)
+//        {
+//            int titaniumCount = 0;
+//            for (ItemStack armorPiece : player.getArmorInventoryList())
+//            {
+//                if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
+//                {
+//                    titaniumCount++;
+//                }
+//            }
+//            if (stats.getSavedSpeed() == 0F)
+//            {
+//                if (titaniumCount == 4)
+//                {
+//                    float speed = player.abilities.getWalkSpeed();
+//                    if (speed < 0.118F)
+//                    {
+//                        try {
+//                            Field f = player.abilities.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "walkSpeed" : "field_75097_g");
+//                            f.setAccessible(true);
+//                            f.set(player.abilities, 0.118F);
+//                            stats.setSavedSpeed(speed);
+//                        } catch (Exception e) { e.printStackTrace(); }
+//                    }
+//                }
+//            }
+//            else if (titaniumCount < 4)
+//            {
+//                try {
+//                    Field f = player.abilities.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "walkSpeed" : "field_75097_g");
+//                    f.setAccessible(true);
+//                    f.set(player.abilities, stats.getSavedSpeed());
+//                    stats.setSavedSpeed(0F);
+//                } catch (Exception e) { e.printStackTrace(); }
+//            }
+//        } TODO Planets
 
         stats.setLastOxygenSetupValid(stats.isOxygenSetupValid());
         stats.setLastUnlockedSchematics(stats.getUnlockedSchematics());

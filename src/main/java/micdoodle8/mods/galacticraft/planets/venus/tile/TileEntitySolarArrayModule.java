@@ -30,15 +30,15 @@ public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT compound)
+    public CompoundNBT write(CompoundNBT compound)
     {
-        return super.writeToNBT(compound);
+        return super.write(compound);
     }
 
     @Override
-    public void readFromNBT(CompoundNBT compound)
+    public void read(CompoundNBT compound)
     {
-        super.readFromNBT(compound);
+        super.read(compound);
     }
 
     @Override

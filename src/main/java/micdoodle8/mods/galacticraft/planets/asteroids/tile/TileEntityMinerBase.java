@@ -37,7 +37,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.ref.WeakReference;
@@ -153,7 +153,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
     }
 
-    public static void addNewMinerBase(int dimID, BlockPos blockPos)
+    public static void addNewMinerBase(DimensionType dimID, BlockPos blockPos)
     {
         if (newMinerBases.containsKey(dimID))
         {
@@ -168,9 +168,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.initialised)
         {
@@ -200,7 +200,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.findTargetPointsFlag = false;
         }
 
-        //TODO: Find linkedminer by UUID and update it if not chunkloaded?
+        //TODO: Find linkedminer by UUID and tick it if not chunkloaded?
 
         if (!this.isMaster)
         {
@@ -341,10 +341,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
-        this.facing = Direction.getHorizontal(nbt.getInt("facing"));
+        super.read(nbt);
+        this.facing = Direction.byHorizontalIndex(nbt.getInt("facing"));
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.isMaster = nbt.getBoolean("isMaster");
@@ -353,7 +353,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                     this.updateClientFlag = true;
             }
             else {
-                CompoundNBT tagCompound = nbt.getCompoundTag("masterpos");
+                CompoundNBT tagCompound = nbt.getCompound("masterpos");
                 if (tagCompound.getKeySet().isEmpty())
                     this.setMainBlockPosition(null);
                 else
@@ -377,7 +377,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                 for (int j = 0; j < mpList.size(); j++)
                 {
                     CompoundNBT bvTag = mpList.getCompound(j);
-                    this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
+                    this.targetPoints.add(BlockVec3.read(bvTag));
                 }
             }
             else
@@ -388,16 +388,16 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("isMaster", this.isMaster);
+        super.write(nbt);
+        nbt.putBoolean("isMaster", this.isMaster);
         if (!this.isMaster && this.mainBlockPosition != null)
         {
             CompoundNBT masterTag = new CompoundNBT();
-            masterTag.setInteger("x", this.mainBlockPosition.getX());
-            masterTag.setInteger("y", this.mainBlockPosition.getY());
-            masterTag.setInteger("z", this.mainBlockPosition.getZ());
+            mastertag.putInt("x", this.mainBlockPosition.getX());
+            mastertag.putInt("y", this.mainBlockPosition.getY());
+            mastertag.putInt("z", this.mainBlockPosition.getZ());
             nbt.put("masterpos", masterTag);
         }
         nbt.putInt("facing", this.facing.getHorizontalIndex());
@@ -409,7 +409,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         ListNBT mpList = new ListNBT();
         for (int j = 0; j < this.targetPoints.size(); j++)
         {
-            mpList.appendTag(this.targetPoints.get(j).writeToNBT(new CompoundNBT()));
+            mpList.add(this.targetPoints.get(j).write(new CompoundNBT()));
         }
         nbt.put("TargetPoints", mpList);
         return nbt;
@@ -505,9 +505,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
      * invalidates a tile entity
      */
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
+        super.remove();
         this.updateContainingBlockInfo();
     }
 
@@ -569,7 +569,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         if (this.isMaster)
         {
-            this.invalidate();
+            this.remove();
             this.onDestroy(this);
             return;
         }
@@ -714,7 +714,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.updateAllInDimension();
         }
 
-        for (Direction facing : Direction.VALUES)
+        for (Direction facing : Direction.values())
         {
             BlockPos offset = this.getPos().offset(facing);
             TileEntity tileOffset = this.world.getTileEntity(offset);

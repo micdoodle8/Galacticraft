@@ -13,7 +13,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -28,10 +28,11 @@ public class GuiSolar extends GuiContainerGC<ContainerSolar>
     private Button buttonEnableSolar;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiSolar(PlayerInventory playerInv, TileEntitySolar solarPanel)
+    public GuiSolar(ContainerSolar container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerSolar(playerInv, solarPanel), playerInv, new StringTextComponent(solarPanel.getName()));
-        this.solarPanel = solarPanel;
+        super(container, playerInv, title);
+//        super(new ContainerSolar(playerInv, solarPanel), playerInv, new TranslationTextComponent(solarPanel.getTierGC() == 1 ? "container.solarbasic.name" : "container.solaradvanced.name"));
+        this.solarPanel = container.getSolar();
         this.ySize = 201;
         this.xSize = 176;
     }
@@ -68,7 +69,7 @@ public class GuiSolar extends GuiContainerGC<ContainerSolar>
         int offsetY = 35;
         this.buttonEnableSolar.active = this.solarPanel.disableCooldown == 0;
         this.buttonEnableSolar.setMessage(!this.solarPanel.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name"));
-        String message = this.solarPanel.getName();
+        String message = this.title.getFormattedText();
         this.font.drawString(message, this.xSize / 2 - this.font.getStringWidth(message) / 2, 7, 4210752);
         message = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
         this.font.drawString(message, this.xSize / 2 - this.font.getStringWidth(message) / 2, 45 + 23 - 46 + offsetY, 4210752);

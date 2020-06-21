@@ -4,11 +4,13 @@ import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -16,17 +18,15 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import java.nio.DoubleBuffer;
 
 public class GameScreenCelestial implements IGameScreen
 {
-    private TextureManager renderEngine;
+    private TextureManager textureManager;
 
     private float frameA;
     private float frameBx;
@@ -46,7 +46,7 @@ public class GameScreenCelestial implements IGameScreen
     {
         if (GCCoreUtil.getEffectiveSide().isClient())
         {
-            renderEngine = Minecraft.getInstance().renderEngine;
+            textureManager = Minecraft.getInstance().textureManager;
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
         }
     }
@@ -164,7 +164,7 @@ public class GameScreenCelestial implements IGameScreen
             {
                 if (planet.getParentSolarSystem().getUnlocalizedName().equalsIgnoreCase(mainSolarSystem))
                 {
-                    Vector3f pos = this.getCelestialBodyPosition(planet, ticks);
+                    Vector3 pos = this.getCelestialBodyPosition(planet, ticks);
                     this.drawCircle(planet);
                     this.drawCelestialBody(planet, pos.x, pos.y, ticks, (planet.getRelativeDistanceFromCenter().unScaledDistance < 1.5F) ? 2F : 2.8F);
                 }
@@ -180,7 +180,7 @@ public class GameScreenCelestial implements IGameScreen
         {
             if (moon.getParentPlanet() == planet && moon.getBodyIcon() != null)
             {
-                Vector3f pos = this.getCelestialBodyPosition(moon, ticks);
+                Vector3 pos = this.getCelestialBodyPosition(moon, ticks);
                 this.drawCircle(moon);
                 this.drawCelestialBody(moon, pos.x, pos.y, ticks, 4F);
             }
@@ -190,7 +190,7 @@ public class GameScreenCelestial implements IGameScreen
         {
             if (satellite.getParentPlanet() == planet)
             {
-                Vector3f pos = this.getCelestialBodyPosition(satellite, ticks);
+                Vector3 pos = this.getCelestialBodyPosition(satellite, ticks);
                 this.drawCircle(satellite);
                 this.drawCelestialBody(satellite, pos.x, pos.y, ticks, 3F);
             }
@@ -262,7 +262,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glLineWidth(0.002F);
 
         GL11.glScalef(sd, sd, sd);
-        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(cBody, new Vector3f(0.0F, 0.0F, 0.0F));
+        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(cBody, new Vector3(0.0F, 0.0F, 0.0F));
         MinecraftForge.EVENT_BUS.post(preEvent);
 
         if (!preEvent.isCanceled())
@@ -289,11 +289,11 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glPopMatrix();
     }
 
-    private Vector3f getCelestialBodyPosition(CelestialBody cBody, float ticks)
+    private Vector3 getCelestialBodyPosition(CelestialBody cBody, float ticks)
     {
         float timeScale = cBody instanceof Planet ? 200.0F : 2.0F;
         float distanceFromCenter = this.getScale(cBody) * scale;
-        return new Vector3f((float) Math.sin(ticks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(ticks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
+        return new Vector3((float) Math.sin(ticks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(ticks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
     }
 
     private float getScale(CelestialBody celestialBody)

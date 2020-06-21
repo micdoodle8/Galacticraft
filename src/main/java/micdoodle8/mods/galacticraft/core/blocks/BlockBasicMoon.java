@@ -283,15 +283,15 @@
 //    }
 //
 //    @Override
-//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 //    {
 //        return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
 //    }
 //
 //    @Override
-//    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+//    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
 //    {
-//        super.breakBlock(worldIn, pos, state);
+//        super.onReplaced(state, worldIn, pos, newState, isMoving);
 //        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON));
 //
 //        if (!worldIn.isRemote && type == EnumBlockBasicMoon.MOON_TURF)
@@ -364,7 +364,7 @@
 //    }
 //
 //    @Override
-//    public int getExpDrop(BlockState state, IBlockReader world, BlockPos pos, int fortune)
+//    public int getExpDrop(BlockState state, IWorldReader world, BlockPos pos, int fortune, int silktouch)
 //    {
 //        if (state.getBlock() != this) return 0;
 //

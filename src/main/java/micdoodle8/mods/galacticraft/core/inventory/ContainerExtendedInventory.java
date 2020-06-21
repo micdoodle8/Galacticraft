@@ -1,21 +1,26 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
-import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerExtendedInventory extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.EXTENDED_INVENTORY)
+    public static ContainerType<ContainerExtendedInventory> TYPE;
+
     public PlayerInventory inventoryPlayer;
     public InventoryExtended extendedInventory;
 
-    public ContainerExtendedInventory(PlayerEntity thePlayer, InventoryExtended extendedInventory)
+    public ContainerExtendedInventory(int containerId, PlayerInventory playerInv, InventoryExtended extendedInventory)
     {
-        this.inventoryPlayer = thePlayer.inventory;
+        super(TYPE, containerId);
+        this.inventoryPlayer = playerInv;
         this.extendedInventory = extendedInventory;
 
         int i;
@@ -25,33 +30,33 @@ public class ContainerExtendedInventory extends Container
         {
             for (j = 0; j < 9; ++j)
             {
-                this.addSlotToContainer(new Slot(thePlayer.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
         for (i = 0; i < 9; ++i)
         {
-            this.addSlotToContainer(new Slot(thePlayer.inventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(playerInv, i, 8 + i * 18, 142));
         }
 
         for (i = 0; i < 4; ++i)
         {
-            this.addSlotToContainer(new SlotArmorGC(thePlayer, thePlayer.inventory, 39 - i, 61, 8 + i * 18, i));
+            this.addSlot(new SlotArmorGC(playerInv.player, playerInv, 39 - i, 61, 8 + i * 18, i));
         }
 
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 0, 125, 26));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 1, 125, 44));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 2, 116, 62));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 3, 134, 62));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 4, 143, 26));
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 5, 107, 26));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 0, 125, 26));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 1, 125, 44));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 2, 116, 62));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 3, 134, 62));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 4, 143, 26));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 5, 107, 26));
 
         for (i = 0; i < 4; ++i)
         {
-            this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 6 + i, 79, 8 + i * 18));
+            this.addSlot(new SlotExtendedInventory(extendedInventory, 6 + i, 79, 8 + i * 18));
         }
 
-        this.addSlotToContainer(new SlotExtendedInventory(extendedInventory, 10, 125, 8));
+        this.addSlot(new SlotExtendedInventory(extendedInventory, 10, 125, 8));
     }
 
     @Override
@@ -96,29 +101,29 @@ public class ContainerExtendedInventory extends Container
 
                 if (!flag)
                 {
-                    if (stack.getItem() instanceof ItemOxygenTank || stack.getItem() instanceof ItemCanisterOxygenInfinite)
-                    {
-                        if (!this.mergeOneItem(stack, 42, 44, false))
-                        {
-                            return ItemStack.EMPTY;
-                        }
-                        flag = true;
-                    }
-                    else
-                    {
-                        for (int j = 40; j < 51; j++)
-                        {
-                            if (((SlotExtendedInventory) this.inventorySlots.get(j)).isItemValid(stack))
-                            {
-                                if (!this.mergeOneItem(stack, j, j + 1, false))
-                                {
-                                    return ItemStack.EMPTY;
-                                }
-                                flag = true;
-                                break;
-                            }
-                        }
-                    }
+//                    if (stack.getItem() instanceof ItemOxygenTank || stack.getItem() instanceof ItemCanisterOxygenInfinite)
+//                    {
+//                        if (!this.mergeOneItem(stack, 42, 44, false))
+//                        {
+//                            return ItemStack.EMPTY;
+//                        }
+//                        flag = true;
+//                    }
+//                    else
+//                    {
+//                        for (int j = 40; j < 51; j++)
+//                        {
+//                            if (((SlotExtendedInventory) this.inventorySlots.get(j)).isItemValid(stack))
+//                            {
+//                                if (!this.mergeOneItem(stack, j, j + 1, false))
+//                                {
+//                                    return ItemStack.EMPTY;
+//                                }
+//                                flag = true;
+//                                break;
+//                            }
+//                        }
+//                    } TODO Oxygen container
                 }
 
                 if (!flag)

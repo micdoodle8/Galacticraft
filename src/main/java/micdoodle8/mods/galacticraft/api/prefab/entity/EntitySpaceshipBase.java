@@ -78,6 +78,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     private double syncAdjustY = 0D; 
     private double syncAdjustZ = 0D;
     private boolean syncAdjustFlag = false;
+    public static final Predicate<Entity> ROCKET_SELECTOR = e -> e instanceof EntitySpaceshipBase && e.isAlive();
 
     public EntitySpaceshipBase(EntityType<? extends EntitySpaceshipBase> type, World worldIn)
     {
@@ -741,15 +742,6 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         return 1.34F;
     }
-
-    public static final Predicate<Entity> rocketSelector = new Predicate<Entity>()
-    {
-        @Override
-        public boolean apply(Entity e)
-        {
-            return e instanceof EntitySpaceshipBase && e.isAlive();
-        }
-    };
     
     @Override
     @OnlyIn(Dist.CLIENT)

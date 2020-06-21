@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client.render;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlanet
 {
-    private static TextureManager renderEngine = Minecraft.getInstance().renderEngine;
+    private static TextureManager textureManager = Minecraft.getInstance().textureManager;
 
     private static ResourceLocation textureEuropa = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/europa.png");
     private static ResourceLocation textureGanymede = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/ganymede.png");

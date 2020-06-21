@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import net.minecraft.block.AirBlock;
 import net.minecraft.state.BooleanProperty;
 
-public class BlockThermalAir extends AirBlock
+public abstract class BlockThermalAir extends AirBlock
 {
     public static final BooleanProperty THERMAL = BooleanProperty.create("thermal");
 

@@ -383,12 +383,12 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 //            final Vector3 posVec = vec.getKey();
 //            final Vector3 motionVec = vec.getValue();
 //
-//            this.spawnParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
+//            this.addParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
 //        }
 //    }
 
 //    @OnlyIn(Dist.CLIENT)
-//    public void spawnParticle(Particle fx)
+//    public void addParticle(Particle fx)
 //    {
 //        final Minecraft mc = Minecraft.getInstance();
 //

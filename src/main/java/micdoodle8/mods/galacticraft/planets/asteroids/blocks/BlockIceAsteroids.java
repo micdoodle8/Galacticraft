@@ -40,7 +40,7 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.TRANSLUCENT;
     }
@@ -71,7 +71,7 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
         }
         else
         {
-            if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (worldIn.dimension.getDimension() == -1 || worldIn.dimension instanceof IGalacticraftWorldProvider)
             {
                 worldIn.removeBlock(pos, false);
                 return;
@@ -98,11 +98,11 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
+    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
     {
         if (worldIn.getLightFor(LightType.BLOCK, pos) > 13 - this.getLightOpacity(state))
         {
-            if (GCCoreUtil.getDimensionID(worldIn) == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (GCCoreUtil.getDimensionID(worldIn) == -1 || worldIn.dimension instanceof IGalacticraftWorldProvider)
             {
                 worldIn.removeBlock(pos, false);
                 return;

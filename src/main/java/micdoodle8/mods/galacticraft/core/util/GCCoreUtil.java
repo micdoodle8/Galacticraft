@@ -291,9 +291,9 @@ public class GCCoreUtil
         return world.getDimension().getType();
     }
 
-    public static DimensionType getDimensionID(Dimension provider)
+    public static DimensionType getDimensionID(Dimension dimension)
     {
-        return provider.getType();
+        return dimension.getType();
     }
 
     public static DimensionType getDimensionID(TileEntity tileEntity)

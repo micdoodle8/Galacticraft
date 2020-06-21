@@ -77,12 +77,12 @@ public class PacketSimpleMars extends PacketBase
         super();
     }
 
-    public PacketSimpleMars(EnumSimplePacketMars packetType, int dimID, Object[] data)
+    public PacketSimpleMars(EnumSimplePacketMars packetType, DimensionType dimID, Object[] data)
     {
         this(packetType, dimID, Arrays.asList(data));
     }
 
-    public PacketSimpleMars(EnumSimplePacketMars packetType, int dimID, List<Object> data)
+    public PacketSimpleMars(EnumSimplePacketMars packetType, DimensionType dimID, List<Object> data)
     {
         super(dimID);
 

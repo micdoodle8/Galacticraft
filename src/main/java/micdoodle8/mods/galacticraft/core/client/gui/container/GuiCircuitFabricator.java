@@ -3,13 +3,16 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -22,10 +25,11 @@ public class GuiCircuitFabricator extends GuiContainerGC<ContainerCircuitFabrica
     private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private final GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 53, 12, null, 0, 0, this);
 
-    public GuiCircuitFabricator(PlayerInventory playerInv, TileEntityCircuitFabricator fabricator)
+    public GuiCircuitFabricator(ContainerCircuitFabricator container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerCircuitFabricator(playerInv, fabricator), playerInv, new StringTextComponent(fabricator.getName()));
-        this.fabricator = fabricator;
+        super(container, playerInv, title);
+//        super(new ContainerCircuitFabricator(playerInv, fabricator), playerInv, new TranslationTextComponent("tile.machine2.5.name")); // TODO Rename these translation keys
+        this.fabricator = container.getFabricator();
         this.ySize = 192;
     }
 
@@ -54,7 +58,7 @@ public class GuiCircuitFabricator extends GuiContainerGC<ContainerCircuitFabrica
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.fabricator.getName(), 10, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 10, 6, 4210752);
         String displayText;
 
         if (this.fabricator.processTicks > 0)

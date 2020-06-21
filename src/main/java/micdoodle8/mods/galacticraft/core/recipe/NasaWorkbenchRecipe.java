@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.recipe;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -49,7 +48,7 @@ public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
         {
             return false;
         }
-        return target.isEmpty() && input.isEmpty() || target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
+        return target.isEmpty() && input.isEmpty() || target.getItem() == input.getItem() && (/*target.getDamage() == OreDictionary.WILDCARD_VALUE ||*/ target.getDamage() == input.getDamage());
     }
 
     @Override

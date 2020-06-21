@@ -1,20 +1,30 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import net.minecraft.block.BlockState;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ITickable;
-import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 
-public class TileEntityLandingPadSingle extends TileEntity implements ITickable
+public class TileEntityLandingPadSingle extends TileEntity implements ITickableTileEntity
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.landingPad)
+    public static TileEntityType<TileEntityLandingPadSingle> TYPE;
+
     private int corner = 0;
 
+    public TileEntityLandingPadSingle()
+    {
+        super(TYPE);
+    }
+
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote && this.corner == 0)
         {
@@ -37,7 +47,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
             {
                 for (final TileEntity tile : attachedLaunchPads)
                 {
-                    this.world.markTileEntityForRemoval(tile);
+                    this.world.removeTileEntity(tile.getPos());
                     ((TileEntityLandingPadSingle)tile).corner = 1;
                 }
 
@@ -46,9 +56,11 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
         }
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
+
+
 }

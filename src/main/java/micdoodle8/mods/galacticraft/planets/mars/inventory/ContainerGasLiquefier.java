@@ -16,32 +16,32 @@ public class ContainerGasLiquefier extends Container
 {
     private final TileEntityGasLiquefier tileEntity;
 
-    public ContainerGasLiquefier(PlayerInventory par1InventoryPlayer, TileEntityGasLiquefier tileEntity, PlayerEntity player)
+    public ContainerGasLiquefier(PlayerInventory playerInv, TileEntityGasLiquefier tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 34, 50, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tileEntity, 0, 34, 50, IItemElectric.class));
 
         // Input slot
-        this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
+        this.addSlot(new Slot(tileEntity, 1, 7, 7));
 
         // 2 output slots
-        this.addSlotToContainer(new Slot(tileEntity, 2, 132, 7));
-        this.addSlotToContainer(new Slot(tileEntity, 3, 153, 7));
+        this.addSlot(new Slot(tileEntity, 2, 132, 7));
+        this.addSlot(new Slot(tileEntity, 3, 153, 7));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 144));
         }
 
         tileEntity.openInventory(player);

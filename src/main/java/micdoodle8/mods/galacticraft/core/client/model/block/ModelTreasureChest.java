@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.model.block;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.tileentity.model.ChestModel;
 
-public class ModelTreasureChest extends ModelChest
+public class ModelTreasureChest extends ChestModel
 {
     public RendererModel keyParts[] = new RendererModel[6];
 
@@ -57,7 +57,7 @@ public class ModelTreasureChest extends ModelChest
                     nmtmr.rotationPointY = 7.0F;
                     nmtmr.rotationPointZ = -2.0F;
                     nmtmr.rotateAngleY = 3 * Constants.halfPI;
-                    nmtmr.rotateAngleX = -this.chestLid.rotateAngleX;
+                    nmtmr.rotateAngleX = -super.getLid().rotateAngleX;
                     nmtmr.render(0.0625F);
                 }
             }

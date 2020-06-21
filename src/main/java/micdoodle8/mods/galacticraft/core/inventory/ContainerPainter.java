@@ -1,57 +1,69 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IPaintable;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerPainter extends Container
 {
-    private TileEntityPainter tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.PAINTER)
+    public static ContainerType<ContainerPainter> TYPE;
 
-    public ContainerPainter(PlayerInventory par1InventoryPlayer, TileEntityPainter tileEntity2)
+    private TileEntityPainter painter;
+
+    public ContainerPainter(int containerId, PlayerInventory playerInv, TileEntityPainter painter)
     {
-        this.tileEntity = tileEntity2;
+        super(TYPE, containerId);
+        this.painter = painter;
  
         // To be painted
-        this.addSlotToContainer(new Slot(tileEntity2, 0, 40, 25));
+        this.addSlot(new Slot(painter, 0, 40, 25));
         //TODO: slots which can only accept one item
 
         // For dyes and other colour giving items
-        this.addSlotToContainer(new Slot(tileEntity2, 1, 122, 25));
+        this.addSlot(new Slot(painter, 1, 122, 25));
 
         int i;
         for (i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 9; ++j)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
+                this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
             }
         }
         for (i = 0; i < 9; ++i)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 162));
+            this.addSlot(new Slot(playerInv, i, 8 + i * 18, 162));
         }
 
-        tileEntity2.playersUsing.add(par1InventoryPlayer.player);
+        painter.playersUsing.add(playerInv.player);
+    }
+
+    public TileEntityPainter getPainter()
+    {
+        return painter;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.playersUsing.remove(entityplayer);
+        this.painter.playersUsing.remove(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.painter.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

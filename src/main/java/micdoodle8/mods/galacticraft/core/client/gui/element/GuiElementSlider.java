@@ -163,6 +163,11 @@ public class GuiElementSlider extends Button
         return (this.sliderPos * 255.0D) / (this.height - 1);
     }
 
+    public float getColorValueF()
+    {
+        return (float) getColorValueD();
+    }
+
     public int getButtonHeight()
     {
         return this.height;

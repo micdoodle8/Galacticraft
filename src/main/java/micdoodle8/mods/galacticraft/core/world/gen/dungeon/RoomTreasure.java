@@ -9,9 +9,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.storage.loot.LootTables;
 
 import java.util.Random;
@@ -21,18 +25,19 @@ public class RoomTreasure extends SizedPiece
     public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_1");
     public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTables.register(MOONCHEST);
 
-    public RoomTreasure()
+    public RoomTreasure(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
+    public RoomTreasure(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
-        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
+        this(type, configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
     }
 
-    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomTreasure(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        super(type, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         int yPos = configuration.getYPosition();
 
@@ -40,7 +45,7 @@ public class RoomTreasure extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -85,30 +90,30 @@ public class RoomTreasure extends SizedPiece
                         }
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, boundingBox);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, boundingBox);
                     }
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        if (chunkBox.isVecInside(blockpos))
+                        if (boundingBox.isVecInside(blockpos))
                         {
                             worldIn.setBlockState(blockpos, GCBlocks.treasureChestTier1.getDefaultState().with(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), 2);
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
                             if (treasureChest != null)
                             {
                                 ResourceLocation chesttype = TABLE_TIER_1_DUNGEON;
-                                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                                if (worldIn.getDimension() instanceof IGalacticraftWorldProvider)
                                 {
-                                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                                    chesttype = ((IGalacticraftWorldProvider)worldIn.getDimension()).getDungeonChestType();
                                 }
                                 treasureChest.setLootTable(chesttype, random.nextLong());
                             }
@@ -116,7 +121,7 @@ public class RoomTreasure extends SizedPiece
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                     }
                 }
             }

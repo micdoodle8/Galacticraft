@@ -3,12 +3,16 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 
 import java.util.Random;
 
@@ -16,20 +20,27 @@ public class EntranceCrater extends SizedPiece
 {
     private final int range = 16;
 
-    public EntranceCrater()
+    public EntranceCrater(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public EntranceCrater(World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
+    public EntranceCrater(IStructurePieceType type, World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
+        super(type, configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
         this.setCoordBaseMode(Direction.SOUTH);
 
         this.boundingBox = new MutableBoundingBox(blockPosX - range, configuration.getYPosition() + 11, blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
+    protected void readAdditional(CompoundNBT tagCompound)
+    {
+
+    }
+
+    @Override
+    public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_)
     {
         BlockState block1;
 
@@ -101,12 +112,12 @@ public class EntranceCrater extends SizedPiece
 
                         if (mirror != Mirror.NONE)
                         {
-                            state = state.withMirror(mirror);
+                            state = state.mirror(mirror);
                         }
 
                         if (rotation != Rotation.NONE)
                         {
-                            state = state.withRotation(rotation);
+                            state = state.rotate(rotation);
                         }
 
                         worldIn.setBlockState(blockpos, state, 2);
@@ -123,6 +134,6 @@ public class EntranceCrater extends SizedPiece
     @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
-        return new RoomEntrance(this.configuration, rand, this.boundingBox.minX + this.boundingBox.getXSize() / 2, this.boundingBox.minZ + this.boundingBox.getZSize() / 2);
+        return new RoomEntrance(this.func_214807_k(), this.configuration, rand, this.boundingBox.minX + this.boundingBox.getXSize() / 2, this.boundingBox.minZ + this.boundingBox.getZSize() / 2);
     }
 }

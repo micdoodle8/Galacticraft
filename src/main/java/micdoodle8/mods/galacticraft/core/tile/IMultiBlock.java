@@ -4,12 +4,12 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
-public interface IMultiBlock extends ITickable
+public interface IMultiBlock extends ITickableTileEntity
 {
     /**
      * Called when activated

@@ -1,87 +1,67 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerRocketInventory extends Container
 {
-    private final IInventory lowerChestInventory;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ROCKET_INVENTORY)
+    public static ContainerType<ContainerRocketInventory> TYPE;
+
+    private final IInventory playerInv;
     private final IInventory spaceshipInv;
     private final EnumRocketType rocketType;
 
-    public ContainerRocketInventory(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType, PlayerEntity player)
+    public ContainerRocketInventory(int containerId, PlayerInventory playerInv, EntityTieredRocket rocket)
     {
-        this.lowerChestInventory = par1IInventory;
-        this.spaceshipInv = par2IInventory;
-        this.rocketType = rocketType;
-        par2IInventory.openInventory(player);
-
-        switch (rocketType.getInventorySpace() - 2)
-        {
-        case 0:
-            this.addSlotsNoInventory();
-            break;
-        case 18:
-            this.addSlotsWithInventory(rocketType.getInventorySpace());
-            break;
-        case 36:
-            this.addSlotsWithInventory(rocketType.getInventorySpace());
-            break;
-        case 54:
-            this.addSlotsWithInventory(rocketType.getInventorySpace());
-            break;
-        }
+        super(TYPE, containerId);
+        this.playerInv = playerInv;
+        this.spaceshipInv = rocket;
+        this.rocketType = rocket.getRocketType();
+        rocket.openInventory(playerInv.player);
+        this.addSlotsWithInventory(rocketType.getInventorySpace());
     }
 
-    private void addSlotsNoInventory()
+    public EnumRocketType getRocketType()
     {
-        int var4;
-        int var5;
-
-        for (var4 = 0; var4 < 3; ++var4)
-        {
-            for (var5 = 0; var5 < 9; ++var5)
-            {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + (var4 + 1) * 9, 8 + var5 * 18, 84 + var4 * 18 - 34));
-            }
-        }
-
-        for (var4 = 0; var4 < 9; ++var4)
-        {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, 142 - 34));
-        }
+        return rocketType;
     }
 
     private void addSlotsWithInventory(int slotCount)
     {
-        int var4;
-        int var5;
-        int lastRow = slotCount / 9;
+        int y;
+        int x;
         int ySize = 145 + (this.rocketType.getInventorySpace() - 2) * 2;
+        int lastRow = slotCount / 9;
 
-        for (var4 = 0; var4 < lastRow; ++var4)
+        for (y = 0; y < lastRow; ++y)
         {
-            for (var5 = 0; var5 < 9; ++var5)
+            for (x = 0; x < 9; ++x)
             {
-                this.addSlotToContainer(new Slot(this.spaceshipInv, var5 + var4 * 9, 8 + var5 * 18, 50 + var4 * 18));
+                this.addSlot(new Slot(this.spaceshipInv, x + y * 9, 8 + x * 18, 50 + y * 18));
             }
         }
 
-        for (var4 = 0; var4 < 3; ++var4)
+        for (y = 0; y < 3; ++y)
         {
-            for (var5 = 0; var5 < 9; ++var5)
+            for (x = 0; x < 9; ++x)
             {
-                this.addSlotToContainer(new Slot(this.lowerChestInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, ySize - 82 + var4 * 18));
+                this.addSlot(new Slot(this.playerInv, x + y * 9 + 9, 8 + x * 18, ySize - 82 + y * 18));
             }
         }
 
-        for (var4 = 0; var4 < 9; ++var4)
+        for (y = 0; y < 9; ++y)
         {
-            this.addSlotToContainer(new Slot(this.lowerChestInventory, var4, 8 + var4 * 18, ySize - 24));
+            this.addSlot(new Slot(this.playerInv, y, 8 + y * 18, ySize - 24));
         }
     }
 
@@ -135,7 +115,7 @@ public class ContainerRocketInventory extends Container
     public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
-        this.lowerChestInventory.closeInventory(par1EntityPlayer);
+        this.playerInv.closeInventory(par1EntityPlayer);
     }
 
     /**
@@ -143,6 +123,6 @@ public class ContainerRocketInventory extends Container
      */
     public IInventory getLowerChestInventory()
     {
-        return this.lowerChestInventory;
+        return this.playerInv;
     }
 }

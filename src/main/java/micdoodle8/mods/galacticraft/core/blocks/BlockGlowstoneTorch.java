@@ -1,32 +1,29 @@
-//package micdoodle8.mods.galacticraft.core.blocks;
-//
-//import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-//import net.minecraft.block.Block;
-//import net.minecraft.block.BlockState;
-//import net.minecraft.block.properties.IProperty;
-//import net.minecraft.block.state.BlockStateContainer;
-//import net.minecraft.item.ItemGroup;
-//import net.minecraft.util.BlockRenderLayer;
-//import net.minecraft.util.Direction;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
-//
-//import java.util.Random;
-//
-//public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescription, ISortableBlock
-//{
-//
-//    public BlockGlowstoneTorch(Properties builder)
-//    {
-//        super(builder);
-//        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
-//    }
-//
+package micdoodle8.mods.galacticraft.core.blocks;
+
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Random;
+
+public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescription
+{
+
+    public BlockGlowstoneTorch(Properties builder)
+    {
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
+    }
+
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -60,7 +57,7 @@
 //    }
 //
 //    @Override
-//    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
+//    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
 //    {
 //        this.checkForDrop(worldIn, pos, state);
 //    }
@@ -90,82 +87,83 @@
 //
 //            if (flag)
 //            {
-//                this.dropBlockAsItem(worldIn, pos, state, 0);
-//                worldIn.removeBlock(pos, false);
+//                worldIn.destroyBlock(pos, true);
+////                this.dropBlockAsItem(worldIn, pos, state, 0);
+////                worldIn.removeBlock(pos, false);
 //            }
 //        }
 //    }
-//
-//    @Override
-//    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
-//    {
-//        super.updateTick(worldIn, pos, state, rand);
-//
+
+    @Override
+    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+    {
+        super.tick(state, worldIn, pos, random);
+
 //        if (getMetaFromState(state) == 0)
 //        {
 //            this.onBlockAdded(worldIn, pos, state);
 //        }
-//    }
-//
-////    @Override
-////    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
-////    {
-////        int l = getMetaFromState(worldIn.getBlockState(pos)) & 7;
-////        float f = 0.15F;
-////
-////        if (l == 1)
-////        {
-////            this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
-////        }
-////        else if (l == 2)
-////        {
-////            this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
-////        }
-////        else if (l == 3)
-////        {
-////            this.setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
-////        }
-////        else if (l == 4)
-////        {
-////            this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
-////        }
-////        else
-////        {
-////            f = 0.1F;
-////            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
-////        }
-////
-////        return super.collisionRayTrace(worldIn, pos, start, end);
-////    }
-//
+    }
+
 //    @Override
-//    @OnlyIn(Dist.CLIENT)
-//    public BlockRenderLayer getBlockLayer()
+//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
-//        return BlockRenderLayer.CUTOUT;
-//    }
+//        int l = getMetaFromState(worldIn.getBlockState(pos)) & 7;
+//        float f = 0.15F;
 //
-//    @Override
-//    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-//    {
-//        builder.add(new IProperty[] { FACING });
-//    }
+//        if (l == 1)
+//        {
+//            this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
+//        }
+//        else if (l == 2)
+//        {
+//            this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+//        }
+//        else if (l == 3)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
+//        }
+//        else if (l == 4)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
+//        }
+//        else
+//        {
+//            f = 0.1F;
+//            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
+//        }
 //
-//    @Override
-//    public String getShiftDescription(ItemStack stack)
-//    {
-//        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+//        return super.collisionRayTrace(worldIn, pos, start, end);
 //    }
-//
-//    @Override
-//    public boolean showDescription(ItemStack stack)
-//    {
-//        return true;
-//    }
-//
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING);
+    }
+
+    @Override
+    public String getShiftDescription(ItemStack stack)
+    {
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
+    }
+
+    @Override
+    public boolean showDescription(ItemStack stack)
+    {
+        return true;
+    }
+
 //    @Override
 //    public EnumSortCategoryBlock getCategory(int meta)
 //    {
 //        return EnumSortCategoryBlock.GENERAL;
 //    }
-//}
+}

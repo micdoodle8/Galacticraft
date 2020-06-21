@@ -60,7 +60,7 @@ public class SpaceRace
         this.spaceRaceID = nbt.getInt("SpaceRaceID");
         this.ticksSpent = (int) nbt.getLong("TicksSpent");  //Deal with legacy error
         this.flagData = FlagData.readFlagData(nbt);
-        this.teamColor = new Vector3(nbt.getDouble("teamColorR"), nbt.getDouble("teamColorG"), nbt.getDouble("teamColorB"));
+        this.teamColor = new Vector3(nbt.getFloat("teamColorR"), nbt.getFloat("teamColorG"), nbt.getFloat("teamColorB"));
 
         ListNBT tagList = nbt.getList("PlayerList", 10);
         for (int i = 0; i < tagList.size(); i++)

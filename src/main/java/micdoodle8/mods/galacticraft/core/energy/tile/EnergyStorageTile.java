@@ -5,40 +5,41 @@ import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
 {
     public static final float STANDARD_CAPACITY = 16000F;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public EnergyStorage storage = new EnergyStorage(STANDARD_CAPACITY, 10);
     public int tierGC = 1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int poweredByTierGC = 1;
 
-    public EnergyStorageTile(String tileName)
+    public EnergyStorageTile(TileEntityType<?> type)
     {
-        super(tileName);
+        super(type);
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
 
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.storage.readFromNBT(nbt);
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         this.storage.writeToNBT(nbt);
         return nbt;
     }
@@ -46,7 +47,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
     
     public abstract ReceiverMode getModeFromDirection(Direction direction);

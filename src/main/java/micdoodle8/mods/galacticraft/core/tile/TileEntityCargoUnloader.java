@@ -5,42 +5,49 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingStat
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.world.IWorldReader;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory implements ILandingPadAttachable
+public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILandingPadAttachable
 {
-    @NetworkedField(targetSide = Side.CLIENT)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.cargoUnloader)
+    public static TileEntityType<TileEntityCargoUnloader> TYPE;
+
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean targetEmpty;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean targetNoInventory;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean noTarget;
 
     public ICargoEntity attachedFuelable;
 
     public TileEntityCargoUnloader()
     {
-        super("container.cargounloader.name");
+        super(TYPE);
         this.storage.setMaxExtract(45);
         this.inventory = NonNullList.withSize(15, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -86,13 +93,13 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         boolean foundFuelable = false;
 
         BlockVec3 thisVec = new BlockVec3(this);
-        for (final Direction dir : Direction.VALUES)
+        for (final Direction dir : Direction.values())
         {
             final TileEntity pad = thisVec.getTileEntityOnSide(this.world, dir);
 
-            if (pad != null && pad instanceof TileEntityMulti)
+            if (pad != null && pad instanceof TileEntityFake)
             {
-                final TileEntity mainTile = ((TileEntityMulti) pad).getMainBlockTile();
+                final TileEntity mainTile = ((TileEntityFake) pad).getMainBlockTile();
 
                 if (mainTile instanceof ICargoEntity)
                 {
@@ -122,11 +129,11 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
 //    }
 
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     // ISidedInventory Implementation:
 
@@ -244,7 +251,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockReader world, BlockPos pos)
+    public boolean canAttachToLandingPad(IWorldReader world, BlockPos pos)
     {
         return true;
     }

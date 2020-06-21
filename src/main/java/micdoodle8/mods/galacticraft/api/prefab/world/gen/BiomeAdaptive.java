@@ -221,9 +221,9 @@ public class BiomeAdaptive extends BiomeGenBaseGC
 //    @Override
 //    public void decorate(World worldIn, Random rand, BlockPos pos)
 //    {
-//        if (worldIn.provider instanceof IGalacticraftWorldProvider)
+//        if (worldIn.dimension instanceof IGalacticraftWorldProvider)
 //        {
-//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.dimension).getCelestialBody());
 //        }
 //        else
 //        {
@@ -235,9 +235,9 @@ public class BiomeAdaptive extends BiomeGenBaseGC
 //    @Override
 //    public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
 //    {
-//        if (worldIn.provider instanceof IGalacticraftWorldProvider)
+//        if (worldIn.dimension instanceof IGalacticraftWorldProvider)
 //        {
-//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.dimension).getCelestialBody());
 //        }
 //        else
 //        {
@@ -256,9 +256,9 @@ public class BiomeAdaptive extends BiomeGenBaseGC
 //    @Override
 //    public final void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
 //    {
-//        if (worldIn.provider instanceof IGalacticraftWorldProvider)
+//        if (worldIn.dimension instanceof IGalacticraftWorldProvider)
 //        {
-//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.dimension).getCelestialBody());
 //        }
 //        else
 //        {

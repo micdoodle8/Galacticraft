@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -19,16 +20,14 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
-
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +43,14 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
     private int buttonFlag_xPosition;
     private int buttonFlag_yPosition;
 
-    private EntityFlag dummyFlag = new EntityFlag(Minecraft.getInstance().world);
+    private EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
     private ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;
 
     public GuiJoinSpaceRace(ClientPlayerEntity player)
     {
+        super(new StringTextComponent("Space Race"));
         this.thePlayer = player;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
@@ -84,39 +84,21 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
             this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2;
             this.buttonFlag_yPosition = this.height / 2 - this.height / 3 + 10;
 
-            this.buttons.add(new GuiElementGradientButton(0, this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close.name")));
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close.name"), (button) -> {
+                this.thePlayer.closeScreen();
+            }));
             int width = (int) (var5 / 1.0F);
-            this.buttons.add(new GuiElementGradientButton(1, this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName())));
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName()), (button) -> {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID() }));
+                this.thePlayer.closeScreen();
+            }));
         }
     }
 
     @Override
-    protected void actionPerformed(Button buttonClicked)
+    public void tick()
     {
-        switch (buttonClicked.id)
-        {
-        case 0:
-            this.thePlayer.closeScreen();
-            break;
-        case 1:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID() }));
-            this.thePlayer.closeScreen();
-            break;
-        default:
-            break;
-        }
-    }
-
-    @Override
-    protected void mouseClicked(int x, int y, int clickIndex) throws IOException
-    {
-        super.mouseClicked(x, y, clickIndex);
-    }
-
-    @Override
-    public void updateScreen()
-    {
-        super.updateScreen();
+        super.tick();
         ++this.ticksPassed;
 
         if (!this.initialized)
@@ -125,11 +107,9 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void render(int par1, int par2, float par3)
     {
-        this.drawDefaultBackground();
-        final int var5 = (this.width - this.width / 4) / 2;
-        final int var6 = (this.height - this.height / 4) / 2;
+        this.renderBackground();
 
         if (this.initialized)
         {
@@ -145,7 +125,7 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
             GL11.glPopMatrix();
         }
 
-        super.drawScreen(par1, par2, par3);
+        super.render(par1, par2, par3);
     }
 
     private void drawFlagButton(int mouseX, int mouseY)
@@ -162,7 +142,7 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
     }
 
     @Override
-    public void drawWorldBackground(int i)
+    public void renderBackground(int i)
     {
         if (this.minecraft.world != null)
         {
@@ -172,14 +152,14 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
             if (scaleX == this.width / 3 && scaleY == this.height / 3 && !this.initialized)
             {
                 this.initialized = true;
-                this.initGui();
+                this.init();
             }
 
             this.fillGradient(this.width / 2 - scaleX, this.height / 2 - scaleY, this.width / 2 + scaleX, this.height / 2 + scaleY, -1072689136, -804253680);
         }
         else
         {
-            this.drawBackground(i);
+            this.renderBackground(i);
         }
     }
 

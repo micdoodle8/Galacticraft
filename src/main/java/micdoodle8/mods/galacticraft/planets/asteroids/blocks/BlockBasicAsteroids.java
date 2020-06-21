@@ -188,7 +188,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_ILMENITE)
         {

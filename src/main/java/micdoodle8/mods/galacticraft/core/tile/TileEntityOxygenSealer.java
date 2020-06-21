@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
@@ -18,11 +20,13 @@ import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -31,20 +35,23 @@ import java.util.List;
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileClientUpdates
 {
-    @NetworkedField(targetSide = Side.CLIENT)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenSealer)
+    public static TileEntityType<TileEntityOxygenSealer> TYPE;
+
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean sealed;
     public boolean lastSealed = false;
 
     public boolean lastDisabled = false;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean active;
     public ThreadFindSeal threadSeal;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int stopSealThreadCooldown;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int threadCooldownTotal;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean calculatingSealed;
     public static int countEntities = 0;
     private static int countTemp = 0;
@@ -56,7 +63,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
 
     public TileEntityOxygenSealer()
     {
-        super("container.oxygensealer.name", 10000, UNSEALED_OXYGENPERTICK);
+        super(TYPE/*"container.oxygensealer.name"*/, 10000, UNSEALED_OXYGENPERTICK);
         this.noRedstoneControl = true;
         this.storage.setMaxExtract(5.0F);  //Half of a standard machine's power draw
         this.storage.setMaxReceive(25.0F);
@@ -82,23 +89,23 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
         if (!this.world.isRemote)
         {
             TileEntityOxygenSealer.loadedTiles.remove(this);
         }
-        super.invalidate();
+        super.remove();
     }
 
     @Override
-    public void onChunkUnload()
+    public void onChunkUnloaded()
     {
         if (!this.world.isRemote)
         {
             TileEntityOxygenSealer.loadedTiles.remove(this);
         }
-        super.onChunkUnload();
+        super.onChunkUnloaded();
     }
 
     public int getScaledThreadCooldown(int i)
@@ -130,11 +137,11 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     public boolean thermalControlEnabled()
     {
         ItemStack oxygenItemStack = this.getStackInSlot(2);
-        return oxygenItemStack != null && oxygenItemStack.getItem() == GCItems.basicItem && oxygenItemStack.getItemDamage() == 20 && this.hasEnoughEnergyToRun && !this.disabled;
+        return oxygenItemStack != null && oxygenItemStack.getItem() == GCItems.ambientThermalController && this.hasEnoughEnergyToRun && !this.disabled;
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -165,7 +172,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         }
 
         this.oxygenPerTick = this.sealed ? 2 : UNSEALED_OXYGENPERTICK;
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -243,9 +250,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             case 0:
                 return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
-                return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+                return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
             case 2:
-                return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
+                return itemstack.getItem() == GCItems.ambientThermalController;
             default:
                 return false;
             }
@@ -267,11 +274,11 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         }
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
@@ -290,7 +297,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         }
         if (slotID == 2)
         {
-            return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 20;
+            return itemstack.getItem() == GCItems.ambientThermalController;
         }
         return false;
     }

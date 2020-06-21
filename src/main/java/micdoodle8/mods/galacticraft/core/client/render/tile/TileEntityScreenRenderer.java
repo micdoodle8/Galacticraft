@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
@@ -17,50 +19,49 @@ import java.nio.FloatBuffer;
 public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScreen>
 {
     public static final ResourceLocation blockTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/screen_side.png");
-    private TextureManager renderEngine = Minecraft.getInstance().renderEngine;
+    private TextureManager textureManager = Minecraft.getInstance().textureManager;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
     private float yPlane = 0.91F;
     float frame = 0.098F;
 
     @Override
-    public void render(TileEntityScreen screen, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
+    public void render(TileEntityScreen screen, double x, double y, double z, float partialTicks, int destroyStage)
     {
         GL11.glPushMatrix();
         // Texture file
         this.textureManager.bindTexture(TileEntityScreenRenderer.blockTexture);
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
+        GL11.glTranslatef((float) x, (float) y, (float) z);
 
-        int meta = screen.getBlockMetadata();
-        boolean screenData = (meta >= 8);
-        meta &= 7;
+        Direction dir = screen.getBlockState().get(BlockScreen.FACING);
+//        boolean screenData = (meta >= 8);
 
-        switch (meta)
+        switch (dir)
         {
-        case 0:
+        case DOWN:
             GL11.glRotatef(180, 1, 0, 0);
             GL11.glTranslatef(0, -1.0F, -1.0F);
             break;
-        case 1:
+        case UP:
             break;
-        case 2:
+        case NORTH:
             GL11.glTranslatef(0.0F, 0.0F, -0.87F);
             GL11.glRotatef(90, 1.0F, 0, 0);
             GL11.glTranslatef(0.0F, 0.0F, -1.0F);
             break;
-        case 3:
+        case SOUTH:
             GL11.glTranslatef(0.0F, 0.0F, 0.87F);
             GL11.glRotatef(90, -1.0F, 0, 0);
             GL11.glTranslatef(1.0F, -1.0F, 1.0F);
             GL11.glRotatef(180, 0, -1.0F, 0);
             break;
-        case 4:
+        case WEST:
             GL11.glTranslatef(-0.87F, 0.0F, 0.0F);
             GL11.glRotatef(90, 0, 0, -1.0F);
             GL11.glTranslatef(-1.0F, 0.0F, 1.0F);
             GL11.glRotatef(90, 0, 1.0F, 0);
             break;
-        case 5:
+        case EAST:
             GL11.glTranslatef(0.87F, 0.0F, 0.0F);
             GL11.glRotatef(90, 0, 0, 1.0F);
             GL11.glTranslatef(1.0F, -1.0F, 0.0F);
@@ -94,7 +95,7 @@ public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScree
         }
         GL11.glRotatef(180, 0, 1, 0);
         GL11.glTranslatef(-screen.screen.getScaleX(), 0.0F, 0.0F);
-        screen.screen.drawScreen(screen.imageType, partialTickTime + screen.getWorld().getWorldTime(), cornerblock);
+        screen.screen.drawScreen(screen.imageType, partialTicks + screen.getWorld().getDayTime(), cornerblock);
 
         GL11.glPopMatrix();
     }

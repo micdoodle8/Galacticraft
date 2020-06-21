@@ -59,7 +59,7 @@
 //            worldData.datacompound = null;
 //            if (worldData.alldata != null)
 //            {
-//                worldData.datacompound = worldData.alldata.getCompoundTag("" + worldData.dim);
+//                worldData.datacompound = worldData.alldata.getCompound("" + worldData.dim);
 //            }
 //            if (worldData.datacompound == null)
 //            {

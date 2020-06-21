@@ -4,15 +4,21 @@ import com.google.common.collect.Sets;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 public class PacketFluidNetworkUpdate extends PacketBase
 {
@@ -31,17 +37,40 @@ public class PacketFluidNetworkUpdate extends PacketBase
     {
     }
 
-    public static PacketFluidNetworkUpdate getFluidUpdate(int dimensionID, BlockPos pos, FluidStack stack, boolean didTransfer)
+    public static PacketFluidNetworkUpdate getFluidUpdate(DimensionType dimensionID, BlockPos pos, FluidStack stack, boolean didTransfer)
     {
         return new PacketFluidNetworkUpdate(PacketType.FLUID, dimensionID, pos, stack, didTransfer);
     }
 
-    public static PacketFluidNetworkUpdate getAddTransmitterUpdate(int dimensionID, BlockPos pos, boolean newNetwork, Collection<IBufferTransmitter<FluidStack>> transmittersAdded)
+    public static PacketFluidNetworkUpdate getAddTransmitterUpdate(DimensionType dimensionID, BlockPos pos, boolean newNetwork, Collection<IBufferTransmitter<FluidStack>> transmittersAdded)
     {
         return new PacketFluidNetworkUpdate(PacketType.ADD_TRANSMITTER, dimensionID, pos, newNetwork, transmittersAdded);
     }
 
-    private PacketFluidNetworkUpdate(PacketType type, int dimensionID, BlockPos pos, FluidStack stack, boolean didTransfer)
+    public static void encode(final PacketFluidNetworkUpdate message, final PacketBuffer buf)
+    {
+        message.encodeInto(buf);
+    }
+
+    public static PacketFluidNetworkUpdate decode(PacketBuffer buf)
+    {
+        PacketFluidNetworkUpdate packet = new PacketFluidNetworkUpdate();
+        packet.decodeInto(buf);
+        return packet;
+    }
+
+    public static void handle(final PacketFluidNetworkUpdate message, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+                message.handleClientSide(ctx.get().getSender());
+            } else {
+                message.handleServerSide(ctx.get().getSender());
+            }
+        });
+        ctx.get().setPacketHandled(true);
+    }
+
+    private PacketFluidNetworkUpdate(PacketType type, DimensionType dimensionID, BlockPos pos, FluidStack stack, boolean didTransfer)
     {
         super(dimensionID);
         this.type = type;
@@ -50,7 +79,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
         this.didTransfer = didTransfer;
     }
 
-    private PacketFluidNetworkUpdate(PacketType type, int dimensionID, BlockPos pos, boolean newNetwork, Collection<IBufferTransmitter<FluidStack>> transmittersAdded)
+    private PacketFluidNetworkUpdate(PacketType type, DimensionType dimensionID, BlockPos pos, boolean newNetwork, Collection<IBufferTransmitter<FluidStack>> transmittersAdded)
     {
         super(dimensionID);
         this.type = type;
@@ -86,8 +115,8 @@ public class PacketFluidNetworkUpdate extends PacketBase
             if (this.stack != null)
             {
                 buffer.writeBoolean(true);
-                ByteBufUtils.writeUTF8String(buffer, FluidRegistry.getFluidName(this.stack));
-                buffer.writeInt(this.stack.amount);
+                NetworkUtil.writeUTF8String(buffer, this.stack.getFluid().getRegistryName().toString());
+                buffer.writeInt(this.stack.getAmount());
             }
             else
             {
@@ -121,7 +150,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
         case FLUID:
             if (buffer.readBoolean())
             {
-                this.fluidType = FluidRegistry.getFluid(ByteBufUtils.readUTF8String(buffer));
+                this.fluidType = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(NetworkUtil.readUTF8String(buffer)));
                 if (this.fluidType != null)
                 {
                     this.stack = new FluidStack(this.fluidType, buffer.readInt());

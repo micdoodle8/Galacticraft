@@ -11,7 +11,7 @@
 //@OnlyIn(Dist.CLIENT)
 //public class EffectHandler
 //{
-//    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... otherInfo)
+//    public static void addParticle(String particleID, Vector3 position, Vector3 motion, Object... otherInfo)
 //    {
 //        Minecraft mc = Minecraft.getInstance();
 //

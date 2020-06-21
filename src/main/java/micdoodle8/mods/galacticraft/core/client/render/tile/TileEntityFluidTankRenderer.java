@@ -1,42 +1,40 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityFluidTankRenderer extends TileEntityRenderer<TileEntityFluidTank>
 {
     @Override
-    public void render(TileEntityFluidTank tank, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntityFluidTank tileTank, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        FluidTankInfo[] info = tank.getTankInfo(Direction.DOWN);
+//        FluidTankInfo[] info = tank.getTankInfo(Direction.DOWN);
 
-        if (info.length != 1)
+//        if (info.length != 1)
+//        {
+//            return;
+//        }
+//        FluidStack tankFluid = info[0].fluid;
+        FluidStack tankFluid = tileTank.fluidTank.getFluid();
+        if (tankFluid == FluidStack.EMPTY || (!tankFluid.getFluid().getAttributes().isGaseous() && tankFluid.getAmount() == 0))
         {
             return;
         }
-        FluidStack tankFluid = info[0].fluid; 
-        if (tankFluid == null || tankFluid.getFluid() == null || (!tankFluid.getFluid().isGaseous() && tankFluid.amount == 0))
-        {
-            return;
-        }
 
-        TileEntityFluidTank tankAbove = tank.getNextTank(tank.getPos());
-        TileEntityFluidTank tankBelow = tank.getPreviousTank(tank.getPos());
+        TileEntityFluidTank tankAbove = tileTank.getNextTank(tileTank.getPos());
+        TileEntityFluidTank tankBelow = tileTank.getPreviousTank(tileTank.getPos());
 
         this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(tankFluid.getFluid().getStill().toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(tankFluid.getFluid().getAttributes().getStillTexture().toString());
         final double uMin = sprite.getMinU();
         final double uMax = sprite.getMaxU();
         final double vMin = sprite.getMinV();
@@ -50,7 +48,7 @@ public class TileEntityFluidTankRenderer extends TileEntityRenderer<TileEntityFl
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder worldRenderer = tess.getBuffer();
 
@@ -58,15 +56,15 @@ public class TileEntityFluidTankRenderer extends TileEntityRenderer<TileEntityFl
         float levelInv = 0.0F;
         float opacity = 1.0F;
 
-        boolean compositeGaseous = tankFluid.getFluid().isGaseous();
+        boolean compositeGaseous = tankFluid.getFluid().getAttributes().isGaseous();
 
         if (compositeGaseous)
         {
-            opacity = Math.min(tankFluid.amount / (float) info[0].capacity * 0.8F + 0.2F, 1F);
+            opacity = Math.min(tankFluid.getAmount() / (float) tileTank.fluidTank.getCapacity() * 0.8F + 0.2F, 1F);
         }
         else
         {
-            level = tank.fluidTank.getFluidAmount() / 16400.0F;
+            level = tileTank.fluidTank.getFluidAmount() / 16400.0F;
             if (level <= 0.012F)
             {
                 levelInv = 1.0F;  //Empty tanks render empty - see #3222

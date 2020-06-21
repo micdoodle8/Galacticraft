@@ -8,10 +8,9 @@ import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -26,10 +25,11 @@ public class GuiOxygenDecompressor extends GuiContainerGC
     private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiOxygenDecompressor(PlayerInventory playerInv, TileEntityOxygenDecompressor decompressor)
+    public GuiOxygenDecompressor(ContainerOxygenDecompressor container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerOxygenDecompressor(playerInv, decompressor, Minecraft.getInstance().player), playerInv, new StringTextComponent(decompressor.getName()));
-        this.decompressor = decompressor;
+        super(container, playerInv, title);
+//        super(new ContainerOxygenDecompressor(playerInv, decompressor, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.oxygendecompressor.name"));
+        this.decompressor = container.getDecompressor();
         this.ySize = 180;
     }
 
@@ -68,7 +68,7 @@ public class GuiOxygenDecompressor extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.decompressor.getName(), 8, 10, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();

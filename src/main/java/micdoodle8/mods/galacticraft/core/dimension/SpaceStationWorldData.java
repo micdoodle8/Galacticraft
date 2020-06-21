@@ -28,14 +28,15 @@ public class SpaceStationWorldData extends WorldSavedData
     private String owner = "NoOwner";
     private ArrayList<UUID> allowedPlayers;
     private boolean allowAllPlayers;
-//    private int homePlanet;
-//    private int dimensionIdDynamic;
-//    private int dimensionIdStatic;
+    private DimensionType homePlanet;
+//    private DimensionType dimensionIdDynamic;
+//    private DimensionType dimensionIdStatic;
+    private DimensionType dimensionType;
     private CompoundNBT dataCompound;
 
-    public SpaceStationWorldData(String par1Str)
+    public SpaceStationWorldData(String dataName)
     {
-        super(par1Str);
+        super(dataName);
 
         this.allowedPlayers = new ArrayList<UUID>();
     }
@@ -72,35 +73,46 @@ public class SpaceStationWorldData extends WorldSavedData
         return this.spaceStationName;
     }
 
-//    public int getHomePlanet()
-//    {
-//        return homePlanet;
-//    }
-//
-//    public void putSpaceStationName(String string)
-//    {
-//        this.spaceStationName = string;
-//    }
-//
-//    public int getDimensionIdStatic()
+    public DimensionType getHomePlanet()
+    {
+        return homePlanet;
+    }
+
+    public void putSpaceStationName(String string)
+    {
+        this.spaceStationName = string;
+    }
+
+//    public DimensionType getDimensionIdStatic()
 //    {
 //        return dimensionIdStatic;
 //    }
 //
-//    public void putDimensionIdStatic(int dimensionIdStatic)
+//    public void putDimensionIdStatic(DimensionType dimensionIdStatic)
 //    {
 //        this.dimensionIdStatic = dimensionIdStatic;
 //    }
 //
-//    public int getDimensionIdDynamic()
+//    public DimensionType getDimensionIdDynamic()
 //    {
 //        return dimensionIdDynamic;
 //    }
 //
-//    public void putDimensionIdDynamic(int dimensionIdDynamic)
+//    public void putDimensionIdDynamic(DimensionType dimensionIdDynamic)
 //    {
 //        this.dimensionIdDynamic = dimensionIdDynamic;
-//    } TODO
+//    }
+
+
+    public DimensionType getDimensionType()
+    {
+        return dimensionType;
+    }
+
+    public void setDimensionType(DimensionType dimensionType)
+    {
+        this.dimensionType = dimensionType;
+    }
 
     @Override
     public void read(CompoundNBT nbt)
@@ -117,16 +129,16 @@ public class SpaceStationWorldData extends WorldSavedData
             this.dataCompound = new CompoundNBT();
         }
 
-//        if (nbt.contains("homePlanet"))
-//        {
-//            this.homePlanet = nbt.getInt("homePlanet");
-//        }
-//        else
-//        {
-//            GCLog.info("Home planet data not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
-//            this.homePlanet = 0; // Overworld dimension ID
-//        }
-//
+        if (nbt.contains("homePlanetRes"))
+        {
+            this.homePlanet = DimensionType.byName(new ResourceLocation(nbt.getString("homePlanetRes")));
+        }
+        else
+        {
+            GCLog.info("Home planet data not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
+            this.homePlanet = DimensionType.OVERWORLD; // Overworld dimension ID
+        }
+
 //        if (nbt.contains("dimensionIdStatic"))
 //        {
 //            this.dimensionIdStatic = nbt.getInt("dimensionIdStatic");
@@ -145,7 +157,7 @@ public class SpaceStationWorldData extends WorldSavedData
 //        {
 //            GCLog.info("Dynamic dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
 //            this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit;
-//        } TODO
+//        }
 
         this.allowAllPlayers = nbt.getBoolean("allowedAll");
 
@@ -210,7 +222,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
         boolean foundMatch = false;
 
-        // Loop through all registered satellites, checking for a provider ID match. If none is found, this method is
+        // Loop through all registered satellites, checking for a dimension ID match. If none is found, this method is
         // being called on an incorrect
         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
         {
@@ -257,7 +269,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
 //            if (providerIdDynamic == -1 || providerIdStatic == -1)
 //            {
-//                throw new RuntimeException("Space station being created on bad provider IDs!");
+//                throw new RuntimeException("Space station being created on bad dimension IDs!");
 //            }
 //            else
 //            {
@@ -326,7 +338,7 @@ public class SpaceStationWorldData extends WorldSavedData
 //        return var3;
 //    } TODO ?
 
-    public static String getSpaceStationID(int dimID)
+    public static String getSpaceStationID(DimensionType dimID)
     {
         return "spacestation_" + dimID;
     }

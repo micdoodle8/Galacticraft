@@ -9,12 +9,12 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
-public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
+public class TileEntityMinerBaseSingle extends TileEntity implements ITickableTileEntity
 {
     private int corner = 0;
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote && this.corner == 0)
         {
@@ -57,14 +57,14 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                     this.world.setBlockToAir(this.getPos());
                 }
                 //Don't try setting a new block with a TileEntity, because new tiles can
-                //get removed after the end of this tileEntity.update() tick - setting a new block
-                //here would automatically invalidate this tile.
+                //get removed after the end of this tileEntity.tick() tick - setting a new block
+                //here would automatically remove this tile.
                 //
                 //(It's because if this tileEntity is now invalid, World.updateEntities() removes
                 // *any* tileEntity at this position - see call to Chunk.removeTileEntity(pos)nee!)
                 //
                 //Equally if any others of these TileEntityMinerBaseSingle are ticked AFTER this
-                //in the same server update tick, then those new ones will also be removed
+                //in the same server tick tick, then those new ones will also be removed
                 //because their TileEntityMinerBaseSingle is now, inevitably, invalid!
             }
         }

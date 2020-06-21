@@ -58,17 +58,17 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         return BlockRenderType.INVISIBLE;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -159,7 +159,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final TileEntity tileAt = worldIn.getTileEntity(pos);
 
@@ -191,12 +191,12 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
             ShortRangeTelepadHandler.removeShortRangeTeleporter((TileEntityShortRangeTelepad) tileAt);
         }
 
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         final TileEntity tileAt = worldIn.getTileEntity(pos);
 
@@ -217,17 +217,17 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
                     r = f * 0.3F;
                     g = f * (0.3F + (teleportTimeScaled * 0.7F));
                     b = f * (1.0F - (teleportTimeScaled * 0.7F));
-                    GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.1, pos.getZ() + 0.2 + rand.nextDouble() * 0.6), new Vector3(0.0, 1.4, 0.0), telepad, false);
+                    GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.1, pos.getZ() + 0.2 + rand.nextDouble() * 0.6), new Vector3(0.0, 1.4, 0.0), telepad, false);
                 }
 
                 f = rand.nextFloat() * 0.6F + 0.4F;
                 r = f * 0.3F;
                 g = f * (0.3F + (teleportTimeScaled * 0.7F));
                 b = f * (1.0F - (teleportTimeScaled * 0.7F));
-                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(pos.getX() + 0.0 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), telepad, true);
-                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(pos.getX() + 0.8 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), telepad, true);
-                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.2 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), telepad, true);
-                GalacticraftPlanets.spawnParticle("portalBlue", new Vector3(pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.8 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), telepad, true);
+                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.0 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), telepad, true);
+                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.8 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), telepad, true);
+                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.2 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), telepad, true);
+                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.8 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), telepad, true);
             }
         }
     }
@@ -235,7 +235,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

@@ -10,10 +10,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 public class PacketDynamicInventory extends PacketBase
 {
@@ -60,6 +64,29 @@ public class PacketDynamicInventory extends PacketBase
         {
             this.stacks[i] = chest.getStackInSlot(i);
         }
+    }
+
+    public static void encode(final PacketDynamicInventory message, final PacketBuffer buf)
+    {
+        message.encodeInto(buf);
+    }
+
+    public static PacketDynamicInventory decode(PacketBuffer buf)
+    {
+        PacketDynamicInventory packet = new PacketDynamicInventory();
+        packet.decodeInto(buf);
+        return packet;
+    }
+
+    public static void handle(final PacketDynamicInventory message, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+                message.handleClientSide(ctx.get().getSender());
+            } else {
+                message.handleServerSide(ctx.get().getSender());
+            }
+        });
+        ctx.get().setPacketHandled(true);
     }
 
     @Override

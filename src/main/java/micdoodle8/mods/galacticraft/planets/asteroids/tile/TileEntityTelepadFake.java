@@ -9,7 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class TileEntityTelepadFake extends TileBaseElectricBlock
 {
     // The the position of the main block
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public BlockPos mainBlockPosition;
     private WeakReference<TileEntityShortRangeTelepad> mainTelepad = null;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     private boolean canConnect = false;
 
     public TileEntityTelepadFake()
@@ -74,9 +74,9 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
 
@@ -131,24 +131,24 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
-        CompoundNBT tagCompound = nbt.getCompoundTag("mainBlockPosition");
+        super.read(nbt);
+        CompoundNBT tagCompound = nbt.getCompound("mainBlockPosition");
         this.setMainBlockInternal(new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z")));
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
         if (this.mainBlockPosition != null)
         {
             CompoundNBT tagCompound = new CompoundNBT();
-            tagCompound.setInteger("x", this.mainBlockPosition.getX());
-            tagCompound.setInteger("y", this.mainBlockPosition.getY());
-            tagCompound.setInteger("z", this.mainBlockPosition.getZ());
+            tagCompound.putInt("x", this.mainBlockPosition.getX());
+            tagCompound.putInt("y", this.mainBlockPosition.getY());
+            tagCompound.putInt("z", this.mainBlockPosition.getZ());
             nbt.put("mainBlockPosition", tagCompound);
         }
 

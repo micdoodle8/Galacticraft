@@ -3,19 +3,29 @@ package micdoodle8.mods.galacticraft.core.network;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class PacketEntityUpdate extends PacketBase
 {
     private int entityID;
-    private Vector3 position;
+    private Vector3D position;
     private float rotationYaw;
     private float rotationPitch;
-    private Vector3 motion;
+    private Vector3D motion;
     private boolean onGround;
 
     public PacketEntityUpdate()
@@ -23,7 +33,7 @@ public class PacketEntityUpdate extends PacketBase
         super();
     }
 
-    public PacketEntityUpdate(int entityID, Vector3 position, Vector2 rotation, Vector3 motion, boolean onGround, int dimID)
+    public PacketEntityUpdate(int entityID, Vector3D position, Vector2 rotation, Vector3D motion, boolean onGround, DimensionType dimID)
     {
         super(dimID);
         this.entityID = entityID;
@@ -36,7 +46,30 @@ public class PacketEntityUpdate extends PacketBase
 
     public PacketEntityUpdate(Entity entity)
     {
-        this(entity.getEntityId(), new Vector3(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3(entity.motionX, entity.motionY, entity.motionZ), entity.onGround, GCCoreUtil.getDimensionID(entity.world));
+        this(entity.getEntityId(), new Vector3D(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3D(entity.getMotion()), entity.onGround, GCCoreUtil.getDimensionID(entity.world));
+    }
+
+    public static void encode(final PacketEntityUpdate message, final PacketBuffer buf)
+    {
+        message.encodeInto(buf);
+    }
+
+    public static PacketEntityUpdate decode(PacketBuffer buf)
+    {
+        PacketEntityUpdate packet = new PacketEntityUpdate();
+        packet.decodeInto(buf);
+        return packet;
+    }
+
+    public static void handle(final PacketEntityUpdate message, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+                message.handleClientSide(ctx.get().getSender());
+            } else {
+                message.handleServerSide(ctx.get().getSender());
+            }
+        });
+        ctx.get().setPacketHandled(true);
     }
 
     @Override
@@ -60,10 +93,10 @@ public class PacketEntityUpdate extends PacketBase
     {
         super.decodeInto(buffer);
         this.entityID = buffer.readInt();
-        this.position = new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+        this.position = new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         this.rotationYaw = buffer.readFloat();
         this.rotationPitch = buffer.readFloat();
-        this.motion = new Vector3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+        this.motion = new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         this.onGround = buffer.readBoolean();
     }
 

@@ -2,12 +2,15 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorageModule>
@@ -16,9 +19,10 @@ public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorag
 
     private TileEntityEnergyStorageModule storageModule;
 
-    public GuiEnergyStorageModule(PlayerInventory playerInv, TileEntityEnergyStorageModule storageModule)
+    public GuiEnergyStorageModule(ContainerEnergyStorageModule container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerEnergyStorageModule(playerInv, storageModule), playerInv, new StringTextComponent(storageModule.getName()));
+        super(container, playerInv, title);
+//        super(new ContainerEnergyStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent(storageModule.getTierGC() == 1 ? "tile.machine.1.name" : "tile.machine.8.name"));
         this.storageModule = storageModule;
     }
 
@@ -29,7 +33,7 @@ public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorag
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.storageModule.getName(), this.xSize / 2 - this.font.getStringWidth(this.storageModule.getName()) / 2, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), this.xSize / 2 - this.font.getStringWidth(this.title.getFormattedText()) / 2, 6, 4210752);
         float energy = this.storageModule.getEnergyStoredGC();
         if (energy + 49 > this.storageModule.getMaxEnergyStoredGC())
         {

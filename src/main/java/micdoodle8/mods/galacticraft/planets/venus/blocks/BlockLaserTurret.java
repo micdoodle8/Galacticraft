@@ -37,11 +37,11 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
         super(builder);
     }
 
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)
@@ -66,13 +66,13 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
             ((TileEntityLaserTurret) tile).addPlayer(placer.getName());
         }
         int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = Direction.getHorizontal(angle).getOpposite().getHorizontalIndex();
+        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
         BlockMulti.onPlacement(worldIn, pos, placer, this);
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -81,7 +81,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
             ((TileEntityLaserTurret) tile).onDestroy(tile);
         }
 
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -110,11 +110,11 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
         return true;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
@@ -131,7 +131,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        Direction enumfacing = Direction.getHorizontal(meta % 4);
+        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
         return this.getDefaultState().with(FACING, enumfacing);
     }
 

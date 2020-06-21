@@ -14,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -175,7 +176,7 @@ public class MapUtil
         {
             return;
         }
-        World overworld = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).getWorld();
+        World overworld = WorldUtil.getProviderForDimensionServer(DimensionType.OVERWORLD).getWorld();
         if (overworld == null)
         {
             return;
@@ -585,9 +586,9 @@ public class MapUtil
      * @param overworldImage Output image already created as a blank image, dimensions biomeMapSizeX x biomeMapSizeY
      * @param paletteImage   Palette image, dimensions must be a square with sides biomeMapSizeZ / 4
      */
-    public static BufferedImage convertTo12pxTexture(BufferedImage overworldImage, BufferedImage paletteImage)
+    public static NativeImage convertTo12pxTexture(BufferedImage overworldImage, BufferedImage paletteImage)
     {
-        BufferedImage result = new BufferedImage(overworldImage.getWidth(), overworldImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+        NativeImage result = new NativeImage(overworldImage.getWidth(), overworldImage.getHeight(), false);
         TreeMap<Integer, Integer> mapColPos = new TreeMap<>();
         TreeMap<Integer, Integer> mapColPosB = new TreeMap<>();
         int count = 0;
@@ -650,7 +651,7 @@ public class MapUtil
                 {
                     for (int zzz = 0; zzz < 4; zzz++)
                     {
-                        result.setRGB(xx * 4 + xxx, zz * 4 + zzz, newCol);
+                        result.setPixelRGBA(xx * 4 + xxx, zz * 4 + zzz, newCol);
                     }
                 }
                 count++;
@@ -905,17 +906,17 @@ public class MapUtil
                 return;
             }
 
-            BufferedImage result = convertTo12pxTexture(worldImage, paletteImage);
+            NativeImage result = convertTo12pxTexture(worldImage, paletteImage);
 
             if (result != null)
             {
                 if (ClientProxyCore.overworldTextureWide == null)
                 {
-                    ClientProxyCore.overworldTextureWide = new DynamicTextureProper(OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT);
+                    ClientProxyCore.overworldTextureWide = new DynamicTextureProper(OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT, false);
                 }
                 if (ClientProxyCore.overworldTextureClient == null)
                 {
-                    ClientProxyCore.overworldTextureClient = new DynamicTextureProper(OVERWORLD_TEXTURE_HEIGHT, OVERWORLD_TEXTURE_HEIGHT);
+                    ClientProxyCore.overworldTextureClient = new DynamicTextureProper(OVERWORLD_TEXTURE_HEIGHT, OVERWORLD_TEXTURE_HEIGHT, false);
                 }
                 ClientProxyCore.overworldTextureWide.update(result);
                 ClientProxyCore.overworldTextureClient.update(result);
@@ -938,7 +939,7 @@ public class MapUtil
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static boolean getMap(int[] image, World world, BlockPos pos)
+    public static boolean getMap(NativeImage image, World world, BlockPos pos)
     {
         int xCoord = pos.getX();
         int zCoord = pos.getZ();
@@ -994,7 +995,7 @@ public class MapUtil
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static boolean makeRGBimage(int[] array, File baseFolder, int cx, int cz, int offsetX, int offsetZ, int xCoord, int zCoord, DimensionType dim, boolean prevResult)
+    private static boolean makeRGBimage(NativeImage image, File baseFolder, int cx, int cz, int offsetX, int offsetZ, int xCoord, int zCoord, DimensionType dim, boolean prevResult)
     {
         File filename = makeFileName(baseFolder, cx, cz);
         if (!filename.exists())
@@ -1073,7 +1074,7 @@ public class MapUtil
                 }
                 else
                 {
-                    array[imagex + SIZE_STD2 * imageZ] = convertBiomeColour(biome, height) + 0xff000000;
+                    image.setPixelRGBA(imagex, imageZ, convertBiomeColour(biome, height) + 0xff000000);
                 }
             }
         }

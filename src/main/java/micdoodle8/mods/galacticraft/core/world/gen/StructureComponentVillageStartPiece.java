@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.biome.dimension.BiomeProvider;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.ArrayList;

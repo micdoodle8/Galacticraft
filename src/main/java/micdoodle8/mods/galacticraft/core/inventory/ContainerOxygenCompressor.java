@@ -2,26 +2,32 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerOxygenCompressor extends Container
 {
-    private TileBaseElectricBlock tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_COMPRESSOR)
+    public static ContainerType<ContainerOxygenCompressor> TYPE;
 
-    public ContainerOxygenCompressor(PlayerInventory par1InventoryPlayer, TileEntityOxygenCompressor compressor, PlayerEntity player)
+    private TileEntityOxygenCompressor compressor;
+
+    public ContainerOxygenCompressor(int containerId, PlayerInventory playerInv, TileEntityOxygenCompressor compressor)
     {
-        this.tileEntity = compressor;
-        this.addSlotToContainer(new Slot(compressor, 0, 133, 71));
-        this.addSlotToContainer(new SlotSpecific(compressor, 1, 47, 27, IItemElectric.class));
-        this.addSlotToContainer(new SlotSpecific(compressor, 2, 17, 27, IItemOxygenSupply.class));
+        super(TYPE, containerId);
+        this.compressor = compressor;
+        this.addSlot(new Slot(compressor, 0, 133, 71));
+        this.addSlot(new SlotSpecific(compressor, 1, 47, 27, IItemElectric.class));
+        this.addSlot(new SlotSpecific(compressor, 2, 17, 27, IItemOxygenSupply.class));
 
         int var3;
 
@@ -29,22 +35,27 @@ public class ContainerOxygenCompressor extends Container
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 20 + 84 + var3 * 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 20 + 84 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 20 + 142));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 20 + 142));
         }
 
-        compressor.openInventory(player);
+        compressor.openInventory(playerInv.player);
+    }
+
+    public TileEntityOxygenCompressor getCompressor()
+    {
+        return compressor;
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.compressor.isUsableByPlayer(var1);
     }
 
     @Override
@@ -85,7 +96,7 @@ public class ContainerOxygenCompressor extends Container
                     }
                     movedToMachineSlot = true;
                 }
-                else if (stack.getItem() instanceof ItemOxygenTank && stack.getItemDamage() > 0)
+                else if (stack.getItem() instanceof ItemOxygenTank && stack.getDamage() > 0)
                 {
                     if (!this.mergeItemStack(stack, 0, 1, false))
                     {

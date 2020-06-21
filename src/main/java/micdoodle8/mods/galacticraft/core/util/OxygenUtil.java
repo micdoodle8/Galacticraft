@@ -272,7 +272,7 @@ public class OxygenUtil
         //Testing a non-air, permeable block (for example a torch or a ladder)
         if (limitCount < 5)
         {
-            for (Direction side : Direction.VALUES)
+            for (Direction side : Direction.values())
             {
                 if (permeableFlag || OxygenUtil.canBlockPassAirOnSide(world, block, pos, side))
                 {
@@ -462,7 +462,7 @@ public class OxygenUtil
 
     public static TileEntity[] getAdjacentFluidConnections(TileEntity tile, boolean ignoreConnect)
     {
-        TileEntity[] adjacentConnections = new TileEntity[Direction.VALUES.length];
+        TileEntity[] adjacentConnections = new TileEntity[Direction.values().length];
 
         if (tile == null)
         {
@@ -472,7 +472,7 @@ public class OxygenUtil
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (Direction direction : Direction.VALUES)
+        for (Direction direction : Direction.values())
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
@@ -495,11 +495,11 @@ public class OxygenUtil
         return adjacentConnections;
     }
 
-    public static boolean noAtmosphericCombustion(Dimension provider)
+    public static boolean noAtmosphericCombustion(Dimension dimension)
     {
-        if (provider instanceof IGalacticraftWorldProvider)
+        if (dimension instanceof IGalacticraftWorldProvider)
         {
-            return (!((IGalacticraftWorldProvider) provider).isGasPresent(EnumAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
+            return (!((IGalacticraftWorldProvider) dimension).isGasPresent(EnumAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) dimension).hasBreathableAtmosphere());
         }
 
         return false;
@@ -507,7 +507,7 @@ public class OxygenUtil
 
     public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
     {
-        int dimID = GCCoreUtil.getDimensionID(worldObj);
+        DimensionType dimID = GCCoreUtil.getDimensionID(worldObj);
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
             if (blockVec != null && blockVec.dim == dimID)

@@ -84,11 +84,11 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         return AABB;
     }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -127,13 +127,13 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerName = player.getName();
             }
 
-            world.markBlockRangeForRenderUpdate(pos, pos);
+            world.func_225319_b(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
 
             return true;
         }
         else
         {
-            world.markBlockRangeForRenderUpdate(pos, pos);
+            world.func_225319_b(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
             return false;
         }
     }
@@ -197,11 +197,11 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
 //    @Override
 //    public Item getItemDropped(int meta, Random random, int par3)
@@ -237,7 +237,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         int metadata = state.getBlock().getMetaFromState(state);
 
@@ -259,7 +259,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

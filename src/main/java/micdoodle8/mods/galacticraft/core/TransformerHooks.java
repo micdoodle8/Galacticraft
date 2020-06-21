@@ -699,7 +699,7 @@ public class TransformerHooks
                 }
                 else
                 {
-                    mc.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, blockpos1.getX() + xd, blockpos1.getY() + 0.1D - axisalignedbb.minY, blockpos1.getZ() + zd, 0.0D, 0.0D, 0.0D, new int[0]);
+                    mc.world.addParticle(EnumParticleTypes.SMOKE_NORMAL, blockpos1.getX() + xd, blockpos1.getY() + 0.1D - axisalignedbb.minY, blockpos1.getZ() + zd, 0.0D, 0.0D, 0.0D, new int[0]);
                 }
             }
         }

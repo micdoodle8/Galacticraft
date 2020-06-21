@@ -150,7 +150,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().getAmount();
+        final double fuelLevel = this.fuelTank.getFluid() == FluidStack.EMPTY ? 0 : this.fuelTank.getFluid().getAmount();
 
         return (int) (fuelLevel * i / this.FUEL_TANK_CAPACITY);
     }
@@ -261,7 +261,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         ItemStackHelper.saveAllItems(nbt, this.stacks);
 
-        if (this.fuelTank.getFluid() != null)
+        if (this.fuelTank.getFluid() != FluidStack.EMPTY)
         {
             nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
@@ -321,7 +321,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             Integer cargoLength = this.stacks != null ? this.stacks.size() : 0;
             objList.add(cargoLength);
-            objList.add(this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().getAmount());
+            objList.add(this.fuelTank.getFluid() == FluidStack.EMPTY ? 0 : this.fuelTank.getFluid().getAmount());
         }
 
         if (this.world.isRemote)

@@ -45,7 +45,7 @@
 //    }
 //
 //    @Override
-//    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+//    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
 //    {
 //        TileEntity tile = worldIn.getTileEntity(pos);
 //        if (tile instanceof TileEntityFluidTank)
@@ -53,7 +53,7 @@
 //            TileEntityFluidTank tank = (TileEntityFluidTank) tile;
 //            tank.onBreak();
 //        }
-//        super.breakBlock(worldIn, pos, state);
+//        super.onReplaced(state, worldIn, pos, newState, isMoving);
 //    }
 //
 //    @Override
@@ -64,7 +64,7 @@
 //
 //    @OnlyIn(Dist.CLIENT)
 //    @Override
-//    public BlockRenderLayer getBlockLayer()
+//    public BlockRenderLayer getRenderLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;
 //    }
@@ -96,7 +96,7 @@
 //    @Override
 //    public String getShiftDescription(ItemStack stack)
 //    {
-//        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+//        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
 //    }
 //
 //    @Override
@@ -208,7 +208,7 @@
 //        if (tile instanceof TileEntityFluidTank)
 //        {
 //            TileEntityFluidTank tank = (TileEntityFluidTank) tile;
-//            return tank.fluidTank.getFluid() == null || tank.fluidTank.getFluid().amount == 0 ? 0 : tank.fluidTank.getFluid().getFluid().getLuminosity(tank.fluidTank.getFluid());
+//            return tank.fluidTank.getFluid() == FluidStack.EMPTY || tank.fluidTank.getFluid().getAmount() == 0 ? 0 : tank.fluidTank.getFluid().getFluid().getLuminosity(tank.fluidTank.getFluid());
 //        }
 //
 //        return 0;

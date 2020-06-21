@@ -2,20 +2,24 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 
 import java.util.Random;
 
 public class RoomEmpty extends SizedPiece
 {
-    public RoomEmpty()
+    public RoomEmpty(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public RoomEmpty(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomEmpty(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        super(type, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -26,7 +30,7 @@ public class RoomEmpty extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {

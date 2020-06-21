@@ -10,11 +10,9 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -25,7 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.TickableSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,10 +45,8 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -364,7 +359,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
                 if (yDiff > 1D && yDiff < 4D)
                 {
-                    for (Object o : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().offset(0D, -3D, 0D), EntitySpaceshipBase.rocketSelector))
+                    for (Object o : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().offset(0D, -3D, 0D), EntitySpaceshipBase.ROCKET_SELECTOR))
                     {
                         if (o instanceof EntitySpaceshipBase)
                         {
@@ -937,7 +932,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             //No rocket flight in the Nether, the End etc
         	for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
             {
-                if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.world.getDimension().getType().getId())
+                if (ConfigManagerCore.disableRocketLaunchDimensions[i].equals(this.world.getDimension().getType().getRegistryName().toString()))
                 {
                 	this.cancelLaunch();
                     return;
@@ -1041,7 +1036,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         nbt.putInt("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
         nbt.putInt("TimeUntilAutoLaunch", this.autoLaunchCountdown);
         nbt.putInt("DestinationFrequency", this.destinationFrequency);
-        if (this.activeLaunchController != null) this.activeLaunchController.writeToNBT(nbt,"ALCat");
+        if (this.activeLaunchController != null) this.activeLaunchController.write(nbt,"ALCat");
     }
 
     @Override
@@ -1070,13 +1065,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.autoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
         this.autoLaunchCountdown = nbt.getInt("TimeUntilAutoLaunch");
         this.destinationFrequency = nbt.getInt("DestinationFrequency");
-        this.activeLaunchController = BlockVec3.readFromNBT(nbt, "ALCat");
+        this.activeLaunchController = BlockVec3.read(nbt, "ALCat");
     }
 
     @Override
-    public int addFuel(FluidStack liquid, boolean doFill)
+    public int addFuel(FluidStack liquid, IFluidHandler.FluidAction action)
     {
-    	return FluidUtil.fillWithGCFuel(this.fuelTank, liquid, doFill);
+    	return FluidUtil.fillWithGCFuel(this.fuelTank, liquid, action);
     }
 
     @Override
@@ -1290,11 +1285,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         return 64;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isUsableByPlayer(PlayerEntity entityplayer)

@@ -3,13 +3,16 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerDeconstructor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -24,9 +27,10 @@ public class GuiElectricFurnace extends GuiContainerGC<ContainerElectricFurnace>
     private TileEntityElectricFurnace furnace;
     private ResourceLocation texture;
 
-    public GuiElectricFurnace(PlayerInventory playerInv, TileEntityElectricFurnace furnace)
+    public GuiElectricFurnace(ContainerElectricFurnace container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerElectricFurnace(playerInv, furnace), playerInv, new StringTextComponent(furnace.getName()));
+        super(container, playerInv, title);
+//        super(new ContainerElectricFurnace(playerInv, furnace), playerInv, new TranslationTextComponent(furnace.getTierGC() == 1 ? "tile.machine.2.name" : "tile.machine.7.name"));
         this.furnace = furnace;
         texture = furnace.tierGC == 2 ? arcFurnaceTexture : electricFurnaceTexture;
     }
@@ -54,7 +58,7 @@ public class GuiElectricFurnace extends GuiContainerGC<ContainerElectricFurnace>
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.furnace.getName(), 45, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 45, 6, 4210752);
         String displayText = "";
 
         if (this.furnace.processTicks > 0)

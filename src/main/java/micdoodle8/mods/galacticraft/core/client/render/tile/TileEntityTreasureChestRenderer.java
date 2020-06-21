@@ -1,14 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -19,21 +20,18 @@ public class TileEntityTreasureChestRenderer extends TileEntityRenderer<TileEnti
 
     private final ModelTreasureChest chestModel = new ModelTreasureChest();
 
-    /**
-     * Renders the TileEntity for the chest at a position.
-     */
     @Override
-    public void render(TileEntityTreasureChest chest, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
+    public void render(TileEntityTreasureChest chest, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        int var9;
+        Direction var9;
 
         if (!chest.hasWorld())
         {
-            var9 = 0;
+            var9 = Direction.DOWN;
         }
         else
         {
-            var9 = chest.getBlockMetadata();
+            var9 = chest.getBlockState().get(BlockTier1TreasureChest.FACING);
         }
 
         ModelTreasureChest var14 = null;
@@ -45,34 +43,34 @@ public class TileEntityTreasureChestRenderer extends TileEntityRenderer<TileEnti
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) par2, (float) par4 + 1.0F, (float) par6 + 1.0F);
+        GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
         GL11.glScalef(1.0F, -1.0F, -1.0F);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         short var11 = 0;
 
-        if (var9 == 2)
+        if (var9 == Direction.NORTH)
         {
             var11 = 180;
         }
 
-        if (var9 == 3)
+        if (var9 == Direction.SOUTH)
         {
             var11 = 0;
         }
 
-        if (var9 == 4)
+        if (var9 == Direction.WEST)
         {
             var11 = 90;
         }
 
-        if (var9 == 5)
+        if (var9 == Direction.EAST)
         {
             var11 = -90;
         }
 
         GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        float var12 = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * partialTickTime;
+        float var12 = chest.prevLidAngle + (chest.lidAngle - chest.prevLidAngle) * partialTicks;
 
         float var13;
 
@@ -81,7 +79,7 @@ public class TileEntityTreasureChestRenderer extends TileEntityRenderer<TileEnti
 
         if (var14 != null)
         {
-            var14.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
+            var14.getLid().rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
             var14.renderAll(!chest.locked);
         }
 

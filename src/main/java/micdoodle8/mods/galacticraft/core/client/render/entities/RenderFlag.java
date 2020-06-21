@@ -47,7 +47,7 @@ public class RenderFlag extends EntityRenderer<EntityFlag>
         GlStateManager.rotatef(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);
         this.bindEntityTexture(entity);
         GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-        this.modelFlag.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.modelFlag.render(entity, 0.0625F);
         GlStateManager.popMatrix();
     }
     

@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockCheese extends Block implements IShiftDescription, ISortableBlock
+public class BlockCheese extends Block implements IShiftDescription
 {
     public static final IntegerProperty BITES = IntegerProperty.create("bites", 0, 6);
     protected static final VoxelShape[] CHEESE_AABB = new VoxelShape[] {
@@ -150,7 +150,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
-//    public BlockRenderLayer getBlockLayer()
+//    public BlockRenderLayer getRenderLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;
 //    }
@@ -173,9 +173,9 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 }

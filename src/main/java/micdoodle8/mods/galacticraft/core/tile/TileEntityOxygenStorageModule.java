@@ -1,19 +1,22 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -21,6 +24,9 @@ import java.util.Set;
 
 public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenStorageModule)
+    public static TileEntityType<TileEntityOxygenStorageModule> TYPE;
+
     public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
     public int scaledOxygenLevel;
     private int lastScaledOxygenLevel;
@@ -30,14 +36,14 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
     public TileEntityOxygenStorageModule()
     {
-        super("tile.machine2.6.name", OXYGEN_CAPACITY, 40);
+        super(TYPE, OXYGEN_CAPACITY, 40);
         this.storage.setCapacity(0);
         this.storage.setMaxExtract(0);
         inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -54,13 +60,14 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
             }
         }
 
-        super.update();
+        super.tick();
 
         this.scaledOxygenLevel = this.getScaledOxygenLevel(16);
 
         if (this.scaledOxygenLevel != this.lastScaledOxygenLevel)
         {
-            this.world.notifyLightSet(this.getPos());
+            this.world.getChunkProvider().getLightManager().checkBlock(this.getPos());
+//            this.world.notifyLightSet(this.getPos());
         }
 
         this.lastScaledOxygenLevel = this.scaledOxygenLevel;
@@ -109,17 +116,17 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;
     }
@@ -196,7 +203,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     {
         if (slotID == 0 && this.isItemValidForSlot(slotID, itemstack))
         {
-            return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+            return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
         }
         return false;
     }
@@ -219,15 +226,15 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
-        return super.drain(from, resource, doDrain);
+        return super.drain(from, resource, action);
     }
 
     @Override
-    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, IFluidHandler.FluidAction action)
     {
-        return super.drain(from, maxDrain, doDrain);
+        return super.drain(from, maxDrain, action);
     }
 
     @Override
@@ -243,32 +250,32 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public int fill(Direction from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
 //        int used = 0;
 //
 //        if (resource != null && this.canFill(from, resource.getFluid()))
 //        {
-//            used = (int) (this.receiveOxygen((int) Math.floor(resource.amount / Constants.LOX_GAS_RATIO), doFill) * Constants.LOX_GAS_RATIO);
+//            used = (int) (this.receiveOxygen((int) Math.floor(resource.amount / Constants.LOX_GAS_RATIO), action) * Constants.LOX_GAS_RATIO);
 //        }
 
-        return super.fill(from, resource, doFill);
+        return super.fill(from, resource, action);
     }
 
-    @Override
-    public FluidTankInfo[] getTankInfo(Direction from)
-    {
-//        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
-//        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
-//        int side = from.ordinal();
-//
-//        if (metaside == side && GalacticraftCore.isPlanetsLoaded)
-//        {
-//            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
-//        }
-//        return tankInfo;
-        return super.getTankInfo(from);
-    }
+//    @Override
+//    public FluidTankInfo[] getTankInfo(Direction from)
+//    {
+////        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
+////        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
+////        int side = from.ordinal();
+////
+////        if (metaside == side && GalacticraftCore.isPlanetsLoaded)
+////        {
+////            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
+////        }
+////        return tankInfo;
+//        return super.getTankInfo(from);
+//    }
 
     @Override
     public EnumSet<Direction> getOxygenInputDirections()
@@ -364,7 +371,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

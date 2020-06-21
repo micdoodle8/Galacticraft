@@ -360,22 +360,22 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public void clear()
@@ -2498,7 +2498,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             for (int j = 0; j < wpList.size(); j++)
             {
                 CompoundNBT bvTag = wpList.getCompound(j);
-                this.wayPoints.add(BlockVec3.readFromNBT(bvTag));
+                this.wayPoints.add(BlockVec3.read(bvTag));
             }
         }
         if (nbt.contains("MinePoints"))
@@ -2508,12 +2508,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             for (int j = 0; j < mpList.size(); j++)
             {
                 CompoundNBT bvTag = mpList.getCompound(j);
-                this.minePoints.add(BlockVec3.readFromNBT(bvTag));
+                this.minePoints.add(BlockVec3.read(bvTag));
             }
         }
         if (nbt.contains("MinePointCurrent"))
         {
-            this.minePointCurrent = BlockVec3.readFromNBT(nbt.getCompoundTag("MinePointCurrent"));
+            this.minePointCurrent = BlockVec3.read(nbt.getCompound("MinePointCurrent"));
         }
         else
         {
@@ -2578,7 +2578,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             ListNBT wpList = new ListNBT();
             for (int j = 0; j < this.wayPoints.size(); j++)
             {
-                wpList.appendTag(this.wayPoints.get(j).writeToNBT(new CompoundNBT()));
+                wpList.add(this.wayPoints.get(j).write(new CompoundNBT()));
             }
             nbt.put("WayPoints", wpList);
         }
@@ -2587,13 +2587,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             ListNBT mpList = new ListNBT();
             for (int j = 0; j < this.minePoints.size(); j++)
             {
-                mpList.appendTag(this.minePoints.get(j).writeToNBT(new CompoundNBT()));
+                mpList.add(this.minePoints.get(j).write(new CompoundNBT()));
             }
             nbt.put("MinePoints", mpList);
         }
         if (this.minePointCurrent != null)
         {
-            nbt.put("MinePointCurrent", this.minePointCurrent.writeToNBT(new CompoundNBT()));
+            nbt.put("MinePointCurrent", this.minePointCurrent.write(new CompoundNBT()));
         }
         if (this.playerUUID != null)
         {
@@ -2602,7 +2602,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         nbt.setDouble("speedup", this.speedup);
         nbt.putInt("pathBlockedCount", this.pathBlockedCount);
-        nbt.setBoolean("spawnedInCreative", this.spawnedInCreative);
+        nbt.putBoolean("spawnedInCreative", this.spawnedInCreative);
     }
 }
 

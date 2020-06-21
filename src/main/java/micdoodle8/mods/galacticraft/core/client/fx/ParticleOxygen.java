@@ -23,19 +23,19 @@ public class ParticleOxygen extends SpriteTexturedParticle
     private static long tick = -1L;
     private static Map<BlockPos, Integer> cacheLighting = new HashMap<>();
 
-    public ParticleOxygen(World par1World, Vector3 position, Vector3 motion, Vector3 color)
+    public ParticleOxygen(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, float colR, float colG, float colB)
     {
-        super(par1World, position.x, position.y, position.z, motion.x, motion.y, motion.z);
-        this.motionX = motion.x;
-        this.motionY = motion.y;
-        this.motionZ = motion.z;
-        this.portalPosX = this.posX = position.x;
-        this.portalPosY = this.posY = position.y;
-        this.portalPosZ = this.posZ = position.z;
+        super(par1World, posX, posY, posZ, motX, motY, motZ);
+        this.motionX = motX;
+        this.motionY = motY;
+        this.motionZ = motZ;
+        this.portalPosX = this.posX = posX;
+        this.portalPosY = this.posY = posY;
+        this.portalPosZ = this.posZ = posZ;
         this.portalParticleScale = this.particleScale = 0.1F;
-        this.particleRed = color.floatX();
-        this.particleGreen = color.floatY();
-        this.particleBlue = color.floatZ();
+        this.particleRed = colR;
+        this.particleGreen = colG;
+        this.particleBlue = colB;
         this.maxAge = (int) (Math.random() * 10.0D) + 40;
         this.canCollide = false;
     }
@@ -131,7 +131,7 @@ public class ParticleOxygen extends SpriteTexturedParticle
         }
 
         public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ParticleOxygen(worldIn, new Vector3(x, y, z), new Vector3(xSpeed, ySpeed, zSpeed), new Vector3(0.7D, 0.7D, 1.0D));
+            return new ParticleOxygen(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 0.7F, 0.7F, 1.0F);
         }
     }
 }

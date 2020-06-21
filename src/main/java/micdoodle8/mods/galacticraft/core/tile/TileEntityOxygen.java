@@ -1,73 +1,67 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
-import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.miccore.Annotations;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.EnumSet;
 
 public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandlerWrapper
 {
     public int oxygenPerTick;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTankGC tank;
     public float lastStoredOxygen;
     public static int timeSinceOxygenRequest;
+    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
 
-    public TileEntityOxygen(String tileName, int maxOxygen, int oxygenPerTick)
+    public TileEntityOxygen(TileEntityType<?> type, int maxOxygen, int oxygenPerTick)
     {
-        super(tileName);
+        super(type);
         this.tank = new FluidTankGC(maxOxygen, this);
         this.oxygenPerTick = oxygenPerTick;
     }
 
+//    @Override
+//    public boolean hasCapability(Capability<?> capability, Direction facing)
+//    {
+//    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+//    		return true;
+//
+//    	if (EnergyUtil.checkMekGasHandler(capability))
+//    		return true;
+//
+//    	return super.hasCapability(capability, facing);
+//    }
+
     @Override
-    public boolean hasCapability(Capability<?> capability, Direction facing)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
     {
-    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-    		return true;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return holder.cast();
 
-    	if (EnergyUtil.checkMekGasHandler(capability))
-    		return true;
-
-    	return super.hasCapability(capability, facing);  
-    }
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, Direction facing)
-    {
-    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-    	{
-    		return (T) new FluidHandlerWrapper(this, facing);
-    	}
-
-    	if (EnergyUtil.checkMekGasHandler(capability))
-    	{
-    		return (T) this;
-    	}
+//    	if (EnergyUtil.checkMekGasHandler(capability))
+//    	{
+//    		return (T) this;
+//    	}
 
     	return super.getCapability(capability, facing);
     }
@@ -85,9 +79,9 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -98,10 +92,10 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
             if (this.shouldUseOxygen())
             {
-                if (this.tank.getFluid() != null)
+                if (this.tank.getFluid() != FluidStack.EMPTY)
                 {
                     FluidStack fluid = this.tank.getFluid().copy();
-                    fluid.amount = Math.max(fluid.amount - this.oxygenPerTick, 0);
+                    fluid.setAmount(Math.max(fluid.getAmount() - this.oxygenPerTick, 0));
                     this.tank.setFluid(fluid);
                 }
             }
@@ -111,19 +105,19 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         if (nbt.contains("storedOxygen"))
         {
-            this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, nbt.getInt("storedOxygen")));
+            this.tank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), nbt.getInt("storedOxygen")));
         }
         else if (nbt.contains("storedOxygenF"))
         {
             int oxygen = (int) nbt.getFloat("storedOxygenF");
             oxygen = Math.min(this.tank.getCapacity(), oxygen);
-            this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, oxygen));
+            this.tank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), oxygen));
         }
         else
         {
@@ -132,9 +126,9 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         this.tank.writeToNBT(nbt);
         return nbt;
     }
@@ -142,13 +136,13 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
     
     @Override
     public void setOxygenStored(int oxygen)
     {
-        this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, (int) Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));
+        this.tank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), (int) Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));
     }
 
     @Override
@@ -195,29 +189,29 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public int receiveOxygen(Direction from, int receive, boolean doReceive)
+    public int receiveOxygen(Direction from, int receive, IFluidHandler.FluidAction action)
     {
         if (this.getOxygenInputDirections().contains(from))
         {
-            if (!doReceive)
+            if (action.simulate())
             {
                 return this.getOxygenRequest(from);
             }
 
-            return this.receiveOxygen(receive, doReceive);
+            return this.receiveOxygen(receive, action);
         }
 
         return 0;
     }
 
-    public int receiveOxygen(int receive, boolean doReceive)
+    public int receiveOxygen(int receive, IFluidHandler.FluidAction action)
     {
         if (receive > 0)
         {
             int prevOxygenStored = this.getOxygenStored();
             int newStoredOxygen = Math.min(prevOxygenStored + receive, this.getMaxOxygenStored());
 
-            if (doReceive)
+            if (action.execute())
             {
                 TileEntityOxygen.timeSinceOxygenRequest = 20;
                 this.setOxygenStored(newStoredOxygen);
@@ -230,23 +224,23 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public int provideOxygen(Direction from, int request, boolean doProvide)
+    public int provideOxygen(Direction from, int request, IFluidHandler.FluidAction action)
     {
         if (this.getOxygenOutputDirections().contains(from))
         {
-            return this.drawOxygen(request, doProvide);
+            return this.drawOxygen(request, action);
         }
 
         return 0;
     }
 
-    public int drawOxygen(int request, boolean doProvide)
+    public int drawOxygen(int request, IFluidHandler.FluidAction action)
     {
         if (request > 0)
         {
             int requestedOxygen = Math.min(request, this.getOxygenStored());
 
-            if (doProvide)
+            if (action.execute())
             {
                 this.setOxygenStored(this.getOxygenStored() - requestedOxygen);
             }
@@ -286,9 +280,9 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
                 if (gasRequested > 0)
                 {
-                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(GCFluidRegistry.fluidOxygenGas, Math.min(gasRequested, provide)), true);
+                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(GCFluids.OXYGEN.getFluid(), Math.min(gasRequested, provide)), IFluidHandler.FluidAction.EXECUTE);
 
-                    this.drawOxygen(usedGas, true);
+                    this.drawOxygen(usedGas, IFluidHandler.FluidAction.EXECUTE);
                     return true;
                 }
             }
@@ -298,8 +292,8 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
                 if (requestedOxygen > 0)
                 {
-                    int acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), provide, true);
-                    this.drawOxygen(acceptedOxygen, true);
+                    int acceptedOxygen = ((IOxygenReceiver) outputTile).receiveOxygen(outputDirection.getOpposite(), provide, IFluidHandler.FluidAction.EXECUTE);
+                    this.drawOxygen(acceptedOxygen, IFluidHandler.FluidAction.EXECUTE);
                     return true;
                 }
             }
@@ -355,80 +349,80 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         return 0;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
-    {
-        if (!stack.getGas().getName().equals("oxygen"))
-        {
-            return 0;
-        }
-        return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(Direction side, GasStack stack)
-    {
-        return this.receiveGas(side, stack, true);
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
-    {
-        return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.drawOxygen(amount, doTransfer)));
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(Direction side, int amount)
-    {
-        return this.drawGas(side, amount, true);
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveGas(Direction side, Gas type)
-    {
-        return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canDrawGas(Direction side, Gas type)
-    {
-        return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
-    public boolean canTubeConnect(Direction side)
-    {
-        return this.canConnect(side, NetworkType.FLUID);
-    }
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
+//    {
+//        if (!stack.getGas().getName().equals("oxygen"))
+//        {
+//            return 0;
+//        }
+//        return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public int receiveGas(Direction side, GasStack stack)
+//    {
+//        return this.receiveGas(side, stack, true);
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
+//    {
+//        return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.drawOxygen(amount, doTransfer)));
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public GasStack drawGas(Direction side, int amount)
+//    {
+//        return this.drawGas(side, amount, true);
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public boolean canReceiveGas(Direction side, Gas type)
+//    {
+//        return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public boolean canDrawGas(Direction side, Gas type)
+//    {
+//        return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
+//    public boolean canTubeConnect(Direction side)
+//    {
+//        return this.canConnect(side, NetworkType.FLUID);
+//    } TODO Mekanism Support
 
     @Override
-    public int fill(Direction from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         if (this.getOxygenInputDirections().contains(from) && resource != null)
         {
-            if (!doFill)
+            if (action.simulate())
             {
                 return this.getOxygenRequest(from);
             }
 
-            return this.receiveOxygen(resource.amount, doFill);
+            return this.receiveOxygen(resource.getAmount(), action);
         }
 
         return 0;
     }
 
     @Override
-    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
-        return resource == null ? null : drain(from, resource.amount, doDrain);
+        return resource == null ? null : drain(from, resource.getAmount(), action);
     }
 
     @Override
-    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, IFluidHandler.FluidAction action)
     {
         if (this.getOxygenOutputDirections().contains(from))
         {
-            return new FluidStack(GCFluidRegistry.fluidOxygenGas, this.drawOxygen(maxDrain, doDrain));
+            return new FluidStack(GCFluids.OXYGEN.getFluid(), this.drawOxygen(maxDrain, action));
         }
 
         return null;
@@ -437,23 +431,23 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public boolean canFill(Direction from, Fluid fluid)
     {
-        return this.getOxygenInputDirections().contains(from) && (fluid == null || fluid.getName().equals("oxygen"));
+        return this.getOxygenInputDirections().contains(from) && (fluid == null || fluid.getRegistryName().getPath().equals("oxygen"));
     }
 
     @Override
     public boolean canDrain(Direction from, Fluid fluid)
     {
-        return this.getOxygenOutputDirections().contains(from) && (fluid == null || fluid.getName().equals("oxygen"));
+        return this.getOxygenOutputDirections().contains(from) && (fluid == null || fluid.getRegistryName().getPath().equals("oxygen"));
     }
 
-    @Override
-    public FluidTankInfo[] getTankInfo(Direction from)
-    {
-        if (canConnect(from, NetworkType.FLUID))
-        {
-            return new FluidTankInfo[] { this.tank.getInfo() };
-        }
-
-        return new FluidTankInfo[] {};
-    }
+//    @Override
+//    public FluidTankInfo[] getTankInfo(Direction from)
+//    {
+//        if (canConnect(from, NetworkType.FLUID))
+//        {
+//            return new FluidTankInfo[] { this.tank.getInfo() };
+//        }
+//
+//        return new FluidTankInfo[] {};
+//    }
 }

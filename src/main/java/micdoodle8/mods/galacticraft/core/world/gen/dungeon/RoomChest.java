@@ -7,25 +7,30 @@ import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+
 import java.util.Random;
 
 public class RoomChest extends RoomEmpty
 {
-    public RoomChest()
+    public RoomChest(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public RoomChest(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomChest(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
+        super(type, configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random rand, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
     {
-        if (super.addComponentParts(worldIn, rand, boundingBox))
+        if (super.addComponentParts(worldIn, random, boundingBox, chunkPos))
         {
             int chestX = this.sizeX / 2;
             int chestY = 1;
@@ -38,11 +43,11 @@ public class RoomChest extends RoomEmpty
             if (chest != null)
             {
                 ResourceLocation chesttype = RoomTreasure.MOONCHEST;
-                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                if (worldIn.getDimension() instanceof IGalacticraftWorldProvider)
                 {
-                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                    chesttype = ((IGalacticraftWorldProvider)worldIn.getDimension()).getDungeonChestType();
                 }
-                chest.setLootTable(chesttype, rand.nextLong());
+                chest.setLootTable(chesttype, random.nextLong());
             }
 
             return true;

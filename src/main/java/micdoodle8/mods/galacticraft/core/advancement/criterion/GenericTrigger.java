@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.advancement.criterion;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
+import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class GenericTrigger implements ICriterionTrigger
 {
@@ -82,7 +82,7 @@ public abstract class GenericTrigger implements ICriterionTrigger
         }
     }
 
-    public static abstract class Instance extends AbstractCriterionInstance
+    public static abstract class Instance extends CriterionInstance
     {
         public Instance(ResourceLocation resourceLocation)
         {

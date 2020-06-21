@@ -7,12 +7,15 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 /**  PacketDynamic is used for updating data for regularly updating Entities and TileEntities 
  * Two types of PacketDynamic:
@@ -36,8 +39,8 @@ public class PacketDynamic extends PacketBase
         super(GCCoreUtil.getDimensionID(entity.world));
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
-        this.identifier = new Integer(entity.getEntityId());
-        this.sendData = new ArrayList<Object>();
+        this.identifier = entity.getEntityId();
+        this.sendData = new ArrayList<>();
         ((IPacketReceiver) entity).getNetworkedData(this.sendData);
     }
 
@@ -47,8 +50,31 @@ public class PacketDynamic extends PacketBase
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
         this.identifier = tile.getPos();
-        this.sendData = new ArrayList<Object>();
+        this.sendData = new ArrayList<>();
         ((IPacketReceiver) tile).getNetworkedData(this.sendData);
+    }
+
+    public static void encode(final PacketDynamic message, final PacketBuffer buf)
+    {
+        message.encodeInto(buf);
+    }
+
+    public static PacketDynamic decode(PacketBuffer buf)
+    {
+        PacketDynamic packet = new PacketDynamic();
+        packet.decodeInto(buf);
+        return packet;
+    }
+
+    public static void handle(final PacketDynamic message, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+                message.handleClientSide(ctx.get().getSender());
+            } else {
+                message.handleServerSide(ctx.get().getSender());
+            }
+        });
+        ctx.get().setPacketHandled(true);
     }
 
     public boolean isEmpty()
@@ -125,16 +151,16 @@ public class PacketDynamic extends PacketBase
     @Override
     public void handleClientSide(PlayerEntity player)
     {
-        this.handleData(Side.CLIENT, player);
+        this.handleData(LogicalSide.CLIENT, player);
     }
 
     @Override
     public void handleServerSide(PlayerEntity player)
     {
-        this.handleData(Side.SERVER, player);
+        this.handleData(LogicalSide.SERVER, player);
     }
 
-    private void handleData(Side side, PlayerEntity player)
+    private void handleData(LogicalSide side, PlayerEntity player)
     {
         switch (this.type)
         {
@@ -149,7 +175,7 @@ public class PacketDynamic extends PacketBase
                 }
 
                 //Treat any packet received by a server from a client as an update request specifically to that client
-                if (side == Side.SERVER && player instanceof ServerPlayerEntity && entity != null)
+                if (side == LogicalSide.SERVER && player instanceof ServerPlayerEntity && entity != null)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (ServerPlayerEntity) player);
                 }
@@ -158,7 +184,7 @@ public class PacketDynamic extends PacketBase
 
         case 1:
             BlockPos bp = (BlockPos) this.identifier;
-            if (player.world.isBlockLoaded(bp, false))
+            if (player.world.isBlockLoaded(bp))
             {
                 TileEntity tile = player.world.getTileEntity(bp);
 
@@ -170,7 +196,7 @@ public class PacketDynamic extends PacketBase
                     }
 
                     //Treat any packet received by a server from a client as an update request specifically to that client
-                    if (side == Side.SERVER && player instanceof ServerPlayerEntity && tile != null)
+                    if (side == LogicalSide.SERVER && player instanceof ServerPlayerEntity && tile != null)
                     {
                         GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (ServerPlayerEntity) player);
                     }

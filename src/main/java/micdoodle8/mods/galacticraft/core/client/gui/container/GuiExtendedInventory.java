@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,10 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 public class GuiExtendedInventory extends DisplayEffectsScreen
@@ -22,9 +25,10 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
     private static float rotation = 0.0F;
     private boolean initWithPotion;
 
-    public GuiExtendedInventory(PlayerEntity playerInv, InventoryExtended inventory)
+    public GuiExtendedInventory(ContainerExtendedInventory container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerExtendedInventory(playerInv, inventory), playerInv.inventory, new StringTextComponent("Extended Inventory"));
+        super(container, playerInv, title);
+//        super(new ContainerExtendedInventory(playerInv, inventory), playerInv.inventory, new StringTextComponent("Extended Inventory"));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.screen;
 
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
@@ -9,26 +11,25 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.horse.HorseEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -115,9 +116,9 @@ public class GameScreenText implements IGameScreen
 
         if (telemeter != null && telemeter.clientData.length >= 3)
         {
-            if (telemeter.clientClass != null)
+            if (telemeter.clientType != null)
             {
-                if (telemeter.clientClass == screen.telemetryLastClass && (telemeter.clientClass != ServerPlayerEntity.class || telemeter.clientName.equals(screen.telemetryLastName)))
+                if (telemeter.clientType == screen.telemetryLastType && (telemeter.clientType != EntityType.PLAYER || telemeter.clientName.equals(screen.telemetryLastName)))
                 {
                     //Used cached data from last time if possible
                     entity = screen.telemetryLastEntity;
@@ -129,26 +130,26 @@ public class GameScreenText implements IGameScreen
                     //Create an entity to render, based on class, and get its name
                     entity = null;
 
-                    if (telemeter.clientClass == ServerPlayerEntity.class)
+                    if (telemeter.clientType == EntityType.PLAYER)
                     {
                         strName = telemeter.clientName;
-                        entity = new RemoteClientPlayerEntity(screen.driver.getWorld(), telemeter.clientGameProfile);
-                        renderEntity = (EntityRenderer) Minecraft.getInstance().getRenderManager().getEntityRenderObject(entity);
+                        entity = new RemoteClientPlayerEntity((ClientWorld) screen.driver.getWorld(), telemeter.clientGameProfile);
+                        renderEntity = Minecraft.getInstance().getRenderManager().getRenderer(entity);
                     }
                     else
                     {
                         try
                         {
-                            entity = (Entity) telemeter.clientClass.getConstructor(World.class).newInstance(screen.driver.getWorld());
+                            entity = telemeter.clientType.create(screen.driver.getWorld());
                         }
                         catch (Exception ex)
                         {
                         }
                         if (entity != null)
                         {
-                            strName = entity.getName();
+                            strName = entity.getName().getFormattedText();
                         }
-                        renderEntity = (EntityRenderer) Minecraft.getInstance().getRenderManager().entityRenderMap.get(telemeter.clientClass);
+                        renderEntity = Minecraft.getInstance().getRenderManager().renderers.get(entity.getClass());
                     }
                 }
 
@@ -160,22 +161,22 @@ public class GameScreenText implements IGameScreen
                 }
                 if (entity instanceof VillagerEntity)
                 {
-                    ((VillagerEntity) entity).setProfession(telemeter.clientData[3]);
+//                    ((VillagerEntity) entity).getVillagerData().setProfession(telemeter.clientData[3]); TODO Fix for MC 1.14+
                     ((VillagerEntity) entity).setGrowingAge(telemeter.clientData[4]);
                 }
                 else if (entity instanceof WolfEntity)
                 {
-                    ((WolfEntity) entity).setCollarColor(DyeColor.byDyeDamage(telemeter.clientData[3]));
+//                    ((WolfEntity) entity).setCollarColor(DyeColor.byDyeDamage(telemeter.clientData[3])); TODO Fix for MC 1.14+
                     ((WolfEntity) entity).setBegging(telemeter.clientData[4] == 1);
                 }
                 else if (entity instanceof SheepEntity)
                 {
-                    ((SheepEntity) entity).setFleeceColor(DyeColor.byDyeDamage(telemeter.clientData[3]));
+//                    ((SheepEntity) entity).setFleeceColor(DyeColor.byDyeDamage(telemeter.clientData[3])); TODO Fix for MC 1.14+
                     ((SheepEntity) entity).setSheared(telemeter.clientData[4] == 1);
                 }
                 else if (entity instanceof OcelotEntity)
                 {
-                    ((OcelotEntity) entity).setTameSkin(telemeter.clientData[3]);
+//                    ((OcelotEntity) entity).setTameSkin(telemeter.clientData[3]); TODO Fix for MC 1.14+
                 }
                 else if (entity instanceof SkeletonEntity)
                 {
@@ -241,7 +242,7 @@ public class GameScreenText implements IGameScreen
         {
             //Default - draw a simple time display just to show the Display Screen is working
             World w1 = screen.driver.getWorld();
-            int time1 = w1 != null ? (int) ((w1.getWorldTime() + 6000L) % 24000L) : 0;
+            int time1 = w1 != null ? (int) ((w1.getDayTime() + 6000L) % 24000L) : 0;
             str[2] = makeTimeString(time1 * 360);
         }
 
@@ -301,7 +302,7 @@ public class GameScreenText implements IGameScreen
         if (renderEntity != null && entity != null)
         {
             GL11.glTranslatef(-Xmargin / 2 / scaleText, textHeightPixels / 2 + (-Yoffset + (sizeY - borders) / 2) / scaleText, -0.0005F);
-            float scalefactor = 38F / (float) Math.pow(Math.max(entity.height, entity.width), 0.65);
+            float scalefactor = 38F / (float) Math.pow(Math.max(entity.getHeight(), entity.getWidth()), 0.65);
             GL11.glScalef(scalefactor, scalefactor, 0.0015F);
             GL11.glRotatef(180F, 0, 0, 1);
             GL11.glRotatef(180F, 0, 1, 0);
@@ -328,7 +329,7 @@ public class GameScreenText implements IGameScreen
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
         //TODO  Deal with text off screen (including where localizations longer than English)
 
-        screen.telemetryLastClass = (telemeter == null) ? null : telemeter.clientClass;
+        screen.telemetryLastType = (telemeter == null) ? null : telemeter.clientType;
         screen.telemetryLastEntity = entity;
         screen.telemetryLastRender = renderEntity;
         screen.telemetryLastName = strName;
@@ -344,7 +345,7 @@ public class GameScreenText implements IGameScreen
     {
         GlStateManager.pushMatrix();
         GlStateManager.disableCull();
-        render.mainModel.isChild = entity.isChild();
+        render.getEntityModel().isChild = entity.isChild();
 
         try
         {
@@ -371,9 +372,9 @@ public class GameScreenText implements IGameScreen
                 f5 = 1.0F;
             }
 
-            GlStateManager.enableAlpha();
-            render.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
-            render.mainModel.setRotationAngles(f6, f5, f8, f2, f7, 0.0625F, entity);
+            GlStateManager.enableAlphaTest();
+            render.getEntityModel().setLivingAnimations(entity, f6, f5, partialTicks);
+            render.getEntityModel().setRotationAngles(entity, f6, f5, f8, f2, f7, 0.0625F);
 
             renderModelMethod.invoke(render, entity, f6, f5, f8, f2, f7, 0.0625F);
             GlStateManager.depthMask(true);
@@ -385,9 +386,9 @@ public class GameScreenText implements IGameScreen
         {
         }
 
-        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GlStateManager.enableTexture2D();
-        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
+        GlStateManager.enableTexture();
+        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
         GlStateManager.enableCull();
         GlStateManager.popMatrix();
     }
@@ -433,7 +434,7 @@ public class GameScreenText implements IGameScreen
 
     private void drawText(String str, int colour)
     {
-        Minecraft.getInstance().fontRenderer.drawString(str, 0, yPos, colour, false);
+        Minecraft.getInstance().fontRenderer.drawString(str, 0, yPos, colour);
         yPos += 10;
     }
 

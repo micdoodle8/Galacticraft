@@ -61,12 +61,12 @@ public class PacketSimpleAsteroids extends PacketBase
         super();
     }
 
-    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, int dimID, Object[] data)
+    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, DimensionType dimID, Object[] data)
     {
         this(packetType, dimID, Arrays.asList(data));
     }
 
-    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, int dimID, List<Object> data)
+    public PacketSimpleAsteroids(EnumSimplePacketAsteroids packetType, DimensionType dimID, List<Object> data)
     {
         super(dimID);
 

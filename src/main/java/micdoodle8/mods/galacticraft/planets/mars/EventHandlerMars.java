@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
@@ -119,9 +119,9 @@ public class EventHandlerMars
             if (state.getBlock() == GCBlocks.fakeBlock && state.get(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
             {
                 TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
-                if (tile instanceof TileEntityMulti)
+                if (tile instanceof TileEntityFake)
                 {
-                    state = event.getEntityPlayer().world.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                    state = event.getEntityPlayer().world.getBlockState(((TileEntityFake) tile).mainBlockPosition);
                 }
             }
 
@@ -169,9 +169,9 @@ public class EventHandlerMars
             int z = MathHelper.floor(entity.posZ);
             TileEntity tile = Minecraft.getInstance().world.getTileEntity(new BlockPos(x, y - 1, z));
 
-            if (tile instanceof TileEntityMulti)
+            if (tile instanceof TileEntityFake)
             {
-                tile = ((TileEntityMulti) tile).getMainBlockTile();
+                tile = ((TileEntityFake) tile).getMainBlockTile();
             }
 
             if (tile instanceof TileEntityCryogenicChamber)

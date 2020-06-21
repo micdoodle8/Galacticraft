@@ -1,40 +1,60 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyEmitter;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 {
+    public static class TileEntityAluminumWireSwitchableT1 extends TileEntityAluminumWireSwitch
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.aluminumWireSwitchable)
+        public static TileEntityType<TileEntityAluminumWireSwitchableT1> TYPE;
+
+        public TileEntityAluminumWireSwitchableT1()
+        {
+            super(TYPE, 1);
+        }
+    }
+
+    public static class TileEntityAluminumWireSwitchableT2 extends TileEntityAluminumWireSwitch
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.aluminumWireSwitchableHeavy)
+        public static TileEntityType<TileEntityAluminumWireSwitchableT2> TYPE;
+
+        public TileEntityAluminumWireSwitchableT2()
+        {
+            super(TYPE, 2);
+        }
+    }
+
     public int tier;
     private boolean disableConnections;
 
-    public TileEntityAluminumWireSwitch()
+    public TileEntityAluminumWireSwitch(TileEntityType<?> type, int tier)
     {
-        this(1);
-    }
-
-    public TileEntityAluminumWireSwitch(int theTier)
-    {
-        this.tier = theTier;
+        super(type);
+        this.tier = tier;
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.tier = nbt.getInt("tier");
         //For legacy worlds (e.g. converted from 1.6.4)
         if (this.tier == 0)
@@ -45,9 +65,9 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("tier", this.tier);
         return nbt;
     }
@@ -55,7 +75,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
     @Override
@@ -93,7 +113,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
             	this.getNetwork().refresh();
 
             	BlockVec3 thisVec = new BlockVec3(this);
-            	for (Direction side : Direction.VALUES)
+            	for (Direction side : Direction.values())
             	{
             		if (this.canConnect(side, NetworkType.POWER))
             		{
@@ -181,45 +201,45 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
         return this.adjacentConnections;
     }
 
-    //IC2
-    @Override
-    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side)
-    {
-    	return this.disableConnections() ? false : super.acceptsEnergyFrom(emitter, side);   	
-    }
-
-    //IC2
-    @Override
-    public double injectEnergy(Direction directionFrom, double amount, double voltage)
-    {
-    	return this.disableConnections ? amount : super.injectEnergy(directionFrom, amount, voltage);   	   	
-    }
-    
-    //IC2
-    @Override
-    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction side)
-    {
-    	return this.disableConnections() ? false : super.emitsEnergyTo(receiver, side);
-    }
-
-    //RF
-    @Override
-    public int receiveEnergy(Direction from, int maxReceive, boolean simulate)
-    {
-    	return this.disableConnections ? 0 : super.receiveEnergy(from, maxReceive, simulate);
-    }
-
-    //RF
-    @Override
-    public boolean canConnectEnergy(Direction from)
-    {
-    	return this.disableConnections() ? false : super.canConnectEnergy(from);
-    }
-
-    //Mekanism
-    @Override
-    public boolean canReceiveEnergy(Direction side)
-    {
-    	return this.disableConnections() ? false : super.canReceiveEnergy(side);
-    }
+//    //IC2
+//    @Override
+//    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side)
+//    {
+//    	return this.disableConnections() ? false : super.acceptsEnergyFrom(emitter, side);
+//    }
+//
+//    //IC2
+//    @Override
+//    public double injectEnergy(Direction directionFrom, double amount, double voltage)
+//    {
+//    	return this.disableConnections ? amount : super.injectEnergy(directionFrom, amount, voltage);
+//    }
+//
+//    //IC2
+//    @Override
+//    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction side)
+//    {
+//    	return this.disableConnections() ? false : super.emitsEnergyTo(receiver, side);
+//    }
+//
+//    //RF
+//    @Override
+//    public int receiveEnergy(Direction from, int maxReceive, boolean simulate)
+//    {
+//    	return this.disableConnections ? 0 : super.receiveEnergy(from, maxReceive, simulate);
+//    }
+//
+//    //RF
+//    @Override
+//    public boolean canConnectEnergy(Direction from)
+//    {
+//    	return this.disableConnections() ? false : super.canConnectEnergy(from);
+//    }
+//
+//    //Mekanism
+//    @Override
+//    public boolean canReceiveEnergy(Direction side)
+//    {
+//    	return this.disableConnections() ? false : super.canReceiveEnergy(side);
+//    }
 }

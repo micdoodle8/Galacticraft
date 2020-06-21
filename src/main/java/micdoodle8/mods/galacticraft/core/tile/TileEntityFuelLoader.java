@@ -4,56 +4,70 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable, IMachineSides
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fuelLoader)
+    public static TileEntityType<TileEntityFuelLoader> TYPE;
+
     private final int tankCapacity = 12000;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
     public IFuelable attachedFuelable;
     private boolean loadedFuelLastTick = false;
 
     public TileEntityFuelLoader()
     {
-        super("container.fuelloader.name");
+        super(TYPE);
         this.storage.setMaxExtract(30);
         this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
+        final double fuelLevel = this.fuelTank.getFluid() == FluidStack.EMPTY ? 0 : this.fuelTank.getFluid().getAmount();
 
         return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -62,7 +76,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
             final FluidStack liquidContained = FluidUtil.getFluidContained(this.getInventory().get(1));
             if (FluidUtil.isFuel(liquidContained))
             {
-                FluidUtil.loadFromContainer(this.fuelTank, GCFluidRegistry.fluidFuel, this.getInventory(), 1, liquidContained.amount);
+                FluidUtil.loadFromContainer(this.fuelTank, GCFluids.FUEL.getFluid(), this.getInventory(), 1, liquidContained.getAmount());
             }
 
             if (this.ticks % 100 == 0)
@@ -70,13 +84,13 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
                 this.attachedFuelable = null;
 
                 BlockVec3 thisVec = new BlockVec3(this);
-                for (final Direction dir : Direction.VALUES)
+                for (final Direction dir : Direction.values())
                 {
                     final TileEntity pad = thisVec.getTileEntityOnSide(this.world, dir);
 
-                    if (pad instanceof TileEntityMulti)
+                    if (pad instanceof TileEntityFake)
                     {
-                        final TileEntity mainTile = ((TileEntityMulti) pad).getMainBlockTile();
+                        final TileEntity mainTile = ((TileEntityFake) pad).getMainBlockTile();
 
                         if (mainTile instanceof IFuelable)
                         {
@@ -93,39 +107,39 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
             }
 
-            if (this.fuelTank != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0)
+            if (this.fuelTank != null && this.fuelTank.getFluid() != FluidStack.EMPTY && this.fuelTank.getFluid().getAmount() > 0)
             {
-                final FluidStack liquid = new FluidStack(GCFluidRegistry.fluidFuel, 2);
+                final FluidStack liquid = new FluidStack(GCFluids.FUEL.getFluid(), 2);
 
                 if (this.attachedFuelable != null && this.hasEnoughEnergyToRun && !this.disabled)
                 {
-                    int filled = this.attachedFuelable.addFuel(liquid, true);
+                    int filled = this.attachedFuelable.addFuel(liquid, IFluidHandler.FluidAction.EXECUTE);
                     this.loadedFuelLastTick = filled > 0;
-                    this.fuelTank.drain(filled, true);
+                    this.fuelTank.drain(filled, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
     }
 
     @Override
-    public void readFromNBT(CompoundNBT par1NBTTagCompound)
+    public void read(CompoundNBT par1NBTTagCompound)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.read(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.hasKey("fuelTank"))
+        if (par1NBTTagCompound.contains("fuelTank"))
         {
-            this.fuelTank.readFromNBT(par1NBTTagCompound.getCompoundTag("fuelTank"));
+            this.fuelTank.readFromNBT(par1NBTTagCompound.getCompound("fuelTank"));
         }
         
         this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
-        if (this.fuelTank.getFluid() != null)
+        if (this.fuelTank.getFluid() != FluidStack.EMPTY)
         {
             nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
@@ -165,11 +179,11 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         return false;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
@@ -184,13 +198,13 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         return null;
     }
 
     @Override
-    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, IFluidHandler.FluidAction action)
     {
         return null;
     }
@@ -200,45 +214,45 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         if (this.getPipeInputDirection().equals(from))
         {
-            return this.fuelTank.getFluid() == null || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
+            return this.fuelTank.getFluid() == FluidStack.EMPTY || this.fuelTank.getFluidAmount() < this.fuelTank.getCapacity();
         }
         return false;
     }
 
     @Override
-    public int fill(Direction from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         int used = 0;
 
         if (this.getPipeInputDirection().equals(from) && resource != null)
         {
-            if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
+            if (FluidUtil.testFuel(resource.getFluid().getRegistryName()))
             {
-                used = this.fuelTank.fill(resource, doFill);
+                used = this.fuelTank.fill(resource, action);
             }
         }
 
         return used;
     }
 
-    @Override
-    public FluidTankInfo[] getTankInfo(Direction from)
-    {
-        if (this.getPipeInputDirection().equals(from))
-        {
-            return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
-        }
-        return null;
-    }
+//    @Override
+//    public FluidTankInfo[] getTankInfo(Direction from)
+//    {
+//        if (this.getPipeInputDirection().equals(from))
+//        {
+//            return new FluidTankInfo[] { new FluidTankInfo(this.fuelTank) };
+//        }
+//        return null;
+//    }
 
     @Override
     public boolean shouldUseEnergy()
     {
-        return this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0 && !this.getDisabled(0) && loadedFuelLastTick;
+        return this.fuelTank.getFluid() != FluidStack.EMPTY && this.fuelTank.getFluid().getAmount() > 0 && !this.getDisabled(0) && loadedFuelLastTick;
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockReader world, BlockPos pos)
+    public boolean canAttachToLandingPad(IWorldReader world, BlockPos pos)
     {
         return true;
     }
@@ -254,19 +268,33 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     	return Direction.NORTH;
     }
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable Direction facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-    }
+//    @Override
+//    public boolean hasCapability(Capability<?> capability, @Nullable Direction facing)
+//    {
+//        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+//    }
+
+    private LazyOptional<IFluidHandler> holder = null;
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable Direction facing)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            return (T) new FluidHandlerWrapper(this, facing);
+            if (holder == null)
+            {
+                holder = LazyOptional.of(new NonNullSupplier<IFluidHandler>()
+                {
+                    @Nonnull
+                    @Override
+                    public IFluidHandler get()
+                    {
+                        return new FluidHandlerWrapper(TileEntityFuelLoader.this, facing);
+                    }
+                });
+            }
+            return holder.cast();
         }
         return super.getCapability(capability, facing);
     }
@@ -370,7 +398,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockFuelLoader.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

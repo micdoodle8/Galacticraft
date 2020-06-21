@@ -43,7 +43,7 @@ public class SchematicTier2Rocket implements ISchematicPage
     }
 
     @Override
-    public Container getResultContainer(PlayerEntity player, BlockPos pos)
+    public Container getContainerProvider(PlayerEntity player, BlockPos pos)
     {
         return new ContainerSchematicTier2Rocket(player.inventory, pos);
     }

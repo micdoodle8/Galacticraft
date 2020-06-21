@@ -42,7 +42,7 @@ public abstract class StructureComponentVillage extends StructurePiece
     @Override
     protected void writeStructureToNBT(CompoundNBT nbttagcompound)
     {
-        nbttagcompound.setInteger("VCount", this.villagersSpawned);
+        nbttagCompound.putInt("VCount", this.villagersSpawned);
     }
 
     @Override
@@ -56,13 +56,13 @@ public abstract class StructureComponentVillage extends StructurePiece
         switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(1), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.byHorizontalIndex(1), this.getComponentType());
         case 1:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, Direction.getHorizontal(2), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, Direction.byHorizontalIndex(2), this.getComponentType());
         case 2:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(1), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.byHorizontalIndex(1), this.getComponentType());
         case 3:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, Direction.getHorizontal(2), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, Direction.byHorizontalIndex(2), this.getComponentType());
         default:
             return null;
         }
@@ -73,13 +73,13 @@ public abstract class StructureComponentVillage extends StructurePiece
         switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(3), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.byHorizontalIndex(3), this.getComponentType());
         case 1:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, Direction.getHorizontal(0), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, Direction.byHorizontalIndex(0), this.getComponentType());
         case 2:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(3), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.byHorizontalIndex(3), this.getComponentType());
         case 3:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, Direction.getHorizontal(0), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, Direction.byHorizontalIndex(0), this.getComponentType());
         default:
             return null;
         }

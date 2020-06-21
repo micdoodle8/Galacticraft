@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerDeconstructor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -10,7 +11,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -23,9 +26,10 @@ public class GuiDeconstructor extends GuiContainerGC<ContainerDeconstructor>
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
-    public GuiDeconstructor(PlayerInventory playerInv, TileEntityDeconstructor deconstructor)
+    public GuiDeconstructor(ContainerDeconstructor container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerDeconstructor(playerInv, deconstructor), playerInv, new StringTextComponent(deconstructor.getName()));
+        super(container, playerInv, title);
+//        super(new ContainerDeconstructor(playerInv, deconstructor), playerInv, new TranslationTextComponent("tile.machine2.10.name"));
         this.deconstructor = deconstructor;
         this.ySize = 199;
     }
@@ -55,7 +59,7 @@ public class GuiDeconstructor extends GuiContainerGC<ContainerDeconstructor>
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.deconstructor.getName(), 10, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 10, 6, 4210752);
         String displayText;
 
         if (this.deconstructor.processTicks > 0)

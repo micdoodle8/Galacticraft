@@ -100,7 +100,7 @@ public class InventorySlimeling implements IInventory
             else
             //Normal case of decrStackSize for a slot
             {
-                var3 = this.stacks.get(par1).splitStack(par2);
+                var3 = this.stacks.get(par1).split(par2);
 
                 if (this.stacks.get(par1).isEmpty())
                 {
@@ -162,7 +162,7 @@ public class InventorySlimeling implements IInventory
         {
             final CompoundNBT nbttagcompound = tagList.getCompound(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = new ItemStack(nbttagcompound);
+            final ItemStack itemstack = ItemStack.read(nbttagcompound);
 
             if (!itemstack.isEmpty())
             {
@@ -182,7 +182,7 @@ public class InventorySlimeling implements IInventory
                 nbttagcompound = new CompoundNBT();
                 nbttagcompound.setByte("Slot", (byte) i);
                 this.stacks.get(i).writeToNBT(nbttagcompound);
-                tagList.appendTag(nbttagcompound);
+                tagList.add(nbttagcompound);
             }
         }
 
@@ -224,22 +224,22 @@ public class InventorySlimeling implements IInventory
     {
     }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public void clear()
@@ -247,11 +247,11 @@ public class InventorySlimeling implements IInventory
 
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public ITextComponent getDisplayName()

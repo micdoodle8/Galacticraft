@@ -23,13 +23,13 @@ public class OxygenHooks
     /**
      * Test whether fire can burn in this world's atmosphere (outside any oxygen bubble).
      * 
-     * @param provider   The WorldProvider for this dimension
+     * @param dimension   The WorldProvider for this dimension
      * 
      * @return   False if fire burns normally
      *            True if fire cannot burn in this world
      *            
      */
-	public static boolean noAtmosphericCombustion(Dimension provider)
+	public static boolean noAtmosphericCombustion(Dimension dimension)
     {
         try
         {
@@ -41,7 +41,7 @@ public class OxygenHooks
                 }
                 combusionTestMethod = oxygenUtilClass.getDeclaredMethod("noAtmosphericCombustion", Dimension.class);
             }
-            return (Boolean)combusionTestMethod.invoke(null, provider);
+            return (Boolean)combusionTestMethod.invoke(null, dimension);
         }
         catch (Exception e)
         {

@@ -336,11 +336,11 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         return 0;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public void spawnParticles()

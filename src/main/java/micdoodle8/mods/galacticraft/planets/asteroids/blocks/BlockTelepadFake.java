@@ -39,11 +39,11 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         super(builder);
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
@@ -130,7 +130,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -139,7 +139,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
             ((TileEntityTelepadFake) tileEntity).onBlockRemoval();
         }
 
-        super.breakBlock(worldIn, pos, state);
+        super.onReplaced(state, worldIn, pos, newState, isMoving);
     }
 
     @Override
@@ -161,11 +161,11 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         return BlockRenderType.INVISIBLE;
     }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -180,12 +180,12 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;

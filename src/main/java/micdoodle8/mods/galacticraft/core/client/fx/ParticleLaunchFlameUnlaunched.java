@@ -12,9 +12,9 @@ import javax.annotation.Nullable;
 
 public class ParticleLaunchFlameUnlaunched extends ParticleLaunchFlame
 {
-    public ParticleLaunchFlameUnlaunched(World par1World, Vector3 position, Vector3 motion, EntityParticleData particleData, IAnimatedSprite sprite)
+    public ParticleLaunchFlameUnlaunched(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, EntityParticleData particleData, IAnimatedSprite sprite)
     {
-        super(par1World, position, motion, false, particleData, sprite);
+        super(par1World, posX, posY, posZ, motX, motY, motZ, false, particleData, sprite);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -30,7 +30,7 @@ public class ParticleLaunchFlameUnlaunched extends ParticleLaunchFlame
         @Override
         public Particle makeParticle(EntityParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
-            return new ParticleLaunchFlameUnlaunched(worldIn, new Vector3(x, y, z), new Vector3(xSpeed, ySpeed, zSpeed), typeIn, this.spriteSet);
+            return new ParticleLaunchFlameUnlaunched(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn, this.spriteSet);
         }
     }
 }

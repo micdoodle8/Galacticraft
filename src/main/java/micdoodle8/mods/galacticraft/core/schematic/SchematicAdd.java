@@ -5,13 +5,14 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicInput;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SchematicAdd extends SchematicPage
 {
@@ -35,14 +36,14 @@ public class SchematicAdd extends SchematicPage
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public Screen getResultScreen(PlayerEntity player, BlockPos pos)
+    public ScreenManager.IScreenFactory<ContainerSchematic, GuiSchematicInput> getResultScreen(PlayerEntity player, BlockPos pos)
     {
-        return new GuiSchematicInput(player.inventory, pos);
+        return GuiSchematicInput::new;
     }
 
     @Override
-    public Container getResultContainer(PlayerEntity player, BlockPos pos)
+    public SimpleNamedContainerProvider getContainerProvider(PlayerEntity player)
     {
-        return new ContainerSchematic(player.inventory, pos);
+        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematic(w, p), new TranslationTextComponent("container.schematic_add.name"));
     }
 }

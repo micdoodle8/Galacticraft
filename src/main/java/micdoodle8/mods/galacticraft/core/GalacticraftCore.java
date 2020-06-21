@@ -27,7 +27,6 @@ import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
-import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
@@ -186,7 +185,7 @@ public class GalacticraftCore
         GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
         GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
 
-        GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.machineBase2)));
+        GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.oxygenCompressor)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTierOne));
 
 //        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
@@ -231,7 +230,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new SchematicAdd());
         ChunkPowerHandler.initiate();
-        EnergyConfigHandler.initGas();
+//        EnergyConfigHandler.initGas();
         LootHandlerGC.registerAll();
 
 //        this.registerCreatures();
@@ -413,10 +412,10 @@ public class GalacticraftCore
             }
         }
 
-        GCDimensions.MOON = WorldUtil.getDimensionTypeById(ConfigManagerCore.idDimensionMoon);
+//        GCDimensions.MOON = WorldUtil.getDimensionTypeById(ConfigManagerCore.idDimensionMoon);
 
         CompatibilityManager.checkForCompatibleMods();
-        RecipeManagerGC.loadCompatibilityRecipes();
+//        RecipeManagerGC.loadCompatibilityRecipes();
         TileEntityDeconstructor.initialiseRecipeList();
         ItemSchematic.registerSchematicItems();
 //        NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
@@ -488,7 +487,7 @@ public class GalacticraftCore
 //        event.getCommandDispatcher().register(new CommandGCEnergyUnits());
 //        event.getCommandDispatcher().register(new CommandJoinSpaceRace()); TODO Commands
 
-        WorldUtil.initialiseDimensionNames();
+//        WorldUtil.initialiseDimensionNames();
         WorldUtil.registerSpaceStations(event.getServer(), new File(event.getServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getPlayerFolder(), "galacticraft"));
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();

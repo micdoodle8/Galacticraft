@@ -108,17 +108,17 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -320,7 +320,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        Object[] connectable = new Object[Direction.VALUES.length];
+        Object[] connectable = new Object[Direction.values().length];
 
         TileEntity tileEntity = null;
         
@@ -328,7 +328,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         {
             tileEntity = worldIn.getTileEntity(pos);
         }
-        for (Direction direction : Direction.VALUES)
+        for (Direction direction : Direction.values())
         {
             if (direction == Direction.UP || (direction == Direction.DOWN && tileEntity == null))
             {
@@ -384,7 +384,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

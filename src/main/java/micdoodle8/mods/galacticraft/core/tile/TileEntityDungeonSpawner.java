@@ -1,17 +1,24 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -19,6 +26,9 @@ import java.util.List;
 
 public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanced
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.bossSpawner)
+    public static TileEntityType<TileEntityDungeonSpawner<?>> TYPE;
+
     public Class<E> bossClass;
     public IBoss boss;
     public boolean spawned;
@@ -41,7 +51,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
     public TileEntityDungeonSpawner(Class<E> bossClass)
     {
-        super("tile.gcdungeonspawner.name");
+        super(TYPE);
         this.bossClass = bossClass;
     }
 
@@ -52,9 +62,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (this.roomCoords == null)
         {
@@ -71,7 +81,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 this.rangeBoundsPlus3 = this.rangeBounds.grow(3, 3, 3);
             }
 
-            if (this.lastKillTime > 0 && MinecraftServer.getCurrentTimeMillis() - lastKillTime > 900000) // 15 minutes
+            if (this.lastKillTime > 0 && Util.milliTime() - lastKillTime > 900000) // 15 minutes
             {
                 this.lastKillTime = 0;
                 this.isBossDefeated = false;
@@ -82,7 +92,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
             for (final Entity e : l)
             {
-                if (!e.isDead)
+                if (e.isAlive())
                 {
                     this.boss = (IBoss) e;
                     this.spawned = true;
@@ -130,7 +140,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                         if (this.boss instanceof MobEntity)
                         {
                             MobEntity bossLiving = (MobEntity) this.boss;
-                            bossLiving.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(bossLiving)), null);
+                            bossLiving.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(bossLiving)), SpawnReason.SPAWNER, (ILivingEntityData)null, (CompoundNBT)null);
                             this.world.addEntity(bossLiving);
                             this.playSpawnSound(bossLiving);
                             this.spawned = true;
@@ -165,9 +175,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         this.playerInRange = this.lastPlayerInRange = nbt.getBoolean("playerInRange");
         this.isBossDefeated = nbt.getBoolean("defeated");
@@ -187,13 +197,13 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         }
 
         this.roomCoords = new Vector3();
-        this.roomCoords.x = nbt.getDouble("roomCoordsX");
-        this.roomCoords.y = nbt.getDouble("roomCoordsY");
-        this.roomCoords.z = nbt.getDouble("roomCoordsZ");
+        this.roomCoords.x = nbt.getFloat("roomCoordsX");
+        this.roomCoords.y = nbt.getFloat("roomCoordsY");
+        this.roomCoords.z = nbt.getFloat("roomCoordsZ");
         this.roomSize = new Vector3();
-        this.roomSize.x = nbt.getDouble("roomSizeX");
-        this.roomSize.y = nbt.getDouble("roomSizeY");
-        this.roomSize.z = nbt.getDouble("roomSizeZ");
+        this.roomSize.x = nbt.getFloat("roomSizeX");
+        this.roomSize.y = nbt.getFloat("roomSizeY");
+        this.roomSize.z = nbt.getFloat("roomSizeZ");
 
         if (nbt.contains("lastKillTime"))
         {
@@ -202,7 +212,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         else if (nbt.contains("lastKillTimeNew"))
         {
             long savedTime = nbt.getLong("lastKillTimeNew");
-            this.lastKillTime = savedTime == 0 ? 0 : savedTime + MinecraftServer.getCurrentTimeMillis();
+            this.lastKillTime = savedTime == 0 ? 0 : savedTime + Util.milliTime();
         }
 
 
@@ -213,13 +223,13 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
-        nbt.setBoolean("playerInRange", this.playerInRange);
-        nbt.setBoolean("defeated", this.isBossDefeated);
-        nbt.setString("bossClass", this.bossClass.getCanonicalName());
+        nbt.putBoolean("playerInRange", this.playerInRange);
+        nbt.putBoolean("defeated", this.isBossDefeated);
+        nbt.putString("bossClass", this.bossClass.getCanonicalName());
 
         if (this.roomCoords != null)
         {
@@ -231,9 +241,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             nbt.putDouble("roomSizeZ", this.roomSize.z);
         }
 
-        nbt.putLong("lastKillTimeNew", this.lastKillTime == 0 ? 0 : this.lastKillTime - MinecraftServer.getCurrentTimeMillis());
+        nbt.putLong("lastKillTimeNew", this.lastKillTime == 0 ? 0 : this.lastKillTime - Util.milliTime());
 
-        nbt.setBoolean("chestPosNull", this.chestPos == null);
+        nbt.putBoolean("chestPosNull", this.chestPos == null);
         if (this.chestPos != null)
         {
             nbt.putInt("chestX", this.chestPos.getX());

@@ -2,11 +2,9 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelSolarPanel;
-import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -17,13 +15,13 @@ public class TileEntitySolarPanelRenderer extends TileEntityRenderer<TileEntityS
     public ModelSolarPanel model = new ModelSolarPanel();
 
     @Override
-    public void render(TileEntitySolar panel, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
+    public void render(TileEntitySolar panel, double x, double y, double z, float partialTicks, int destroyStage)
     {
         boolean doSkyRotation = false;
         if (panel.tierGC == 2)
         {
             this.bindTexture(TileEntitySolarPanelRenderer.solarPanelAdvTexture);
-            doSkyRotation = panel.getWorld().provider instanceof DimensionSpaceStation;
+//            doSkyRotation = panel.getWorld().dimension instanceof DimensionSpaceStation; TODO Sky rotation
         }
         else
         {
@@ -33,13 +31,13 @@ public class TileEntitySolarPanelRenderer extends TileEntityRenderer<TileEntityS
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
+        GL11.glTranslatef((float) x, (float) y, (float) z);
 
         GL11.glTranslatef(0.5F, 1.0F, 0.5F);
         if (doSkyRotation)
         {
             GL11.glPushMatrix();
-            GL11.glRotatef(((DimensionSpaceStation)panel.getWorld().provider).getSkyRotation(), 0.0F, 1.0F, 0.0F);
+//            GL11.glRotatef(((DimensionSpaceStation)panel.getWorld().dimension).getSkyRotation(), 0.0F, 1.0F, 0.0F); TODO Sky rotation
             this.model.renderPole();
             GL11.glPopMatrix();
         }
@@ -56,7 +54,7 @@ public class TileEntitySolarPanelRenderer extends TileEntityRenderer<TileEntityS
 
         if (doSkyRotation)
         {
-            GL11.glRotatef(((DimensionSpaceStation)panel.getWorld().provider).getSkyRotation(), 0.0F, -1.0F, 0.0F);
+//            GL11.glRotatef(((DimensionSpaceStation)panel.getWorld().dimension).getSkyRotation(), 0.0F, -1.0F, 0.0F); TODO Sky rotation
         }
 
         GL11.glRotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);

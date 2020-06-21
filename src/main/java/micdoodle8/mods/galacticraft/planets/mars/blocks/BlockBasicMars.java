@@ -225,13 +225,13 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void randomDisplayTick(BlockState state, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, World worldIn, BlockPos pos, Random rand)
     {
         if (rand.nextInt(10) == 0)
         {
             if (state.getBlock() == this && state.get(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
             {
-                GalacticraftPlanets.spawnParticle("sludgeDrip", new Vector3(pos.getX() + rand.nextDouble(), pos.getY(), pos.getZ() + rand.nextDouble()), new Vector3(0, 0, 0));
+                GalacticraftPlanets.addParticle("sludgeDrip", new Vector3(pos.getX() + rand.nextDouble(), pos.getY(), pos.getZ() + rand.nextDouble()), new Vector3(0, 0, 0));
 
                 if (rand.nextInt(100) == 0)
                 {
@@ -250,7 +250,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
     }

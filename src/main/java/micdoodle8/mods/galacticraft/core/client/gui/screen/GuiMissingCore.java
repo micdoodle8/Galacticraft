@@ -4,11 +4,11 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.net.URI;
 
@@ -20,6 +20,11 @@ public class GuiMissingCore extends Screen
     private int urlWidth;
     private int urlHeight;
 
+    public GuiMissingCore()
+    {
+        super(new StringTextComponent("Missing Core"));
+    }
+
     @Override
     protected void init()
     {
@@ -27,9 +32,9 @@ public class GuiMissingCore extends Screen
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void render(int par1, int par2, float par3)
     {
-        this.drawDefaultBackground();
+        this.renderBackground();
         int offset = this.height / 2 - 50;
         this.drawCenteredString(this.font, GCCoreUtil.translate("gui.missing_core.name.0"), this.width / 2, offset, 0xFF5555);
         offset += 25;
@@ -46,24 +51,19 @@ public class GuiMissingCore extends Screen
         this.drawCenteredString(this.font, s, this.width / 2, offset, 0x999999);
     }
 
-    @Override
-    protected void keyTyped(char par1, int par2)
-    {
-    }
+//    public void actionPerformed()
+//    {
+//        this.actionPerformed(null);
+//    }
 
-    public void actionPerformed()
-    {
-        this.actionPerformed(null);
-    }
-
-    @Override
-    protected void actionPerformed(Button par1GuiButton)
-    {
-        Minecraft.getInstance().displayGuiScreen((Screen) null);
-    }
+//    @Override
+//    protected void actionPerformed(Button par1GuiButton)
+//    {
+//        Minecraft.getInstance().displayGuiScreen((Screen) null);
+//    }
 
     @Override
-    protected void mouseClicked(int x, int y, int which)
+    public boolean mouseClicked(double x, double y, int button)
     {
         if (x > this.urlX && x < this.urlX + this.urlWidth && y > this.urlY && y < this.urlY + this.urlHeight)
         {
@@ -78,5 +78,7 @@ public class GuiMissingCore extends Screen
                 throwable.printStackTrace();
             }
         }
+
+        return true;
     }
 }

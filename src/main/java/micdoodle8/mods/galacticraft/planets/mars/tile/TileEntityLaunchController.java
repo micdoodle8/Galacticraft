@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPadFull;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -35,7 +35,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ServerWorld;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.ArrayList;
 // import java.util.HashMap;
@@ -45,25 +45,25 @@ import java.util.List;
 public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
     public static final int WATTS_PER_TICK = 1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
     private List<BlockPos> connectedPads = new ArrayList<BlockPos>();
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int frequency = -1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int destFrequency = -1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public String ownerName = "";
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean frequencyValid;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean destFrequencyValid;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int launchDropdownSelection;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean launchSchedulingEnabled;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean controlEnabled;
     public boolean hideTargetDestination = true;
     public boolean requiresClientUpdate;
@@ -81,9 +81,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -148,9 +148,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
+        super.remove();
 
         if (this.chunkLoadTicket != null)
         {
@@ -184,7 +184,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 {
                     Block blockID = this.world.getBlockState(this.getPos().add(x, 0, z)).getBlock();
 
-                    if (blockID instanceof BlockLandingPadFull)
+                    if (blockID instanceof BlockPadFull)
                     {
                         if (this.getPos().getX() + x >> 4 != this.getPos().getX() >> 4 || this.getPos().getZ() + z >> 4 != this.getPos().getZ() >> 4)
                         {
@@ -220,9 +220,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         this.ownerName = nbt.getString("OwnerName");
         this.launchDropdownSelection = nbt.getInt("LaunchSelection");
@@ -236,16 +236,16 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setString("OwnerName", this.ownerName);
+        super.write(nbt);
+        nbt.putString("OwnerName", this.ownerName);
         nbt.putInt("LaunchSelection", this.launchDropdownSelection);
         nbt.putInt("ControllerFrequency", this.frequency);
         nbt.putInt("TargetFrequency", this.destFrequency);
-        nbt.setBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
-        nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
-        nbt.setBoolean("HideTargetDestination", this.hideTargetDestination);
+        nbt.putBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
+        nbt.putBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
+        nbt.putBoolean("HideTargetDestination", this.hideTargetDestination);
         return nbt;
     }
 

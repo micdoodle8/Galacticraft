@@ -7,8 +7,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -17,18 +20,19 @@ public class RoomBoss extends SizedPiece
 {
     private BlockPos chestPos;
 
-    public RoomBoss()
+    public RoomBoss(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
+    public RoomBoss(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
-        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 14, rand.nextInt(2) + 8, rand.nextInt(6) + 14, entranceDir);
+        this(type, configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 14, rand.nextInt(2) + 8, rand.nextInt(6) + 14, entranceDir);
     }
 
-    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomBoss(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        super(type, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
@@ -39,7 +43,12 @@ public class RoomBoss extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
+    protected void readAdditional(CompoundNBT tagCompound)
+    {
+    }
+
+    @Override
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos chunkPos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -93,7 +102,7 @@ public class RoomBoss extends SizedPiece
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.FLOWING_LAVA.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.LAVA.getDefaultState(), i, j, k, chunkBox);
                     }
                     else if (j % 3 == 0 && j >= 2 && ((i == 1 || i == this.sizeX - 1 || k == 1 || k == this.sizeZ - 1) || (i == 2 && k == 2) || (i == 2 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == 2) || (i == this.sizeX - 2 && k == this.sizeZ - 2)))
                     {
@@ -142,9 +151,9 @@ public class RoomBoss extends SizedPiece
 
         if(this.chestPos != null)
         {
-            tagCompound.setInteger("chestX", this.chestPos.getX());
-            tagCompound.setInteger("chestY", this.chestPos.getY());
-            tagCompound.setInteger("chestZ", this.chestPos.getZ());
+            tagCompound.putInt("chestX", this.chestPos.getX());
+            tagCompound.putInt("chestY", this.chestPos.getY());
+            tagCompound.putInt("chestZ", this.chestPos.getZ());
         }
     }
 

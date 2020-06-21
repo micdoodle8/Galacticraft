@@ -1,16 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public abstract class KeyHandler
 {
@@ -38,54 +35,51 @@ public abstract class KeyHandler
         this.isDummy = true;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onTick(ClientTickEvent event)
+    public void onClientTick(TickEvent.ClientTickEvent event)
     {
-        if (event.side == Side.CLIENT)
+        if (event.phase == TickEvent.Phase.START)
         {
-            if (event.phase == Phase.START)
-            {
-                this.keyTick(event.type, false);
-            }
-            else if (event.phase == Phase.END)
-            {
-                this.keyTick(event.type, true);
-            }
+            this.keyTick(event.type, false);
         }
-
+        else if (event.phase == TickEvent.Phase.END)
+        {
+            this.keyTick(event.type, true);
+        }
     }
 
-    public void keyTick(Type type, boolean tickEnd)
+    public void keyTick(TickEvent.Type type, boolean tickEnd)
     {
         boolean inChat = Minecraft.getInstance().currentScreen instanceof ChatScreen;
 
         for (int i = 0; i < this.keyBindings.length; i++)
         {
             KeyBinding keyBinding = this.keyBindings[i];
-            int keyCode = keyBinding.getKeyCode();
-            if (keyCode == Keyboard.KEY_NONE) continue;
-            boolean state = false;
+//            int keyCode = keyBinding.getKeyCode();
+//            if (keyCode == Keyboard.KEY_NONE) continue;
+            boolean state = keyBinding.isKeyDown();
 
-            try
-            {
-                if (!inChat)
-                {
-                    if (keyCode < 0)
-                    {
-                        keyCode += 100;
-                        state = Mouse.isButtonDown(keyCode);
-                    }
-                    else
-                    {
-                        state = Keyboard.isKeyDown(keyCode);
-                    }
-                }
-            }
-            catch (IndexOutOfBoundsException e)
-            {
-                GCLog.severe("Invalid keybinding! " + keyBinding.getKeyDescription());
-                continue;
-            }
+//            try
+//            {
+//                if (!inChat)
+//                {
+//                    if (keyCode < 0)
+//                    {
+//                        keyCode += 100;
+//                        state = Mouse.isButtonDown(keyCode);
+//                    }
+//                    else
+//                    {
+//                        state = Keyboard.isKeyDown(keyCode);
+//                    }
+//                }
+//            }
+//            catch (IndexOutOfBoundsException e)
+//            {
+//                GCLog.severe("Invalid keybinding! " + keyBinding.getKeyDescription());
+//                continue;
+//            }
 
             if (state != this.keyDown[i] || state && this.repeatings[i])
             {
@@ -106,9 +100,10 @@ public abstract class KeyHandler
         for (int i = 0; i < this.vKeyBindings.length; i++)
         {
             KeyBinding keyBinding = this.vKeyBindings[i];
-            int keyCode = keyBinding.getKeyCode();
-            if (keyCode == Keyboard.KEY_NONE) continue;
-            boolean state = keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
+//            int keyCode = keyBinding.getKeyCode();
+//            if (keyCode == Keyboard.KEY_NONE) continue;
+//            boolean state = keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
+            boolean state = keyBinding.isKeyDown();
             if (state != this.keyDown[i + this.keyBindings.length] || state && this.vRepeatings[i])
             {
                 if (state)
@@ -127,8 +122,8 @@ public abstract class KeyHandler
         }
     }
 
-    public abstract void keyDown(Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat);
+    public abstract void keyDown(TickEvent.Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat);
 
-    public abstract void keyUp(Type types, KeyBinding kb, boolean tickEnd);
+    public abstract void keyUp(TickEvent.Type types, KeyBinding kb, boolean tickEnd);
 
 }

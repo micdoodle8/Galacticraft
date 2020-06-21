@@ -1,36 +1,52 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
+import micdoodle8.mods.galacticraft.core.Annotations;
+import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.DoubleSidedInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraft.world.storage.loot.LootTable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, ISidedInventory
+public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickableTileEntity, IInventory, IKeyable, ISidedInventory
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.treasureChestTier1)
+    public static TileEntityType<TileEntityTreasureChest> TYPE;
+
     public boolean adjacentChestChecked;
     public float lidAngle;
     public float prevLidAngle;
@@ -41,9 +57,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     protected ResourceLocation lootTable;
     protected long lootTableSeed;
 
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    @Annotations.NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean locked = true;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    @Annotations.NetworkedField(targetSide = LogicalSide.CLIENT)
     public int tier = 1;
 
     public TileEntityTreasureChest()
@@ -53,15 +69,15 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
     public TileEntityTreasureChest(int tier)
     {
-        super("container.treasurechest.name");
+        super(TYPE);
         this.tier = tier;
         inventory = NonNullList.withSize(27, ItemStack.EMPTY);
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.locked = nbt.getBoolean("isLocked");
         this.tier = nbt.getInt("tier");
 
@@ -69,10 +85,10 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("isLocked", this.locked);
+        super.write(nbt);
+        nbt.putBoolean("isLocked", this.locked);
         nbt.putInt("tier", this.tier);
 
         checkLootAndWrite(nbt);
@@ -83,7 +99,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
     @Override
@@ -97,7 +113,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
      * Updates the JList with a new model.
      */
     @Override
-    public void update()
+    public void tick()
     {
         int i = this.pos.getX();
         int j = this.pos.getY();
@@ -179,7 +195,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             }
         }
 
-        super.update();
+        super.tick();
     }
 
     @Override
@@ -207,9 +223,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             }
 
             ++this.numPlayersUsing;
-            this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
-            this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
+            this.world.addBlockEvent(this.pos, this.getBlockState().getBlock(), 1, this.numPlayersUsing);
+            this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockState().getBlock());
+            this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockState().getBlock());
         }
     }
 
@@ -238,9 +254,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
      * invalidates a tile entity
      */
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
+        super.remove();
         this.updateContainingBlockInfo();
     }
 
@@ -249,27 +265,27 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         return "minecraft:chest";
     }
 
-    public Container createContainer(PlayerInventory playerInventory, PlayerEntity playerIn)
-    {
-        return new ChestContainer(playerInventory, this, playerIn);
-    }
+//    public Container createContainer(PlayerInventory playerInventory, PlayerEntity playerIn)
+//    {
+//        return new ChestContainer(playerInventory, this, playerIn);
+//    }
 
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getField(int id)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value)
+//    {
+//    }
 
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
+//    @Override
+//    public int getFieldCount()
+//    {
+//        return 0;
+//    }
 
     @Override
     public double getPacketRange()
@@ -371,77 +387,77 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         return chest;
     }
 
-    protected boolean checkLootAndRead(CompoundNBT compound)
-    {
-        if (compound.hasKey("LootTable", 8))
-        {
-            this.lootTable = new ResourceLocation(compound.getString("LootTable"));
-            this.lootTableSeed = compound.getLong("LootTableSeed");
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+//    protected boolean checkLootAndRead(CompoundNBT compound)
+//    {
+//        if (compound.contains("LootTable", 8))
+//        {
+//            this.lootTable = new ResourceLocation(compound.getString("LootTable"));
+//            this.lootTableSeed = compound.getLong("LootTableSeed");
+//            return true;
+//        }
+//        else
+//        {
+//            return false;
+//        }
+//    }
 
-    protected boolean checkLootAndWrite(CompoundNBT compound)
-    {
-        if (this.lootTable != null)
-        {
-            compound.setString("LootTable", this.lootTable.toString());
+//    protected boolean checkLootAndWrite(CompoundNBT compound)
+//    {
+//        if (this.lootTable != null)
+//        {
+//            compound.putString("LootTable", this.lootTable.toString());
+//
+//            if (this.lootTableSeed != 0L)
+//            {
+//                compound.putLong("LootTableSeed", this.lootTableSeed);
+//            }
+//
+//            return true;
+//        }
+//        else
+//        {
+//            return false;
+//        }
+//    }
 
-            if (this.lootTableSeed != 0L)
-            {
-                compound.setLong("LootTableSeed", this.lootTableSeed);
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void fillWithLoot(PlayerEntity player)
-    {
-        if (this.lootTable != null)
-        {
-            LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(this.lootTable);
-            this.lootTable = null;
-            Random random;
-
-            if (this.lootTableSeed == 0L)
-            {
-                random = new Random();
-            }
-            else
-            {
-                random = new Random(this.lootTableSeed);
-            }
-
-            LootContext.Builder builder = new LootContext.Builder((ServerWorld)this.world);
-
-            if (player != null)
-            {
-                builder.withLuck(player.getLuck());
-            }
-
-            loottable.fillInventory(this, random, builder.build());
-        }
-    }
+//    public void fillWithLoot(PlayerEntity player)
+//    {
+//        if (this.lootTable != null)
+//        {
+//            LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(this.lootTable);
+//            this.lootTable = null;
+//            Random random;
+//
+//            if (this.lootTableSeed == 0L)
+//            {
+//                random = new Random();
+//            }
+//            else
+//            {
+//                random = new Random(this.lootTableSeed);
+//            }
+//
+//            LootContext.Builder builder = new LootContext.Builder((ServerWorld) this.world);
+//
+//            if (player != null)
+//            {
+//                builder.withLuck(player.getLuck());
+//            }
+//
+//            loottable.fillInventory(this, random, builder.build());
+//        }
+//    }
 
     public ResourceLocation getLootTable()
     {
         return this.lootTable;
     }
 
-    public void setLootTable(ResourceLocation lootTable, long lootTableSeed)
-    {
-        this.lootTable = lootTable;
-        this.lootTableSeed = lootTableSeed;
-    }
+//    public void setLootTable(ResourceLocation lootTable, long lootTableSeed)
+//    {
+//        this.lootTable = lootTable;
+//        this.lootTableSeed = lootTableSeed;
+//    }
     
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -477,5 +493,118 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
         return false;
+    }
+
+    public static void setLootTable(IBlockReader reader, Random rand, BlockPos p_195479_2_, ResourceLocation lootTableIn) {
+        TileEntity tileentity = reader.getTileEntity(p_195479_2_);
+        if (tileentity instanceof LockableLootTileEntity) {
+            ((LockableLootTileEntity)tileentity).setLootTable(lootTableIn, rand.nextLong());
+        }
+
+    }
+
+    protected boolean checkLootAndRead(CompoundNBT compound) {
+        if (compound.contains("LootTable", 8)) {
+            this.lootTable = new ResourceLocation(compound.getString("LootTable"));
+            this.lootTableSeed = compound.getLong("LootTableSeed");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean checkLootAndWrite(CompoundNBT compound) {
+        if (this.lootTable == null) {
+            return false;
+        } else {
+            compound.putString("LootTable", this.lootTable.toString());
+            if (this.lootTableSeed != 0L) {
+                compound.putLong("LootTableSeed", this.lootTableSeed);
+            }
+
+            return true;
+        }
+    }
+
+    public void fillWithLoot(@Nullable PlayerEntity player) {
+        if (this.lootTable != null && this.world.getServer() != null) {
+            LootTable loottable = this.world.getServer().getLootTableManager().getLootTableFromLocation(this.lootTable);
+            this.lootTable = null;
+            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.world)).withParameter(LootParameters.POSITION, new BlockPos(this.pos)).withSeed(this.lootTableSeed);
+            if (player != null) {
+                lootcontext$builder.withLuck(player.getLuck()).withParameter(LootParameters.THIS_ENTITY, player);
+            }
+
+            loottable.fillInventory(this, lootcontext$builder.build(LootParameterSets.CHEST));
+        }
+
+    }
+
+    public void setLootTable(ResourceLocation lootTableIn, long seedIn) {
+        this.lootTable = lootTableIn;
+        this.lootTableSeed = seedIn;
+    }
+
+    /**
+     * Returns the stack in the given slot.
+     */
+    public ItemStack getStackInSlot(int index) {
+        this.fillWithLoot((PlayerEntity)null);
+        return this.inventory.get(index);
+    }
+
+    /**
+     * Removes up to a specified number of items from an inventory slot and returns them in a new stack.
+     */
+    public ItemStack decrStackSize(int index, int count) {
+        this.fillWithLoot((PlayerEntity)null);
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.inventory, index, count);
+        if (!itemstack.isEmpty()) {
+            this.markDirty();
+        }
+
+        return itemstack;
+    }
+
+    /**
+     * Removes a stack from the given slot and returns it.
+     */
+    public ItemStack removeStackFromSlot(int index) {
+        this.fillWithLoot((PlayerEntity)null);
+        return ItemStackHelper.getAndRemove(this.inventory, index);
+    }
+
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        this.fillWithLoot((PlayerEntity)null);
+        this.inventory.set(index, stack);
+        if (stack.getCount() > this.getInventoryStackLimit()) {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
+    }
+
+    /**
+     * Don't rename this method to canInteractWith due to conflicts with Container
+     */
+    public boolean isUsableByPlayer(PlayerEntity player) {
+        if (this.world.getTileEntity(this.pos) != this) {
+            return false;
+        } else {
+            return !(player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) > 64.0D);
+        }
+    }
+
+    public void clear() {
+        this.inventory.clear();
+    }
+
+    @Nullable
+    public ChestContainer createMenu(int containerId, PlayerInventory playerInv) {
+        this.fillWithLoot(playerInv.player);
+        return ChestContainer.createGeneric9X3(containerId, playerInv, this);
     }
 }

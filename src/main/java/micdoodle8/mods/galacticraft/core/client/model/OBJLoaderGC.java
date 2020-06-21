@@ -1,21 +1,26 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.renderer.model.IUnbakedModel;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResource;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import com.google.common.collect.ImmutableMap;
+import net.minecraftforge.resource.IResourceType;
+import org.apache.commons.io.IOUtils;
 
 /*
  * Loader for OBJ models.
@@ -26,11 +31,11 @@ public class OBJLoaderGC implements ICustomModelLoader {
     public static final OBJLoaderGC instance = new OBJLoaderGC();
     private IResourceManager manager;
     private final Set<String> enabledDomains = new HashSet<>();
-    private final Map<ResourceLocation, IModel> cache = new HashMap<>();
+    private final Map<ResourceLocation, OBJModel> cache = new HashMap<>();
 
     static
     {
-        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(instance);
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(instance);
     }
     
     public void addDomain(String domain)
@@ -48,41 +53,47 @@ public class OBJLoaderGC implements ICustomModelLoader {
     @Override
     public boolean accepts(ResourceLocation modelLocation)
     {
-        return enabledDomains.contains(modelLocation.getResourceDomain()) && modelLocation.getResourcePath().endsWith(".obj");
+        return enabledDomains.contains(modelLocation.getNamespace()) && modelLocation.getPath().endsWith(".obj");
     }
 
     @Override
-    public IModel loadModel(ResourceLocation modelLocation) throws IOException
+    public IUnbakedModel loadModel(ResourceLocation file) throws IOException
     {
-        IModel model = null;
-        if (cache.containsKey(modelLocation))
+        OBJModel model = null;
+        if (cache.containsKey(file))
         {
-            model = cache.get(modelLocation);
+            model = cache.get(file);
         }
         else
         {
+            IResource resource = null;
             try
             {
-                String prefix = modelLocation.getResourcePath().contains("models/") ? "" : "models/";
-                ResourceLocation file = new ResourceLocation(modelLocation.getResourceDomain(), prefix + modelLocation.getResourcePath());
-                IResource resource = manager.getResource(file);
-                if (resource != null)
+                try
                 {
-                    OBJModel.Parser parser = new OBJModel.Parser(resource, manager);
-                    try
-                    {
-                        model = parser.parse().process(ImmutableMap.of("flip-v", "true"));
-                    }
-                    finally
-                    {
-                        resource.getInputStream().close();
-                        cache.put(modelLocation, model);
-                    }
+                    resource = manager.getResource(file);
+                }
+                catch (FileNotFoundException e)
+                {
+                    if (file.getPath().startsWith("models/block/"))
+                        resource = manager.getResource(new ResourceLocation(file.getNamespace(), "models/item/" + file.getPath().substring("models/block/".length())));
+                    else if (file.getPath().startsWith("models/item/"))
+                        resource = manager.getResource(new ResourceLocation(file.getNamespace(), "models/block/" + file.getPath().substring("models/item/".length())));
+                    else throw e;
+                }
+                OBJModel.Parser parser = new OBJModel.Parser(resource, manager);
+                try
+                {
+                    model = parser.parse();
+                }
+                finally
+                {
+                    cache.put(file, model);
                 }
             }
-            catch (IOException e)
+            finally
             {
-                throw e;
+                IOUtils.closeQuietly(resource);
             }
         }
         if (model == null) return ModelLoaderRegistry.getMissingModel();

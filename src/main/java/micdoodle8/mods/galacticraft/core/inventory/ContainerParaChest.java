@@ -1,21 +1,30 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerParaChest extends Container
 {
-    private IInventory parachestInventory;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.PARACHEST)
+    public static ContainerType<ContainerParaChest> TYPE;
+
+    private TileEntityParaChest paraChest;
     public int numRows;
 
-    public ContainerParaChest(IInventory par1IInventory, IInventory par2IInventory, PlayerEntity player)
+    public ContainerParaChest(int containerId, PlayerInventory playerInv, TileEntityParaChest paraChest)
     {
-        this.parachestInventory = par2IInventory;
-        this.numRows = (par2IInventory.getSizeInventory() - 3) / 9;
-        par2IInventory.openInventory(player);
+        super(TYPE, containerId);
+        this.paraChest = paraChest;
+        this.numRows = (paraChest.getSizeInventory() - 3) / 9;
+        paraChest.openInventory(playerInv.player);
         int i = (this.numRows - 4) * 18 + 19;
         int j;
         int k;
@@ -24,32 +33,37 @@ public class ContainerParaChest extends Container
         {
             for (k = 0; k < 9; ++k)
             {
-                this.addSlotToContainer(new Slot(par2IInventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlot(new Slot(paraChest, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
 
-        this.addSlotToContainer(new Slot(par2IInventory, par2IInventory.getSizeInventory() - 3, 125 + 0 * 18, (this.numRows == 0 ? 24 : 26) + this.numRows * 18));
-        this.addSlotToContainer(new Slot(par2IInventory, par2IInventory.getSizeInventory() - 2, 125 + 1 * 18, (this.numRows == 0 ? 24 : 26) + this.numRows * 18));
-        this.addSlotToContainer(new Slot(par2IInventory, par2IInventory.getSizeInventory() - 1, 75, (this.numRows == 0 ? 24 : 26) + this.numRows * 18));
+        this.addSlot(new Slot(paraChest, paraChest.getSizeInventory() - 3, 125 + 0 * 18, (this.numRows == 0 ? 24 : 26) + this.numRows * 18));
+        this.addSlot(new Slot(paraChest, paraChest.getSizeInventory() - 2, 125 + 1 * 18, (this.numRows == 0 ? 24 : 26) + this.numRows * 18));
+        this.addSlot(new Slot(paraChest, paraChest.getSizeInventory() - 1, 75, (this.numRows == 0 ? 24 : 26) + this.numRows * 18));
 
         for (j = 0; j < 3; ++j)
         {
             for (k = 0; k < 9; ++k)
             {
-                this.addSlotToContainer(new Slot(par1IInventory, k + j * 9 + 9, 8 + k * 18, (this.numRows == 0 ? 116 : 118) + j * 18 + i));
+                this.addSlot(new Slot(playerInv, k + j * 9 + 9, 8 + k * 18, (this.numRows == 0 ? 116 : 118) + j * 18 + i));
             }
         }
 
         for (j = 0; j < 9; ++j)
         {
-            this.addSlotToContainer(new Slot(par1IInventory, j, 8 + j * 18, (this.numRows == 0 ? 174 : 176) + i));
+            this.addSlot(new Slot(playerInv, j, 8 + j * 18, (this.numRows == 0 ? 174 : 176) + i));
         }
+    }
+
+    public TileEntityParaChest getParaChest()
+    {
+        return paraChest;
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.parachestInventory.isUsableByPlayer(par1EntityPlayer);
+        return this.paraChest.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -64,14 +78,14 @@ public class ContainerParaChest extends Container
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (par2 < this.parachestInventory.getSizeInventory())
+            if (par2 < this.paraChest.getSizeInventory())
             {
                 if (!this.mergeItemStack(itemstack1, b - 36, b, true))
                 {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.mergeItemStack(itemstack1, 0, this.parachestInventory.getSizeInventory(), false))
+            else if (!this.mergeItemStack(itemstack1, 0, this.paraChest.getSizeInventory(), false))
             {
                 return ItemStack.EMPTY;
             }
@@ -96,7 +110,7 @@ public class ContainerParaChest extends Container
     public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
-        this.parachestInventory.closeInventory(par1EntityPlayer);
+        this.paraChest.closeInventory(par1EntityPlayer);
     }
 
     /**
@@ -104,6 +118,6 @@ public class ContainerParaChest extends Container
      */
     public IInventory getparachestInventory()
     {
-        return this.parachestInventory;
+        return this.paraChest;
     }
 }

@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
@@ -11,7 +12,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -26,10 +29,11 @@ public class GuiOxygenCompressor extends GuiContainerGC<ContainerOxygenCompresso
     private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiOxygenCompressor(PlayerInventory playerInv, TileEntityOxygenCompressor compressor)
+    public GuiOxygenCompressor(ContainerOxygenCompressor container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerOxygenCompressor(playerInv, compressor, Minecraft.getInstance().player), playerInv, new StringTextComponent(compressor.getName()));
-        this.compressor = compressor;
+        super(container, playerInv, title);
+//        super(new ContainerOxygenCompressor(playerInv, compressor, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.oxygencompressor.name"));
+        this.compressor = container.getCompressor();
         this.ySize = 180;
     }
 
@@ -72,7 +76,7 @@ public class GuiOxygenCompressor extends GuiContainerGC<ContainerOxygenCompresso
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.compressor.getName(), 8, 10, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
         GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();

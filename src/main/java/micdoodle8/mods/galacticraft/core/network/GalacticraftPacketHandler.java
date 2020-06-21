@@ -46,7 +46,7 @@
 //    public void unload(World world)
 //    {
 //        Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
-//        int dimId = GCCoreUtil.getDimensionID(world);
+//        DimensionType dimID = GCCoreUtil.getDimensionID(world);
 //        Queue<PacketPlayerPair> queue = getQueue(side, dimId);
 //        queue.clear();
 //    }
@@ -55,7 +55,7 @@
 //    {
 //        PacketPlayerPair pair;
 //        Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
-//        int dimID = GCCoreUtil.getDimensionID(world);
+//        DimensionType dimID = GCCoreUtil.getDimensionID(world);
 //        Queue<PacketPlayerPair> queue = getQueue(side, dimID);
 //        while ((pair = queue.poll()) != null)
 //        {
@@ -90,7 +90,7 @@
 //        }
 //    }
 //
-//    private Queue<PacketPlayerPair> getQueue(Side side, int dimID)
+//    private Queue<PacketPlayerPair> getQueue(Side side, DimensionType dimID)
 //    {
 //        Map<Integer, Queue<PacketPlayerPair>> map = packetMap.get(side);
 //        if (!map.containsKey(dimID))

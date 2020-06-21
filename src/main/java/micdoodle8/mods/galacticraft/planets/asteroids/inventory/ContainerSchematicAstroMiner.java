@@ -18,10 +18,10 @@ public class ContainerSchematicAstroMiner extends Container
     public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerSchematicAstroMiner(PlayerInventory par1InventoryPlayer, BlockPos pos)
+    public ContainerSchematicAstroMiner(PlayerInventory playerInv, BlockPos pos)
     {
-        this.world = par1InventoryPlayer.player.world;
-        this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 72));
+        this.world = playerInv.player.world;
+        this.addSlot(new SlotRocketBenchResult(playerInv.player, this.craftMatrix, this.craftResult, 0, 142, 72));
         int i;
         int j;
         int count = 1;
@@ -29,25 +29,25 @@ public class ContainerSchematicAstroMiner extends Container
         // Miner top layer
         for (i = 0; i < 4; i++)
         {
-            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 27 + i * 18, 35, pos, par1InventoryPlayer.player));
+            this.addSlot(new SlotSchematicAstroMiner(this.craftMatrix, count++, 27 + i * 18, 35, pos, playerInv.player));
         }
 
         // Miner mid layer
         for (i = 0; i < 5; i++)
         {
-            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 16 + i * 18, 53, pos, par1InventoryPlayer.player));
+            this.addSlot(new SlotSchematicAstroMiner(this.craftMatrix, count++, 16 + i * 18, 53, pos, playerInv.player));
         }
 
         // Miner bottom layer
         for (i = 0; i < 3; i++)
         {
-            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 44 + i * 18, 71, pos, par1InventoryPlayer.player));
+            this.addSlot(new SlotSchematicAstroMiner(this.craftMatrix, count++, 44 + i * 18, 71, pos, playerInv.player));
         }
 
         // Laser
         for (i = 0; i < 2; ++i)
         {
-            this.addSlotToContainer(new SlotSchematicAstroMiner(this.craftMatrix, count++, 8 + i * 18, 77, pos, par1InventoryPlayer.player));
+            this.addSlot(new SlotSchematicAstroMiner(this.craftMatrix, count++, 8 + i * 18, 77, pos, playerInv.player));
         }
 
         // Player inv:
@@ -56,13 +56,13 @@ public class ContainerSchematicAstroMiner extends Container
         {
             for (j = 0; j < 9; ++j)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, j + i * 9 + 9, 8 + j * 18, 140 + i * 18 - 26));
+                this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 140 + i * 18 - 26));
             }
         }
 
         for (i = 0; i < 9; ++i)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 144 + 54 - 26));
+            this.addSlot(new Slot(playerInv, i, 8 + i * 18, 144 + 54 - 26));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);

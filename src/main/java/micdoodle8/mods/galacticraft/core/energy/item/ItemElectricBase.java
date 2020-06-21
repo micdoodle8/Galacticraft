@@ -35,10 +35,10 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
 //        this.mcVersion = new DefaultArtifactVersion((String) FMLInjectionData.data()[4]);
 
-        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
-        {
-            itemManagerIC2 = new ElectricItemManagerIC2();
-        }
+//        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+//        {
+//            itemManagerIC2 = new ElectricItemManagerIC2();
+//        } TODO IC2 support
     }
 
     @Override

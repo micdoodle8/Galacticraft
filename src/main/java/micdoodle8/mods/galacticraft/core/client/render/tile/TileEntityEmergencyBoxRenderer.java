@@ -1,22 +1,23 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEmergencyBox;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEmergencyBox;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntityEmergencyBox>
 {
     private static final float MASKSCALE = 3F;
-    
-    public class Flap extends ModelBase
+
+    public class Flap extends Model
     {
         RendererModel model;
         protected float angle;
@@ -47,7 +48,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         }
     }
 
-    public class Plinth extends ModelBase
+    public class Plinth extends Model
     {
         RendererModel model;
 
@@ -69,7 +70,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         }
     }
 
-    public class Mask extends ModelBase
+    public class Mask extends Model
     {
         RendererModel model;
 
@@ -91,7 +92,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         }
     }
 
-    public class Tank extends ModelBase
+    public class Tank extends Model
     {
         RendererModel model;
 
@@ -114,7 +115,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         }
     }
 
-    public class Pack extends ModelBase
+    public class Pack extends Model
     {
         RendererModel model;
 
@@ -152,20 +153,20 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
     private Pack pack = new Pack();
 
     @Override
-    public void render(TileEntityEmergencyBox tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
+    public void render(TileEntityEmergencyBox emergencyBox, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        BlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState b = emergencyBox.getWorld().getBlockState(emergencyBox.getPos());
         if (!(b.getBlock() instanceof BlockEmergencyBox)) return;
         GlStateManager.pushMatrix();
-        GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
-        
-        flapA.angle = tileEntity.getAngleA(f);
-        flapB.angle = tileEntity.getAngleB(f);
-        flapC.angle = tileEntity.getAngleC(f);
-        flapD.angle = tileEntity.getAngleD(f);
+        GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+
+        flapA.angle = emergencyBox.getAngleA(partialTicks);
+        flapB.angle = emergencyBox.getAngleB(partialTicks);
+        flapC.angle = emergencyBox.getAngleC(partialTicks);
+        flapD.angle = emergencyBox.getAngleD(partialTicks);
         float height = Math.max(Math.max(flapA.angle, flapB.angle), Math.max(flapC.angle, flapD.angle)) / 90F;
-        
-        if (height > 0F && b.getValue(BlockEmergencyBox.KIT))
+
+        if (height > 0F && b.get(BlockEmergencyBox.KIT))
         {
             GlStateManager.pushMatrix();
             this.bindTexture(packTexture);

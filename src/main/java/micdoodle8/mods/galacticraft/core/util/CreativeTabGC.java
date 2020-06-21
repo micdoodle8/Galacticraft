@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.registry.Registry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Collections;
 import java.util.Comparator;
 
 public class CreativeTabGC extends ItemGroup
@@ -22,9 +23,7 @@ public class CreativeTabGC extends ItemGroup
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public ItemStack getTabIconItem()
-    {
+    public ItemStack createIcon() {
         return this.itemForTab;
     }
 
@@ -35,25 +34,32 @@ public class CreativeTabGC extends ItemGroup
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public String getTranslatedTabLabel()
+    public String getTranslationKey()
     {
-        return "item_group." + this.getTabLabel();
+        return "itemGroup." + this.getTabLabel();
     }
 
-    @Override
-    public void displayAllRelevantItems(NonNullList<ItemStack> list)
-    {
-        super.displayAllRelevantItems(list);
-        if (this.tabSorter != null)
-        {
-            try {
-                Collections.sort(list, tabSorter);
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+    @OnlyIn(Dist.CLIENT)
+    public void fill(NonNullList<ItemStack> items) {
+        for(Item item : Registry.ITEM) {
+            item.fillItemGroup(this, items);
         }
     }
+
+//    @Override
+//    public void displayAllRelevantItems(NonNullList<ItemStack> list)
+//    {
+//        super.displayAllRelevantItems(list);
+//        if (this.tabSorter != null)
+//        {
+//            try {
+//                Collections.sort(list, tabSorter);
+//            } catch (Exception e)
+//            {
+//                e.printStackTrace();
+//            }
+//        }
+//    } TODO Sorting
 
     public void setTabSorter(Comparator<ItemStack> tabSorter)
     {

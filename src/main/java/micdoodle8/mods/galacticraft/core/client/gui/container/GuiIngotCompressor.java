@@ -2,13 +2,16 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -21,9 +24,10 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
 
     private TileEntityIngotCompressor compressor;
 
-    public GuiIngotCompressor(PlayerInventory playerInv, TileEntityIngotCompressor compressor)
+    public GuiIngotCompressor(ContainerIngotCompressor container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerIngotCompressor(playerInv, compressor), playerInv, new StringTextComponent(compressor.getName()));
+        super(container, playerInv, title);
+//        super(new ContainerIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent("tile.machine.3.name"));
         this.compressor = compressor;
         this.ySize = 192;
     }
@@ -47,7 +51,7 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(this.compressor.getName(), 10, 6, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 10, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.message.fuel.name") + ":";
         this.font.drawString(displayText, 50 - this.font.getStringWidth(displayText), 79, 4210752);
 

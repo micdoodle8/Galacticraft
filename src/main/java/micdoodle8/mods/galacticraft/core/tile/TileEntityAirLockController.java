@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAirLockWall;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -14,31 +14,31 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.List;
 
 public class TileEntityAirLockController extends TileEntityAirLock
 {
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean redstoneActivation;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean playerDistanceActivation = true;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int playerDistanceSelection;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean playerNameMatches;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public String playerToOpenFor = "";
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean invertSelection;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean horizontalModeEnabled;
     public boolean lastHorizontalModeEnabled;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public String ownerName = "";
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean active;
     public boolean lastActive;
     private int otherAirLocks;
@@ -52,9 +52,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -62,31 +62,31 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
             if (this.redstoneActivation)
             {
-                this.active = this.world.isBlockIndirectlyGettingPowered(this.getPos()) > 0;
+                this.active = this.world.getRedstonePowerFromNeighbors(this.getPos()) > 0;
             }
 
             if ((this.active || !this.redstoneActivation) && this.playerDistanceActivation)
             {
-                double distance = 0D;
+                float distance = 0.0F;
 
                 switch (this.playerDistanceSelection)
                 {
                 case 0:
-                    distance = 1.0D;
+                    distance = 1.0F;
                     break;
                 case 1:
-                    distance = 2.0D;
+                    distance = 2.0F;
                     break;
                 case 2:
-                    distance = 5.0D;
+                    distance = 5.0F;
                     break;
                 case 3:
-                    distance = 10.0D;
+                    distance = 10.0F;
                     break;
                 }
 
-                Vector3 minPos = new Vector3(this).translate(0.5D - distance);
-                Vector3 maxPos = new Vector3(this).translate(0.5D + distance);
+                Vector3 minPos = new Vector3(this).translate(0.5F - distance);
+                Vector3 maxPos = new Vector3(this).translate(0.5F + distance);
                 AxisAlignedBB matchingRegion = new AxisAlignedBB(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
                 List<PlayerEntity> playersWithin = this.world.getEntitiesWithinAABB(PlayerEntity.class, matchingRegion);
 
@@ -288,7 +288,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                             if (sealedSide)
                                 this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
                             else
-                                this.world.setBlockToAir(pos);
+                                this.world.removeBlock(pos, false);
                         }
                     }
                 }
@@ -337,7 +337,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                             if (sealedSide)
                                 this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
                             else
-                                this.world.setBlockToAir(pos);
+                                this.world.removeBlock(pos, false);
                         }
                     }
                 }
@@ -383,7 +383,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                             if (sealedSide)
                                 this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
                             else
-                                this.world.setBlockToAir(pos);
+                                this.world.removeBlock(pos, false);
                         }
                     }
                 }
@@ -392,9 +392,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.ownerName = nbt.getString("OwnerName");
         this.redstoneActivation = nbt.getBoolean("RedstoneActivation");
         this.playerDistanceActivation = nbt.getBoolean("PlayerDistanceActivation");
@@ -408,26 +408,26 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setString("OwnerName", this.ownerName);
-        nbt.setBoolean("RedstoneActivation", this.redstoneActivation);
-        nbt.setBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
+        super.write(nbt);
+        nbt.putString("OwnerName", this.ownerName);
+        nbt.putBoolean("RedstoneActivation", this.redstoneActivation);
+        nbt.putBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
         nbt.putInt("PlayerDistanceSelection", this.playerDistanceSelection);
-        nbt.setBoolean("PlayerNameMatches", this.playerNameMatches);
-        nbt.setString("PlayerToOpenFor", this.playerToOpenFor);
-        nbt.setBoolean("InvertSelection", this.invertSelection);
-        nbt.setBoolean("active", this.active);
-        nbt.setBoolean("lastActive", this.lastActive);
-        nbt.setBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
+        nbt.putBoolean("PlayerNameMatches", this.playerNameMatches);
+        nbt.putString("PlayerToOpenFor", this.playerToOpenFor);
+        nbt.putBoolean("InvertSelection", this.invertSelection);
+        nbt.putBoolean("active", this.active);
+        nbt.putBoolean("lastActive", this.lastActive);
+        nbt.putBoolean("HorizontalModeEnabled", this.horizontalModeEnabled);
         return nbt;
     }
 
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 
     @Override

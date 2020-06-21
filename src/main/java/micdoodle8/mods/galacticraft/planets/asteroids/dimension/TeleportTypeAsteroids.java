@@ -31,6 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.ServerWorld;
+import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.ServerChunkProvider;
 
 import java.util.Random;
@@ -162,19 +163,19 @@ public class TeleportTypeAsteroids implements ITeleportType
                 {
                     if (world.getBlockState(new BlockPos(x, y, z)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(new BlockPos(x, y, z));
+                        world.removeBlock(new BlockPos(x, y, z), false);
                     }
                     if (world.getBlockState(new BlockPos(x - 1, y, z)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(new BlockPos(x - 1, y, z));
+                        world.removeBlock(new BlockPos(x - 1, y, z), false);
                     }
                     if (world.getBlockState(new BlockPos(x, y, z - 1)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(new BlockPos(x, y, z - 1));
+                        world.removeBlock(new BlockPos(x, y, z - 1), false);
                     }
                     if (world.getBlockState(new BlockPos(x - 1, y, z - 1)).getBlock() == AsteroidBlocks.blockBasic)
                     {
-                        world.setBlockToAir(new BlockPos(x - 1, y, z - 1));
+                        world.removeBlock(new BlockPos(x - 1, y, z - 1), false);
                     }
                 }
                 if (ConfigManagerCore.enableDebug)
@@ -189,7 +190,7 @@ public class TeleportTypeAsteroids implements ITeleportType
 
     private void makeSmallLandingSpot(World world, int x, int z)
     {
-        this.loadChunksAround(x, z, -1, (ServerChunkProvider) world.getChunkProvider());
+        this.loadChunksAround(x, z, -1, world.getChunkProvider());
 
         for (int k = 255; k > 48; k--)
         {
@@ -219,7 +220,7 @@ public class TeleportTypeAsteroids implements ITeleportType
         return;
     }
 
-    private void loadChunksAround(int x, int z, int i, ServerChunkProvider cp)
+    private void loadChunksAround(int x, int z, int i, AbstractChunkProvider cp)
     {
         cp.loadChunk(x >> 4, z >> 4);
         if ((x + i) >> 4 != x >> 4)

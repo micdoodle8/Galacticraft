@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -23,7 +24,7 @@ public class TeleportTypeMoon implements ITeleportType
     }
 
     @Override
-    public Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -54,26 +55,26 @@ public class TeleportTypeMoon implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vector3(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
+            return new Vector3D(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
         }
 
         return null;
     }
 
     @Override
-    public Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity)
+    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
+        return new Vector3D(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         if (ConfigManagerCore.disableLander)
         {
-            final double x = (rand.nextDouble() * 2 - 1.0D) * 4.0D;
-            final double z = (rand.nextDouble() * 2 - 1.0D) * 4.0D;
-            return new Vector3(player.posX + x, 220.0D, player.posZ + z);
+            final float x = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
+            final float z = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
+            return new Vector3D(player.posX + x, 220.0, player.posZ + z);
         }
 
         return null;

@@ -112,11 +112,11 @@ public class GalacticraftPlanets
         GalacticraftPlanets.proxy.serverInit(event);
     }
 
-    public static void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
+    public static void addParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
         for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {
-            module.spawnParticle(particleID, position, motion, extraData);
+            module.addParticle(particleID, position, motion, extraData);
         }
     }
 

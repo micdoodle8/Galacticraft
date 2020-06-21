@@ -109,17 +109,17 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -199,7 +199,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -210,7 +210,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

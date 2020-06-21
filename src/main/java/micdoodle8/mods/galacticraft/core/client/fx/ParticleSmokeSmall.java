@@ -16,16 +16,16 @@ public class ParticleSmokeSmall extends SpriteTexturedParticle
     float smokeParticleScale;
     private final IAnimatedSprite animatedSprite;
 
-    public ParticleSmokeSmall(World par1World, Vector3 position, Vector3 motion, IAnimatedSprite animatedSprite)
+    public ParticleSmokeSmall(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, IAnimatedSprite animatedSprite)
     {
-        super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
+        super(par1World, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.01D;
         this.motionY *= 0.01D;
         this.motionZ *= 0.01D;
         this.setSize(0.05F, 0.05F);
-        this.motionX += motion.x;
-        this.motionY += motion.y;
-        this.motionZ += motion.z;
+        this.motionX += motX;
+        this.motionY += motY;
+        this.motionZ += motZ;
         this.particleAlpha = 0.8F;
         this.particleRed = this.particleGreen = this.particleBlue = (float) (Math.random() * 0.2D) + 0.7F;
         this.particleScale *= 0.3F;
@@ -103,7 +103,7 @@ public class ParticleSmokeSmall extends SpriteTexturedParticle
         }
 
         public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ParticleSmokeSmall particleSmokeSmall = new ParticleSmokeSmall(worldIn, new Vector3(x, y, z), new Vector3(xSpeed, ySpeed, zSpeed), this.spriteSet);
+            ParticleSmokeSmall particleSmokeSmall = new ParticleSmokeSmall(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
             particleSmokeSmall.selectSpriteRandomly(this.spriteSet);
             return particleSmokeSmall;
         }

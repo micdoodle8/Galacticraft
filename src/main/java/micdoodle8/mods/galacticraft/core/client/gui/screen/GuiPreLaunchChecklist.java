@@ -1,23 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckboxPreLaunch;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.screen.Screen;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,11 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
     private NextPageButton buttonNextPage;
     private NextPageButton buttonPreviousPage;
     private CompoundNBT tagCompound;
-    private Map<Integer, String> checkboxToKeyMap = Maps.newHashMap();
+    private Map<GuiElementCheckboxPreLaunch, String> checkboxToKeyMap = Maps.newHashMap();
 
     public GuiPreLaunchChecklist(List<List<String>> checklistKeys, CompoundNBT tagCompound)
     {
+        super(new StringTextComponent("Prelaunch Checklist"));
         this.tagCompound = tagCompound != null ? tagCompound : new CompoundNBT();
         this.checklistKeys = checklistKeys;
     }
@@ -49,8 +51,14 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
 
         int i = (this.width - this.bookImageWidth) / 2;
         int j = 2;
-        this.buttons.add(this.buttonNextPage = new NextPageButton(0, i + 120, j + 154, true));
-        this.buttons.add(this.buttonPreviousPage = new NextPageButton(1, i + 38, j + 154, false));
+        this.buttons.add(this.buttonNextPage = new NextPageButton(i + 120, j + 154, true, (button) -> {
+            this.currPage++;
+            this.init();
+        }));
+        this.buttons.add(this.buttonPreviousPage = new NextPageButton(i + 38, j + 154, false, (button) -> {
+            this.currPage--;
+            this.init();
+        }));
 
         int yPos = 25;
         int index = 2;
@@ -64,14 +72,14 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
             }
             String title = e.get(0);
             List<String> checkboxes = e.subList(1, e.size());
-            GuiElementCheckboxPreLaunch element = new GuiElementCheckboxPreLaunch(index, this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0);
+            GuiElementCheckboxPreLaunch element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0, (button) -> {});
             int size = element.willFit(152 - yPos);
             if (size >= 0)
             {
                 if (page == this.currPage)
                 {
                     this.buttons.add(element);
-                    this.checkboxToKeyMap.put(element.id, title);
+                    this.checkboxToKeyMap.put(element, title);
                     index++;
                 }
                 yPos += size + minecraft.fontRenderer.FONT_HEIGHT / 2;
@@ -81,12 +89,12 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
                 page++;
                 yPos = 25;
                 size = element.willFit(152 - yPos);
-                element = new GuiElementCheckboxPreLaunch(index, this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0);
+                element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0, (button) -> {});
 
                 if (page == this.currPage)
                 {
                     this.buttons.add(element);
-                    this.checkboxToKeyMap.put(element.id, title);
+                    this.checkboxToKeyMap.put(element, title);
                     index++;
                 }
                 yPos += size + minecraft.fontRenderer.FONT_HEIGHT / 2;
@@ -94,14 +102,14 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
 
             for (String checkbox : checkboxes)
             {
-                element = new GuiElementCheckboxPreLaunch(index, this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0);
+                element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0, (button) -> {});
                 size = element.willFit(152 - yPos);
                 if (size >= 0)
                 {
                     if (page == this.currPage)
                     {
                         this.buttons.add(element);
-                        this.checkboxToKeyMap.put(element.id, title + "." + checkbox + ".key");
+                        this.checkboxToKeyMap.put(element, title + "." + checkbox + ".key");
                         index++;
                     }
                     yPos += size + minecraft.fontRenderer.FONT_HEIGHT / 2;
@@ -111,12 +119,12 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
                     page++;
                     yPos = 25;
                     size = element.willFit(152 - yPos);
-                    element = new GuiElementCheckboxPreLaunch(index, this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0);
+                    element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0, (button) -> {});
 
                     if (page == this.currPage)
                     {
                         this.buttons.add(element);
-                        this.checkboxToKeyMap.put(element.id, title + "." + checkbox + ".key");
+                        this.checkboxToKeyMap.put(element, title + "." + checkbox + ".key");
                         index++;
                     }
                     yPos += size + minecraft.fontRenderer.FONT_HEIGHT / 2;
@@ -140,7 +148,7 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
         {
             if (button instanceof GuiElementCheckboxPreLaunch)
             {
-                this.tagCompound.putBoolean(this.checkboxToKeyMap.get(button.id), ((GuiElementCheckboxPreLaunch) button).isSelected);
+                this.tagCompound.putBoolean(this.checkboxToKeyMap.get(button), ((GuiElementCheckboxPreLaunch) button).isSelected);
             }
         }
 
@@ -158,39 +166,16 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
         stack.setTag(tagCompound);
     }
 
-
-
     @Override
-    protected void actionPerformed(Button buttonClicked)
+    public void render(int par1, int par2, float par3)
     {
-        if (buttonClicked == this.buttonNextPage)
-        {
-            this.currPage++;
-            this.initGui();
-        }
-        else if (buttonClicked == this.buttonPreviousPage)
-        {
-            this.currPage--;
-            this.initGui();
-        }
-    }
-
-    @Override
-    public void updateScreen()
-    {
-
-    }
-
-    @Override
-    public void drawScreen(int par1, int par2, float par3)
-    {
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(bookGuiTexture);
         int i = (this.width - this.bookImageWidth) / 2;
         int j = 2;
         this.blit(i, j, 0, 0, this.bookImageWidth, this.bookImageHeight);
 
-        super.drawScreen(par1, par2, par3);
+        super.render(par1, par2, par3);
     }
 
     @Override
@@ -200,19 +185,19 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
         boolean started = false;
         for (int i = 2; i < this.buttons.size(); ++i)
         {
-            Button button = this.buttons.get(i);
+            Widget widget = this.buttons.get(i);
             if (started)
             {
-                if (button.x > element.x)
+                if (widget.x > element.x)
                 {
-                    ((GuiElementCheckboxPreLaunch) button).isSelected = newSelected;
+                    ((GuiElementCheckboxPreLaunch) widget).isSelected = newSelected;
                 }
                 else
                 {
                     break;
                 }
             }
-            else if (button == element)
+            else if (widget == element)
             {
                 started = true;
             }
@@ -230,7 +215,7 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
     @Override
     public boolean getInitiallySelected(GuiElementCheckboxPreLaunch checkbox)
     {
-        return this.tagCompound.getBoolean(this.checkboxToKeyMap.get(checkbox.id));
+        return this.tagCompound.getBoolean(this.checkboxToKeyMap.get(checkbox));
     }
 
     @Override
@@ -243,20 +228,20 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
     {
         private final boolean forward;
 
-        public NextPageButton(int id, int x, int y, boolean forward)
+        public NextPageButton(int x, int y, boolean forward, Button.IPressable onPress)
         {
-            super(id, x, y, 23, 13, "");
+            super(x, y, 23, 13, "", onPress);
             this.forward = forward;
         }
 
         @Override
-        public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partial)
+        public void render(int mouseX, int mouseY, float partial)
         {
             if (this.visible)
             {
                 boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                minecraft.getTextureManager().bindTexture(bookGuiTexture);
+                GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTexture);
                 int i = 0;
                 int j = 192;
 

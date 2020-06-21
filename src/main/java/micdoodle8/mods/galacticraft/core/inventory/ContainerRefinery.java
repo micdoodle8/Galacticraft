@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
@@ -8,54 +9,65 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerRefinery extends Container
 {
-    private final TileEntityRefinery tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.REFINERY)
+    public static ContainerType<ContainerRefinery> TYPE;
 
-    public ContainerRefinery(PlayerInventory par1InventoryPlayer, TileEntityRefinery tileEntity, PlayerEntity player)
+    private final TileEntityRefinery refinery;
+
+    public ContainerRefinery(int containerId, PlayerInventory playerInv, TileEntityRefinery refinery)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.refinery = refinery;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 38, 51, IItemElectric.class));
+        this.addSlot(new SlotSpecific(refinery, 0, 38, 51, IItemElectric.class));
 
         // To be smelted
-        this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));
+        this.addSlot(new Slot(refinery, 1, 7, 7));
 
         // Smelting result
-        this.addSlotToContainer(new Slot(tileEntity, 2, 153, 7));
+        this.addSlot(new Slot(refinery, 2, 153, 7));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 104 + var3 * 18 - 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 144));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 144));
         }
 
-        tileEntity.openInventory(player);
+        refinery.openInventory(playerInv.player);
+    }
+
+    public TileEntityRefinery getRefinery()
+    {
+        return refinery;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory(entityplayer);
+        this.refinery.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.refinery.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

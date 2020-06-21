@@ -29,7 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.biome.dimension.BiomeProvider;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.World;

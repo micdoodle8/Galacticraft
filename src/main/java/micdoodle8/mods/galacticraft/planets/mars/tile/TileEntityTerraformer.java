@@ -31,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
@@ -41,7 +41,7 @@ import java.util.List;
 public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProviderColored, IFluidHandlerWrapper
 {
     private final int tankCapacity = 2000;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank waterTank = new FluidTank(this.tankCapacity);
     public boolean active;
     public boolean lastActive;
@@ -49,19 +49,19 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     private ArrayList<BlockPos> terraformableBlocksList = new ArrayList<BlockPos>();
     private ArrayList<BlockPos> grassBlockList = new ArrayList<BlockPos>();
     private ArrayList<BlockPos> grownTreesList = new ArrayList<BlockPos>();
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int terraformableBlocksListSize = 0; // used for server->client ease
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int grassBlocksListSize = 0; // used for server->client ease
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean treesDisabled;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean grassDisabled;
     public final double MAX_SIZE = 15.0D;
     private int[] useCount = new int[2];
     private int saplingIndex = 6;
     public float bubbleSize;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean shouldRenderBubble = true;
 
     public TileEntityTerraformer()
@@ -73,15 +73,15 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public int getScaledWaterLevel(int i)
     {
-        final double fuelLevel = this.waterTank.getFluid() == null ? 0 : this.waterTank.getFluid().amount;
+        final double fuelLevel = this.waterTank.getFluid() == FluidStack.EMPTY ? 0 : this.waterTank.getFluid().getAmount();
 
         return (int) (fuelLevel * i / this.tankCapacity);
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
+        super.remove();
     }
 
     public double getDistanceFromServer(double par1, double par3, double par5)
@@ -93,9 +93,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
 //        if (this.terraformBubble == null)
 //        {
@@ -114,7 +114,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.getInventory(), 0, liquid.amount);
             }
 
-            this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && !this.getFirstBonemealStack().isEmpty() && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
+            this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && !this.getFirstBonemealStack().isEmpty() && this.waterTank.getFluid() != FluidStack.EMPTY && this.waterTank.getFluid().getAmount() > 0;
         }
 
         if (!this.world.isRemote && (this.active != this.lastActive || this.ticks % 60 == 0))
@@ -244,7 +244,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                     else if (b instanceof BushBlock)
                     {
                         if (this.world.getLightFromNeighbors(vecSapling) >= 5)
-                        //Hammer the update tick a few times to try to get it to grow - it won't always
+                        //Hammer the tick tick a few times to try to get it to grow - it won't always
                         {
                             for (int j = 0; j < 12; j++)
                             {
@@ -432,9 +432,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         this.bubbleSize = nbt.getFloat("BubbleSize");
         this.useCount = nbt.getIntArray("UseCountArray");
@@ -446,7 +446,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (nbt.contains("waterTank"))
         {
-            this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
+            this.waterTank.read(nbt.getCompound("waterTank"));
         }
 
         if (nbt.contains("bubbleVisible"))
@@ -456,18 +456,18 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setFloat("BubbleSize", this.bubbleSize);
+        super.write(nbt);
+        nbt.putFloat("BubbleSize", this.bubbleSize);
         nbt.setIntArray("UseCountArray", this.useCount);
 
-        if (this.waterTank.getFluid() != null)
+        if (this.waterTank.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
+            nbt.put("waterTank", this.waterTank.write(new CompoundNBT()));
         }
 
-        nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
+        nbt.putBoolean("bubbleVisible", this.shouldRenderBubble);
         return nbt;
     }
 
@@ -606,13 +606,13 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         return null;
     }
 
     @Override
-    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, IFluidHandler.FluidAction action)
     {
         return null;
     }
@@ -624,13 +624,13 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public int fill(Direction from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         int used = 0;
 
         if (resource != null && this.canFill(from, resource.getFluid()))
         {
-            used = this.waterTank.fill(resource, doFill);
+            used = this.waterTank.fill(resource, action);
         }
 
         return used;

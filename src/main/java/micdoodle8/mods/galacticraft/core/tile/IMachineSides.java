@@ -1,20 +1,19 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.Arrays;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties.MachineSidesModel;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Used as a common interface for any TileEntity with configurable power, pipe, etc sides
@@ -418,7 +417,7 @@ public interface IMachineSides extends ITileClientUpdates
         
         if (te.getWorld().isRemote)
         {
-            te.getWorld().markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+//            te.getWorld().markBlockRangeForRenderUpdate(te.getPos(), te.getPos()); TODO Needed?
         }
         else
         {
@@ -495,9 +494,9 @@ public interface IMachineSides extends ITileClientUpdates
         {
             CompoundNBT tag = new CompoundNBT();
             msp.writeToNBT(tag);
-            tagList.appendTag(tag);
+            tagList.add(tag);
         }
-        par1nbtTagCompound.setTag("macsides", tagList);
+        par1nbtTagCompound.put("macsides", tagList);
     }
 
 
@@ -526,7 +525,7 @@ public interface IMachineSides extends ITileClientUpdates
     
     @Override
     @OnlyIn(Dist.CLIENT)
-    public default void updateClient(List<Object> data)
+    default void updateClient(List<Object> data)
     {
         MachineSidePack[] msps = this.getAllMachineSides();
         for (int i = 0; i < msps.length; ++i)
@@ -534,7 +533,7 @@ public interface IMachineSides extends ITileClientUpdates
             msps[i].set((Integer) data.get(i + 1));
         }
         BlockPos pos = ((TileEntity)this).getPos();
-        ((TileEntity)this).getWorld().markBlockRangeForRenderUpdate(pos, pos);
+//        ((TileEntity)this).getWorld().markBlockRangeForRenderUpdate(pos, pos); TODO Needed?
     }
 
     /**
@@ -556,21 +555,21 @@ public interface IMachineSides extends ITileClientUpdates
         
         public void writeToNBT(CompoundNBT tag)
         {
-            tag.setInteger("ts", this.theSide.ordinal());
-            tag.setInteger("cf", this.currentFace.ordinal());
+            tag.putInt("ts", this.theSide.ordinal());
+            tag.putInt("cf", this.currentFace.ordinal());
         }
 
         public void readFromNBT(CompoundNBT tag)
         {
             int ts = -1;
             int cf = -1;
-            if (tag.hasKey("ts"))
+            if (tag.contains("ts"))
             {
-                ts = tag.getInteger("ts");
+                ts = tag.getInt("ts");
             }
-            if (tag.hasKey("cf"))
+            if (tag.contains("cf"))
             {
-                cf = tag.getInteger("cf");
+                cf = tag.getInt("cf");
             }
             if (ts == theSide.ordinal() && cf >= 0 && cf < Face.values().length)
             {

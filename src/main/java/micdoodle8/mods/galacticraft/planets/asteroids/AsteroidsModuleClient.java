@@ -171,7 +171,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMinerBase.class, new TileEntityMinerBaseRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
 
-//        if (Loader.isModLoaded("craftguide"))
+//        if (ModList.get().isLoaded("craftguide"))
 //        {
 //            CraftGuideIntegration.register();
 //        }
@@ -254,7 +254,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     }
 
     @Override
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
+    public void addParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
         Minecraft mc = Minecraft.getInstance();
 

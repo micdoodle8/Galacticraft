@@ -18,7 +18,7 @@ public class AsteroidSaveData extends WorldSavedData
     @Override
     public void readFromNBT(CompoundNBT nbt)
     {
-        this.datacompound = nbt.getCompoundTag("asteroids");
+        this.datacompound = nbt.getCompound("asteroids");
     }
 
     @Override

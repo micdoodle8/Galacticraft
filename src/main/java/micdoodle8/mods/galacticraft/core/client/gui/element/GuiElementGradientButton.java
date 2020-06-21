@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementGradientButton extends Button
 {
-    public GuiElementGradientButton(int id, int x, int y, int width, int height, String buttonText)
+    public GuiElementGradientButton(int x, int y, int width, int height, String buttonText, Button.IPressable onPress)
     {
-        super(x, y, width, height, buttonText, (button) -> {});
+        super(x, y, width, height, buttonText, onPress);
     }
 
     @Override

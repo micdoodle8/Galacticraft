@@ -3,24 +3,27 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicTier1Rocket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
-public class GuiSchematicTier1Rocket extends GuiPositionedContainer<ContainerSchematicTier1Rocket> implements ISchematicResultPage
+public class GuiSchematicTier1Rocket extends GuiContainerGC<ContainerSchematicTier1Rocket> implements ISchematicResultPage
 {
     private static final ResourceLocation rocketBenchTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/rocketbench.png");
 
     private int pageIndex;
 
-    public GuiSchematicTier1Rocket(PlayerInventory playerInv, BlockPos pos)
+    public GuiSchematicTier1Rocket(ContainerSchematicTier1Rocket container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerSchematicTier1Rocket(playerInv, pos), playerInv, new TranslationTextComponent("schematic.rocket_t1.name"), pos);
+        super(container, playerInv, title);
+//        super(new ContainerSchematicTier1Rocket(playerInv, pos), playerInv, new TranslationTextComponent("schematic.rocket_t1.name"), pos);
         this.ySize = 221;
     }
 

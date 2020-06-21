@@ -9,9 +9,9 @@ import net.minecraft.item.ItemStack;
 
 public class SlotCraftingMemory extends CraftingResultSlot
 {
-    public TileEntityCrafting tileEntity;
+    public IInventory tileEntity;
     
-    public SlotCraftingMemory(PlayerEntity player, CraftingInventory craftingInventory, IInventory p_i45790_3_, int slotIndex, int xPosition, int yPosition, TileEntityCrafting tile)
+    public SlotCraftingMemory(PlayerEntity player, CraftingInventory craftingInventory, IInventory p_i45790_3_, int slotIndex, int xPosition, int yPosition, IInventory tile)
     {
         super(player, craftingInventory, p_i45790_3_, slotIndex, xPosition, yPosition);
         this.tileEntity = tile;
@@ -20,7 +20,7 @@ public class SlotCraftingMemory extends CraftingResultSlot
     @Override
     public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack)
     {
-        if (!stack.isEmpty()) this.tileEntity.updateMemory(stack);
+        if (!stack.isEmpty() && this.tileEntity instanceof TileEntityCrafting) ((TileEntityCrafting) this.tileEntity).updateMemory(stack);
         return super.onTake(thePlayer, stack);
     }
 }

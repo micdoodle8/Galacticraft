@@ -1,48 +1,46 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
-import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
-import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fluidPipe)
+    public static TileEntityType<TileEntityFluidPipe> TYPE;
+
     public FluidTankGC buffer = new FluidTankGC(1000, this);
     private boolean dataRequest = false;
     private AxisAlignedBB renderAABB;
 
     public TileEntityFluidPipe()
     {
-        super("tile.fluid_pipe.name", 100);
+        super(TYPE, 100);
     }
 
     @Override
@@ -57,17 +55,17 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         return false;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState)
-    {
-        // Do not re-create tile entity if only the pipe's color changed!
-        if (oldState != newState)
-        {
-            return oldState.getBlock() != newState.getBlock();
-        }
-
-        return super.shouldRefresh(world, pos, oldState, newState);
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState)
+//    {
+//        // Do not re-create tile entity if only the pipe's color changed!
+//        if (oldState != newState)
+//        {
+//            return oldState.getBlock() != newState.getBlock();
+//        }
+//
+//        return super.shouldRefresh(world, pos, oldState, newState);
+//    }
 
     @Override
     public boolean canConnect(Direction direction, NetworkType type)
@@ -82,7 +80,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
                 BlockState adjacentTileState = adjacentTile.getWorld().getBlockState(adjacentTile.getPos());
                 byte thisCol = this.getColor(state);
                 byte otherCol = ((IColorable) adjacentTile).getColor(adjacentTileState);
-                return thisCol == otherCol || thisCol == DyeColor.WHITE.getDyeDamage() || otherCol == DyeColor.WHITE.getDyeDamage();
+                return thisCol == otherCol || thisCol == DyeColor.WHITE.getId() || otherCol == DyeColor.WHITE.getId();
             }
 
             return true;
@@ -121,7 +119,8 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     {
         if (this.world.isRemote)
         {
-            this.world.notifyLightSet(getPos());
+//            this.world.notifyLightSet(getPos());
+            world.getChunkProvider().getLightManager().checkBlock(getPos());
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[] { GCCoreUtil.getDimensionID(this.world), this.getPos() }));
         }
     }
@@ -133,7 +132,8 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         {
             if (this.world.isRemote)
             {
-                this.world.notifyLightSet(getPos());
+//                this.world.notifyLightSet(getPos());
+                world.getChunkProvider().getLightManager().checkBlock(getPos());
             }
             else
             {
@@ -148,7 +148,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     {
         if (state.getBlock() instanceof BlockFluidPipe)
         {
-            return (byte) state.get(BlockFluidPipe.COLOR).getDyeDamage();
+            return (byte) state.get(BlockFluidPipe.COLOR).getId();
         }
         return 15;
     }
@@ -166,12 +166,12 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT tagCompound)
+    public CompoundNBT write(CompoundNBT tagCompound)
     {
-        super.writeToNBT(tagCompound);
-        if (this.buffer.getFluid() != null)
+        super.write(tagCompound);
+        if (this.buffer.getFluid() != FluidStack.EMPTY)
         {
-            tagCompound.setTag("buff", this.buffer.writeToNBT(new CompoundNBT()));
+            tagCompound.put("buff", this.buffer.writeToNBT(new CompoundNBT()));
         }
         return tagCompound;
     }
@@ -179,30 +179,30 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
-       
-    @Override
-    public void readFromNBT(CompoundNBT tagCompound)
-    {
-        super.readFromNBT(tagCompound);
 
-        if (tagCompound.hasKey("pipeColor"))
+    @Override
+    public void read(CompoundNBT tagCompound)
+    {
+        super.read(tagCompound);
+
+        if (tagCompound.contains("pipeColor"))
         {
             // Backwards compatibility
-            this.world.setBlockState(getPos(), this.world.getBlockState(getPos()).with(BlockFluidPipe.COLOR, DyeColor.byDyeDamage(tagCompound.getByte("pipeColor"))));
+            this.world.setBlockState(getPos(), this.world.getBlockState(getPos()).with(BlockFluidPipe.COLOR, DyeColor.byId(tagCompound.getByte("pipeColor"))));
         }
-        
-        if (tagCompound.hasKey("buff"))
+
+        if (tagCompound.contains("buff"))
         {
-            this.buffer.readFromNBT(tagCompound.getCompoundTag("buff"));
+            this.buffer.readFromNBT(tagCompound.getCompound("buff"));
         }
     }
 
     @Override
     public FluidStack getBuffer()
     {
-        return buffer.getFluid() == null ? null : buffer.getFluid();
+        return buffer.getFluid() == FluidStack.EMPTY ? null : buffer.getFluid();
     }
 
     @Override
@@ -212,31 +212,33 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
 
     @Override
-    public int fill(Direction from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         IGridNetwork network = this.getNetwork();
         if (network instanceof FluidNetwork)
         {
             FluidNetwork fluidNetwork = (FluidNetwork) network;
-            return fluidNetwork.emitToBuffer(resource, doFill);
+            return fluidNetwork.emitToBuffer(resource, action);
         }
         else
         {
-            return this.buffer.fill(resource, doFill);
+            return this.buffer.fill(resource, action);
         }
     }
 
     @Override
-    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, IFluidHandler.FluidAction action)
     {
         return null;
     }
 
     @Override
-    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, IFluidHandler.FluidAction action)
     {
         return null;
     }
+
+
 
     @Override
     public boolean canFill(Direction from, Fluid fluid)
@@ -250,11 +252,11 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         return false;
     }
 
-    @Override
-    public FluidTankInfo[] getTankInfo(Direction from)
-    {
-        return new FluidTankInfo[0];
-    }
+//    @Override
+//    public FluidTankInfo[] getTankInfo(Direction from)
+//    {
+//        return new FluidTankInfo[0];
+//    }
 
     public boolean switchType()
     {
@@ -264,7 +266,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         }
 
         Block block;
-        Block currentType = this.getBlockType();
+        Block currentType = this.getBlockState().getBlock();
 
         if (!(currentType instanceof BlockFluidPipe))
         {
@@ -274,15 +276,15 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         switch (((BlockFluidPipe) currentType).getMode())
         {
         case NORMAL:
-            block = GCBlocks.oxygenPipePull;
+            block = GCBlocks.fluidPipePull;
             break;
         default:
-            block = GCBlocks.oxygenPipe;
+            block = GCBlocks.fluidPipe;
             break;
         }
 
         BlockFluidPipe.ignoreDrop = true;
-        this.world.setBlockState(pos, block.getStateFromMeta(currentType.getMetaFromState(this.world.getBlockState(pos))));
+        this.world.setBlockState(pos, block.getDefaultState());
         BlockFluidPipe.ignoreDrop = false;
         if (this.hasNetwork())
         {
@@ -296,7 +298,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public boolean canTransmit()
     {
-        Block currentType = this.getBlockType();
+        Block currentType = this.getBlockState().getBlock();
 
         if (!(currentType instanceof BlockFluidPipe))
         {
@@ -306,7 +308,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 
         return ((BlockFluidPipe) currentType).getMode() != BlockFluidPipe.EnumPipeMode.PULL;
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
@@ -317,7 +319,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         }
         return this.renderAABB;
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
@@ -325,97 +327,97 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         return 16384;  //128 squared
     }
 
-    @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
-    {
-        String mekGas = stack.getGas().getName(); 
-        if (mekGas == null)
-        {
-            return 0;
-        }
-        FluidStack mekEquivalent = null;
-        if (mekGas.equals("oxygen"))
-        {
-            mekEquivalent = new FluidStack(GCFluidRegistry.fluidOxygenGas, stack.amount);
-        }
-        else if (mekGas.equals("hydrogen"))
-        {
-            mekEquivalent = new FluidStack(GCFluidRegistry.fluidHydrogenGas, stack.amount);
-        }
-        else
-        {
-            return 0;
-        }
-        return this.fill(side, mekEquivalent, doTransfer);
-    }
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
+//    {
+//        String mekGas = stack.getGas().getName();
+//        if (mekGas == null)
+//        {
+//            return 0;
+//        }
+//        FluidStack mekEquivalent = null;
+//        if (mekGas.equals("oxygen"))
+//        {
+//            mekEquivalent = new FluidStack(GCFluidRegistry.fluidOxygenGas, stack.amount);
+//        }
+//        else if (mekGas.equals("hydrogen"))
+//        {
+//            mekEquivalent = new FluidStack(GCFluidRegistry.fluidHydrogenGas, stack.amount);
+//        }
+//        else
+//        {
+//            return 0;
+//        }
+//        return this.fill(side, mekEquivalent, doTransfer);
+//    }
+//
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public int receiveGas(Direction side, GasStack stack)
+//    {
+//        return this.receiveGas(side, stack, true);
+//    }
+//
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
+//    {
+//        return null;
+//    }
+//
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public GasStack drawGas(Direction side, int amount)
+//    {
+//        return null;
+//    }
+//
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public boolean canReceiveGas(Direction side, Gas type)
+//    {
+//        return type.getName().equals("oxygen") || type.getName().equals("hydrogen");
+//    }
+//
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public boolean canDrawGas(Direction side, Gas type)
+//    {
+//        return false;
+//    }
+//
+//    @Override
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
+//    public boolean canTubeConnect(Direction side)
+//    {
+//        return false;
+//    }
+
+//    @Override
+//    public boolean hasCapability(Capability<?> capability, Direction facing)
+//    {
+//        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+//            return true;
+//
+//    	if (EnergyUtil.checkMekGasHandler(capability))
+//    		return true;
+//
+//    	return super.hasCapability(capability, facing);
+//    }
 
     @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(Direction side, GasStack stack)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
     {
-        return this.receiveGas(side, stack, true);
-    }
+//    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+//    	{
+//    		return (T) new FluidHandlerWrapper(this, facing);
+//    	}
 
-    @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
-    {
-        return null;
-    }
-
-    @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(Direction side, int amount)
-    {
-        return null;
-    }
-
-    @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveGas(Direction side, Gas type)
-    {
-        return type.getName().equals("oxygen") || type.getName().equals("hydrogen");
-    }
-
-    @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canDrawGas(Direction side, Gas type)
-    {
-        return false;
-    }
-
-    @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
-    public boolean canTubeConnect(Direction side)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, Direction facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return true;
-
-    	if (EnergyUtil.checkMekGasHandler(capability))
-    		return true;
-
-    	return super.hasCapability(capability, facing);  
-    }
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, Direction facing)
-    {
-    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-    	{
-    		return (T) new FluidHandlerWrapper(this, facing);
-    	}
-
-    	if (EnergyUtil.checkMekGasHandler(capability))
-    	{
-    		return (T) this;
-    	}
+//    	if (EnergyUtil.checkMekGasHandler(capability))
+//    	{
+//    		return (T) this;
+//    	}
 
     	return super.getCapability(capability, facing);
     }

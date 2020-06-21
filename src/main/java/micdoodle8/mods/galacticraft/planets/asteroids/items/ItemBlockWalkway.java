@@ -35,7 +35,7 @@ public class ItemBlockWalkway extends ItemBlockDesc
         }
         else if (itemStack.getItemDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_PIPE.getMeta())
         {
-            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate(GCBlocks.oxygenPipe.getUnlocalizedName() + ".name"));
+            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate(GCBlocks.fluidPipe.getUnlocalizedName() + ".name"));
         }
 
         super.addInformation(itemStack, worldIn, tooltip, flagIn);

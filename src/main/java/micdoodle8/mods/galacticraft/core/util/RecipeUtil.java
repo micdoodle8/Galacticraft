@@ -83,10 +83,10 @@ public class RecipeUtil
         GalacticraftRegistry.addMoonBuggyRecipe(new NasaWorkbenchRecipe(result, input));
     }
 
-    public static ItemStack getIndustrialCraftItem(String indentifier, String variant)
-    {
-        return IC2Items.getItem(indentifier, variant);
-    }
+//    public static ItemStack getIndustrialCraftItem(String indentifier, String variant)
+//    {
+//        return IC2Items.getItem(indentifier, variant);
+//    }
     
     /**
      * An extended version of areItemStackTagsEqual which ignores LevelUp's "NoPlacing" tag on mined blocks
@@ -107,7 +107,7 @@ public class RecipeUtil
         }
         if (query != null)
         {
-            if (query.getKeySet().size() == 1 && query.hasKey("NoPlacing"))
+            if (query.size() == 1 && query.contains("NoPlacing"))
                 return true;
         }
 

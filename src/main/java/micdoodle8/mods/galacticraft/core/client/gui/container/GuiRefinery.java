@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerPainter;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -14,7 +15,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
@@ -33,10 +36,11 @@ public class GuiRefinery extends GuiContainerGC
     private GuiElementInfoRegion oilTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiRefinery(PlayerInventory playerInv, TileEntityRefinery refinery)
+    public GuiRefinery(ContainerRefinery container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerRefinery(playerInv, refinery, Minecraft.getInstance().player), playerInv, new StringTextComponent(refinery.getName()));
-        this.refinery = refinery;
+        super(container, playerInv, title);
+//        super(new ContainerRefinery(playerInv, refinery, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.refinery.name"));
+        this.refinery = container.getRefinery();
         this.ySize = 168;
     }
 
@@ -93,12 +97,12 @@ public class GuiRefinery extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        GCCoreUtil.drawStringCentered(this.refinery.getName(), this.xSize / 2, 5, 4210752, this.font);
+        GCCoreUtil.drawStringCentered(this.title.getFormattedText(), this.xSize / 2, 5, 4210752, this.font);
         String displayText = "";
         int yOffset = -18;
 
         String missingInput = null;
-        if (this.refinery.oilTank.getFluid() == null || this.refinery.oilTank.getFluidAmount() == 0)
+        if (this.refinery.oilTank.getFluid() == FluidStack.EMPTY || this.refinery.oilTank.getFluidAmount() == 0)
         {
             missingInput= EnumColor.RED + GCCoreUtil.translate("gui.status.nooil.name");
         }

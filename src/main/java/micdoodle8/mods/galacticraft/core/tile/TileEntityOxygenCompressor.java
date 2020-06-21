@@ -1,31 +1,38 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
 public class TileEntityOxygenCompressor extends TileEntityOxygen
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenCompressor)
+    public static TileEntityType<TileEntityOxygenCompressor> TYPE;
+
     public static final int TANK_TRANSFER_SPEED = 2;
     private boolean usingEnergy = false;
 
     public TileEntityOxygenCompressor()
     {
-        super("container.oxygencompressor.name", 1200, 16);
+        super(TYPE, 1200, 16);
         this.storage.setMaxExtract(15);
         inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.world.isRemote)
         {
@@ -42,7 +49,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
             }
         }
 
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -53,9 +60,9 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
 
                 if (!tank0.isEmpty())
                 {
-                    if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
+                    if (tank0.getItem() instanceof ItemOxygenTank && tank0.getDamage() > 0)
                     {
-                        tank0.setItemDamage(tank0.getItemDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
+                        tank0.setDamage(tank0.getDamage() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
                         this.setOxygenStored(this.getOxygenStored() - TileEntityOxygenCompressor.TANK_TRANSFER_SPEED);
                         this.usingEnergy = true;
                     }
@@ -86,11 +93,11 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
             switch (slotID)
             {
             case 0:
-                return itemstack.getItemDamage() > 1;
+                return itemstack.getDamage() > 1;
             case 1:
                 return ItemElectricBase.isElectricItemCharged(itemstack);
             case 2:
-                return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
+                return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
             default:
                 return false;
             }
@@ -104,7 +111,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
         switch (slotID)
         {
         case 0:
-            return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getItemDamage() == 0;
+            return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getDamage() == 0;
         case 1:
             return ItemElectricBase.isElectricItemEmpty(itemstack);
         case 2:

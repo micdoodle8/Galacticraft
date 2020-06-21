@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.model.block;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.model.Model;
 
-public class ModelSolarPanel extends ModelBase
+public class ModelSolarPanel extends Model
 {
     RendererModel panelMain;
     RendererModel sideHorizontal0;
@@ -103,11 +102,5 @@ public class ModelSolarPanel extends ModelBase
     public void renderPole()
     {
         this.pole.render(0.0625F);
-    }
-
-    @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e)
-    {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
     }
 }

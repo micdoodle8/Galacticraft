@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
@@ -24,10 +24,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityCryogenicChamber extends TileEntityMulti implements IMultiBlock
+public class TileEntityCryogenicChamber extends TileEntityFake implements IMultiBlock
 {
     public boolean isOccupied;
     private boolean initialised;
@@ -117,7 +116,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 //    }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
@@ -181,23 +180,23 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.isOccupied = nbt.getBoolean("IsChamberOccupied");
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
-        nbt.setBoolean("IsChamberOccupied", this.isOccupied);
+        super.write(nbt);
+        nbt.putBoolean("IsChamberOccupied", this.isOccupied);
         return nbt;
     }
 
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 }

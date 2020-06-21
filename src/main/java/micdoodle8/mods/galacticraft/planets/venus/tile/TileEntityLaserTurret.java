@@ -18,7 +18,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -47,7 +47,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -64,23 +64,23 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     private boolean initialisedMulti = false;
     private AxisAlignedBB renderAABB;
 
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean active = false;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int targettedEntity = -1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int chargeLevel = 0;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean blacklistMode = false;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean targetMeteors = true;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean alwaysIgnoreSpaceRace = true;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int priorityClosest = 1;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int priorityLowestHealth = 2;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int priorityHighestHealth = 3;
 
 
@@ -334,9 +334,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.initialisedMulti)
         {
@@ -501,9 +501,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
 
         ListNBT playersTag = nbt.getList("PlayerList", 10);
@@ -535,9 +535,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
         ListNBT playersTag = new ListNBT();
@@ -545,7 +545,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         {
             CompoundNBT tagComp = new CompoundNBT();
             tagComp.setString("PlayerName", player);
-            playersTag.appendTag(tagComp);
+            playersTag.add(tagComp);
         }
 
         nbt.put("PlayerList", playersTag);
@@ -555,24 +555,24 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         {
             CompoundNBT tagComp = new CompoundNBT();
             tagComp.setString("EntityRes", entity.toString());
-            entitiesTag.appendTag(tagComp);
+            entitiesTag.add(tagComp);
         }
 
         nbt.put("EntitiesList", entitiesTag);
 
-        nbt.setBoolean("active", this.active);
+        nbt.putBoolean("active", this.active);
         nbt.putInt("targettedEntity", this.targettedEntity);
         nbt.putInt("chargeLevel", this.chargeLevel);
-        nbt.setBoolean("blacklistMode", this.blacklistMode);
-        nbt.setBoolean("targetMeteors", this.targetMeteors);
-        nbt.setBoolean("alwaysIgnoreSpaceRace", this.alwaysIgnoreSpaceRace);
+        nbt.putBoolean("blacklistMode", this.blacklistMode);
+        nbt.putBoolean("targetMeteors", this.targetMeteors);
+        nbt.putBoolean("alwaysIgnoreSpaceRace", this.alwaysIgnoreSpaceRace);
         nbt.putInt("priorityClosest", this.priorityClosest);
         nbt.putInt("priorityLowestHealth", this.priorityLowestHealth);
         nbt.putInt("priorityHighestHealth", this.priorityHighestHealth);
 
         if (this.ownerName != null)
         {
-            nbt.setString("ownerName", this.ownerName);
+            nbt.putString("ownerName", this.ownerName);
         }
         nbt.setUniqueId("ownerUUID", this.ownerUUID);
 
@@ -621,11 +621,11 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         return new int[] { 0 };
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean shouldUseEnergy()
@@ -761,9 +761,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         for (BlockPos vecToAdd : positions)
         {
             TileEntity tile = world.getTileEntity(vecToAdd);
-            if (tile instanceof TileEntityMulti)
+            if (tile instanceof TileEntityFake)
             {
-                ((TileEntityMulti) tile).mainBlockPosition = pos;
+                ((TileEntityFake) tile).mainBlockPosition = pos;
             }
             else
             {
@@ -816,7 +816,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachineTiered.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 

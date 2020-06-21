@@ -16,14 +16,14 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.LinkedList;
 
 public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements ILaserNode
 {
     public LinkedList<ILaserNode> nodeList = new LinkedList<ILaserNode>();
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public BlockPos targetVec = new BlockPos(-1, -1, -1);
     public float pitch;
     public float yaw;
@@ -36,7 +36,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (this.preLoadTarget != null)
         {
@@ -49,7 +49,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
             }
         }
 
-        super.update();
+        super.tick();
 
         if (!this.targetVec.equals(this.lastTargetVec))
         {
@@ -70,9 +70,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
+        super.remove();
         this.invalidateReflector();
     }
 
@@ -94,7 +94,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public void onChunkUnload()
+    public void onChunkUnloaded()
     {
         this.invalidateReflector();
     }
@@ -347,9 +347,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
 
         if (nbt.getBoolean("HasTarget"))
         {
@@ -358,11 +358,11 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
-        nbt.setBoolean("HasTarget", this.getTarget() != null);
+        nbt.putBoolean("HasTarget", this.getTarget() != null);
 
         if (this.getTarget() != null)
         {
@@ -377,6 +377,6 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     @Override
     public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new CompoundNBT());
+        return this.write(new CompoundNBT());
     }
 }

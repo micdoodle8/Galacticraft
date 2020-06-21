@@ -59,12 +59,12 @@ public class PacketSimpleVenus extends PacketBase
         super();
     }
 
-    public PacketSimpleVenus(EnumSimplePacketVenus packetType, int dimID, Object[] data)
+    public PacketSimpleVenus(EnumSimplePacketVenus packetType, DimensionType dimID, Object[] data)
     {
         this(packetType, dimID, Arrays.asList(data));
     }
 
-    public PacketSimpleVenus(EnumSimplePacketVenus packetType, int dimID, List<Object> data)
+    public PacketSimpleVenus(EnumSimplePacketVenus packetType, DimensionType dimID, List<Object> data)
     {
         super(dimID);
 

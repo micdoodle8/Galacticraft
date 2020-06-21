@@ -103,9 +103,9 @@ public class RoomTreasureMars extends RoomTreasure
                             if (treasureChest != null)
                             {
                                 ResourceLocation chesttype = TABLE_TIER_2_DUNGEON;
-                                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                                if (worldIn.dimension instanceof IGalacticraftWorldProvider)
                                 {
-                                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                                    chesttype = ((IGalacticraftWorldProvider)worldIn.dimension).getDungeonChestType();
                                 }
                                 treasureChest.setLootTable(chesttype, random.nextLong());
                             }

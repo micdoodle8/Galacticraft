@@ -2,18 +2,24 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -46,7 +52,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItem() == GCItems.fuelCanister && var4.getItemDamage() < var4.getMaxDamage();
+            return var4.getItem() == GCItems.fuelCanister && var4.getDamage() < var4.getMaxDamage();
         }
 
         if (var4.getItem() == GCItems.bucketFuel)
@@ -54,8 +60,8 @@ public class FluidUtil
         	return true;
         }
 
-        FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return liquid != null && FluidUtil.testFuel(FluidRegistry.getFluidName(liquid));
+        LazyOptional<FluidStack> liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        return liquid.isPresent() && FluidUtil.testFuel(FluidRegistry.getFluidName());
     }
 
     /**
@@ -65,73 +71,75 @@ public class FluidUtil
      * @param name - which MUST be in lowercase, as always returned by FluidRegistry.getFluidName
      * @return true if a type of recognised fuel, false if not
      */
-    public static boolean testFuel(String name)
+    public static boolean testFuel(ResourceLocation name)
     {
         if (name == null) return false;
         
-        if (name.equals("fuel") || name.equals("fuelgc")|| name.equals("fuel_light"))
-        {
-            return true;
-        }
+//        if (name.equals("fuel") || name.equals("fuelgc")|| name.equals("fuel_light"))
+//        {
+//            return true;
+//        }
+//
+//        if (name.contains("rocket") && name.contains("fuel"))    //from EnderIO
+//        {
+//            return true;
+//        }
+//
+//        if (name.equals("rc jet fuel"))    //from RotaryCraft
+//        {
+//            return true;
+//        }
+//
+//        if (name.startsWith("fuel"))
+//        {
+//            return !name.contains("dense") && !name.contains("heavy") && !name.contains("mixed") && !name.contains("gaseous");
+//        }
 
-        if (name.contains("rocket") && name.contains("fuel"))    //from EnderIO
-        {
-            return true;
-        }
-
-        if (name.equals("rc jet fuel"))    //from RotaryCraft
-        {
-            return true;
-        }
-
-        if (name.startsWith("fuel"))
-        {
-            return !name.contains("dense") && !name.contains("heavy") && !name.contains("mixed") && !name.contains("gaseous");
-        }
-
-        return name.equals("refined_fuel");    //from Thermal Expansion
+        return name.getPath().contains("fuel");
+//        return name.equals("refined_fuel");    //from Thermal Expansion
     }
     
-    public static boolean testOil(String name)
+    public static boolean testOil(ResourceLocation name)
     {
         if (name == null) return false;
 
-        if (name.equals("oil") || name.equals("oilgc"))
-        {
-            return true;
-        }
+//        if (name.equals("oil") || name.equals("oilgc"))
+//        {
+//            return true;
+//        }
+//
+//        if (name.equals("crude_oil"))
+//        {
+//            return true;
+//        }
+//
+//        if (name.startsWith("oil"))
+//        {
+//            return !name.contains("dense") && !name.contains("residue");
+//        }
+        return name.getPath().contains("oil");
 
-        if (name.equals("crude_oil"))
-        {
-            return true;
-        }
-
-        if (name.startsWith("oil"))
-        {
-            return !name.contains("dense") && !name.contains("residue");
-        }
-
-        return false;
+//        return false;
     }
     
     public static boolean isFuel(FluidStack fluid)
     {
-        return fluid != null && testFuel(FluidRegistry.getFluidName(fluid));
+        return fluid != null && testFuel(fluid.getFluid().getRegistryName());
     }
 
     public static boolean isOil(FluidStack fluid)
     {
-        return fluid != null && testOil(FluidRegistry.getFluidName(fluid));
+        return fluid != null && testOil(fluid.getFluid().getRegistryName());
     }
 
     public static boolean isFluidFuzzy(FluidStack fluid, String name)
     {
-        return fluid != null && fluid.getFluid() != null && fluid.getFluid().getName().startsWith(name);
+        return fluid != null && fluid != FluidStack.EMPTY && fluid.getFluid().getRegistryName().getPath().startsWith(name);
     }
 
     public static boolean isFluidStrict(FluidStack fluid, String name)
     {
-        return fluid != null && fluid.getFluid() != null && fluid.getFluid().getName().equals(name);
+        return fluid != null && fluid != FluidStack.EMPTY && fluid.getFluid().getRegistryName().getPath().equals(name);
     }
 
     /**
@@ -141,25 +149,25 @@ public class FluidUtil
      *
      * @param tank   The tank
      * @param liquid A FluidStack being the fuel offered
-     * @param doFill True if this is not a simulation / tank capacity test
+     * @param action True if this is not a simulation / tank capacity test
      * @return The amount filled
      */
-    public static int fillWithGCFuel(FluidTank tank, FluidStack liquid, boolean doFill)
+    public static int fillWithGCFuel(FluidTank tank, FluidStack liquid, IFluidHandler.FluidAction action)
     {
-        if (liquid != null && testFuel(FluidRegistry.getFluidName(liquid)))
+        if (liquid != FluidStack.EMPTY && testFuel(liquid.getFluid().getRegistryName()))
         {
             final FluidStack liquidInTank = tank.getFluid();
 
             //If the tank is empty, fill it with the current type of GC fuel
-            if (liquidInTank == null)
+            if (liquidInTank == FluidStack.EMPTY)
             {
-                return tank.fill(new FluidStack(GCFluidRegistry.fluidFuel, liquid.amount), doFill);
+                return tank.fill(new FluidStack(GCFluids.FUEL.getFluid(), liquid.getAmount()), action);
             }
 
             //If the tank already contains something, fill it with more of the same
-            if (liquidInTank.amount < tank.getCapacity())
+            if (liquidInTank.getAmount() < tank.getCapacity())
             {
-                return tank.fill(new FluidStack(liquidInTank, liquid.amount), doFill);
+                return tank.fill(new FluidStack(liquidInTank, liquid.getAmount()), action);
             }
         }
 
@@ -177,7 +185,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItem() == GCItems.oilCanister && var4.getItemDamage() < var4.getMaxDamage();
+            return var4.getItem() == GCItems.oilCanister && var4.getDamage() < var4.getMaxDamage();
         }
         
         if (var4.getItem() == GCItems.bucketOil)
@@ -185,8 +193,8 @@ public class FluidUtil
         	return true;
         }
 
-        FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return isOil(liquid);
+        LazyOptional<FluidStack> liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        return liquid.isPresent() && isOil(liquid.orElse(null));
     }
 
     /**
@@ -199,11 +207,16 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItem() == AsteroidsItems.methaneCanister && var4.getItemDamage() < var4.getMaxDamage();
+            return var4.getItem() == AsteroidsItems.methaneCanister && var4.getDamage() < var4.getMaxDamage();
         }
 
-        FluidStack stack = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return stack != null && stack.getFluid() != null && stack.getFluid().getName().toLowerCase().contains("methane");
+        LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        if (holder.isPresent())
+        {
+            FluidStack stack = holder.orElse(null);
+            return stack != FluidStack.EMPTY && stack.getFluid().getRegistryName().getPath().toLowerCase().contains("methane");
+        }
+        return false;
     }
 
     /**
@@ -217,7 +230,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItemDamage() == 1;
+            return var4.getDamage() == 1;
         }
         
         if (var4.getItem() instanceof ItemBucketGC)
@@ -225,8 +238,8 @@ public class FluidUtil
         	return true;
         }
 
-        FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return liquid != null;
+        LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        return holder.isPresent();
     }
 
     /**
@@ -243,22 +256,22 @@ public class FluidUtil
     public static void tryFillContainer(FluidTank tank, FluidStack liquid, NonNullList<ItemStack> inventory, int slot, Item canisterType)
     {
         ItemStack slotItem = inventory.get(slot);
-        if (liquid.amount <= 0 || slotItem.isEmpty())
+        if (liquid.getAmount() <= 0 || slotItem.isEmpty())
         {
             return;
         }
 
         if (slotItem.getItem() instanceof ItemCanisterGeneric)
         {
-        	if (slotItem.getCount() != 1 || slotItem.getItem() != canisterType && slotItem.getItemDamage() != ItemCanisterGeneric.EMPTY)
+        	if (slotItem.getCount() != 1 || slotItem.getItem() != canisterType && slotItem.getDamage() != ItemCanisterGeneric.EMPTY)
         	{
         		return;
         	}
 
-        	final int used = Math.min(liquid.amount, slotItem.getItemDamage() - 1);
+        	final int used = Math.min(liquid.getAmount(), slotItem.getDamage() - 1);
         	if (used > 0)
         	{
-        		inventory.set(slot, new ItemStack(canisterType, 1, slotItem.getItemDamage() - used));
+        		inventory.set(slot, new ItemStack(canisterType, 1, slotItem.getDamage() - used));
         		tank.drain(used, true);
         	}
         	return;
@@ -266,10 +279,10 @@ public class FluidUtil
         else if (slotItem.getCount() == 1)
         {
         	ItemBucketGC bucketGC;
-        	if (slotItem.getItem() == Items.BUCKET && liquid.amount >= Fluid.BUCKET_VOLUME && (bucketGC = ItemBucketGC.getBucketForFluid(liquid.getFluid())) != null)
+        	if (slotItem.getItem() == Items.BUCKET && liquid.getAmount() >= 1000 && (bucketGC = ItemBucketGC.getBucketForFluid(liquid.getFluid())) != null)
         	{
         		inventory.set(slot, new ItemStack(bucketGC));
-        		tank.drain(Fluid.BUCKET_VOLUME, true);
+        		tank.drain(1000, true);
         		return;
         	}
 
@@ -297,7 +310,7 @@ public class FluidUtil
         {
             FluidStack liquid = tank.getFluid();
 
-            if (liquid != null && liquid.amount > 0)
+            if (liquid != null && liquid.getAmount() > 0)
             {
                 String liquidname = liquid.getFluid().getName();
 
@@ -305,9 +318,9 @@ public class FluidUtil
                 if (liquidname.startsWith("fuel"))
                 {
                     //Make sure it is the current GC fuel
-                    if (!liquidname.equals(GCFluidRegistry.fluidFuel.getName()))
+                    if (!liquidname.equals(GCFluids.FUEL.getFluid().getName()))
                     {
-                        liquid = new FluidStack(GCFluidRegistry.fluidFuel, liquid.amount);
+                        liquid = new FluidStack(GCFluids.FUEL.getFluid(), liquid.getAmount());
                     }
 
                     //But match any existing fuel fluid in the container
@@ -319,9 +332,9 @@ public class FluidUtil
                     	if (handler != null)
                     	{
                     		FluidStack existingFluid = net.minecraftforge.fluids.FluidUtil.getFluidContained(stack);
-                    		if (existingFluid != null && !existingFluid.getFluid().getName().equals(GCFluidRegistry.fluidFuel.getName()))
+                    		if (existingFluid != null && !existingFluid.getFluid().getName().equals(GCFluids.FUEL.getFluid().getName()))
                     		{
-                    			liquid = new FluidStack(existingFluid, liquid.amount);
+                    			liquid = new FluidStack(existingFluid, liquid.getAmount());
                     		}
                     	}
                     }
@@ -351,18 +364,22 @@ public class FluidUtil
 
         if (slotItem.getItem() instanceof ItemCanisterGeneric)
         {
-            int originalDamage = slotItem.getItemDamage();
+            int originalDamage = slotItem.getDamage();
             int used = tank.fill(new FluidStack(desiredLiquid, ItemCanisterGeneric.EMPTY - originalDamage), true);
             if (originalDamage + used >= ItemCanisterGeneric.EMPTY)
             {
-            	stacks.set(slot, new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY));
+                ItemStack item = new ItemStack(GCItems.oilCanister, 1);
+                item.setDamage(ItemCanisterGeneric.EMPTY);
+            	stacks.set(slot, item);
             }
             else
             {
-            	stacks.set(slot, new ItemStack(slotItem.getItem(), 1, originalDamage + used));
+                ItemStack item = new ItemStack(slotItem.getItem(), 1);
+                item.setDamage(originalDamage + used);
+            	stacks.set(slot, item);
             }
         }
-        else if (slotItem.getItem() instanceof ItemBucketGC && amountOffered == Fluid.BUCKET_VOLUME)
+        else if (slotItem.getItem() instanceof ItemBucketGC && amountOffered == 1000)
         {
         	ItemBucketGC bucket = (ItemBucketGC) slotItem.getItem();
         	if (fluidsSame(bucket.accepts, desiredLiquid, true))
@@ -373,7 +390,7 @@ public class FluidUtil
         }
         else
         {
-        	if (tank.getFluid() == null || amountOffered <= tank.getCapacity() - tank.getFluid().amount)
+        	if (tank.getFluid() == FluidStack.EMPTY || amountOffered <= tank.getCapacity() - tank.getFluid().getAmount())
             {
         		//Now deal with the resulting container
                 if (FluidUtil.isFilledContainer(slotItem))
@@ -384,21 +401,21 @@ public class FluidUtil
                 		int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), true);
                         if (itemCount > 1)
                         {
-                            tank.fill(new FluidStack(desiredLiquid, (itemCount - 1) * Fluid.BUCKET_VOLUME), true);
+                            tank.fill(new FluidStack(desiredLiquid, (itemCount - 1) * 1000), true);
                         }
                         stacks.set(slot, new ItemStack(Items.BUCKET, itemCount));
-                        return;
                     }
                     else if (itemCount == 1)
                     {
-                        IFluidHandlerItem handlerItem = net.minecraftforge.fluids.FluidUtil.getFluidHandler(slotItem);
-                        if (handlerItem != null)
+                        LazyOptional<IFluidHandlerItem> holder = net.minecraftforge.fluids.FluidUtil.getFluidHandler(slotItem);
+                        if (holder.isPresent())
                         {
-                            int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), false);
-                            FluidStack given = handlerItem.drain(used, true); 
-                            if (given != null)
+                            IFluidHandlerItem handlerItem = holder.orElse(null);
+                            int used = tank.fill(new FluidStack(desiredLiquid, amountOffered), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack given = handlerItem.drain(used, IFluidHandler.FluidAction.EXECUTE);
+                            if (given != FluidStack.EMPTY)
                             {
-                                tank.fill(new FluidStack(desiredLiquid, given.amount), true);
+                                tank.fill(new FluidStack(desiredLiquid, given.getAmount()), IFluidHandler.FluidAction.EXECUTE);
                                 stacks.set(slot, handlerItem.getContainer());
                             }
                             return;
@@ -407,7 +424,6 @@ public class FluidUtil
                         ItemStack emptyStack = FluidUtil.getUsedContainer(slotItem);
                         tank.fill(new FluidStack(desiredLiquid, FluidUtil.getContainerCapacity(slotItem)), true);
                         stacks.set(slot, emptyStack);
-                        return;
                     }
                 }
             }
@@ -428,7 +444,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItemDamage() == ItemCanisterGeneric.EMPTY || (var4.getItem() == canisterType && var4.getItemDamage() > 1);
+            return var4.getDamage() == ItemCanisterGeneric.EMPTY || (var4.getItem() == canisterType && var4.getDamage() > 1);
         }
 
         IFluidHandlerItem handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(var4);
@@ -443,8 +459,8 @@ public class FluidUtil
 
             // Check that there is at least some space in container
             containedFluid = containedFluid.copy();
-            containedFluid.amount = 1;
-            if (handler.fill(containedFluid, false) > 0)
+            containedFluid.setAmount(1);
+            if (handler.fill(containedFluid, IFluidHandler.FluidAction.EXECUTE) > 0)
             {
                 return true;
             }
@@ -465,11 +481,11 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            if (var4.getItemDamage() == ItemCanisterGeneric.EMPTY)
+            if (var4.getDamage() == ItemCanisterGeneric.EMPTY)
             {
                 return true;
             }
-            if (var4.getItemDamage() == 1)
+            if (var4.getDamage() == 1)
             {
                 return false;
             }
@@ -482,7 +498,12 @@ public class FluidUtil
             return true;
         }
 
-        return fluidsSame(net.minecraftforge.fluids.FluidUtil.getFluidContained(var4), targetFluid);
+        LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        if (holder.isPresent())
+        {
+            return fluidsSame(holder.orElse(null), targetFluid);
+        }
+        return false;
     }
 
     /**
@@ -496,7 +517,7 @@ public class FluidUtil
     {
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
-            return container.getItemDamage() - 1;
+            return container.getDamage() - 1;
         }
         if (!container.isEmpty())
         {
@@ -506,7 +527,7 @@ public class FluidUtil
             if (fluidHandler != null)
             {
                 FluidStack drain = fluidHandler.drain(Integer.MAX_VALUE, false);
-                return drain == null ? 0 : drain.amount;
+                return drain == null ? 0 : drain.getAmount();
             }
         }
         return 0;
@@ -520,60 +541,61 @@ public class FluidUtil
      */
     public static boolean fluidsSame(FluidStack fs1, FluidStack fs2)
     {
-        if (fs1 == null || fs2 == null)
-        {
-            return false;
-        }
-        Fluid f1 = fs1.getFluid();
-        Fluid f2 = fs2.getFluid();
-        if (f1 == null || f2 == null || f1.getName() == null)
-        {
-            return false;
-        }
-        return f1.getName().equals(f2.getName());
+        return fs1 == fs2; // TODO New way to do this? With registry resource locations
+//        if (fs1 == null || fs2 == null)
+//        {
+//            return false;
+//        }
+//        Fluid f1 = fs1.getFluid();
+//        Fluid f2 = fs2.getFluid();
+//        if (f1 == null || f2 == null || f1.getName() == null)
+//        {
+//            return false;
+//        }
+//        return f1.getName().equals(f2.getName());
     }
 
     public static boolean fluidsSame(Fluid f1, Fluid f2, boolean fuzzy)
     {
-        if (f1 == null || f2 == null || f1.getName() == null)
+        if (f1 == null || f2 == null)
         {
             return false;
         }
         if (fuzzy)
         {
-        	if (f1.getName().startsWith("fuel"))
+        	if (f1.getRegistryName().getPath().startsWith("fuel"))
         	{
-        		return testFuel(f2.getName());
+        		return testFuel(f2.getRegistryName());
         	}
-        	if (f1.getName().startsWith("oil"))
+        	if (f1.getRegistryName().getPath().startsWith("oil"))
         	{
-        		return f2.getName().startsWith("oil");
+        		return f2.getRegistryName().getPath().startsWith("oil");
         	}
-        	if (f1.getName().startsWith("water"))
+        	if (f1.getRegistryName().getPath().startsWith("water"))
         	{
-        		return f2.getName().startsWith("water");
+        		return f2.getRegistryName().getPath().startsWith("water");
         	}
         }
-        return f1.getName().equals(f2.getName());
+        return f1.getRegistryName().getPath().equals(f2.getRegistryName().getPath());
     }
 
-    public static boolean fluidsSame(Fluid f1, String name2, boolean fuzzy)
-    {
-        if (f1 == null || name2 == null || f1.getName() == null)
-        {
-            return false;
-        }
-        if (fuzzy)
-        {
-        	if (name2.equals("fuel"))
-        	{
-        		return testFuel(f1.getName());
-        	}
-
-        	return f1.getName().startsWith(name2);
-        }
-        return f1.getName().equals(name2);
-    }
+//    public static boolean fluidsSame(Fluid f1, String name2, boolean fuzzy)
+//    {
+//        if (f1 == null || name2 == null || f1.getName() == null)
+//        {
+//            return false;
+//        }
+//        if (fuzzy)
+//        {
+//        	if (name2.equals("fuel"))
+//        	{
+//        		return testFuel(f1.getName());
+//        	}
+//
+//        	return f1.getName().startsWith(name2);
+//        }
+//        return f1.getName().equals(name2);
+//    }
 
     /**
      * Test for any completely empty container of either type
@@ -586,7 +608,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItemDamage() == ItemCanisterGeneric.EMPTY;
+            return var4.getDamage() == ItemCanisterGeneric.EMPTY;
         }
         
         if (var4.getItem() == Items.BUCKET)
@@ -594,9 +616,9 @@ public class FluidUtil
         	return true;
         }
 
-        IFluidHandlerItem handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(var4);
-        FluidStack containedFluid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return handler != null && (containedFluid == null || containedFluid.amount == 0);
+        LazyOptional<IFluidHandlerItem> handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(var4);
+        LazyOptional<FluidStack> containedFluid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        return handler.isPresent() && (!containedFluid.isPresent() || containedFluid.orElse(null).getAmount() == 0);
     }
 
     /**
@@ -626,7 +648,7 @@ public class FluidUtil
         }
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getItemDamage() < ItemCanisterGeneric.EMPTY;
+            return var4.getDamage() < ItemCanisterGeneric.EMPTY;
         }
         return net.minecraftforge.fluids.FluidUtil.getFluidContained(var4) != null;
     }
@@ -640,8 +662,13 @@ public class FluidUtil
      */
     public static boolean isWaterContainer(ItemStack var4)
     {
-        FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return liquid != null && liquid.getFluid() != null && liquid.getFluid().getName().equals("water");
+        LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
+        if (holder.isPresent())
+        {
+            FluidStack liquid = holder.orElse(null);
+            return liquid != FluidStack.EMPTY && liquid.getFluid().getRegistryName().getPath().equals("water");
+        }
+        return false;
     }
 
 
@@ -660,10 +687,10 @@ public class FluidUtil
         
         if (container.getItem() instanceof ItemBucketGC)
         {
-        	return new FluidStack(((ItemBucketGC)container.getItem()).accepts, Fluid.BUCKET_VOLUME);
+        	return new FluidStack(((ItemBucketGC)container.getItem()).accepts, 1000);
         }
 
-        return net.minecraftforge.fluids.FluidUtil.getFluidContained(container);
+        return net.minecraftforge.fluids.FluidUtil.getFluidContained(container).orElse(FluidStack.EMPTY);
 	}
 	
     /**
@@ -687,14 +714,15 @@ public class FluidUtil
      */
     public static ItemStack getUsedContainer(ItemStack container)
     {
-        IFluidHandlerItem handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        LazyOptional<IFluidHandlerItem> holder = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        IFluidHandlerItem handler = holder.orElse(null);
         if (FluidUtil.isBucket(container) && handler != null)
         {
             return new ItemStack(Items.BUCKET, container.getCount());
         }
         else if (handler != null) 
         {
-            handler.drain(Integer.MAX_VALUE, true);
+            handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
             return handler.getContainer();
         }
         else
@@ -720,7 +748,7 @@ public class FluidUtil
         BlockPos pos = new BlockPos(i, j, k);
         Block block = entity.world.getBlockState(pos).getBlock();
 
-        if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid() != null && ((IFluidBlock) block).getFluid().getName().equals(fluid.getName()))
+        if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid().getRegistryName().equals(fluid.getRegistryName()))
         {
             double filled = ((IFluidBlock) block).getFilledPercentage(entity.world, pos);
             if (filled < 0)
@@ -746,7 +774,8 @@ public class FluidUtil
             return false;
         }
 
-        IFluidHandlerItem handlerItem = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        LazyOptional<IFluidHandlerItem> holder = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        IFluidHandlerItem handlerItem = holder.orElse(null);
         if (handlerItem != null)
         {
             if (container.getItem() == Items.BUCKET)
@@ -785,9 +814,9 @@ public class FluidUtil
         	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler, player.abilities.isCreativeMode)) != ItemStack.EMPTY || (result = FluidUtil.tryFillCanister(container, fluidHandler, player.abilities.isCreativeMode)) != ItemStack.EMPTY)
         	{
         		// send inventory updates to client
-        		if (player.inventoryContainer != null)
+        		if (player.container != null)
         		{
-        			player.inventoryContainer.detectAndSendChanges();
+        			player.container.detectAndSendChanges();
         		}
                 return new FluidActionResult(result);
         	}
@@ -822,29 +851,29 @@ public class FluidUtil
         //-----------(but without the InvWrapper bug which could put fluids in armor slots!)-------
         IItemHandler playerInventory = new PlayerMainInvWrapper(player.inventory);
 
-        FluidActionResult fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
+        FluidActionResult fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player, true);
         if (fillResult.isSuccess())
         {
             return fillResult;
         }
         else
         {
-            return net.minecraftforge.fluids.FluidUtil.tryEmptyContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
+            return net.minecraftforge.fluids.FluidUtil.tryEmptyContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player, true);
         }
      }
 
     private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
-    	int currCapacity = canister.getItemDamage() - 1; 
+    	int currCapacity = canister.getDamage() - 1;
         if (currCapacity <= 0)
         {
             return ItemStack.EMPTY;
         }
-        FluidStack liquid = tank.drain(currCapacity, false);
-        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, !isCreativeMode);
+        FluidStack liquid = tank.drain(currCapacity, IFluidHandler.FluidAction.SIMULATE);
+        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, isCreativeMode ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE);
         if (transferred > 0)
         {
-            liquid = tank.drain(transferred, true);
+            liquid = tank.drain(transferred, IFluidHandler.FluidAction.EXECUTE);
             return canister;
         }
         return ItemStack.EMPTY;
@@ -852,16 +881,16 @@ public class FluidUtil
 
     private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
-    	int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
+    	int currContents = ItemCanisterGeneric.EMPTY - canister.getDamage();
         if (currContents <= 0)
         {
         	return ItemStack.EMPTY;
         }
-        FluidStack liquid = ((ItemCanisterGeneric)canister.getItem()).drain(canister, currContents, false); 
-        int transferred = tank.fill(liquid, true);
+        FluidStack liquid = ((ItemCanisterGeneric)canister.getItem()).drain(canister, currContents, IFluidHandler.FluidAction.SIMULATE);
+        int transferred = tank.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
         if (transferred > 0)
         {
-            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, !isCreativeMode);
+            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, isCreativeMode ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE);
             return canister;
         }
         return ItemStack.EMPTY;

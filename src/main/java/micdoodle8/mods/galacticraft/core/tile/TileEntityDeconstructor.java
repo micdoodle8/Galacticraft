@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -18,32 +14,32 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TileEntityDeconstructor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.deconstructor)
+    public static TileEntityType<TileEntityDeconstructor> TYPE;
+
     public static final float SALVAGE_CHANCE = 0.75F;
     public static final int PROCESS_TIME_REQUIRED_BASE = 250;
     public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
     private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
@@ -59,28 +55,29 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     
     private static void initialiseItemList()
     {
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            addSalvage(new ItemStack(AsteroidsItems.basicItem, 1, 5));  //T3 plate
-            addSalvage(new ItemStack(AsteroidsItems.basicItem, 1, 6));  //Compressed titanium
-            addSalvage(new ItemStack(AsteroidsItems.basicItem, 1, 0));  //Titanium ingot
-            addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 3));  //T2 plate
-            addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 5));  //Compressed desh
-            addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 2));  //Desh ingot
-        }
+//        if (GalacticraftCore.isPlanetsLoaded)
+//        {
+//            addSalvage(new ItemStack(AsteroidsItems.basicItem, 1, 5));  //T3 plate
+//            addSalvage(new ItemStack(AsteroidsItems.basicItem, 1, 6));  //Compressed titanium
+//            addSalvage(new ItemStack(AsteroidsItems.basicItem, 1, 0));  //Titanium ingot
+//            addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 3));  //T2 plate
+//            addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 5));  //Compressed desh
+//            addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 2));  //Desh ingot
+//        } TODO planets
         addSalvage(new ItemStack(GCItems.flagPole));
         addSalvage(new ItemStack(GCItems.heavyPlatingTier1));
-        addSalvage(new ItemStack(GCItems.itemBasicMoon, 1, 1));  //Compressed meteoric iron
-        addSalvage(new ItemStack(GCItems.itemBasicMoon, 1, 0));  //Meteoric iron ingot
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 9));  //Compressed steel
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 10));  //Compressed bronze
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 6));
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 7));
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 8));
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 11));  //Compressed iron
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 3));
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 4));
-        addSalvage(new ItemStack(GCItems.basicItem, 1, 5));
+        addSalvage(new ItemStack(GCItems.ingotMeteoricIron, 1));  //Meteoric iron ingot
+        addSalvage(new ItemStack(GCItems.compressedSteel, 1));  //Compressed steel
+        addSalvage(new ItemStack(GCItems.compressedAluminum, 1));  //Compressed meteoric iron
+        addSalvage(new ItemStack(GCItems.compressedBronze, 1));  //Compressed bronze
+        addSalvage(new ItemStack(GCItems.compressedCopper, 1));
+        addSalvage(new ItemStack(GCItems.compressedIron, 1));
+        addSalvage(new ItemStack(GCItems.compressedMeteoricIron, 1));
+        addSalvage(new ItemStack(GCItems.compressedSteel, 1));  //Compressed iron
+        addSalvage(new ItemStack(GCItems.compressedTin, 1));
+        addSalvage(new ItemStack(GCItems.compressedWaferAdvanced, 1));
+        addSalvage(new ItemStack(GCItems.compressedWaferBasic, 1));
+        addSalvage(new ItemStack(GCItems.compressedWaferSolar, 1));
         addSalvage(new ItemStack(Items.IRON_INGOT));
         addSalvage(new ItemStack(Items.GOLD_INGOT));
         addSalvage(new ItemStack(Items.GOLD_NUGGET));
@@ -103,7 +100,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     public TileEntityDeconstructor()
     {
-        super("tile.machine2.10.name");
+        super(TYPE);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
         this.setTierGC(2);
         this.inventory = NonNullList.withSize(11, ItemStack.EMPTY);
@@ -130,9 +127,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public void update()
+    public void tick()
     {
-        super.update();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -183,7 +180,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     public void deconstruct()
     {
         List<ItemStack> ingredients = new LinkedList<>();
-        ingredients.add(new ItemStack(this.getInventory().get(1).getItem(), 1, this.getInventory().get(1).getItemDamage()));
+        ItemStack input = this.getInventory().get(1).copy();
+        input.setCount(1);
+        ingredients.add(input);
         this.recursiveCount = 0;
         List<ItemStack> salvaged = this.getSalvageable(ingredients, null);
         salvaged = this.squashList(salvaged);
@@ -306,29 +305,29 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 return toItemStackList(recipe.getRecipeInput().values());
             }
         }
-        for (IRecipe recipe : CraftingManager.REGISTRY)
-        {
-            ItemStack test = recipe.getRecipeOutput();
-            if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
-            {
-                if (recipe instanceof ShapedRecipe)
-                {
-                    return expandRecipeInputs(((ShapedRecipe) recipe).recipeItems);
-                }
-                else if (recipe instanceof ShapelessRecipe)
-                {
-                    return expandRecipeInputs(((ShapelessRecipe) recipe).recipeItems);
-                }
-                else if (recipe instanceof ShapedOreRecipe)
-                {
-                    return expandRecipeInputs(((ShapedOreRecipe) recipe).getIngredients());
-                }
-                else if (recipe instanceof ShapelessOreRecipe)
-                {
-                    return expandRecipeInputs(((ShapelessOreRecipe) recipe).getIngredients());
-                }
-            }
-        }
+//        for (IRecipe recipe : CraftingManager.REGISTRY)
+//        {
+//            ItemStack test = recipe.getRecipeOutput();
+//            if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
+//            {
+//                if (recipe instanceof ShapedRecipe)
+//                {
+//                    return expandRecipeInputs(((ShapedRecipe) recipe).recipeItems);
+//                }
+//                else if (recipe instanceof ShapelessRecipe)
+//                {
+//                    return expandRecipeInputs(((ShapelessRecipe) recipe).recipeItems);
+//                }
+//                else if (recipe instanceof ShapedOreRecipe)
+//                {
+//                    return expandRecipeInputs(((ShapedOreRecipe) recipe).getIngredients());
+//                }
+//                else if (recipe instanceof ShapelessOreRecipe)
+//                {
+//                    return expandRecipeInputs(((ShapelessOreRecipe) recipe).getIngredients());
+//                }
+//            }
+//        } TODO Deconstructor recipes
         return null;
     }
     
@@ -359,34 +358,34 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 }
             }
         }
-        else if (input instanceof ItemStack)
-        {
-            ItemStack stack = (ItemStack) input;
-            if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
-            {
-                return new ItemStack(stack.getItem(), stack.getCount(), 0);
-            }
-            else
-            {
-                return stack.copy();
-            }
-        }
-        else if (input instanceof String)
-        {
-            List<ItemStack> stacks = OreDictionary.getOres((String) input);
-            if (stacks.isEmpty())
-            {
-                return null;
-            }
-            for (ItemStack stack : stacks)
-            {
-                if (isSalvage(stack))
-                {
-                    return stack.copy();
-                }
-            }
-            return stacks.get(0) == null ? null : stacks.get(0).copy();
-        }
+//        else if (input instanceof ItemStack)
+//        {
+//            ItemStack stack = (ItemStack) input;
+//            if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+//            {
+//                return new ItemStack(stack.getItem(), stack.getCount(), 0);
+//            }
+//            else
+//            {
+//                return stack.copy();
+//            }
+//        }
+//        else if (input instanceof String)
+//        {
+//            List<ItemStack> stacks = OreDictionary.getOres((String) input);
+//            if (stacks.isEmpty())
+//            {
+//                return null;
+//            }
+//            for (ItemStack stack : stacks)
+//            {
+//                if (isSalvage(stack))
+//                {
+//                    return stack.copy();
+//                }
+//            }
+//            return stacks.get(0) == null ? null : stacks.get(0).copy();
+//        } TODO Deconstructor recipes
         else if (input instanceof Iterable)
         {
             for (Object obj : (Iterable) input)
@@ -441,18 +440,18 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public void readFromNBT(CompoundNBT par1NBTTagCompound)
+    public void read(CompoundNBT par1NBTTagCompound)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
+        super.read(par1NBTTagCompound);
+        this.processTicks = par1NBTTagCompound.getInt("smeltingTicks");
         
         this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        super.writeToNBT(nbt);
+        super.write(nbt);
         nbt.putInt("smeltingTicks", this.processTicks);
 
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
@@ -567,7 +566,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

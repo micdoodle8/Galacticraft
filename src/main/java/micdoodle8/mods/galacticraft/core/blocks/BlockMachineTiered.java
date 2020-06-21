@@ -1,26 +1,24 @@
 //package micdoodle8.mods.galacticraft.core.blocks;
 //
-//import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 //import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
+//import net.minecraft.block.Block;
 //import net.minecraft.block.BlockState;
-//import net.minecraft.block.properties.PropertyEnum;
-//import net.minecraft.block.state.BlockStateContainer;
+//import net.minecraft.state.EnumProperty;
+//import net.minecraft.state.IntegerProperty;
+//import net.minecraft.state.StateContainer;
 //import net.minecraft.tileentity.TileEntity;
-//import net.minecraft.util.Direction;
 //import net.minecraft.util.IStringSerializable;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.IBlockReader;
 //
 //import javax.annotation.Nullable;
 //
 //public class BlockMachineTiered extends BlockMachineBase
 //{
-//    public static final EnumProperty<EnumTieredMachineType> TYPE = EnumProperty.create("type", EnumTieredMachineType.class);
+////    public static final EnumProperty<EnumTieredMachineType> TYPE = EnumProperty.create("type", EnumTieredMachineType.class);
 //    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
-//    public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
+//    public static final EnumProperty SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 //    public static final IntegerProperty FILL_VALUE = IntegerProperty.create("fill_value", 0, 33);
 //
 //    public enum EnumTieredMachineType implements EnumMachineBase, IStringSerializable
@@ -84,7 +82,7 @@
 //        }
 //
 //        @Override
-//        public String getUnlocalizedName()
+//        public String getTranslationKey()
 //        {
 //            return this.blockName;
 //        }
@@ -95,12 +93,12 @@
 //        super(builder);
 //    }
 //
-//    @Override
-//    protected void initialiseTypes()
-//    {
-//        this.types = EnumTieredMachineType.values;
-//        this.typeBase = EnumTieredMachineType.values[0];
-//    }
+////    @Override
+////    protected void initialiseTypes()
+////    {
+////        this.types = EnumTieredMachineType.values;
+////        this.typeBase = EnumTieredMachineType.values[0];
+////    }
 //
 //    @Nullable
 //    @Override
@@ -111,32 +109,32 @@
 //        return super.createTileEntity(state, world);
 //    }
 //
-//    @Override
-//    public BlockState getStateFromMeta(int meta)
-//    {
-//        Direction enumfacing = Direction.getHorizontal(meta % 4);
-//        EnumTieredMachineType type = (EnumTieredMachineType) typeBase.fromMetadata(meta);
-//        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
-//    }
+////    @Override
+////    public BlockState getStateFromMeta(int meta)
+////    {
+////        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
+////        EnumTieredMachineType type = (EnumTieredMachineType) typeBase.fromMetadata(meta);
+////        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
+////    }
 //
 //    @Override
 //    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 //    {
-//        builder.add(FACING, TYPE, FILL_VALUE, SIDES);
+//        builder.add(FACING, FILL_VALUE, SIDES);
 //    }
 //
-//    @Override
-//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
-//    {
-//        TileEntity tile = worldIn.getTileEntity(pos);
-//        state = IMachineSides.addPropertyForTile(state, tile, MACHINESIDES_RENDERTYPE, SIDES);
-//
-//        if (!(tile instanceof TileEntityEnergyStorageModule))
-//        {
-//            return state.with(FILL_VALUE, 0);
-//        }
-//        int energyLevel = ((TileEntityEnergyStorageModule) tile).scaledEnergyLevel;
-//        if (state.get(TYPE) == EnumTieredMachineType.STORAGE_CLUSTER) energyLevel += 17;
-//        return state.with(FILL_VALUE, energyLevel);
-//    }
+////    @Override
+////    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
+////    {
+////        TileEntity tile = worldIn.getTileEntity(pos);
+////        state = IMachineSides.addPropertyForTile(state, tile, MACHINESIDES_RENDERTYPE, SIDES);
+////
+////        if (!(tile instanceof TileEntityEnergyStorageModule))
+////        {
+////            return state.with(FILL_VALUE, 0);
+////        }
+////        int energyLevel = ((TileEntityEnergyStorageModule) tile).scaledEnergyLevel;
+////        if (state.get(TYPE) == EnumTieredMachineType.STORAGE_CLUSTER) energyLevel += 17;
+////        return state.with(FILL_VALUE, energyLevel);
+////    }
 //}

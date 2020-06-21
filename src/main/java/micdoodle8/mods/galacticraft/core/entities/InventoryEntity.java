@@ -120,9 +120,9 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
         }
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return false;
+//    }
 }

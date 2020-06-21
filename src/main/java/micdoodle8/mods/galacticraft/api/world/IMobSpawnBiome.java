@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 /**
- * Implement this on any Galacticraft World Provider biome registered for a Celestial Body
+ * Implement this on any Galacticraft World dimension biome registered for a Celestial Body
  */
 public interface IMobSpawnBiome
 {

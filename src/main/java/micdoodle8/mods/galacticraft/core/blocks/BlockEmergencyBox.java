@@ -28,7 +28,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, ISortableBlock, IPartialSealableBlock
+public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, IPartialSealableBlock
 {
     public static final BooleanProperty KIT = BooleanProperty.create("kit");
     
@@ -65,14 +65,14 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
 //    }
 
 //    @Override
-//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 //    {
 //        return new ItemStack(this, 1, this.getMetaFromState(state));
 //    }
 
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
-//    public BlockRenderLayer getBlockLayer()
+//    public BlockRenderLayer getRenderLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;
 //    }
@@ -142,11 +142,11 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 
     @Override
     public boolean isSealed(World world, BlockPos pos, Direction direction)

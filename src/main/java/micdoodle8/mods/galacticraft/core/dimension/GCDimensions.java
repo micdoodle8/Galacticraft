@@ -4,7 +4,7 @@ import net.minecraft.world.dimension.DimensionType;
 
 public class GCDimensions
 {
-    public static DimensionType MOON;
-    public static DimensionType ORBIT;
-    public static DimensionType ORBIT_KEEPLOADED;
+//    public static DimensionType MOON;
+//    public static DimensionType ORBIT;
+//    public static DimensionType ORBIT_KEEPLOADED;
 }

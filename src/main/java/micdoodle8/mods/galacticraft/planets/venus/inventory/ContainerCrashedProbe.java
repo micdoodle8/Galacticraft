@@ -12,13 +12,13 @@ public class ContainerCrashedProbe extends Container
 {
     private TileEntityCrashedProbe tileEntity;
 
-    public ContainerCrashedProbe(PlayerInventory par1InventoryPlayer, TileEntityCrashedProbe tileEntityCrashedProbe)
+    public ContainerCrashedProbe(PlayerInventory playerInv, TileEntityCrashedProbe tileEntityCrashedProbe)
     {
         this.tileEntity = tileEntityCrashedProbe;
 
         for (int i = 0; i < 6; ++i)
         {
-            this.addSlotToContainer(new Slot(tileEntityCrashedProbe, i, 35 + i * 18, 18));
+            this.addSlot(new Slot(tileEntityCrashedProbe, i, 35 + i * 18, 18));
         }
 
         int var6;
@@ -30,13 +30,13 @@ public class ContainerCrashedProbe extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 52 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 52 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 110));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 110));
         }
     }
 

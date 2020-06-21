@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
 import net.minecraft.util.Direction;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 /**
  * Applied to all TileEntities that can interact with oxygen.
@@ -16,10 +17,10 @@ public interface IOxygenReceiver extends IConnector
      *
      * @param from      Orientation the oxygen is sent in from.
      * @param receive   Maximum amount of oxygen to be sent into the block.
-     * @param doReceive If false, the transfer will only be simulated.
+     * @param action    Whether the transfer will be executed.
      * @return Amount of oxygen that was accepted by the block.
      */
-    int receiveOxygen(Direction from, int receive, boolean doReceive);
+    int receiveOxygen(Direction from, int receive, IFluidHandler.FluidAction action);
 
     /**
      * Adds oxygen provision to a block. Returns the quantity of oxygen
@@ -28,10 +29,10 @@ public interface IOxygenReceiver extends IConnector
      *
      * @param from      Orientation the oxygen is requested from.
      * @param request   Maximum amount of oxygen to be pushed out of the block.
-     * @param doProvide If false, the transfer will only be simulated.
+     * @param action    Whether the transfer will be executed.
      * @return Amount of oxygen that was given out by the block.
      */
-    int provideOxygen(Direction from, int request, boolean doProvide);
+    int provideOxygen(Direction from, int request, IFluidHandler.FluidAction action);
 
     /**
      * @return How much oxygen does this TileEntity want?

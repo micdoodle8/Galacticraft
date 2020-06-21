@@ -32,7 +32,7 @@
 ////    IIcon flowingIcon;
 //
 //    @Override
-//    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, BlockState state, Entity entityIn)
+//    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
 //    {
 //        if (!worldIn.isRemote)
 //        {
@@ -110,9 +110,9 @@
 //
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
-//    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+//    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
-//        super.randomDisplayTick(stateIn, worldIn, pos, rand);
+//        super.animateTick(stateIn, worldIn, pos, rand);
 //
 //        if (rand.nextInt(1200) == 0)
 //        {
@@ -124,7 +124,7 @@
 //            BlockState state = worldIn.getBlockState(below);
 //            if (state.getBlock().isSideSolid(state, worldIn, below, Direction.UP) && !worldIn.getBlockState(pos.down(2)).getMaterial().blocksMovement())
 //            {
-//                GalacticraftPlanets.spawnParticle("bacterialDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0));
+//                GalacticraftPlanets.addParticle("bacterialDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0));
 //            }
 //        }
 //    }

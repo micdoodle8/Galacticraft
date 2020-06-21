@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderParaChest;
-import net.minecraft.client.model.ModelChest;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.tileentity.model.ChestModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
-public class ModelParaChest extends ModelChest
+public class ModelParaChest extends ChestModel
 {
     private static final ResourceLocation grayParachuteTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/gray.png");
 
@@ -50,19 +50,19 @@ public class ModelParaChest extends ModelChest
     @Override
     public void renderAll()
     {
-        this.chestLid.rotateAngleX = (float) Math.PI;
-        this.chestBelow.rotateAngleX = (float) Math.PI;
-        this.chestKnob.rotateAngleX = (float) Math.PI;
-
-        this.chestLid.rotationPointX = 2.0F;
-        this.chestLid.rotationPointY = 7.0F;
-        this.chestLid.rotationPointZ = -6.0F;
-        this.chestKnob.rotationPointX = 9.0F;
-        this.chestKnob.rotationPointY = 7.0F;
-        this.chestKnob.rotationPointZ = -6.0F;
-        this.chestBelow.rotationPointX = 2.0F;
-        this.chestBelow.rotationPointY = 8.0F;
-        this.chestBelow.rotationPointZ = 8.0F;
+//        this.chestLid.rotateAngleX = (float) Math.PI;
+//        this.chestBelow.rotateAngleX = (float) Math.PI;
+//        this.chestKnob.rotateAngleX = (float) Math.PI;
+//
+//        this.chestLid.rotationPointX = 2.0F;
+//        this.chestLid.rotationPointY = 7.0F;
+//        this.chestLid.rotationPointZ = -6.0F;
+//        this.chestKnob.rotationPointX = 9.0F;
+//        this.chestKnob.rotationPointY = 7.0F;
+//        this.chestKnob.rotationPointZ = -6.0F;
+//        this.chestBelow.rotationPointX = 2.0F;
+//        this.chestBelow.rotationPointY = 8.0F;
+//        this.chestBelow.rotationPointZ = 8.0F;
 
         int i;
 

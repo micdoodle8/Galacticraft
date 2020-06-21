@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockConcealedDetector extends Block implements ISortableBlock
+public class BlockConcealedDetector extends Block
 {
     public static final IntegerProperty VARIANT = IntegerProperty.create("var", 0, 1);
     public static final IntegerProperty FACING = IntegerProperty.create("facing", 0, 3);
@@ -40,11 +40,11 @@ public class BlockConcealedDetector extends Block implements ISortableBlock
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-         return EnumSortCategoryBlock.DECORATION;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//         return EnumSortCategoryBlock.DECORATION;
+//    }
 
     @Nullable
     @Override

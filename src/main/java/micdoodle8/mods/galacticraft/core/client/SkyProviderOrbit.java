@@ -1,25 +1,24 @@
 package micdoodle8.mods.galacticraft.core.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.client.FMLClientHandler;
-
 import org.lwjgl.opengl.GL11;
+
 import java.util.Random;
 
-public class SkyProviderOrbit extends IRenderHandler
+public class SkyProviderOrbit implements IRenderHandler
 {
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation sunTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/planets/orbitalsun.png");
@@ -90,7 +89,7 @@ public class SkyProviderOrbit extends IRenderHandler
     private final Minecraft minecraft = Minecraft.getInstance();
 
     @Override
-    public void render(float partialTicks, ClientWorld world, Minecraft mc)
+    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc)
     {
         final float var20 = 400.0F + (float) this.minecraft.player.posY / 2F;
 
@@ -101,21 +100,21 @@ public class SkyProviderOrbit extends IRenderHandler
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GlStateManager.disableRescaleNormal();
-        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
+        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
         float var3 = (float) var2.x;
         float var4 = (float) var2.y;
         float var5 = (float) var2.z;
         float var8;
 
-        if (this.minecraft.gameSettings.anaglyph)
-        {
-            final float var6 = (var3 * 30.0F + var4 * 59.0F + var5 * 11.0F) / 100.0F;
-            final float var7 = (var3 * 30.0F + var4 * 70.0F) / 100.0F;
-            var8 = (var3 * 30.0F + var5 * 70.0F) / 100.0F;
-            var3 = var6;
-            var4 = var7;
-            var5 = var8;
-        }
+//        if (this.minecraft.gameSettings.anaglyph)
+//        {
+//            final float var6 = (var3 * 30.0F + var4 * 59.0F + var5 * 11.0F) / 100.0F;
+//            final float var7 = (var3 * 30.0F + var4 * 70.0F) / 100.0F;
+//            var8 = (var3 * 30.0F + var5 * 70.0F) / 100.0F;
+//            var3 = var6;
+//            var4 = var7;
+//            var5 = var8;
+//        } rip
 
         GL11.glColor3f(var3, var4, var5);
         final Tessellator var23 = Tessellator.getInstance();
@@ -147,15 +146,15 @@ public class SkyProviderOrbit extends IRenderHandler
             var10 = var24[2];
             float var13;
 
-            if (this.minecraft.gameSettings.anaglyph)
-            {
-                var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-                var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-                var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-                var8 = var11;
-                var9 = var12;
-                var10 = var13;
-            }
+//            if (this.minecraft.gameSettings.anaglyph)
+//            {
+//                var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
+//                var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
+//                var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
+//                var8 = var11;
+//                var9 = var12;
+//                var10 = var13;
+//            }
 
             BufferBuilder worldRenderer = var23.getBuffer();
             worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
@@ -189,7 +188,7 @@ public class SkyProviderOrbit extends IRenderHandler
         float deltaTick = partialTicks - this.prevPartialTicks;
         //while (deltaTick < 0F) deltaTick += 1.0F;
         this.prevPartialTicks = partialTicks;
-        long curTick = this.minecraft.world.getTotalWorldTime();
+        long curTick = this.minecraft.world.getDayTime();
         int tickDiff = (int) (curTick - this.prevTick);
         this.prevTick = curTick;
         if (tickDiff > 0 && tickDiff < 20)

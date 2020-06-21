@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +21,7 @@ import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BlockAluminumWire extends BlockTransmitter implements IShiftDescription, ISortableBlock
+public class BlockAluminumWire extends BlockTransmitter implements IShiftDescription
 {
     public static final EnumProperty<EnumWireType> WIRE_TYPE = EnumProperty.create("wiretype", EnumWireType.class);
     private static final float MIN = 0.38F;
@@ -307,9 +308,9 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
     }
 
     @Override
-    public String getShiftDescription(int itemDamage)
+    public String getShiftDescription(ItemStack item)
     {
-        switch (itemDamage)
+        switch (item.getDamage())
         {
         case 0:
             return GCCoreUtil.translate("tile.aluminum_wire.alu_wire.description");
@@ -330,14 +331,14 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
     }
 
     @Override
-    public boolean showDescription(int itemDamage)
+    public boolean showDescription(ItemStack item)
     {
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.TRANSMITTER;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(ItemStack item)
+//    {
+//        return EnumSortCategoryBlock.TRANSMITTER;
+//    }
 }

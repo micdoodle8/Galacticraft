@@ -88,7 +88,7 @@ public class BlockMachineMarsT2 extends BlockMachineBase
         }
 
         @Override
-        public String getUnlocalizedName()
+        public String getTranslationKey()
         {
             return this.blockName;
         }
@@ -117,7 +117,7 @@ public class BlockMachineMarsT2 extends BlockMachineBase
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         int metadata = this.getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
         return new ItemStack(this, 1, metadata);
@@ -125,7 +125,7 @@ public class BlockMachineMarsT2 extends BlockMachineBase
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         final TileEntity te = worldIn.getTileEntity(pos);
 
@@ -165,7 +165,7 @@ public class BlockMachineMarsT2 extends BlockMachineBase
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        Direction enumfacing = Direction.getHorizontal(meta % 4);
+        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
         EnumMachineType type = (EnumMachineType) typeBase.fromMetadata(meta);
         return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }

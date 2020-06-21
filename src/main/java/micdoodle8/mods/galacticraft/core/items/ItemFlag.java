@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.IHoldableItemCustom;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -11,21 +10,19 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 {
@@ -49,7 +46,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entity, int timeLeft)
     {
-        final int useTime = this.getMaxItemUseDuration(stack) - timeLeft;
+        final int useTime = this.getUseDuration(stack) - timeLeft;
 
         boolean placed = false;
 
@@ -60,7 +57,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
         PlayerEntity player = (PlayerEntity) entity;
 
-        final RayTraceResult var12 = this.rayTrace(worldIn, player, true);
+        final RayTraceResult var12 = this.rayTrace(worldIn, player, RayTraceContext.FluidMode.ANY);
 
         float var7 = useTime / 20.0F;
         var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
@@ -119,13 +116,13 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    public int getUseDuration(ItemStack stack)
     {
         return 72000;
     }
 
     @Override
-    public UseAction getItemUseAction(ItemStack par1ItemStack)
+    public UseAction getUseAction(ItemStack stack)
     {
         return UseAction.NONE;
     }
@@ -144,11 +141,11 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        return "item.flag";
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemStack)
+//    {
+//        return "item.flag";
+//    }
 
     /*@Override
     public IIcon getIconFromDamage(int damage)

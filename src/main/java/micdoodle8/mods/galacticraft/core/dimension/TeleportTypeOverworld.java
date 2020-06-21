@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import net.minecraft.entity.Entity;
@@ -19,30 +19,30 @@ public class TeleportTypeOverworld implements ITeleportType
     }
 
     @Override
-    public Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            return new Vector3(stats.getCoordsTeleportedFromX(), 250.0, stats.getCoordsTeleportedFromZ());
+            return new Vector3D(stats.getCoordsTeleportedFromX(), 250.0F, stats.getCoordsTeleportedFromZ());
         }
 
         return null;
     }
 
     @Override
-    public Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity)
+    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3(entity.posX, 250.0, entity.posZ);
+        return new Vector3D((float)entity.posX, 250.0F, (float)entity.posZ);
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
-        final double x = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
-        final double z = (rand.nextDouble() * 2 - 1.0D) * 5.0D;
+        final float x = (rand.nextFloat() * 2 - 1.0F) * 5.0F;
+        final float z = (rand.nextFloat() * 2 - 1.0F) * 5.0F;
 
-        return new Vector3(player.posX + x, 230.0D, player.posZ + z);
+        return new Vector3D((float)player.posX + x, 230.0F, (float)player.posZ + z);
     }
 
     @Override

@@ -1,26 +1,33 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerSchematic extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SCHEMATIC)
+    public static ContainerType<ContainerSchematic> TYPE;
+
     public InventorySchematic craftMatrix = new InventorySchematic(this);
     public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerSchematic(PlayerInventory par1InventoryPlayer, BlockPos pos)
+    public ContainerSchematic(int containerId, PlayerInventory playerInv)
     {
-        this.world = par1InventoryPlayer.player.world;
-        this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
+        super(TYPE, containerId);
+        this.world = playerInv.player.world;
+        this.addSlot(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
         int var6;
         int var7;
 
@@ -30,13 +37,13 @@ public class ContainerSchematic extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 111 + var6 * 18 - 59 + 16));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 111 + var6 * 18 - 59 + 16));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 169 - 59 + 16));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 169 - 59 + 16));
         }
 
         this.onCraftMatrixChanged(this.craftMatrix);

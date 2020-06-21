@@ -9,11 +9,10 @@ public class GCLog
 {
     
     private static Logger log = LogManager.getFormatterLogger(Constants.MOD_NAME_SIMPLE);
-    
-    public static void info(String message)
+
+    public static void info(String message, Object... params)
     {
-        log.info(message);
-        
+        log.info(message, params);
     }
 
     public static void severe(String message)

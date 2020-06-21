@@ -89,7 +89,7 @@
 //    }
 //
 //    @Override
-//    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+//    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
 //    {
 //        final TileEntity tile = worldIn.getTileEntity(pos);
 //
@@ -98,7 +98,7 @@
 //            ((TileEntityDish) tile).onDestroy(tile);
 //        }
 //
-//        super.breakBlock(worldIn, pos, state);
+//        super.onReplaced(state, worldIn, pos, newState, isMoving);
 //    }
 //
 //    @Override

@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 
-public class ModelMeteor extends ModelBase
+public class ModelMeteor extends EntityModel<EntityMeteor>
 {
     RendererModel[] shapes = new RendererModel[13];
 
@@ -94,10 +94,10 @@ public class ModelMeteor extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityMeteor entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        super.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 
         for (final RendererModel shape : this.shapes)
         {

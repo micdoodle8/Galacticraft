@@ -27,9 +27,9 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     {
         super.writeStructureToNBT(tagCompound);
 
-        tagCompound.setInteger("sizeX", this.sizeX);
-        tagCompound.setInteger("sizeY", this.sizeY);
-        tagCompound.setInteger("sizeZ", this.sizeZ);
+        tagCompound.putInt("sizeX", this.sizeX);
+        tagCompound.putInt("sizeY", this.sizeY);
+        tagCompound.putInt("sizeZ", this.sizeZ);
     }
 
     @Override

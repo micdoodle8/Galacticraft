@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import com.google.common.collect.ImmutableList;
 
+import com.mojang.blaze3d.platform.GLX;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -18,7 +20,7 @@ import org.lwjgl.opengl.GL12;
 @Deprecated
 public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProvider> extends TileEntityRenderer<E>
 {
-    private static IBakedModel sphere;
+    public static IBakedModel sphere;
 
     private final float colorRed;
     private final float colorGreen;
@@ -37,7 +39,6 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         {
             try
             {
-                sphere = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "sphere.obj"), ImmutableList.of("Sphere"));
             }
             catch (Exception e)
             {
@@ -47,9 +48,9 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
     }
 
     @Override
-    public void render(E provider, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(E tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if (!provider.getBubbleVisible())
+        if (!tile.getBubbleVisible())
         {
             return;
         }
@@ -73,10 +74,11 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         GL11.glLoadIdentity();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glDepthMask(false);
-        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
-        GL11.glScalef(provider.getBubbleSize(), provider.getBubbleSize(), provider.getBubbleSize());
+//        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+//        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
+        GL11.glScalef(tile.getBubbleSize(), tile.getBubbleSize(), tile.getBubbleSize());
 
         int color = ColorUtil.to32BitColor(30, (int)(this.colorBlue / 2.0F * 255), (int)(this.colorGreen / 2.0F * 255), (int)(this.colorRed / 2.0F * 255));
         ClientUtil.drawBakedModelColored(sphere, color);
@@ -91,7 +93,7 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glEnable(GL11.GL_CULL_FACE);
 
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();

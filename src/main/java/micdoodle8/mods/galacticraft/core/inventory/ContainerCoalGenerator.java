@@ -1,36 +1,49 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerCoalGenerator extends Container
 {
-    private TileEntityCoalGenerator tileEntity;
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.COAL_GENERATOR)
+    public static ContainerType<ContainerCoalGenerator> TYPE;
 
-    public ContainerCoalGenerator(PlayerInventory par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
+    private IInventory inventory;
+
+    public ContainerCoalGenerator(int containerId, PlayerInventory playerInv)
     {
-        this.tileEntity = tileEntity;
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 33, 34, new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK))));
+        this(containerId, playerInv, new Inventory(1));
+    }
+
+    public ContainerCoalGenerator(int containerId, PlayerInventory playerInv, IInventory inventory)
+    {
+        super(TYPE, containerId);
+        this.inventory = inventory;
+        this.addSlot(new SlotSpecific(inventory, 0, 33, 34, new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK))));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 142));
         }
     }
 
@@ -43,7 +56,7 @@ public class ContainerCoalGenerator extends Container
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.inventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

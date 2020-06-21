@@ -114,7 +114,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, BlockState state, Entity entityIn)
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn)
     {
         if (entityIn instanceof LivingEntity)
         {
@@ -143,17 +143,17 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
@@ -208,7 +208,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
+    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
     {
         if (!worldIn.isRemote)
         {
@@ -274,7 +274,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -285,7 +285,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

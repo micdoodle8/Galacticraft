@@ -5,29 +5,33 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityNasaWorkbench;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiSchematicInput extends GuiPositionedContainer implements ISchematicResultPage
+public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implements ISchematicResultPage
 {
     private static final ResourceLocation schematicInputTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/schematicpage.png");
 
     private int pageIndex;
 
-    public GuiSchematicInput(PlayerInventory playerInv, BlockPos pos)
+    public GuiSchematicInput(ContainerSchematic container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerSchematic(playerInv, pos), playerInv, new TranslationTextComponent("gui.message.addnewsch.name"), pos);
+        super(container, playerInv, title);
+//        super(new ContainerSchematic(playerInv, pos), playerInv, new TranslationTextComponent("gui.message.addnewsch.name"), pos);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         super.onBlockAdded(worldIn, pos, state);
 
@@ -109,7 +109,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -130,15 +130,15 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
         return EnumSortCategoryBlock.MACHINE;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 }

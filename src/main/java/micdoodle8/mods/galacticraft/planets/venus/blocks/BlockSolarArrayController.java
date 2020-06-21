@@ -48,17 +48,17 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
         return AABB;
     }
 
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = Direction.getHorizontal(angle).getOpposite().getHorizontalIndex();
+        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
@@ -76,16 +76,16 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
         return new TileEntitySolarArrayController();
     }
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -94,11 +94,11 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
         return true;
     }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
 
     @Override
     public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
@@ -109,7 +109,7 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        Direction enumfacing = Direction.getHorizontal(meta % 4);
+        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
         return this.getDefaultState().with(FACING, enumfacing);
     }
 

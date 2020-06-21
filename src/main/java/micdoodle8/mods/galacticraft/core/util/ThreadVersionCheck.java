@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class ThreadVersionCheck extends Thread
     @Override
     public void run()
     {
-        final Side sideToCheck = FMLCommonHandler.instance().getSide();
+        final LogicalSide sideToCheck = EffectiveSide.get();
 
         if (sideToCheck == null || ConfigManagerCore.disableUpdateCheck)
         {
@@ -75,11 +75,11 @@ public class ThreadVersionCheck extends Thread
                         {
                             Thread.sleep(5000);
 
-                            if (sideToCheck.equals(Side.CLIENT))
+                            if (sideToCheck.equals(LogicalSide.CLIENT))
                             {
                                 Minecraft.getInstance().player.sendMessage(new StringTextComponent(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
                             }
-                            else if (sideToCheck.equals(Side.SERVER))
+                            else if (sideToCheck.equals(LogicalSide.SERVER))
                             {
                                 GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + " http://micdoodle8.com/");
                             }

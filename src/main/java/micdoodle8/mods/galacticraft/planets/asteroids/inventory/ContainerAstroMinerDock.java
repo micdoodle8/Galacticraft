@@ -15,10 +15,10 @@ public class ContainerAstroMinerDock extends Container
 {
     private TileEntityMinerBase tileEntity;
 
-    public ContainerAstroMinerDock(PlayerInventory par1InventoryPlayer, IInventory tile)
+    public ContainerAstroMinerDock(PlayerInventory playerInv, IInventory tile)
     {
         this.tileEntity = (TileEntityMinerBase) tile;
-        this.addSlotToContainer(new SlotSpecific(tile, 0, 230, 108, IItemElectric.class));
+        this.addSlot(new SlotSpecific(tile, 0, 230, 108, IItemElectric.class));
 
         int i;
         int j;
@@ -27,7 +27,7 @@ public class ContainerAstroMinerDock extends Container
         {
             for (j = 0; j < 12; ++j)
             {
-                this.addSlotToContainer(new Slot(tile, j + i * 12 + 1, 8 + j * 18, 18 + i * 18));
+                this.addSlot(new Slot(tile, j + i * 12 + 1, 8 + j * 18, 18 + i * 18));
             }
         }
 
@@ -37,13 +37,13 @@ public class ContainerAstroMinerDock extends Container
         {
             for (j = 0; j < 9; ++j)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, j + i * 9 + 9, 8 + j * 18, 139 + i * 18));
+                this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 139 + i * 18));
             }
         }
 
         for (i = 0; i < 9; ++i)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 58 + 139));
+            this.addSlot(new Slot(playerInv, i, 8 + i * 18, 58 + 139));
         }
     }
 

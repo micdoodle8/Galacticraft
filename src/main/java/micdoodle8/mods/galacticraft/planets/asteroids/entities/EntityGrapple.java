@@ -420,7 +420,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 float f4 = 0.25F;
                 for (int l = 0; l < 4; ++l)
                 {
-                    this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * f4, this.posY - this.motionY * f4, this.posZ - this.motionZ * f4, this.motionX, this.motionY, this.motionZ);
+                    this.world.addParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * f4, this.posY - this.motionY * f4, this.posZ - this.motionZ * f4, this.motionX, this.motionY, this.motionZ);
                 }
 
             }
@@ -461,7 +461,7 @@ public class EntityGrapple extends Entity implements IProjectile
     @Override
     public void readEntityFromNBT(CompoundNBT par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.hasKey("xTile"))
+        if (par1NBTTagCompound.contains("xTile"))
         {
             this.hitVec = new BlockPos(par1NBTTagCompound.getShort("xTile"), par1NBTTagCompound.getShort("yTile"), par1NBTTagCompound.getShort("zTile"));
         }
@@ -472,16 +472,16 @@ public class EntityGrapple extends Entity implements IProjectile
         this.arrowShake = par1NBTTagCompound.getByte("shake") & 255;
         this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
 
-        if (par1NBTTagCompound.hasKey("pickup", 99))
+        if (par1NBTTagCompound.contains("pickup", 99))
         {
             this.canBePickedUp = par1NBTTagCompound.getByte("pickup");
         }
-        else if (par1NBTTagCompound.hasKey("player", 99))
+        else if (par1NBTTagCompound.contains("player", 99))
         {
             this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
         }
 
-        if (par1NBTTagCompound.hasKey("stringStack")) {
+        if (par1NBTTagCompound.contains("stringStack")) {
             this.updateStringStack(new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(par1NBTTagCompound.getString("stringStack"))))));
         } else {
             this.updateStringStack(new ItemStack(Items.STRING));

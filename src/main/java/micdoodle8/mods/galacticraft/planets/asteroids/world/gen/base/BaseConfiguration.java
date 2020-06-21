@@ -78,10 +78,10 @@ public class BaseConfiguration
 
     public void writeToNBT(CompoundNBT tagCompound)
     {
-        tagCompound.setInteger("yPos", this.yPosition);
-        tagCompound.setInteger("dT", this.baseType + (this.hangar ? 16 : 0));
-        tagCompound.setInteger("rmD", this.roomDepth);
-        tagCompound.setInteger("rmN", this.roomsNo);
+        tagCompound.putInt("yPos", this.yPosition);
+        tagCompound.putInt("dT", this.baseType + (this.hangar ? 16 : 0));
+        tagCompound.putInt("rmD", this.roomDepth);
+        tagCompound.putInt("rmN", this.roomsNo);
     }
 
     public void readFromNBT(CompoundNBT tagCompound)

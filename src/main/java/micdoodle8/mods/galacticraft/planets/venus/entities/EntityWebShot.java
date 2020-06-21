@@ -301,7 +301,7 @@ public class EntityWebShot extends Entity implements IProjectile
             for (int i1 = 0; i1 < 4; ++i1)
             {
                 float f8 = 0.25F;
-                this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double)f8, this.posY - this.motionY * (double)f8, this.posZ - this.motionZ * (double)f8, this.motionX, this.motionY, this.motionZ);
+                this.world.addParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double)f8, this.posY - this.motionY * (double)f8, this.posZ - this.motionZ * (double)f8, this.motionX, this.motionY, this.motionZ);
             }
         }
 
@@ -326,7 +326,7 @@ public class EntityWebShot extends Entity implements IProjectile
     {
         this.arrowShake = tagCompund.getByte("shake") & 255;
 
-        if (tagCompund.hasKey("pickup", 99))
+        if (tagCompund.contains("pickup", 99))
         {
             this.canBePickedUp = tagCompund.getByte("pickup");
         }

@@ -13,18 +13,21 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.dimension.DimensionType;
+
+import javax.annotation.Nullable;
 
 public class SlotBuggyBench extends Slot
 {
     private final int index;
-    private final BlockPos pos;
+//    @Nullable
+//    private final BlockPos pos; // Null client side
     private final PlayerEntity player;
 
-    public SlotBuggyBench(IInventory par2IInventory, int par3, int par4, int par5, BlockPos pos, PlayerEntity player)
+    public SlotBuggyBench(IInventory par2IInventory, int par3, int par4, int par5, PlayerEntity player)
     {
         super(par2IInventory, par3, par4, par5);
         this.index = par3;
-        this.pos = pos;
         this.player = player;
     }
 
@@ -33,8 +36,8 @@ public class SlotBuggyBench extends Slot
     {
         if (this.player instanceof ServerPlayerEntity)
         {
-            int dimID = GCCoreUtil.getDimensionID(this.player.world);
-            GCCoreUtil.sendToAllAround(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, dimID, new Object[] { this.pos }), this.player.world, dimID, this.pos, 20);
+            DimensionType dimID = GCCoreUtil.getDimensionID(this.player.world);
+//            GCCoreUtil.sendToAllAround(new PacketSimple(EnumSimplePacket.C_SPAWN_SPARK_PARTICLES, dimID, new Object[] { this.pos }), this.player.world, dimID, this.pos, 20); TODO Sparks
         }
     }
 

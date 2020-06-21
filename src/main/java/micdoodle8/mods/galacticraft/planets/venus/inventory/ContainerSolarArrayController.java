@@ -14,10 +14,10 @@ public class ContainerSolarArrayController extends Container
 {
     private TileEntitySolarArrayController tileEntity;
 
-    public ContainerSolarArrayController(PlayerInventory par1InventoryPlayer, TileEntitySolarArrayController solarGen)
+    public ContainerSolarArrayController(PlayerInventory playerInv, TileEntitySolarArrayController solarGen)
     {
         this.tileEntity = solarGen;
-        this.addSlotToContainer(new SlotSpecific(solarGen, 0, 152, 91, IItemElectric.class));
+        this.addSlot(new SlotSpecific(solarGen, 0, 152, 91, IItemElectric.class));
 
         int var6;
         int var7;
@@ -28,13 +28,13 @@ public class ContainerSolarArrayController extends Container
         {
             for (var7 = 0; var7 < 9; ++var7)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 59 + 68 + var6 * 18));
+                this.addSlot(new Slot(playerInv, var7 + var6 * 9 + 9, 8 + var7 * 18, 59 + 68 + var6 * 18));
             }
         }
 
         for (var6 = 0; var6 < 9; ++var6)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 69 + 116));
+            this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 69 + 116));
         }
     }
 

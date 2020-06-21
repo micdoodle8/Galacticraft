@@ -422,7 +422,7 @@
 //    @Override
 //    public String getShiftDescription(ItemStack stack)
 //    {
-//        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+//        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
 //    }
 //
 //    @Override
@@ -501,7 +501,7 @@
 //    }
 //
 //    @Override
-//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+//    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 //    {
 //        return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
 //    }

@@ -1,41 +1,48 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerEnergyStorageModule extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ENERGY_STORAGE_MODULE)
+    public static ContainerType<ContainerEnergyStorageModule> TYPE;
+
     private TileEntityEnergyStorageModule tileEntity;
 
-    public ContainerEnergyStorageModule(PlayerInventory par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
+    public ContainerEnergyStorageModule(int containerId, PlayerInventory playerInv, TileEntityEnergyStorageModule batteryBox)
     {
+        super(TYPE, containerId);
         this.tileEntity = batteryBox;
         // Top slot for battery output
-        this.addSlotToContainer(new SlotSpecific(batteryBox, 0, 33, 24, IItemElectric.class));
+        this.addSlot(new SlotSpecific(batteryBox, 0, 33, 24, IItemElectric.class));
         // Bottom slot for batter input
-        this.addSlotToContainer(new SlotSpecific(batteryBox, 1, 33, 48, IItemElectric.class));
+        this.addSlot(new SlotSpecific(batteryBox, 1, 33, 48, IItemElectric.class));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+                this.addSlot(new Slot(playerInv, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+            this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 142));
         }
 
-        this.tileEntity.playersUsing.add(par1InventoryPlayer.player);
+        this.tileEntity.playersUsing.add(playerInv.player);
     }
 
     @Override

@@ -1,26 +1,28 @@
 package micdoodle8.mods.galacticraft.core.client.screen;
 
+import com.mojang.blaze3d.platform.GLX;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraft.world.dimension.DimensionType;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
 public class DrawGameScreen implements IScreenManager
 {
-    private TextureManager renderEngine = Minecraft.getInstance().renderEngine;
+    private TextureManager textureManager = Minecraft.getInstance().textureManager;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
     private static int texCount = 1;
 
@@ -36,12 +38,13 @@ public class DrawGameScreen implements IScreenManager
     private float scaleZ;
 
     public TileEntity driver;
-    public Class telemetryLastClass;
+    public EntityType<?> telemetryLastType;
     public String telemetryLastName;
     public Entity telemetryLastEntity;
     public EntityRenderer telemetryLastRender;
     public static DynamicTexture reusableMap;  //This will be set up in MapUtil.resetClientBody()
-    public int[] localMap = null;
+//    public int[] localMap = null;
+    private NativeImage localMap;
     public boolean mapDone = false;
     public boolean mapFirstTick = false;
 
@@ -65,15 +68,17 @@ public class DrawGameScreen implements IScreenManager
 
     private void makeMap()
     {
-        if (this.mapDone || reusableMap == null || GCCoreUtil.getDimensionID(this.driver.getWorld()) != 0)
+        if (this.mapDone || reusableMap == null || GCCoreUtil.getDimensionID(this.driver.getWorld()) != DimensionType.OVERWORLD)
         {
             return;
         }
-        this.localMap = new int[MapUtil.SIZE_STD2 * MapUtil.SIZE_STD2];
+        this.localMap = new NativeImage(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2, false);
+//        this.localMap = new int[MapUtil.SIZE_STD2 * MapUtil.SIZE_STD2];
         boolean result = MapUtil.getMap(this.localMap, this.driver.getWorld(), this.driver.getPos());
         if (result)
         {
-            TextureUtil.uploadTexture(reusableMap.getGlTextureId(), this.localMap, MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+            this.localMap.uploadTextureSub(0, 0, 0, false);
+//            TextureUtil.uploadTexture(reusableMap.getGlTextureId(), this.localMap, MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
             mapDone = true;
         }
     }
@@ -179,9 +184,10 @@ public class DrawGameScreen implements IScreenManager
 
     private void doDraw(int type, float ticks)
     {
-        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+//        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+//        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 
         if (type > 0)
         {
@@ -195,7 +201,7 @@ public class DrawGameScreen implements IScreenManager
             GL11.glEnable(GL11.GL_LIGHTING);
         }
 
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
     }
 
     @Override
@@ -203,7 +209,7 @@ public class DrawGameScreen implements IScreenManager
     {
         if (this.driver != null)
         {
-            return driver.getWorld().provider;
+            return driver.getWorld().dimension;
         }
 
         return null;

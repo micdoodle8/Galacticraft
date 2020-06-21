@@ -3,26 +3,52 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IItemElectricBase;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements ISidedInventory, IInventoryDefaults, IConnector, IMachineSides
+public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements ISidedInventory, IInventoryDefaults, IConnector, IMachineSides
 {
+    public static class TileEntityEnergyStorageModuleT1 extends TileEntityEnergyStorageModule
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.storageModule)
+        public static TileEntityType<TileEntityEnergyStorageModuleT1> TYPE;
+
+        public TileEntityEnergyStorageModuleT1()
+        {
+            super(TYPE);
+            this.storage.setCapacity(BASE_CAPACITY);
+            this.storage.setMaxExtract(300);
+        }
+    }
+
+    public static class TileEntityEnergyStorageModuleT2 extends TileEntityEnergyStorageModule
+    {
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.storageModule)
+        public static TileEntityType<TileEntityEnergyStorageModuleT2> TYPE;
+
+        public TileEntityEnergyStorageModuleT2()
+        {
+            super(TYPE);
+            setTier2();
+        }
+    }
+
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
 
@@ -33,31 +59,17 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
     private boolean initialised = false;
 
-    public TileEntityEnergyStorageModule()
-    {
-        this(1);
-    }
-
     /*
      * @param tier: 1 = Electric Furnace  2 = Electric Arc Furnace
      */
-    public TileEntityEnergyStorageModule(int tier)
+    public TileEntityEnergyStorageModule(TileEntityType<?> type)
     {
-        super(tier == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
+        super(type);
         this.initialised = true;
         this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
-        if (tier == 1)
-        {
-            //Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
-            this.storage.setCapacity(BASE_CAPACITY);
-            this.storage.setMaxExtract(300);
-            return;
-        }
-
-        this.setTier2();
     }
 
-    private void setTier2()
+    protected void setTier2()
     {
         this.storage.setCapacity(TIER2_CAPACITY);
         this.storage.setMaxExtract(1800);
@@ -65,22 +77,20 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void update()
+    public void tick()
     {
         if (!this.initialised)
         {
-            int metadata = this.getBlockMetadata();
-
-            //for version update compatibility
-            Block b = this.world.getBlockState(this.getPos()).getBlock();
-            if (b == GCBlocks.machineBase)
-            {
-                this.world.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState(), 2);
-            }
-            else if (metadata >= 8)
-            {
-                this.setTier2();
-            }
+            //for version tick compatibility
+//            Block b = this.world.getBlockState(this.getPos()).getBlock();
+//            if (b == GCBlocks.machineBase)
+//            {
+//                this.world.setBlockState(this.getPos(), GCBlocks.machineTiered.getDefaultState(), 2);
+//            }
+//            else if (metadata >= 8)
+//            {
+//                this.setTier2();
+//            }
             this.initialised = true;
         }
 
@@ -95,13 +105,14 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
         this.lastEnergy = energy;
 
-        super.update();
+        super.tick();
 
         this.scaledEnergyLevel = (int) Math.floor((this.getEnergyStoredGC() + 49) * 16 / this.getMaxEnergyStoredGC());
 
         if (this.scaledEnergyLevel != this.lastScaledEnergyLevel)
         {
-            this.world.notifyLightSet(this.getPos());
+//            this.world.notifyLightSet(this.getPos());
+            world.getChunkProvider().getLightManager().checkBlock(this.getPos());
         }
 
         if (!this.world.isRemote)
@@ -119,9 +130,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
-        super.readFromNBT(nbt);
+        super.read(nbt);
         if (this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {
             this.setTier2();
@@ -136,14 +147,14 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {
             this.storage.setEnergyStored(BASE_CAPACITY);
         }
 
-        super.writeToNBT(nbt);
+        super.write(nbt);
 
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
@@ -320,7 +331,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachineTiered.MACHINESIDES_RENDERTYPE;
+        return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
 }

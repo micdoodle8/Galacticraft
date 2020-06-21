@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.Entity;
+import micdoodle8.mods.galacticraft.core.entities.EntityLander;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 
-public class ModelLander extends ModelBase
+public class ModelLander extends EntityModel<EntityLander>
 {
     ModelRendererGC bodyMain1;
     ModelRendererGC bodyMain2;
@@ -459,10 +459,10 @@ public class ModelLander extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void render(EntityLander entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         super.render(entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
+        this.setRotationAngles(entity, par2, par3, par4, par5, par6, par7);
         this.bodyMain1.render(par7);
         this.bodyMain2.render(par7);
         this.bodyAux1.render(par7);

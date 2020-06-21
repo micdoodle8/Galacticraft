@@ -13,9 +13,9 @@ public class BiomeMoon extends BiomeGenBaseGC
 {
     public static final Biome moonFlat = new BiomeFlatMoon(new BiomeProperties("Moon").setBaseHeight(1.5F).setHeightVariation(0.4F).setRainfall(0.0F));
 
-    BiomeMoon(BiomeProperties properties)
+    BiomeMoon(Biome.Builder builder)
     {
-        super(properties, true);
+        super(builder, true);
     }
     
     @Override

@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,7 +33,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> astroMinerRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static Map<Class<? extends Dimension>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends Dimension>, ResourceLocation>();
     private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
-    private static List<Integer> dimensionTypeIDs = new ArrayList<Integer>();
+    private static List<DimensionType> dimensionTypeIDs = new ArrayList<>();
     private static List<IGameScreen> gameScreens = new ArrayList<IGameScreen>();
     private static int maxScreenTypes;
     private static Map<Integer, List<Object>> gearMap = new HashMap<>();
@@ -40,9 +41,9 @@ public class GalacticraftRegistry
     private static Method gratingRegister = null;
 
     /**
-     * Register a new Teleport type for the world provider passed
+     * Register a new Teleport type for the world dimension passed
      *
-     * @param clazz the world provider class that you wish to customize
+     * @param clazz the world dimension class that you wish to customize
      *              teleportation for
      * @param type  an ITeleportType-implemented class that will be used for the
      *              provided world type
@@ -56,10 +57,10 @@ public class GalacticraftRegistry
     }
 
     /**
-     * Link a world provider to a gui texture. This texture will be shown on the
+     * Link a world dimension to a gui texture. This texture will be shown on the
      * left-side of the screen while the player is in the rocket.
      *
-     * @param clazz     The World Provider class
+     * @param clazz     The World dimension class
      * @param rocketGui Resource Location for the gui texture
      */
     public static void registerRocketGui(Class<? extends Dimension> clazz, ResourceLocation rocketGui)
@@ -208,16 +209,16 @@ public class GalacticraftRegistry
         GalacticraftRegistry.spaceStations.add(type);
     }
 
-    public static void replaceSpaceStationRecipe(int spaceStationID, HashMap<Object, Integer> obj)
-    {
-        for (SpaceStationType type1 : GalacticraftRegistry.spaceStations)
-        {
-            if (type1.getSpaceStationID() == spaceStationID)
-            {
-                type1.setRecipeForSpaceStation(new SpaceStationRecipe(obj));
-            }
-        }
-    }
+//    public static void replaceSpaceStationRecipe(int spaceStationID, HashMap<Object, Integer> obj)
+//    {
+//        for (SpaceStationType type1 : GalacticraftRegistry.spaceStations)
+//        {
+//            if (type1.getSpaceStationID() == spaceStationID)
+//            {
+//                type1.setRecipeForSpaceStation(new SpaceStationRecipe(obj));
+//            }
+//        }
+//    }
 
     public SpaceStationType getTypeFromPlanetID(int planetID)
     {
@@ -277,7 +278,7 @@ public class GalacticraftRegistry
     /***
      * Register a Galacticraft dimension
      */
-//    public static DimensionType registerDimension(String name, String suffix, DimensionType id, Class<? extends Dimension> provider, boolean keepLoaded) throws IllegalArgumentException
+//    public static DimensionType registerDimension(String name, String suffix, DimensionType id, Class<? extends Dimension> dimension, boolean keepLoaded) throws IllegalArgumentException
 //    {
 //        for (DimensionType other : DimensionType.values())
 //        {
@@ -287,7 +288,7 @@ public class GalacticraftRegistry
 //            }
 //        }
 //
-//        DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
+//        DimensionType type = DimensionType.register(name, suffix, id, dimension, keepLoaded);
 //        GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
 //        if (type == null)
 //        {
@@ -297,12 +298,12 @@ public class GalacticraftRegistry
 //        return type;
 //    } TODO ?
 
-    public static int getDimensionTypeID(int index)
+    public static DimensionType getDimensionTypeID(int index)
     {
     	return GalacticraftRegistry.dimensionTypeIDs.get(index);
     }
     
-    public static boolean isDimensionTypeIDRegistered(int typeId)
+    public static boolean isDimensionTypeIDRegistered(DimensionType typeId)
     {
         return GalacticraftRegistry.dimensionTypeIDs.contains(typeId);
     }

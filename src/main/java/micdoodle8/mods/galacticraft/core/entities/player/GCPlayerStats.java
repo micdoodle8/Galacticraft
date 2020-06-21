@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.dimension.DimensionType;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -232,9 +233,9 @@ public abstract class GCPlayerStats
 
     public abstract void setCoordsTeleportedFromZ(double coordsTeleportedFromZ);
 
-    public abstract HashMap<Integer, Integer> getSpaceStationDimensionData();
+    public abstract HashMap<DimensionType, DimensionType> getSpaceStationDimensionData();
 
-    public abstract void setSpaceStationDimensionData(HashMap<Integer, Integer> spaceStationDimensionData);
+    public abstract void setSpaceStationDimensionData(HashMap<DimensionType, DimensionType> spaceStationDimensionData);
 
     public abstract boolean isOxygenSetupValid();
 

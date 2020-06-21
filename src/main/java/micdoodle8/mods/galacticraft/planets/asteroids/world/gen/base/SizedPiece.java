@@ -42,10 +42,10 @@ public abstract class SizedPiece extends Piece
     {
         super.writeStructureToNBT(tagCompound);
 
-        tagCompound.setInteger("dir", this.direction.ordinal());
-        tagCompound.setInteger("sX", this.sizeX);
-        tagCompound.setInteger("sY", this.sizeY);
-        tagCompound.setInteger("sZ", this.sizeZ);
+        tagCompound.putInt("dir", this.direction.ordinal());
+        tagCompound.putInt("sX", this.sizeX);
+        tagCompound.putInt("sY", this.sizeY);
+        tagCompound.putInt("sZ", this.sizeZ);
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class SizedPiece extends Piece
         this.sizeY = tagCompound.getInteger("sY");
         this.sizeZ = tagCompound.getInteger("sZ");
 
-        if (tagCompound.hasKey("dir"))
+        if (tagCompound.contains("dir"))
         {
             this.direction = Direction.byIndex(tagCompound.getInteger("dir"));
         }
@@ -145,7 +145,7 @@ public abstract class SizedPiece extends Piece
         do
         {
             int randDir = rand.nextInt(4);
-            randomDir = Direction.getHorizontal((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
+            randomDir = Direction.byHorizontalIndex((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
             MutableBoundingBox extension = getExtension(randomDir, 1, 3);
             blockX = extension.minX;
             blockZ = extension.minZ;

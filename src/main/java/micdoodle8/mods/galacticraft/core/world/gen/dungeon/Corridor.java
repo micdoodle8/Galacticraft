@@ -3,28 +3,39 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 
 import java.lang.reflect.Constructor;
 import java.util.Random;
 
 public class Corridor extends SizedPiece
 {
-    public Corridor()
+    public Corridor(IStructurePieceType type)
     {
+        super(type);
     }
 
-    public Corridor(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction direction)
+    public Corridor(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(configuration, sizeX, sizeY, sizeZ, direction);
+        super(type, configuration, sizeX, sizeY, sizeZ, direction);
         this.setCoordBaseMode(Direction.SOUTH);
         this.boundingBox = new MutableBoundingBox(blockPosX, configuration.getYPosition(), blockPosZ, blockPosX + sizeX, configuration.getYPosition() + sizeY, blockPosZ + sizeZ);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
+    protected void readAdditional(CompoundNBT tagCompound)
+    {
+
+    }
+
+    @Override
+    public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_)
     {
         for (int i = 0; i < this.boundingBox.getXSize(); i++)
         {

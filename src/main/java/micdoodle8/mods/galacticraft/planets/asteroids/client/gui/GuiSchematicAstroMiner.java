@@ -21,9 +21,9 @@ public class GuiSchematicAstroMiner extends GuiPositionedContainer implements IS
 
     private int pageIndex;
 
-    public GuiSchematicAstroMiner(PlayerInventory par1InventoryPlayer, BlockPos pos)
+    public GuiSchematicAstroMiner(PlayerInventory playerInv, BlockPos pos)
     {
-        super(new ContainerSchematicAstroMiner(par1InventoryPlayer, pos), pos);
+        super(new ContainerSchematicAstroMiner(playerInv, pos), pos);
         this.ySize = 221;
     }
 

@@ -20,7 +20,7 @@ public class GuiElementDropdown extends Button
     public FontRenderer font;
     private IDropboxCallback parentGui;
 
-    public GuiElementDropdown(int id, IDropboxCallback parentClass, int x, int y, String... text)
+    public GuiElementDropdown(IDropboxCallback parentClass, int x, int y, String... text)
     {
         super(x, y, 15, 15, "", (button) -> {});
         Minecraft minecraft = Minecraft.getInstance();
