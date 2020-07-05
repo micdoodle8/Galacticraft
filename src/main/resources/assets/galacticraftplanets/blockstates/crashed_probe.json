@@ -1,5 +1,9 @@
 {
+    "forge_marker": 1,
     "variants": {
-        "normal": { "model": "galacticraftplanets:crashed_probe" }
+        "facing=north": { "model": "galacticraftplanets:crashed_probe" },
+        "facing=east":  { "model": "galacticraftplanets:crashed_probe", "y": 90 },
+        "facing=west":  { "model": "galacticraftplanets:crashed_probe", "y": 270 },
+        "facing=south": { "model": "galacticraftplanets:crashed_probe", "y": 180 }
     }
 }
