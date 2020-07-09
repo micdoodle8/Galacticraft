@@ -50,7 +50,7 @@
 //import net.minecraftforge.common.property.IUnlistedProperty;
 //import net.minecraftforge.fluids.BlockFluidBase;
 //import net.minecraftforge.fluids.BlockFluidClassic;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //import net.minecraftforge.registries.IForgeRegistry;
 //
@@ -345,7 +345,7 @@
 //            Block.spawnAsEntity(world, pos, new ItemStack(GCBlocks.grating));
 //            return;
 //        }
-//        if (newBlock.getBlock() instanceof BlockLiquid)
+//        if (newBlock.getBlock() instanceof FlowingFluidBlock)
 //        {
 //            if (newBlock.getMaterial() == Material.WATER)
 //            {
@@ -393,7 +393,7 @@
 //                }
 //            }
 //        }
-//        else if (oldBlock.getBlock() instanceof BlockLiquid)
+//        else if (oldBlock.getBlock() instanceof FlowingFluidBlock)
 //        {
 //            if (oldBlock.getMaterial() == Material.WATER)
 //            {

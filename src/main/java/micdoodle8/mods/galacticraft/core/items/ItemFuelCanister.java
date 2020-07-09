@@ -42,7 +42,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableIt
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        if (itemStack.getItemDamage() == 1)
+//        if (itemStack.getDamage() == 1)
 //        {
 //            return "item.fuel_canister";
 //        }

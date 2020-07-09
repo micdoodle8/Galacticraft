@@ -6,7 +6,7 @@
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 //import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-//import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+//import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.item.crafting.Ingredient;
 //import net.minecraft.util.JSONUtils;

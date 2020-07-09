@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -53,7 +53,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -108,7 +107,7 @@ public class GCPlayerHandler
         if (event.isWasDeath() && event.getOriginal() instanceof ServerPlayerEntity)
         {
             UUID uu = event.getOriginal().getUniqueID();
-            if (event.getOriginal().world.getDimension() instanceof IGalacticraftWorldProvider)
+            if (event.getOriginal().world.getDimension() instanceof IGalacticraftDimension)
             {
                 Integer timeA = deathTimes.get(uu);
                 int bb = ((ServerPlayerEntity) event.getOriginal()).server.getTickCounter();
@@ -528,7 +527,7 @@ public class GCPlayerHandler
 
     protected void checkThermalStatus(ServerPlayerEntity player, GCPlayerStats playerStats)
     {
-        if (player.world.getDimension() instanceof IGalacticraftWorldProvider && !player.abilities.isCreativeMode && !CompatibilityManager.isAndroid(player))
+        if (player.world.getDimension() instanceof IGalacticraftDimension && !player.abilities.isCreativeMode && !CompatibilityManager.isAndroid(player))
         {
             final ItemStack thermalPaddingHelm = playerStats.getExtendedInventory().getStackInSlot(6);
             final ItemStack thermalPaddingChestplate = playerStats.getExtendedInventory().getStackInSlot(7);
@@ -557,7 +556,7 @@ public class GCPlayerHandler
                 lowestThermalStrength = Math.abs(lowestThermalStrength);  //It shouldn't be negative, but just in case!
             }
 
-            IGalacticraftWorldProvider dimension = (IGalacticraftWorldProvider) player.world.getDimension();
+            IGalacticraftDimension dimension = (IGalacticraftDimension) player.world.getDimension();
             float thermalLevelMod = dimension.getThermalLevelModifier();
             float absThermalLevelMod = Math.abs(thermalLevelMod);
 
@@ -699,9 +698,9 @@ public class GCPlayerHandler
 
     protected void checkShield(ServerPlayerEntity playerMP, GCPlayerStats playerStats)
     {
-        if (playerMP.ticksExisted % 20 == 0 && playerMP.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (playerMP.ticksExisted % 20 == 0 && playerMP.world.getDimension() instanceof IGalacticraftDimension)
         {
-            if (((IGalacticraftWorldProvider) playerMP.world.getDimension()).shouldCorrodeArmor())
+            if (((IGalacticraftDimension) playerMP.world.getDimension()).shouldCorrodeArmor())
             {
                 ItemStack shieldController = playerStats.getExtendedInventory().getStackInSlot(10);
                 boolean valid = false;
@@ -732,7 +731,7 @@ public class GCPlayerHandler
 
     protected void checkOxygen(ServerPlayerEntity player, GCPlayerStats stats)
     {
-        if ((player.dimension == DimensionType.OVERWORLD || player.world.getDimension() instanceof IGalacticraftWorldProvider) && (!(player.dimension == DimensionType.OVERWORLD || ((IGalacticraftWorldProvider) player.world.getDimension()).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.abilities.isCreativeMode && !(player.getRidingEntity() instanceof EntityLanderBase) && !(player.getRidingEntity() instanceof EntityAutoRocket) && !(player.getRidingEntity() instanceof EntityCelestialFake) && !CompatibilityManager.isAndroid(player))
+        if ((player.dimension == DimensionType.OVERWORLD || player.world.getDimension() instanceof IGalacticraftDimension) && (!(player.dimension == DimensionType.OVERWORLD || ((IGalacticraftDimension) player.world.getDimension()).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.abilities.isCreativeMode && !(player.getRidingEntity() instanceof EntityLanderBase) && !(player.getRidingEntity() instanceof EntityAutoRocket) && !(player.getRidingEntity() instanceof EntityCelestialFake) && !CompatibilityManager.isAndroid(player))
         {
             final ItemStack tankInSlot = stats.getExtendedInventory().getStackInSlot(2);
             final ItemStack tankInSlot2 = stats.getExtendedInventory().getStackInSlot(3);
@@ -867,11 +866,11 @@ public class GCPlayerHandler
     protected void throwMeteors(ServerPlayerEntity player)
     {
         World world = player.world;
-        if (world.getDimension() instanceof IGalacticraftWorldProvider && !world.isRemote)
+        if (world.getDimension() instanceof IGalacticraftDimension && !world.isRemote)
         {
-            if (((IGalacticraftWorldProvider) world.getDimension()).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod > 0.0)
+            if (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod > 0.0)
             {
-                final int f = (int) (((IGalacticraftWorldProvider) world.getDimension()).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.meteorSpawnMod));
+                final int f = (int) (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.meteorSpawnMod));
 
                 if (world.rand.nextInt(f) == 0)
                 {
@@ -1070,7 +1069,7 @@ public class GCPlayerHandler
 
             // If the block below is the moon block
             BlockState state = player.world.getBlockState(new BlockPos(iPosX, iPosY, iPosZ));
-            if (state.getBlock() == GCBlocks.blockMoon)
+            if (state.getBlock() == GCBlocks.moonTurf)
             {
                 // And is the correct metadata (moon turf)
 //                if (state.get(BlockBasicMoon.BASIC_TYPE_MOON) == BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF) TODO Footprints
@@ -1298,7 +1297,7 @@ public class GCPlayerHandler
 //            player.setSpawnPoint(new BlockPos(spawnPos.intX(), spawnPos.intY(), spawnPos.intZ()), true, GCCoreUtil.getDimensionID(player.world));
 //            stats.setNewAdventureSpawn(true);
 //        } TODO Challenge spawning
-        final boolean isInGCDimension = player.world.getDimension() instanceof IGalacticraftWorldProvider;
+        final boolean isInGCDimension = player.world.getDimension() instanceof IGalacticraftDimension;
 
         if (tick >= 25)
         {
@@ -1507,7 +1506,7 @@ public class GCPlayerHandler
 
         this.updateSchematics(player, stats);
 
-        if (tick % 250 == 0 && stats.getFrequencyModuleInSlot().isEmpty() && !stats.hasReceivedSoundWarning() && isInGCDimension && player.onGround && tick > 0 && ((IGalacticraftWorldProvider) player.world.getDimension()).getSoundVolReductionAmount() > 1.0F)
+        if (tick % 250 == 0 && stats.getFrequencyModuleInSlot().isEmpty() && !stats.hasReceivedSoundWarning() && isInGCDimension && player.onGround && tick > 0 && ((IGalacticraftDimension) player.world.getDimension()).getSoundVolReductionAmount() > 1.0F)
         {
             String[] string2 = GCCoreUtil.translate("gui.frequencymodule.warning1").split(" ");
             StringBuilder sb = new StringBuilder();

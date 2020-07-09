@@ -5,6 +5,8 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nonnull;
+
 public interface IFluidHandlerWrapper 
 {
     int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction fillAction);
@@ -17,5 +19,12 @@ public interface IFluidHandlerWrapper
 
     boolean canDrain(Direction from, Fluid fluid);
 
-//    FluidTankInfo[] getTankInfo(Direction from);
+    int getTanks();
+
+    @Nonnull
+    FluidStack getFluidInTank(int tank);
+
+    int getTankCapacity(int tank);
+
+    boolean isFluidValid(int tank, @Nonnull FluidStack stack);
 }

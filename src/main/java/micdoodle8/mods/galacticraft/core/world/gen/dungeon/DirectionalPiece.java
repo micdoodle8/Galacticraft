@@ -12,9 +12,9 @@ public abstract class DirectionalPiece extends Piece
 {
     private Direction direction;
 
-    public DirectionalPiece(IStructurePieceType type)
+    public DirectionalPiece(IStructurePieceType type, CompoundNBT nbt)
     {
-        super(type);
+        super(type, nbt);
     }
 
     public DirectionalPiece(IStructurePieceType type, DungeonConfiguration configuration, Direction direction)
@@ -85,6 +85,6 @@ public abstract class DirectionalPiece extends Piece
             return null;
         }
 
-        return new Corridor(this.func_214807_k(), this.configuration, rand, blockX, blockZ, sizeX, small ? 3 : this.configuration.getHallwayHeight(), sizeZ, randomDir);
+        return new Corridor(this.configuration, rand, blockX, blockZ, sizeX, small ? 3 : this.configuration.getHallwayHeight(), sizeZ, randomDir);
     }
 }

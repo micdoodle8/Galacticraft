@@ -2,15 +2,12 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCParticles;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityParticleData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.items.ItemTier1Rocket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -152,7 +149,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.world.getDimension() instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.getDimension()).hasNoAtmosphere())
+                if (this.world.getDimension() instanceof IGalacticraftDimension && ((IGalacticraftDimension) this.world.getDimension()).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 1.6);
                 }
@@ -173,9 +170,9 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
             double multiplier = 1.0D;
 
-            if (this.world.getDimension() instanceof IGalacticraftWorldProvider)
+            if (this.world.getDimension() instanceof IGalacticraftDimension)
             {
-                multiplier = ((IGalacticraftWorldProvider) this.world.getDimension()).getFuelUsageMultiplier();
+                multiplier = ((IGalacticraftDimension) this.world.getDimension()).getFuelUsageMultiplier();
 
                 if (multiplier <= 0)
                 {

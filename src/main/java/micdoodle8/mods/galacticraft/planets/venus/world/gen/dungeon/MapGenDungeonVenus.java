@@ -1,97 +1,167 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.Dynamic;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.world.gen.GCFeatures;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.Structure;
-import net.minecraft.world.gen.feature.StructureIO;
-import net.minecraft.world.gen.feature.StructurePiece;
-import net.minecraft.world.gen.feature.StructureStart;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.structure.*;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
-public class MapGenDungeonVenus extends Structure
+public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
 {
-    private static boolean initialized;
-    private DungeonConfigurationVenus configuration;
+//    private DungeonConfiguration configuration;
 
-    static
+//    static
+//    {
+//        try
+//        {
+//            MapGenDungeon.initiateStructures();
+//        }
+//        catch (Throwable e)
+//        {
+//
+//        }
+//    }
+
+    public MapGenDungeonVenus(Function<Dynamic<?>, ? extends DungeonConfigurationVenus> func)
     {
-        try
-        {
-            MapGenDungeonVenus.initiateStructures();
-        }
-        catch (Throwable e)
-        {
-
-        }
-    }
-
-    public MapGenDungeonVenus(DungeonConfigurationVenus configuration)
-    {
-        this.configuration = configuration;
-    }
-
-    public static void initiateStructures() throws Throwable
-    {
-        if (!MapGenDungeonVenus.initialized)
-        {
-            StructureIO.registerStructure(MapGenDungeonVenus.Start.class, "VenusDungeon");
-            StructureIO.registerStructureComponent(DungeonStartVenus.class, "VenusDungeonStart");
-            StructureIO.registerStructureComponent(CorridorVenus.class, "VenusDungeonCorridor");
-            StructureIO.registerStructureComponent(RoomEmptyVenus.class, "VenusDungeonEmptyRoom");
-            StructureIO.registerStructureComponent(RoomBossVenus.class, "VenusDungeonBossRoom");
-            StructureIO.registerStructureComponent(RoomTreasureVenus.class, "VenusDungeonTreasureRoom");
-            StructureIO.registerStructureComponent(RoomSpawnerVenus.class, "VenusDungeonSpawnerRoom");
-            StructureIO.registerStructureComponent(RoomChestVenus.class, "VenusDungeonChestRoom");
-            StructureIO.registerStructureComponent(RoomEntranceVenus.class, "VenusDungeonEntranceRoom");
-        }
-
-        MapGenDungeonVenus.initialized = true;
+        super(func);
     }
 
     @Override
     public String getStructureName()
     {
-        return "GC_Dungeon_Venus";
+        return "GC_Dungeon";
     }
 
     @Override
-    protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
+    public IStartFactory getStartFactory()
     {
-        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.getDimension()).getDungeonSpacing());
+        return MapGenDungeonVenus.Start::new;
+    }
+
+    @Override
+    public int getSize()
+    {
+        return 12;
+    }
+
+    @Override
+    public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkX, int chunkZ)
+    {
+        long dungeonPos = getDungeonPosForCoords(chunkGen, chunkX, chunkZ, ((IGalacticraftDimension) chunkGen.world.getDimension()).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
-        int j = (int) dungeonPos;
+        int j = (int) dungeonPos;  //Java automatically gives the 32 least significant bits
         return i == chunkX && j == chunkZ;
     }
 
-    @Override
-    protected StructureStart getStructureStart(int chunkX, int chunkZ)
+    public static long getDungeonPosForCoords(ChunkGenerator<?> generator, int chunkX, int chunkZ, int spacing)
     {
-        return new MapGenDungeonVenus.Start(this.world, this.rand, chunkX, chunkZ, this.configuration);
+        final int numChunks = spacing / 16;
+        if (chunkX < 0)
+        {
+            chunkX -= numChunks - 1;
+        }
+
+        if (chunkZ < 0)
+        {
+            chunkZ -= numChunks - 1;
+        }
+
+        int k = chunkX / numChunks;
+        int l = chunkZ / numChunks;
+        long seed = (long)k * 341873128712L + (long)l * 132897987541L + generator.world.getWorldInfo().getSeed() + (long)(10387340 + generator.world.getDimension().getType().getId());
+        Random random = new Random();
+        random.setSeed(seed);
+        k = k * numChunks + random.nextInt(numChunks);
+        l = l * numChunks + random.nextInt(numChunks);
+        return (((long) k) << 32) + l;
     }
 
+    /**
+     * This returns an angle between 0 and 360 degrees.  0 degrees means due North from the current (x, z) position
+     * Only provides meaningful results in worlds with dungeon generation using this class!
+     */
+    public static float directionToNearestDungeon(World world, double xpos, double zpos)
+    {
+        int spacing = ((IGalacticraftDimension) world.getDimension()).getDungeonSpacing();
+        if (spacing == 0) return 0F;
+        int x = MathHelper.floor(xpos);
+        int z = MathHelper.floor(zpos);
+        int quadrantX = x % spacing;
+        int quadrantZ = z % spacing;
+        int searchOffsetX = quadrantX / (spacing / 2);  //0 or 1
+        int searchOffsetZ = quadrantZ / (spacing / 2);  //0 or 1
+        double nearestX = 0;
+        double nearestZ = 0;
+        double nearestDistance = Double.MAX_VALUE;
+        for (int cx = searchOffsetX - 1; cx < searchOffsetX + 1; cx++)
+        {
+            for (int cz = searchOffsetZ - 1; cz < searchOffsetZ + 1; cz++)
+            {
+                long dungeonPos = getDungeonPosForCoords(world.getChunkProvider().getChunkGenerator(), (x + cx * spacing) / 16, (z + cz * spacing) / 16, spacing);
+                int i = 2 + (((int) (dungeonPos >> 32)) << 4);
+                int j = 2 + (((int) dungeonPos) << 4);  //Java automatically gives the 32 least significant bits
+                double oX = i - xpos;
+                double oZ = j - zpos;
+                double distanceSq = oX * oX + oZ * oZ;
+                if (distanceSq < nearestDistance)
+                {
+                    nearestDistance = distanceSq;
+                    nearestX = oX;
+                    nearestZ = oZ;
+                }
+            }
+        }
+
+        return GCCoreUtil.getAngleForRelativePosition(nearestX, nearestZ);
+    }
+
+//    @Override
+//    protected StructureStart getStructureStart(int chunkX, int chunkZ)
+//    {
+//        return new MapGenDungeon.Start(this.world, this.rand, chunkX, chunkZ, this.configuration);
+//    }
+
+    @Nullable
     @Override
-    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean p_180706_3_)
+    public BlockPos findNearest(World worldIn, ChunkGenerator<? extends GenerationSettings> chunkGenerator, BlockPos pos, int radius, boolean p_211405_5_)
     {
         return null;
     }
 
     public static class Start extends StructureStart
     {
-        private DungeonConfigurationVenus configuration;
+        //        private DungeonConfigurationVenus configuration;
+        DungeonStartVenus startPiece;
 
-        public Start()
+        public Start(Structure<?> structure, int chunkX, int chunkZ, Biome biomeIn, MutableBoundingBox boundsIn, int referenceIn, long seed)
         {
+            super(structure, chunkX, chunkZ, biomeIn, boundsIn, referenceIn, seed);
+//            this.configuration = configuration;
         }
 
-        public Start(World worldIn, Random rand, int chunkX, int chunkZ, DungeonConfigurationVenus configuration)
+        @Override
+        public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn)
         {
-            super(chunkX, chunkZ);
-            this.configuration = configuration;
-            DungeonStartVenus startPiece = new DungeonStartVenus(worldIn, configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+            DungeonConfigurationVenus dungeonConfig = generator.getStructureConfig(biomeIn, VenusFeatures.VENUS_DUNGEON.get());
+            startPiece = new DungeonStartVenus((World) generator.world, dungeonConfig, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             startPiece.buildComponent(startPiece, this.components, rand);
             List<StructurePiece> list = startPiece.attachedComponents;
 
@@ -102,7 +172,7 @@ public class MapGenDungeonVenus extends Structure
                 structurecomponent.buildComponent(startPiece, this.components, rand);
             }
 
-            this.updateBoundingBox();
+            this.recalculateStructureSize();
         }
     }
 }

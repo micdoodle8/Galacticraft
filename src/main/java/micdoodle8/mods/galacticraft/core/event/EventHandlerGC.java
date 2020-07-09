@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -169,9 +170,9 @@ public class EventHandlerGC
             }
         }
 
-        if (event.getEntityLiving().world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (event.getEntityLiving().world.getDimension() instanceof IGalacticraftDimension)
         {
-            event.setDistance(event.getDistance() * ((IGalacticraftWorldProvider) event.getEntityLiving().world.getDimension()).getFallDamageModifier());
+            event.setDistance(event.getDistance() * ((IGalacticraftDimension) event.getEntityLiving().world.getDimension()).getFallDamageModifier());
         }
     }
 
@@ -233,7 +234,7 @@ public class EventHandlerGC
 
         final Block idClicked = worldObj.getBlockState(event.getPos()).getBlock();
 
-        if (idClicked instanceof BedBlock && worldObj.dimension instanceof IGalacticraftWorldProvider && !worldObj.isRemote && !((IGalacticraftWorldProvider) worldObj.dimension).hasBreathableAtmosphere())
+        if (idClicked instanceof BedBlock && worldObj.dimension instanceof IGalacticraftDimension && !worldObj.isRemote && !((IGalacticraftDimension) worldObj.dimension).hasBreathableAtmosphere())
         {
             if (GalacticraftCore.isPlanetsLoaded)
             {
@@ -316,18 +317,18 @@ public class EventHandlerGC
         if (entityLiving instanceof ServerPlayerEntity)
         {
             GalacticraftCore.handler.onPlayerUpdate((ServerPlayerEntity) entityLiving);
-//            if (GalacticraftCore.isPlanetsLoaded)
-//            {
-//                AsteroidsModule.playerHandler.onPlayerUpdate((ServerPlayerEntity) entityLiving);
-//            } TODO
+            if (GalacticraftCore.isPlanetsLoaded)
+            {
+                AsteroidsModule.playerHandler.onPlayerUpdate((ServerPlayerEntity) entityLiving);
+            }
             return;
         }
 
         if (entityLiving.ticksExisted % ConfigManagerCore.suffocationCooldown == 0)
         {
-            if (entityLiving.world.getDimension() instanceof IGalacticraftWorldProvider)
+            if (entityLiving.world.getDimension() instanceof IGalacticraftDimension)
             {
-                if (!(entityLiving instanceof PlayerEntity) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider) entityLiving.world.getDimension()).hasBreathableAtmosphere())
+                if (!(entityLiving instanceof PlayerEntity) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftDimension) entityLiving.world.getDimension()).hasBreathableAtmosphere())
                 {
                     if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
                     {
@@ -617,7 +618,7 @@ public class EventHandlerGC
         {
             return true;
         }
-        return /*b instanceof BlockLiquid && */b != GCBlocks.crudeOil;
+        return /*b instanceof FlowingFluidBlock && */b != GCBlocks.crudeOil;
     }
 
     private static boolean checkBlockAbove(IWorld w, BlockPos pos)
@@ -895,7 +896,7 @@ public class EventHandlerGC
         //Disable any night vision effects on the sky, if the planet has no atmosphere
         if (entity != null && ((LivingEntity) entity).isPotionActive(Effects.NIGHT_VISION))
         {
-            if (worldclient.dimension instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.dimension).hasNoAtmosphere() && !((IGalacticraftWorldProvider) worldclient.dimension).hasBreathableAtmosphere())
+            if (worldclient.dimension instanceof IGalacticraftDimension && ((IGalacticraftDimension) worldclient.dimension).hasNoAtmosphere() && !((IGalacticraftDimension) worldclient.dimension).hasBreathableAtmosphere())
             {
                 Vec3d vec = worldclient.getFogColor(1.0F);
                 event.setRed((float) vec.x);
@@ -929,7 +930,7 @@ public class EventHandlerGC
 
         ClientPlayerEntity player = Minecraft.getInstance().player;
 
-        if (player != null && player.world != null && player.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (player != null && player.world != null && player.world.getDimension() instanceof IGalacticraftDimension)
         {
             //Only modify standard game sounds, not music
             if (event.getResultSound().getAttenuationType() != ISound.AttenuationType.NONE)
@@ -993,7 +994,7 @@ public class EventHandlerGC
                         }
 
                         //If it's not a duplicate: play the same sound but at reduced volume
-                        float newVolume = volume / Math.max(0.01F, ((IGalacticraftWorldProvider) player.world.getDimension()).getSoundVolReductionAmount());
+                        float newVolume = volume / Math.max(0.01F, ((IGalacticraftDimension) player.world.getDimension()).getSoundVolReductionAmount());
 
 //                        this.soundPlayList.add(new SoundPlayEntry(event.getName(), x, y, z, newVolume));
 //                        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(event.getResultSound().getSoundLocation());

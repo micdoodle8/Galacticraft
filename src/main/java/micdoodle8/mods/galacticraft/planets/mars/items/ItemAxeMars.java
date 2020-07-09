@@ -1,32 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import com.google.common.collect.Sets;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Set;
-
-public class ItemAxeMars extends ToolItem implements ISortableItem
+public class ItemAxeMars extends AxeItem implements ISortableItem
 {
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] { Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE});
-
-    public ItemAxeMars(ToolMaterial material)
+    public ItemAxeMars(Item.Properties builder)
     {
-        super(material, EFFECTIVE_ON);
-        this.attackDamage = 6.0F;
-        this.attackSpeed = -3.0F;
+        super(EnumItemTierMars.DESH, 6.0F, -3.0F, builder);
     }
 
     @Override
@@ -36,7 +26,7 @@ public class ItemAxeMars extends ToolItem implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
@@ -53,6 +43,6 @@ public class ItemAxeMars extends ToolItem implements ISortableItem
     public float getDestroySpeed(ItemStack stack, BlockState state)
     {
         Material material = state.getMaterial();
-        return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE ? super.getDestroySpeed(stack, state) : this.efficiency;
+        return material != Material.WOOD && material != Material.PLANTS && material != Material.TALL_PLANTS ? super.getDestroySpeed(stack, state) : this.efficiency;
     }
 }

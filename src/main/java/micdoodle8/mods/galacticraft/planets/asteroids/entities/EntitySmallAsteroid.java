@@ -1,11 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityProjectileTNT;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.world.World;
 
 public class EntitySmallAsteroid extends Entity
@@ -18,15 +22,21 @@ public class EntitySmallAsteroid extends Entity
     public int type;
     private boolean firstUpdate = true;
 
-    public EntitySmallAsteroid(World world)
+    public EntitySmallAsteroid(EntityType<? extends EntitySmallAsteroid> type, World worldIn)
     {
-        super(world);
-        this.setSize(1.0F, 1.0F);
-        this.isImmuneToFire = true;
+        super(type, worldIn);
+//        this.setSize(1.0F, 1.0F);
+//        this.isImmuneToFire = true;
     }
 
     @Override
-    public void onEntityUpdate()
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
+    }
+
+    @Override
+    public void baseTick()
     {
         if (!this.firstUpdate)
         {
@@ -43,7 +53,7 @@ public class EntitySmallAsteroid extends Entity
             }
         }
 
-        super.onEntityUpdate();
+        super.baseTick();
 
         if (!this.world.isRemote)
         {
@@ -59,22 +69,23 @@ public class EntitySmallAsteroid extends Entity
             this.rotationYaw += this.getSpinYaw();
         }
 
-        double sqrdMotion = this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ;
+        double sqrdMotion = this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z;
 
         if (sqrdMotion < 0.05)
         {
             // If the motion is too low (for some odd reason), speed it back up slowly.
-            this.motionX *= 1.001D;
-            this.motionY *= 1.001D;
-            this.motionZ *= 1.001D;
+//            this.motionX *= 1.001D;
+//            this.motionY *= 1.001D;
+//            this.motionZ *= 1.001D;
+            this.setMotion(this.getMotion().x * 1.001, this.getMotion().y * 1.001, this.getMotion().z * 1.001);
         }
 
-        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.getMotion());
         this.firstUpdate = false;
     }
 
     @Override
-    protected void entityInit()
+    protected void registerData()
     {
         this.dataManager.register(SPIN_PITCH, 0.0F);
         this.dataManager.register(SPIN_YAW, 0.0F);

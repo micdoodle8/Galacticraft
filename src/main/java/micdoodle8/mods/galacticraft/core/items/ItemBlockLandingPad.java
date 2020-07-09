@@ -7,7 +7,7 @@
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockLandingPad extends ItemBlockDesc
@@ -24,7 +24,7 @@
 //    {
 //        String name = "";
 //
-//        switch (par1ItemStack.getItemDamage())
+//        switch (par1ItemStack.getDamage())
 //        {
 //        case 0:
 //            name = "landing_pad";
@@ -43,7 +43,7 @@
 //    @Override
 //    public void onCreated(ItemStack stack, World world, PlayerEntity player)
 //    {
-//        if (world.isRemote && stack.getItemDamage() == 0 && player instanceof ClientPlayerEntity)
+//        if (world.isRemote && stack.getDamage() == 0 && player instanceof ClientPlayerEntity)
 //        {
 //            ClientProxyCore.playerClientHandler.onBuild(5, (ClientPlayerEntity) player);
 //        }

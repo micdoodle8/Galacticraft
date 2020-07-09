@@ -66,7 +66,7 @@ public class OxygenHooks
 	 * therefore advisable not to call this every tick: 1 tick in 5 should be plenty.
 	 * 
 	 * @param world		The World
-	 * @param bb		AxisAligned BB representing the block (e.g. a torch), or maybe the side of a block
+	 * @param bb		AxisAligned BB representing the block (e.g. a torch), or maybe the LogicalSide of a block
 	 * @return			True if the bb is in oxygen, otherwise false.
 	 */
 	public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
@@ -128,7 +128,7 @@ public class OxygenHooks
 	/**
 	 * Simplified (better performance) version of the block oxygen check
 	 * for use with torch blocks and other oxygen-requiring blocks
-	 * which can access oxygen on any side.
+	 * which can access oxygen on any LogicalSide.
 	 * 
 	 * NOTE:  this does not run an inOxygenBubble() check, you will need to do
 	 * that also.

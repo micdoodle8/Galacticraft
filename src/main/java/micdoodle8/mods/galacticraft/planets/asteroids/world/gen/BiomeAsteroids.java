@@ -1,24 +1,29 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
-import java.util.LinkedList;
-
-import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.api.world.BiomeGC;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.BiomeDictionary;
 
-public class BiomeAsteroids extends BiomeGenBaseGC
-{
-    public static final Biome asteroid = new BiomeAsteroids(new BiomeProperties("Asteroids").setRainfall(0.0F));
+import java.util.LinkedList;
 
-    private BiomeAsteroids(BiomeProperties properties)
+import static net.minecraft.world.gen.surfacebuilders.SurfaceBuilder.STONE_STONE_GRAVEL_CONFIG;
+
+public class BiomeAsteroids extends BiomeGC
+{
+    public static final BiomeAsteroids asteroid = new BiomeAsteroids();
+
+    private BiomeAsteroids()
     {
-        super(properties, true);
-        this.spawnableMonsterList.clear();
-        this.spawnableWaterCreatureList.clear();
-        this.spawnableCreatureList.clear();
-        this.spawnableCaveCreatureList.clear();
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).parent(null), true);
+        this.getSpawns(EntityClassification.MONSTER).clear();
+        this.getSpawns(EntityClassification.WATER_CREATURE).clear();
+        this.getSpawns(EntityClassification.CREATURE).clear();
+        this.getSpawns(EntityClassification.AMBIENT).clear();
+        this.getSpawns(EntityClassification.MISC).clear();
         this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
     }
 
@@ -31,17 +36,12 @@ public class BiomeAsteroids extends BiomeGenBaseGC
 
     public void resetMonsterListByMode(boolean challengeMode)
     {
-        this.spawnableMonsterList.clear();
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 3000, 1, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-        if (challengeMode) this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedEnderman.class, 250, 1, 1));
-    }
-    
-    @Override
-    public void initialiseMobLists(LinkedList<SpawnListEntry> mobInfo)
-    {
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE.get(), 3000, 1, 3));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SPIDER.get(), 2000, 1, 2));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SKELETON.get(), 1500, 1, 1));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_CREEPER.get(), 2000, 1, 1));
+        if (challengeMode)
+            this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ENDERMAN.get(), 250, 1, 1));
     }
 
     @Override

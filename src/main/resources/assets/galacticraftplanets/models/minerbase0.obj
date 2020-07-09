@@ -1,7 +1,7 @@
 # Blender v2.76 (sub 0) OBJ File: ''
 # www.blender.org
 mtllib minerbase0.mtl
-o dock.001
+o dock
 v -20.000000 -20.000008 19.999992
 v -20.000000 -19.999992 -20.000008
 v 20.000000 -19.999992 -20.000008

@@ -3,6 +3,6 @@
     "textures": {
         "bottom": "galacticraftplanets:blocks/brick",
         "top": "galacticraftplanets:blocks/brick",
-        "side": "galacticraftplanets:blocks/brick"
+        "LogicalSide": "galacticraftplanets:blocks/brick"
     }
 }

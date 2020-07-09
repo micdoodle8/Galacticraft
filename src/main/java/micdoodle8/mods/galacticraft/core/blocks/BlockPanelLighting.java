@@ -25,7 +25,7 @@
 //import net.minecraftforge.common.property.ExtendedBlockState;
 //import net.minecraftforge.common.property.IExtendedBlockState;
 //import net.minecraftforge.common.property.IUnlistedProperty;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.util.ArrayList;
@@ -114,7 +114,7 @@
 //    @Override
 //    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 //    {
-//        int damage = stack.getItemDamage();
+//        int damage = stack.getDamage();
 //        if (damage >= PANELTYPES_LENGTH) damage = 0;
 //        TileEntity tile = worldIn.getTileEntity(pos);
 //        if (tile instanceof TileEntityPanelLight && placer instanceof PlayerEntity)
@@ -246,14 +246,14 @@
 //        worldIn.checkLightFor(LightType.BLOCK, pos);
 //    }
 //
-//    @SideOnly(value=Side.CLIENT)
+//    @SideOnly(value=LogicalSide.CLIENT)
 //    public static void updateClient(int type, BlockState state)
 //    {
 //        if (type >= PANELTYPES_LENGTH) type = 0;
 //        superState[type] = state;
 //    }
 //
-//    @SideOnly(value=Side.CLIENT)
+//    @SideOnly(value=LogicalSide.CLIENT)
 //    public static void updateClient(List<Object> data)
 //    {
 //        BlockState state;
@@ -285,9 +285,9 @@
 //    }
 //
 //    @Override
-//    public int setColor(int color, PlayerEntity p, Side side)
+//    public int setColor(int color, PlayerEntity p, LogicalSide LogicalSide)
 //    {
-//        if (side == Side.CLIENT)
+//        if (LogicalSide == LogicalSide.CLIENT)
 //        {
 //            BlockPanelLighting.color = ColorUtil.lighten(ColorUtil.lightenFully(color, 255), 0.1F);
 //        }

@@ -105,7 +105,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 //            return false;
 //        }
 //
-//        if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == GCBlocks.platform && side == Direction.UP)
+//        if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == GCBlocks.platform && LogicalSide == Direction.UP)
 //        {
 //            return false;
 //        }

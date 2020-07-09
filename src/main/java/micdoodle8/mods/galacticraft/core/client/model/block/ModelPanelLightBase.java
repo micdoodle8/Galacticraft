@@ -41,12 +41,12 @@
 //            {
 //                if (layer == null || layer == BlockRenderLayer.SOLID)
 //                {
-//                    return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock).getQuads(state, side, rand);
+//                    return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock).getQuads(state, LogicalSide, rand);
 //                }
 //            }
 //            else if (layer == null || baseState.getBlock().canRenderInLayer(baseState, layer))
 //            {
-//                return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState).getQuads(baseState, side, rand);
+//                return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState).getQuads(baseState, LogicalSide, rand);
 //            }
 //        }
 //        return ImmutableList.of();

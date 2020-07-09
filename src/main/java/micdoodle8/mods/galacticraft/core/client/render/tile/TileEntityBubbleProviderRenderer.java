@@ -76,7 +76,7 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         GL11.glDepthMask(false);
 //        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 //        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
         GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
         GL11.glScalef(tile.getBubbleSize(), tile.getBubbleSize(), tile.getBubbleSize());
 

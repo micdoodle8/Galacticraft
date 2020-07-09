@@ -1,25 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerLaunchController extends Container
 {
-    private final TileEntityLaunchController tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.LAUNCH_CONTROLLER)
+    public static ContainerType<ContainerLaunchController> TYPE;
 
-    public ContainerLaunchController(PlayerInventory playerInv, TileEntityLaunchController tileEntity, PlayerEntity player)
+    private final TileEntityLaunchController launchController;
+
+    public ContainerLaunchController(int containerId, PlayerInventory playerInv, TileEntityLaunchController launchController)
     {
-        this.tileEntity = tileEntity;
-        tileEntity.checkDestFrequencyValid();
+        super(TYPE, containerId);
+        this.launchController = launchController;
+        this.launchController.checkDestFrequencyValid();
 
-        this.addSlot(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
+        this.addSlot(new SlotSpecific(this.launchController, 0, 152, 105, IItemElectric.class));
 
         int var6;
         int var7;
@@ -37,20 +44,25 @@ public class ContainerLaunchController extends Container
             this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 185));
         }
 
-        tileEntity.openInventory(player);
+        this.launchController.openInventory(playerInv.player);
+    }
+
+    public TileEntityLaunchController getLaunchController()
+    {
+        return launchController;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory(entityplayer);
+        this.launchController.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.launchController.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override

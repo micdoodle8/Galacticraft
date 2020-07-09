@@ -109,7 +109,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         }
 
         // Crafting Manager can produce concurrent modification exception in single player
-        // if a server-side tick (e.g. from a Hopper) calls this while client-side is still initialising recipes
+        // if a server-LogicalSide tick (e.g. from a Hopper) calls this while client-LogicalSide is still initialising recipes
         try {
             Optional<ICraftingRecipe> optional = this.getWorld().getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, this.getWorld());
             if (optional.isPresent())

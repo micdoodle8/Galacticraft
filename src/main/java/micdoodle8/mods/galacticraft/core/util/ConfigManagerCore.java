@@ -260,7 +260,7 @@ public class ConfigManagerCore
 //            idAchievBase = prop.getInt(1784);
 //            finishProp(prop);
 //
-////Client side
+////Client LogicalSide
 //
 //            prop = getConfig(Constants.CONFIG_CATEGORY_CLIENT, "More Stars", true);
 //            prop.setComment("Setting this to false will revert night skies back to default minecraft star count");
@@ -281,7 +281,7 @@ public class ConfigManagerCore
 //            finishProp(prop);
 //
 //            prop = getConfig(Constants.CONFIG_CATEGORY_CLIENT, "Minimap Left", false);
-//            prop.setComment("If true, this will move the Oxygen Indicator to the left side. You can combine this with \"Minimap Bottom\"");
+//            prop.setComment("If true, this will move the Oxygen Indicator to the left LogicalSide. You can combine this with \"Minimap Bottom\"");
 //            prop.setLanguageKey("gc.configgui.oxygen_indicator_left");
 //            oxygenIndicatorLeft = prop.getBoolean(false);
 //            finishProp(prop);
@@ -408,7 +408,7 @@ public class ConfigManagerCore
 //            disableLander = prop.getBoolean(false);
 //            finishProp(prop);
 //
-////Server side
+////Server LogicalSide
 //
 //            prop = getConfig(Constants.CONFIG_CATEGORY_DIFFICULTY, "Disable Spaceship Explosion", false);
 //            prop.setComment("Spaceships will not explode on contact if set to true.");
@@ -949,7 +949,7 @@ public class ConfigManagerCore
                     .translation("gc.configgui.disable_vehicle_camera_changes")
                     .define("disable_vehicle_third-person_and_zoom", false).get();
 
-            oxygenIndicatorLeft = COMMON_BUILDER.comment("If true, this will move the Oxygen Indicator to the left side. You can combine this with \"Minimap Bottom\"")
+            oxygenIndicatorLeft = COMMON_BUILDER.comment("If true, this will move the Oxygen Indicator to the left LogicalSide. You can combine this with \"Minimap Bottom\"")
                     .translation("gc.configgui.oxygen_indicator_left")
                     .define("minimap_left", false).get();
 
@@ -1187,7 +1187,7 @@ public class ConfigManagerCore
 //    	EnergyConfigHandler.serverConfigOverride(returnList);
 //
 //    	returnList.add(ConfigManagerCore.detectableIDs.clone());
-//    	//TODO Should this include any other client-side configurables too?
+//    	//TODO Should this include any other client-LogicalSide configurables too?
 //    	return returnList;
 //    }
 //

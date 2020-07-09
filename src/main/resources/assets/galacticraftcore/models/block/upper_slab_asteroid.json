@@ -3,6 +3,6 @@
     "textures": {
         "bottom": "galacticraftcore:blocks/screen_side",
         "top": "galacticraftcore:blocks/screen_side",
-        "side": "galacticraftcore:blocks/screen_side"
+        "LogicalSide": "galacticraftcore:blocks/screen_side"
     }
 }

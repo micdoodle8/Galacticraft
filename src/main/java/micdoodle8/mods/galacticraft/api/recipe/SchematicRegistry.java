@@ -131,7 +131,7 @@ public class SchematicRegistry
      * @return the schematic page that will be shown when the player clicks BACK
      */
     @OnlyIn(Dist.CLIENT)
-    public static void flipToLastPage(Screen cs, int currentIndex)
+    public static void flipToPrevPage(Screen cs, int currentIndex)
     {
         Minecraft.getInstance().currentScreen = null;
 

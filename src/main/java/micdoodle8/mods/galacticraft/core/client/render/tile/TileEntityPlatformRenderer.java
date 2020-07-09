@@ -124,7 +124,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                 BufferBuilder worldRenderer = tess.getBuffer();
                 float frameA, frameB, frameC, frameD;
 
-                // Draw the moving platform side-lights 
+                // Draw the moving platform LogicalSide-lights
                 if (tileEntity.isMoving() && renderPlatformForThisTE)
                 {
                     GlStateManager.pushMatrix();

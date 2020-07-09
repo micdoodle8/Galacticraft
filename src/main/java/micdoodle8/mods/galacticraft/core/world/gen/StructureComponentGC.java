@@ -1,21 +1,28 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 
 import java.util.Random;
 
 public abstract class StructureComponentGC extends StructurePiece
 {
-    public StructureComponentGC(int var1)
+    protected StructureComponentGC(IStructurePieceType type, int componentType)
     {
-        super(var1);
+        super(type, componentType);
+    }
+
+    public StructureComponentGC(IStructurePieceType type, CompoundNBT nbt)
+    {
+        super(type, nbt);
     }
 
     public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int lengthOffset, int heightOffset, int widthOffset, int length, int height, int width, Direction coordBaseMode)
@@ -37,21 +44,21 @@ public abstract class StructureComponentGC extends StructurePiece
         return new MutableBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
     }
 
-    protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, MutableBoundingBox var7)
+    protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, EntityType<?> var6, MutableBoundingBox var7)
     {
         final int var8 = this.getXWithOffset(var3, var5);
         final int var9 = this.getYWithOffset(var4);
         final int var10 = this.getZWithOffset(var3, var5);
 
         BlockPos pos = new BlockPos(var8, var9, var10);
-        if (var7.isVecInside(pos) && var1.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER)
+        if (var7.isVecInside(pos) && var1.getBlockState(pos).getBlock() != Blocks.SPAWNER)
         {
-            var1.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
+            var1.setBlockState(pos, Blocks.SPAWNER.getDefaultState(), 2);
             final MobSpawnerTileEntity var11 = (MobSpawnerTileEntity) var1.getTileEntity(pos);
 
             if (var11 != null)
             {
-                var11.getSpawnerBaseLogic().setEntityId(var6);
+                var11.getSpawnerBaseLogic().setEntityType(var6);
             }
         }
     }

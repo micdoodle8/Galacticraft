@@ -47,11 +47,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     /**
      * Get the amount of ticks between each packet send
      *
-     * @param side The target side.
+     * @param LogicalSide The target LogicalSide.
      * @return The amount of ticks to wait before sending another packet to this
      * target
      */
-    public abstract int getPacketCooldown(LogicalSide side);
+    public abstract int getPacketCooldown(LogicalSide LogicalSide);
 
     /**
      * Add any additional data to the stream
@@ -76,21 +76,21 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 //    }
 
     /**
-     * Called after a packet is read, only on client side.
+     * Called after a packet is read, only on client LogicalSide.
      *
      * @param player The player associated with the received packet
      */
     public abstract void onPacketClient(PlayerEntity player);
 
     /**
-     * Called after a packet is read, only on server side.
+     * Called after a packet is read, only on server LogicalSide.
      *
      * @param player The player associated with the received packet
      */
     public abstract void onPacketServer(PlayerEntity player);
 
     /**
-     * Packets will be sent to all (client-side) players within this range
+     * Packets will be sent to all (client-LogicalSide) players within this range
      *
      * @return Maximum distance to send packets to client players
      */

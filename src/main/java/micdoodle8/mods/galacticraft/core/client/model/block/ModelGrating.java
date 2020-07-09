@@ -33,7 +33,7 @@
 //    @Override
 //    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData)
 //    {
-//        if (side == Direction.DOWN && state.getBlock() instanceof BlockGrating)
+//        if (LogicalSide == Direction.DOWN && state.getBlock() instanceof BlockGrating)
 //        {
 //            BlockState baseState = ((IExtendedBlockState) state).getValue(BlockGrating.BASE_STATE);
 //            if (baseState != null)
@@ -52,7 +52,7 @@
 //        }
 //        if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.CUTOUT)
 //        {
-//            return this.gratingMetal.getQuads(state, side, rand);
+//            return this.gratingMetal.getQuads(state, LogicalSide, rand);
 //        }
 //
 //        return ImmutableList.of();

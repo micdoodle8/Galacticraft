@@ -6,9 +6,9 @@ public class ConfigManagerPlanets
 {
     ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 
-    public static int dimensionIDMars;
-    public static int dimensionIDAsteroids;
-    public static int dimensionIDVenus;
+//    public static int dimensionIDMars;
+//    public static int dimensionIDAsteroids;
+//    public static int dimensionIDVenus;
 
     public static int idSchematicRocketT2;
     public static int idSchematicCargoRocket;
@@ -100,17 +100,17 @@ public class ConfigManagerPlanets
 
         COMMON_BUILDER.push("DIMENSIONS");
 
-        dimensionIDVenus = COMMON_BUILDER.comment("Dimension ID for Venus")
-                .translation("gc.configgui.dimension_id_venus")
-                .defineInRange("dimensionIDVenus", -31, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
-
-        dimensionIDAsteroids = COMMON_BUILDER.comment("Dimension ID for Asteroids")
-                .translation("gc.configgui.dimension_id_asteroids")
-                .defineInRange("dimensionIDAsteroids", -30, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
-
-        dimensionIDMars = COMMON_BUILDER.comment("Dimension ID for Mars")
-                .translation("gc.configgui.dimension_id_mars")
-                .defineInRange("dimensionIDMars", -29, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//        dimensionIDVenus = COMMON_BUILDER.comment("Dimension ID for Venus")
+//                .translation("gc.configgui.dimension_id_venus")
+//                .defineInRange("dimensionIDVenus", -31, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//
+//        dimensionIDAsteroids = COMMON_BUILDER.comment("Dimension ID for Asteroids")
+//                .translation("gc.configgui.dimension_id_asteroids")
+//                .defineInRange("dimensionIDAsteroids", -30, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//
+//        dimensionIDMars = COMMON_BUILDER.comment("Dimension ID for Mars")
+//                .translation("gc.configgui.dimension_id_mars")
+//                .defineInRange("dimensionIDMars", -29, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
 
         COMMON_BUILDER.pop();
 

@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
-import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import net.minecraft.block.Block;
@@ -58,7 +57,7 @@ public class GalacticraftRegistry
 
     /**
      * Link a world dimension to a gui texture. This texture will be shown on the
-     * left-side of the screen while the player is in the rocket.
+     * left-LogicalSide of the screen while the player is in the rocket.
      *
      * @param clazz     The World dimension class
      * @param rocketGui Resource Location for the gui texture
@@ -189,7 +188,7 @@ public class GalacticraftRegistry
 
     public static ITeleportType getTeleportTypeForDimension(Class<? extends Dimension> clazz)
     {
-        if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
+        if (!IGalacticraftDimension.class.isAssignableFrom(clazz))
         {
             clazz = OverworldDimension.class;
         }
@@ -263,7 +262,7 @@ public class GalacticraftRegistry
 	@OnlyIn(Dist.CLIENT)
     public static ResourceLocation getResouceLocationForDimension(Class<? extends Dimension> clazz)
     {
-        if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
+        if (!IGalacticraftDimension.class.isAssignableFrom(clazz))
         {
             clazz = OverworldDimension.class;
         }

@@ -10,29 +10,35 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_BOSS;
+
 public class RoomBoss extends SizedPiece
 {
     private BlockPos chestPos;
 
-    public RoomBoss(IStructurePieceType type)
+    public RoomBoss(TemplateManager templateManager, CompoundNBT nbt)
     {
-        super(type);
+        super(CMOON_DUNGEON_BOSS, nbt);
     }
 
-    public RoomBoss(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
+    protected RoomBoss(IStructurePieceType type, CompoundNBT nbt)
     {
-        this(type, configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 14, rand.nextInt(2) + 8, rand.nextInt(6) + 14, entranceDir);
+        super(type, nbt);
     }
 
-    public RoomBoss(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
-        super(type, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 14, rand.nextInt(2) + 8, rand.nextInt(6) + 14, entranceDir);
+    }
+
+    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    {
+        super(CMOON_DUNGEON_BOSS, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
@@ -158,9 +164,9 @@ public class RoomBoss extends SizedPiece
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT nbt)
     {
-        super.readStructureFromNBT(nbt, manager);
+        super.readStructureFromNBT(nbt);
         this.chestPos = new BlockPos(nbt.getInt("chestX"), nbt.getInt("chestY"), nbt.getInt("chestZ"));
     }
 

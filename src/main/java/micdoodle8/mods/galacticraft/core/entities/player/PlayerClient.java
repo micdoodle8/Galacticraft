@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -76,7 +76,7 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        if (stats.getPlatformControlled() || player.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (stats.getPlatformControlled() || player.world.getDimension() instanceof IGalacticraftDimension)
         {
             if (!startup)
             {
@@ -296,7 +296,7 @@ public class PlayerClient implements IPlayerClient
             BlockState state = player.world.getBlockState(pos1);
 
             // If the block below is the moon block
-            if (state.getBlock() == GCBlocks.blockMoon)
+            if (state.getBlock() == GCBlocks.moonTurf)
             {
                 // And is the correct metadata (moon turf)
 //                if (state.get(BlockBasicMoon.BASIC_TYPE_MOON) == BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF)

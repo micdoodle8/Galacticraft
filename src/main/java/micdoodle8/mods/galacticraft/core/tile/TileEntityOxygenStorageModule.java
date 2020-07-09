@@ -267,9 +267,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 //    {
 ////        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 ////        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
-////        int side = from.ordinal();
+////        int LogicalSide = from.ordinal();
 ////
-////        if (metaside == side && GalacticraftCore.isPlanetsLoaded)
+////        if (metaside == LogicalSide && GalacticraftCore.isPlanetsLoaded)
 ////        {
 ////            tankInfo = new FluidTankInfo[] { new FluidTankInfo(new FluidStack(AsteroidsModule.fluidLiquidOxygen, (int) (this.getOxygenStored() * Constants.LOX_GAS_RATIO)), (int) (OXYGEN_CAPACITY * Constants.LOX_GAS_RATIO)) };
 ////        }

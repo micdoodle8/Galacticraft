@@ -19,13 +19,11 @@ import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
@@ -42,7 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickableTileEntity, IInventory, IKeyable, ISidedInventory
+public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickableTileEntity, IInventory, IKeyable, ISidedInventory, IChestLid
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.treasureChestTier1)
     public static TileEntityType<TileEntityTreasureChest> TYPE;
@@ -64,12 +62,12 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
     public TileEntityTreasureChest()
     {
-        this(1);
+        this(TYPE, 1);
     }
 
-    public TileEntityTreasureChest(int tier)
+    public TileEntityTreasureChest(TileEntityType<?> type, int tier)
     {
-        super(TYPE);
+        super(type);
         this.tier = tier;
         inventory = NonNullList.withSize(27, ItemStack.EMPTY);
     }
@@ -606,5 +604,11 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public ChestContainer createMenu(int containerId, PlayerInventory playerInv) {
         this.fillWithLoot(playerInv.player);
         return ChestContainer.createGeneric9X3(containerId, playerInv, this);
+    }
+
+    @Override
+    public float getLidAngle(float partialTicks)
+    {
+        return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
     }
 }

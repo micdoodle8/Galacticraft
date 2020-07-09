@@ -59,18 +59,18 @@
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //        GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGuiTexture);
-//        GuiDraw.drawTexturedModalRect(-2, 0, 3, 4, 168, 66);
+//        GuiDraw.blit(-2, 0, 3, 4, 168, 66);
 //
 //        if (progress <= 40)
 //        {
 //            int level = progress * 38 / 40;
 //            GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGasesTexture);
-//            GuiDraw.drawTexturedModalRect(2, 62 - level, 35, 38 - level, 16, level);
+//            GuiDraw.blit(2, 62 - level, 35, 38 - level, 16, level);
 //
 //            if (this.fillAtmos)
 //            {
 //                int yoffset = progress / 2;
-//                GuiDraw.drawTexturedModalRect(23, 44 - yoffset, 35, 26 - yoffset, 16, yoffset);
+//                GuiDraw.blit(23, 44 - yoffset, 35, 26 - yoffset, 16, yoffset);
 //            }
 //        }
 //        else if (progress < 104)
@@ -79,18 +79,18 @@
 //
 //            int yoffset = 20 - level;
 //            GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGasesTexture);
-//            GuiDraw.drawTexturedModalRect(2, 62 - yoffset, 35, 26 - yoffset, 16, yoffset);
+//            GuiDraw.blit(2, 62 - yoffset, 35, 26 - yoffset, 16, yoffset);
 //            if (this.fillAtmos)
 //            {
-//                GuiDraw.drawTexturedModalRect(23, 44 - yoffset, 35, 26 - yoffset, 16, yoffset);
+//                GuiDraw.blit(23, 44 - yoffset, 35, 26 - yoffset, 16, yoffset);
 //            }
-//            GuiDraw.drawTexturedModalRect(148, 62 - level, 1, 26 - level, 16, level);
+//            GuiDraw.blit(148, 62 - level, 1, 26 - level, 16, level);
 //
 //            //Offsets from GUI: x - 5,  y - 4
 //            int powerlevel = 53 - (progress - 41) / 6;
 //            GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGuiTexture);
-//            GuiDraw.drawTexturedModalRect(61, 13, 176, 38, powerlevel, 7);
-//            GuiDraw.drawTexturedModalRect(47, 12, 208, 0, 11, 10);
+//            GuiDraw.blit(61, 13, 176, 38, powerlevel, 7);
+//            GuiDraw.blit(47, 12, 208, 0, 11, 10);
 //        }
 //
 //        if (this.fillAtmos)
@@ -99,9 +99,9 @@
 //            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
 //            String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
 //            String text3 = GCCoreUtil.translate("gui.message.with_atmosphere1.name");
-//            this.fontRenderer.drawString(text1, 4, 85, 4210752);
-//            this.fontRenderer.drawString(text2, 18, 95, 4210752);
-//            this.fontRenderer.drawString(text3, 18, 105, 4210752);
+//            this.font.drawString(text1, 4, 85, 4210752);
+//            this.font.drawString(text2, 18, 95, 4210752);
+//            this.font.drawString(text3, 18, 105, 4210752);
 //        }
 //    }
 //

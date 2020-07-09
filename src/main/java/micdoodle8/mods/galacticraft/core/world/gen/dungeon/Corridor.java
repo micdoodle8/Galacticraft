@@ -7,23 +7,25 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.lang.reflect.Constructor;
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_CORRIDOR;
+
 public class Corridor extends SizedPiece
 {
-    public Corridor(IStructurePieceType type)
+    public Corridor(TemplateManager templateManager, CompoundNBT nbt)
     {
-        super(type);
+        super(CMOON_DUNGEON_CORRIDOR, nbt);
     }
 
-    public Corridor(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction direction)
+    public Corridor(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(type, configuration, sizeX, sizeY, sizeZ, direction);
+        super(CMOON_DUNGEON_CORRIDOR, configuration, sizeX, sizeY, sizeZ, direction);
         this.setCoordBaseMode(Direction.SOUTH);
         this.boundingBox = new MutableBoundingBox(blockPosX, configuration.getYPosition(), blockPosZ, blockPosX + sizeX, configuration.getYPosition() + sizeY, blockPosZ + sizeZ);
     }

@@ -9,19 +9,25 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_BOSS;
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_BOSS;
 
 public class RoomBossVenus extends SizedPieceVenus
 {
     private Direction exitDirection;
     private BlockPos chestPos;
 
-    public RoomBossVenus()
+    public RoomBossVenus(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CVENUS_DUNGEON_BOSS, nbt);
     }
 
     public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
@@ -31,7 +37,7 @@ public class RoomBossVenus extends SizedPieceVenus
 
     public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        super(CVENUS_DUNGEON_BOSS, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
@@ -51,8 +57,7 @@ public class RoomBossVenus extends SizedPieceVenus
             tagCompound.putInt("direction_exit", this.exitDirection.ordinal());
         }
 
-
-        tagCompound.setBoolean("chestPosNull", this.chestPos == null);
+        tagCompound.putBoolean("chestPosNull", this.chestPos == null);
         if (this.chestPos != null)
         {
             tagCompound.putInt("chestX", this.chestPos.getX());
@@ -62,13 +67,13 @@ public class RoomBossVenus extends SizedPieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
-        super.readStructureFromNBT(tagCompound, manager);
+        super.readStructureFromNBT(tagCompound);
 
         if (tagCompound.contains("direction_exit"))
         {
-            this.exitDirection = Direction.byIndex(tagCompound.getInteger("direction_exit"));
+            this.exitDirection = Direction.byIndex(tagCompound.getInt("direction_exit"));
         }
         else
         {
@@ -77,12 +82,12 @@ public class RoomBossVenus extends SizedPieceVenus
 
         if (tagCompound.contains("chestPosNull") && !tagCompound.getBoolean("chestPosNull"))
         {
-            this.chestPos = new BlockPos(tagCompound.getInteger("chestX"), tagCompound.getInteger("chestY"), tagCompound.getInteger("chestZ"));
+            this.chestPos = new BlockPos(tagCompound.getInt("chestX"), tagCompound.getInt("chestY"), tagCompound.getInt("chestZ"));
         }
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
         MutableBoundingBox box = new MutableBoundingBox(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE });
 

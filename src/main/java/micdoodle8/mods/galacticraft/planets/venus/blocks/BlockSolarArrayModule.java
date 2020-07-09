@@ -2,29 +2,22 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySolarArrayModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ISortableBlock, ITileEntityProvider
+public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock
 {
     protected static final VoxelShape AABB = Block.makeCuboidShape(0.0, 0.375, 0.0, 1.0, 0.625, 1.0);
 
@@ -42,7 +35,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
 
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -61,7 +54,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     @Override
     public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        super.onBlockAdded(worldIn, pos, state);
+        super.onBlockAdded(state, worldIn, pos, oldState, isMoving);
 
         if (!worldIn.isRemote)
         {
@@ -107,13 +100,13 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
 //    }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -124,11 +117,11 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
         return direction.getAxis() == Direction.Axis.Y;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.MACHINE;
+//    }
 
 //    @Override
 //    public boolean isOpaqueCube(BlockState state)

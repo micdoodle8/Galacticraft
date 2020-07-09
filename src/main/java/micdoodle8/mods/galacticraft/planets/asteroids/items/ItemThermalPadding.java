@@ -16,20 +16,20 @@ import net.minecraft.util.*;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemThermalPadding extends Item implements IItemThermal, ISortableItem
 {
-    public static String[] names = { "thermal_helm", "thermal_chestplate", "thermal_leggings", "thermal_boots", "thermal_helm0", "thermal_chestplate0", "thermal_leggings0", "thermal_boots0" };
+//    public static String[] names = { "thermal_helm", "thermal_chestplate", "thermal_leggings", "thermal_boots", "thermal_helm0", "thermal_chestplate0", "thermal_leggings0", "thermal_boots0" };
 
     public ItemThermalPadding(Item.Properties properties)
     {
         super(properties);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-        this.setMaxStackSize(1);
-        this.setUnlocalizedName(assetName);
+//        this.setMaxDamage(0);
+//        this.setHasSubtypes(true);
+//        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -39,41 +39,41 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
         return ClientProxyCore.galacticraftItem;
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
 //        return GalacticraftCore.galacticraftItemsTab;
 //    }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            for (int i = 0; i < ItemThermalPadding.names.length / 2; i++)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            for (int i = 0; i < ItemThermalPadding.names.length / 2; i++)
+//            {
+//                list.add(new ItemStack(this, 1, i));
+//            }
+//        }
+//    }
 
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack)
-    {
-        if (names.length > par1ItemStack.getItemDamage())
-        {
-            return "item." + ItemThermalPadding.names[par1ItemStack.getItemDamage()];
-        }
+//    @Override
+//    public String getUnlocalizedName(ItemStack par1ItemStack)
+//    {
+//        if (names.length > par1ItemStack.getDamage())
+//        {
+//            return "item." + ItemThermalPadding.names[par1ItemStack.getDamage()];
+//        }
+//
+//        return "unnamed";
+//    }
 
-        return "unnamed";
-    }
-
-    @Override
-    public int getMetadata(int par1)
-    {
-        return par1;
-    }
+//    @Override
+//    public int getMetadata(int par1)
+//    {
+//        return par1;
+//    }
 
     @Override
     public int getThermalStrength()
@@ -84,7 +84,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
     @Override
     public boolean isValidForSlot(ItemStack stack, int armorSlot)
     {
-        return stack.getItemDamage() == armorSlot;
+        return stack.getDamage() == armorSlot;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
             ItemStack gear2 = stats.getExtendedInventory().getStackInSlot(8);
             ItemStack gear3 = stats.getExtendedInventory().getStackInSlot(9);
 
-            if (itemStack.getItemDamage() == 0)
+            if (itemStack.getDamage() == 0)
             {
                 if (gear.isEmpty())
                 {
@@ -114,7 +114,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
                     itemStack.setCount(0);
                 }
             }
-            else if (itemStack.getItemDamage() == 1)
+            else if (itemStack.getDamage() == 1)
             {
                 if (gear1.isEmpty())
                 {
@@ -122,7 +122,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
                     itemStack.setCount(0);
                 }
             }
-            else if (itemStack.getItemDamage() == 2)
+            else if (itemStack.getDamage() == 2)
             {
                 if (gear2.isEmpty())
                 {
@@ -130,7 +130,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
                     itemStack.setCount(0);
                 }
             }
-            else if (itemStack.getItemDamage() == 3)
+            else if (itemStack.getDamage() == 3)
             {
                 if (gear3.isEmpty())
                 {

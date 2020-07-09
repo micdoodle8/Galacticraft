@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -360,9 +360,9 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    public Vector3 getMotionVec()
+    public Vector3D getMotionVec()
     {
-        return new Vector3(0, 0, 0);
+        return new Vector3D(0, 0, 0);
     }
 
     @Override

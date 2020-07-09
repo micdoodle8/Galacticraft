@@ -1,22 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
+import micdoodle8.mods.galacticraft.core.inventory.GCContainerNames;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerLaserTurret extends Container
 {
-    private TileEntityLaserTurret tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.LASER_TURRET)
+    public static ContainerType<ContainerLaserTurret> TYPE;
 
-    public ContainerLaserTurret(PlayerInventory playerInv, TileEntityLaserTurret laserTurret)
+    private TileEntityLaserTurret turret;
+
+    public ContainerLaserTurret(int containerId, PlayerInventory playerInv, TileEntityLaserTurret laserTurret)
     {
-        this.tileEntity = laserTurret;
+        super(TYPE, containerId);
+        this.turret = laserTurret;
         this.addSlot(new SlotSpecific(laserTurret, 0, 82, 103, IItemElectric.class));
 
         int var6;
@@ -38,10 +48,15 @@ public class ContainerLaserTurret extends Container
         }
     }
 
+    public TileEntityLaserTurret getTurret()
+    {
+        return turret;
+    }
+
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.turret.isUsableByPlayer(var1);
     }
 
     @Override

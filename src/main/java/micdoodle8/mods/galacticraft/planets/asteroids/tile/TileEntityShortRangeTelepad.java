@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -14,13 +15,11 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTelepadFake;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,14 +29,17 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -54,6 +56,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         WRONG_DIM,
         TARGET_DISABLED
     }
+
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidBlockNames.shortRangeTelepad)
+    public static TileEntityType<TileEntityShortRangeTelepad> TYPE;
 
     public static final int MAX_TELEPORT_TIME = 150;
     public static final int TELEPORTER_RANGE = 256;
@@ -76,7 +81,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
     public TileEntityShortRangeTelepad()
     {
-        super("container.short_range_telepad.name");
+        super(TYPE);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 115 : 50);
         this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
@@ -160,7 +165,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                 for (LivingEntity e : containedEntities)
                                 {
                                     e.setPosition(finalPos.x + 0.5F, finalPos.y + 0.08F, finalPos.z + 0.5F);
-                                    this.world.updateEntityWithOptionalForce(e, true);
+//                                    this.world.updateEntityWithOptionalForce(e, true); TODO Still necessary?
                                     if (e instanceof ServerPlayerEntity)
                                     {
                                         ((ServerPlayerEntity) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
@@ -183,7 +188,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof PlayerEntity)
                                         {
-                                            e.sendMessage(new StringTextComponent("Cannot Send client-side")); // No need for translation, since this should never happen
+                                            e.sendMessage(new StringTextComponent("Cannot Send client-LogicalSide")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -231,7 +236,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(nbt, this.getInventory());
 
-        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
+        if (GCCoreUtil.getEffectiveSide() == LogicalSide.SERVER)
         {
             this.setAddress(nbt.getInt("Address"));
         }
@@ -274,7 +279,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public boolean onActivated(PlayerEntity entityPlayer)
     {
-        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+//        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()); TODO guis
         return true;
     }
 
@@ -358,11 +363,11 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         return new int[] { 0 };
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public int getInventoryStackLimit()
@@ -409,7 +414,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public Direction getElectricInputDirection()
     {
-        return Direction.byIndex((this.getBlockMetadata() & 3) + 2);
+        return Direction.UP;
+//        return Direction.byIndex((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override

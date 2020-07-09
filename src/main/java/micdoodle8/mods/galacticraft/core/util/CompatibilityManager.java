@@ -423,41 +423,41 @@ public class CompatibilityManager
         }
     }
 
-    public static void registerMicroBlocks()
-    {
-        try
-        {
-            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
-            if (clazz != null)
-            {
-                Method registerMethod = null;
-                Method[] methodz = clazz.getMethods();
-                for (Method m : methodz)
-                {
-                    if (m.getName().equals("registerMaterial"))
-                    {
-                        registerMethod = m;
-                        break;
-                    }
-                }
-                Class<?> clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 3), "tile.gcBlockCore.decoblock1");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 4), "tile.gcBlockCore.decoblock2");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 9), "tile.gcBlockCore.copperBlock");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 10), "tile.gcBlockCore.tinBlock");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 11), "tile.gcBlockCore.aluminumBlock");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 12), "tile.gcBlockCore.meteorironBlock");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 3), "tile.moonBlock.moondirt");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 4), "tile.moonBlock.moonstone");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 5), "tile.moonBlock.moongrass");
-                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.blockMoon, 14), "tile.moonBlock.bricks");
-                GCLog.info("Galacticraft: activating CodeChicken Microblocks compatibility.");
-            }
-        }
-        catch (Exception e)
-        {
-        }
-    }
+//    public static void registerMicroBlocks()
+//    {
+//        try
+//        {
+//            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+//            if (clazz != null)
+//            {
+//                Method registerMethod = null;
+//                Method[] methodz = clazz.getMethods();
+//                for (Method m : methodz)
+//                {
+//                    if (m.getName().equals("registerMaterial"))
+//                    {
+//                        registerMethod = m;
+//                        break;
+//                    }
+//                }
+//                Class<?> clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 3), "tile.gcBlockCore.decoblock1");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 4), "tile.gcBlockCore.decoblock2");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 9), "tile.gcBlockCore.copperBlock");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 10), "tile.gcBlockCore.tinBlock");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 11), "tile.gcBlockCore.aluminumBlock");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.basicBlock, 12), "tile.gcBlockCore.meteorironBlock");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.moonDirt, 3), "tile.moonBlock.moondirt");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.moonStone, 4), "tile.moonBlock.moonstone");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.moonTurf, 5), "tile.moonBlock.moongrass");
+//                registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(GCBlocks.moonDungeonBrick, 14), "tile.moonBlock.bricks");
+//                GCLog.info("Galacticraft: activating CodeChicken Microblocks compatibility.");
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//        }
+//    }
 
     public static boolean isAndroid(PlayerEntity player)
     {

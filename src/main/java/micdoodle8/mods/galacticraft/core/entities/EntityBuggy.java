@@ -866,11 +866,11 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         return dock instanceof TileEntityBuggyFueler;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public UUID getOwnerUUID()

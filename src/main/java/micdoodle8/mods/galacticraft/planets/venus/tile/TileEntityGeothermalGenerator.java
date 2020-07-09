@@ -4,27 +4,36 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.PlanetFluids;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockGeothermalGenerator;
-import micdoodle8.mods.miccore.Annotations;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.VenusParticles;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
 public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSource implements IInventoryDefaults, ISidedInventory, IConnector, IDisableableMachine
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.geothermalGenerator)
+    public static TileEntityType<TileEntityGeothermalGenerator> TYPE;
+
     public static final int MAX_GENERATE_GJ_PER_TICK = 200;
     public static final int MIN_GENERATE_GJ_PER_TICK = 30;
 
@@ -40,7 +49,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     public TileEntityGeothermalGenerator()
     {
-        super("container.geothermal_generator.name");
+        super(TYPE);
         this.storage.setMaxExtract(TileEntitySolar.MAX_GENERATE_WATTS);
         this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
         this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
@@ -69,7 +78,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 for (; this.getPos().getY() - pos1.getY() < 20; pos1 = pos1.down())
                 {
                     BlockState state = this.world.getBlockState(pos1);
-                    if (state.getBlock() == VenusModule.sulphuricAcid.getBlock())
+                    if (state.getBlock() == PlanetFluids.LIQUID_SULPHURIC_ACID.getBlock())
                     {
                         this.validSpout = true;
                         break;
@@ -108,15 +117,15 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 double posX = pos.getX() + 0.5;
                 double posY = pos.getY() + 1.0;
                 double posZ = pos.getZ() + 0.5;
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX - 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX, posY, posZ), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ - 0.25), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ), new Vector3(0.0, 0.025, 0.0));
-                GalacticraftPlanets.addParticle("acidExhaust", new Vector3(posX + 0.25, posY, posZ + 0.25), new Vector3(0.0, 0.025, 0.0));
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX - 0.25, posY, posZ - 0.25, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX - 0.25, posY, posZ, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX - 0.25, posY, posZ + 0.25, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX, posY, posZ - 0.25, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX, posY, posZ, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX, posY, posZ + 0.25, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX + 0.25, posY, posZ - 0.25, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX + 0.25, posY, posZ, 0.0, 0.025, 0.0);
+                world.addParticle(VenusParticles.ACID_EXHAUST, posX + 0.25, posY, posZ + 0.25, 0.0, 0.025, 0.0);
             }
         }
 
@@ -178,11 +187,11 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         return getFront().rotateY();
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public void setDisabled(int index, boolean disabled)

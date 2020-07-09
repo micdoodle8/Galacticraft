@@ -1,24 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -37,7 +35,7 @@ public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
         if (this.rocketModel == null)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
-            this.rocketModel = (ItemModelRocketT2) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+            this.rocketModel = (ItemModelRocketT2) Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
@@ -54,16 +52,16 @@ public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
         float rollAmplitude = entity.rollAmplitude / 3 - partialTicks;
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-pitch, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(0.0F, entity.getRenderOffsetY(), 0.0F);
+        GlStateManager.translatef((float) x, (float) y, (float) z);
+        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translatef(0.0F, entity.getRenderOffsetY(), 0.0F);
 
         if (rollAmplitude > 0.0F)
         {
             final float i = entity.getLaunched() ? (5 - MathHelper.floor(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
-            GlStateManager.rotate(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
+            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
         }
 
         this.updateModel();

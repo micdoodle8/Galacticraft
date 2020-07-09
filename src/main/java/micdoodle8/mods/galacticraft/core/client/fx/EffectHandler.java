@@ -5,7 +5,7 @@
 //import net.minecraft.client.particle.Particle;
 //import net.minecraft.entity.LivingEntity;
 //import net.minecraftforge.fml.client.FMLClientHandler;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //@OnlyIn(Dist.CLIENT)
@@ -39,11 +39,11 @@
 //            {
 //                particle = new ParticleLaunchSmoke(mc.world, position, motion, 2.5F, true);
 //            }
-//            else if (particleID.equals("launchFlameIdle"))
+//            else if (particleID.equals(GCParticles.LAUNCH_FLAME_IDLE))
 //            {
 //                particle = new ParticleLaunchFlame(mc.world, position, motion, false, (LivingEntity) otherInfo[0]);
 //            }
-//            else if (particleID.equals("launchFlameLaunched"))
+//            else if (particleID.equals(GCParticles.LAUNCH_FLAME_LAUNCHED))
 //            {
 //                particle = new ParticleLaunchFlame(mc.world, position, motion, true, (LivingEntity) otherInfo[0]);
 //            }

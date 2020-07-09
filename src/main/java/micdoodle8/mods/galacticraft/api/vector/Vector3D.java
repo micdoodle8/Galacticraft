@@ -116,6 +116,24 @@ public class Vector3D implements Cloneable
         return (int) Math.floor(this.z);
     }
 
+    public double getMagnitudeSquared()
+    {
+        return x * x + y * y + z * z;
+    }
+
+    public double getMagnitude()
+    {
+        return Math.sqrt(this.getMagnitudeSquared());
+    }
+
+    public Vector3D translate(Vector3D par1)
+    {
+        this.x += par1.x;
+        this.y += par1.y;
+        this.z += par1.z;
+        return this;
+    }
+
     @Override
     public int hashCode()
     {

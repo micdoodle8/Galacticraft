@@ -3,30 +3,42 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 
 public abstract class Piece extends StructurePiece
 {
     protected BaseConfiguration configuration;
 
-    public Piece()
+    public Piece(IStructurePieceType type)
     {
+        super(type, 0);
     }
 
-    public Piece(BaseConfiguration configuration)
+    public Piece(IStructurePieceType type, BaseConfiguration configuration)
     {
+        this(type);
         this.configuration = configuration;
     }
 
+    public Piece(IStructurePieceType type, CompoundNBT tagCompound) {
+        super(type, tagCompound);
+        this.readStructureFromNBT(tagCompound);
+    }
+
     @Override
+    protected void readAdditional(CompoundNBT tagCompound)
+    {
+        // This is actually write, incorrect name mapping
+        this.writeStructureToNBT(tagCompound);
+    }
+
     protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         this.configuration.writeToNBT(tagCompound);
     }
 
-    @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
         if (this.configuration == null)
         {

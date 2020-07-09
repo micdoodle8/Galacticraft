@@ -3,17 +3,19 @@ package micdoodle8.mods.galacticraft.planets.venus.event;
 import micdoodle8.mods.galacticraft.api.entity.ILaserTrackableFast;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
-import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+import micdoodle8.mods.galacticraft.planets.PlanetFluids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.ArrayList;
 
@@ -22,19 +24,11 @@ public class EventHandlerVenus
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (event.side == Side.SERVER && event.phase == Phase.START)
+        if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.START)
         {
-            ArrayList<Entity> list = new ArrayList<>(event.world.loadedEntityList);
-            for (Entity e : list)
-            {
-                if (e.ticksExisted % 20 == 1 && e instanceof LivingEntity)
-                {
-                    if (event.world.isMaterialInBB(e.getBoundingBox().grow(-0.1D, -0.4D, -0.1D), VenusModule.acidMaterial))
-                    {
-                        e.attackEntityFrom(DamageSourceGC.acid, 3.0F);
-                    }
-                }
-            }
+            ((ServerWorld) event.world).getEntities()
+                    .filter((e) -> e.ticksExisted % 20 == 1 && e instanceof LivingEntity && event.world.isMaterialInBB(e.getBoundingBox().grow(-0.1D, -0.4D, -0.1D), PlanetFluids.ACID_MATERIAL))
+                    .forEach((e) -> e.attackEntityFrom(DamageSourceGC.acid, 3.0F));
         }
     }
 
@@ -45,9 +39,23 @@ public class EventHandlerVenus
         {
             event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.REMOVE);
         }
-        else if (event.armorStack.getItem() == VenusItems.thermalPaddingTier2 && event.armorStack.getItemDamage() == event.armorIndex)
+//        else if (event.armorStack.getItem() == VenusItems.thermalPaddingTier2 && event.armorStack.getDamage() == event.armorIndex)
+//        {
+//            event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+//        }
+        else
         {
-            event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+            switch (event.armorIndex)
+            {
+            case 0:
+                if (event.armorStack.getItem() == VenusItems.thermal_helmet_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+            case 1:
+                if (event.armorStack.getItem() == VenusItems.thermal_chestplate_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+            case 2:
+                if (event.armorStack.getItem() == VenusItems.thermal_leggings_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+            case 3:
+                if (event.armorStack.getItem() == VenusItems.thermal_boots_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+            }
         }
     }
 

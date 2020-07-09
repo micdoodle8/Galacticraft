@@ -61,7 +61,7 @@
 //            {
 //                /*if (this.getBlock() instanceof BlockTileGC) TODO Other GC blocks
 //                {
-//                    TileEntity te = ((BlockTileGC) this.getBlock()).createTileEntity(null, getBlock().getStateFromMeta(stack.getItemDamage() & 12));
+//                    TileEntity te = ((BlockTileGC) this.getBlock()).createTileEntity(null, getBlock().getStateFromMeta(stack.getDamage() & 12));
 //                    if (te instanceof TileBaseElectricBlock)
 //                    {
 //                        float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
@@ -73,7 +73,7 @@
 //                }
 //                else if (this.getBlock() instanceof BlockAdvancedTile)
 //                {
-//                    TileEntity te = ((BlockAdvancedTile) this.getBlock()).createTileEntity(worldIn, getBlock().getStateFromMeta(stack.getItemDamage() & 12));
+//                    TileEntity te = ((BlockAdvancedTile) this.getBlock()).createTileEntity(worldIn, getBlock().getStateFromMeta(stack.getDamage() & 12));
 //                    if (te instanceof TileBaseElectricBlock)
 //                    {
 //                        float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();

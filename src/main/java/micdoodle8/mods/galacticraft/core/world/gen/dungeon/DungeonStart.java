@@ -2,27 +2,35 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_START;
 
 public class DungeonStart extends EntranceCrater
 {
     public List<StructurePiece> attachedComponents = Lists.newArrayList();
     public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
-    public DungeonStart(IStructurePieceType type)
+//    public DungeonStart(IStructurePieceType type)
+//    {
+//        super(type);
+//    }
+//
+    public DungeonStart(World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(type);
+        super(CMOON_DUNGEON_START, world, configuration, rand, blockPosX, blockPosZ);
     }
 
-    public DungeonStart(IStructurePieceType type, World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
-    {
-        super(type, world, configuration, rand, blockPosX, blockPosZ);
+    public DungeonStart(TemplateManager templateManager, CompoundNBT nbt) {
+        super(CMOON_DUNGEON_START, nbt);
     }
 
     @Override

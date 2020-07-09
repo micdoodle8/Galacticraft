@@ -1,62 +1,40 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
 import com.google.common.collect.ImmutableList;
-import micdoodle8.mods.galacticraft.api.client.IItemMeshDefinitionCustom;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockCavernousVine;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
-import micdoodle8.mods.galacticraft.planets.mars.client.fx.ParticleDrip;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
+import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimeling;
+import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingFeed;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityTreasureChestRenderer;
-import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.planets.mars.tile.*;
-import net.minecraft.block.BlockState;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.List;
 
@@ -64,8 +42,61 @@ public class MarsModuleClient implements IPlanetsModuleClient
 {
     private static ModelResourceLocation sludgeLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge", "fluid");
 
+//    @Override
+//    public void preInit(FMLPreInitializationEvent event)
+//    {
+//    }
+
+//    private void addPlanetVariants(String name, String... variants)
+//    {
+//        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+//        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
+//        for (int i = 0; i < variants.length; ++i)
+//        {
+//            variants0[i] = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + variants[i]);
+//        }
+//        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
+//    }
+
+//    @Override
+//    public void registerVariants()
+//    {
+//        addPlanetVariants("mars", "ore_copper_mars", "ore_tin_mars", "ore_desh_mars", "ore_iron_mars", "cobblestone", "mars_surface", "mars_middle", "dungeon_brick", "desh_block", "mars_stone");
+//        addPlanetVariants("cavern_vines", "vine_0", "vine_1", "vine_2");
+//        addPlanetVariants("item_basic_mars", "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip");
+//        addPlanetVariants("schematic", "schematic_rocket_t3", "schematic_rocket_cargo", "schematic_astro_miner");
+//        addPlanetVariants("slimeling_egg", "slimeling_egg_red", "slimeling_egg_blue", "slimeling_egg_yellow");
+//        addPlanetVariants("mars_machine", "terraformer", "cryogenic_chamber", "launch_controller");
+//        addPlanetVariants("mars_machine_t2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
+//
+//        Item sludge = Item.getItemFromBlock(MarsBlocks.blockSludge);
+//        ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge"));
+//        ModelLoader.setCustomMeshDefinition(sludge, IItemMeshDefinitionCustom.create((ItemStack stack) -> sludgeLocation));
+//        ModelLoader.setCustomStateMapper(MarsBlocks.blockSludge, new StateMapperBase()
+//        {
+//            @Override
+//            protected ModelResourceLocation getModelResourceLocation(BlockState state)
+//            {
+//                return sludgeLocation;
+//            }
+//        });
+//
+//        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
+//        for (int i = 0; i < 5; ++i)
+//        {
+//            ModelLoader.setCustomModelResourceLocation(MarsItems.rocketMars, i, modelResourceLocation);
+//        }
+//
+//        modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_cargo", "inventory");
+//        for (int i = 11; i < 15; ++i)
+//        {
+//            ModelLoader.setCustomModelResourceLocation(MarsItems.rocketMars, i, modelResourceLocation);
+//        }
+//    }
+
+
     @Override
-    public void preInit(FMLPreInitializationEvent event)
+    public void init(FMLCommonSetupEvent event)
     {
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -76,60 +107,28 @@ public class MarsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (EntityRendererManager manager) -> new RenderCargoRocket(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (EntityRendererManager manager) -> new RenderLandingBalloons(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, (EntityRendererManager manager) -> new RenderTier2Rocket(manager));
-    }
 
-    private void addPlanetVariants(String name, String... variants)
-    {
-        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(Constants.MOD_ID_PLANETS, name));
-        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
-        for (int i = 0; i < variants.length; ++i)
-        {
-            variants0[i] = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + variants[i]);
-        }
-        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
-    }
+        // ==============================
 
-    @Override
-    public void registerVariants()
-    {
-        addPlanetVariants("mars", "ore_copper_mars", "ore_tin_mars", "ore_desh_mars", "ore_iron_mars", "cobblestone", "mars_surface", "mars_middle", "dungeon_brick", "desh_block", "mars_stone");
-        addPlanetVariants("cavern_vines", "vine_0", "vine_1", "vine_2");
-        addPlanetVariants("item_basic_mars", "raw_desh", "desh_stick", "ingot_desh", "reinforced_plate_t2", "slimeling_cargo", "compressed_desh", "fluid_manip");
-        addPlanetVariants("schematic", "schematic_rocket_t3", "schematic_rocket_cargo", "schematic_astro_miner");
-        addPlanetVariants("slimeling_egg", "slimeling_egg_red", "slimeling_egg_blue", "slimeling_egg_yellow");
-        addPlanetVariants("mars_machine", "terraformer", "cryogenic_chamber", "launch_controller");
-        addPlanetVariants("mars_machine_t2", "gas_liquefier", "methane_synthesizer", "electrolyzer");
-
-        Item sludge = Item.getItemFromBlock(MarsBlocks.blockSludge);
-        ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge"));
-        ModelLoader.setCustomMeshDefinition(sludge, IItemMeshDefinitionCustom.create((ItemStack stack) -> sludgeLocation));
-        ModelLoader.setCustomStateMapper(MarsBlocks.blockSludge, new StateMapperBase()
-        {
-            @Override
-            protected ModelResourceLocation getModelResourceLocation(BlockState state)
-            {
-                return sludgeLocation;
-            }
-        });
-
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
-        for (int i = 0; i < 5; ++i)
-        {
-            ModelLoader.setCustomModelResourceLocation(MarsItems.rocketMars, i, modelResourceLocation);
-        }
-
-        modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_cargo", "inventory");
-        for (int i = 11; i < 15; ++i)
-        {
-            ModelLoader.setCustomModelResourceLocation(MarsItems.rocketMars, i, modelResourceLocation);
-        }
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event)
-    {
         MinecraftForge.EVENT_BUS.register(new TickHandlerClient());
-        MarsModuleClient.registerBlockRenderers();
+//        MarsModuleClient.registerBlockRenderers();
+
+        // ==============================
+
+//            IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/chamber.obj"));
+//            IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/cargoRocket.obj"));
+//
+//        // Tile Entity Renderers
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
+//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer<>(0.25F, 1.0F, 0.25F));
+//
+//        // Entities
+
+        // Add Armor Renderer Prefix
+//        RenderingRegistry.addNewArmourRendererPrefix("desh");
+
+        ItemSchematicTier2.registerTextures();
     }
 
     @SubscribeEvent
@@ -143,7 +142,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
-        event.getMap().registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
+        event.addSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }
 
     @SubscribeEvent
@@ -152,6 +151,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         replaceModelDefault(event, "rocket_t2", "rocket_t2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
         replaceModelDefault(event, "rocket_cargo", "cargo_rocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
+
+        RenderLandingBalloons.updateModels(event.getModelLoader());
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
@@ -159,136 +160,117 @@ public class MarsModuleClient implements IPlanetsModuleClient
         ClientUtil.replaceModel(GalacticraftPlanets.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
     }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event)
-    {
-//            IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/chamber.obj"));
-//            IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/cargoRocket.obj"));
+//    public static void registerBlockRenderers()
+//    {
+//        for (BlockBasicMars.EnumBlockBasic blockBasic : BlockBasicMars.EnumBlockBasic.values())
+//        {
+//            ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsBlock, blockBasic.getMeta(), blockBasic.getName());
+//        }
 //
-//        // Tile Entity Renderers
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer<>(0.25F, 1.0F, 0.25F));
+//        for (BlockCavernousVine.EnumVineType vineType : BlockCavernousVine.EnumVineType.values())
+//        {
+//            ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.vine, vineType.getMeta(), vineType.getName());
+//        }
 //
-//        // Entities
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 0, "slimeling_egg_red");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 1, "slimeling_egg_blue");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 2, "slimeling_egg_yellow");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.creeperEgg);
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 0, "terraformer");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 4, "cryogenic_chamber");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 8, "launch_controller");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 0, "gas_liquefier");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 4, "methane_synthesizer");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 8, "electrolyzer");
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.treasureChestTier2);
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsBricksStairs);
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsCobblestoneStairs);
+//        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.bossSpawner);
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 0, "raw_desh");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 1, "desh_stick");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 2, "ingot_desh");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 3, "reinforced_plate_t2");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 4, "slimeling_cargo");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 5, "compressed_desh");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 6, "fluid_manip");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.key, 0, "key");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 0, "schematic_rocket_t3");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 1, "schematic_rocket_cargo");
+//        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 2, "schematic_astro_miner");
+//    }
 
-        // Add Armor Renderer Prefix
-//        RenderingRegistry.addNewArmourRendererPrefix("desh");
-        
-        ItemSchematicTier2.registerTextures();
-    }
-
-    public static void registerBlockRenderers()
-    {
-        for (BlockBasicMars.EnumBlockBasic blockBasic : BlockBasicMars.EnumBlockBasic.values())
-        {
-            ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsBlock, blockBasic.getMeta(), blockBasic.getName());
-        }
-
-        for (BlockCavernousVine.EnumVineType vineType : BlockCavernousVine.EnumVineType.values())
-        {
-            ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.vine, vineType.getMeta(), vineType.getName());
-        }
-
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 0, "slimeling_egg_red");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 1, "slimeling_egg_blue");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.rock, 2, "slimeling_egg_yellow");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.creeperEgg);
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 0, "terraformer");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 4, "cryogenic_chamber");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machine, 8, "launch_controller");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 0, "gas_liquefier");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 4, "methane_synthesizer");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.machineT2, 8, "electrolyzer");
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.treasureChestTier2);
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsBricksStairs);
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.marsCobblestoneStairs);
-        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsBlocks.bossSpawner);
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 0, "raw_desh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 1, "desh_stick");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 2, "ingot_desh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 3, "reinforced_plate_t2");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 4, "slimeling_cargo");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 5, "compressed_desh");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.marsItemBasic, 6, "fluid_manip");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.key, 0, "key");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 0, "schematic_rocket_t3");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 1, "schematic_rocket_cargo");
-        ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, MarsItems.schematic, 2, "schematic_astro_miner");
-    }
-
-    @Override
-    public Object getGuiElement(Side side, int ID, PlayerEntity player, World world, int x, int y, int z)
-    {
-        if (side == Side.CLIENT)
-        {
-            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
-
-            if (ID == GuiIdsPlanets.MACHINE_MARS)
-            {
-                if (tile instanceof TileEntityTerraformer)
-                {
-                    return new GuiTerraformer(player.inventory, (TileEntityTerraformer) tile);
-                }
-                else if (tile instanceof TileEntityLaunchController)
-                {
-                    return new GuiLaunchController(player.inventory, (TileEntityLaunchController) tile);
-                }
-                else if (tile instanceof TileEntityElectrolyzer)
-                {
-                    return new GuiWaterElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile);
-                }
-                else if (tile instanceof TileEntityGasLiquefier)
-                {
-                    return new GuiGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
-                }
-                else if (tile instanceof TileEntityMethaneSynthesizer)
-                {
-                    return new GuiMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public void addParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
-    {
-        Minecraft mc = Minecraft.getInstance();
-
-        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
-        {
-            final double dPosX = mc.getRenderViewEntity().posX - position.x;
-            final double dPosY = mc.getRenderViewEntity().posY - position.y;
-            final double dPosZ = mc.getRenderViewEntity().posZ - position.z;
-            Particle particle = null;
-            final double maxDistSqrd = 64.0D;
-
-            if (dPosX * dPosX + dPosY * dPosY + dPosZ * dPosZ < maxDistSqrd * maxDistSqrd)
-            {
-                if (particleID.equals("sludgeDrip"))
-                {
-//                    particle = new EntityDropParticleFX(mc.world, position.x, position.y, position.z, Material.WATER); TODO
-                }
-                else if (particleID.equals("bacterialDrip"))
-                {
-                    particle = new ParticleDrip(mc.world, position.x, position.y, position.z);
-                }
-            }
-
-            if (particle != null)
-            {
-                mc.effectRenderer.addEffect(particle);
-            }
-        }
-    }
-
-    @Override
-    public void getGuiIDs(List<Integer> idList)
-    {
-        idList.add(GuiIdsPlanets.MACHINE_MARS);
-    }
+//    @Override
+//    public Object getGuiElement(LogicalSide LogicalSide, int ID, PlayerEntity player, World world, int x, int y, int z)
+//    {
+//        if (LogicalSide == LogicalSide.CLIENT)
+//        {
+//            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+//
+//            if (ID == GuiIdsPlanets.MACHINE_MARS)
+//            {
+//                if (tile instanceof TileEntityTerraformer)
+//                {
+//                    return new GuiTerraformer(player.inventory, (TileEntityTerraformer) tile);
+//                }
+//                else if (tile instanceof TileEntityLaunchController)
+//                {
+//                    return new GuiLaunchController(player.inventory, (TileEntityLaunchController) tile);
+//                }
+//                else if (tile instanceof TileEntityElectrolyzer)
+//                {
+//                    return new GuiWaterElectrolyzer(player.inventory, (TileEntityElectrolyzer) tile);
+//                }
+//                else if (tile instanceof TileEntityGasLiquefier)
+//                {
+//                    return new GuiGasLiquefier(player.inventory, (TileEntityGasLiquefier) tile);
+//                }
+//                else if (tile instanceof TileEntityMethaneSynthesizer)
+//                {
+//                    return new GuiMethaneSynthesizer(player.inventory, (TileEntityMethaneSynthesizer) tile);
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
+//
+//    @Override
+//    public void addParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
+//    {
+//        Minecraft mc = Minecraft.getInstance();
+//
+//        if (mc != null && mc.getRenderViewEntity() != null && mc.particles != null)
+//        {
+//            final double dPosX = mc.getRenderViewEntity().posX - position.x;
+//            final double dPosY = mc.getRenderViewEntity().posY - position.y;
+//            final double dPosZ = mc.getRenderViewEntity().posZ - position.z;
+//            Particle particle = null;
+//            final double maxDistSqrd = 64.0D;
+//
+//            if (dPosX * dPosX + dPosY * dPosY + dPosZ * dPosZ < maxDistSqrd * maxDistSqrd)
+//            {
+//                if (particleID.equals("sludgeDrip"))
+//                {
+////                    particle = new EntityDropParticleFX(mc.world, position.x, position.y, position.z, Material.WATER); TODO
+//                }
+//                else if (particleID.equals("bacterialDrip"))
+//                {
+//                    particle = new ParticleDrip(mc.world, position.x, position.y, position.z);
+//                }
+//            }
+//
+//            if (particle != null)
+//            {
+//                mc.particles.addEffect(particle);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void getGuiIDs(List<Integer> idList)
+//    {
+//        idList.add(GuiIdsPlanets.MACHINE_MARS);
+//    }
 
     public static void openSlimelingGui(EntitySlimeling slimeling, int gui)
     {
@@ -307,7 +289,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
-        public void onClientTick(ClientTickEvent event)
+        public void onClientTick(TickEvent.ClientTickEvent event)
         {
             final Minecraft minecraft = Minecraft.getInstance();
 
@@ -315,11 +297,11 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
             if (world != null)
             {
-                if (world.getDimension() instanceof WorldProviderMars)
+                if (world.getDimension() instanceof DimensionMars)
                 {
                     if (world.getDimension().getSkyRenderer() == null)
                     {
-                        world.getDimension().setSkyRenderer(new SkyProviderMars((IGalacticraftWorldProvider) world.getDimension()));
+                        world.getDimension().setSkyRenderer(new SkyProviderMars((IGalacticraftDimension) world.getDimension()));
                     }
 
                     if (world.getDimension().getCloudRenderer() == null)

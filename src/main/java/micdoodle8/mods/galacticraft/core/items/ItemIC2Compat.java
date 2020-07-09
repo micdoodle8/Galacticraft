@@ -9,7 +9,7 @@
 //import net.minecraft.item.Item;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.NonNullList;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemIC2Compat extends Item implements ISortableItem
@@ -41,7 +41,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        int meta = itemStack.getItemDamage();
+//        int meta = itemStack.getDamage();
 //        if (!CompatibilityManager.isIc2Loaded()) meta = 0;
 //        return this.getUnlocalizedName() + "." + ItemIC2Compat.types[meta % 4] + "_" + ItemIC2Compat.names[meta / 4];
 //    }

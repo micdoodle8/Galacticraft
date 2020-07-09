@@ -5,8 +5,6 @@ import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,8 +12,10 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,21 +26,21 @@ public class PacketSimpleVenus extends PacketBase
     public static enum EnumSimplePacketVenus
     {
         // SERVER
-        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
-        S_OPEN_LASER_TURRET_GUI(Side.SERVER, BlockPos.class),
-        S_MODIFY_LASER_TARGET(Side.SERVER, Integer.class, BlockPos.class, String.class);
+        S_UPDATE_ADVANCED_GUI(LogicalSide.SERVER, Integer.class, BlockPos.class, Integer.class),
+        S_OPEN_LASER_TURRET_GUI(LogicalSide.SERVER, BlockPos.class),
+        S_MODIFY_LASER_TARGET(LogicalSide.SERVER, Integer.class, BlockPos.class, String.class);
         // CLIENT
 
-        private Side targetSide;
+        private LogicalSide targetSide;
         private Class<?>[] decodeAs;
 
-        private EnumSimplePacketVenus(Side targetSide, Class<?>... decodeAs)
+        private EnumSimplePacketVenus(LogicalSide targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;
         }
 
-        public Side getTargetSide()
+        public LogicalSide getTargetSide()
         {
             return this.targetSide;
         }
@@ -183,7 +183,7 @@ public class PacketSimpleVenus extends PacketBase
             break;
         case S_OPEN_LASER_TURRET_GUI:
             BlockPos pos = (BlockPos) this.data.get(0);
-            player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, player.world, pos.getX(), pos.getY(), pos.getZ());
+//            player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, player.world, pos.getX(), pos.getY(), pos.getZ()); TODO guis
             break;
         case S_MODIFY_LASER_TARGET:
             TileEntity tile1 = player.world.getTileEntity((BlockPos) this.data.get(1));

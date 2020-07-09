@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import micdoodle8.mods.galacticraft.api.world.BiomeGC;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.SharedSeedRandom;
@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class BiomeAdaptive extends BiomeGenBaseGC
+public class BiomeAdaptive extends BiomeGC
 {
     public static BiomeAdaptive biomeDefault;
     public static List<BiomeAdaptive> biomeList = new LinkedList<>();
@@ -55,9 +55,9 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     @Override
     public void registerTypes(Biome b)
     {
-        if (this.biomeTrue instanceof BiomeGenBaseGC)
+        if (this.biomeTrue instanceof BiomeGC)
         {
-            ((BiomeGenBaseGC) this.biomeTrue).registerTypes(this);
+            ((BiomeGC) this.biomeTrue).registerTypes(this);
         }
         else
         {
@@ -65,7 +65,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         }
     }
 
-    public static BiomeGenBaseGC register(int index, BiomeGenBaseGC biome)
+    public static BiomeGC register(int index, BiomeGC biome)
     {
         if (index >= biomeList.size())
         {
@@ -77,7 +77,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         return biomeList.get(index);
     }
 
-    public static BiomeGenBaseGC getDefaultBiomeFor(CelestialBody body)
+    public static BiomeGC getDefaultBiomeFor(CelestialBody body)
     {
         return body.biomesToAdapt[0];
     }

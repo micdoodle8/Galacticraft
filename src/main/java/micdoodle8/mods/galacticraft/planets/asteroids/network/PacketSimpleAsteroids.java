@@ -16,8 +16,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,21 +30,21 @@ public class PacketSimpleAsteroids extends PacketBase
     public static enum EnumSimplePacketAsteroids
     {
         // SERVER
-        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
+        S_UPDATE_ADVANCED_GUI(LogicalSide.SERVER, Integer.class, BlockPos.class, Integer.class),
         // CLIENT
-        C_TELEPAD_SEND(Side.CLIENT, BlockVec3.class, Integer.class),
-        C_UPDATE_GRAPPLE_POS(Side.CLIENT, Integer.class, Vector3.class);
+        C_TELEPAD_SEND(LogicalSide.CLIENT, BlockVec3.class, Integer.class),
+        C_UPDATE_GRAPPLE_POS(LogicalSide.CLIENT, Integer.class, Vector3.class);
 
-        private Side targetSide;
+        private LogicalSide targetSide;
         private Class<?>[] decodeAs;
 
-        private EnumSimplePacketAsteroids(Side targetSide, Class<?>... decodeAs)
+        private EnumSimplePacketAsteroids(LogicalSide targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;
         }
 
-        public Side getTargetSide()
+        public LogicalSide getTargetSide()
         {
             return this.targetSide;
         }

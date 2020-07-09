@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiOxygenCollector extends GuiContainerGC
+public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
 {
     private static final ResourceLocation collectorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen.png");
 

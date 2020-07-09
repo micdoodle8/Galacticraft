@@ -18,7 +18,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class GuiExtendedInventory extends DisplayEffectsScreen
+public class GuiExtendedInventory extends DisplayEffectsScreen<ContainerExtendedInventory>
 {
     private static final ResourceLocation inventoryTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/inventory.png");
     private int potionOffsetLast;
@@ -135,7 +135,7 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
     public int getPotionOffset()
     {
         /*Disabled in 1.12.2 because a vanilla bug means potion offsets are currently not a thing
-         *The vanilla bug is that GuiInventory.initGui() resets GuiLeft to the recipe book version of GuiLeft,
+         *The vanilla bug is that GuiInventory.init() resets GuiLeft to the recipe book version of GuiLeft,
          *and in GuiRecipeBook.updateScreenPosition() it takes no account of potion offset even if the recipe book is inactive.
 
         // If at least one potion is active...

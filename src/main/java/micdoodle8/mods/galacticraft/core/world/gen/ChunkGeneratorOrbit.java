@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import micdoodle8.mods.galacticraft.core.dimension.chunk.OrbitGenSettings;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
 {
+    private WorldGenSpaceStation spaceStation = new WorldGenSpaceStation();
 //    private final Random rand;
 //    private final World world;
 
@@ -39,7 +41,10 @@ public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
     @Override
     public void makeBase(IWorld worldIn, IChunk chunkIn)
     {
-
+        ChunkPos chunkPos = chunkIn.getPos();
+        int x = chunkPos.x * 16;
+        int z = chunkPos.z * 16;
+        spaceStation.place(world, new BlockPos(x - 10, 62, z - 3));
     }
 
     @Override

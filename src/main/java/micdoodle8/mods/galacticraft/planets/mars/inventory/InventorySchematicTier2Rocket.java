@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventorySchematicTier2Rocket implements IInventory
 {
@@ -35,11 +32,11 @@ public class InventorySchematicTier2Rocket implements IInventory
         return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
-    @Override
-    public String getName()
-    {
-        return "container.crafting";
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return "container.crafting";
+//    }
 
     @Override
     public ItemStack removeStackFromSlot(int index)
@@ -158,9 +155,9 @@ public class InventorySchematicTier2Rocket implements IInventory
 //        return false;
 //    }
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
+//    }
 }

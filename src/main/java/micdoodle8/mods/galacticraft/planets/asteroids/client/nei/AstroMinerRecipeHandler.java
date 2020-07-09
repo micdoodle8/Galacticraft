@@ -40,7 +40,7 @@
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(AstroMinerRecipeHandler.rocketGuiTexture);
-//        GuiDraw.drawTexturedModalRect(0, -8, 3, 32, 168, 104);
+//        GuiDraw.blit(0, -8, 3, 32, 168, 104);
 //    }
 //
 //    @Override

@@ -32,7 +32,7 @@
 //    {
 //        String name = "";
 //
-//        int meta = par1ItemStack.getItemDamage();
+//        int meta = par1ItemStack.getDamage();
 //        if (meta >= BlockPanelLighting.PANELTYPES_LENGTH)
 //        {
 //            meta = 0;
@@ -66,11 +66,11 @@
 //            }
 //            if (world.isRemote)
 //            {
-//                BlockPanelLighting.updateClient(stack.getItemDamage(), state);
+//                BlockPanelLighting.updateClient(stack.getDamage(), state);
 //            }
 //            else
 //            {
-//                int meta = stack.getItemDamage();
+//                int meta = stack.getDamage();
 //                if (meta >= BlockPanelLighting.PANELTYPES_LENGTH) meta = 0;
 //                GCPlayerStats stats = GCPlayerStats.get(player);
 //                BlockState[] panels = stats.getPanelLightingBases();

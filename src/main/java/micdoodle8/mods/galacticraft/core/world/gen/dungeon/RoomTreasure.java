@@ -1,43 +1,47 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.StructurePiece;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.storage.loot.LootTables;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_TREASURE;
 
 public class RoomTreasure extends SizedPiece
 {
     public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_1");
-    public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTables.register(MOONCHEST);
 
-    public RoomTreasure(IStructurePieceType type)
+    public RoomTreasure(TemplateManager templateManager, CompoundNBT nbt)
     {
-        super(type);
+        super(CMOON_DUNGEON_TREASURE, nbt);
     }
 
-    public RoomTreasure(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
+    protected RoomTreasure(IStructurePieceType type, CompoundNBT nbt)
     {
-        this(type, configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
+        super(type, nbt);
     }
 
-    public RoomTreasure(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
-        super(type, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
+    }
+
+    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    {
+        super(CMOON_DUNGEON_TREASURE, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         int yPos = configuration.getYPosition();
 
@@ -110,12 +114,12 @@ public class RoomTreasure extends SizedPiece
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
                             if (treasureChest != null)
                             {
-                                ResourceLocation chesttype = TABLE_TIER_1_DUNGEON;
-                                if (worldIn.getDimension() instanceof IGalacticraftWorldProvider)
-                                {
-                                    chesttype = ((IGalacticraftWorldProvider)worldIn.getDimension()).getDungeonChestType();
-                                }
-                                treasureChest.setLootTable(chesttype, random.nextLong());
+//                                ResourceLocation chesttype = TABLE_TIER_1_DUNGEON;
+//                                if (worldIn.getDimension() instanceof IGalacticraftWorldProvider)
+//                                {
+//                                    chesttype = ((IGalacticraftWorldProvider)worldIn.getDimension()).getDungeonChestType();
+//                                }
+                                treasureChest.setLootTable(MOONCHEST, random.nextLong());
                             }
                         }
                     }

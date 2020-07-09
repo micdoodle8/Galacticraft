@@ -30,7 +30,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiOxygenSealer extends GuiContainerGC
+public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
 {
     private static final ResourceLocation sealerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_sealer.png");
 

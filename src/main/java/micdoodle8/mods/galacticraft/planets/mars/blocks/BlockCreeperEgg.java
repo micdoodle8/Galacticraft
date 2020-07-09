@@ -1,30 +1,28 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DragonEggBlock;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription, ISortableBlock
+public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 {
     protected static final VoxelShape DRAGON_EGG_AABB = Block.makeCuboidShape(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 
@@ -58,11 +56,11 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
@@ -71,9 +69,8 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    public void onBlockClicked(World worldIn, BlockPos pos, PlayerEntity playerIn)
+    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
     {
-
     }
 
     @Override
@@ -84,18 +81,18 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
+    public void onBlockExploded(BlockState state, World world, BlockPos pos, Explosion explosion)
     {
         if (!world.isRemote)
         {
-            EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(world);
+            EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(GCEntities.EVOLVED_CREEPER.get(), world);
             creeper.setPosition(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
             creeper.setChild(true);
             world.addEntity(creeper);
         }
 
-        world.setBlockToAir(pos);
-        this.onBlockDestroyedByExplosion(world, pos, explosion);
+        world.removeBlock(pos, false);
+        this.onExplosionDestroy(world, pos, explosion);
     }
 
     @Override
@@ -104,9 +101,8 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
         return false;
     }
 
-    //Can only be harvested with a Sticky Desh Pickaxe
     @Override
-    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, PlayerEntity player)
+    public boolean canHarvestBlock(BlockState state, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         ItemStack stack = player.inventory.getCurrentItem();
         if (stack.isEmpty())
@@ -117,10 +113,10 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, World worldIn, BlockPos pos)
+    public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos)
     {
         ItemStack stack = player.inventory.getCurrentItem();
-        if (stack != null && stack.getItem() == MarsItems.deshPickSlime)
+        if (stack != ItemStack.EMPTY && stack.getItem() == MarsItems.deshPickSlime)
         {
             return 0.2F;
         }
@@ -128,20 +124,20 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.EGG;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.EGG;
+//    }
 }

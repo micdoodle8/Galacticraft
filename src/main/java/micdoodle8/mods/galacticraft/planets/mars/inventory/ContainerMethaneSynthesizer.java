@@ -1,41 +1,47 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerMethaneSynthesizer extends Container
 {
-    private final TileEntityMethaneSynthesizer tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.METHANE_SYNTHESIZER)
+    public static ContainerType<ContainerMethaneSynthesizer> TYPE;
 
-    public ContainerMethaneSynthesizer(PlayerInventory playerInv, TileEntityMethaneSynthesizer tileEntity, PlayerEntity player)
+    private final TileEntityMethaneSynthesizer synthesizer;
+
+    public ContainerMethaneSynthesizer(int containerId, PlayerInventory playerInv, TileEntityMethaneSynthesizer synthesizer)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.synthesizer = synthesizer;
 
         // Electric Input Slot
-        this.addSlot(new SlotSpecific(tileEntity, 0, 53, 53, IItemElectric.class));
+        this.addSlot(new SlotSpecific(this.synthesizer, 0, 53, 53, IItemElectric.class));
 
         // Input slot - hydrogen
-        this.addSlot(new Slot(tileEntity, 1, 7, 7));
+        this.addSlot(new Slot(this.synthesizer, 1, 7, 7));
 
         // Input slot - CO2
-        this.addSlot(new Slot(tileEntity, 2, 28, 7));
+        this.addSlot(new Slot(this.synthesizer, 2, 28, 7));
 
         // Carbon slot
-        this.addSlot(new SlotSpecific(tileEntity, 3, 28, 53, new ItemStack(MarsItems.carbonFragments, 1, 0)));
+        this.addSlot(new SlotSpecific(this.synthesizer, 3, 28, 53, new ItemStack(MarsItems.carbonFragments, 1)));
 
         // Output slot
-        this.addSlot(new Slot(tileEntity, 4, 153, 7));
+        this.addSlot(new Slot(this.synthesizer, 4, 153, 7));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -51,20 +57,25 @@ public class ContainerMethaneSynthesizer extends Container
             this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 144));
         }
 
-        tileEntity.openInventory(player);
+        this.synthesizer.openInventory(playerInv.player);
+    }
+
+    public TileEntityMethaneSynthesizer getSynthesizer()
+    {
+        return synthesizer;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory(entityplayer);
+        this.synthesizer.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.synthesizer.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -105,7 +116,7 @@ public class ContainerMethaneSynthesizer extends Container
                 }
                 else
                 {
-                    if (var4.getItem() instanceof ItemAtmosphericValve)
+                    if (var4.getItem() == AsteroidsItems.atmosphericValve)
                     {
                         if (!this.mergeItemStack(var4, 2, 3, false))
                         {

@@ -1,24 +1,31 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerShortRangeTelepad extends Container
 {
-    private final TileEntityShortRangeTelepad tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SHORT_RANGE_TELEPAD)
+    public static ContainerType<ContainerShortRangeTelepad> TYPE;
 
-    public ContainerShortRangeTelepad(PlayerInventory playerInv, TileEntityShortRangeTelepad tileEntity, PlayerEntity player)
+    private final TileEntityShortRangeTelepad telepad;
+
+    public ContainerShortRangeTelepad(int containerId, PlayerInventory playerInv, TileEntityShortRangeTelepad telepad)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.telepad = telepad;
 
-        this.addSlot(new SlotSpecific(tileEntity, 0, 152, 105, IItemElectric.class));
+        this.addSlot(new SlotSpecific(this.telepad, 0, 152, 105, IItemElectric.class));
 
         int var6;
         int var7;
@@ -36,20 +43,25 @@ public class ContainerShortRangeTelepad extends Container
             this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 185));
         }
 
-        tileEntity.openInventory(player);
+        this.telepad.openInventory(playerInv.player);
+    }
+
+    public TileEntityShortRangeTelepad getTelepad()
+    {
+        return telepad;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory(entityplayer);
+        this.telepad.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.telepad.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override

@@ -8,9 +8,12 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -29,50 +32,42 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
 
     public GuiLaserTurretEditPriority(TileEntityLaserTurret turret)
     {
+        super(new StringTextComponent("Edit Turret Priority"));
         this.laserTurret = turret;
     }
 
     @Override
-    protected void actionPerformed(Button button)
-    {
-        switch (button.id)
-        {
-        case 0:
-            break;
-        }
-    }
-
-    @Override
-    public void initGui()
+    public void init()
     {
         this.buttons.clear();
-        super.initGui();
+        super.init();
         this.ySize = 95;
         this.xSize = 222;
         int yTop = (this.height - this.ySize) / 2;
-        this.priorityClosest = new GuiElementSpinner(0, this, this.width / 2 - 95, yTop + 21, ColorUtil.to32BitColor(255, 220, 220, 220));
+        this.priorityClosest = new GuiElementSpinner(this, this.width / 2 - 95, yTop + 21, ColorUtil.to32BitColor(255, 220, 220, 220));
         this.buttons.add(this.priorityClosest);
-        this.priorityLowestHealth = new GuiElementSpinner(1, this, this.width / 2 - 95, yTop + 43, ColorUtil.to32BitColor(255, 220, 220, 220));
+        this.priorityLowestHealth = new GuiElementSpinner(this, this.width / 2 - 95, yTop + 43, ColorUtil.to32BitColor(255, 220, 220, 220));
         this.buttons.add(this.priorityLowestHealth);
-        this.priorityHighestHealth = new GuiElementSpinner(2, this, this.width / 2 - 95, yTop + 65, ColorUtil.to32BitColor(255, 220, 220, 220));
+        this.priorityHighestHealth = new GuiElementSpinner(this, this.width / 2 - 95, yTop + 65, ColorUtil.to32BitColor(255, 220, 220, 220));
         this.buttons.add(this.priorityHighestHealth);
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID) throws IOException
+    public boolean keyPressed(int key, int scanCode, int modifiers)
     {
-        if (keyID == 1)
+        if (key == GLFW.GLFW_KEY_ESCAPE)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_OPEN_LASER_TURRET_GUI, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { laserTurret.getPos() }));
+            return true;
         }
         else
         {
-            super.keyTyped(keyChar, keyID);
+            return super.keyPressed(key, scanCode, modifiers);
         }
     }
 
     @Override
-    public boolean doesGuiPauseGame()
+    public boolean isPauseScreen()
     {
         return false;
     }
@@ -80,20 +75,20 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
     @Override
     public void render(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
+        this.renderBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiLaserTurretEditPriority.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize - 10);
-        this.drawTexturedModalRect(var5, var6 + this.ySize - 10, 0, 144 - 10, this.xSize, 10);
+        this.blit(var5, var6, 0, 0, this.xSize, this.ySize - 10);
+        this.blit(var5, var6 + this.ySize - 10, 0, 144 - 10, this.xSize, 10);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
 
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_low.name"), var5 + 6, var6 + 8, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_closest.name"), this.priorityClosest.x + 35, this.priorityClosest.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_health_low.name"), this.priorityLowestHealth.x + 35, this.priorityLowestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_health_high.name"), this.priorityHighestHealth.x + 35, this.priorityHighestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_low.name"), var5 + 6, var6 + 8, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_closest.name"), this.priorityClosest.x + 35, this.priorityClosest.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_health_low.name"), this.priorityLowestHealth.x + 35, this.priorityLowestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_health_high.name"), this.priorityHighestHealth.x + 35, this.priorityHighestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
     }
 
     @Override
@@ -105,7 +100,7 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
     @Override
     public void onSelectionChanged(GuiElementSpinner spinner, int newVal)
     {
-        for (Button button : this.buttons)
+        for (Widget button : this.buttons)
         {
             if (button instanceof GuiElementSpinner)
             {

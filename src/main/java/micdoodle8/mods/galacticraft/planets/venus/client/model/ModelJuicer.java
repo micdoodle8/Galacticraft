@@ -1,12 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.model;
 
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelJuicer extends ModelBase
+public class ModelJuicer extends EntityModel<EntityJuicer>
 {
     private RendererModel body1;
     private RendererModel body2;
@@ -226,10 +225,10 @@ public class ModelJuicer extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityJuicer entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
         body1.render(f5);
         body2.render(f5);
         head.render(f5);
@@ -267,10 +266,9 @@ public class ModelJuicer extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float f1, float f2, float f3, float f4, float f5, float f6, Entity entityIn)
+    public void setRotationAngles(EntityJuicer juicer, float f1, float f2, float f3, float f4, float f5, float f6)
     {
-        EntityJuicer juicer = (EntityJuicer) entityIn;
-        super.setRotationAngles(f1, f2, f3, f4, f5, f6, entityIn);
+        super.setRotationAngles(juicer, f1, f2, f3, f4, f5, f6);
         float movement = f1;
         float increment = -1.0F;
         float offset = 0.5F;
@@ -318,10 +316,10 @@ public class ModelJuicer extends ModelBase
         this.tail0.rotationPointY = -1.5F;
         this.tail0.offsetY = 0.0F;
 //        this.tail0.rotateAngleX = MathHelper.cos(movement) * 0.2F + 0.5205006F;
-        this.tail0.rotateAngleX = juicer.attackingPlayer != null ? 0.52F : 0.1F;
+        this.tail0.rotateAngleX = juicer.getAttackingEntity() != null ? 0.52F : 0.1F;
         this.tail0.rotateAngleY = 0.0F;
         this.tail0.rotateAngleZ = 0.0F;
-        this.tail1.rotateAngleX = juicer.attackingPlayer != null ? 2.659407F : 2.7F;
+        this.tail1.rotateAngleX = juicer.getAttackingEntity() != null ? 2.659407F : 2.7F;
         this.tail1.rotationPointZ = 4 * (MathHelper.sin(this.tail0.rotateAngleZ) + MathHelper.cos(this.tail0.rotateAngleY));
         this.tail1.rotationPointY = 0.5F;
         this.tail1.rotationPointX = 0.0F;

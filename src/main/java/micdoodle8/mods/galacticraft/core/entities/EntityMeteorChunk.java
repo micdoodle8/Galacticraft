@@ -344,7 +344,6 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                     this.posZ -= motionZ / f2 * 0.05000000074505806D;
                     this.inGround = true;
 
-                    BlockState hitState = this.world.getBlockState(blockResult.getPos());
                     if (!this.inBlockState.isAir(this.world, blockResult.getPos()))
                     {
                         this.inBlockState.onEntityCollision(this.world, blockResult.getPos(), this);

@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 public abstract class SizedPieceVenus extends DirectionalPieceVenus
@@ -10,13 +12,14 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     protected int sizeY;
     protected int sizeZ;
 
-    public SizedPieceVenus()
+    public SizedPieceVenus(IStructurePieceType type, CompoundNBT nbt)
     {
+        super(type, nbt);
     }
 
-    public SizedPieceVenus(DungeonConfigurationVenus configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
+    public SizedPieceVenus(IStructurePieceType type, DungeonConfigurationVenus configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(configuration, direction);
+        super(type, configuration, direction);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
@@ -33,13 +36,13 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
-        super.readStructureFromNBT(tagCompound, manager);
+        super.readStructureFromNBT(tagCompound);
 
-        this.sizeX = tagCompound.getInteger("sizeX");
-        this.sizeY = tagCompound.getInteger("sizeY");
-        this.sizeZ = tagCompound.getInteger("sizeZ");
+        this.sizeX = tagCompound.getInt("sizeX");
+        this.sizeY = tagCompound.getInt("sizeY");
+        this.sizeZ = tagCompound.getInt("sizeZ");
     }
 
     public int getSizeX()

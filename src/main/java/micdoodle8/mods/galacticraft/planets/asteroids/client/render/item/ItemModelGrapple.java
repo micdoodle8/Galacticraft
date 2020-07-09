@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.vecmath.Matrix4f;
@@ -18,9 +18,9 @@ public class ItemModelGrapple extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
     {
-        if (cameraTransformType == TransformType.GUI)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -41,12 +41,12 @@ public class ItemModelGrapple extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND)
         {
-            float xTran = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? 0.3F : 0.3F;
-            float yTran = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? 0.2F : -0.2F;
-            float zTran = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? 0.2F : 0.8F;
-            int xRot = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? 180 : 0;
+            float xTran = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? 0.3F : 0.3F;
+            float yTran = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? 0.2F : -0.2F;
+            float zTran = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? 0.2F : 0.8F;
+            int xRot = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? 180 : 0;
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
@@ -67,13 +67,13 @@ public class ItemModelGrapple extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND)
         {
-            float xTran = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? -0.275F : 0.5F;
-            float yTran = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? 0.925F : 0.05F;
-            float zTran = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? 0.2F : -0.2F;
-            int xRot = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? -180 : 0;
-            int yRot = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? 75 : 45;
+            float xTran = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.275F : 0.5F;
+            float yTran = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? 0.925F : 0.05F;
+            float zTran = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? 0.2F : -0.2F;
+            int xRot = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -180 : 0;
+            int yRot = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? 75 : 45;
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
@@ -93,7 +93,7 @@ public class ItemModelGrapple extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.GROUND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GROUND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -107,7 +107,7 @@ public class ItemModelGrapple extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIXED)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.FIXED)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

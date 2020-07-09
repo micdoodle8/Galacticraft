@@ -1,24 +1,25 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import micdoodle8.mods.galacticraft.api.world.BiomeGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.BiomeDictionary;
 
-public class BiomeOrbit extends BiomeGenBaseGC
-{
-    public static final Biome space = new BiomeOrbit(new BiomeProperties("Space").setRainfall(0.0F));
+import static net.minecraft.world.gen.surfacebuilders.SurfaceBuilder.STONE_STONE_GRAVEL_CONFIG;
 
-    private BiomeOrbit(BiomeProperties properties)
+public class BiomeOrbit extends BiomeGC
+{
+    public static final Biome space = new BiomeOrbit();
+
+    private BiomeOrbit()
     {
-        super(properties, true);
-        this.spawnableMonsterList.clear();
-        this.spawnableWaterCreatureList.clear();
-        this.spawnableCreatureList.clear();
-        this.spawnableCaveCreatureList.clear();
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 10, 4, 4));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 10, 4, 4));
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).temperature(0.0F).downfall(0.0F).parent(null), true);
+        addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE.get(), 10, 4, 4));
+        addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SPIDER.get(), 10, 4, 4));
     }
 
     @Override

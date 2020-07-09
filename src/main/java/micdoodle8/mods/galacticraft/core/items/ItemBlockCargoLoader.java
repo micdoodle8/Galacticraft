@@ -17,7 +17,7 @@
 //    {
 //        String name = "";
 //
-//        if (par1ItemStack.getItemDamage() < 4)
+//        if (par1ItemStack.getDamage() < 4)
 //        {
 //            name = "loader";
 //        }

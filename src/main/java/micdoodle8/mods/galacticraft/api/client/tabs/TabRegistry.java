@@ -10,7 +10,7 @@
 //import net.minecraftforge.client.event.GuiScreenEvent;
 //import net.minecraftforge.fml.client.FMLClientHandler;
 //import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.util.ArrayList;
@@ -64,7 +64,7 @@
 //
 //	@OnlyIn(Dist.CLIENT)
 //	@SubscribeEvent
-//	public void guiPostInit (GuiScreenEvent.InitGuiEvent.Post event)
+//	public void guiPostInit (GuiScreenEvent.initEvent.Post event)
 //	{
 //		if (event.getGui() instanceof InventoryScreen)
 //		{
@@ -122,7 +122,7 @@
 //	public static int getPotionOffset()
 //	{
 ///*Disabled in 1.12.2 because a vanilla bug means potion offsets are currently not a thing
-// *The vanilla bug is that GuiInventory.initGui() resets GuiLeft to the recipe book version of GuiLeft,
+// *The vanilla bug is that GuiInventory.init() resets GuiLeft to the recipe book version of GuiLeft,
 // *and in GuiRecipeBook.updateScreenPosition() it takes no account of potion offset even if the recipe book is inactive.
 //
 //		// If at least one potion is active...

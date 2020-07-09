@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
@@ -18,9 +18,9 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
     {
-        if (cameraTransformType == TransformType.GUI)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -38,11 +38,12 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND ||
+                cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND)
         {
-            float xTran = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? -0.5F : 0.5F;
-            float zTran = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? 0.3F : 0.7F;
-            int yRot = cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND ? -90 : 90;
+            float xTran = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.5F : 0.5F;
+            float zTran = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? 0.3F : 0.7F;
+            int yRot = cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -90 : 90;
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
@@ -62,11 +63,12 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND ||
+                cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND)
         {
-            float xTran = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? -0.4F : 0.4F;
-            float zTran = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? 0.5F : 0.5F;
-            int yRot = cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND ? -45 : -225;
+            float xTran = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? -0.4F : 0.4F;
+            float zTran = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? 0.5F : 0.5F;
+            int yRot = cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND ? -45 : -225;
             Vector3f trans = new Vector3f(xTran, 0.0F, zTran);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -84,7 +86,7 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.GROUND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GROUND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -98,7 +100,7 @@ public class ItemModelBeamReceiver extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIXED)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.FIXED)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

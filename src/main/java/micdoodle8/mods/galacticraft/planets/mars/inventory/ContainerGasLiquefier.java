@@ -1,34 +1,41 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityGasLiquefier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerGasLiquefier extends Container
 {
-    private final TileEntityGasLiquefier tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.GAS_LIQUEFIER)
+    public static ContainerType<ContainerGasLiquefier> TYPE;
 
-    public ContainerGasLiquefier(PlayerInventory playerInv, TileEntityGasLiquefier tileEntity, PlayerEntity player)
+    private final TileEntityGasLiquefier gasLiquefier;
+
+    public ContainerGasLiquefier(int containerId, PlayerInventory playerInv, TileEntityGasLiquefier gasLiquefier)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.gasLiquefier = gasLiquefier;
 
         // Electric Input Slot
-        this.addSlot(new SlotSpecific(tileEntity, 0, 34, 50, IItemElectric.class));
+        this.addSlot(new SlotSpecific(this.gasLiquefier, 0, 34, 50, IItemElectric.class));
 
         // Input slot
-        this.addSlot(new Slot(tileEntity, 1, 7, 7));
+        this.addSlot(new Slot(this.gasLiquefier, 1, 7, 7));
 
         // 2 output slots
-        this.addSlot(new Slot(tileEntity, 2, 132, 7));
-        this.addSlot(new Slot(tileEntity, 3, 153, 7));
+        this.addSlot(new Slot(this.gasLiquefier, 2, 132, 7));
+        this.addSlot(new Slot(this.gasLiquefier, 3, 153, 7));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -44,20 +51,25 @@ public class ContainerGasLiquefier extends Container
             this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 144));
         }
 
-        tileEntity.openInventory(player);
+        this.gasLiquefier.openInventory(playerInv.player);
+    }
+
+    public TileEntityGasLiquefier getGasLiquefier()
+    {
+        return gasLiquefier;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory(entityplayer);
+        this.gasLiquefier.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.gasLiquefier.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -99,14 +111,14 @@ public class ContainerGasLiquefier extends Container
                 else
                 {
                     boolean outputTankSlotsSuccess = false;
-                    if (FluidUtil.isEmptyContainerFor(var4, this.tileEntity.liquidTank2.getFluid()))
+                    if (FluidUtil.isEmptyContainerFor(var4, this.gasLiquefier.liquidTank2.getFluid()))
                     {
                         if (this.mergeItemStack(var4, 3, 4, false))
                         {
                             outputTankSlotsSuccess = true;
                         }
                     }
-                    if (!outputTankSlotsSuccess && FluidUtil.isEmptyContainerFor(var4, this.tileEntity.liquidTank.getFluid()))
+                    if (!outputTankSlotsSuccess && FluidUtil.isEmptyContainerFor(var4, this.gasLiquefier.liquidTank.getFluid()))
                     {
                         if (this.mergeItemStack(var4, 2, 3, false))
                         {
@@ -116,7 +128,7 @@ public class ContainerGasLiquefier extends Container
 
                     if (!outputTankSlotsSuccess)
                     {
-                        if (FluidUtil.isFilledContainer(var4) || var4.getItem() instanceof ItemAtmosphericValve)
+                        if (FluidUtil.isFilledContainer(var4) || var4.getItem() == AsteroidsItems.atmosphericValve)
                         {
                             if (!this.mergeItemStack(var4, 1, 2, false))
                             {

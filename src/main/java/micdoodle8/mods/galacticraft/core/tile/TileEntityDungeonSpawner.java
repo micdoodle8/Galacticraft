@@ -46,7 +46,13 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
     public TileEntityDungeonSpawner()
     {
-        this(null);
+        super(TYPE);
+    }
+
+    public TileEntityDungeonSpawner(TileEntityType<? extends TileEntityDungeonSpawner<E>> type, Class<E> bossClass)
+    {
+        super(type);
+        this.bossClass = bossClass;
     }
 
     public TileEntityDungeonSpawner(Class<E> bossClass)
@@ -189,7 +195,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         catch (Exception e)
         {
             // This exception will be thrown when read is called from TileEntity.handleUpdateTag
-            // but we only care if an exception is thrown on server side read
+            // but we only care if an exception is thrown on server LogicalSide read
             if (!this.world.isRemote)
             {
                 e.printStackTrace();

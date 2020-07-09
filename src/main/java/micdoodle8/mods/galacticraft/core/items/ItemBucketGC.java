@@ -10,6 +10,7 @@
 //import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 //import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 //import net.minecraft.block.Block;
+//import net.minecraft.fluid.Fluid;
 //import net.minecraft.item.ItemGroup;
 //import net.minecraft.item.Items;
 //import net.minecraft.item.Rarity;
@@ -19,15 +20,10 @@
 //import net.minecraft.util.Direction;
 //import net.minecraftforge.common.capabilities.Capability;
 //import net.minecraftforge.common.capabilities.ICapabilityProvider;
-//import net.minecraftforge.fluids.Fluid;
 //import net.minecraftforge.fluids.FluidStack;
 //import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-//import net.minecraftforge.fluids.capability.FluidTankProperties;
 //import net.minecraftforge.fluids.capability.IFluidHandler;
 //import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-//import net.minecraftforge.fluids.capability.IFluidTankProperties;
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBucketGC extends BucketItem implements ISortableItem, ICapabilityProvider
 //{

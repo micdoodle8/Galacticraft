@@ -1,19 +1,28 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedDetector;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures;
+import net.minecraft.block.*;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.state.properties.AttachFace;
+import net.minecraft.state.properties.Half;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+
+import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_DECK;
+import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_START;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +41,9 @@ public class BaseDeck extends SizedPiece
     
     public enum EnumBaseType 
     {
-        HUMANOID(5, 3, GCBlocks.basicBlock.getStateFromMeta(4), new ItemStack(Items.GHAST_TEAR, 3, 0)),
-        AVIAN(4, 3, GCBlocks.blockMoon.getStateFromMeta(4), new ItemStack(AsteroidsItems.strangeSeed, 1, 1)),
-        TUNNELER(4, 4, GCBlocks.blockMoon.getStateFromMeta(4), new ItemStack(AsteroidsItems.strangeSeed, 1, 0));
+        HUMANOID(5, 3, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(Items.GHAST_TEAR, 3)),
+        AVIAN(4, 3, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(AsteroidsItems.strangeSeed2, 1)),
+        TUNNELER(4, 4, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(AsteroidsItems.strangeSeed1, 1));
         
         public final int height;
         public final int width;
@@ -49,14 +58,25 @@ public class BaseDeck extends SizedPiece
             this.treasure = treasure;
         }
     }
-    
-    public BaseDeck()
+
+    public BaseDeck(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CBASE_DECK, nbt);
+    }
+    
+    public BaseDeck(IStructurePieceType type, CompoundNBT nbt)
+    {
+        super(type, nbt);
     }
 
     public BaseDeck(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosY, int blockPosZ, int tier, Direction dir)
     {
-        super(configuration, configuration.getCorridorWidth() + 1, configuration.getRoomHeight() + 1, configuration.getCorridorLength(), dir);
+        this(CBASE_DECK, configuration, rand, blockPosX, blockPosY, blockPosZ, tier, dir);
+    }
+
+    public BaseDeck(IStructurePieceType type, BaseConfiguration configuration, Random rand, int blockPosX, int blockPosY, int blockPosZ, int tier, Direction dir)
+    {
+        super(type, configuration, configuration.getCorridorWidth() + 1, configuration.getRoomHeight() + 1, configuration.getCorridorLength(), dir);
         this.roomsOnSide = configuration.getRoomsNo();
         this.roomDepth = configuration.getRoomDepth() + (tier == 0 ? 1 : 0);
         this.deckTier = tier;
@@ -152,17 +172,17 @@ public class BaseDeck extends SizedPiece
                 deck.writeStructureToNBT(tag1);
                 tagList.add(tag1);
             }
-            tagCompound.setTag("oD", tagList);
+            tagCompound.put("oD", tagList);
         }
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
-        super.readStructureFromNBT(tagCompound, manager);
+        super.readStructureFromNBT(tagCompound);
         try
         {
-            int details = tagCompound.getInteger("dD");
+            int details = tagCompound.getInt("dD");
             this.deckTier = details & 15;
             this.largeRoomPosB = details >> 8;
             this.largeRoomPosA = (details >> 4) & 15;
@@ -176,8 +196,7 @@ public class BaseDeck extends SizedPiece
                 for (int i = 0; i < tagList.size(); i++)
                 {
                     CompoundNBT tagAt = tagList.getCompound(i);
-                    BaseDeck deck = new BaseDeck();
-                    deck.readStructureFromNBT(tagAt, manager);
+                    BaseDeck deck = new BaseDeck(AsteroidFeatures.CBASE_DECK, tagAt);
                     this.otherDecks.add(deck);
                 }
             }
@@ -190,7 +209,7 @@ public class BaseDeck extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox chunkBounds)
+    public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_)
     {
         BlockState block1;
         BlockState blockWall = this.configuration.getWallBlock();
@@ -223,27 +242,27 @@ public class BaseDeck extends SizedPiece
                         {
                             //Make airlock at the hangar end, if it's a hangar deck
                             BlockState blockLintel = GCBlocks.airLockFrame.getDefaultState();
-                            BlockState blockAirlock = GCBlocks.airLockFrame.getStateFromMeta(1);
+                            BlockState blockAirlock = GCBlocks.airLockController.getDefaultState();
                             if ((!directionNS && (z == startZ + 1 || z == endZ - 1) || directionNS && (x == startX + 1 || x == endX - 1)) && y < sizeY - 1)
                             {
-                                this.setBlockState(worldIn, blockLintel, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockLintel, x, y, z, this.boundingBox);
                             }
                             else if (y >= endY - 1 || directionNS && (x == startX || x == endX) || !directionNS && (z == startZ || z == endZ))
                             {
-                                this.setBlockState(worldIn, blockWall, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockWall, x, y, z, this.boundingBox);
                             }
                             else if (y == 0 || y == endY - 2)
                             {
                                 //Test mid point bottom
                                 if (y == 0 && (!directionNS && z == (startZ + endZ) / 2 || directionNS && x == (startX + endX) / 2))
-                                    this.setBlockState(worldIn, blockAirlock, x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockAirlock, x, y, z, this.boundingBox);
                                 else
-                                    this.setBlockState(worldIn, blockLintel, x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockLintel, x, y, z, this.boundingBox);
                                 skipCap = true;
                             }
                             else
                             {
-                                this.setBlockState(worldIn, blockAir, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockAir, x, y, z, this.boundingBox);
                             }
                         }
                         //Skip certain blocks at top and bottom to give chamfered edge
@@ -251,7 +270,7 @@ public class BaseDeck extends SizedPiece
                         {
                             if (y == 0 && (this.deckTier & 1) == 1 && this.configuration.getDeckType() == EnumBaseType.HUMANOID && (directionNS && (x == startX + 2 + (this.configuration.isHangarDeck() ? 1 : 0) || x == startX + 4 + (this.configuration.isHangarDeck() ? 1 : 0)) || !directionNS && (z == startZ + 2 + (this.configuration.isHangarDeck() ? 1 : 0) || z == startZ + 4 + (this.configuration.isHangarDeck() ? 1 : 0))))
                             {
-                                this.setBlockState(worldIn, blockGrid, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockGrid, x, y, z, this.boundingBox);
                             }
                             else if (!this.configuration.isHangarDeck() && (this.getDirection() == Direction.SOUTH && z == endZ || this.getDirection() == Direction.NORTH && z == startZ || this.getDirection() == Direction.EAST && x == endX || this.getDirection() == Direction.WEST && x == startX))
                             {
@@ -302,11 +321,11 @@ public class BaseDeck extends SizedPiece
                                     }
                                 }
 
-                                this.setBlockState(worldIn, windowOrWall, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, windowOrWall, x, y, z, this.boundingBox);
                             }
                             else
                             {
-                                this.setBlockState(worldIn, blockWall, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockWall, x, y, z, this.boundingBox);
                             }
                         }
                         
@@ -318,7 +337,7 @@ public class BaseDeck extends SizedPiece
                             {
                                 if (!skipCap)
                                 {
-                                    this.setBlockState(worldIn, blockWall, x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockWall, x, y, z, this.boundingBox);
                                 }
                             }
                         }
@@ -335,75 +354,105 @@ public class BaseDeck extends SizedPiece
                         {
                             if (x == startX + 1)
                             {
-                                this.setBlockState(worldIn, blockStair.getStateFromMeta(0 ^ top), x, y, z, chunkBounds);
+                                int val = 0 ^ top;
+                                BlockState state = blockStair.getDefaultState();
+                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (x == endX - 1)
                             {
-                                this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, chunkBounds);
+                                int val = 1 ^ top;
+                                BlockState state = blockStair.getDefaultState();
+                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (this.configuration.getDeckType() == EnumBaseType.AVIAN)
                             {
                                 if (z == ceilingDeco && top >= 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(3 ^ top), x, y, z, chunkBounds);
+                                    BlockState state = blockStair.getDefaultState();
+                                    state.with(StairsBlock.HALF, (top & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (top & 3)));
+                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                 }
                                 else if (z == ceilingDeco + 1 && top >= 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(2 ^ top), x, y, z, chunkBounds);
+                                    int val = 2 ^ top;
+                                    BlockState state = blockStair.getDefaultState();
+                                    state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                     if (x >= endX - 2) ceilingDeco += ceilingSpacer;
                                 }
                                 else
                                 {
-                                    this.setBlockState(worldIn, blockAir, x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockAir, x, y, z, this.boundingBox);
                                 }
                             }
                             else
                             {
-                                this.setBlockState(worldIn, blockAir, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockAir, x, y, z, this.boundingBox);
                             }
                         }
                         else
                         {
                             if (z == startZ + 1)
                             {
-                                this.setBlockState(worldIn, blockStair.getStateFromMeta(2 ^ top), x, y, z, chunkBounds);
+                                int val = 2 ^ top;
+                                BlockState state = blockStair.getDefaultState();
+                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (z == endZ - 1)
                             {
-                                this.setBlockState(worldIn, blockStair.getStateFromMeta(3 ^ top), x, y, z, chunkBounds);
+                                int val = 3 ^ top;
+                                BlockState state = blockStair.getDefaultState();
+                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (this.configuration.getDeckType() == EnumBaseType.AVIAN)
                             {
                                 if (x == ceilingDeco && top == 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, chunkBounds);
+                                    int val = 1 ^ top;
+                                    BlockState state = blockStair.getDefaultState();
+                                    state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                 }
                                 else if (x == ceilingDeco + 1 && top == 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(top), x, y, z, chunkBounds);
+                                    BlockState state = blockStair.getDefaultState();
+                                    state.with(StairsBlock.HALF, (top & 4) > 0 ? Half.TOP : Half.BOTTOM);
+                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (top & 3)));
+                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                     if (z >= endZ - 2) ceilingDeco += ceilingSpacer;
                                 }
                                 else
                                 {
-                                    this.setBlockState(worldIn, blockAir, x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockAir, x, y, z, this.boundingBox);
                                 }
                             }
                             else
                             {
-                                this.setBlockState(worldIn, blockAir, x, y, z, chunkBounds);
+                                this.setBlockState(worldIn, blockAir, x, y, z, this.boundingBox);
                             }
                         }
                     }
                     else
                     {
-                        this.setBlockState(worldIn, blockAir, x, y, z, chunkBounds);
+                        this.setBlockState(worldIn, blockAir, x, y, z, this.boundingBox);
                     }
                 }
                 
                 //Infill for the extra height layer
                 if (endY != this.sizeY)
                 {
-                    this.setBlockState(worldIn, blockWall, x, this.sizeY, z, chunkBounds);
+                    this.setBlockState(worldIn, blockWall, x, this.sizeY, z, this.boundingBox);
                 }
             }
         }
@@ -420,16 +469,16 @@ public class BaseDeck extends SizedPiece
 
             if (directionNS)
             {
-                this.makeDoorway(worldIn, this.sizeX, leftZ + largeRoomOffset, directionNS, chunkBounds);
-                this.makeDoorway(worldIn, 0, rightZ + largeRoomOffset, directionNS, chunkBounds);
+                this.makeDoorway(worldIn, this.sizeX, leftZ + largeRoomOffset, directionNS, this.boundingBox);
+                this.makeDoorway(worldIn, 0, rightZ + largeRoomOffset, directionNS, this.boundingBox);
 
                 leftZ += roomsize;
                 rightZ += roomsize;
             }
             else
             {
-                this.makeDoorway(worldIn, leftX + largeRoomOffset, this.sizeZ, directionNS, chunkBounds);
-                this.makeDoorway(worldIn, rightX + largeRoomOffset, 0, directionNS, chunkBounds);
+                this.makeDoorway(worldIn, leftX + largeRoomOffset, this.sizeZ, directionNS, this.boundingBox);
+                this.makeDoorway(worldIn, rightX + largeRoomOffset, 0, directionNS, this.boundingBox);
 
                 leftX += roomsize;
                 rightX += roomsize;
@@ -448,12 +497,12 @@ public class BaseDeck extends SizedPiece
         {
             //Create an access hole between the floors
             int width = directionNS ? this.sizeX : this.sizeZ;
-            this.setBlockState(worldIn, blockAir, 0, this.sizeY, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, 1, this.sizeY, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, 1, this.sizeY - 1, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, width - 1, this.sizeY - 1, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, width - 1, this.sizeY, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, width, this.sizeY, 1, chunkBounds);
+            this.setBlockState(worldIn, blockAir, 0, this.sizeY, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, 1, this.sizeY, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, 1, this.sizeY - 1, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, width - 1, this.sizeY - 1, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, width - 1, this.sizeY, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, width, this.sizeY, 1, this.boundingBox);
         }
 
         //Special settings for Control Room
@@ -483,7 +532,7 @@ public class BaseDeck extends SizedPiece
             {
                 for (int x = 2; x < endX - 1; x++)
                 {
-                    this.setBlockState(worldIn, blockGlass, x, y, endZ, chunkBounds);
+                    this.setBlockState(worldIn, blockGlass, x, y, endZ, this.boundingBox);
                 }
             }
             
@@ -503,22 +552,23 @@ public class BaseDeck extends SizedPiece
                 facing = 3;
             }
 
-            BlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
-            this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ, chunkBounds);
-            this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ, chunkBounds);
-            lever = Blocks.LEVER.getStateFromMeta(this.direction.getAxis() == Direction.Axis.Z ? 4 : 3);
-            this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ - 1, chunkBounds);
-            this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ - 1, chunkBounds);
+//            BlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
+            BlockState lever = GCBlocks.concealedDetector.getDefaultState().with(BlockConcealedDetector.DETECTED, true).with(BlockConcealedDetector.FACING, facing).with(BlockConcealedDetector.VARIANT, this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4);
+            this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ, this.boundingBox);
+            this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ, this.boundingBox);
+            lever = Blocks.LEVER.getDefaultState().with(LeverBlock.FACE, AttachFace.WALL).with(LeverBlock.HORIZONTAL_FACING, this.direction.getAxis() == Direction.Axis.Z ? Direction.NORTH : Direction.SOUTH);
+            this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ - 1, this.boundingBox);
+            this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ - 1, this.boundingBox);
             
             //Create two redstone blocks
-            this.setBlockState(worldIn, GCBlocks.concealedRedstone.getStateFromMeta(15), endX / 2 - 2, this.sizeY, endZ, chunkBounds);
-            this.setBlockState(worldIn, GCBlocks.concealedRedstone.getStateFromMeta(15), endX / 2 + 2, this.sizeY, endZ, chunkBounds);
+            this.setBlockState(worldIn, GCBlocks.concealedRedstone.getDefaultState().with(StairsBlock.HALF, Half.TOP).with(StairsBlock.FACING, Direction.NORTH), endX / 2 - 2, this.sizeY, endZ, this.boundingBox);
+            this.setBlockState(worldIn, GCBlocks.concealedRedstone.getDefaultState().with(StairsBlock.HALF, Half.TOP).with(StairsBlock.FACING, Direction.NORTH), endX / 2 + 2, this.sizeY, endZ, this.boundingBox);
 
             //Create an access hole between the floors
-            this.setBlockState(worldIn, blockAir, 2, 0, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, 3, 0, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, 11, 0, 1, chunkBounds);
-            this.setBlockState(worldIn, blockAir, 12, 0, 1, chunkBounds);
+            this.setBlockState(worldIn, blockAir, 2, 0, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, 3, 0, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, 11, 0, 1, this.boundingBox);
+            this.setBlockState(worldIn, blockAir, 12, 0, 1, this.boundingBox);
         }
         this.setCoordBaseMode(Direction.NORTH);
 
@@ -645,11 +695,11 @@ public class BaseDeck extends SizedPiece
         return rooms;
     }
     
-    protected void makeDoorway(World worldIn, int x, int z, boolean directionNS, MutableBoundingBox chunkBounds)
+    protected void makeDoorway(IWorld worldIn, int x, int z, boolean directionNS, MutableBoundingBox chunkBounds)
     {
 //        System.out.println("Making doorway at " + x + "," + z + " NS:" + directionNS + " Tier " + this.deckTier);
         BlockState blockLintel = GCBlocks.airLockFrame.getDefaultState();
-        BlockState blockAirlock = GCBlocks.airLockFrame.getStateFromMeta(1);
+        BlockState blockAirlock = GCBlocks.airLockController.getDefaultState();
         Block blockStair = GCBlocks.moonStoneStairs;
         BlockState blockAir = Blocks.AIR.getDefaultState();
         int meta = directionNS ? 2 : 0;
@@ -672,24 +722,24 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockLintel, x, 3, z, chunkBounds);
             break;
         case AVIAN:
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(0 + meta), x, this.sizeY - 4, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, (meta & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - (meta & 3))), x, this.sizeY - 4, z, chunkBounds);
             this.setBlockState(worldIn, blockAir, x, this.sizeY - 3, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(4 + meta), x, this.sizeY - 2, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((4 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((4 + meta) & 3))), x, this.sizeY - 2, z, chunkBounds);
             if (directionNS) z++; else x++;
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(1 + meta), x, this.sizeY - 4, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((1 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((1 + meta) & 3))), x, this.sizeY - 4, z, chunkBounds);
             this.setBlockState(worldIn, blockAir, x, this.sizeY - 3, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(5 + meta), x, this.sizeY - 2, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((5 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((5 + meta) & 3))), x, this.sizeY - 2, z, chunkBounds);
             break;
         case TUNNELER:
             if (directionNS) z--; else x--;
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(1 + meta), x, 2, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(5 + meta), x, 3, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((1 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((1 + meta) & 3))), x, 2, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((5 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((5 + meta) & 3))), x, 3, z, chunkBounds);
             if (directionNS) z++; else x++;
             this.setBlockState(worldIn, blockAir, x, 2, z, chunkBounds);
             this.setBlockState(worldIn, blockAir, x, 3, z, chunkBounds);
             if (directionNS) z++; else x++;
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(0 + meta), x, 2, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getStateFromMeta(4 + meta), x, 3, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((meta) & 3))), x, 2, z, chunkBounds);
+            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((4 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((4 + meta) & 3))), x, 3, z, chunkBounds);
             break;
         default:
         }

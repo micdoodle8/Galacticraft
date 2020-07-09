@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -13,14 +13,10 @@ import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-
-public abstract class DimensionSpace extends Dimension implements IGalacticraftWorldProvider
+public abstract class DimensionSpace extends Dimension implements IGalacticraftDimension
 {
     private long timeCurrentOffset = 0L;
     public long preTickTime = Long.MIN_VALUE;
@@ -74,21 +70,6 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftW
      * Default: 24000
      */
     public abstract long getDayLength();
-
-    public abstract Class<? extends ChunkGenerator> getChunkProviderClass();
-
-    @Deprecated
-    /**
-     * If possible you should not override this so that BiomeProviderDefault is used (see Moon, Mars and Asteroids for examples)
-     * 
-     * But this can be used for planets where you have multiple biomes
-     * In that case if using BiomeAdaptive (see Venus for example) this will need a BiomeAdaptive.setBodyMultiBiome() call;
-     */
-    public Class<? extends BiomeProvider> getBiomeProviderClass()
-    {
-        return null;
-    }
-
 
     @Override
     public void updateWeather(Runnable defaultLogic)
@@ -360,35 +341,6 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftW
     public float getArrowGravity()
     {
         return 0.005F;
-    }
-    
-    @Override
-    public ChunkGenerator createChunkGenerator()
-    {
-        try
-        {
-            Class<? extends ChunkGenerator> chunkProviderClass = this.getChunkProviderClass();
-
-            Constructor<?>[] constructors = chunkProviderClass.getConstructors();
-            for (int i = 0; i < constructors.length; i++)
-            {
-                Constructor<?> constr = constructors[i];
-                if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
-                {
-                    return (ChunkGenerator) constr.newInstance(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
-                }
-                else if (constr.getParameterTypes().length == 0)
-                {
-                    return (ChunkGenerator) constr.newInstance();
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
 //    @Override

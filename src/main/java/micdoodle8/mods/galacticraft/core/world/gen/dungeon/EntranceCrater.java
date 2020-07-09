@@ -20,9 +20,9 @@ public class EntranceCrater extends SizedPiece
 {
     private final int range = 16;
 
-    public EntranceCrater(IStructurePieceType type)
+    public EntranceCrater(IStructurePieceType type, CompoundNBT nbt)
     {
-        super(type);
+        super(type, nbt);
     }
 
     public EntranceCrater(IStructurePieceType type, World world, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
@@ -134,6 +134,6 @@ public class EntranceCrater extends SizedPiece
     @Override
     public Piece getNextPiece(DungeonStart startPiece, Random rand)
     {
-        return new RoomEntrance(this.func_214807_k(), this.configuration, rand, this.boundingBox.minX + this.boundingBox.getXSize() / 2, this.boundingBox.minZ + this.boundingBox.getZSize() / 2);
+        return new RoomEntrance(this.configuration, rand, this.boundingBox.minX + this.boundingBox.getXSize() / 2, this.boundingBox.minZ + this.boundingBox.getZSize() / 2);
     }
 }

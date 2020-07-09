@@ -7,15 +7,18 @@ import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.HashMap;
-import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.LogicalSide;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
 
 public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortableItem
 {
@@ -24,8 +27,8 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 
     public ItemCanisterLiquidOxygen(Item.Properties builder)
     {
-        super(assetName);
-        this.setAllowedFluid("liquidoxygen");
+        super(builder);
+//        this.setAllowedFluid("liquidoxygen");
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
@@ -39,21 +42,21 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
         }
     }*/
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        if (ItemCanisterGeneric.EMPTY - itemStack.getItemDamage() == 0)
-        {
-            return "item.empty_gas_canister";
-        }
-
-        if (itemStack.getItemDamage() == 1)
-        {
-            return "item.canister.lox.full";
-        }
-
-        return "item.canister.lox.partial";
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemStack)
+//    {
+//        if (ItemCanisterGeneric.EMPTY - itemStack.getDamage() == 0)
+//        {
+//            return "item.empty_gas_canister";
+//        }
+//
+//        if (itemStack.getDamage() == 1)
+//        {
+//            return "item.canister.lox.full";
+//        }
+//
+//        return "item.canister.lox.partial";
+//    }
 
     /*@Override
     public IIcon getIconFromDamage(int par1)
@@ -70,11 +73,11 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage() > 0)
+        if (ItemCanisterGeneric.EMPTY - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage()));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getDamage())));
         }
     }
 
@@ -92,12 +95,14 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
             if (saved < ItemCanisterGeneric.EMPTY)
             {
                 ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
-                itemstack.setItemDamage(saved);
+                itemstack.setDamage(saved);
                 return itemstack.copy();
             }
-            return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
+            ItemStack stack = new ItemStack(this.getContainerItem(), 1);
+            stack.setDamage(ItemCanisterGeneric.EMPTY);
+            return stack;
         }
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+        if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
         {
             return itemstack.copy();
         }
@@ -107,7 +112,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @Override
     public int discharge(ItemStack itemStack, int amount)
     {
-        int damage = itemStack.getItemDamage();
+        int damage = itemStack.getDamage();
         int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
         this.setNewDamage(itemStack, damage + used);
         return (int) Math.floor(used / Constants.LOX_GAS_RATIO);
@@ -116,7 +121,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @Override
     public int getOxygenStored(ItemStack par1ItemStack)
     {
-        return ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage();
+        return ItemCanisterGeneric.EMPTY - par1ItemStack.getDamage();
     }
 
     @Override

@@ -17,7 +17,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     protected boolean isAddedToEnergyNet;
     protected Object powerHandlerBC;
 
-    //	@NetworkedField(targetSide = Side.CLIENT)
+    //	@NetworkedField(targetSide = LogicalSide.CLIENT)
     //	public float energyStored = 0;
     private float IC2surplusInGJ = 0F;
 
@@ -93,7 +93,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     //	}
 
     /**
-     * A non-side specific version of receiveElectricity for you to optionally
+     * A non-LogicalSide specific version of receiveElectricity for you to optionally
      * use it internally.
      */
     //	public float receiveElectricity(ElectricityPack receive, boolean doReceive)
@@ -502,7 +502,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
 //    public boolean canReceiveEnergy(Direction side)
 //    {
-//        return this.getElectricalInputDirections().contains(side);
+//        return this.getElectricalInputDirections().contains(LogicalSide);
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
@@ -513,12 +513,12 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //            return 0.0;
 //        }
 //
-//        if (!this.getElectricalInputDirections().contains(side))
+//        if (!this.getElectricalInputDirections().contains(LogicalSide))
 //        {
 //            return 0;
 //        }
 //
-//        return this.receiveElectricity(side, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, simulate) / EnergyConfigHandler.MEKANISM_RATIO;
+//        return this.receiveElectricity(LogicalSide, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, simulate) / EnergyConfigHandler.MEKANISM_RATIO;
 //    }
 //
 //    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
@@ -573,8 +573,8 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     /*
      * Compatibility: call this if the facing metadata is updated
      */
-//    public void updateFacing()
-//    {
+    public void updateFacing()
+    {
 //        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.world.isRemote)
 //        {
 //            //This seems the only method to tell IC2 the connection sides have changed
@@ -582,7 +582,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //            this.unloadTileIC2();
 //            //This will do an initIC2 on next tick update.
 //        }
-//    }
+    }
     
 //    @Override
 //    public boolean hasCapability(Capability<?> capability, Direction facing)

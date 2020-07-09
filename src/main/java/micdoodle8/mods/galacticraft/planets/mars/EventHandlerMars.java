@@ -11,11 +11,9 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockCryoChamber;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
@@ -30,18 +28,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 public class EventHandlerMars
 {
+    private Feature<NoFeatureConfig> eggGenerator;
+
     @SubscribeEvent
     public void onLivingDeath(LivingDeathEvent event)
     {
@@ -80,11 +80,11 @@ public class EventHandlerMars
     public void onPlayerWakeUp(EventWakePlayer event)
     {
         PlayerEntity player = event.getEntityPlayer();
-        BlockPos c = player.bedLocation;
+        BlockPos c = player.getBedLocation(player.dimension);
         BlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
 
-        if (blockID == MarsBlocks.machine && state.get(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
+        if (blockID == MarsBlocks.cryoChamber)
         {
             if (!event.immediately && event.updateWorld && event.setSpawn)
             {
@@ -97,12 +97,12 @@ public class EventHandlerMars
                     player.heal(5.0F);
                     GCPlayerStats.get(player).setCryogenicChamberCooldown(6000);
 
-                    ServerWorld ws = (ServerWorld)player.world;
+                    ServerWorld ws = (ServerWorld) player.world;
                     ws.updateAllPlayersSleepingFlag();
-                    if (ws.areAllPlayersAsleep() && ws.getGameRules().getBoolean("doDaylightCycle"))
-                    {
-                        WorldUtil.setNextMorning(ws);
-                    }
+//                    if (ws.areAllPlayersAsleep() && ws.getGameRules().getBoolean("doDaylightCycle"))
+//                    {
+//                        WorldUtil.setNextMorning(ws);
+//                    } TODO Needed in 1.14+?
                 }
             }
         }
@@ -112,7 +112,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
-        BlockPos blockPos = event.getEntityPlayer().bedLocation;
+        BlockPos blockPos = event.getEntityPlayer().getBedLocation(event.getPlayer().dimension);
         if (blockPos != null)
         {
             BlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
@@ -125,7 +125,7 @@ public class EventHandlerMars
                 }
             }
 
-            if (state.getBlock() == MarsBlocks.machine && state.get(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+            if (state.getBlock() == MarsBlocks.cryoChamber)
             {
                 event.shouldRotate = true;
                 event.vanillaOverride = true;
@@ -133,17 +133,15 @@ public class EventHandlerMars
         }
     }
 
-    private Feature eggGenerator;
-
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
         if (this.eggGenerator == null)
         {
-            this.eggGenerator = new WorldGenEggs(MarsBlocks.rock);
+            this.eggGenerator = new WorldGenEggs(NoFeatureConfig::deserialize, MarsBlocks.slimelingEgg.getDefaultState());
         }
 
-        if (event.world.getDimension() instanceof WorldProviderMars)
+        if (event.world.getDimension() instanceof DimensionMars)
         {
             int eggsPerChunk = 2;
             BlockPos blockpos;
@@ -151,7 +149,7 @@ public class EventHandlerMars
             for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
             {
                 blockpos = event.pos.add(event.rand.nextInt(16) + 8, event.rand.nextInt(104) + 24, event.rand.nextInt(16) + 8);
-                this.eggGenerator.generate(event.world, event.rand, blockpos);
+                this.eggGenerator.place(event.world, event.world.getChunkProvider().getChunkGenerator(), event.rand, blockpos, new NoFeatureConfig());
             }
         }
     }
@@ -178,25 +176,25 @@ public class EventHandlerMars
             {
                 GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
 
-                switch (tile.getBlockMetadata() & 3)
+                switch (tile.getBlockState().get(BlockCryoChamber.FACING))
                 {
-                case 0:
+                case SOUTH:
                     GL11.glTranslatef(-0.4F, -0.5F, 4.1F);
                     break;
-                case 1:
+                case WEST:
                     GL11.glTranslatef(0, -0.5F, 4.1F);
                     break;
-                case 2:
+                case NORTH:
                     GL11.glTranslatef(0, -0.5F, 4.1F);
                     break;
-                case 3:
+                case EAST:
                     GL11.glTranslatef(0.0F, -0.5F, 4.1F);
                     break;
                 }
 
                 GL11.glRotatef(-180, 0.0F, 1.0F, 0.0F);
 
-                GL11.glRotatef(Minecraft.getInstance().player.sleepTimer - 50, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(Minecraft.getInstance().player.getSleepTimer() - 50, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(0.0F, 0.3F, 0.0F);
             }
         }

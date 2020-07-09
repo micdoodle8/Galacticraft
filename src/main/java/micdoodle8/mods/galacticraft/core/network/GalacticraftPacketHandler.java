@@ -23,20 +23,20 @@
 //@Sharable
 //public class GalacticraftPacketHandler extends SimpleChannelInboundHandler<IPacket>
 //{
-//    private final Map<Side, Map<Integer, Queue<PacketPlayerPair>>> packetMap;
+//    private final Map<LogicalSide, Map<Integer, Queue<PacketPlayerPair>>> packetMap;
 //    private static volatile int livePacketCount = 0;
 //
 //    public GalacticraftPacketHandler()
 //    {
-//        Map<Side, Map<Integer, Queue<PacketPlayerPair>>> map = Maps.newHashMap();
-//        for (Side side : Side.values())
+//        Map<LogicalSide, Map<Integer, Queue<PacketPlayerPair>>> map = Maps.newHashMap();
+//        for (LogicalSide LogicalSide : LogicalSide.values())
 //        {
 //            Map<Integer, Queue<PacketPlayerPair>> sideMap = new ConcurrentHashMap<Integer, Queue<PacketPlayerPair>>();
-//            map.put(side, sideMap);
+//            map.put(LogicalSide, sideMap);
 //        }
 //
 //        packetMap = ImmutableMap.copyOf(map);
-//        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+//        if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
 //        {
 //            TickHandlerClient.addPacketHandler(this);
 //        }
@@ -45,21 +45,21 @@
 //
 //    public void unload(World world)
 //    {
-//        Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
+//        LogicalSide LogicalSide = world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER;
 //        DimensionType dimID = GCCoreUtil.getDimensionID(world);
-//        Queue<PacketPlayerPair> queue = getQueue(side, dimId);
+//        Queue<PacketPlayerPair> queue = getQueue(LogicalSide, dimId);
 //        queue.clear();
 //    }
 //
 //    public void tick(World world)
 //    {
 //        PacketPlayerPair pair;
-//        Side side = world.isRemote ? Side.CLIENT : Side.SERVER;
+//        LogicalSide LogicalSide = world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER;
 //        DimensionType dimID = GCCoreUtil.getDimensionID(world);
-//        Queue<PacketPlayerPair> queue = getQueue(side, dimID);
+//        Queue<PacketPlayerPair> queue = getQueue(LogicalSide, dimID);
 //        while ((pair = queue.poll()) != null)
 //        {
-//            switch (side)
+//            switch (LogicalSide)
 //            {
 //            case CLIENT:
 //                pair.getPacket().handleClientSide(pair.getPlayer());
@@ -75,7 +75,7 @@
 //    protected void channelRead0(ChannelHandlerContext ctx, IPacket msg) throws Exception
 //    {
 //        INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
-//        Side side = ctx.channel().attr(NetworkRegistry.CHANNEL_SOURCE).get();
+//        LogicalSide LogicalSide = ctx.channel().attr(NetworkRegistry.CHANNEL_SOURCE).get();
 //        EntityPlayer player = GalacticraftCore.proxy.getPlayerFromNetHandler(netHandler);
 //
 //        if (player == null)
@@ -83,16 +83,16 @@
 //            return;
 //        }
 //
-//        if (side != null)
+//        if (LogicalSide != null)
 //        {
-//            getQueue(side, msg.getDimensionID()).add(new PacketPlayerPair(msg, player));
+//            getQueue(LogicalSide, msg.getDimensionID()).add(new PacketPlayerPair(msg, player));
 //            livePacketCount++;
 //        }
 //    }
 //
-//    private Queue<PacketPlayerPair> getQueue(Side side, DimensionType dimID)
+//    private Queue<PacketPlayerPair> getQueue(LogicalSide LogicalSide, DimensionType dimID)
 //    {
-//        Map<Integer, Queue<PacketPlayerPair>> map = packetMap.get(side);
+//        Map<Integer, Queue<PacketPlayerPair>> map = packetMap.get(LogicalSide);
 //        if (!map.containsKey(dimID))
 //        {
 //            map.put(dimID, Queues.<PacketPlayerPair>newConcurrentLinkedQueue());

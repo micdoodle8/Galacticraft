@@ -1,24 +1,24 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemArmorAsteroids extends ArmorItem implements ISortableItem
 {
-    public ItemArmorAsteroids(EquipmentSlotType armorIndex, String assetSuffix)
+    public ItemArmorAsteroids(EquipmentSlotType slotType, Item.Properties properties)
     {
-        super(AsteroidsItems.ARMOR_TITANIUM, 0, armorIndex);
-        this.setUnlocalizedName("titanium_" + assetSuffix);
+        super(EnumArmorAsteroids.ARMOR_TITANIUM, slotType, properties);
+//        this.setUnlocalizedName("titanium_" + assetSuffix);
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + "titanium_" + assetSuffix);
     }
 
@@ -38,7 +38,7 @@ public class ItemArmorAsteroids extends ArmorItem implements ISortableItem
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
     {
-        if (this.getArmorMaterial() == AsteroidsItems.ARMOR_TITANIUM)
+        if (this.getArmorMaterial() == EnumArmorAsteroids.ARMOR_TITANIUM)
         {
             if (stack.getItem() == AsteroidsItems.titaniumHelmet)
             {
@@ -66,6 +66,6 @@ public class ItemArmorAsteroids extends ArmorItem implements ISortableItem
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return repair.getItem() == AsteroidsItems.basicItem && repair.getItemDamage() == 6;
+        return repair.getItem() == this && repair.getDamage() == 6;
     }
 }

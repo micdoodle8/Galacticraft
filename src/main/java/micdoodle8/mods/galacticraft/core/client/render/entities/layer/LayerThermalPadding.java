@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
-import micdoodle8.mods.galacticraft.planets.venus.items.ItemThermalPaddingTier2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.entity.layers.ArmorLayer;
@@ -76,21 +72,21 @@ public class LayerThermalPadding extends ArmorLayer<AbstractClientPlayerEntity, 
             int padding = gearData.getThermalPadding(slotIn.getSlotIndex() - 1);
             if (padding != GCPlayerHandler.GEAR_NOT_PRESENT)
             {
-                switch (padding)
-                {
-                case Constants.GEAR_ID_THERMAL_PADDING_T1_HELMET:
-                case Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE:
-                case Constants.GEAR_ID_THERMAL_PADDING_T1_LEGGINGS:
-                case Constants.GEAR_ID_THERMAL_PADDING_T1_BOOTS:
-                    return new ItemStack(AsteroidsItems.thermalPadding, 1); // TODO Flatten thermal padding
-                case Constants.GEAR_ID_THERMAL_PADDING_T2_HELMET:
-                case Constants.GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE:
-                case Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS:
-                case Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS:
-                    return new ItemStack(VenusItems.thermalPaddingTier2, 1); // TODO Flatten thermal padding
-                default:
-                    break;
-                }
+//                switch (padding)
+//                {
+//                case Constants.GEAR_ID_THERMAL_PADDING_T1_HELMET:
+//                case Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE:
+//                case Constants.GEAR_ID_THERMAL_PADDING_T1_LEGGINGS:
+//                case Constants.GEAR_ID_THERMAL_PADDING_T1_BOOTS:
+//                    return new ItemStack(AsteroidsItems.thermalPadding, 1); // TODO Flatten thermal padding
+//                case Constants.GEAR_ID_THERMAL_PADDING_T2_HELMET:
+//                case Constants.GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE:
+//                case Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS:
+//                case Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS:
+//                    return new ItemStack(VenusItems.thermalPaddingTier2, 1); // TODO Flatten thermal padding
+//                default:
+//                    break;
+//                }
             }
         }
 
@@ -116,7 +112,7 @@ public class LayerThermalPadding extends ArmorLayer<AbstractClientPlayerEntity, 
             model.setModelAttributes(this.renderer.getEntityModel());
             model.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
             this.setModelSlotVisible(model, slotIn);
-            this.renderer.bindTexture(itemstack.getItem() instanceof ItemThermalPaddingTier2 ? RenderPlayerGC.thermalPaddingTexture1_T2 : RenderPlayerGC.thermalPaddingTexture1);
+//            this.renderer.bindTexture(itemstack.getItem() instanceof ItemThermalPaddingTier2 ? RenderPlayerGC.thermalPaddingTexture1_T2 : RenderPlayerGC.thermalPaddingTexture1);
             model.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
             // Start alpha render
@@ -132,9 +128,9 @@ public class LayerThermalPadding extends ArmorLayer<AbstractClientPlayerEntity, 
             float g = 1.0F * sTime;
             float b = 0.2F * sTime;
 
-            if (entityLivingBaseIn.world.getDimension() instanceof IGalacticraftWorldProvider)
+            if (entityLivingBaseIn.world.getDimension() instanceof IGalacticraftDimension)
             {
-                float modifier = ((IGalacticraftWorldProvider) entityLivingBaseIn.world.getDimension()).getThermalLevelModifier();
+                float modifier = ((IGalacticraftDimension) entityLivingBaseIn.world.getDimension()).getThermalLevelModifier();
 
                 if (modifier > 0)
                 {

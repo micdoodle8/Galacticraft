@@ -248,7 +248,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 //This tries all sides of the acceptor which are connected (see refreshAcceptors())
                 Direction sideFrom = acceptorDirection.next();
 
-                //But the grid will only put energy into the acceptor from one side - once it's in availableAcceptors
+                //But the grid will only put energy into the acceptor from one LogicalSide - once it's in availableAcceptors
                 if (!this.ignoreAcceptors.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
                 {
                     e = 0.0F;

@@ -1,13 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.Dynamic;
+import com.mojang.datafixers.types.DynamicOps;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseRoom.EnumRoomType;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
 
-public class BaseConfiguration
+public class BaseConfiguration implements IFeatureConfig
 {
     private final static int HANGAR_AIRLOCK_HEIGHT = 6;
     private final static int HANGAR_AIRLOCK_WIDTH = 7;
@@ -20,6 +27,14 @@ public class BaseConfiguration
     private int roomsNo;
     private int[] randomRoomTypes;
     private EnumRoomType[] roomTypes = EnumRoomType.values();
+
+    public BaseConfiguration(int yPosition, int baseType, int roomDepth, int roomsNo)
+    {
+        this.yPosition = yPosition;
+        this.baseType = baseType;
+        this.roomDepth = roomDepth;
+        this.roomsNo = roomsNo;
+    }
 
     public BaseConfiguration()
     {
@@ -76,6 +91,30 @@ public class BaseConfiguration
         }
     }
 
+    @Override
+    public <T> Dynamic<T> serialize(DynamicOps<T> ops)
+    {
+        ImmutableMap.Builder<T, T> builder = ImmutableMap.builder();
+        builder.put(ops.createString("yPos"), ops.createInt(this.yPosition));
+        builder.put(ops.createString("dT"), ops.createInt(this.baseType + (this.hangar ? 16 : 0)));
+        builder.put(ops.createString("rmD"), ops.createInt(this.roomDepth));
+        builder.put(ops.createString("rmN"), ops.createInt(this.roomsNo));
+        return new Dynamic<>(ops, ops.createMap(builder.build()));
+    }
+
+    public static <T> BaseConfiguration deserialize(Dynamic<T> ops) {
+        BaseConfiguration config = new BaseConfiguration(ops.get("yPos").asInt(0),
+                ops.get("dT").asInt(0),
+                ops.get("rmD").asInt(0),
+                ops.get("rmN").asInt(0));
+        if (config.baseType >= 16)
+        {
+            config.hangar = true;
+            config.baseType -= 16;
+        }
+        return config;
+    }
+
     public void writeToNBT(CompoundNBT tagCompound)
     {
         tagCompound.putInt("yPos", this.yPosition);
@@ -88,16 +127,16 @@ public class BaseConfiguration
     {
         try
         {
-            this.yPosition = tagCompound.getInteger("yPos");
-            this.baseType = tagCompound.getInteger("dT");
+            this.yPosition = tagCompound.getInt("yPos");
+            this.baseType = tagCompound.getInt("dT");
             this.hangar = false;
             if (this.baseType >= 16)
             {
                 this.hangar = true;
                 this.baseType -= 16;
             }
-            this.roomDepth = tagCompound.getInteger("rmD");
-            this.roomsNo = tagCompound.getInteger("rmN");
+            this.roomDepth = tagCompound.getInt("rmD");
+            this.roomsNo = tagCompound.getInt("rmN");
             this.roomHeight = BaseDeck.EnumBaseType.values()[this.baseType].height;
             this.wallBlock = BaseDeck.EnumBaseType.values()[this.baseType].wall;
         }

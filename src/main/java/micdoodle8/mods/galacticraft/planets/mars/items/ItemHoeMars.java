@@ -1,21 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemHoeMars extends HoeItem implements ISortableItem
 {
-    public ItemHoeMars(ToolMaterial par2EnumToolMaterial)
+    public ItemHoeMars(Item.Properties builder)
     {
-        super(par2EnumToolMaterial);
+        super(EnumItemTierMars.DESH, 0.0F, builder);
     }
 
     @Override
@@ -25,7 +24,7 @@ public class ItemHoeMars extends HoeItem implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {

@@ -1,28 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTier3TreasureChest;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.StructurePiece;
-import net.minecraft.world.storage.loot.LootTables;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_TREASURE;
 
 public class RoomTreasureVenus extends SizedPieceVenus
 {
     public static ResourceLocation VENUSCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_3");
-    public static final ResourceLocation TABLE_TIER_3_DUNGEON = LootTables.register(VENUSCHEST);
-    
-    public RoomTreasureVenus()
+//    public static final ResourceLocation TABLE_TIER_3_DUNGEON = LootTables.register(VENUSCHEST);
+
+    public RoomTreasureVenus(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CVENUS_DUNGEON_TREASURE, nbt);
     }
 
     public RoomTreasureVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
@@ -32,7 +36,7 @@ public class RoomTreasureVenus extends SizedPieceVenus
 
     public RoomTreasureVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        super(CVENUS_DUNGEON_TREASURE, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         int yPos = configuration.getYPosition();
 
@@ -40,7 +44,7 @@ public class RoomTreasureVenus extends SizedPieceVenus
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -106,12 +110,12 @@ public class RoomTreasureVenus extends SizedPieceVenus
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
                             if (treasureChest != null)
                             {
-                                ResourceLocation chesttype = TABLE_TIER_3_DUNGEON;
-                                if (worldIn.dimension instanceof IGalacticraftWorldProvider)
-                                {
-                                    chesttype = ((IGalacticraftWorldProvider)worldIn.dimension).getDungeonChestType();
-                                }
-                                treasureChest.setLootTable(chesttype, random.nextLong());
+//                                ResourceLocation chesttype = TABLE_TIER_3_DUNGEON;
+//                                if (worldIn.dimension instanceof IGalacticraftDimension)
+//                                {
+//                                    chesttype = ((IGalacticraftDimension)worldIn.dimension).getDungeonChestType();
+//                                } TODO Loot tables
+//                                treasureChest.setLootTable(chesttype, random.nextLong());
                             }
                         }
                     }

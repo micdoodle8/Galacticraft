@@ -4,14 +4,14 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelSludgeling;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderSludgeling extends MobRenderer<EntitySludgeling>
+public class RenderSludgeling extends MobRenderer<EntitySludgeling, ModelSludgeling>
 {
     private static final ResourceLocation sludgelingTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/sludgeling.png");
     private boolean texSwitch;

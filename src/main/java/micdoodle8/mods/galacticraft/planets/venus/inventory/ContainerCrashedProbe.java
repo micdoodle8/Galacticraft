@@ -1,24 +1,34 @@
 package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
+import micdoodle8.mods.galacticraft.core.inventory.GCContainerNames;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerCrashedProbe extends Container
 {
-    private TileEntityCrashedProbe tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.CRASHED_PROBE)
+    public static ContainerType<ContainerCrashedProbe> TYPE;
 
-    public ContainerCrashedProbe(PlayerInventory playerInv, TileEntityCrashedProbe tileEntityCrashedProbe)
+    private TileEntityCrashedProbe probe;
+
+    public ContainerCrashedProbe(int containerId, PlayerInventory playerInv, TileEntityCrashedProbe probe)
     {
-        this.tileEntity = tileEntityCrashedProbe;
+        super(TYPE, containerId);
+        this.probe = probe;
 
         for (int i = 0; i < 6; ++i)
         {
-            this.addSlot(new Slot(tileEntityCrashedProbe, i, 35 + i * 18, 18));
+            this.addSlot(new Slot(probe, i, 35 + i * 18, 18));
         }
 
         int var6;
@@ -40,10 +50,15 @@ public class ContainerCrashedProbe extends Container
         }
     }
 
+    public TileEntityCrashedProbe getProbe()
+    {
+        return probe;
+    }
+
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.probe.isUsableByPlayer(var1);
     }
 
     @Override

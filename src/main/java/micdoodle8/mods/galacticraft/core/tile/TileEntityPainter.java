@@ -123,7 +123,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
 //            {
 //                int type = ((BlockSpaceGlass)b).type.ordinal();
 //                this.glassColor[type] = color;
-//                if (result > 0 && side == Side.CLIENT)
+//                if (result > 0 && LogicalSide == LogicalSide.CLIENT)
 //                {
 //                    BlockSpaceGlass.updateClientRender();
 //                }
@@ -347,7 +347,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
 //            ItemStack ic2paintbrush = IC2Items.getItem("painter");
 //            if (ic2paintbrush != null && item == ic2paintbrush.getItem())
 //            {
-//                return DyeItem.DYE_COLORS[itemStack.getItemDamage()];
+//                return DyeItem.DYE_COLORS[itemStack.getDamage()];
 //            }
 //        } TODO Ic2 support
 

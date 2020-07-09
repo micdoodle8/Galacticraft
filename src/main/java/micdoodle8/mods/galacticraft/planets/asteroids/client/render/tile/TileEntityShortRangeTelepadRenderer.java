@@ -1,24 +1,19 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -27,27 +22,21 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntityRenderer<Tile
     private static OBJModel.OBJBakedModel teleporterTop;
     private static OBJModel.OBJBakedModel teleporterBottom;
 
-    private void updateModels()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (teleporterTop == null)
+        try
         {
-            try
-            {
-                IModel model = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "block/telepad_short.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
-
-                teleporterTop = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Top", "Connector"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                teleporterBottom = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Bottom"), false), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
+            teleporterTop = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "block/telepad_short.obj"), ImmutableList.of("Top", "Connector"));
+            teleporterBottom = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "block/telepad_short.obj"), ImmutableList.of("Bottom"));
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void render(TileEntityShortRangeTelepad te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntityShortRangeTelepad tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage)
     {
         GL11.glPushMatrix();
 
@@ -61,8 +50,6 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntityRenderer<Tile
         {
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
-
-        updateModels();
 
         GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 

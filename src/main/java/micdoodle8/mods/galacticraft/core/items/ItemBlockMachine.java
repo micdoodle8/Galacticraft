@@ -11,7 +11,7 @@
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockMachine extends ItemBlockDesc
@@ -40,7 +40,7 @@
 //    public String getUnlocalizedName(ItemStack itemstack)
 //    {
 //        int index = 0;
-//        int typenum = itemstack.getItemDamage() & 12;
+//        int typenum = itemstack.getDamage() & 12;
 //
 //        if (this.getBlock() instanceof BlockMachineBase)
 //        {
@@ -57,7 +57,7 @@
 //            return;
 //        }
 //
-//        int typenum = stack.getItemDamage() & 12;
+//        int typenum = stack.getDamage() & 12;
 //
 //        //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
 //        if (player instanceof ClientPlayerEntity)

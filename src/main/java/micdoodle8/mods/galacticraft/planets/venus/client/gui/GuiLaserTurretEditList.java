@@ -10,17 +10,17 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,80 +46,48 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
 
     public GuiLaserTurretEditList(TileEntityLaserTurret turret)
     {
+        super(new StringTextComponent("Edit Turret List"));
         this.laserTurret = turret;
     }
 
     @Override
-    protected void actionPerformed(Button button)
-    {
-        switch (button.id)
-        {
-        case 0:
-            mode = EnumMode.ADD_PLAYER;
-            initGui();
-            break;
-        case 1:
-            mode = EnumMode.ADD_ENTITY;
-            initGui();
-            break;
-        case 2:
-            GuiElementGradientList.ListElement selected = entityListElement.getSelectedElement();
-            if (selected != null)
-            {
-                boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player.name") + ": ");
-                String toSend = isPlayer ? selected.value.substring(8) : selected.value;
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { isPlayer ? 2 : 3, laserTurret.getPos(), toSend }));
-                if (isPlayer)
-                {
-                    laserTurret.removePlayer(toSend);
-                }
-                else
-                {
-                    laserTurret.removeEntity(new ResourceLocation(toSend));
-                }
-                initGui();
-            }
-            break;
-        case 4:
-            if (mode == EnumMode.ADD_ENTITY)
-            {
-                EntityEntry entry = getEntityEntry();
-                if (entry != null)
-                {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { 1, laserTurret.getPos(), entry.getRegistryName().toString() }));
-                    laserTurret.addEntity(entry.getRegistryName());
-                }
-            }
-            else if (mode == EnumMode.ADD_PLAYER)
-            {
-                if (name.text != null && !name.text.isEmpty())
-                {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { 0, laserTurret.getPos(), name.text }));
-                    laserTurret.addPlayer(name.text);
-                }
-            }
-            name.text = null;
-            mode = EnumMode.MAIN;
-            initGui();
-            break;
-        }
-    }
-
-    @Override
-    public void initGui()
+    public void init()
     {
         int yTop;
         this.buttons.clear();
-        super.initGui();
+        super.init();
         switch (mode)
         {
         case MAIN:
             this.ySize = 144;
             this.xSize = 222;
             yTop = (this.height - this.ySize) / 2;
-            this.buttons.add(new Button(0, (this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name")));
-            this.buttons.add(new Button(1, (this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name")));
-            this.buttons.add(new Button(2, (this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name")));
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name"), (button) -> {
+                mode = EnumMode.ADD_PLAYER;
+                init();
+            }));
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name"), (button) -> {
+                mode = EnumMode.ADD_ENTITY;
+                init();
+            }));
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name"), (button) -> {
+                GuiElementGradientList.ListElement selected = entityListElement.getSelectedElement();
+                if (selected != null)
+                {
+                    boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player.name") + ": ");
+                    String toSend = isPlayer ? selected.value.substring(8) : selected.value;
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { isPlayer ? 2 : 3, laserTurret.getPos(), toSend }));
+                    if (isPlayer)
+                    {
+                        laserTurret.removePlayer(toSend);
+                    }
+                    else
+                    {
+                        laserTurret.removeEntity(new ResourceLocation(toSend));
+                    }
+                    init();
+                }
+            }));
             this.entityListElement = new GuiElementGradientList((this.width - this.xSize) / 2 + 4, yTop + 26, xSize - 8, ySize - 45);
             List<String> alphabeticalList = Lists.newArrayList();
             alphabeticalList.addAll(laserTurret.getPlayers());
@@ -141,7 +109,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                 list.add(new GuiElementGradientList.ListElement(str, ColorUtil.to32BitColor(255, 240, 240, 240)));
             }
             this.entityListElement.updateListContents(list);
-            this.neverAttackSpaceRace = new GuiElementCheckbox(5, this, this.width / 2 - 106, yTop + 126, GCCoreUtil.translate("gui.button.never_fire_team.name"), 4210752);
+            this.neverAttackSpaceRace = new GuiElementCheckbox(this, this.width / 2 - 106, yTop + 126, GCCoreUtil.translate("gui.button.never_fire_team.name"), 4210752);
             this.buttons.add(this.neverAttackSpaceRace);
             break;
         case ADD_PLAYER:
@@ -149,26 +117,46 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             this.ySize = 70;
             this.xSize = 148;
             yTop = (this.height - this.ySize) / 2;
-            this.name = new GuiElementTextBox(3, this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
+            this.name = new GuiElementTextBox(this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
             this.name.resetOnClick = false;
             this.addButton(this.name);
-            this.buttons.add(new Button(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name")));
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name"), (button) -> {
+                if (mode == EnumMode.ADD_ENTITY)
+                {
+                    EntityType<?> entry = getEntityEntry();
+                    if (entry != null)
+                    {
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { 1, laserTurret.getPos(), entry.getRegistryName().toString() }));
+                        laserTurret.addEntity(entry.getRegistryName());
+                    }
+                }
+                else if (mode == EnumMode.ADD_PLAYER)
+                {
+                    if (name.text != null && !name.text.isEmpty())
+                    {
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[] { 0, laserTurret.getPos(), name.text }));
+                        laserTurret.addPlayer(name.text);
+                    }
+                }
+                name.text = null;
+                mode = EnumMode.MAIN;
+                init();
+            }));
             break;
         }
     }
 
     @Override
-    protected void keyTyped(char keyChar, int keyID) throws IOException
+    public boolean keyPressed(int key, int scanCode, int modifiers)
     {
-        if (this.mode != EnumMode.MAIN && keyID != Keyboard.KEY_ESCAPE)
+        if (key != GLFW.GLFW_KEY_ESCAPE)
         {
-            if (this.name.keyTyped(keyChar, keyID))
+            if (this.mode != EnumMode.MAIN && this.name.keyPressed(key, scanCode, modifiers))
             {
-                return;
+                return true;
             }
         }
-
-        if (keyID == 1)
+        else
         {
             switch (mode)
             {
@@ -177,24 +165,22 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                 break;
             default:
                 mode = EnumMode.MAIN;
-                initGui();
+                init();
                 break;
             }
         }
-        else
-        {
-            super.keyTyped(keyChar, keyID);
-        }
+
+        return super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override
-    public boolean doesGuiPauseGame()
+    public boolean isPauseScreen()
     {
         return false;
     }
 
     @Override
-    public void updateScreen()
+    public void tick()
     {
         if (this.mode == EnumMode.MAIN)
         {
@@ -205,14 +191,14 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
     @Override
     public void render(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
+        this.renderBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiLaserTurretEditList.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6, 0, mode == EnumMode.MAIN ? 0 : 144, this.xSize, this.ySize);
+        this.blit(var5, var6, 0, mode == EnumMode.MAIN ? 0 : 144, this.xSize, this.ySize);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
 
         if (this.mode == EnumMode.MAIN)
         {
@@ -221,16 +207,16 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
         else if (this.mode == EnumMode.ADD_PLAYER)
         {
             String displayString = GCCoreUtil.translate("gui.message.enter_player.name");
-            this.fontRenderer.drawString(displayString, var5 + this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, var6 + 5, 4210752);
+            this.font.drawString(displayString, var5 + this.xSize / 2 - this.font.getStringWidth(displayString) / 2, var6 + 5, 4210752);
         }
         else if (this.mode == EnumMode.ADD_ENTITY)
         {
             String displayString = GCCoreUtil.translate("gui.message.enter_entity.name");
-            this.fontRenderer.drawString(displayString, var5 + this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, var6 + 5, 4210752);
+            this.font.drawString(displayString, var5 + this.xSize / 2 - this.font.getStringWidth(displayString) / 2, var6 + 5, 4210752);
         }
     }
 
-    private EntityEntry getEntityEntry()
+    private EntityType<?> getEntityEntry()
     {
         if (this.name.text != null)
         {
@@ -245,7 +231,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             // Then check without domain
             for (ResourceLocation loc : ForgeRegistries.ENTITIES.getKeys())
             {
-                if (this.name.text.equalsIgnoreCase(loc.getResourcePath()))
+                if (this.name.text.equalsIgnoreCase(loc.getPath()))
                 {
                     return ForgeRegistries.ENTITIES.getValue(loc);
                 }
@@ -253,10 +239,10 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             // Then check names
             for (ResourceLocation loc : ForgeRegistries.ENTITIES.getKeys())
             {
-                EntityEntry entry = ForgeRegistries.ENTITIES.getValue(loc);
+                EntityType<?> entry = ForgeRegistries.ENTITIES.getValue(loc);
                 if (entry != null)
                 {
-                    if (this.name.text.equalsIgnoreCase(entry.getName()))
+                    if (this.name.text.equalsIgnoreCase(entry.getName().getFormattedText()))
                     {
                         return entry;
                     }
@@ -264,7 +250,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             }
             for (ResourceLocation loc : ForgeRegistries.ENTITIES.getKeys())
             {
-                EntityEntry entry = ForgeRegistries.ENTITIES.getValue(loc);
+                EntityType<?> entry = ForgeRegistries.ENTITIES.getValue(loc);
                 if (entry != null)
                 {
                     if (this.name.text.equalsIgnoreCase(LanguageMap.getInstance().translateKey("entity." + entry.getName() + ".name")))

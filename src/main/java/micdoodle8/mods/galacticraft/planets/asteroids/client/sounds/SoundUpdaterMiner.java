@@ -38,9 +38,9 @@ public class SoundUpdaterMiner extends TickableSound
      * Updates the JList with a new model.
      */
     @Override
-    public void update()
+    public void tick()
     {
-        if (!this.theRocket.isDead)
+        if (this.theRocket.isAlive())
         {
             if (this.theRocket.AIstate == EntityAstroMiner.AISTATE_ATBASE || this.theRocket.AIstate == EntityAstroMiner.AISTATE_DOCKING)
             {
@@ -100,8 +100,8 @@ public class SoundUpdaterMiner extends TickableSound
 
     public void updateSoundLocation(Entity e)
     {
-        this.xPosF = (float) e.posX;
-        this.yPosF = (float) e.posY;
-        this.zPosF = (float) e.posZ;
+        this.x = (float) e.posX;
+        this.y = (float) e.posY;
+        this.z = (float) e.posZ;
     }
 }

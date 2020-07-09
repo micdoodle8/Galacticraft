@@ -89,7 +89,7 @@ public class BlockVec3Dim implements Cloneable
 
     /**
      * Get block ID at the BlockVec3Dim coordinates, with a forced chunk load if
-     * the coordinates are unloaded.  Only works server-side.
+     * the coordinates are unloaded.  Only works server-LogicalSide.
      *
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
@@ -219,10 +219,10 @@ public class BlockVec3Dim implements Cloneable
         return this;
     }
 
-    public BlockVec3Dim newVecSide(int side)
+    public BlockVec3Dim newVecSide(int LogicalSide)
     {
         BlockVec3Dim vec = new BlockVec3Dim(this.x, this.y, this.z, this.dim);
-        switch (side)
+        switch (LogicalSide)
         {
         case 0:
             vec.y--;

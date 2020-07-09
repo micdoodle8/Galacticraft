@@ -22,7 +22,7 @@ public class BlockNames
     public static final String unlitTorch = "unlit_torch";
     public static final String gratingWater = "grating1";
     public static final String crudeOil = "oil";
-    public static final String basicBlock = "basic_block_core";
+//    public static final String basicBlock = "basic_block_core";
     public static final String spinThruster = "spin_thruster";
     public static final String slabGCHalf = "slab_gc_half";
     public static final String bossSpawner = "boss_spawner";
@@ -65,7 +65,7 @@ public class BlockNames
     public static final String moonStoneStairs = "moon_stairs_stone";
     public static final String concealedRedstone = "concealed_redstone";
     public static final String parachest = "parachest";
-    public static final String blockMoon = "basic_block_moon";
+//    public static final String blockMoon = "basic_block_moon";
     public static final String oxygenDistributor = "distributor";
     public static final String spaceGlassVanilla = "space_glass_vanilla";
     public static final String concealedDetector = "concealed_detector";
@@ -98,6 +98,7 @@ public class BlockNames
     public static final String oreTin = "ore_tin_gc";
     public static final String oreAluminum = "ore_aluminum_gc";
     public static final String oreSilicon = "ore_silicon";
+    public static final String oreMeteoricIron = "block_meteoric_iron_gc";
     public static final String decoBlockCopper = "block_copper_gc";
     public static final String decoBlockTin = "block_tin_gc";
     public static final String decoBlockAluminum = "block_aluminum_gc";

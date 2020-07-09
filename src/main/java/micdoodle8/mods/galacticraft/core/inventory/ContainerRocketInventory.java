@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,37 +18,40 @@ public class ContainerRocketInventory extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ROCKET_INVENTORY)
     public static ContainerType<ContainerRocketInventory> TYPE;
 
-    private final IInventory playerInv;
-    private final IInventory spaceshipInv;
-    private final EnumRocketType rocketType;
+    private final PlayerInventory playerInv;
+    private final EntityAutoRocket rocket;
 
-    public ContainerRocketInventory(int containerId, PlayerInventory playerInv, EntityTieredRocket rocket)
+    public ContainerRocketInventory(int containerId, PlayerInventory playerInv, EntityAutoRocket rocket)
     {
         super(TYPE, containerId);
         this.playerInv = playerInv;
-        this.spaceshipInv = rocket;
-        this.rocketType = rocket.getRocketType();
+        this.rocket = rocket;
         rocket.openInventory(playerInv.player);
-        this.addSlotsWithInventory(rocketType.getInventorySpace());
+        this.addSlotsWithInventory(rocket.getSizeInventory());
     }
 
-    public EnumRocketType getRocketType()
+    public PlayerInventory getPlayerInv()
     {
-        return rocketType;
+        return playerInv;
+    }
+
+    public EntityAutoRocket getRocket()
+    {
+        return rocket;
     }
 
     private void addSlotsWithInventory(int slotCount)
     {
         int y;
         int x;
-        int ySize = 145 + (this.rocketType.getInventorySpace() - 2) * 2;
+        int ySize = 145 + (slotCount - 2) * 2;
         int lastRow = slotCount / 9;
 
         for (y = 0; y < lastRow; ++y)
         {
             for (x = 0; x < 9; ++x)
             {
-                this.addSlot(new Slot(this.spaceshipInv, x + y * 9, 8 + x * 18, 50 + y * 18));
+                this.addSlot(new Slot(this.rocket, x + y * 9, 8 + x * 18, 50 + y * 18));
             }
         }
 
@@ -68,7 +72,7 @@ public class ContainerRocketInventory extends Container
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.spaceshipInv.isUsableByPlayer(par1EntityPlayer);
+        return this.rocket.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -108,21 +112,10 @@ public class ContainerRocketInventory extends Container
         return var3;
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     @Override
     public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
         this.playerInv.closeInventory(par1EntityPlayer);
-    }
-
-    /**
-     * Return this chest container's lower chest inventory.
-     */
-    public IInventory getLowerChestInventory()
-    {
-        return this.playerInv;
     }
 }

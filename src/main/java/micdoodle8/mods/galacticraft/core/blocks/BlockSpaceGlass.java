@@ -31,7 +31,7 @@
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import javax.annotation.Nullable;
@@ -549,11 +549,11 @@
 //            return false;
 //        }
 //
-//        //Non-matching planes of connection, including all singles not already dealt with -> solid side
+//        //Non-matching planes of connection, including all singles not already dealt with -> solid LogicalSide
 //        if (connThis != connOther)
 //            return true;
 //
-//        //One side of connection only - and matches plane of the one above/below -> no solid side
+//        //One LogicalSide of connection only - and matches plane of the one above/below -> no solid LogicalSide
 //        if (trueThis < 3 || trueThis == 4 || trueThis == 8)
 //        {
 //            return false;
@@ -563,7 +563,7 @@
 //            return false;
 //        }
 //        
-//        //Special cases: T junctions above/below 2-way corners, or similar -> solid side because the glass can't connect properly
+//        //Special cases: T junctions above/below 2-way corners, or similar -> solid LogicalSide because the glass can't connect properly
 //        if ((trueThis & 7) != (trueOther & 7))
 //        {
 //            return true;
@@ -581,7 +581,7 @@
 //            return true;
 //        }
 //
-//        //Anything still left, it's matching planes of connection and not a special case -> no solid side
+//        //Anything still left, it's matching planes of connection and not a special case -> no solid LogicalSide
 //        return false;
 //    }
 //    
@@ -701,7 +701,7 @@
 ////            testUD = EnumFacing.UP;
 ////        }
 //
-//        // Two glass connections in a flat plane - this also covers connected flat on one side only
+//        // Two glass connections in a flat plane - this also covers connected flat on one LogicalSide only
 //        if (connectW && connectE || connections == 1 && (connectW || connectE))
 //        {
 //            rot = GlassRotation.E;
@@ -869,7 +869,7 @@
 //    }
 //
 //    @Override
-//    public int setColor(int newColor, PlayerEntity p, Side side)
+//    public int setColor(int newColor, PlayerEntity p, LogicalSide LogicalSide)
 //    {
 //        if (newColor >= 0 && this.color != newColor)
 //        {
@@ -888,9 +888,9 @@
 //    public static void updateGlassColors(int color1, int color2, int color3)
 //    {
 //        int changes = 0;
-//        changes += GCBlocks.spaceGlassVanilla.setColor(color1, null, Side.CLIENT);
-//        changes += GCBlocks.spaceGlassClear.setColor(color2, null, Side.CLIENT);
-//        changes += GCBlocks.spaceGlassStrong.setColor(color3, null, Side.CLIENT);
+//        changes += GCBlocks.spaceGlassVanilla.setColor(color1, null, LogicalSide.CLIENT);
+//        changes += GCBlocks.spaceGlassClear.setColor(color2, null, LogicalSide.CLIENT);
+//        changes += GCBlocks.spaceGlassStrong.setColor(color3, null, LogicalSide.CLIENT);
 //        
 //        if (changes > 0)
 //            BlockSpaceGlass.updateClientRender();

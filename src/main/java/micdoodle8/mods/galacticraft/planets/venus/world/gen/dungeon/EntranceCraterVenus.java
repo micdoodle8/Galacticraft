@@ -3,33 +3,40 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_ENTRANCE;
 
 public class EntranceCraterVenus extends SizedPieceVenus
 {
     private final int range = 16;
 
-    public EntranceCraterVenus()
+    public EntranceCraterVenus(IStructurePieceType type, CompoundNBT nbt)
     {
+        super(type, nbt);
     }
 
-    public EntranceCraterVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
+    public EntranceCraterVenus(IStructurePieceType type, DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
+        super(type, configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
         this.setCoordBaseMode(Direction.SOUTH);
 
         this.boundingBox = new MutableBoundingBox(blockPosX - range, configuration.getYPosition() + 11, blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
         BlockState block1;
 
@@ -101,12 +108,12 @@ public class EntranceCraterVenus extends SizedPieceVenus
 
                         if (mirror != Mirror.NONE)
                         {
-                            state = state.withMirror(mirror);
+                            state = state.mirror(mirror);
                         }
 
                         if (rotation != Rotation.NONE)
                         {
-                            state = state.withRotation(rotation);
+                            state = state.rotate(rotation);
                         }
 
                         worldIn.setBlockState(blockpos, state, 2);

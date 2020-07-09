@@ -1,23 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
@@ -36,7 +34,7 @@ public class RenderCargoRocket extends EntityRenderer<EntityCargoRocket>
         if (this.rocketModel == null)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_cargo", "inventory");
-            this.rocketModel = (ItemModelCargoRocket) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+            this.rocketModel = (ItemModelCargoRocket) Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
@@ -52,10 +50,10 @@ public class RenderCargoRocket extends EntityRenderer<EntityCargoRocket>
         float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y + entity.getRenderOffsetY(), (float) z);
+        GlStateManager.translatef((float) x, (float) y + entity.getRenderOffsetY(), (float) z);
         GlStateManager.scalef(0.4F, 0.4F, 0.4F);
-        GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-pitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
         this.bindEntityTexture(entity);
 
         if (Minecraft.isAmbientOcclusionEnabled())

@@ -106,11 +106,11 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
 //        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 //        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
 //
-//        if (stack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
+//        if (stack.getDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 //        {
 //            change += BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA;
 //        }
-//        else if (stack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+//        else if (stack.getDamage() >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 //        {
 //            change += BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA;
 //        }

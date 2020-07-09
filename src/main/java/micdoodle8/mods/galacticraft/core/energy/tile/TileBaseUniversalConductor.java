@@ -355,7 +355,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
 //            return 0.0;
 //        }
 //
-//        if (!this.canReceiveEnergy(side))
+//        if (!this.canReceiveEnergy(LogicalSide))
 //        {
 //            return 0.0;
 //        }
@@ -371,7 +371,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
 //            return 0.0;
 //        }
 //
-//        if (!this.canReceiveEnergy(side))
+//        if (!this.canReceiveEnergy(LogicalSide))
 //        {
 //            return 0.0;
 //        }

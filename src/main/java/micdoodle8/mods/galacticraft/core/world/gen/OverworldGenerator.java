@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import net.minecraft.block.Block;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.pattern.BlockMatcher;
@@ -20,13 +19,11 @@ public class OverworldGenerator implements IWorldGenerator
     private final int maxGenerateLevel;
     private final int minGenerateLevel;
     private final int amountPerVein;
-    private final Block oreBlock;
-    private final int metadata;
+    private final BlockState state;
 
-    public OverworldGenerator(Block oreBlock, int metadata, int amountPerChunk, int minGenLevel, int maxGenLevel, int amountPerVein)
+    public OverworldGenerator(BlockState state, int amountPerChunk, int minGenLevel, int maxGenLevel, int amountPerVein)
     {
-        this.oreBlock = oreBlock;
-        this.metadata = metadata;
+        this.state = state;
         this.amountPerChunk = amountPerChunk;
         this.minGenerateLevel = minGenLevel;
         this.maxGenerateLevel = maxGenLevel;
@@ -36,7 +33,7 @@ public class OverworldGenerator implements IWorldGenerator
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, ChunkGenerator chunkGenerator, AbstractChunkProvider chunkProvider)
     {
-        if (!(world.getDimension() instanceof IGalacticraftWorldProvider))
+        if (!(world.getDimension() instanceof IGalacticraftDimension))
         {
             for (int i = 0; i < this.amountPerChunk; i++)
             {
@@ -93,7 +90,7 @@ public class OverworldGenerator implements IWorldGenerator
                                 BlockState state = par1World.getBlockState(pos);
                                 if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && state.getBlock().isReplaceableOreGen(state, par1World, pos, BlockMatcher.forBlock(Blocks.STONE)))
                                 {
-                                    par1World.setBlockState(new BlockPos(var38, var41, var44), this.oreBlock.getStateFromMeta(this.metadata), 2);
+                                    par1World.setBlockState(new BlockPos(var38, var41, var44), this.state, 2);
                                 }
                             }
                         }

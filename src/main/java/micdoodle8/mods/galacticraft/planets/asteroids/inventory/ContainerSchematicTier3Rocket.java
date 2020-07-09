@@ -1,26 +1,31 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerSchematicTier3Rocket extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SCHEMATIC_TIER_3_ROCKET)
+    public static ContainerType<ContainerSchematicTier3Rocket> TYPE;
+
     public InventorySchematicTier3Rocket craftMatrix = new InventorySchematicTier3Rocket(this);
     public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerSchematicTier3Rocket(PlayerInventory playerInv, BlockPos pos)
+    public ContainerSchematicTier3Rocket(int containerId, PlayerInventory playerInv)
     {
+        super(TYPE, containerId);
         final int change = 27;
         this.world = playerInv.player.world;
         this.addSlot(new SlotRocketBenchResult(playerInv.player, this.craftMatrix, this.craftResult, 0, 142, 18 + 69 + change));
@@ -28,37 +33,37 @@ public class ContainerSchematicTier3Rocket extends Container
         int var7;
 
         // Cone
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 1, 48, -8 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 1, 48, -8 + change, playerInv.player));
 
         // Body
         for (var6 = 0; var6 < 5; ++var6)
         {
-            this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16 + change, pos, playerInv.player));
+            this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 2 + var6, 39, -6 + var6 * 18 + 16 + change, playerInv.player));
         }
 
         // Body Right
         for (var6 = 0; var6 < 5; ++var6)
         {
-            this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 7 + var6, 57, -6 + var6 * 18 + 16 + change, pos, playerInv.player));
+            this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 7 + var6, 57, -6 + var6 * 18 + 16 + change, playerInv.player));
         }
 
         // Left fins
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 12, 21, 64 + change, pos, playerInv.player));
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 13, 21, 82 + change, pos, playerInv.player));
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 14, 21, 100 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 12, 21, 64 + change, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 13, 21, 82 + change, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 14, 21, 100 + change, playerInv.player));
 
         // Engine
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 15, 48, 100 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 15, 48, 100 + change, playerInv.player));
 
         // Right fins
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 16, 75, 64 + change, pos, playerInv.player));
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 17, 75, 82 + change, pos, playerInv.player));
-        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 18, 75, 100 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 16, 75, 64 + change, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 17, 75, 82 + change, playerInv.player));
+        this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 18, 75, 100 + change, playerInv.player));
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 19 + var8, 93 + var8 * 26, -15 + change, pos, playerInv.player));
+            this.addSlot(new SlotSchematicTier3Rocket(this.craftMatrix, 19 + var8, 93 + var8 * 26, -15 + change, playerInv.player));
         }
 
         // Player inv:
@@ -153,14 +158,14 @@ public class ContainerSchematicTier3Rocket extends Container
                 else
                 {
                     boolean foundChest = false;
-                    for (ItemStack woodChest : OreDictionary.getOres("chestWood"))
-                    {
-                        if (var2.getItem() == woodChest.getItem())
-                        {
-                            foundChest = true;
-                            break;
-                        }
-                    }
+//                    for (ItemStack woodChest : OreDictionary.getOres("chestWood"))
+//                    {
+//                        if (var2.getItem() == woodChest.getItem())
+//                        {
+//                            foundChest = true;
+//                            break;
+//                        }
+//                    } TODO rocket container w/ cargo
                     if (foundChest)
                     {
                         if (!this.mergeOneItemTestValid(var4, 19, 22, false))

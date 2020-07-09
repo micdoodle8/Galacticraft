@@ -7,7 +7,9 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 
 public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced implements ITransmitter
@@ -16,9 +18,9 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     public TileEntity[] adjacentConnections = null;
     private boolean validated = true;
 
-    public TileEntitySolarTransmitter(String tileName)
+    public TileEntitySolarTransmitter(TileEntityType<? extends TileEntitySolarTransmitter> type)
     {
-        super(tileName);
+        super(type);
     }
 
     @Override
@@ -76,7 +78,9 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     @Override
     public void onNetworkChanged()
     {
-        this.world.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
+//        this.world.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
+        BlockState state = this.getBlockState();
+        world.func_225319_b(pos, state.getBlock().getDefaultState(), state); // Forces block render update. Better way to do this?
     }
 
     @Override

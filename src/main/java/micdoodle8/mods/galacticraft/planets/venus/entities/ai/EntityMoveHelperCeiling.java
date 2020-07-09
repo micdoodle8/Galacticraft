@@ -14,28 +14,28 @@ public class EntityMoveHelperCeiling extends MovementController
     }
 
     @Override
-    public void onUpdateMoveHelper()
+    public void tick()
     {
-        this.entity.setMoveForward(0.0F);
+        this.mob.setMoveForward(0.0F);
 
         if (this.isUpdating())
         {
             this.action = MovementController.Action.WAIT;
-            int i = MathHelper.floor(this.entity.getBoundingBox().minY + 0.5D);
-            double d0 = this.posX - this.entity.posX;
-            double d1 = this.posZ - this.entity.posZ;
+            int i = MathHelper.floor(this.mob.getBoundingBox().minY + 0.5D);
+            double d0 = this.posX - this.mob.posX;
+            double d1 = this.posZ - this.mob.posZ;
             double d2 = this.posY - (double)i;
             double d3 = d0 * d0 + d1 * d1;
 
             if (d3 >= 2.500000277905201E-7D)
             {
                 float f = (float) MathHelper.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - 90.0F;
-                this.entity.rotationYaw = f;
-                this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
+                this.mob.rotationYaw = f;
+                this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
 
                 if (d2 > 0.0D && d0 * d0 + d1 * d1 < 1.0D)
                 {
-                    this.entity.getJumpHelper().setJumping();
+                    this.mob.getJumpController().setJumping();
                 }
             }
         }

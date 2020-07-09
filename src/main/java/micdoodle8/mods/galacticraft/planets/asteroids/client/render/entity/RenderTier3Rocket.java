@@ -22,11 +22,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
@@ -35,9 +35,9 @@ import java.io.IOException;
 @OnlyIn(Dist.CLIENT)
 public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
 {
-    private OBJModel.OBJBakedModel rocketModel;
-    private OBJModel.OBJBakedModel coneModel;
-    private OBJModel.OBJBakedModel cubeModel;
+    private static OBJModel.OBJBakedModel rocketModel;
+    private static OBJModel.OBJBakedModel coneModel;
+    private static OBJModel.OBJBakedModel cubeModel;
 
     public RenderTier3Rocket(EntityRendererManager manager)
     {
@@ -45,33 +45,17 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
         this.shadowSize = 2F;
     }
 
-    private void updateModel()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (this.rocketModel == null)
+        try
         {
-            try
-            {
-                IModel model = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "tier3rocket.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
-                this.rocketModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Boosters", "Rocket"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                this.coneModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("NoseCone"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                this.cubeModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Cube"), false), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (IOException e)
-            {
-                throw new RuntimeException(e);
-            }
-//            Function<ResourceLocation, TextureAtlasSprite> textureGetter = new Function<ResourceLocation, TextureAtlasSprite>()
-//            {
-//                @Override
-//                public TextureAtlasSprite apply(ResourceLocation input)
-//                {
-//                    return Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(input.toString());
-//                }
-//            };
-//
-//            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t3", "inventory");
-//            rocketModel = (ItemModelRocketT3) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+            rocketModel = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "tier3rocket.obj"), ImmutableList.of("Boosters", "Rocket"));
+            coneModel = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "tier3rocket.obj"), ImmutableList.of("NoseCone"));
+            cubeModel = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "tier3rocket.obj"), ImmutableList.of("Cube"));
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,20 +71,19 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
         float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks + 180;
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-pitch, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(0.0F, entity.getRenderOffsetY(), 0.0F);
+        GlStateManager.translatef((float) x, (float) y, (float) z);
+        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translatef(0.0F, entity.getRenderOffsetY(), 0.0F);
         float rollAmplitude = entity.rollAmplitude / 3 - partialTicks;
 
         if (rollAmplitude > 0.0F)
         {
             final float i = entity.getLaunched() ? (5 - MathHelper.floor(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
-            GlStateManager.rotate(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
+            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
         }
 
-        this.updateModel();
         this.bindEntityTexture(entity);
 
         if (Minecraft.isAmbientOcclusionEnabled())
@@ -121,13 +104,13 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
         if (teamColor != null)
         {
             int color = ColorUtil.to32BitColor(255, (int)(teamColor.floatZ() * 255), (int)(teamColor.floatY() * 255), (int)(teamColor.floatX() * 255));
-            GlStateManager.disableTexture2D();
+            GlStateManager.disableTexture();
             ClientUtil.drawBakedModelColored(coneModel, color);
         }
         else
         {
             ClientUtil.drawBakedModel(coneModel);
-            GlStateManager.disableTexture2D();
+            GlStateManager.disableTexture();
         }
 
         GlStateManager.disableLighting();
@@ -136,10 +119,10 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
         int color = ColorUtil.to32BitColor(255, 0, red ? 0 : 255, red ? 255 : 0);
         ClientUtil.drawBakedModelColored(cubeModel, color);
 
-        GlStateManager.enableTexture2D();
+        GlStateManager.enableTexture();
         GlStateManager.enableLighting();
 
-        GlStateManager.color(1F, 1F, 1F);
+        GlStateManager.color3f(1F, 1F, 1F);
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
     }

@@ -1,47 +1,43 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 
 import com.google.common.collect.ImmutableList;
-
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.client.model.ModelSpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoader;
 import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderSpiderQueen extends MobRenderer<EntitySpiderQueen>
+public class RenderSpiderQueen extends MobRenderer<EntitySpiderQueen, ModelSpiderQueen>
 {
     private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/spider_queen.png");
-    public static IBakedModel webModel;
+    private static IBakedModel webModel;
 
     public RenderSpiderQueen(EntityRendererManager renderManager)
     {
         super(renderManager, new ModelSpiderQueen(), 1.0F);
     }
 
-    private void updateModels()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (webModel == null)
+        try
         {
-            try
-            {
-                webModel = ClientUtil.modelFromOBJ(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "web.obj"), ImmutableList.of("Sphere"));
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
+            webModel = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "web.obj"), ImmutableList.of("Sphere"));
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
@@ -51,7 +47,7 @@ public class RenderSpiderQueen extends MobRenderer<EntitySpiderQueen>
         if (entity.getBurrowedCount() >= 0)
         {
             GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glTranslatef(0.0F, entity.height, 0.0F);
+            GL11.glTranslatef(0.0F, entity.getHealth(), 0.0F);
         }
         GL11.glScalef(1.5F, 1.5F, 1.5F);
         GL11.glRotatef((float) (Math.pow(entity.deathTicks, 2) / 5.0F + (Math.pow(entity.deathTicks, 2) / 5.0F - Math.pow(entity.deathTicks - 1, 2) / 5.0F) * partialTickTime), 0.0F, 1.0F, 0.0F);
@@ -68,8 +64,6 @@ public class RenderSpiderQueen extends MobRenderer<EntitySpiderQueen>
         GL11.glScalef(1.4F, 1.5F, 1.4F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        this.updateModels();
 
         RenderHelper.disableStandardItemLighting();
         this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);

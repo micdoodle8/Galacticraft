@@ -3,14 +3,16 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
 {
@@ -18,8 +20,8 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
 
     public ItemCanisterLiquidArgon(Item.Properties builder)
     {
-        super(assetName);
-        this.setAllowedFluid("liquidargon");
+        super(builder);
+//        this.setAllowedFluid("liquidargon");
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
@@ -33,21 +35,21 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
         }
     }*/
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
-        {
-            return "item.emptyGasCanister";
-        }
-
-        if (itemStack.getItemDamage() == 1)
-        {
-            return "item.canister.liquidArgon.full";
-        }
-
-        return "item.canister.liquidArgon.partial";
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemStack)
+//    {
+//        if (itemStack.getMaxDamage() - itemStack.getDamage() == 0)
+//        {
+//            return "item.emptyGasCanister";
+//        }
+//
+//        if (itemStack.getDamage() == 1)
+//        {
+//            return "item.canister.liquidArgon.full";
+//        }
+//
+//        return "item.canister.liquidArgon.partial";
+//    }
 
     /*@Override
     public IIcon getIconFromDamage(int par1)
@@ -64,11 +66,11 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(GCCoreUtil.translate("item.canister.liquid_argon.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.liquid_argon.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
         }
     }
 }

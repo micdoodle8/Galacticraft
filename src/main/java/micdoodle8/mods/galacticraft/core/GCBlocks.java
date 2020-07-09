@@ -48,7 +48,7 @@ public class GCBlocks
     @ObjectHolder(BlockNames.oxygenDetector) public static Block oxygenDetector;
     @ObjectHolder(BlockNames.nasaWorkbench) public static Block nasaWorkbench;
     @ObjectHolder(BlockNames.fallenMeteor) public static Block fallenMeteor;
-    @ObjectHolder(BlockNames.basicBlock) public static Block basicBlock;
+//    @ObjectHolder(BlockNames.basicBlock) public static Block basicBlock;
     @ObjectHolder(BlockNames.airLockFrame) public static Block airLockFrame;
     @ObjectHolder(BlockNames.airLockController) public static Block airLockController;
     @ObjectHolder(BlockNames.airLockSeal) public static Block airLockSeal;
@@ -91,7 +91,7 @@ public class GCBlocks
     @ObjectHolder(BlockNames.aluminumWireSwitchableHeavy) public static Block aluminumWireSwitchableHeavy;
 //    @ObjectHolder(BlockNames.panelLighting) public static Block panelLighting;
     @ObjectHolder(BlockNames.glowstoneTorch) public static Block glowstoneTorch;
-    @ObjectHolder(BlockNames.blockMoon) public static Block blockMoon;
+//    @ObjectHolder(BlockNames.blockMoon) public static Block blockMoon;
     @ObjectHolder(BlockNames.cheeseBlock) public static Block cheeseBlock;
     @ObjectHolder(BlockNames.spinThruster) public static Block spinThruster;
     @ObjectHolder(BlockNames.screen) public static Block screen;
@@ -119,11 +119,16 @@ public class GCBlocks
     @ObjectHolder(BlockNames.oreTin) public static Block oreTin;
     @ObjectHolder(BlockNames.oreAluminum) public static Block oreAluminum;
     @ObjectHolder(BlockNames.oreSilicon) public static Block oreSilicon;
+    @ObjectHolder(BlockNames.oreMeteoricIron) public static Block oreMeteoricIron;
     @ObjectHolder(BlockNames.decoBlockCopper) public static Block decoBlockCopper;
     @ObjectHolder(BlockNames.decoBlockTin) public static Block decoBlockTin;
     @ObjectHolder(BlockNames.decoBlockAluminum) public static Block decoBlockAluminum;
     @ObjectHolder(BlockNames.decoBlockMeteorIron) public static Block decoBlockMeteorIron;
     @ObjectHolder(BlockNames.decoBlockSilicon) public static Block decoBlockSilicon;
+    @ObjectHolder(BlockNames.moonDirt) public static Block moonDirt;
+    @ObjectHolder(BlockNames.moonStone) public static Block moonStone;
+    @ObjectHolder(BlockNames.moonTurf) public static Block moonTurf;
+    @ObjectHolder(BlockNames.moonDungeonBrick) public static Block moonDungeonBrick;
 
 //    public static Block breatheableAir;
 //    public static Block brightAir;
@@ -359,6 +364,7 @@ public class GCBlocks
         register(r, new OreBlock(builder), BlockNames.oreTinMoon);
         register(r, new OreBlock(builder), BlockNames.oreCheeseMoon);
         register(r, new OreBlock(builder), BlockNames.oreSapphire);
+        register(r, new OreBlock(builder), BlockNames.oreMeteoricIron);
 
         builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
         register(r, new OreBlock(builder), BlockNames.moonDirt);
@@ -503,7 +509,7 @@ public class GCBlocks
 //                System.out.println("ERROR: null sort stack: " + type.toString());
 //            }
 //        }
-//        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
+//        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(input -> new StackSorted(input.getItem(), input.getDamage()));
 //        GalacticraftCore.galacticraftBlocksTab.setTabSorter(tabSorterBlocks);
 //    }
 
@@ -739,9 +745,9 @@ public class GCBlocks
 //    }
 
     @SubscribeEvent
-    public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt) {
+    public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt)
+    {
         IForgeRegistry<TileEntityType<?>> r = evt.getRegistry();
-
 
         register(r, TileEntityType.Builder.create(TileEntityTreasureChest::new, treasureChestTier1).build(null), BlockNames.treasureChestTier1);
         register(r, TileEntityType.Builder.create(TileEntityOxygenDistributor::new, oxygenDistributor).build(null), BlockNames.oxygenDistributor);

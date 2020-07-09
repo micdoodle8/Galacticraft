@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelSludgeling extends ModelBase
+public class ModelSludgeling extends EntityModel<EntitySludgeling>
 {
     RendererModel tail4;
     RendererModel body;
@@ -51,10 +51,10 @@ public class ModelSludgeling extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntitySludgeling sludgeling, float f, float f1, float f2, float f3, float f4, float f5)
     {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        super.render(sludgeling, f, f1, f2, f3, f4, f5);
+        this.setRotationAngles(sludgeling, f, f1, f2, f3, f4, f5);
         this.body.render(f5);
         this.tail1.render(f5);
         this.tail2.render(f5);
@@ -70,9 +70,9 @@ public class ModelSludgeling extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
+    public void setRotationAngles(EntitySludgeling sludgeling, float f, float f1, float f2, float f3, float f4, float f5)
     {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        super.setRotationAngles(sludgeling, f, f1, f2, f3, f4, f5);
         this.tail1.rotateAngleY = MathHelper.cos(f2 * 0.3F + 0 * 0.15F * (float) Math.PI) * (float) Math.PI * 0.025F * (1 + Math.abs(0 - 2));
         this.tail2.rotateAngleY = MathHelper.cos(f2 * 0.3F + 1 * 0.15F * (float) Math.PI) * (float) Math.PI * 0.025F * (1 + Math.abs(1 - 2));
         this.tail3.rotateAngleY = MathHelper.cos(f2 * 0.3F + 2 * 0.15F * (float) Math.PI) * (float) Math.PI * 0.025F * (1 + Math.abs(1 - 2));

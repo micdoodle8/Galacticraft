@@ -16,29 +16,27 @@ import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 
+import net.minecraftforge.client.model.ModelLoader;
 import org.lwjgl.opengl.GL11;
 
 public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
 {
-    private IBakedModel modelEntryPod;
+    private static IBakedModel modelEntryPod;
 
     public RenderEntryPod(EntityRendererManager manager)
     {
         super(manager);
     }
 
-    private void updateModels()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (this.modelEntryPod == null)
+        try
         {
-            try
-            {
-                this.modelEntryPod = ClientUtil.modelFromOBJ(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "pod.obj"), ImmutableList.of("PodBody"));
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
+            modelEntryPod = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "pod.obj"), ImmutableList.of("PodBody"));
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
@@ -49,12 +47,11 @@ public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
         float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(180.0F - pitch, 0.0F, 0.0F, 1.0F);
-        GlStateManager.rotate(-yaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translatef((float) x, (float) y, (float) z);
+        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(180.0F - pitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotatef(-yaw, 0.0F, 1.0F, 0.0F);
 
-        this.updateModels();
         this.bindEntityTexture(entity);
 
         if (Minecraft.isAmbientOcclusionEnabled())

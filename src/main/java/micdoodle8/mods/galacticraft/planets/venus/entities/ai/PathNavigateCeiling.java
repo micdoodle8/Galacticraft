@@ -8,10 +8,13 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.pathfinding.PathType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.stream.Stream;
 
 public class PathNavigateCeiling extends PathNavigator
 {
@@ -23,16 +26,16 @@ public class PathNavigateCeiling extends PathNavigator
     }
 
     @Override
-    protected PathFinder getPathFinder()
+    protected PathFinder getPathFinder(int val)
     {
         this.nodeProcessor = new WalkNodeProcessorCeiling();
-        return new PathFinder(this.nodeProcessor);
+        return new PathFinder(this.nodeProcessor, val);
     }
 
     @Override
     protected boolean canNavigate()
     {
-        return this.entity.onGround || this.entity.isRiding() && this.entity instanceof ZombieEntity && this.entity.getRidingEntity() instanceof ChickenEntity;
+        return this.entity.onGround || this.entity.getRidingEntity() != null && this.entity instanceof ZombieEntity && this.entity.getRidingEntity() instanceof ChickenEntity;
     }
 
     @Override
@@ -172,22 +175,17 @@ public class PathNavigateCeiling extends PathNavigator
 
     private boolean isPositionClear(int minX, int minY, int minZ, int sizeX, int sizeY, int sizeZ, Vec3d currentPos, double distanceX, double distanceZ)
     {
-        for (BlockPos blockpos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(minX + sizeX - 1, minY + sizeY - 1, minZ + sizeZ - 1)))
-        {
-            double d0 = (double)blockpos.getX() + 0.5D - currentPos.x;
-            double d1 = (double)blockpos.getZ() + 0.5D - currentPos.z;
+        Stream<BlockPos> stream = BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(minX + sizeX - 1, minY + sizeY - 1, minZ + sizeZ - 1));
+        stream = stream.filter((pos) -> ((double)pos.getX() + 0.5D - currentPos.x) * distanceX + ((double)pos.getZ() + 0.5D - currentPos.z) * distanceZ >= 0.0D);
+        return stream.allMatch((pos) -> {
+            BlockState state = this.world.getBlockState(pos);
 
-            if (d0 * distanceX + d1 * distanceZ >= 0.0D)
+            if (!state.allowsMovement(world, pos, PathType.LAND))
             {
-                Block block = this.world.getBlockState(blockpos).getBlock();
-
-                if (!block.isPassable(this.world, blockpos))
-                {
-                    return false;
-                }
+                return false;
             }
-        }
 
-        return true;
+            return true;
+        });
     }
 }

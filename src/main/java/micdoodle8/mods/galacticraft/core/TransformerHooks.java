@@ -4,69 +4,63 @@ import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.IWeatherProvider;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
-import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import micdoodle8.mods.galacticraft.core.client.BubbleRenderer;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
-import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.EnumGravity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
-import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.settings.ParticleStatus;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.AbstractChunkProvider;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.PLAYER_Y_OFFSET;
 import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.submergedTextures;
@@ -89,14 +83,14 @@ public class TransformerHooks
 
     public static double getGravityForEntity(Entity entity)
     {
-        if (entity.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (entity.world.getDimension() instanceof IGalacticraftDimension)
         {
             if (entity instanceof ChickenEntity && !OxygenUtil.isAABBInBreathableAirBlock(entity.world, entity.getBoundingBox()))
             {
                 return 0.08D;
             }
 
-            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.world.getDimension();
+            final IGalacticraftDimension customProvider = (IGalacticraftDimension) entity.world.getDimension();
             if (entity instanceof PlayerEntity)
             {
                 PlayerEntity player = (PlayerEntity) entity;
@@ -149,9 +143,9 @@ public class TransformerHooks
 
     public static double getItemGravity(ItemEntity e)
     {
-        if (e.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (e.world.getDimension() instanceof IGalacticraftDimension)
         {
-            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) e.world.getDimension();
+            final IGalacticraftDimension customProvider = (IGalacticraftDimension) e.world.getDimension();
             return Math.max(0.002D, 0.03999999910593033D - (customProvider instanceof IOrbitDimension ? 0.05999999910593033D : customProvider.getGravity()) / 1.75D);
         }
         else
@@ -162,9 +156,9 @@ public class TransformerHooks
 
     public static float getArrowGravity(AbstractArrowEntity e)
     {
-        if (e.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (e.world.getDimension() instanceof IGalacticraftDimension)
         {
-            return ((IGalacticraftWorldProvider)e.world.getDimension()).getArrowGravity();
+            return ((IGalacticraftDimension)e.world.getDimension()).getArrowGravity();
         }
         else
         {
@@ -187,91 +181,91 @@ public class TransformerHooks
 
     public static void otherModGenerate(int chunkX, int chunkZ, World world, ChunkGenerator chunkGenerator, AbstractChunkProvider chunkProvider)
     {
-        if (world.getDimension() instanceof DimensionSpaceStation)
-        {
-            return;
-        }
-
-        if (!(world.getDimension() instanceof IGalacticraftWorldProvider) || ConfigManagerCore.enableOtherModsFeatures)
-        {
-            try {
-                net.minecraftforge.fml.common.registry.GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-            } catch (Exception e)
-            {
-                GCLog.severe("Error in another mod's worldgen.  This is *NOT* a Galacticraft bug, report it to the other mod please.");
-                GCLog.severe("Details:- Dimension:" + GCCoreUtil.getDimensionID(world) + "  Chunk cx,cz:" + chunkX + "," + chunkZ + "  Seed:" + world.getSeed());
-                e.printStackTrace();
-            }
-            return;
-        }
-
-        if (!generatorsInitialised)
-        {
-            generatorsInitialised = true;
-            
-            if (ConfigManagerCore.whitelistCoFHCoreGen)
-            {   
-                addWorldGenForName("CoFHCore custom oregen", "cofh.cofhworld.init.WorldHandler");
-            }
-            addWorldGenForName("GalacticGreg oregen", "bloodasp.galacticgreg.GT_Worldgenerator_Space");
-            addWorldGenForName("Dense Ores oregen", "com.rwtema.denseores.WorldGenOres");
-            addWorldGenForName("AE2 meteorites worldgen", "appeng.worldgen.MeteoriteWorldGen");
-
-            try
-            {
-                Class genThaumCraft = Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator");
-                if (genThaumCraft != null && ConfigManagerCore.enableThaumCraftNodes)
-                {
-                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (genThaumCraft.isInstance(gen))
-                        {
-                            generatorTCAuraNodes = gen;
-                            break;
-                        }
-                    }
-                    if (generatorTCAuraNodes != null)
-                    {
-                        generateTCAuraNodes = genThaumCraft.getDeclaredMethod("generateWildNodes", World.class, Random.class, int.class, int.class, boolean.class, boolean.class);
-                        generateTCAuraNodes.setAccessible(true);
-                        GCLog.info("Whitelisting ThaumCraft aura node generation on planets.");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
-
-        if (otherModGeneratorsWhitelist.size() > 0 || generateTCAuraNodes != null)
-        {
-            try
-            {
-                long worldSeed = world.getSeed();
-                Random fmlRandom = new Random(worldSeed);
-                long xSeed = fmlRandom.nextLong() >> 2 + 1L;
-                long zSeed = fmlRandom.nextLong() >> 2 + 1L;
-                long chunkSeed = (xSeed * chunkX + zSeed * chunkZ) ^ worldSeed;
-                fmlRandom.setSeed(chunkSeed);
-
-                for (IWorldGenerator gen : otherModGeneratorsWhitelist)
-                {
-                    gen.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generateTCAuraNodes != null)
-                {
-                    generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);
-                }
-            }
-            catch (Exception e)
-            {
-                GCLog.severe("Error in another mod's worldgen.  This is *NOT* a Galacticraft bug, report it to the other mod please.");
-                e.printStackTrace();
-            }
-        }
+//        if (world.getDimension() instanceof DimensionSpaceStation) TODO Other mod gen in space dimensions
+//        {
+//            return;
+//        }
+//
+//        if (!(world.getDimension() instanceof IGalacticraftWorldProvider) || ConfigManagerCore.enableOtherModsFeatures)
+//        {
+//            try {
+//                net.minecraftforge.fml.common.registry.GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+//            } catch (Exception e)
+//            {
+//                GCLog.severe("Error in another mod's worldgen.  This is *NOT* a Galacticraft bug, report it to the other mod please.");
+//                GCLog.severe("Details:- Dimension:" + GCCoreUtil.getDimensionID(world) + "  Chunk cx,cz:" + chunkX + "," + chunkZ + "  Seed:" + world.getSeed());
+//                e.printStackTrace();
+//            }
+//            return;
+//        }
+//
+//        if (!generatorsInitialised)
+//        {
+//            generatorsInitialised = true;
+//
+//            if (ConfigManagerCore.whitelistCoFHCoreGen)
+//            {
+//                addWorldGenForName("CoFHCore custom oregen", "cofh.cofhworld.init.WorldHandler");
+//            }
+//            addWorldGenForName("GalacticGreg oregen", "bloodasp.galacticgreg.GT_Worldgenerator_Space");
+//            addWorldGenForName("Dense Ores oregen", "com.rwtema.denseores.WorldGenOres");
+//            addWorldGenForName("AE2 meteorites worldgen", "appeng.worldgen.MeteoriteWorldGen");
+//
+//            try
+//            {
+//                Class genThaumCraft = Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator");
+//                if (genThaumCraft != null && ConfigManagerCore.enableThaumCraftNodes)
+//                {
+//                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
+//                    regField.setAccessible(true);
+//                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
+//                    for (IWorldGenerator gen : registeredGenerators)
+//                    {
+//                        if (genThaumCraft.isInstance(gen))
+//                        {
+//                            generatorTCAuraNodes = gen;
+//                            break;
+//                        }
+//                    }
+//                    if (generatorTCAuraNodes != null)
+//                    {
+//                        generateTCAuraNodes = genThaumCraft.getDeclaredMethod("generateWildNodes", World.class, Random.class, int.class, int.class, boolean.class, boolean.class);
+//                        generateTCAuraNodes.setAccessible(true);
+//                        GCLog.info("Whitelisting ThaumCraft aura node generation on planets.");
+//                    }
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//            }
+//        }
+//
+//        if (otherModGeneratorsWhitelist.size() > 0 || generateTCAuraNodes != null)
+//        {
+//            try
+//            {
+//                long worldSeed = world.getSeed();
+//                Random fmlRandom = new Random(worldSeed);
+//                long xSeed = fmlRandom.nextLong() >> 2 + 1L;
+//                long zSeed = fmlRandom.nextLong() >> 2 + 1L;
+//                long chunkSeed = (xSeed * chunkX + zSeed * chunkZ) ^ worldSeed;
+//                fmlRandom.setSeed(chunkSeed);
+//
+//                for (IWorldGenerator gen : otherModGeneratorsWhitelist)
+//                {
+//                    gen.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+//                }
+//                if (generateTCAuraNodes != null)
+//                {
+//                    generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//                GCLog.severe("Error in another mod's worldgen.  This is *NOT* a Galacticraft bug, report it to the other mod please.");
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private static void addWorldGenForName(String logString, String name)
@@ -408,7 +402,7 @@ public class TransformerHooks
 
             if (player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
             {
-                Vec3d vec = world.getSkyColor(Minecraft.getInstance().getRenderViewEntity(), 1.0F);
+                Vec3d vec = world.getSkyColor(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getBlockPos(), 1.0F);
                 double blend = (player.posY - Constants.OVERWORLD_CLOUD_HEIGHT) / (Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT - Constants.OVERWORLD_CLOUD_HEIGHT);
                 double ablend = 1 - blend;
                 return new Vec3d(f4 * blend + vec.x * ablend, f5 * blend + vec.y * ablend, f6 * blend + vec.z * ablend);
@@ -422,7 +416,7 @@ public class TransformerHooks
             }
         }
 
-        return world.getSkyColor(Minecraft.getInstance().getRenderViewEntity(), 1.0F);
+        return world.getSkyColor(Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getBlockPos(), 1.0F);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -441,7 +435,7 @@ public class TransformerHooks
     @OnlyIn(Dist.CLIENT)
     public static boolean shouldRenderFire(Entity entity)
     {
-        if (entity.world == null || !(entity.world.getDimension() instanceof IGalacticraftWorldProvider))
+        if (entity.world == null || !(entity.world.getDimension() instanceof IGalacticraftDimension))
         {
             return entity.isBurning();
         }
@@ -492,11 +486,11 @@ public class TransformerHooks
             }
         }
 
-        if (viewEntity instanceof LivingEntity && viewEntity.world.getDimension() instanceof IZeroGDimension && !((LivingEntity)viewEntity).isPlayerSleeping())
+        if (viewEntity instanceof LivingEntity && viewEntity.world.getDimension() instanceof IZeroGDimension && !((LivingEntity)viewEntity).isSleeping())
         {
             float pitch = viewEntity.prevRotationPitch + (viewEntity.rotationPitch - viewEntity.prevRotationPitch) * partialTicks;
             float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
-            float eyeHeightChange = viewEntity.width / 2.0F;
+            float eyeHeightChange = viewEntity.getWidth() / 2.0F;
 
 //            GL11.glTranslatef(0.0F, -f1, 0.0F);
             GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
@@ -607,10 +601,10 @@ public class TransformerHooks
             if (stats != null)
             {
                 ItemStack shield = stats.getShieldControllerInSlot();
-                if (shield != null && !shield.isEmpty() && shield.getItem() == VenusItems.basicItem && shield.getItemDamage() == 0)
-                {
-                    return 0D;
-                }
+//                if (shield != null && !shield.isEmpty() && shield.getItem() == VenusItems.basicItem && shield.getDamage() == 0)
+//                {
+//                    return 0D;
+//                } TODO Planets
             }
         }
         return 1D;
@@ -623,7 +617,8 @@ public class TransformerHooks
     
     public static boolean isGrating(boolean orig, Block b)
     {
-        return orig || (b instanceof BlockGrating && b != GCBlocks.grating && MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT);
+        return false; // TODO Grating
+//        return orig || (b instanceof BlockGrating && b != GCBlocks.grating && MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT);
     }
 
     public static float armorDamageHookF(LivingEntity entity)
@@ -632,85 +627,90 @@ public class TransformerHooks
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static int addRainParticles(int result, int rendererUpdateCount, float f)
+    public static int addRainParticles(int result, int rendererUpdateCount)
     {
         Minecraft mc = Minecraft.getInstance();
-        World world = mc.world;
+        ClientWorld world = mc.world;
         if (result == 0 || !(world.getDimension() instanceof IWeatherProvider))
         {
             // Either no rain or it's a vanilla dimension
             return result;
         }
         IWeatherProvider moddedProvider = ((IWeatherProvider) world.getDimension());
-        
-        random.setSeed((long)rendererUpdateCount * 312987231L);
-        Entity entity = mc.getRenderViewEntity();
-        BlockPos blockpos = new BlockPos(entity);
-        int i = 10;
-        double x = 0.0D;
-        double y = 0.0D;
-        double z = 0.0D;
-        double xx = 0.0D;
-        double yy = 0.0D;
-        double zz = 0.0D;
-        int j = 0;
-        int k = (int)(100.0F * f * f);
-
-        if (mc.gameSettings.particleSetting == 1)
-        {
-            k >>= 1;
-        }
-        else if (mc.gameSettings.particleSetting == 2)
-        {
-            k = 0;
+        float f = mc.world.getRainStrength(1.0F);
+        if (!mc.gameSettings.fancyGraphics) {
+            f /= 2.0F;
         }
 
-        for (int l = 0; l < k; ++l)
-        {
-            BlockPos blockpos1 = world.getPrecipitationHeight(blockpos.add(random.nextInt(i) - random.nextInt(i), 0, random.nextInt(i) - random.nextInt(i)));
-            Biome biome = world.getBiome(blockpos1);
+        if (f != 0.0F) {
+            random.setSeed((long)rendererUpdateCount * 312987231L);
+            IWorldReader iworldreader = mc.world;
+            BlockPos blockpos = new BlockPos(mc.gameRenderer.getActiveRenderInfo().getProjectedView());
+            int i = 10;
+            double xx = 0.0D;
+            double yy = 0.0D;
+            double zz = 0.0D;
+            double x = 0.0D;
+            double y = 0.0D;
+            double z = 0.0D;
+            int j = 0;
+            int k = (int)(100.0F * f * f);
+            if (mc.gameSettings.particles == ParticleStatus.DECREASED) {
+                k >>= 1;
+            } else if (mc.gameSettings.particles == ParticleStatus.MINIMAL) {
+                k = 0;
+            }
 
-            if (blockpos1.getY() <= blockpos.getY() + i && blockpos1.getY() >= blockpos.getY() - i)
-            {
-                double xd = random.nextDouble();
-                double zd = random.nextDouble();
+            for(int l = 0; l < k; ++l) {
+                BlockPos blockpos1 = iworldreader.getHeight(Heightmap.Type.MOTION_BLOCKING, blockpos.add(random.nextInt(10) - random.nextInt(10), 0, random.nextInt(10) - random.nextInt(10)));
+                Biome biome = iworldreader.getBiome(blockpos1);
                 BlockPos blockpos2 = blockpos1.down();
-                BlockState iblockstate = world.getBlockState(blockpos2);
-                AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(world, blockpos2);
+                if (blockpos1.getY() <= blockpos.getY() + 10 && blockpos1.getY() >= blockpos.getY() - 10 && biome.getPrecipitation() == Biome.RainType.RAIN && biome.func_225486_c(blockpos1) >= 0.15F) {
+                    double d3 = random.nextDouble();
+                    double d4 = random.nextDouble();
+                    BlockState blockstate = iworldreader.getBlockState(blockpos2);
+                    IFluidState ifluidstate = iworldreader.getFluidState(blockpos1);
+                    VoxelShape voxelshape = blockstate.getCollisionShape(iworldreader, blockpos2);
+                    double d7 = voxelshape.max(Direction.Axis.Y, d3, d4);
+                    double d8 = (double)ifluidstate.func_215679_a(iworldreader, blockpos1);
+                    double d5;
+                    double d6;
+                    if (d7 >= d8) {
+                        d5 = d7;
+                        d6 = voxelshape.min(Direction.Axis.Y, d3, d4);
+                    } else {
+                        d5 = 0.0D;
+                        d6 = 0.0D;
+                    }
 
-                if (iblockstate.getMaterial() != Material.LAVA && iblockstate.getBlock() != Blocks.MAGMA)
-                {
-                    if (iblockstate.getMaterial() != Material.AIR)
-                    {
-                        ++j;
+                    if (d5 > -Double.MAX_VALUE) {
+                        if (!ifluidstate.isTagged(FluidTags.LAVA) && blockstate.getBlock() != Blocks.MAGMA_BLOCK && (blockstate.getBlock() != Blocks.CAMPFIRE || !blockstate.get(CampfireBlock.LIT))) {
+                            ++j;
+                            x = (double)blockpos2.getX() + d3;
+                            y = (double)((float)blockpos2.getY() + 0.1F) + d5;
+                            z = (double)blockpos2.getZ() + d4;
+                            if (random.nextInt(j) == 0) {
+                                xx = x + d3;
+                                yy = y - 1.0D;
+                                zz = z + d4;
+                            }
 
-                        x = blockpos2.getX() + xd;
-                        y = blockpos2.getY() + 0.1D + axisalignedbb.maxY;
-                        z = blockpos2.getZ() + zd;
-                        if (random.nextInt(j) == 0)
-                        {
-                            xx = x;
-                            yy = y - 1.0D;
-                            zz = z;
+                            mc.world.addParticle(moddedProvider.getParticle(mc.world, x, y, z), x, y, z, 0.0D, 0.0D, 0.0D);
+                        } else {
+                            mc.world.addParticle(ParticleTypes.SMOKE, (double)blockpos1.getX() + d3, (double)((float)blockpos1.getY() + 0.1F) - d6, (double)blockpos1.getZ() + d4, 0.0D, 0.0D, 0.0D);
                         }
-
-                        mc.effectRenderer.addEffect(moddedProvider.getParticle(mc.world, x, y, z));
                     }
                 }
-                else
-                {
-                    mc.world.addParticle(EnumParticleTypes.SMOKE_NORMAL, blockpos1.getX() + xd, blockpos1.getY() + 0.1D - axisalignedbb.minY, blockpos1.getZ() + zd, 0.0D, 0.0D, 0.0D, new int[0]);
-                }
+            }
+
+            if (j > 0 && random.nextInt(moddedProvider.getSoundInterval(f)) < rainSoundCounter++)
+            {
+                rainSoundCounter = 0;
+
+                moddedProvider.weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
             }
         }
 
-        if (j > 0 && random.nextInt(moddedProvider.getSoundInterval(f)) < rainSoundCounter++)
-        {
-            rainSoundCounter = 0;
-
-            moddedProvider.weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
-        }
-        
         // Bypass vanilla code after returning from this
         return 0;
     }

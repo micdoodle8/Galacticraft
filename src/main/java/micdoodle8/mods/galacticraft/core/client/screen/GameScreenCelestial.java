@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
@@ -86,9 +86,9 @@ public class GameScreenCelestial implements IGameScreen
         case 2:
             Dimension wp = scr.getWorldProvider();
             CelestialBody body = null;
-            if (wp instanceof IGalacticraftWorldProvider)
+            if (wp instanceof IGalacticraftDimension)
             {
-                body = ((IGalacticraftWorldProvider) wp).getCelestialBody();
+                body = ((IGalacticraftDimension) wp).getCelestialBody();
             }
             if (body == null)
             {

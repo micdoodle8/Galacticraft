@@ -1,28 +1,35 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.lang.reflect.Constructor;
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_CORRIDOR;
+
 public class CorridorVenus extends SizedPieceVenus
 {
-    public CorridorVenus()
+    public CorridorVenus(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CVENUS_DUNGEON_CORRIDOR, nbt);
     }
 
     public CorridorVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(configuration, sizeX, sizeY, sizeZ, direction);
+        super(CVENUS_DUNGEON_CORRIDOR, configuration, sizeX, sizeY, sizeZ, direction);
         this.setCoordBaseMode(Direction.SOUTH);
         this.boundingBox = new MutableBoundingBox(blockPosX, configuration.getYPosition(), blockPosZ, blockPosX + sizeX, configuration.getYPosition() + sizeY, blockPosZ + sizeZ);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
         for (int i = 0; i < this.boundingBox.getXSize(); i++)
         {

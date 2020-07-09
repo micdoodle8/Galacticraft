@@ -31,9 +31,9 @@ public class RedstoneUtil
             return true;
         }
 
-        for (Direction dir : Direction.values())
+        for (Direction facing : Direction.values())
         {
-            if (dir.getAxis().isHorizontal())
+            if (facing.getAxis().isHorizontal())
             {
                 if (getStrongPower_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
                 {
@@ -56,7 +56,7 @@ public class RedstoneUtil
 
     public static int getStrongPower_NoChunkLoad(World w, BlockPos pos, Direction side)
     {
-        if (!w.isBlockLoaded(pos, false))
+        if (!w.isBlockLoaded(pos))
         {
             return 0;
         }
@@ -89,9 +89,9 @@ public class RedstoneUtil
             return true;
         }
 
-        for (Direction dir : Direction.values())
+        for (Direction facing : Direction.values())
         {
-            if (dir.getAxis().isHorizontal())
+            if (facing.getAxis().isHorizontal())
             {
                 if (getRedstonePowerIndirect_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
                 {
@@ -104,7 +104,7 @@ public class RedstoneUtil
 
     public static int getRedstonePowerIndirect_NoChunkLoad(World w, BlockPos pos, Direction side)
     {
-        if (!w.isBlockLoaded(pos, false))
+        if (!w.isBlockLoaded(pos))
         {
             return 0;
         }
@@ -166,7 +166,7 @@ public class RedstoneUtil
                 }
                 //This is a slightly faster pos.offset(side)
                 sidePos = pos.add(side.getXOffset(), 0, side.getZOffset());
-                if (!w.isBlockLoaded(sidePos, false))
+                if (!w.isBlockLoaded(sidePos))
                 {
                     continue;
                 }

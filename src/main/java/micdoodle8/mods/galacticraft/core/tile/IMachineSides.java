@@ -66,7 +66,7 @@ public interface IMachineSides extends ITileClientUpdates
     }
     
     /*
-     * All the different possible types of configurable side.
+     * All the different possible types of configurable LogicalSide.
      * 
      * Each of these can correspond to a texture and a function
      * according to the block type.  Many may be unused.
@@ -152,7 +152,7 @@ public interface IMachineSides extends ITileClientUpdates
      * Returns false if the MachineSide is not configurable.
      * 
      * Use isValidForSide() first to test whether the setting
-     * is valid for the side here.
+     * is valid for the LogicalSide here.
      */
     public default boolean setSide(MachineSide sideToSet, Face newSide)
     {
@@ -241,7 +241,7 @@ public interface IMachineSides extends ITileClientUpdates
     }
     
     /**
-     * Returns true if the machine side can be set to this face
+     * Returns true if the machine LogicalSide can be set to this face
      * 
      * By default, returns all allowable configurable faces
      * 

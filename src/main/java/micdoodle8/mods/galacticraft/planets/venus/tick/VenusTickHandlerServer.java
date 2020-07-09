@@ -1,13 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.venus.tick;
 
 import com.google.common.collect.Lists;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tile.SolarModuleNetwork;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySolarTransmitter;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,14 +30,14 @@ public class VenusTickHandlerServer
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer server = GCCoreUtil.getServer();
         //Prevent issues when clients switch to LAN servers
         if (server == null)
         {
             return;
         }
 
-        if (event.phase == Phase.END)
+        if (event.phase == TickEvent.Phase.END)
         {
             for (SolarModuleNetwork network : new ArrayList<>(solarModuleNetworks))
             {
@@ -60,7 +59,7 @@ public class VenusTickHandlerServer
                 solarTransmitterUpdates.clear();
                 for (TileEntitySolarTransmitter newTile : pass)
                 {
-                    if (!newTile.isInvalid())
+                    if (!newTile.isRemoved())
                     {
                         newTile.refresh();
                     }

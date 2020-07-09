@@ -1,21 +1,40 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_EMPTY;
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_ENTRANCE;
+
 public class RoomEmptyVenus extends SizedPieceVenus
 {
-    public RoomEmptyVenus()
+    public RoomEmptyVenus(TemplateManager templateManager, CompoundNBT nbt)
     {
+        this(CVENUS_DUNGEON_EMPTY, nbt);
+    }
+
+    public RoomEmptyVenus(IStructurePieceType type, CompoundNBT nbt)
+    {
+        super(type, nbt);
     }
 
     public RoomEmptyVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+        this(CVENUS_DUNGEON_EMPTY, configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
+    }
+
+    public RoomEmptyVenus(IStructurePieceType type, DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
+    {
+        super(type, configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -26,7 +45,7 @@ public class RoomEmptyVenus extends SizedPieceVenus
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {

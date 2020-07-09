@@ -163,7 +163,7 @@ public class GCItems
         register(r, new ItemPickaxeGC(defaultBuilder()), ItemNames.steelPickaxe);
         register(r, new ItemAxeGC(defaultBuilder()), ItemNames.steelAxe);
         register(r, new ItemHoeGC(defaultBuilder()), ItemNames.steelHoe);
-        register(r, new ItemSpadeGC(defaultBuilder()), ItemNames.steelSpade);
+        register(r, new ItemShovelGC(defaultBuilder()), ItemNames.steelSpade);
         register(r, new ItemSwordGC(defaultBuilder()), ItemNames.steelSword);
         register(r, new ArmorItemGC(EquipmentSlotType.HEAD, defaultBuilder()), ItemNames.steelHelmet);
         register(r, new ArmorItemGC(EquipmentSlotType.CHEST, defaultBuilder()), ItemNames.steelChestplate);
@@ -361,7 +361,7 @@ public class GCItems
 //            }
 //        }
 //
-//        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
+//        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getDamage()));
 //
 //        GalacticraftCore.galacticraftItemsTab.setTabSorter(tabSorterItems);
 //    }
@@ -382,12 +382,12 @@ public class GCItems
 //            item.getSubItems(GalacticraftCore.galacticraftItemsTab, items);
 //            for (ItemStack stack : items)
 //            {
-//                EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getItemDamage());
+//                EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getDamage());
 //                if (!sortMapItems.containsKey(categoryItem))
 //                {
 //                    sortMapItems.put(categoryItem, new ArrayList<>());
 //                }
-//                sortMapItems.get(categoryItem).add(new StackSorted(stack.getItem(), stack.getItemDamage()));
+//                sortMapItems.get(categoryItem).add(new StackSorted(stack.getItem(), stack.getDamage()));
 //            }
 //        }
 //        else if (item.getCreativeTab() == GalacticraftCore.galacticraftItemsTab)

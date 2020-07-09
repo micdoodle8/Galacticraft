@@ -1,39 +1,31 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.CommandBlockBlock;
 import net.minecraft.block.StructureBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.*;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -43,23 +35,26 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
 {
     public ItemVolcanicPickaxe(Item.Properties builder)
     {
-        super(VenusItems.TOOL_VOLCANIC);
-        this.setUnlocalizedName(assetName);
+        super(EnumItemTierVenus.VOLCANIC_TOOL, 1, -2.8F, builder);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> info, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (this.showDescription(stack.getItemDamage()))
+        if (this.showDescription(stack))
         {
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
             {
-                info.addAll(Minecraft.getInstance().fontRenderer.listFormattedStringToWidth(this.getShiftDescription(stack.getItemDamage()), 150));
+                List<String> descString = Minecraft.getInstance().fontRenderer.listFormattedStringToWidth(this.getShiftDescription(stack), 150);
+                for (String string : descString)
+                {
+                    tooltip.add(new StringTextComponent(string));
+                }
             }
             else
             {
-                info.add(GCCoreUtil.translateWithFormat("item_desc.shift.name", GameSettings.getKeyDisplayString(Minecraft.getInstance().gameSettings.keyBindSneak.getKeyCode())));
+                tooltip.add(new StringTextComponent(GCCoreUtil.translateWithFormat("item_desc.shift.name", Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName())));
             }
         }
     }
@@ -156,16 +151,16 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
                             }
                         }
     
-                        boolean canHarvest = block.canHarvestBlock(worldIn, pos1, player);
-                        boolean destroyed = block.removedByPlayer(state1, worldIn, pos1, player, canHarvest);
+                        boolean canHarvest = block.canHarvestBlock(state1, worldIn, pos1, player);
+                        boolean destroyed = block.removedByPlayer(state1, worldIn, pos1, player, canHarvest, worldIn.getFluidState(pos1));
                         if (destroyed)
                         {
-                            block.onBlockDestroyedByPlayer(worldIn, pos1, state1);
+                            block.onPlayerDestroy(worldIn, pos1, state1);
                         }
                         if (canHarvest && destroyed)
                         {
                             block.harvestBlock(worldIn, player, pos1, state1, tileentity, stack);
-                            stack.damageItem(1, player);
+                            stack.damageItem(1, player, (e) -> {});
                         }
                     }
                 }
@@ -176,13 +171,13 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate("item.volcanic_pickaxe.description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }

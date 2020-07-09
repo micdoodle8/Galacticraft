@@ -1,19 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
     }
 
     private final PlayerInventory playerInv;
-    private final EnumRocketType rocketType;
+    private final EntityAutoRocket rocket;
 
     public GuiRocketInventory(ContainerRocketInventory container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -40,8 +37,8 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
 //        super(new ContainerRocketInventory(playerInv, rocket, rocketType, Minecraft.getInstance().player), playerInv, rocket.getName());
         this.playerInv = playerInv;
         this.passEvents = false;
-        this.rocketType = container.getRocketType();
-        this.ySize = rocketType.getInventorySpace() <= 3 ? 132 : 145 + rocketType.getInventorySpace() * 2;
+        this.rocket = container.getRocket();
+        this.ySize = rocket.getSizeInventory() <= 3 ? 132 : 145 + rocket.getSizeInventory() * 2;
     }
 
     @Override
@@ -74,7 +71,7 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.minecraft.getTextureManager().bindTexture(GuiRocketInventory.rocketTextures[(this.rocketType.getInventorySpace() - 2) / 18]);
+        this.minecraft.getTextureManager().bindTexture(GuiRocketInventory.rocketTextures[(this.rocket.getSizeInventory() - 2) / 18]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

@@ -100,7 +100,7 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        return this.getUnlocalizedName() + "_" + ItemParaChute.names[itemStack.getItemDamage()];
+//        return this.getUnlocalizedName() + "_" + ItemParaChute.names[itemStack.getDamage()];
 //    }
 
     /*@Override

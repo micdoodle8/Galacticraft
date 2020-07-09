@@ -186,7 +186,7 @@ public class DrawGameScreen implements IScreenManager
     {
 //        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 //        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
         GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 
         if (type > 0)

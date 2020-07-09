@@ -178,7 +178,78 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         return fluid == null || fluidTank.getFluid() != FluidStack.EMPTY && fluidTank.getFluid().getFluid() == fluid;
     }
 
-//    @Override
+    @Override
+    public int getTanks()
+    {
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        TileEntityFluidTank last = getLastTank();
+
+        if (last != null)
+        {
+            return last.fluidTank.getFluid();
+        }
+        else
+        {
+            return FluidStack.EMPTY;
+        }
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        if (tank != 0)
+        {
+            return 0;
+        }
+
+        TileEntityFluidTank last = getLastTank();
+
+        int capacity = last.fluidTank.getCapacity();
+        last = getNextTank(last.getPos());
+
+        while (last != null)
+        {
+            capacity += last.fluidTank.getCapacity();
+            last = getNextTank(last.getPos());
+        }
+
+        return capacity;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        if (tank != 0)
+        {
+            return false;
+        }
+
+        TileEntityFluidTank last = getLastTank();
+
+        if (last != null)
+        {
+            if (last.fluidTank.getFluid() != FluidStack.EMPTY)
+            {
+                return last.fluidTank.getFluid().getFluid() == stack.getFluid();
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //    @Override
 //    public FluidTankInfo[] getTankInfo(Direction from)
 //    {
 //        FluidTank compositeTank = new FluidTank(fluidTank.getCapacity());

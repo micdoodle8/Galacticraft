@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -11,13 +12,14 @@ public abstract class DirectionalPieceVenus extends PieceVenus
 {
     private Direction direction;
 
-    public DirectionalPieceVenus()
+    public DirectionalPieceVenus(IStructurePieceType type, CompoundNBT nbt)
     {
+        super(type, nbt);
     }
 
-    public DirectionalPieceVenus(DungeonConfigurationVenus configuration, Direction direction)
+    public DirectionalPieceVenus(IStructurePieceType type, DungeonConfigurationVenus configuration, Direction direction)
     {
-        super(configuration);
+        super(type, configuration);
         this.direction = direction;
     }
 
@@ -40,13 +42,13 @@ public abstract class DirectionalPieceVenus extends PieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
-        super.readStructureFromNBT(tagCompound, manager);
+        super.readStructureFromNBT(tagCompound);
 
         if (tagCompound.contains("direction"))
         {
-            this.direction = Direction.byIndex(tagCompound.getInteger("direction"));
+            this.direction = Direction.byIndex(tagCompound.getInt("direction"));
         }
         else
         {

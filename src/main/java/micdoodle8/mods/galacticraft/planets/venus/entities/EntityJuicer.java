@@ -2,31 +2,25 @@ package micdoodle8.mods.galacticraft.planets.venus.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.ai.EntityMoveHelperCeiling;
 import micdoodle8.mods.galacticraft.planets.venus.entities.ai.PathNavigateCeiling;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.*;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 public class EntityJuicer extends MonsterEntity implements IEntityBreathable
@@ -36,24 +30,24 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
     private BlockPos jumpTarget;
     private int timeSinceLastJump = 0;
 
-    public EntityJuicer(World world)
+    public EntityJuicer(EntityType<? extends EntityJuicer> type, World worldIn)
     {
-        super(world);
-        this.moveHelper = new EntityMoveHelperCeiling(this);
-        this.setSize(0.95F, 0.6F);
-        this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0, true));
-        this.tasks.addTask(5, new RandomWalkingGoal(this, 0.8D));
-        this.tasks.addTask(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.tasks.addTask(6, new LookRandomlyGoal(this));
-        this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        super(type, worldIn);
+        this.moveController = new EntityMoveHelperCeiling(this);
+//        this.setSize(0.95F, 0.6F);
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 0.8D));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.timeSinceLastJump = this.rand.nextInt(200) + 50;
     }
 
     @Override
-    protected void entityInit()
+    protected void registerData()
     {
-        super.entityInit();
+        super.registerData();
         this.dataManager.register(IS_FALLING, false);
         this.dataManager.register(IS_HANGING, false);
     }
@@ -85,10 +79,10 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
     }
 
     @Override
-    protected void applyEntityAttributes()
+    protected void registerAttributes()
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
     }
 
     @Override
@@ -110,7 +104,7 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
     }
 
     @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
+    protected void playStepSound(BlockPos pos, BlockState blockIn)
     {
         this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
     }
@@ -127,21 +121,21 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
         return super.getSoundPitch() + 0.4F;
     }
 
-    @Override
-    protected Item getDropItem()
-    {
-        return Item.getItemFromBlock(Blocks.AIR);
-    }
+//    @Override
+//    protected Item getDropItem()
+//    {
+//        return Item.getItemFromBlock(Blocks.AIR);
+//    }
 
     @Override
-    public void onLivingUpdate()
+    public void livingTick()
     {
         if (this.isHanging())
         {
             this.onGround = true;
         }
 
-        super.onLivingUpdate();
+        super.livingTick();
 
         if (!this.world.isRemote)
         {
@@ -152,25 +146,24 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
                     BlockPos posAbove = new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ);
                     BlockState blockAbove = this.world.getBlockState(posAbove);
 
-                    if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
-                            blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
+                    if (blockAbove.getBlock() == VenusBlocks.dungeonBrick2 || blockAbove.getBlock() == VenusBlocks.dungeonBrick1)
                     {
-                        RayTraceResult hit = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
+                        RayTraceResult hit = this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 
-                        if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK)
+                        if (hit.getType() == RayTraceResult.Type.BLOCK)
                         {
-                            BlockState blockBelow = this.world.getBlockState(hit.getBlockPos());
-                            if (blockBelow.getBlock() == VenusBlocks.venusBlock && (blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
-                                    blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
+                            BlockRayTraceResult blockResult = (BlockRayTraceResult) hit;
+                            BlockState blockBelow = this.world.getBlockState(blockResult.getPos());
+                            if (blockBelow.getBlock() == VenusBlocks.dungeonBrick1 || blockBelow.getBlock() == VenusBlocks.dungeonBrick2)
                             {
                                 if (this.isHanging())
                                 {
-                                    this.jumpTarget = hit.getBlockPos();
+                                    this.jumpTarget = blockResult.getPos();
                                     this.setFalling(this.jumpTarget != null);
                                 }
                                 else
                                 {
-                                    this.jumpTarget = hit.getBlockPos().offset(Direction.DOWN);
+                                    this.jumpTarget = blockResult.getPos().offset(Direction.DOWN);
                                     this.setFalling(this.jumpTarget != null);
                                 }
                             }
@@ -186,14 +179,14 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
 
         if (this.isHanging())
         {
-            this.motionY = 0.0F;
+            this.setMotion(this.getMotion().x, 0.0, this.getMotion().z);
         }
     }
 
     @Override
-    public void move(MoverType type, double x, double y, double z)
+    public void move(MoverType typeIn, Vec3d pos)
     {
-        super.move(type, x, y, z);
+        super.move(typeIn, pos);
         if (this.isHanging())
         {
             this.onGround = true;
@@ -227,10 +220,11 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
                 double diffX = this.jumpTarget.getX() - this.posX + 0.5;
                 double diffY = this.jumpTarget.getY() - this.posY + 0.6;
                 double diffZ = this.jumpTarget.getZ() - this.posZ + 0.5;
-                this.motionY = diffY > 0 ? Math.min(diffY / 2.0F, 0.2123F) : Math.max(diffY / 2.0F, -0.2123F);
-                this.motionX = diffX > 0 ? Math.min(diffX / 2.0F, 0.2123F) : Math.max(diffX / 2.0F, -0.2123F);
-                this.motionZ = diffZ > 0 ? Math.min(diffZ / 2.0F, 0.2123F) : Math.max(diffZ / 2.0F, -0.2123F);
-                if (diffY > 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.motionY)) < 0.4F)
+                double motY = diffY > 0 ? Math.min(diffY / 2.0F, 0.2123F) : Math.max(diffY / 2.0F, -0.2123F);
+                double motX = diffX > 0 ? Math.min(diffX / 2.0F, 0.2123F) : Math.max(diffX / 2.0F, -0.2123F);
+                double motZ = diffZ > 0 ? Math.min(diffZ / 2.0F, 0.2123F) : Math.max(diffZ / 2.0F, -0.2123F);
+                this.setMotion(motX, motY, motZ);
+                if (diffY > 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.getMotion().y)) < 0.4F)
                 {
                     this.setPosition(this.jumpTarget.getX() + 0.5, this.jumpTarget.getY() + 0.2, this.jumpTarget.getZ() + 0.5);
                     this.jumpTarget = null;
@@ -238,7 +232,7 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
                     this.timeSinceLastJump = this.rand.nextInt(180) + 60;
                     this.setHanging(true);
                 }
-                else if (diffY < 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.motionY)) < 0.8F)
+                else if (diffY < 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.getMotion().y)) < 0.8F)
                 {
                     this.setPosition(this.jumpTarget.getX() + 0.5, this.jumpTarget.getY() + 1.0, this.jumpTarget.getZ() + 0.5);
                     this.jumpTarget = null;
@@ -254,31 +248,31 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
         }
     }
 
-    @Override
-    protected boolean isValidLightLevel()
-    {
-        return true;
-    }
+//    @Override
+//    protected boolean isValidLightLevel()
+//    {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean getCanSpawnHere()
+//    {
+//        if (super.getCanSpawnHere())
+//        {
+//            PlayerEntity var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
+//            return var1 == null;
+//        }
+//        else
+//        {
+//            return false;
+//        }
+//    }
 
-    @Override
-    public boolean getCanSpawnHere()
-    {
-        if (super.getCanSpawnHere())
-        {
-            PlayerEntity var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
-            return var1 == null;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    @Override
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
+//    @Override
+//    public EnumCreatureAttribute getCreatureAttribute()
+//    {
+//        return EnumCreatureAttribute.ARTHROPOD;
+//    }
 
     @Override
     public boolean canBreath()
@@ -292,39 +286,40 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
         return new PathNavigateCeiling(this, worldIn);
     }
 
-    @Override
-    public void setInWeb()
-    {
-    }
+//    @Override
+//    public void setInWeb()
+//    {
+//    }
+
 
     @Override
-    public void writeEntityToNBT(CompoundNBT tagCompound)
+    public void writeAdditional(CompoundNBT nbt)
     {
-        super.writeEntityToNBT(tagCompound);
+        super.writeAdditional(nbt);
 
-        tagCompound.putInt("timeSinceLastJump", this.timeSinceLastJump);
-        tagCompound.setBoolean("jumpTargetNull", this.jumpTarget == null);
+        nbt.putInt("timeSinceLastJump", this.timeSinceLastJump);
+        nbt.putBoolean("jumpTargetNull", this.jumpTarget == null);
         if (this.jumpTarget != null)
         {
-            tagCompound.putInt("jumpTargetX", this.jumpTarget.getX());
-            tagCompound.putInt("jumpTargetY", this.jumpTarget.getY());
-            tagCompound.putInt("jumpTargetZ", this.jumpTarget.getZ());
+            nbt.putInt("jumpTargetX", this.jumpTarget.getX());
+            nbt.putInt("jumpTargetY", this.jumpTarget.getY());
+            nbt.putInt("jumpTargetZ", this.jumpTarget.getZ());
         }
     }
 
     @Override
-    public void readEntityFromNBT(CompoundNBT tagCompund)
+    public void readAdditional(CompoundNBT nbt)
     {
-        super.readEntityFromNBT(tagCompund);
+        super.readAdditional(nbt);
 
-        this.timeSinceLastJump = tagCompund.getInteger("timeSinceLastJump");
-        if (tagCompund.getBoolean("jumpTargetNull"))
+        this.timeSinceLastJump = nbt.getInt("timeSinceLastJump");
+        if (nbt.getBoolean("jumpTargetNull"))
         {
             this.jumpTarget = null;
         }
         else
         {
-            this.jumpTarget = new BlockPos(tagCompund.getInteger("jumpTargetX"), tagCompund.getInteger("jumpTargetY"), tagCompund.getInteger("jumpTargetZ"));
+            this.jumpTarget = new BlockPos(nbt.getInt("jumpTargetX"), nbt.getInt("jumpTargetY"), nbt.getInt("jumpTargetZ"));
         }
 
         this.setFalling(this.jumpTarget != null);

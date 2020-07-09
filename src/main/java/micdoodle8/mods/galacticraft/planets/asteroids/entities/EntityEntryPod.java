@@ -3,34 +3,63 @@ package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.Particle;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.Map;
-import java.util.Random;
+import net.minecraftforge.fluids.FluidStack;
 
 public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLevel, ICameraZoomEntity, IIgnoreShift
 {
-    public EntityEntryPod(World var1)
+    public EntityEntryPod(EntityType<? extends EntityEntryPod> type, World worldIn)
     {
-        super(var1);
-        this.setSize(1.5F, 3.0F);
+        super(type, worldIn);
+//        this.setSize(1.5F, 3.0F);
     }
 
-    public EntityEntryPod(ServerPlayerEntity player)
+    public static EntityEntryPod createEntityEntryPod(ServerPlayerEntity player)
     {
-        super(player, 0.0F);
-        this.setSize(1.5F, 3.0F);
+        EntityEntryPod pod = new EntityEntryPod(AsteroidEntities.ENTRY_POD.get(), player.world);
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        pod.stacks = NonNullList.withSize(stats.getRocketStacks().size() + 1, ItemStack.EMPTY);
+        pod.fuelTank.setFluid(new FluidStack(GCFluids.FUEL.getFluid(), stats.getFuelLevel()));
+
+        for (int i = 0; i < stats.getRocketStacks().size(); i++)
+        {
+            if (!stats.getRocketStacks().get(i).isEmpty())
+            {
+                pod.stacks.set(i, stats.getRocketStacks().get(i).copy());
+            }
+            else
+            {
+                pod.stacks.get(i).setCount(0);
+            }
+        }
+
+        pod.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+
+        player.startRiding(pod, true);
+        return pod;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
     }
 
     @Override
@@ -42,7 +71,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     @Override
     public double getMountedYOffset()
     {
-        return this.height - 2.0D;
+        return this.getHeight() - 2.0D;
     }
 
     @Override
@@ -52,22 +81,29 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
         return -20.0F;
     }
     
-    @Override
-    public boolean shouldSpawnParticles()
-    {
-        return false;
-    }
+//    @Override
+//    public boolean shouldSpawnParticles()
+//    {
+//        return false;
+//    }
+//
+//    @Override
+//    public Map<Vector3, Vector3> getParticleMap()
+//    {
+//        return null;
+//    }
+//
+//    @Override
+//    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+//    {
+//        return null;
+//    }
+
 
     @Override
-    public Map<Vector3, Vector3> getParticleMap()
+    public void spawnParticles()
     {
-        return null;
-    }
 
-    @Override
-    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
-    {
-        return null;
     }
 
     @Override
@@ -85,7 +121,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
         {
             if (!this.onGround)
             {
-                this.motionY -= 0.002D;
+                this.setMotion(this.getMotion().x, this.getMotion().y - 0.002, this.getMotion().z);
             }
         }
     }
@@ -98,19 +134,21 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
-    public Vector3 getMotionVec()
+    public Vector3D getMotionVec()
     {
         if (this.onGround)
         {
-            return new Vector3(0, 0, 0);
+            return new Vector3D(0, 0, 0);
         }
 
         if (this.ticks >= 40 && this.ticks < 45)
         {
-            this.motionY = this.getInitialMotionY();
+//            this.motionY = this.getInitialMotionY();
+            this.setMotion(this.getMotion().x, this.getInitialMotionY(), this.getMotion().z);
         }
 
-        return new Vector3(this.motionX, this.motionY, this.motionZ);
+//        return new Vector3(this.motionX, this.motionY, this.motionZ);
+        return new Vector3D(this.getMotion());
     }
 
     @Override
@@ -131,17 +169,17 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
         return false;
     }
 
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.entry_pod.name");
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return GCCoreUtil.translate("container.entry_pod.name");
+//    }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     protected boolean canTriggerWalking()
@@ -193,7 +231,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
 
         if (this.getPassengers().isEmpty() && player instanceof ServerPlayerEntity)
         {
-            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this);
+//            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this); TODO Guis
             return true;
         }
         else if (player instanceof ServerPlayerEntity)

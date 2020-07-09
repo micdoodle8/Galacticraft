@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
@@ -8,27 +7,32 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.storage.loot.LootTables;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.planets.mars.world.gen.MarsFeatures.CMARS_DUNGEON_TREASURE;
 
 public class RoomTreasureMars extends RoomTreasure
 {
     public static ResourceLocation MARSCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_2");
-    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTables.register(MARSCHEST);
+//    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTables.register(MARSCHEST);
 
-    public RoomTreasureMars()
+    public RoomTreasureMars(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CMARS_DUNGEON_TREASURE, nbt);
     }
 
     public RoomTreasureMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
-        super(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
+        this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
     }
 
     public RoomTreasureMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
@@ -37,7 +41,7 @@ public class RoomTreasureMars extends RoomTreasure
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -102,12 +106,12 @@ public class RoomTreasureMars extends RoomTreasure
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
                             if (treasureChest != null)
                             {
-                                ResourceLocation chesttype = TABLE_TIER_2_DUNGEON;
-                                if (worldIn.dimension instanceof IGalacticraftWorldProvider)
-                                {
-                                    chesttype = ((IGalacticraftWorldProvider)worldIn.dimension).getDungeonChestType();
-                                }
-                                treasureChest.setLootTable(chesttype, random.nextLong());
+//                                ResourceLocation chesttype = TABLE_TIER_2_DUNGEON;
+//                                if (worldIn.dimension instanceof IGalacticraftWorldProvider)
+//                                {
+//                                    chesttype = ((IGalacticraftWorldProvider)worldIn.dimension).getDungeonChestType();
+//                                } TODO Treasure loot tables
+//                                treasureChest.setLootTable(chesttype, random.nextLong());
                             }
                         }
                     }

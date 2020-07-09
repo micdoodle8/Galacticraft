@@ -318,7 +318,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
         World world = this.world;
         int sideskip1 = this.sideRear.getIndex();
         int sideskip2 = this.facingSide.getIndex() ^ 1;
-        int side, bits;
+        int LogicalSide, bits;
         for (int i = 0; i < 6; i++)
         {
             if (i != sideskip1 && i != sideskip2 && i != (sideskip1 ^ 1) && i != (sideskip2 ^ 1))
@@ -413,18 +413,18 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                 
                 //Now process each layer outwards from the source, finding new blocks to light (similar to ThreadFindSeal)
                 //This is high performance code using our own custom HashSet (that's intBucket)
-                side = 0;
+                LogicalSide = 0;
                 bits = vec.sideDoneBits;
                 boolean doShine = false;
                 do
                 {
-                    //Skip the side which this was entered from
+                    //Skip the LogicalSide which this was entered from
                     //and never go 'backwards'
-                    if ((bits & (1 << side)) == 0)
+                    if ((bits & (1 << LogicalSide)) == 0)
                     {
-                        BlockVec3 sideVec = vec.newVecSide(side);
+                        BlockVec3 sideVec = vec.newVecSide(LogicalSide);
                         boolean toAdd = false;
-                        if (!checkedContains(vec, side))
+                        if (!checkedContains(vec, LogicalSide))
                         {
                             checkedAdd(sideVec);
                             toAdd = true;
@@ -433,13 +433,13 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                         BlockState bs = sideVec.getBlockStateSafe_noChunkLoad(world);
                         if (bs == null)
                         {
-                            side++;
+                            LogicalSide++;
                             continue;
                         }
                         Block b = bs.getBlock();
                         if (b instanceof AirBlock)
                         {
-                            if (toAdd && side != sideskip1 && side != sideskip2)
+                            if (toAdd && LogicalSide != sideskip1 && LogicalSide != sideskip2)
                             {
                                 nextLayer.add(sideVec);
                             }
@@ -448,7 +448,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                         {
                             doShine = true;
                             //Glass blocks go through to the next layer as well
-                            if (side != sideskip1 && side != sideskip2)
+                            if (LogicalSide != sideskip1 && LogicalSide != sideskip2)
                             {
                                 if (toAdd && b != null && b.getOpacity(bs, world, sideVec.toBlockPos()) == 0)
                                 {
@@ -457,9 +457,9 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                             }
                         }
                     }
-                    side++;
+                    LogicalSide++;
                 }
-                while (side < 6);
+                while (LogicalSide < 6);
 
                 if (doShine)
                 {
@@ -969,12 +969,12 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
         return bucket.contains(vec.y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
     }
 
-    private boolean checkedContains(BlockVec3 vec, int side)
+    private boolean checkedContains(BlockVec3 vec, int LogicalSide)
     {
         int y = vec.y;
         int dx = this.pos.getX() - vec.x;
         int dz = this.pos.getZ() - vec.z;
-        switch (side)
+        switch (LogicalSide)
         {
         case 0:
             y--;

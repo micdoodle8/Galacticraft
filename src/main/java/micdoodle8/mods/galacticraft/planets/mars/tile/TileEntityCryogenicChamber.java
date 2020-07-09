@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.mojang.datafixers.util.Either;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -11,29 +10,41 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Unit;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ObjectHolder;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class TileEntityCryogenicChamber extends TileEntityFake implements IMultiBlock
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.cryoChamber)
+    public static TileEntityType<TileEntityCryogenicChamber> TYPE;
+
     public boolean isOccupied;
     private boolean initialised;
 
     public TileEntityCryogenicChamber()
     {
-        super(null);
+        super(TYPE);
     }
 
     @Override
@@ -51,62 +62,61 @@ public class TileEntityCryogenicChamber extends TileEntityFake implements IMulti
             return false;
         }
 
-        PlayerEntity.SleepResult enumstatus = this.sleepInBedAt(entityPlayer, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        Either<PlayerEntity.SleepResult, Unit> enumstatus = this.sleepInBedAt(entityPlayer, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 
-        switch (enumstatus)
-        {
-        case OK:
+        enumstatus.ifLeft((result) -> {
             ((ServerPlayerEntity) entityPlayer).connection.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
             GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.world), new Object[] { this.getPos() }), (ServerPlayerEntity) entityPlayer);
-            return true;
-        case NOT_POSSIBLE_NOW:
+        });
+
+        enumstatus.ifRight((result) -> {
             GCPlayerStats stats = GCPlayerStats.get(entityPlayer);
             entityPlayer.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", stats.getCryogenicChamberCooldown() / 20)));
-            return false;
-        default:
-            return false;
-        }
+        });
+
+        return enumstatus.left().isPresent();
     }
 
-    public PlayerEntity.SleepResult sleepInBedAt(PlayerEntity entityPlayer, int par1, int par2, int par3)
+    public Either<PlayerEntity.SleepResult, Unit> sleepInBedAt(PlayerEntity entityPlayer, int par1, int par2, int par3)
     {
         if (!this.world.isRemote)
         {
-            if (entityPlayer.isPlayerSleeping() || !entityPlayer.isEntityAlive())
+            if (entityPlayer.isSleeping() || !entityPlayer.isAlive())
             {
-                return PlayerEntity.SleepResult.OTHER_PROBLEM;
+                return Either.left(PlayerEntity.SleepResult.OTHER_PROBLEM);
             }
 
-            if (this.world.getBiome(new BlockPos(par1, par2, par3)) == Biomes.HELL)
+            if (this.world.getBiome(new BlockPos(par1, par2, par3)) == Biomes.NETHER)
             {
-                return PlayerEntity.SleepResult.NOT_POSSIBLE_HERE;
+                return Either.left(PlayerEntity.SleepResult.NOT_POSSIBLE_HERE);
             }
 
             GCPlayerStats stats = GCPlayerStats.get(entityPlayer);
             if (stats.getCryogenicChamberCooldown() > 0)
             {
-                return PlayerEntity.SleepResult.NOT_POSSIBLE_NOW;
+                return Either.left(PlayerEntity.SleepResult.NOT_POSSIBLE_NOW);
             }
         }
 
-        if (entityPlayer.isRiding())
+        if (entityPlayer.getRidingEntity() != null)
         {
-            entityPlayer.dismountRidingEntity();
+            entityPlayer.stopRiding();
         }
 
         entityPlayer.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() + 1.9F, this.getPos().getZ() + 0.5F);
 
-        entityPlayer.sleeping = true;
+        entityPlayer.startSleeping(new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
+//        entityPlayer.sleeping = true;
         entityPlayer.sleepTimer = 0;
-        entityPlayer.bedLocation = new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-        entityPlayer.motionX = entityPlayer.motionZ = entityPlayer.motionY = 0.0D;
+//        entityPlayer.bedLocation = new BlockPos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        entityPlayer.setMotion(0.0, 0.0, 0.0);
 
         if (!this.world.isRemote)
         {
-            this.world.updateAllPlayersSleepingFlag();
+            ((ServerWorld) this.world).updateAllPlayersSleepingFlag();
         }
 
-        return PlayerEntity.SleepResult.OK;
+        return Either.right(Unit.INSTANCE);
     }
 
 //    @Override
@@ -167,11 +177,11 @@ public class TileEntityCryogenicChamber extends TileEntityFake implements IMulti
         {
             BlockState stateAt = this.world.getBlockState(pos);
 
-            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.CRYO_CHAMBER)
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.get(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.CRYO_CHAMBER)
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                 {
-                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
+                    Minecraft.getInstance().particles.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                 }
                 this.world.destroyBlock(pos, false);
             }

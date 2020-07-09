@@ -114,8 +114,8 @@ public class GalacticraftChannelHandler
 //     */
 //    public void sendToAll(IPacket message)
 //    {
-//        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
-//        this.channels.get(Side.SERVER).writeOutbound(message);
+//        this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
+//        this.channels.get(LogicalSide.SERVER).writeOutbound(message);
 //    }
 //
 //    /**
@@ -129,9 +129,9 @@ public class GalacticraftChannelHandler
 //     */
 //    public void sendTo(IPacket message, ServerPlayerEntity player)
 //    {
-//        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
-//        this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
-//        this.channels.get(Side.SERVER).writeOutbound(message);
+//        this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
+//        this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
+//        this.channels.get(LogicalSide.SERVER).writeOutbound(message);
 //    }
 //
 //    /**
@@ -149,9 +149,9 @@ public class GalacticraftChannelHandler
 //    {
 //        try
 //        {
-//            this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
-//            this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
-//            this.channels.get(Side.SERVER).writeOutbound(message);
+//            this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
+//            this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
+//            this.channels.get(LogicalSide.SERVER).writeOutbound(message);
 //        }
 //        catch (Exception e)
 //        {
@@ -173,9 +173,9 @@ public class GalacticraftChannelHandler
 //    {
 //        try
 //        {
-//            this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
-//            this.channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionID);
-//            this.channels.get(Side.SERVER).writeOutbound(message);
+//            this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
+//            this.channels.get(LogicalSide.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionID);
+//            this.channels.get(LogicalSide.SERVER).writeOutbound(message);
 //        }
 //        catch (Exception e)
 //        {
@@ -194,11 +194,11 @@ public class GalacticraftChannelHandler
 //     */
 //    public void sendToServer(IPacket message)
 //    {
-//        if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
+//        if (FMLCommonHandler.instance().getSide() != LogicalSide.CLIENT)
 //        {
 //            return;
 //        }
-//        this.channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-//        this.channels.get(Side.CLIENT).writeOutbound(message);
+//        this.channels.get(LogicalSide.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+//        this.channels.get(LogicalSide.CLIENT).writeOutbound(message);
 //    }
 }

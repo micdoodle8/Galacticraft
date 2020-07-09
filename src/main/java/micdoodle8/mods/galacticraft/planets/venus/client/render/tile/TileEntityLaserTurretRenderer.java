@@ -1,28 +1,26 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.tile;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import org.lwjgl.opengl.GL11;
-
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntityLaserTurret>
@@ -35,37 +33,30 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
     public static OBJModel.OBJBakedModel orb1;
     public static OBJModel.OBJBakedModel orb2;
 
-    public IBakedModel updateModels()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (laserBase == null)
+        try
         {
-            try
-            {
-                IModel model0 = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"));
-                IModel model1 = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "orb.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
+            laserBase = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"), ImmutableList.of("baseConnector0", "baseConnector1"));
+            laserPhalange = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"), ImmutableList.of("phalange"));
+            laserPhalangeAxle = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"), ImmutableList.of("phalangeAxle"));
+            laserTurrets = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"), ImmutableList.of("turretLeft", "turretRight"));
+            laserTurretsOff = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"), ImmutableList.of("turretLeft_off", "turretRight_off"));
 
-                laserBase = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("baseConnector0", "baseConnector1"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                laserPhalange = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("phalange"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                laserPhalangeAxle = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("phalangeAxle"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                laserTurrets = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("turretLeft", "turretRight"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                laserTurretsOff = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("turretLeft_off", "turretRight_off"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                orb1 = (OBJModel.OBJBakedModel) model1.bake(new OBJModel.OBJState(ImmutableList.of("inner_Icosphere"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                orb2 = (OBJModel.OBJBakedModel) model1.bake(new OBJModel.OBJState(ImmutableList.of("outer_Icosphere.001"), false), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
+            orb1 = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "orb.obj"), ImmutableList.of("inner_Icosphere"));
+            orb2 = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "orb.obj"), ImmutableList.of("inner_Icosphere.001"));
         }
-        return laserBase;
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void render(TileEntityLaserTurret tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntityLaserTurret tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+        GlStateManager.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
         GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();
 
@@ -80,8 +71,6 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        this.updateModels();
-
         GlStateManager.scalef(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
 
         GlStateManager.pushMatrix();
@@ -89,12 +78,12 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
         ClientUtil.drawBakedModel(laserBase);
         GlStateManager.popMatrix();
 
-        GlStateManager.rotate(tile.yaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
 
         // Interpolate between yaw and targetYaw
 
         float partialRot = Math.signum(tile.pitch) * tile.pitch * (tile.pitch / 120.0F);
-        GlStateManager.rotate(partialRot, 0.0F, 0.0F, -1.0F);
+        GlStateManager.rotatef(partialRot, 0.0F, 0.0F, -1.0F);
 
         GlStateManager.pushMatrix();
         GlStateManager.scalef(1.1F, 1.0F, 1.0F);
@@ -102,7 +91,7 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
         ClientUtil.drawBakedModel(laserPhalange);
         GlStateManager.popMatrix();
 
-        GlStateManager.rotate(tile.pitch - partialRot, 0.0F, 0.0F, -1.0F);
+        GlStateManager.rotatef(tile.pitch - partialRot, 0.0F, 0.0F, -1.0F);
 
         ClientUtil.drawBakedModel(laserPhalangeAxle);
         ClientUtil.drawBakedModel(tile.active ? laserTurrets : laserTurretsOff);
@@ -114,20 +103,20 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
         float invNext = (float) (Math.pow((tile.chargeLevel + 1) / 5.0F + 1.0F, 2.5F) * 1.0F);
         float rotate = inv + (invNext - inv) * partialTicks;
 
-        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+        float lightMapSaveX = GLX.lastBrightnessX;
+        float lightMapSaveY = GLX.lastBrightnessY;
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 
         if (tile.chargeLevel > 0)
         {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            GlStateManager.rotate(tile.yaw, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(tile.pitch, 0.0F, 0.0F, -1.0F);
-            GlStateManager.translate(-0.6F, 0.28F, 0.0F);
+            GlStateManager.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
+            GlStateManager.translatef(-0.6F, 0.28F, 0.0F);
 
-            GlStateManager.disableTexture2D();
+            GlStateManager.disableTexture();
 
             tess.getBuffer().begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
 
@@ -136,13 +125,13 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
             tess.getBuffer().pos(0.09F, 0.0F, -0.275F).color(0.0F, 1.0F, 0.0F, 1.0F).endVertex();
 
             tess.draw();
-            GlStateManager.enableTexture2D();
+            GlStateManager.enableTexture();
 
             float scale = tile.chargeLevel / 600.0F;
             GlStateManager.scalef(0.01F + scale, 0.01F + scale, 0.01F + scale);
-            GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotatef(rotate, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModel(orb1);
-            GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotatef(rotate, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModel(orb2);
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
@@ -154,21 +143,21 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
 
             if (e != null)
             {
-                GlStateManager.disableTexture2D();
+                GlStateManager.disableTexture();
                 GlStateManager.pushMatrix();
                 GlStateManager.enableBlend();
                 GlStateManager.disableCull();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                GlStateManager.rotate(tile.yaw, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(tile.pitch, 0.0F, 0.0F, -1.0F);
-                GlStateManager.translate(-0.6F, 0.28F, 0.0F);
+                GlStateManager.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
+                GlStateManager.translatef(-0.6F, 0.28F, 0.0F);
 
                 BufferBuilder bb = tess.getBuffer();
 
                 bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 
-                Vector3 vec = new Vector3(e.posX, e.posY + e.getEyeHeight(), e.posZ);
-                vec.translate(new Vector3(-(tile.getPos().getX() + 0.5F), -(tile.getPos().getY() + 1.78F), -(tile.getPos().getZ() + 0.5F)));
+                Vector3D vec = new Vector3D(e.posX, e.posY + e.getEyeHeight(), e.posZ);
+                vec.translate(new Vector3D(-(tile.getPos().getX() + 0.5F), -(tile.getPos().getY() + 1.78F), -(tile.getPos().getZ() + 0.5F)));
                 float dist = (float) vec.getMagnitude() - 0.8F;
                 float shotTimer = (float) (Math.pow((5.0F - tile.timeSinceShot) / 5.0F + 1.0F, 2.5F) * 0.5F);
                 float shotTimerNext = (float) (Math.pow((5.0F - (tile.timeSinceShot + 1)) / 5.0F + 1.0F, 2.5F) * 0.5F);
@@ -201,11 +190,11 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
                 tess.draw();
 
                 GlStateManager.enableCull();
-                GlStateManager.enableTexture2D();
+                GlStateManager.enableTexture();
                 GlStateManager.popMatrix();
             }
         }
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightMapSaveX, lightMapSaveY);
         GlStateManager.popMatrix();
     }
 }

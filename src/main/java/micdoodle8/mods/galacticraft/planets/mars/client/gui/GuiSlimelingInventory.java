@@ -1,24 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
 
-import java.io.IOException;
-
-public class GuiSlimelingInventory extends ContainerScreen
+public class GuiSlimelingInventory extends GuiContainerGC<ContainerSlimeling>
 {
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimeling_panel2.png");
     private final EntitySlimeling slimeling;
@@ -28,18 +26,18 @@ public class GuiSlimelingInventory extends ContainerScreen
     private final int invWidth = 18;
     private final int invHeight = 18;
 
-    public GuiSlimelingInventory(PlayerEntity player, EntitySlimeling slimeling)
+    public GuiSlimelingInventory(ContainerSlimeling container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerSlimeling(player.inventory, slimeling, Minecraft.getInstance().player));
-        this.slimeling = slimeling;
+        super(container, playerInv, title);
+        this.slimeling = container.getSlimeling();
         this.xSize = 176;
         this.ySize = 210;
     }
 
     @Override
-    public void initGui()
+    public void init()
     {
-        super.initGui();
+        super.init();
         this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
@@ -48,38 +46,26 @@ public class GuiSlimelingInventory extends ContainerScreen
     }
 
     @Override
-    public boolean doesGuiPauseGame()
+    public boolean isPauseScreen()
     {
         return false;
     }
 
     @Override
-    protected void actionPerformed(Button par1GuiButton)
-    {
-        if (par1GuiButton.enabled)
-        {
-            switch (par1GuiButton.id)
-            {
-            case 0:
-                break;
-            }
-        }
-    }
-
-    @Override
-    protected void mouseClicked(int px, int py, int par3) throws IOException
+    public boolean mouseClicked(double px, double py, int par3)
     {
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
-            this.minecraft.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.minecraft.displayGuiScreen(new GuiSlimeling(this.slimeling));
+            return true;
         }
 
-        super.mouseClicked(px, py, par3);
+        return super.mouseClicked(px, py, par3);
     }
 
     @Override
-    public void drawDefaultBackground()
+    public void renderBackground()
     {
     }
 
@@ -98,30 +84,30 @@ public class GuiSlimelingInventory extends ContainerScreen
         GuiSlimeling.drawSlimelingOnGui(this.slimeling, this.width / 2, var6 + 62 - yOffset, 70, var5 + 51 - i, var6 + 75 - 50 - j);
 
 
-        GlStateManager.translate(0, 0, 100);
+        GlStateManager.translatef(0, 0, 100);
 
         GlStateManager.pushMatrix();
         this.minecraft.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
-        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
-        this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
-        this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
-        this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 35, 194, 0, 9, 9);
+        this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
+        this.blit(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
+        this.blit(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
+        this.blit(var5 + this.xSize - 15, var6 + 35, 194, 0, 9, 9);
         String str = "" + Math.round(this.slimeling.getColorRed() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 10, ColorUtil.to32BitColor(255, 255, 0, 0));
+        this.drawString(this.font, str, var5 + this.xSize - 15 - this.font.getStringWidth(str), var6 + 10, ColorUtil.to32BitColor(255, 255, 0, 0));
         str = "" + Math.round(this.slimeling.getColorGreen() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 23, ColorUtil.to32BitColor(255, 0, 255, 0));
+        this.drawString(this.font, str, var5 + this.xSize - 15 - this.font.getStringWidth(str), var6 + 23, ColorUtil.to32BitColor(255, 0, 255, 0));
         str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
+        this.drawString(this.font, str, var5 + this.xSize - 15 - this.font.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.minecraft.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
-        this.drawTexturedModalRect(this.invX, this.invY, 176, 27, this.invWidth, this.invHeight);
-        this.drawTexturedModalRect(var5 + 8, var6 + 8, 176, 9, 18, 18);
-        this.drawTexturedModalRect(var5 + 8, var6 + 29, 176, 9, 18, 18);
+        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        this.blit(this.invX, this.invY, 176, 27, this.invWidth, this.invHeight);
+        this.blit(var5 + 8, var6 + 8, 176, 9, 18, 18);
+        this.blit(var5 + 8, var6 + 29, 176, 9, 18, 18);
 
         ItemStack stack = this.slimeling.slimelingInventory.getStackInSlot(1);
 
-        if (stack != null && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
+        if (stack != null && stack.getItem() == MarsItems.slimelingCargo)
         {
             int offsetX = 7;
             int offsetY = 53;
@@ -130,7 +116,7 @@ public class GuiSlimelingInventory extends ContainerScreen
             {
                 for (int x = 0; x < 9; ++x)
                 {
-                    this.drawTexturedModalRect(var5 + offsetX + x * 18, var6 + offsetY + y * 18, 176, 9, 18, 18);
+                    this.blit(var5 + offsetX + x * 18, var6 + offsetY + y * 18, 176, 9, 18, 18);
                 }
             }
         }

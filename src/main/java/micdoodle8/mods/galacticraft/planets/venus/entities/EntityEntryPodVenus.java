@@ -2,36 +2,61 @@ package micdoodle8.mods.galacticraft.planets.venus.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.Particle;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityProjectileTNT;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.Map;
-import java.util.Random;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.fluids.FluidStack;
 
 public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableFuelLevel, ICameraZoomEntity, IIgnoreShift
 {
     private Integer groundPosY = null;
 
-    public EntityEntryPodVenus(World var1)
+    public EntityEntryPodVenus(EntityType<? extends EntityEntryPodVenus> type, World worldIn)
     {
-        super(var1);
-        this.setSize(1.5F, 3.0F);
+        super(type, worldIn);
+//        this.setSize(1.5F, 3.0F);
     }
 
-    public EntityEntryPodVenus(ServerPlayerEntity player)
+    public static EntityEntryPodVenus createEntityEntryPodVenus(ServerPlayerEntity player)
     {
-        super(player, 0.0F);
-        this.setSize(1.5F, 3.0F);
+        EntityEntryPodVenus pod = new EntityEntryPodVenus(VenusEntities.ENTRY_POD.get(), player.world);
+
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        pod.stacks = NonNullList.withSize(stats.getRocketStacks().size() + 1, ItemStack.EMPTY);
+        pod.fuelTank.setFluid(new FluidStack(GCFluids.FUEL.getFluid(), stats.getFuelLevel()));
+
+        for (int i = 0; i < stats.getRocketStacks().size(); i++)
+        {
+            if (!stats.getRocketStacks().get(i).isEmpty())
+            {
+                pod.stacks.set(i, stats.getRocketStacks().get(i).copy());
+            }
+            else
+            {
+                pod.stacks.get(i).setCount(0);
+            }
+        }
+
+        pod.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+
+        player.startRiding(pod, true);
+        return pod;
     }
 
     @Override
@@ -43,7 +68,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     @Override
     public double getMountedYOffset()
     {
-        return this.height - 2.0D;
+        return this.getHeight() - 2.0D;
     }
 
     @Override
@@ -53,22 +78,34 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
         return -20F;
     }
 
+//    @Override
+//    public boolean shouldSpawnParticles()
+//    {
+//        return false;
+//    }
+//
+//    @Override
+//    public Map<Vector3, Vector3> getParticleMap()
+//    {
+//        return null;
+//    }
+//
+//    @Override
+//    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+//    {
+//        return null;
+//    }
+
+
     @Override
-    public boolean shouldSpawnParticles()
+    public void spawnParticles()
     {
-        return false;
     }
 
     @Override
-    public Map<Vector3, Vector3> getParticleMap()
+    public IPacket<?> createSpawnPacket()
     {
-        return null;
-    }
-
-    @Override
-    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
-    {
-        return null;
+        return new SSpawnObjectPacket(this);
     }
 
     @Override
@@ -86,26 +123,30 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
         {
             if (!this.onGround)
             {
-                this.motionY -= 0.002D;
+//                this.motionY -= 0.002D;
+                this.setMotion(getMotion().x, this.getMotion().y - 0.002, this.getMotion().z);
 
-                if (this.motionY < -0.7F)
+                if (this.getMotion().y < -0.7F)
                 {
-                    this.motionY *= 0.994F;
+//                    this.motionY *= 0.994F;
+                    this.setMotion(getMotion().x, this.getMotion().y * 0.994F, this.getMotion().z);
                 }
 
                 if (this.posY <= 242.0F)
                 {
                     if (groundPosY == null)
                     {
-                        this.groundPosY = this.world.getTopSolidOrLiquidBlock(new BlockPos(this.posX, this.posY, this.posZ)).getY();
+                        this.groundPosY = this.world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(this.posX, this.posY, this.posZ)).getY();
                     }
 
                     if (this.posY - this.groundPosY > 5.0F)
                     {
-                        this.motionY *= 0.995F;
+                        this.setMotion(getMotion().x, this.getMotion().y * 0.995F, this.getMotion().z);
                     }
                     else
-                        this.motionY *= 0.9995F;
+                    {
+                        this.setMotion(getMotion().x, this.getMotion().y * 0.9995F, this.getMotion().z);
+                    }
                 }
             }
         }
@@ -118,24 +159,24 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     }
 
     @Override
-    public Vector3 getMotionVec()
+    public Vector3D getMotionVec()
     {
         if (this.onGround)
         {
-            return new Vector3(0, 0, 0);
+            return new Vector3D(0, 0, 0);
         }
 
         if (this.ticks >= 40 && this.ticks < 45)
         {
-            this.motionY = this.getInitialMotionY();
+            this.setMotion(this.getMotion().x, this.getInitialMotionY(), this.getMotionVec().z);
         }
 
         if (!this.shouldMove())
         {
-            return new Vector3(0, 0, 0);
+            return new Vector3D(0, 0, 0);
         }
 
-        return new Vector3(this.motionX, this.motionY, this.motionZ);
+        return new Vector3D(this.getMotion());
     }
 
     @Override
@@ -156,17 +197,17 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
         return false;
     }
 
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.entry_pod.name");
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return GCCoreUtil.translate("container.entry_pod.name");
+//    }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     protected boolean canTriggerWalking()
@@ -218,7 +259,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
 
         if (this.getPassengers().isEmpty() && player instanceof ServerPlayerEntity)
         {
-            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this);
+//            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this); TODO guis
             return true;
         }
         else if (player instanceof ServerPlayerEntity)

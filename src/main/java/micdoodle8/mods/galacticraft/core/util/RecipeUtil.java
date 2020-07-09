@@ -1,22 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import ic2.api.item.IC2Items;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.registries.GameData;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public class RecipeUtil
@@ -49,29 +41,29 @@ public class RecipeUtil
         return ItemStack.EMPTY;
     }
 
-    public static void addRecipe(ItemStack result, Object[] obj)
-    {
-        CraftingHelper.ShapedPrimer pattern = CraftingHelper.parseShaped(obj);
-        addCustomRecipe(new ShapedRecipe(result.getItem().getRegistryName().toString(), pattern.width, pattern.height, pattern.input, result));
-    }
-
-    public static void addCustomRecipe(IRecipe rec)
-    {
-        String modID = Loader.instance().activeModContainer().getModId();
-        ResourceLocation newLocation = new ResourceLocation(modID, rec.getRecipeOutput().getItem().getRegistryName().getResourcePath());
-        if (CraftingManager.REGISTRY.containsKey(newLocation))
-        {
-            int count = 1;
-            String newNameBase = newLocation.getResourcePath() + "_";
-            while (CraftingManager.REGISTRY.containsKey(newLocation))
-            {
-                newLocation = new ResourceLocation(modID, newNameBase + count++);
-            }
-        }
-        rec.setRegistryName(newLocation);
-
-        GameData.register_impl(rec);
-    }
+//    public static void addRecipe(ItemStack result, Object[] obj)
+//    {
+//        CraftingHelper.ShapedPrimer pattern = CraftingHelper.parseShaped(obj);
+//        addCustomRecipe(new ShapedRecipe(result.getItem().getRegistryName().toString(), pattern.width, pattern.height, pattern.input, result));
+//    }
+//
+//    public static void addCustomRecipe(IRecipe rec)
+//    {
+//        String modID = Loader.instance().activeModContainer().getModId();
+//        ResourceLocation newLocation = new ResourceLocation(modID, rec.getRecipeOutput().getItem().getRegistryName().getResourcePath());
+//        if (CraftingManager.REGISTRY.containsKey(newLocation))
+//        {
+//            int count = 1;
+//            String newNameBase = newLocation.getResourcePath() + "_";
+//            while (CraftingManager.REGISTRY.containsKey(newLocation))
+//            {
+//                newLocation = new ResourceLocation(modID, newNameBase + count++);
+//            }
+//        }
+//        rec.setRegistryName(newLocation);
+//
+//        GameData.register_impl(rec);
+//    }
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
     {
@@ -122,6 +114,6 @@ public class RecipeUtil
      */
     public static boolean stacksMatch(ItemStack itemstack, ItemStack itemstack1)
     {
-        return !itemstack1.isEmpty() && itemstack1.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()) && RecipeUtil.areItemStackTagsEqual(itemstack, itemstack1);
+        return !itemstack1.isEmpty() && itemstack1.getItem() == itemstack.getItem() && (!itemstack.hasTag() || itemstack.getDamage() == itemstack1.getDamage()) && RecipeUtil.areItemStackTagsEqual(itemstack, itemstack1);
     }
 }

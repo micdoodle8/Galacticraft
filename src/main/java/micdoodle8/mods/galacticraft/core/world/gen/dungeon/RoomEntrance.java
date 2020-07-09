@@ -1,25 +1,28 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_ENTRANCE;
+
 public class RoomEntrance extends SizedPiece
 {
-    public RoomEntrance(IStructurePieceType type)
+    public RoomEntrance(TemplateManager templateManager, CompoundNBT nbt)
     {
-        super(type);
+        super(CMOON_DUNGEON_ENTRANCE, nbt);
     }
 
-    public RoomEntrance(IStructurePieceType type, DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
+    public RoomEntrance(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(type, configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
+        super(CMOON_DUNGEON_ENTRANCE, configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
         this.setCoordBaseMode(Direction.SOUTH);
         int sX = this.sizeX / 2;
         int sZ = this.sizeZ / 2;

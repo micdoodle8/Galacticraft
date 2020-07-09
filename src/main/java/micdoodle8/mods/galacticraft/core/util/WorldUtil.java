@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3D;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
@@ -29,7 +29,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -159,9 +158,9 @@ public class WorldUtil
 
     public static float getGravityFactor(Entity entity)
     {
-        if (entity.world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (entity.world.getDimension() instanceof IGalacticraftDimension)
         {
-            final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.world.getDimension();
+            final IGalacticraftDimension customProvider = (IGalacticraftDimension) entity.world.getDimension();
             float returnValue = MathHelper.sqrt(0.08F / (0.08F - customProvider.getGravity()));
             if (returnValue > 2.5F)
             {
@@ -185,10 +184,10 @@ public class WorldUtil
 
     public static Vector3 getWorldColor(World world)
     {
-        if (GalacticraftCore.isPlanetsLoaded && world.getDimension() instanceof WorldProviderVenus)
-        {
-            return new Vector3(1, 0.8F, 0.6F);
-        }
+//        if (GalacticraftCore.isPlanetsLoaded && world.getDimension() instanceof WorldProviderVenus)
+//        {
+//            return new Vector3(1, 0.8F, 0.6F);
+//        } TODO Planets
 
         return new Vector3(1, 1, 1);
     }
@@ -278,9 +277,9 @@ public class WorldUtil
 
             if (dimension != null)
             {
-                if (dimension instanceof IGalacticraftWorldProvider)
+                if (dimension instanceof IGalacticraftDimension)
                 {
-                    if (((IGalacticraftWorldProvider) dimension).canSpaceshipTierPass(tier))
+                    if (((IGalacticraftDimension) dimension).canSpaceshipTierPass(tier))
                     {
                         temp.add(element);
                     }
@@ -325,9 +324,9 @@ public class WorldUtil
 
                 if (homeWorld != null)
                 {
-                    if (homeWorld instanceof IGalacticraftWorldProvider)
+                    if (homeWorld instanceof IGalacticraftDimension)
                     {
-                        if (((IGalacticraftWorldProvider) homeWorld).canSpaceshipTierPass(tier))
+                        if (((IGalacticraftDimension) homeWorld).canSpaceshipTierPass(tier))
                         {
                             temp.add(element);
                         }
@@ -397,7 +396,7 @@ public class WorldUtil
         MinecraftServer theServer = GCCoreUtil.getServer();
         if (theServer == null)
         {
-            GCLog.debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
+            GCLog.debug("Called WorldUtil server LogicalSide method but FML returned no server - is this a bug?");
             return null;
         }
         return theServer.getWorld(id);
@@ -473,7 +472,7 @@ public class WorldUtil
                     Dimension dimension = WorldUtil.getProviderForDimensionServer(id);
                     if (celestialBody != null && dimension != null)
                     {
-                        if (dimension instanceof IGalacticraftWorldProvider && !(dimension instanceof IOrbitDimension) || GCCoreUtil.getDimensionID(dimension) == DimensionType.OVERWORLD)
+                        if (dimension instanceof IGalacticraftDimension && !(dimension instanceof IOrbitDimension) || GCCoreUtil.getDimensionID(dimension) == DimensionType.OVERWORLD)
                         {
                             map.put(celestialBody.getName(), GCCoreUtil.getDimensionID(dimension));
                         }
@@ -1658,9 +1657,9 @@ public class WorldUtil
 
     public static String getDimensionName(Dimension wp)
     {
-        if (wp instanceof IGalacticraftWorldProvider)
+        if (wp instanceof IGalacticraftDimension)
         {
-            CelestialBody cb = ((IGalacticraftWorldProvider) wp).getCelestialBody();
+            CelestialBody cb = ((IGalacticraftDimension) wp).getCelestialBody();
             if (cb != null && !(cb instanceof Satellite))
             {
                 return cb.getUnlocalizedName();

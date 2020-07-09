@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiOxygenDecompressor extends GuiContainerGC
+public class GuiOxygenDecompressor extends GuiContainerGC<ContainerOxygenDecompressor>
 {
     private static final ResourceLocation compressorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/decompressor.png");
 

@@ -21,7 +21,7 @@ public class SlotBuggyBench extends Slot
 {
     private final int index;
 //    @Nullable
-//    private final BlockPos pos; // Null client side
+//    private final BlockPos pos; // Null client LogicalSide
     private final PlayerEntity player;
 
     public SlotBuggyBench(IInventory par2IInventory, int par3, int par4, int par5, PlayerEntity player)

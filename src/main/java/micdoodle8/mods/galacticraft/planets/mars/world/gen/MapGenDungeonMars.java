@@ -1,38 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
+import com.mojang.datafixers.Dynamic;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
-import net.minecraft.world.gen.feature.StructureIO;
+
+import java.util.function.Function;
 
 public class MapGenDungeonMars extends MapGenDungeon
 {
-    private static boolean initialized;
-
-    static
+    public MapGenDungeonMars(Function<Dynamic<?>, ? extends DungeonConfiguration> func)
     {
-        try
-        {
-            MapGenDungeonMars.initiateStructures();
-        }
-        catch (Throwable e)
-        {
-
-        }
+        super(func);
     }
 
-    public MapGenDungeonMars(DungeonConfiguration configuration)
+    @Override
+    public String getStructureName()
     {
-        super(configuration);
-    }
-
-    public static void initiateStructures() throws Throwable
-    {
-        if (!MapGenDungeonMars.initialized)
-        {
-            StructureIO.registerStructureComponent(RoomBossMars.class, "MarsDungeonBossRoom");
-            StructureIO.registerStructureComponent(RoomTreasureMars.class, "MarsDungeonTreasureRoom");
-        }
-
-        MapGenDungeonMars.initialized = true;
+        return "GC_Dungeon_Mars";
     }
 }

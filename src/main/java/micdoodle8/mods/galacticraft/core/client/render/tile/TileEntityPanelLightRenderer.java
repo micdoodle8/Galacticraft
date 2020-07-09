@@ -23,15 +23,15 @@
 //    @Override
 //    public void render(TileEntityPanelLight tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
 //    {
-//        int side = tileEntity.meta;
-//        int rot = side >> 3;
-//        side = (side & 7) ^ 1;
+//        int LogicalSide = tileEntity.meta;
+//        int rot = LogicalSide >> 3;
+//        LogicalSide = (LogicalSide & 7) ^ 1;
 //        BlockPanelLighting.PanelType type = tileEntity.getType();
 //
 //        GlStateManager.pushMatrix();
 //        GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
 //
-//        switch (side)
+//        switch (LogicalSide)
 //        {
 //        case 0:
 //            break;
@@ -74,18 +74,18 @@
 //        else
 //        {
 //            float greyLevel = 24F / 255F;
-//            GlStateManager.color(greyLevel, greyLevel, greyLevel, 1.0F);
+//            GlStateManager.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
 //        }
 //
 //        //Save the lighting state
 //        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 //        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 //        GlStateManager.disableLighting();
 //
 //        this.bindTexture(TileEntityArclampRenderer.lightTexture);
 //        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GlStateManager.disableTexture2D();
+//        GlStateManager.disableTexture();
 //        final Tessellator tess = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tess.getBuffer();
 //        float frameY = 1.01F;
@@ -169,8 +169,8 @@
 //            worldRenderer.pos(frameA, frameY, frameC).endVertex();
 //            tess.draw();
 //        }
-//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//        GlStateManager.enableTexture2D();
+//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GlStateManager.enableTexture();
 //        //? need to undo GlStateManager.glBlendFunc()?
 //
 //        //Restore the lighting state

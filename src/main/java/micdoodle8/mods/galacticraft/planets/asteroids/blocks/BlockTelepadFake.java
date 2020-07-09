@@ -1,33 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake;
 import net.minecraft.block.*;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityProvider
+public class BlockTelepadFake extends BlockAdvancedTile
 {
     public static final BooleanProperty TOP = BooleanProperty.create("top");
     public static final BooleanProperty CONNECTABLE = BooleanProperty.create("connectable");
@@ -112,7 +111,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public float getBlockHardness(BlockState blockState, World worldIn, BlockPos pos)
+    public float getBlockHardness(BlockState blockState, IBlockReader worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -149,11 +148,11 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         return tileEntity.onActivated(playerIn);
     }
 
-    @Override
-    public int quantityDropped(Random par1Random)
-    {
-        return 0;
-    }
+//    @Override
+//    public int quantityDropped(Random par1Random)
+//    {
+//        return 0;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)
@@ -167,14 +166,16 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
+
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World var1, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityTelepadFake();
     }
@@ -204,7 +205,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public Direction getBedDirection(BlockState state, IBlockAccess world, BlockPos pos)
+    public Direction getBedDirection(BlockState state, IWorldReader world, BlockPos pos)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
@@ -214,11 +215,11 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
             return world.getBlockState(pos).getBlock().getBedDirection(world.getBlockState(mainBlockPosition), world, mainBlockPosition);
         }
 
-        return getActualState(world.getBlockState(pos), world, pos).getValue(DirectionalBlock.FACING);
+        return state.get(DirectionalBlock.FACING);
     }
 
     @Override
-    public boolean isBed(BlockState state, IBlockAccess world, BlockPos pos, Entity player)
+    public boolean isBed(BlockState state, IBlockReader world, BlockPos pos, @Nullable Entity player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
@@ -232,33 +233,33 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public void setBedOccupied(IBlockAccess world, BlockPos pos, PlayerEntity player, boolean occupied)
+    public void setBedOccupied(BlockState state, IWorldReader world, BlockPos pos, LivingEntity sleeper, boolean occupied)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
 
         if (mainBlockPosition != null)
         {
-            world.getBlockState(pos).getBlock().setBedOccupied(world, mainBlockPosition, player, occupied);
+            world.getBlockState(pos).getBlock().setBedOccupied(state, world, pos, sleeper, occupied);
         }
         else
         {
-            super.setBedOccupied(world, pos, player, occupied);
+            super.setBedOccupied(state, world, pos, sleeper, occupied);
         }
     }
 
     @Override
     public boolean addHitEffects(BlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
     {
-        TileEntity tileEntity = worldObj.getTileEntity(target.getBlockPos());
+        TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(target.getHitVec()));
 
-        if (tileEntity instanceof TileEntityTelepadFake)
+        if (tileEntity instanceof TileEntityTelepadFake && target instanceof BlockRayTraceResult)
         {
             BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
 
             if (mainBlockPosition != null)
             {
-                manager.addBlockHitEffects(mainBlockPosition, target);
+                manager.addBlockHitEffects(mainBlockPosition, (BlockRayTraceResult)target);
             }
         }
 
@@ -271,10 +272,9 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         builder.add(TOP, CONNECTABLE);
     }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(TOP, meta % 2 == 1).with(CONNECTABLE, meta > 1);
-    }
-
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(TOP, meta % 2 == 1).with(CONNECTABLE, meta > 1);
+//    }
+}

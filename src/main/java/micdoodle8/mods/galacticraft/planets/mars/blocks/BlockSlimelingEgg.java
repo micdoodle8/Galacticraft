@@ -1,44 +1,35 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.PickaxeItem;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockSlimelingEgg extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
+public class BlockSlimelingEgg extends Block implements IShiftDescription
 {
     //    private IIcon[] icons;
     public static final EnumProperty<EnumEggColor> EGG_COLOR = EnumProperty.create("eggcolor", EnumEggColor.class);
@@ -90,17 +81,17 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
-    }
+//    @Override
+//    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+//    {
+//        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
+//    }
 
 //    @Override
 //    public boolean canBlockStay(World par1World, int par2, int par3, int par4)
@@ -112,11 +103,10 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     private boolean beginHatch(World world, BlockPos pos, PlayerEntity player, int time)
     {
         BlockState state = world.getBlockState(pos);
-        int l = state.getBlock().getMetaFromState(state);
 
-        if (l < 3)
+        if (!state.get(BROKEN))
         {
-            world.setBlockState(pos, state.getBlock().getStateFromMeta(l + 3), 2);
+            world.setBlockState(pos, state.with(BROKEN, true), 2);
 
             TileEntity tile = world.getTileEntity(pos);
 
@@ -124,7 +114,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
             {
                 ((TileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(30 + time) + time;
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerUUID = player.getUniqueID().toString();
-                ((TileEntitySlimelingEgg) tile).lastTouchedPlayerName = player.getName();
             }
 
             world.func_225319_b(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
@@ -139,16 +128,16 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest)
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid)
     {
         ItemStack currentStack = player.getHeldItemMainhand();
-        if (currentStack != null && currentStack.getItem() instanceof PickaxeItem)
+        if (currentStack != ItemStack.EMPTY && currentStack.getItem() instanceof PickaxeItem)
         {
-            return world.setBlockToAir(pos);
+            return world.removeBlock(pos, false);
         }
         else if (player.abilities.isCreativeMode)
         {
-            return world.setBlockToAir(pos);
+            return world.removeBlock(pos, false);
         }
         else
         {
@@ -168,12 +157,14 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     {
         if (!currentStack.isEmpty() && currentStack.getItem() instanceof PickaxeItem)
         {
-            player.addStat(Stats.getBlockStats(this));
+            player.addStat(Stats.BLOCK_MINED.get(this));
             player.addExhaustion(0.025F);
-            this.dropBlockAsItem(worldIn, pos, state.getBlock().getStateFromMeta(state.getBlock().getMetaFromState(state) % 3), 0);
+            spawnAsEntity(worldIn, pos, getItem(worldIn, pos, state));
+//            this.dropBlockAsItem(worldIn, pos, state.getBlock().getStateFromMeta(state.getBlock().getMetaFromState(state) % 3), 0);
             if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, currentStack) > 0)
             {
-                ItemStack itemstack = new ItemStack(MarsItems.deshPickSlime, 1, currentStack.getItemDamage());
+                ItemStack itemstack = new ItemStack(MarsItems.deshPickSlime, 1/*, currentStack.getDamage()*/);
+                itemstack.setDamage(currentStack.getDamage());
                 if (currentStack.getTag() != null)
                 {
                     itemstack.setTag(currentStack.getTag().copy());
@@ -185,7 +176,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 
     /*@Override
     @OnlyIn(Dist.CLIENT)
-    public IIcon getIcon(int side, int metadata)
+    public IIcon getIcon(int LogicalSide, int metadata)
     {
         return this.icons[metadata % 6];
     }*/
@@ -209,11 +200,11 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 //        return Item.getItemFromBlock(this);
 //    }
 
-    @Override
-    public int damageDropped(BlockState state)
-    {
-        return getMetaFromState(state);
-    }
+//    @Override
+//    public int damageDropped(BlockState state)
+//    {
+//        return getMetaFromState(state);
+//    }
 
 //    @Override
 //    public int quantityDropped(int meta, int fortune, Random random)
@@ -221,14 +212,14 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 //        return 1;
 //    }
 
-    @Override
-    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        for (int var4 = 0; var4 < EnumEggColor.values().length; ++var4)
-        {
-            list.add(new ItemStack(this, 1, var4));
-        }
-    }
+//    @Override
+//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        for (int var4 = 0; var4 < EnumEggColor.values().length; ++var4)
+//        {
+//            list.add(new ItemStack(this, 1, var4));
+//        }
+//    }
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
@@ -239,40 +230,41 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
-        int metadata = state.getBlock().getMetaFromState(state);
-
-        if (metadata == 3)
-        {
-            return new ItemStack(Item.getItemFromBlock(this), 1, 0);
-        }
-        if (metadata == 4)
-        {
-            return new ItemStack(Item.getItemFromBlock(this), 1, 1);
-        }
-        if (metadata == 5)
-        {
-            return new ItemStack(Item.getItemFromBlock(this), 1, 2);
-        }
+//        int metadata = state.getBlock().getMetaFromState(state);
+//        EnumEggColor color = state.get(BlockSlimelingEgg.EGG_COLOR);
+//
+//        if (color)
+//        {
+//            return new ItemStack(Item.getItemFromBlock(this), 1, 0);
+//        }
+//        if (metadata == 4)
+//        {
+//            return new ItemStack(Item.getItemFromBlock(this), 1, 1);
+//        }
+//        if (metadata == 5)
+//        {
+//            return new ItemStack(Item.getItemFromBlock(this), 1, 2);
+//        }
         return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(EGG_COLOR, EnumEggColor.values()[meta % 3]).with(BROKEN, meta - 3 >= 0);
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(EGG_COLOR, EnumEggColor.values()[meta % 3]).with(BROKEN, meta - 3 >= 0);
+//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
@@ -280,9 +272,9 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         builder.add(EGG_COLOR, BROKEN);
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.EGG;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.EGG;
+//    }
 }

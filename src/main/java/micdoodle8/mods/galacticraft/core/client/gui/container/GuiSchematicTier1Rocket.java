@@ -3,15 +3,12 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicTier1Rocket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier1Rocket extends GuiContainerGC<ContainerSchematicTier1Rocket> implements ISchematicResultPage
@@ -33,7 +30,7 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC<ContainerSchematicTi
         super.init();
         Button backButton;
         this.buttons.add(backButton = new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) -> {
-            SchematicRegistry.flipToLastPage(this, this.pageIndex);
+            SchematicRegistry.flipToPrevPage(this, this.pageIndex);
         }));
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) -> {
             SchematicRegistry.flipToNextPage(this, this.pageIndex);

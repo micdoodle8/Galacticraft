@@ -5,7 +5,7 @@
 //import net.minecraft.item.BlockItem;
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockDummy extends BlockItem
@@ -40,7 +40,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemstack)
 //    {
-//        int metadata = itemstack.getItemDamage();
+//        int metadata = itemstack.getDamage();
 //        String blockName = "";
 //
 //        switch (metadata)

@@ -1,35 +1,26 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockBeamReflector extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 {
     protected static final VoxelShape AABB = Block.makeCuboidShape(0.25, 0.0, 0.25, 0.75, 0.8, 0.75);
 
@@ -63,11 +54,11 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)
@@ -95,12 +86,12 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
         return new TileEntityBeamReflector();
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        list.add(new ItemStack(this, 1, 0));
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        list.add(new ItemStack(this, 1, 0));
+//    }
 
     @Override
     public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
@@ -109,27 +100,27 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 
         if (tile instanceof TileEntityBeamReflector)
         {
-            return ((TileEntityBeamReflector) tile).onMachineActivated(world, pos, world.getBlockState(pos), entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+            return ((TileEntityBeamReflector) tile).onMachineActivated(world, pos, world.getBlockState(pos), entityPlayer, hand, heldItem, hit);
         }
 
         return false;
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.MACHINE;
+//    }
 }

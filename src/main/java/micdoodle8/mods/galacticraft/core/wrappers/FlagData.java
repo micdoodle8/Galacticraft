@@ -67,7 +67,7 @@ public class FlagData
             return new Vector3(0, 0, 0);
         }
 
-        return new Vector3((this.color[posX][posY][0] + 128) / 256.0D, (this.color[posX][posY][1] + 128) / 256.0D, (this.color[posX][posY][2] + 128) / 256.0D);
+        return new Vector3((this.color[posX][posY][0] + 128) / 256.0F, (this.color[posX][posY][1] + 128) / 256.0F, (this.color[posX][posY][2] + 128) / 256.0F);
     }
 
     /**
@@ -139,7 +139,7 @@ public class FlagData
                 byte[] arrayColor = this.color[j][i];
                 colorRow[j] = ColorUtil.to32BitColorB(arrayColor[0], arrayColor[1], arrayColor[2]);
             }
-            nbt.setIntArray("FRow" + i, colorRow);
+            nbt.putIntArray("FRow" + i, colorRow);
         }
     }
 

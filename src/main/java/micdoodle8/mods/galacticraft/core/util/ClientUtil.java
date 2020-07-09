@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
@@ -181,14 +182,18 @@ public class ClientUtil
     
     public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups) throws IOException
     {
-        return modelFromOBJ(loader, loc, visibleGroups, TRSRTransformation.identity());
+        return modelFromOBJ(loader, loc, visibleGroups, TRSRTransformation.identity(), ImmutableMap.of());
     }
     
-    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups, IModelState parentState) throws IOException
+    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups, IModelState parentState, ImmutableMap<String, String> customData) throws IOException
     {
         IModel<?> model = OBJLoaderGC.instance.loadModel(loc);
         java.util.function.Function<ResourceLocation, TextureAtlasSprite> textureGetter;
         textureGetter = location -> Minecraft.getInstance().getTextureMap().getAtlasSprite(location.toString());
+        if (!customData.isEmpty())
+        {
+            model.process(customData);
+        }
 
         return (OBJModel.OBJBakedModel) model.bake(loader, textureGetter, new BasicState(new OBJModel.OBJState(visibleGroups, false, parentState), false), DefaultVertexFormats.ITEM);
     }

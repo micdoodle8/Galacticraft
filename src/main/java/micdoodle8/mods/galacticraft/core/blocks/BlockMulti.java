@@ -7,8 +7,6 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.*;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
@@ -400,10 +398,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         BlockPos mainBlockPosition = ((TileEntityFake) tileEntity).mainBlockPosition;
         BlockState cryoChamber = worldIn.getBlockState(mainBlockPosition);
         Direction enumfacing = Direction.NORTH;
-        if (GalacticraftCore.isPlanetsLoaded && cryoChamber.getBlock() == MarsBlocks.machine)
-        {
-            enumfacing = cryoChamber.get(BlockMachineMars.FACING);
-        }
+//        if (GalacticraftCore.isPlanetsLoaded && cryoChamber.getBlock() == MarsBlocks.machine)
+//        {
+//            enumfacing = cryoChamber.get(BlockMachineMars.FACING);
+//        } TODO Planets
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();

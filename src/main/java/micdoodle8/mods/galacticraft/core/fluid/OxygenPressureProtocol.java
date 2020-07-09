@@ -129,22 +129,22 @@ public class OxygenPressureProtocol
 //            }
         }
 
-        //Half slab seals on the top side or the bottom side according to its metadata
+        //Half slab seals on the top LogicalSide or the bottom LogicalSide according to its metadata
 //        if (block instanceof SlabBlock)
 //        {
 //            int meta = state.getBlock().getMetaFromState(state);
-//            return !(side == Direction.DOWN && (meta & 8) == 8 || side == Direction.UP && (meta & 8) == 0);
+//            return !(LogicalSide == Direction.DOWN && (meta & 8) == 8 || LogicalSide == Direction.UP && (meta & 8) == 0);
 //        } TODO Slab blocks permeability
 
         //Farmland etc only seals on the solid underside
-        if (block instanceof FarmlandBlock || block instanceof EnchantingTableBlock/* || block instanceof BlockLiquid*/) // TODO Liquid permeability
+        if (block instanceof FarmlandBlock || block instanceof EnchantingTableBlock/* || block instanceof FlowingFluidBlock*/) // TODO Liquid permeability
         {
             return side != Direction.UP;
         }
 
         if (block instanceof PistonBlock)
         {
-            if (((Boolean) state.get(PistonBlock.EXTENDED)).booleanValue())
+            if (state.get(PistonBlock.EXTENDED).booleanValue())
             {
                 Direction facing = state.get(PistonBlock.FACING);
                 return side != facing;

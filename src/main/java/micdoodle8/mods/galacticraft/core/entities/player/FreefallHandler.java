@@ -29,7 +29,7 @@
 //import net.minecraft.world.World;
 //import net.minecraft.world.dimension.Dimension;
 //import net.minecraftforge.common.MinecraftForge;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class FreefallHandler
@@ -66,7 +66,7 @@
 //        BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
 //        BlockState state = player.world.getBlockState(pos);
 //        Block b = state.getBlock();
-//        if (b.getMaterial(state) != Material.AIR && !(b instanceof BlockLiquid))
+//        if (b.getMaterial(state) != Material.AIR && !(b instanceof FlowingFluidBlock))
 //        {
 //            double blockYmax;
 //            if (b == GCBlocks.platform)
@@ -257,7 +257,7 @@
 //				break;
 //			}
 //
-//			//This block search could cost a lot of CPU (but client side) - maybe optimise later
+//			//This block search could cost a lot of CPU (but client LogicalSide) - maybe optimise later
 //			BLOCKCHECK0:
 //			for(int x = xmin; x <= xmax; x++)
 //				for (int z = zmin; z <= zmax; z++)

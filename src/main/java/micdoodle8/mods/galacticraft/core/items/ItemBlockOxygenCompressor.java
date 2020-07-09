@@ -24,11 +24,11 @@
 //    {
 //        int metadata = 0;
 //
-//        if (itemstack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
+//        if (itemstack.getDamage() >= BlockOxygenCompressor.OXYGEN_DECOMPRESSOR_METADATA)
 //        {
 //            metadata = 1;
 //        }
-//        else if (itemstack.getItemDamage() >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
+//        else if (itemstack.getDamage() >= BlockOxygenCompressor.OXYGEN_COMPRESSOR_METADATA)
 //        {
 //            metadata = 0;
 //        }

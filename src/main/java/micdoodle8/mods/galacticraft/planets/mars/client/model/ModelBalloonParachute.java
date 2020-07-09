@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
-public class ModelBalloonParachute extends ModelBase
+public class ModelBalloonParachute extends EntityModel<EntityLandingBalloons>
 {
     private static final ResourceLocation grayParachuteTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/gray.png");
 
@@ -44,6 +45,12 @@ public class ModelBalloonParachute extends ModelBase
         this.parachuteStrings[3] = new RendererModel(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[3].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
         this.parachuteStrings[3].setRotationPoint(0.0F, 0.0F, 0.0F);
+    }
+
+    @Override
+    public void render(EntityLandingBalloons entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    {
+        renderAll();
     }
 
     public void renderAll()

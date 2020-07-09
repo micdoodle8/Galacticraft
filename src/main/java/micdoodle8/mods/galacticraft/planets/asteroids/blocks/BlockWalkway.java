@@ -1,90 +1,75 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
-import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityNull;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
+import javax.annotation.Nullable;
+
+public class BlockWalkway extends BlockTransmitter implements IShiftDescription
 {
-    public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
+//    public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
 //    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
 //    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
     protected static final VoxelShape AABB_UNCONNECTED = Block.makeCuboidShape(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
     protected static final VoxelShape AABB_CONNECTED_DOWN = Block.makeCuboidShape(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 
-    public enum EnumWalkwayType implements IStringSerializable
-    {
-        WALKWAY(0, "walkway"),
-        WALKWAY_WIRE(1, "walkway_wire"),
-        WALKWAY_PIPE(2, "walkway_pipe");
-
-        private final int meta;
-        private final String name;
-
-        private EnumWalkwayType(int meta, String name)
-        {
-            this.meta = meta;
-            this.name = name;
-        }
-
-        public int getMeta()
-        {
-            return this.meta;
-        }
-
-        private final static EnumWalkwayType[] values = values();
-        public static EnumWalkwayType byMetadata(int meta)
-        {
-            return values[meta % values.length];
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-    }
+//    public enum EnumWalkwayType implements IStringSerializable
+//    {
+//        WALKWAY(0, "walkway"),
+//        WALKWAY_WIRE(1, "walkway_wire"),
+//        WALKWAY_PIPE(2, "walkway_pipe");
+//
+//        private final int meta;
+//        private final String name;
+//
+//        private EnumWalkwayType(int meta, String name)
+//        {
+//            this.meta = meta;
+//            this.name = name;
+//        }
+//
+//        public int getMeta()
+//        {
+//            return this.meta;
+//        }
+//
+//        private final static EnumWalkwayType[] values = values();
+//        public static EnumWalkwayType byMetadata(int meta)
+//        {
+//            return values[meta % values.length];
+//        }
+//
+//        @Override
+//        public String getName()
+//        {
+//            return this.name;
+//        }
+//    }
 
     protected BlockWalkway(Properties builder)
     {
         super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        state = this.getActualState(state, source, pos);
+//        state = this.getActualState(state, source, pos);
 
         if (state.get(DOWN))
         {
@@ -94,12 +79,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         return AABB_UNCONNECTED;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
-    {
-        return true;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    {
+//        return true;
+//    }
 
 //    @OnlyIn(Dist.CLIENT)
 //    @Override
@@ -120,49 +105,50 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
+//
+//    @Override
+//    public boolean canPlaceTorchOnTop(BlockState state, IBlockAccess world, BlockPos pos)
+//    {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isNormalCube(BlockState state)
+//    {
+//        return state.getMaterial().blocksMovement() && state.getBlock().isFullCube(state);
+//    }
 
+    @Nullable
     @Override
-    public boolean canPlaceTorchOnTop(BlockState state, IBlockAccess world, BlockPos pos)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        return true;
-    }
-    
-    @Override
-    public boolean isNormalCube(BlockState state)
-    {
-        return state.getMaterial().blocksMovement() && state.getBlock().isFullCube(state);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int metadata)
-    {
-        if (metadata == EnumWalkwayType.WALKWAY_PIPE.getMeta())
+        if (this == AsteroidBlocks.blockWalkwayFluid)
         {
             return new TileEntityFluidPipe();
         }
 
-        if (metadata == EnumWalkwayType.WALKWAY_WIRE.getMeta())
+        if (this == AsteroidBlocks.blockWalkwayWire)
         {
-            return new TileEntityAluminumWire(2);
+            return new TileEntityAluminumWire.TileEntityAluminumWireT2();
         }
 
-        return new TileEntityNull();
+        return null;
     }
 
     @Override
     public NetworkType getNetworkType(BlockState state)
     {
-        if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+        if (this == AsteroidBlocks.blockWalkwayWire)
         {
             return NetworkType.FLUID;
         }
 
-        if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+        if (this == AsteroidBlocks.blockWalkwayFluid)
         {
             return NetworkType.POWER;
         }
@@ -287,26 +273,26 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 //    }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
-        if (meta == EnumWalkwayType.WALKWAY.getMeta())
-        {
-            return GCCoreUtil.translate("tile.walkway.walkway.description");
-        }
-        else if (meta == EnumWalkwayType.WALKWAY_WIRE.getMeta())
-        {
-            return GCCoreUtil.translate("tile.walkway.walkway_wire.description");
-        }
-        else if (meta == EnumWalkwayType.WALKWAY_PIPE.getMeta())
-        {
-            return GCCoreUtil.translate("tile.walkway.walkway_pipe.description");
-        }
+//        if (meta == EnumWalkwayType.WALKWAY.getMeta())
+//        {
+//            return GCCoreUtil.translate("tile.walkway.walkway.description");
+//        }
+//        else if (meta == EnumWalkwayType.WALKWAY_WIRE.getMeta())
+//        {
+//            return GCCoreUtil.translate("tile.walkway.walkway_wire.description");
+//        }
+//        else if (meta == EnumWalkwayType.WALKWAY_PIPE.getMeta())
+//        {
+//            return GCCoreUtil.translate("tile.walkway.walkway_pipe.description");
+//        } TODO Shift descriptions
 
         return "";
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -314,73 +300,73 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
+        builder.add(NORTH, EAST, SOUTH, WEST, DOWN);
     }
 
-    @Override
-    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        Object[] connectable = new Object[Direction.values().length];
+//    @Override
+//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        Object[] connectable = new Object[Direction.values().length];
+//
+//        TileEntity tileEntity = null;
+//
+//        if (state.get(WALKWAY_TYPE) != EnumWalkwayType.WALKWAY)
+//        {
+//            tileEntity = worldIn.getTileEntity(pos);
+//        }
+//        for (Direction direction : Direction.values())
+//        {
+//            if (direction == Direction.UP || (direction == Direction.DOWN && tileEntity == null))
+//            {
+//                continue;
+//            }
+//
+//            if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY)
+//            {
+//                BlockPos neighbour = pos.offset(direction);
+//                Block block = worldIn.getBlockState(neighbour).getBlock();
+//
+//                if (block == this || block.isSideSolid(worldIn.getBlockState(neighbour), worldIn, neighbour, direction.getOpposite()))
+//                {
+//                    connectable[direction.ordinal()] = block;
+//                }
+//            }
+//            else if (tileEntity !=null && state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+//            {
+//                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
+//            }
+//            else if (tileEntity !=null && state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
+//            {
+//                connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+//            }
+//        }
+//
+//        return state.with(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
+//                .with(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
+//                .with(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
+//                .with(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null))
+//                .with(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null));
+//    }
 
-        TileEntity tileEntity = null;
-        
-        if (state.get(WALKWAY_TYPE) != EnumWalkwayType.WALKWAY)
-        {
-            tileEntity = worldIn.getTileEntity(pos);
-        }
-        for (Direction direction : Direction.values())
-        {
-            if (direction == Direction.UP || (direction == Direction.DOWN && tileEntity == null))
-            {
-                continue;
-            }
-
-            if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY)
-            {
-                BlockPos neighbour = pos.offset(direction);
-                Block block = worldIn.getBlockState(neighbour).getBlock();
-
-                if (block == this || block.isSideSolid(worldIn.getBlockState(neighbour), worldIn, neighbour, direction.getOpposite()))
-                {
-                    connectable[direction.ordinal()] = block;
-                }
-            }
-            else if (tileEntity !=null && state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
-            {
-                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
-            }
-            else if (tileEntity !=null && state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
-            {
-                connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
-            }
-        }
-
-        return state.with(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
-                .with(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
-                .with(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
-                .with(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null))
-                .with(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null));
-    }
-
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(WALKWAY_TYPE, EnumWalkwayType.byMetadata(meta));
-    }
-
-    @Override
-    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        list.add(new ItemStack(this, 1, 0));
-        list.add(new ItemStack(this, 1, 1));
-        list.add(new ItemStack(this, 1, 2));
-    }
-
-    @Override
-    public int damageDropped(BlockState state)
-    {
-        return this.getMetaFromState(state);
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(WALKWAY_TYPE, EnumWalkwayType.byMetadata(meta));
+//    }
+//
+//    @Override
+//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        list.add(new ItemStack(this, 1, 0));
+//        list.add(new ItemStack(this, 1, 1));
+//        list.add(new ItemStack(this, 1, 2));
+//    }
+//
+//    @Override
+//    public int damageDropped(BlockState state)
+//    {
+//        return this.getMetaFromState(state);
+//    }
 
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -389,9 +375,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 }

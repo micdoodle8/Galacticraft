@@ -3,8 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GCFluids;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -14,37 +13,36 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableItem
 {
     public ItemTier3Rocket(Item.Properties properties)
     {
         super(properties);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-        this.setMaxStackSize(1);
-        this.setUnlocalizedName(assetName);
+//        this.setMaxDamage(0);
+//        this.setHasSubtypes(true);
+//        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
     }
 
@@ -55,21 +53,22 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
         return ClientProxyCore.galacticraftItem;
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
 //        return GalacticraftCore.galacticraftItemsTab;
 //    }
 
+
     @Override
-    public ActionResultType onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ)
+    public ActionResultType onItemUse(ItemUseContext context)
     {
         boolean padFound = false;
         TileEntity tile = null;
-        ItemStack stack = playerIn.getHeldItem(hand);
+        ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
 
-        if (worldIn.isRemote)
+        if (context.getWorld().isRemote)
         {
             return ActionResultType.PASS;
         }
@@ -83,19 +82,18 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    BlockPos pos1 = pos.add(i, 0, j);
-                    BlockState state = worldIn.getBlockState(pos1);
+                    BlockPos pos1 = context.getPos().add(i, 0, j);
+                    BlockState state = context.getWorld().getBlockState(pos1);
                     final Block id = state.getBlock();
-                    int meta = id.getMetaFromState(state);
 
-                    if (id == GCBlocks.landingPadFull && meta == 0)
+                    if (id == GCBlocks.landingPadFull)
                     {
                         padFound = true;
-                        tile = worldIn.getTileEntity(pos1);
+                        tile = context.getWorld().getTileEntity(pos1);
 
-                        centerX = pos.getX() + i + 0.5F;
-                        centerY = pos.getY() + 0.4F;
-                        centerZ = pos.getZ() + j + 0.5F;
+                        centerX = context.getPos().getX() + i + 0.5F;
+                        centerY = context.getPos().getY() + 0.4F;
+                        centerZ = context.getPos().getZ() + j + 0.5F;
 
                         break;
                     }
@@ -109,12 +107,12 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
 
             if (padFound)
             {
-                if (!placeRocketOnPad(stack, worldIn, tile, centerX, centerY, centerZ))
+                if (!placeRocketOnPad(stack, context.getWorld(), tile, centerX, centerY, centerZ))
                 {
                     return ActionResultType.FAIL;
                 }
 
-                if (!playerIn.abilities.isCreativeMode)
+                if (!context.getPlayer().abilities.isCreativeMode)
                 {
                     stack.shrink(1);
                 }
@@ -127,55 +125,55 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
         }
     }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            for (int i = 0; i < EnumRocketType.values().length; i++)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            for (int i = 0; i < EnumRocketType.values().length; i++)
+//            {
+//                list.add(new ItemStack(this, 1, i));
+//            }
+//        }
+//    }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         EnumRocketType type;
 
-        if (par1ItemStack.getItemDamage() < 10)
+        if (stack.getDamage() < 10)
         {
-            type = EnumRocketType.values()[par1ItemStack.getItemDamage()];
+            type = EnumRocketType.values()[stack.getDamage()];
         }
         else
         {
-            type = EnumRocketType.values()[par1ItemStack.getItemDamage() - 10];
+            type = EnumRocketType.values()[stack.getDamage() - 10];
         }
 
-        if (!type.getTooltip().isEmpty())
+        if (!type.getTooltip().getFormattedText().isEmpty())
         {
             tooltip.add(type.getTooltip());
         }
 
         if (type.getPreFueled())
         {
-            tooltip.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
+            tooltip.add(new StringTextComponent(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc")));
         }
 
-        if (par1ItemStack.hasTag() && par1ItemStack.getTag().contains("RocketFuel"))
+        if (stack.hasTag() && stack.getTag().contains("RocketFuel"))
         {
-            EntityTier3Rocket rocket = new EntityTier3Rocket(Minecraft.getInstance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
-            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTag().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
+            EntityTier3Rocket rocket = EntityTier3Rocket.createEntityTier3Rocket(Minecraft.getInstance().world, 0, 0, 0, EntityTier3Rocket.getTypeFromItem(stack.getItem()));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + stack.getTag().getInt("RocketFuel") + " / " + rocket.fuelTank.getCapacity()));
         }
     }
 
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack)
-    {
-        return super.getUnlocalizedName(par1ItemStack) + ".t3Rocket";
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack par1ItemStack)
+//    {
+//        return super.getUnlocalizedName(par1ItemStack) + ".t3Rocket";
+//    }
 
     @Override
     public boolean shouldHoldLeftHandUp(PlayerEntity player)
@@ -216,19 +214,19 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
             return false;
         }
 
-        EntityTier3Rocket rocket = new EntityTier3Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
+        EntityTier3Rocket rocket = EntityTier3Rocket.createEntityTier3Rocket(worldIn, centerX, centerY, centerZ, EntityTier3Rocket.getTypeFromItem(stack.getItem()));
 
         rocket.rotationYaw += 45;
         rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
         worldIn.addEntity(rocket);
 
-        if (rocket.getType().getPreFueled())
+        if (rocket.getRocketType().getPreFueled())
         {
-            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
+            rocket.fuelTank.fill(new FluidStack(GCFluids.FUEL.getFluid(), rocket.getMaxFuel()), IFluidHandler.FluidAction.EXECUTE);
         }
         else if (stack.hasTag() && stack.getTag().contains("RocketFuel"))
         {
-            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTag().getInteger("RocketFuel")), true);
+            rocket.fuelTank.fill(new FluidStack(GCFluids.FUEL.getFluid(), stack.getTag().getInt("RocketFuel")), IFluidHandler.FluidAction.EXECUTE);
         }
         
         return true;

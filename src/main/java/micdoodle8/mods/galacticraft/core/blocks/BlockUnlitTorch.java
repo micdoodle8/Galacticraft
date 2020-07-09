@@ -1,15 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
@@ -107,7 +105,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
 
     private void checkOxygen(World world, BlockPos pos, BlockState state)
     {
-        if (world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (world.getDimension() instanceof IGalacticraftDimension)
         {
             if (OxygenUtil.checkTorchHasOxygen(world, pos))
             {
@@ -158,7 +156,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     @Override
     public void onOxygenRemoved(World world, BlockPos pos, BlockState state)
     {
-        if (world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (world.getDimension() instanceof IGalacticraftDimension)
         {
             Direction enumfacing = state.get(FACING);
             world.setBlockState(pos, this.unlitVersion.getDefaultState().with(FACING, enumfacing), 2);
@@ -168,7 +166,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     @Override
     public void onOxygenAdded(World world, BlockPos pos, BlockState state)
     {
-        if (world.getDimension() instanceof IGalacticraftWorldProvider)
+        if (world.getDimension() instanceof IGalacticraftDimension)
         {
             Direction enumfacing = state.get(FACING);
             world.setBlockState(pos, this.litVersion.getDefaultState().with(FACING, enumfacing), 2);

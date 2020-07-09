@@ -52,7 +52,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
 //        {
 //            stack.damageItem(1, player);
 //
-//            if (stack.getItemDamage() >= stack.getMaxDamage())
+//            if (stack.getDamage() >= stack.getMaxDamage())
 //            {
 //                stack.shrink(1);
 //            }

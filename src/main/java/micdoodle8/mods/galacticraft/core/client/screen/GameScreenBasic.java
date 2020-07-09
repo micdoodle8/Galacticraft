@@ -32,7 +32,7 @@ public class GameScreenBasic implements IGameScreen
     public GameScreenBasic()
     {
         //This can be called from either server or client, so don't include
-        //client-side only code on the server.
+        //client-LogicalSide only code on the server.
         if (GCCoreUtil.getEffectiveSide().isClient())
         {
             textureManager = Minecraft.getInstance().textureManager;

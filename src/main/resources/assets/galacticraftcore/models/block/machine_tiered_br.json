@@ -6,7 +6,7 @@
             "to": [ 16.0, 16.0, 16.0 ], 
             "faces": {
                 "north": { "texture": "#front", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#LogicalSide", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "south": { "texture": "#el_in", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "west": { "texture": "#el_out", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "up": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },

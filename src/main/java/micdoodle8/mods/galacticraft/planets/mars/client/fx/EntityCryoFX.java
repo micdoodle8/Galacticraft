@@ -1,56 +1,58 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class EntityCryoFX extends Particle
+public class EntityCryoFX extends SpriteTexturedParticle
 {
-    float field_70569_a;
+    private IAnimatedSprite animatedSprite;
+    float scaleStart;
 
-    public EntityCryoFX(World worldIn, Vector3 position, Vector3 motion)
+    public EntityCryoFX(World worldIn, double x, double y, double z, double mX, double mY, double mZ, IAnimatedSprite animatedSprite)
     {
-        super(worldIn, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
+        super(worldIn, x, y, z, mX, mY, mZ);
         float f = 2.5F;
-        this.motionX *= 0.0;
-        this.motionY *= 0.10000000149011612;
-        this.motionZ *= 0.0;
-        this.motionX += motion.x;
-        this.motionY += motion.y;
-        this.motionZ += motion.z;
+//        this.motionX *= 0.0;
+//        this.motionY *= 0.10000000149011612;
+//        this.motionZ *= 0.0;
+//        this.motionX += motion.x;
+//        this.motionY += motion.y;
+//        this.motionZ += motion.z;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F - (float) (Math.random() * 0.30000001192092896D);
         this.particleRed *= 0.8F;
         this.particleGreen *= 0.8F;
         this.particleScale *= 0.25F;
         this.particleScale *= f;
-        this.field_70569_a = this.particleScale;
-        this.particleMaxAge = (int) (8.0D / (Math.random() * 0.8D + 0.3D));
-        this.particleMaxAge = (int) ((float) this.particleMaxAge * f);
+        this.scaleStart = this.particleScale;
+        this.maxAge = (int) (8.0D / (Math.random() * 0.8D + 0.3D));
+        this.maxAge = (int) ((float) this.maxAge * f);
         this.canCollide = false;
+        this.animatedSprite = animatedSprite;
     }
 
-    /**
-     * Renders the particle
-     */
     @Override
-    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float p_180434_4_, float p_180434_5_, float p_180434_6_, float p_180434_7_, float p_180434_8_)
+    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
-        float f = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge * 32.0F;
+        float f = ((float) this.age + partialTicks) / (float) this.maxAge * 32.0F;
         f = MathHelper.clamp(f, 0.0F, 1.0F);
-        this.particleScale = this.field_70569_a * f;
-        super.renderParticle(worldRendererIn, entityIn, partialTicks, p_180434_4_, p_180434_5_, p_180434_6_, p_180434_7_, p_180434_8_);
+        this.particleScale = this.scaleStart * f;
+        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
+    @Override
+    public IParticleRenderType getRenderType()
+    {
+        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    }
+
     @Override
     public void tick()
     {
@@ -58,12 +60,13 @@ public class EntityCryoFX extends Particle
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 
-        if (this.particleAge++ >= this.particleMaxAge)
+        if (this.age++ >= this.maxAge)
         {
             this.setExpired();
         }
 
-        this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
+//        this.setParticleTextureIndex(7 - this.age * 8 / this.maxAge);
+        this.selectSpriteWithAge(this.animatedSprite);
         this.move(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;
@@ -73,7 +76,7 @@ public class EntityCryoFX extends Particle
         if (entityplayer != null && this.posY > entityplayer.getBoundingBox().minY)
         {
             this.posY += (entityplayer.getBoundingBox().minY - this.posY) * 0.2D;
-            this.motionY += (entityplayer.motionY - this.motionY) * 0.2D;
+            this.motionY += (entityplayer.getMotion().y - this.motionY) * 0.2D;
             this.setPosition(this.posX, this.posY, this.posZ);
         }
 
@@ -81,6 +84,20 @@ public class EntityCryoFX extends Particle
         {
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class Factory implements IParticleFactory<BasicParticleType>
+    {
+        private final IAnimatedSprite spriteSet;
+
+        public Factory(IAnimatedSprite spriteSet) {
+            this.spriteSet = spriteSet;
+        }
+
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new EntityCryoFX(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
         }
     }
 }

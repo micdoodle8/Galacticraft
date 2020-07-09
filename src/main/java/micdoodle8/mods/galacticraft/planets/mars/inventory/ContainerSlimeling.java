@@ -1,34 +1,47 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.Collections;
 
 public class ContainerSlimeling extends Container
 {
-    private final InventorySlimeling slimelingInventory;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.SLIMELING)
+    public static ContainerType<ContainerSlimeling> TYPE;
 
-    public ContainerSlimeling(PlayerInventory playerInventory, EntitySlimeling slimeling, PlayerEntity player)
+    private final EntitySlimeling slimeling;
+
+    public ContainerSlimeling(int containerId, PlayerInventory playerInv, EntitySlimeling slimeling)
     {
-        this.slimelingInventory = slimeling.slimelingInventory;
-        this.slimelingInventory.currentContainer = this;
+        super(TYPE, containerId);
+        this.slimeling = slimeling;
+        this.slimeling.slimelingInventory.currentContainer = this;
 
-        ContainerSlimeling.addSlots(this, playerInventory, slimeling);
-        ContainerSlimeling.addAdditionalSlots(this, slimeling, this.slimelingInventory.getStackInSlot(1));
+        ContainerSlimeling.addSlots(this, playerInv, slimeling);
+        ContainerSlimeling.addAdditionalSlots(this, slimeling, this.slimeling.slimelingInventory.getStackInSlot(1));
 
-        this.slimelingInventory.openInventory(player);
+        this.slimeling.slimelingInventory.openInventory(playerInv.player);
+    }
+
+    public EntitySlimeling getSlimeling()
+    {
+        return slimeling;
     }
 
     public static void addSlots(ContainerSlimeling container, PlayerInventory playerInventory, EntitySlimeling slimeling)
     {
-        Slot slot = new SlotSpecific(slimeling.slimelingInventory, 1, 9, 30, new ItemStack(MarsItems.marsItemBasic, 1, 4));
+        Slot slot = new SlotSpecific(slimeling.slimelingInventory, 1, 9, 30, new ItemStack(MarsItems.slimelingCargo, 1));
         container.addSlot(slot);
 
         int var3;
@@ -52,12 +65,13 @@ public class ContainerSlimeling extends Container
     public static void removeSlots(ContainerSlimeling container)
     {
         Collections.copy(container.inventoryItemStacks, container.inventoryItemStacks.subList(0, 37));
-        container.inventorySlots = container.inventorySlots.subList(0, 37);
+        container.inventorySlots.clear();
+        container.inventorySlots.addAll(container.inventorySlots.subList(0, 37));
     }
 
     public static void addAdditionalSlots(ContainerSlimeling container, EntitySlimeling slimeling, ItemStack stack)
     {
-        if (!stack.isEmpty() && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
+        if (!stack.isEmpty() && stack.getItem() == MarsItems.slimelingCargo)
         {
         	//Note that if NEI is installed, this can be called by InventorySlimeling.setInventorySlotContents even if the container already has the slots
         	if (container.inventorySlots.size() < 63)
@@ -79,20 +93,20 @@ public class ContainerSlimeling extends Container
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
-        this.slimelingInventory.closeInventory(entityplayer);
+        this.slimeling.slimelingInventory.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.slimelingInventory.isUsableByPlayer(par1EntityPlayer);
+        return this.slimeling.slimelingInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        final Slot slot = this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -111,7 +125,7 @@ public class ContainerSlimeling extends Container
                 }
                 else
                 {
-                    if (var4.getItem() == MarsItems.marsItemBasic && var4.getItemDamage() == 4)
+                    if (var4.getItem() == MarsItems.slimelingCargo)
                     {
                         if (!this.mergeItemStack(var4, 0, 1, false))
                         {

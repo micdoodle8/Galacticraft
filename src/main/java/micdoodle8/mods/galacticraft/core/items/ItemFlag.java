@@ -79,7 +79,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
                 if (worldIn.getEntitiesWithinAABB(EntityFlag.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 3, pos.getZ() + 1)).isEmpty())
                 {
                     worldIn.addEntity(flag);
-//                    flag.setType(stack.getItemDamage());
+//                    flag.setType(stack.getDamage());
                     flag.setOwner(PlayerUtil.getName(player));
                     worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 2.0F);
                     placed = true;

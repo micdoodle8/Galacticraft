@@ -1,45 +1,37 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
-import com.google.common.base.Function;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderGrapple extends EntityRenderer<EntityGrapple>
 {
-    private ItemModelGrapple grappleModel;
+    private static ItemModelGrapple grappleModel;
 
     public RenderGrapple(EntityRendererManager manager)
     {
         super(manager);
     }
 
-    private void updateModel()
+    public static void updateModel()
     {
-        if (grappleModel == null)
-        {
-            Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER = input -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(input.toString());
-
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "grapple", "inventory");
-            grappleModel = (ItemModelGrapple) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
-        }
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "grapple", "inventory");
+        grappleModel = (ItemModelGrapple) Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
     }
 
     @Override

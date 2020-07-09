@@ -5,9 +5,9 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ILaserTrackableFast;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
+import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
@@ -23,11 +24,12 @@ import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockLaserTurret;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,26 +38,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.*;
 
 public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory implements IMultiBlock, ISidedInventory, IMachineSides
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.laserTurret)
+    public static TileEntityType<TileEntityLaserTurret> TYPE;
+
     private final float RANGE = 15.0F;
     private final float METEOR_RANGE = 90.0F;
     private List<Entity> tracked = Lists.newArrayList();
@@ -100,7 +106,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
 
     public TileEntityLaserTurret()
     {
-        super("tile.laser_turret.name");
+        super(TYPE);
         inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
@@ -147,13 +153,13 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             int playerSize = dataStream.readInt();
             for (int i = 0; i < playerSize; ++i)
             {
-                players.add(ByteBufUtils.readUTF8String(dataStream));
+                players.add(NetworkUtil.readUTF8String(dataStream));
             }
             entities.clear();
             int entitySize = dataStream.readInt();
             for (int i = 0; i < entitySize; ++i)
             {
-                entities.add(new ResourceLocation(ByteBufUtils.readUTF8String(dataStream)));
+                entities.add(new ResourceLocation(NetworkUtil.readUTF8String(dataStream)));
             }
             if (dataStream.readBoolean())
             {
@@ -224,7 +230,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             for (int i = 0; i < tracked.size(); ++i)
             {
                 Entity e = tracked.get(i);
-                if (e.isDead)
+                if (!e.isAlive())
                 {
                     tracked.remove(i--);
                 }
@@ -242,7 +248,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                         {
                             for (String player : players)
                             {
-                                if (player.equalsIgnoreCase(e.getName()))
+                                if (player.equalsIgnoreCase(e.getName().getString()))
                                 {
                                     shouldTarget = !shouldTarget;
                                 }
@@ -257,7 +263,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                     }
                     else
                     {
-                        ResourceLocation location = EntityList.getKey(e.getClass());
+                        ResourceLocation location = ForgeRegistries.ENTITIES.getKey(e.getType());
                         if (location != null)
                         {
                             for (ResourceLocation entity : entities)
@@ -271,7 +277,8 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                     }
                     if (shouldTarget)
                     {
-                        Vector3 vec = new Vector3(e.posX, e.posY + e.getEyeHeight(), e.posZ);
+                        Vector3 vec = new Vector3(e);
+                        vec.y += e.getEyeHeight();
                         vec.translate(new Vector3(-(pos.getX() + 0.5F), -(pos.getY() + 1.78F), -(pos.getZ() + 0.5F)));
                         Vector3 vecNoHeight = vec.clone();
                         vecNoHeight.y = 0;
@@ -323,8 +330,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             Vec3d end = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
             start = start.add(end.add(start.scale(-1)).normalize()); // Start at block in front of laser facing direction
 
-            RayTraceResult res = this.world.rayTraceBlocks(start, end, false, true, true);
-            if (res == null || res.typeOfHit != RayTraceResult.Type.BLOCK)
+            RayTraceResult res = this.world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
+//            RayTraceResult res = this.world.rayTraceBlocks(start, end, false, true, true);
+            if (res.getType() != RayTraceResult.Type.BLOCK)
             {
                 return entity;
             }
@@ -361,13 +369,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             {
                 if (storage.getEnergyStoredGC() > 1000 && !this.getDisabled(0) && !RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos()))
                 {
-                    for (Entity e : world.loadedEntityList)
-                    {
-                        if (e instanceof LivingEntity || e instanceof ILaserTrackableFast)
-                        {
-                            this.trackEntity(e);
-                        }
-                    }
+                    ((ServerWorld) world).getEntities().filter((e) -> e instanceof LivingEntity || e instanceof ILaserTrackableFast).forEach((e) -> trackEntity(e));
                 }
                 else
                 {
@@ -414,7 +416,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         }
         else
         {
-            // Client side only
+            // Client LogicalSide only
             if (chargeLevel > 0 && chargeLevel < 60)
             {
                 chargeLevel++;
@@ -430,9 +432,10 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             if (active && targettedEntity != -1)
             {
                 Entity entity = world.getEntityByID(targettedEntity);
-                if (entity != null && !entity.isDead)
+                if (entity != null && entity.isAlive())
                 {
-                    Vector3 vec = new Vector3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+                    Vector3 vec = new Vector3(entity);
+                    vec.y += entity.getEyeHeight();
                     vec.translate(new Vector3(-(pos.getX() + 0.5F), -(pos.getY() + 1.78F), -(pos.getZ() + 0.5F))).normalize();
                     targetPitch = (float) (Math.asin(vec.y) * (180.0F / Math.PI));
                     targetYaw = (float) (Math.atan2(vec.x, vec.z) * (180.0F / Math.PI)) + 90.0F;
@@ -544,7 +547,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         for (String player : this.players)
         {
             CompoundNBT tagComp = new CompoundNBT();
-            tagComp.setString("PlayerName", player);
+            tagComp.putString("PlayerName", player);
             playersTag.add(tagComp);
         }
 
@@ -554,7 +557,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         for (ResourceLocation entity : this.entities)
         {
             CompoundNBT tagComp = new CompoundNBT();
-            tagComp.setString("EntityRes", entity.toString());
+            tagComp.putString("EntityRes", entity.toString());
             entitiesTag.add(tagComp);
         }
 
@@ -574,7 +577,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         {
             nbt.putString("ownerName", this.ownerName);
         }
-        nbt.setUniqueId("ownerUUID", this.ownerUUID);
+        nbt.putUniqueId("ownerUUID", this.ownerUUID);
 
         return nbt;
     }
@@ -671,7 +674,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             PlayerEntity player = this.world.getPlayerByUuid(uniqueID);
             if (player != null)
             {
-                this.ownerName = player.getName();
+                this.ownerName = player.getName().getFormattedText();
             }
         }
         for (SpaceRace race : SpaceRaceManager.getSpaceRaces())
@@ -691,7 +694,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean onActivated(PlayerEntity entityPlayer)
     {
-        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ());
+//        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ()); TODO Guis
         return true;
     }
 
@@ -716,15 +719,15 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
 
             if (stateAt.getBlock() == GCBlocks.fakeBlock)
             {
-                BlockMulti.EnumBlockMultiType type = stateAt.getValue(BlockMulti.MULTI_TYPE);
+                BlockMulti.EnumBlockMultiType type = stateAt.get(BlockMulti.MULTI_TYPE);
                 if (type == BlockMulti.EnumBlockMultiType.LASER_TURRET)
                 {
                     if (this.world.isRemote)
                     {
-                        Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, VenusBlocks.laserTurret.getDefaultState());
+                        Minecraft.getInstance().particles.addBlockDestroyEffects(pos, VenusBlocks.laserTurret.getDefaultState());
                     }
 
-                    this.world.setBlockToAir(pos);
+                    this.world.removeBlock(pos, false);
                 }
             }
         }

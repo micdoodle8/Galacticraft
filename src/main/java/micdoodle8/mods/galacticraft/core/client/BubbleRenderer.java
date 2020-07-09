@@ -61,8 +61,8 @@ public class BubbleRenderer
         GlStateManager.loadIdentity();
         GlStateManager.matrixMode(GL11.GL_MODELVIEW);
         GlStateManager.depthMask(false);
-//        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-//        float lightMapSaveY = OpenGlHelper.lastBrightnessY; TODO Does this need saved in 1.14.4+ ?
+        float lightMapSaveX = GLX.lastBrightnessX;
+        float lightMapSaveY = GLX.lastBrightnessY;
         GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 
         for (IBubbleProviderColored dimension : bubbleProviders)
@@ -89,7 +89,7 @@ public class BubbleRenderer
             GL11.glPopMatrix();
         }
 
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightMapSaveX, lightMapSaveY);
         GlStateManager.popMatrix();
     }
 }

@@ -1,27 +1,33 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_LINKING;
+
 public class BaseLinking extends SizedPiece
 {
-    public BaseLinking()
+    public BaseLinking(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CBASE_LINKING, nbt);
     }
 
     public BaseLinking(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosY, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(configuration, sizeX, sizeY, sizeZ, direction);
+        super(CBASE_LINKING, configuration, sizeX, sizeY, sizeZ, direction);
         this.setCoordBaseMode(Direction.SOUTH);
         this.boundingBox = new MutableBoundingBox(blockPosX, blockPosY, blockPosZ, blockPosX + sizeX, blockPosY + sizeY, blockPosZ + sizeZ);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
+    public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos chunkPos)
     {
         for (int i = 0; i < this.boundingBox.getXSize(); i++)
         {

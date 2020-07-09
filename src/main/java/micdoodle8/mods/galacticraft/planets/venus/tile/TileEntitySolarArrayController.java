@@ -7,30 +7,38 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSolarArrayController;
-import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
+import micdoodle8.mods.galacticraft.planets.venus.dimension.DimensionVenus;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 public class TileEntitySolarArrayController extends TileBaseUniversalElectricalSource implements IDisableableMachine, IInventoryDefaults, ISidedInventory, IConnector
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.solarArrayController)
+    public static TileEntityType<TileEntitySolarArrayController> TYPE;
+
     private int solarStrength = 0;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean disabled = false;
@@ -47,7 +55,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
     public TileEntitySolarArrayController()
     {
-        super("container.solar_array_controller.name");
+        super(TYPE);
         this.storage.setMaxExtract(TileEntitySolarArrayController.MAX_GENERATE_WATTS);
         this.storage.setMaxReceive(TileEntitySolarArrayController.MAX_GENERATE_WATTS);
         this.storage.setCapacity(50000);
@@ -126,7 +134,8 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
             {
                 this.solarStrength = 0;
                 int arraySizeWithinRange = 0;
-                if (this.world.isDaytime() && (this.world.getDimension() instanceof IGalacticraftWorldProvider || !this.world.isRaining() && !this.world.isThundering()))
+                BlockPos offset;
+                if (this.world.isDaytime() && (this.world.getDimension() instanceof IGalacticraftDimension || !this.world.isRaining() && !this.world.isThundering()))
                 {
                     for (ITransmitter transmitter : solarArray)
                     {
@@ -141,9 +150,10 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
                                 for (int y = this.getPos().getY() + 1; y < 256; y++)
                                 {
-                                    BlockState state = this.world.getBlockState(this.getPos().add(0, y, 0));
+                                    offset = this.getPos().add(0, y, 0);
+                                    BlockState state = this.world.getBlockState(offset);
 
-                                    if (state.getBlock().isOpaqueCube(state))
+                                    if (state.isOpaqueCube(world, offset))
                                     {
                                         valid = false;
                                         break;
@@ -166,7 +176,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         float angle = this.world.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
         if (!(this.world.getDimension() instanceof DimensionSpaceStation)) celestialAngle += 12.5F;
-        if (this.world.getDimension() instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
+        if (this.world.getDimension() instanceof DimensionVenus) celestialAngle = 180F - celestialAngle;
         celestialAngle %= 360;
         boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.getDimension() instanceof DimensionSpaceStation;
 
@@ -204,7 +214,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
             // 10% boost for new solar on space stations
             result *= 1.1F;
         }
-        if (this.world.getDimension() instanceof WorldProviderVenus)
+        if (this.world.getDimension() instanceof DimensionVenus)
         {
             if (this.pos.getY() > 90)
             {
@@ -277,11 +287,11 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         return getFront();
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public void setDisabled(int index, boolean disabled)

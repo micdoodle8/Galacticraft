@@ -1,21 +1,24 @@
 package micdoodle8.mods.galacticraft.planets.mars.client;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import com.mojang.blaze3d.platform.GlStateManager;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
+
 import java.util.Random;
 
 /**
@@ -26,7 +29,7 @@ import java.util.Random;
  * @author micdoodle8
  */
 @OnlyIn(Dist.CLIENT)
-public class SkyProviderMars extends IRenderHandler
+public class SkyProviderMars implements IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation sunTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/planets/atmosphericsun.png");
@@ -36,7 +39,7 @@ public class SkyProviderMars extends IRenderHandler
     public int glSkyList2;
     private float sunSize;
 
-    public SkyProviderMars(IGalacticraftWorldProvider marsProvider)
+    public SkyProviderMars(IGalacticraftDimension marsProvider)
     {
         this.sunSize = 17.5F * marsProvider.getSolarSize();
 
@@ -93,25 +96,25 @@ public class SkyProviderMars extends IRenderHandler
     }
 
     @Override
-    public void render(float partialTicks, ClientWorld world, Minecraft mc)
+    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc)
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GlStateManager.disableRescaleNormal();
-        Vec3d vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
+        Vec3d vec3 = world.getSkyColor(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
         float f1 = (float) vec3.x;
         float f2 = (float) vec3.y;
         float f3 = (float) vec3.z;
         float f6;
 
-        if (mc.gameSettings.anaglyph)
-        {
-            float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
-            float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
-            f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
-            f1 = f4;
-            f2 = f5;
-            f3 = f6;
-        }
+//        if (mc.gameSettings.anaglyph)
+//        {
+//            float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
+//            float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
+//            f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
+//            f1 = f4;
+//            f2 = f5;
+//            f3 = f6;
+//        }
 
         GL11.glColor3f(f1, f2, f3);
         Tessellator tessellator1 = Tessellator.getInstance();
@@ -158,15 +161,15 @@ public class SkyProviderMars extends IRenderHandler
         f8 = afloat[2];
         float f11;
 
-        if (mc.gameSettings.anaglyph)
-        {
-            f9 = (f6 * 30.0F + f7 * 59.0F + f8 * 11.0F) / 100.0F;
-            f10 = (f6 * 30.0F + f7 * 70.0F) / 100.0F;
-            f11 = (f6 * 30.0F + f8 * 70.0F) / 100.0F;
-            f6 = f9;
-            f7 = f10;
-            f8 = f11;
-        }
+//        if (mc.gameSettings.anaglyph)
+//        {
+//            f9 = (f6 * 30.0F + f7 * 59.0F + f8 * 11.0F) / 100.0F;
+//            f10 = (f6 * 30.0F + f7 * 70.0F) / 100.0F;
+//            f11 = (f6 * 30.0F + f8 * 70.0F) / 100.0F;
+//            f6 = f9;
+//            f7 = f10;
+//            f8 = f11;
+//        }
 
         f18 = 1.0F - f18;
 
@@ -223,7 +226,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glShadeModel(GL11.GL_FLAT);
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ZERO);
         GL11.glPushMatrix();
         f7 = 0.0F;
         f8 = 0.0F;
@@ -327,7 +330,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GlStateManager.enableRescaleNormal();
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
         GL11.glDepthMask(true);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_BLEND);

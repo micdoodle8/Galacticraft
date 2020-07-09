@@ -3,13 +3,15 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonChunkGenerator;
+import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonGenSettings;
+import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,6 +22,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -31,7 +34,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DimensionMoon extends DimensionSpace implements IGalacticraftWorldProvider, ISolarLevel
+public class DimensionMoon extends DimensionSpace implements IGalacticraftDimension, ISolarLevel
 {
     public DimensionMoon(World worldIn, DimensionType typeIn)
     {
@@ -69,9 +72,10 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftWorldP
     }
 
     @Override
-    public Class<? extends ChunkGenerator> getChunkProviderClass()
+    public ChunkGenerator createChunkGenerator()
     {
-        return MoonChunkGenerator.class;
+        MoonGenSettings settings = new MoonGenSettings();
+        return new MoonChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings().setBiome(BiomeMoon.moonBiome)), settings);
     }
 
     @Override
@@ -222,7 +226,7 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftWorldP
     public List<Block> getSurfaceBlocks()
     {
         List<Block> list = new LinkedList<>();
-        list.add(GCBlocks.blockMoon);
+        list.add(GCBlocks.moonTurf);
         return list;
     }
 

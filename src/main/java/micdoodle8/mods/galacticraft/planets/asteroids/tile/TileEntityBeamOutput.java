@@ -3,20 +3,26 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.LinkedList;
 
@@ -30,9 +36,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     private BlockPos preLoadTarget = null;
     private BlockPos lastTargetVec = new BlockPos(-1, -1, -1);
 
-    public TileEntityBeamOutput(String tileName)
+    public TileEntityBeamOutput(TileEntityType<? extends TileEntityBeamOutput> type)
     {
-        super(tileName);
+        super(type);
     }
 
     @Override
@@ -117,15 +123,15 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         int chunkZMin = this.getPos().getZ() - 15 >> 4;
         int chunkXMax = this.getPos().getX() + 15 >> 4;
         int chunkZMax = this.getPos().getZ() + 15 >> 4;
+        Chunk chunk;
 
         for (int cX = chunkXMin; cX <= chunkXMax; cX++)
         {
             for (int cZ = chunkZMin; cZ <= chunkZMax; cZ++)
             {
-                if (this.world.getChunkProvider().getLoadedChunk(cX, cZ) != null)
+                chunk = this.world.getChunkProvider().getChunk(cX, cZ, false);
+                if (chunk != null)
                 {
-                    Chunk chunk = this.world.getChunkFromChunkCoords(cX, cZ);
-
                     for (Object obj : chunk.getTileEntityMap().values())
                     {
                         if (obj != this && obj instanceof ILaserNode)
@@ -281,7 +287,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         return 0;
     }
 
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         if (this.nodeList.size() > 1)
         {

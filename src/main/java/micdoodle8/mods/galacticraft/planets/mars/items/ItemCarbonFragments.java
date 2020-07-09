@@ -1,26 +1,25 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.extensions.IForgeItem;
 
-public class ItemCarbonFragments extends Item implements ISortableItem
+public class ItemCarbonFragments extends Item implements ISortableItem, IForgeItem
 {
-    public ItemCarbonFragments()
+    public ItemCarbonFragments(Item.Properties properties)
     {
-        super();
-        this.setMaxStackSize(64);
-        this.setMaxDamage(0);
+        super(properties);
+//        this.setMaxStackSize(64);
+//        this.setMaxDamage(0);
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
@@ -41,7 +40,7 @@ public class ItemCarbonFragments extends Item implements ISortableItem
     }
 
     @Override
-    public int getItemBurnTime(ItemStack itemStack)
+    public int getBurnTime(ItemStack itemStack)
     {
         return 200;
     }

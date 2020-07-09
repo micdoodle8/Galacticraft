@@ -249,7 +249,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         {
             if (this.protocol.minY == this.protocol.maxY && this.protocol.minX != this.protocol.maxX && this.protocol.minZ != this.protocol.maxZ)
             {
-                // First test if there is sealed air to either side
+                // First test if there is sealed air to either LogicalSide
                 for (x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
                 {
                     for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
@@ -298,7 +298,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         {
             if (this.lastProtocol.minX != this.lastProtocol.maxX)
             {
-                // First test if there is sealed air to either side
+                // First test if there is sealed air to either LogicalSide
                 for (x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
                 {
                     for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
@@ -344,7 +344,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
             }
             else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
             {
-                // First test if there is sealed air to either side
+                // First test if there is sealed air to either LogicalSide
                 for (z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
                 {
                     for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)

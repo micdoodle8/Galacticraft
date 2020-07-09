@@ -1,32 +1,22 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
-public class BlockMinerBase extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMinerBase extends BlockTileGC implements IShiftDescription
 {
     public BlockMinerBase(Properties builder)
     {
@@ -40,23 +30,23 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public Item getItemDropped(BlockState state, Random random, int par3)
-    {
-        return super.getItemDropped(state, random, par3);
-    }
-
-    @Override
-    public int damageDropped(BlockState state)
-    {
-        return 0;
-    }
-
-    @Override
-    public int quantityDropped(BlockState state, int fortune, Random random)
-    {
-        return 1;
-    }
+//    @Override
+//    public Item getItemDropped(BlockState state, Random random, int par3)
+//    {
+//        return super.getItemDropped(state, random, par3);
+//    }
+//
+//    @Override
+//    public int damageDropped(BlockState state)
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public int quantityDropped(BlockState state, int fortune, Random random)
+//    {
+//        return 1;
+//    }
 
 //    @Override
 //    public boolean isOpaqueCube(BlockState state)
@@ -64,38 +54,40 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
+
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState metadata)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityMinerBaseSingle();
     }
 
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
-    {
-        return getStateFromMeta(0);
-    }
+//    @Override
+//    public BlockState getStateForPlacement(BlockItemUseContext context)
+//    {
+//        return getStateFromMeta(0);
+//    }
+
+//    @Override
+//    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side)
+//    {
+//        return true;
+//    }
 
     @Override
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side)
-    {
-        return true;
-    }
-
-    @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -107,9 +99,9 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 }

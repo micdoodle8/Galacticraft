@@ -15,7 +15,7 @@
 //    @Override
 //    public boolean isItemValid(ItemStack par1ItemStack)
 //    {
-//        return par1ItemStack.getItem() instanceof ItemFuelCanister && par1ItemStack.getItemDamage() > 0;
+//        return par1ItemStack.getItem() instanceof ItemFuelCanister && par1ItemStack.getDamage() > 0;
 //
 //    }
 //}

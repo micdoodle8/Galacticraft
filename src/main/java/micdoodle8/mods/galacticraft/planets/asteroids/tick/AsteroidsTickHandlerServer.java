@@ -1,13 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tick;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -19,14 +11,16 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AsteroidsTickHandlerServer
 {
@@ -44,7 +38,7 @@ public class AsteroidsTickHandlerServer
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer server = GCCoreUtil.getServer();
         //Prevent issues when clients switch to LAN servers
         if (server == null)
         {
@@ -57,13 +51,13 @@ public class AsteroidsTickHandlerServer
             
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
-                World world = server.getWorld(0);
-                AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.getMapStorage().getOrLoadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
+                World world = server.getWorld(DimensionType.OVERWORLD);
+                AsteroidsTickHandlerServer.spaceRaceData = ((ServerWorld) world).getSavedData().getOrCreate(() -> new ShortRangeTelepadHandler(ShortRangeTelepadHandler.saveDataID), ShortRangeTelepadHandler.saveDataID);
 
                 if (AsteroidsTickHandlerServer.spaceRaceData == null)
                 {
                     AsteroidsTickHandlerServer.spaceRaceData = new ShortRangeTelepadHandler(ShortRangeTelepadHandler.saveDataID);
-                    world.getMapStorage().setData(ShortRangeTelepadHandler.saveDataID, AsteroidsTickHandlerServer.spaceRaceData);
+                    ((ServerWorld) world).getSavedData().set(AsteroidsTickHandlerServer.spaceRaceData);
                 }
             }
             
@@ -71,7 +65,7 @@ public class AsteroidsTickHandlerServer
             for(EntityAstroMiner miner : activeMiners)
             {
                 index ++;
-                if (miner.isDead)
+                if (!miner.isAlive())
                 {
 //                    minerIt.remove();  Don't remove it, we want the index number to be static for the others
                     continue;
@@ -90,7 +84,7 @@ public class AsteroidsTickHandlerServer
                             BlockVec3 data = it.next();
                             if (data.sideDoneBits == index)  //SideDoneBits won't be saved to NBT, but during an active server session we can use it as a cross-reference to the index here - it's a 4th data int hidden inside a BlockVec3
                             {
-                                if (miner.isDead)
+                                if (!miner.isAlive())
                                 {
                                     it.remove();  //Player stats should not save position of dead AstroMiner entity (probably broken by player deliberately breaking it)
                                 }
@@ -105,7 +99,7 @@ public class AsteroidsTickHandlerServer
                         }
                         if (!inListAlready)
                         {
-                            BlockVec3 data = new BlockVec3(miner.chunkCoordX, miner.dimension, miner.chunkCoordZ);
+                            BlockVec3 data = new BlockVec3(miner.chunkCoordX, miner.dimension.getId(), miner.chunkCoordZ);
                             data.sideDoneBits = index;
                             list.add(data);
                         }
@@ -117,24 +111,24 @@ public class AsteroidsTickHandlerServer
     }
     
     @SubscribeEvent
-    public void onWorldTick(WorldTickEvent event)
+    public void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (event.phase == Phase.START)
+        if (event.phase == TickEvent.Phase.START)
         {
             for(EntityAstroMiner miner : activeMiners)
             {
-                if (miner.playerMP != null && miner.world == event.world && !miner.isDead)
+                if (miner.playerMP != null && miner.world == event.world && miner.isAlive())
                 {
                     miner.serverTick = true;
                     miner.serverTickSave = miner.ticksExisted;
                 }
             }
         }
-        else if (event.phase == Phase.END)
+        else if (event.phase == TickEvent.Phase.END)
         {
             for(EntityAstroMiner miner : activeMiners)
             {
-                if (miner.isDead)
+                if (!miner.isAlive())
                 {
 //                    minerIt.remove();  Don't remove it, we want the index number to be static for the others
                     continue;
@@ -145,7 +139,7 @@ public class AsteroidsTickHandlerServer
                     {
                         //Force an entity update tick, if it didn't happen already (mainly needed on Sponge servers - entities not super close to players seem to be not updated at all on Sponge even if the chunk is active, see issue #3307)
                         miner.ticksExisted = miner.serverTickSave + 1;
-                        miner.onUpdate();
+                        miner.tick();
                     }
 
                     try
@@ -206,13 +200,13 @@ public class AsteroidsTickHandlerServer
         {
             for (BlockVec3 data : copyList)
             {
-                Dimension p = WorldUtil.getProviderForDimensionServer(data.y);
-                if (p != null && p.world != null)
+                Dimension p = WorldUtil.getProviderForDimensionServer(DimensionType.getById(data.y));
+                if (p != null && p.getWorld() != null)
                 {
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
-                    ServerWorld w = (ServerWorld)p.world;
+                    ServerWorld w = (ServerWorld)p.getWorld();
                     boolean previous = CompatibilityManager.forceLoadChunks(w);
-                    w.getChunkProvider().loadChunk(data.x, data.z);
+                    w.getChunkProvider().getChunk(data.x, data.z, true);
                     CompatibilityManager.forceLoadChunksEnd(w, previous);
                 }
             }

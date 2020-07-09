@@ -17,20 +17,18 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
-
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDropboxCallback, ICheckBoxCallback
+public class GuiLaunchControllerAdvanced extends GuiContainerGC<ContainerLaunchController> implements IDropboxCallback, ICheckBoxCallback
 {
     private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launch_controller.png");
 
@@ -43,34 +41,34 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
 
     private int cannotEditTimer;
 
-    public GuiLaunchControllerAdvanced(PlayerInventory playerInventory, TileEntityLaunchController launchController)
+    public GuiLaunchControllerAdvanced(ContainerLaunchController container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerLaunchController(playerInventory, launchController, Minecraft.getInstance().player));
+        super(container, playerInv, title);
         this.ySize = 209;
-        this.launchController = launchController;
+        this.launchController = container.getLaunchController();
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void render(int x, int y, float partialTicks)
     {
         if (this.launchController.disableCooldown > 0)
         {
-            this.enablePadRemovalButton.enabled = false;
+            this.enablePadRemovalButton.active = false;
         }
         else
         {
-            boolean isOwner = PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerName());
-            this.enablePadRemovalButton.enabled = isOwner;
+            boolean isOwner = PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID());
+            this.enablePadRemovalButton.active = isOwner;
         }
 
         // Hacky way of rendering buttons properly, possibly bugs here:
-        List<Button> buttonList = new ArrayList<>(this.buttons);
-        List<GuiLabel> labelList = new ArrayList<>(this.labelList);
+//        List<Button> buttonList = new ArrayList<>(this.buttons);
+//        List<GuiLabel> labelList = new ArrayList<>(this.labelList);
         List<GuiElementInfoRegion> infoRegions = new ArrayList<>(this.infoRegions);
-        this.buttons.clear();
-        this.labelList.clear();
+//        this.buttons.clear();
+//        this.labelList.clear();
         this.infoRegions.clear();
-        super.drawScreen(par1, par2, par3);
+        super.render(x, y, partialTicks);
 
         GL11.glColor3f(1, 1, 1);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -79,23 +77,23 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         int k;
-        for (k = 0; k < buttonList.size(); ++k)
-        {
-            ((Button) buttonList.get(k)).drawButton(this.minecraft, par1, par2, par3);
-        }
+//        for (k = 0; k < buttonList.size(); ++k)
+//        {
+//            ((Button) buttonList.get(k)).drawButton(this.minecraft, x, y, partialTicks);
+//        }
 
-        for (k = 0; k < labelList.size(); ++k)
-        {
-            ((GuiLabel) labelList.get(k)).drawLabel(this.minecraft, par1, par2);
-        }
+//        for (k = 0; k < labelList.size(); ++k)
+//        {
+//            ((GuiLabel) labelList.get(k)).drawLabel(this.minecraft, x, y);
+//        }
 
         for (k = 0; k < infoRegions.size(); ++k)
         {
-            infoRegions.get(k).drawRegion(par1, par2);
+            infoRegions.get(k).drawRegion(x, y);
         }
 
-        this.buttons = buttonList;
-        this.labelList = labelList;
+//        this.buttons = buttonList;
+//        this.labelList = labelList;
         this.infoRegions = infoRegions;
 
 //		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -105,16 +103,23 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     }
 
     @Override
-    public void initGui()
+    public void init()
     {
-        super.initGui();
+        super.init();
         this.buttons.clear();
         final int xLeft = (this.width - this.xSize) / 2;
         final int yTop = (this.height - this.ySize) / 2;
-        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
-        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
-        this.dropdownTest = new GuiElementDropdown(3, this, xLeft + 52, yTop + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
-        this.closeAdvancedConfig = new Button(4, xLeft + 5, yTop + 5, 20, 20, "<");
+        this.enablePadRemovalButton = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
+        this.launchWhenCheckbox = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
+        this.dropdownTest = new GuiElementDropdown(this, xLeft + 52, yTop + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
+        this.closeAdvancedConfig = new Button( xLeft + 5, yTop + 5, 20, 20, "<", (button) -> {
+            if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
+            {
+                this.cannotEditTimer = 50;
+                return;
+            }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.launchController.getPos(), 1 }));
+        });
         this.buttons.add(this.enablePadRemovalButton);
         this.buttons.add(this.launchWhenCheckbox);
         this.buttons.add(this.dropdownTest);
@@ -132,40 +137,19 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     }
 
     @Override
-    protected void actionPerformed(Button button)
-    {
-        if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerName()))
-        {
-            this.cannotEditTimer = 50;
-            return;
-        }
-
-        if (button.enabled)
-        {
-            switch (button.id)
-            {
-                case 4:
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.launchController.getPos(), 1 }));
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String displayString = GCCoreUtil.translate("gui.launch_controller.owner") + ": " + this.launchController.getOwnerName();
-        this.fontRenderer.drawString(displayString, this.xSize - this.fontRenderer.getStringWidth(displayString) - 5, 5, 4210752);
+//        String displayString = GCCoreUtil.translate("gui.launch_controller.owner") + ": " + this.launchController.getOwnerUUID();
+        String displayString = "Owned " + this.getTitle().getFormattedText();
+        this.font.drawString(displayString, this.xSize - this.font.getStringWidth(displayString) - 5, 5, 4210752);
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRenderer.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.font.drawString("Owned", this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
     }
 
     @Override
@@ -176,14 +160,14 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         this.minecraft.textureManager.bindTexture(GuiLaunchControllerAdvanced.launchControllerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+        this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (this.launchController.getEnergyStoredGC() > 0)
         {
             int scale = this.launchController.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(var5 + 99, var6 + 114, 176, 0, Math.min(scale, 54), 7);
+            this.blit(var5 + 99, var6 + 114, 176, 0, Math.min(scale, 54), 7);
         }
 
         GL11.glPopMatrix();
@@ -194,7 +178,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     {
         if (dropdown.equals(this.dropdownTest))
         {
-            return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
+            return PlayerUtil.getName(player).equals(this.launchController.getOwnerUUID());
         }
 
         return false;
@@ -239,7 +223,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     @Override
     public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
-        return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
+        return PlayerUtil.getName(player).equals(this.launchController.getOwnerUUID());
     }
 
     @Override

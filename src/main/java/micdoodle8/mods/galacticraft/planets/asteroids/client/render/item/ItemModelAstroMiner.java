@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.vecmath.Matrix4f;
@@ -19,9 +19,9 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
     }
 
     @Override
-    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
+    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
     {
-        if (cameraTransformType == TransformType.GUI)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
         {
             Vector3f trans = new Vector3f(-0.17F, 0.0F, -0.17F);
             Matrix4f ret = new Matrix4f();
@@ -53,7 +53,8 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND ||
+                cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(0.5F, 0.0F, -1.7F);
             Matrix4f ret = new Matrix4f();
@@ -81,7 +82,8 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND ||
+                cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND)
         {
             Vector3f trans = new Vector3f(-0.2F, -0.0F, 1.1F);
             Matrix4f ret = new Matrix4f();
@@ -121,7 +123,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.GROUND)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GROUND)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
@@ -135,7 +137,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             return ret;
         }
 
-        if (cameraTransformType == TransformType.FIXED)
+        if (cameraTransformType == ItemCameraTransforms.TransformType.FIXED)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();

@@ -5,32 +5,32 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
+import javax.annotation.Nonnull;
+
+public class BlockTorchWeb extends Block implements IShearable, IShiftDescription
 {
     public static final EnumProperty<EnumWebType> WEB_TYPE = EnumProperty.create("webtype", EnumWebType.class);
     protected static final VoxelShape AABB_WEB = Block.makeCuboidShape(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
@@ -73,12 +73,12 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         super(builder);
     }
 
-    @Override
-    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        list.add(new ItemStack(this, 1, 0));
-        list.add(new ItemStack(this, 1, 1));
-    }
+//    @Override
+//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        list.add(new ItemStack(this, 1, 0));
+//        list.add(new ItemStack(this, 1, 1));
+//    }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
@@ -121,89 +121,91 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return null;
-    }
+//    @Override
+//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        return null;
+//    }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        if (world.getBlockState(pos).getBlock().isReplaceable(world, pos) && this.canBlockStay(world, pos, this.getStateFromMeta(meta)))
+        World world = context.getWorld();
+        BlockPos pos = context.getPos();
+        if (world.getBlockState(pos).isReplaceable(context) && this.canBlockStay(world, pos))
         {
-            return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
+            return super.getStateForPlacement(context);
         }
         return world.getBlockState(pos);
     }
 
-    private boolean canBlockStay(World world, BlockPos pos, BlockState state)
+    private boolean canBlockStay(World world, BlockPos pos)
     {
         BlockState blockUp = world.getBlockState(pos.up());
-        return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
+        return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.get(WEB_TYPE) == EnumWebType.WEB_0;
     }
 
     @Override
-    public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        this.checkAndDropBlock(world, pos, state);
+        this.checkAndDropBlock(worldIn, pos);
     }
 
     @Override
-    public void updateTick(World world, BlockPos pos, BlockState state, Random rand)
+    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
     {
-        this.checkAndDropBlock(world, pos, state);
+        this.checkAndDropBlock(worldIn, pos);
     }
 
-    protected void checkAndDropBlock(World world, BlockPos pos, BlockState state)
+    protected void checkAndDropBlock(World world, BlockPos pos)
     {
-        if (!this.canBlockStay(world, pos, state))
+        if (!this.canBlockStay(world, pos))
         {
-            this.dropBlockAsItem(world, pos, state, 0);
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+            world.destroyBlock(pos, true);
         }
     }
 
-    @Override
-    public Item getItemDropped(BlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(Blocks.AIR);
-    }
+//    @Override
+//    public Item getItemDropped(BlockState state, Random rand, int fortune)
+//    {
+//        return Item.getItemFromBlock(Blocks.AIR);
+//    }
+
+//    @Override
+//    public int quantityDropped(Random rand)
+//    {
+//        return 0;
+//    }
 
     @Override
-    public int quantityDropped(Random rand)
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos)
+    public boolean isShearable(ItemStack item, IWorldReader world, BlockPos pos)
     {
         return true;
     }
 
+    @Nonnull
     @Override
-    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    public List<ItemStack> onSheared(@Nonnull ItemStack item, IWorld world, BlockPos pos, int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(new ItemStack(this, 1, this.getMetaFromState(world.getBlockState(pos))));
+        ret.add(new ItemStack(this, 1));
         return ret;
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -215,11 +217,11 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(WEB_TYPE, EnumWebType.byMetadata(meta));
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(WEB_TYPE, EnumWebType.byMetadata(meta));
+//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
@@ -227,9 +229,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         builder.add(WEB_TYPE);
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 }

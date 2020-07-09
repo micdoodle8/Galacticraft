@@ -35,7 +35,6 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -429,14 +428,14 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
         ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":panel_lighting", "normal");
         ModelResourceLocation defaultLoc;
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            defaultLoc = new ModelResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":asteroids_block", "basictypeasteroids=asteroid_deco");
-        }
-        else
-        {
-            defaultLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":basic_block_core", "basictype=deco_block_1");
-        }
+//        if (GalacticraftCore.isPlanetsLoaded)
+//        {
+//            defaultLoc = new ModelResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":asteroids_block", "basictypeasteroids=asteroid_deco");
+//        }
+//        else
+//        {
+//            defaultLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":basic_block_core", "basictype=deco_block_1");
+//        }
 //        event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
 //        defaultLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":grating", "normal");
 //        event.getModelRegistry().putObject(defaultLoc, new ModelGrating(defaultLoc, event.getModelManager()));

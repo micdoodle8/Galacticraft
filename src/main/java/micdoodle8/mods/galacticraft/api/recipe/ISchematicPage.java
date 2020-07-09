@@ -36,7 +36,7 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
     ItemStack getRequiredItem();
 
     /**
-     * The resulting client-side GUI for this page
+     * The resulting client-LogicalSide GUI for this page
      *
      * @param player The player opening this GUI
      * @param pos    Coordinates of the NASA Workbench

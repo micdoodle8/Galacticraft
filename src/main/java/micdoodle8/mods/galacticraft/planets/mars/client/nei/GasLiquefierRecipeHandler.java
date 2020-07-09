@@ -54,7 +54,7 @@
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //        GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGuiTexture);
-//        GuiDraw.drawTexturedModalRect(-2, 0, 3, 4, 168, 64);
+//        GuiDraw.blit(-2, 0, 3, 4, 168, 64);
 //
 //        if (progress <= 40)
 //        {
@@ -62,12 +62,12 @@
 //            {
 //                int yoffset = progress / 3;
 //                GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGasesTexture);
-//                GuiDraw.drawTexturedModalRect(2, 62 - yoffset, 1 + this.inputGas * 17, 26 - yoffset, 16, yoffset);
+//                GuiDraw.blit(2, 62 - yoffset, 1 + this.inputGas * 17, 26 - yoffset, 16, yoffset);
 //            }
 //            else if (this.inputGas > 0)
 //            {
 //                GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGasesTexture);
-//                GuiDraw.drawTexturedModalRect(2, 62 - 10, 1 + this.inputGas * 17, 26 - 10, 16, 10);
+//                GuiDraw.blit(2, 62 - 10, 1 + this.inputGas * 17, 26 - 10, 16, 10);
 //            }
 //        }
 //        else if (progress < 104)
@@ -80,23 +80,23 @@
 //                yoffset = 13 + level / 3;
 //            }
 //            GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGasesTexture);
-//            GuiDraw.drawTexturedModalRect(2, 62 - yoffset, 1 + this.inputGas * 17, 26 - yoffset, 16, yoffset);
+//            GuiDraw.blit(2, 62 - yoffset, 1 + this.inputGas * 17, 26 - yoffset, 16, yoffset);
 //
 //            if (this.outputGas == 0)
 //            {
 //                GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGuiTexture);
-//                GuiDraw.drawTexturedModalRect(127, 62 - level, 176 + 16, 26 - level, 16, level);
+//                GuiDraw.blit(127, 62 - level, 176 + 16, 26 - level, 16, level);
 //            }
 //            else
 //            {
-//                GuiDraw.drawTexturedModalRect(127 + ((this.outputGas == 3) ? 21 : 0), 62 - level, 1 + this.outputGas * 17, 26 - level, 16, level);
+//                GuiDraw.blit(127 + ((this.outputGas == 3) ? 21 : 0), 62 - level, 1 + this.outputGas * 17, 26 - level, 16, level);
 //                GuiDraw.changeTexture(GasLiquefierRecipeHandler.liquefierGuiTexture);
 //            }
 //
 //            //Offsets from GUI: x - 5,  y - 4
 //            int powerlevel = 53 - (progress - 41) / 6;
-//            GuiDraw.drawTexturedModalRect(37, 13, 176, 38, powerlevel, 7);
-//            GuiDraw.drawTexturedModalRect(23, 12, 208, 0, 11, 10);
+//            GuiDraw.blit(37, 13, 176, 38, powerlevel, 7);
+//            GuiDraw.blit(23, 12, 208, 0, 11, 10);
 //        }
 //
 //        if (this.fillAtmos)
@@ -104,8 +104,8 @@
 //            String gasname = this.outputGas == 3 ? GCCoreUtil.translate("gas.oxygen.name") : GCCoreUtil.translate("gas.nitrogen.name");
 //            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
 //            String text2 = GCCoreUtil.lowerCaseNoun(gasname) + " " + GCCoreUtil.translate("gui.message.with_atmosphere1.name");
-//            this.fontRenderer.drawString(text1, 4, 83, 4210752);
-//            this.fontRenderer.drawString(text2, 4, 93, 4210752);
+//            this.font.drawString(text1, 4, 83, 4210752);
+//            this.font.drawString(text2, 4, 93, 4210752);
 //        }
 //    }
 //

@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.entity.ILandable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -483,7 +483,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         return false;
     }
 
-    //Server side only - this is a Launch Controlled ignition attempt
+    //Server LogicalSide only - this is a Launch Controlled ignition attempt
     private void autoLaunch()
     {
         if (this.autoLaunchSetting != null)
@@ -921,7 +921,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onLaunch()
     {
-        if (!(this.world.getDimension().getType() == GalacticraftCore.planetOverworld.getDimensionID() || this.world.getDimension() instanceof IGalacticraftWorldProvider))
+        if (!(this.world.getDimension().getType() == GalacticraftCore.planetOverworld.getDimensionID() || this.world.getDimension() instanceof IGalacticraftDimension))
         {
             if (ConfigManagerCore.disableRocketLaunchAllNonGC)
             {

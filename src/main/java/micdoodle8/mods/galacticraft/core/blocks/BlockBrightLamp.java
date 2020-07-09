@@ -36,7 +36,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
     protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
     protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
 
-    //Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
+    //Metadata: bits 0-2 are the LogicalSide of the base plate using standard LogicalSide convention (0-5)
 
     public BlockBrightLamp(Properties builder)
     {
@@ -122,7 +122,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 //    {
 //        for (Direction side : Direction.values())
 //        {
-//            BlockPos offsetPos = pos.offset(side);
+//            BlockPos offsetPos = pos.offset(LogicalSide);
 //            BlockState state = worldIn.getBlockState(offsetPos);
 //            if (state.getBlock().isSideSolid(state, worldIn, offsetPos, side.getOpposite()))
 //            {
@@ -149,9 +149,9 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 //    {
 //        Direction side = state.get(FACING);
 //
-//        BlockPos offsetPos = pos.offset(side);
+//        BlockPos offsetPos = pos.offset(LogicalSide);
 //        BlockState state1 = worldIn.getBlockState(offsetPos);
-//        if (state1.getBlock().isSideSolid(state1, worldIn, offsetPos, Direction.byIndex(side.getIndex() ^ 1)))
+//        if (state1.getBlock().isSideSolid(state1, worldIn, offsetPos, Direction.byIndex(LogicalSide.getIndex() ^ 1)))
 //        {
 //            return;
 //        }
@@ -163,26 +163,26 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 //    @Override
 //    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
 //    {
-//        EnumFacing side = worldIn.getBlockState(pos).getValue(FACING);
+//        EnumFacing LogicalSide = worldIn.getBlockState(pos).getValue(FACING);
 //        float var8 = 0.3F;
 //
-//        if (side == EnumFacing.WEST)
+//        if (LogicalSide == EnumFacing.WEST)
 //        {
 //            this.setBlockBounds(0.0F, 0.2F, 0.5F - var8, var8 * 2.0F, 0.8F, 0.5F + var8);
 //        }
-//        else if (side == EnumFacing.EAST)
+//        else if (LogicalSide == EnumFacing.EAST)
 //        {
 //            this.setBlockBounds(1.0F - var8 * 2.0F, 0.2F, 0.5F - var8, 1.0F, 0.8F, 0.5F + var8);
 //        }
-//        else if (side == EnumFacing.NORTH)
+//        else if (LogicalSide == EnumFacing.NORTH)
 //        {
 //            this.setBlockBounds(0.5F - var8, 0.2F, 0.0F, 0.5F + var8, 0.8F, var8 * 2.0F);
 //        }
-//        else if (side == EnumFacing.SOUTH)
+//        else if (LogicalSide == EnumFacing.SOUTH)
 //        {
 //            this.setBlockBounds(0.5F - var8, 0.2F, 1.0F - var8 * 2.0F, 0.5F + var8, 0.8F, 1.0F);
 //        }
-//        else if (side == EnumFacing.DOWN)
+//        else if (LogicalSide == EnumFacing.DOWN)
 //        {
 //            this.setBlockBounds(0.5F - var8, 0.0F, 0.5F - var8, 0.5F + var8, 0.6F, 0.5F + var8);
 //        }

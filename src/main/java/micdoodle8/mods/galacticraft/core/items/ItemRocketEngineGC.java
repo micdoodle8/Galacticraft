@@ -10,7 +10,7 @@
 //import net.minecraft.util.NonNullList;
 //import net.minecraftforge.api.distmarker.Dist;
 //import net.minecraftforge.api.distmarker.OnlyIn;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemRocketEngineGC extends Item implements ISortableItem
@@ -57,7 +57,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        return this.getUnlocalizedName() + "." + ItemRocketEngineGC.names[itemStack.getItemDamage()];
+//        return this.getUnlocalizedName() + "." + ItemRocketEngineGC.names[itemStack.getDamage()];
 //    }
 //
 //    /*@Override

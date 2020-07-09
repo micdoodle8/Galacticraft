@@ -8,7 +8,7 @@
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.NonNullList;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemMoon extends ItemDesc implements ISortableItem
@@ -62,9 +62,9 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack par1ItemStack)
 //    {
-//        if (names.length > par1ItemStack.getItemDamage())
+//        if (names.length > par1ItemStack.getDamage())
 //        {
-//            return "item." + ItemMoon.names[par1ItemStack.getItemDamage()];
+//            return "item." + ItemMoon.names[par1ItemStack.getDamage()];
 //        }
 //
 //        return "unnamed";
@@ -123,7 +123,7 @@
 //    @Override
 //    public float getSmeltingExperience(ItemStack item)
 //    {
-//        switch (item.getItemDamage())
+//        switch (item.getDamage())
 //        {
 //        case 1:
 //            return 1F;

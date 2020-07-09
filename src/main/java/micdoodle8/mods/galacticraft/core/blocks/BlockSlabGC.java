@@ -19,7 +19,7 @@
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.RayTraceResult;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.util.Random;

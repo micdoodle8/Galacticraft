@@ -29,7 +29,7 @@ public class GuiSchematicBuggy extends GuiContainerGC<ContainerSchematicBuggy> i
         super.init();
         this.buttons.clear();
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) -> {
-            SchematicRegistry.flipToLastPage(this, this.pageIndex);
+            SchematicRegistry.flipToPrevPage(this, this.pageIndex);
         }));
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) -> {
             SchematicRegistry.flipToNextPage(this, this.pageIndex);

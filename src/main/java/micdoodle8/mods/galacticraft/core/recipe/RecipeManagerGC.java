@@ -16,7 +16,7 @@
 //import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 //import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 //import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
-//import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+//import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.Blocks;
 //import net.minecraft.item.Items;
@@ -313,7 +313,7 @@
 //
 //    public static void setConfigurableRecipes()
 //    {
-//        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded) TickHandlerClient.updateJEIhiding = true;
+//        if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT && CompatibilityManager.modJEILoaded) TickHandlerClient.updateJEIhiding = true;
 //
 //        // Update Aluminium Wire and Battery crafting recipes and GC Advanced Metals recipes
 //        ItemStack aluWire = new ItemStack(GCBlocks.aluminumWire, ConfigManagerCore.quickMode ? 9 : 6, 0);

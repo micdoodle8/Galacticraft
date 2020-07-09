@@ -216,7 +216,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
 //    public double pullEnergy(Direction side, double amount, boolean simulate)
 //    {
-//        if (this.canOutputEnergy(side))
+//        if (this.canOutputEnergy(LogicalSide))
 //        {
 //            float amountGC = (float) amount / EnergyConfigHandler.TO_MEKANISM_RATIO;
 //            return this.storage.extractEnergyGC(amountGC, simulate) * EnergyConfigHandler.TO_MEKANISM_RATIO;
@@ -247,16 +247,16 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
 //    @Override
 //    public boolean hasCapability(Capability<?> cap, Direction side)
 //    {
-//        if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return true;
+//        if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(LogicalSide)) return true;
 //        if (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage)
 //        {
-//            return this.canOutputEnergy(side);
+//            return this.canOutputEnergy(LogicalSide);
 //        }
-//        if (EnergyConfigHandler.isBuildcraftLoaded() && cap == MjAPI.CAP_CONNECTOR && this.canOutputEnergy(side))
+//        if (EnergyConfigHandler.isBuildcraftLoaded() && cap == MjAPI.CAP_CONNECTOR && this.canOutputEnergy(LogicalSide))
 //        {
 //            return true;
 //        }
-//        return super.hasCapability(cap, side);
+//        return super.hasCapability(cap, LogicalSide);
 //    }
 
     private LazyOptional<IEnergyStorage> holder = null;

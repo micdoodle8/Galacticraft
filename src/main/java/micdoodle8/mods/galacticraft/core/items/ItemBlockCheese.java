@@ -6,7 +6,7 @@
 //import net.minecraft.item.ItemGroup;
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockCheese extends ItemBlockDesc

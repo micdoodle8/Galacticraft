@@ -14,8 +14,6 @@ public class ItemPickaxeGC extends PickaxeItem implements ISortableItem
     public ItemPickaxeGC(Item.Properties builder)
     {
         super(EnumItemTierGC.STEEL, 1, -2.8F, builder);
-//        this.setUnlocalizedName(assetName);
-        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
 //    @Override

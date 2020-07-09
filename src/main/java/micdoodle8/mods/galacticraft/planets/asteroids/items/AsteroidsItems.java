@@ -1,136 +1,180 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.items.ItemBase;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class AsteroidsItems
 {
-    public static Item grapple;
-    public static Item tier3Rocket;
-    public static Item astroMiner;
-    public static Item thermalPadding;
-    public static Item basicItem;
-    public static Item methaneCanister;
-    public static Item canisterLOX;
-    public static Item canisterLN2;
-    //public static Item canisterLAr;
-    public static Item atmosphericValve;
-    public static ItemHeavyNoseCone heavyNoseCone;
-    public static Item orionDrive;
-    public static Item titaniumHelmet;
-    public static Item titaniumChestplate;
-    public static Item titaniumLeggings;
-    public static Item titaniumBoots;
-    public static Item titaniumAxe;
-    public static Item titaniumPickaxe;
-    public static Item titaniumSpade;
-    public static Item titaniumHoe;
-    public static Item titaniumSword;
-    public static Item strangeSeed;
+    @ObjectHolder(AsteroidItemNames.grapple) public static Item grapple;
+    @ObjectHolder(AsteroidItemNames.rocketTierThree) public static Item rocketTierThree;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo1) public static Item rocketTierThreeCargo1;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo2) public static Item rocketTierThreeCargo2;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo3) public static Item rocketTierThreeCargo3;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCreative) public static Item rocketTierThreeCreative;
+    @ObjectHolder(AsteroidItemNames.astroMiner) public static Item astroMiner;
+    @ObjectHolder(AsteroidItemNames.thermalHelm) public static Item thermalHelm;
+    @ObjectHolder(AsteroidItemNames.thermalChestplate) public static Item thermalChestplate;
+    @ObjectHolder(AsteroidItemNames.thermalLeggings) public static Item thermalLeggings;
+    @ObjectHolder(AsteroidItemNames.thermalBoots) public static Item thermalBoots;
+    @ObjectHolder(AsteroidItemNames.methaneCanister) public static Item methaneCanister;
+    @ObjectHolder(AsteroidItemNames.canisterLOX) public static Item canisterLOX;
+    @ObjectHolder(AsteroidItemNames.canisterLN2) public static Item canisterLN2;
+    @ObjectHolder(AsteroidItemNames.canisterLAr) public static Item canisterLAr;
+    @ObjectHolder(AsteroidItemNames.atmosphericValve) public static Item atmosphericValve;
+    @ObjectHolder(AsteroidItemNames.heavyNoseCone) public static Item heavyNoseCone;
+    @ObjectHolder(AsteroidItemNames.orionDrive) public static Item orionDrive;
+    @ObjectHolder(AsteroidItemNames.titaniumHelmet) public static Item titaniumHelmet;
+    @ObjectHolder(AsteroidItemNames.titaniumChestplate) public static Item titaniumChestplate;
+    @ObjectHolder(AsteroidItemNames.titaniumLeggings) public static Item titaniumLeggings;
+    @ObjectHolder(AsteroidItemNames.titaniumBoots) public static Item titaniumBoots;
+    @ObjectHolder(AsteroidItemNames.titaniumAxe) public static Item titaniumAxe;
+    @ObjectHolder(AsteroidItemNames.titaniumPickaxe) public static Item titaniumPickaxe;
+    @ObjectHolder(AsteroidItemNames.titaniumSpade) public static Item titaniumSpade;
+    @ObjectHolder(AsteroidItemNames.titaniumHoe) public static Item titaniumHoe;
+    @ObjectHolder(AsteroidItemNames.titaniumSword) public static Item titaniumSword;
+    @ObjectHolder(AsteroidItemNames.strangeSeed1) public static Item strangeSeed1;
+    @ObjectHolder(AsteroidItemNames.strangeSeed2) public static Item strangeSeed2;
+    @ObjectHolder(AsteroidItemNames.ingotTitanium) public static Item ingotTitanium;
+    @ObjectHolder(AsteroidItemNames.engineT2) public static Item engineT2;
+    @ObjectHolder(AsteroidItemNames.rocketFinsT2) public static Item rocketFinsT2;
+    @ObjectHolder(AsteroidItemNames.shardIron) public static Item shardIron;
+    @ObjectHolder(AsteroidItemNames.shardTitanium) public static Item shardTitanium;
+    @ObjectHolder(AsteroidItemNames.reinforcedPlateT3) public static Item reinforcedPlateT3;
+    @ObjectHolder(AsteroidItemNames.compressedTitanium) public static Item compressedTitanium;
+    @ObjectHolder(AsteroidItemNames.thermalCloth) public static Item thermalCloth;
+    @ObjectHolder(AsteroidItemNames.beamCore) public static Item beamCore;
+    @ObjectHolder(AsteroidItemNames.dustTitanium) public static Item dustTitanium;
 
-    public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 4, 760, 14.0F, 4.0F, 16);
-    public static ArmorItem.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 7, 10, 5 }, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
+//    public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 4, 760, 14.0F, 4.0F, 16);
+//    public static ArmorItem.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 7, 10, 5 }, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
 
-    public static void initItems()
+    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
     {
-        AsteroidsItems.grapple = new ItemGrappleHook("grapple");
-        AsteroidsItems.tier3Rocket = new ItemTier3Rocket("rocket_t3");
-        AsteroidsItems.astroMiner = new ItemAstroMiner("astro_miner");
-        AsteroidsItems.thermalPadding = new ItemThermalPadding("thermal_padding");
-        AsteroidsItems.basicItem = new ItemBasicAsteroids("item_basic_asteroids");
-        AsteroidsItems.methaneCanister = new ItemCanisterMethane("methane_canister_partial");
-        AsteroidsItems.canisterLOX = new ItemCanisterLiquidOxygen("canister_partial_lox");
-        AsteroidsItems.canisterLN2 = new ItemCanisterLiquidNitrogen("canister_partial_ln2");
-        //AsteroidsItems.canisterLAr = new ItemCanisterLiquidArgon("canisterPartialLAr");
-        AsteroidsItems.atmosphericValve = new ItemAtmosphericValve("atmospheric_valve");
-        AsteroidsItems.heavyNoseCone = new ItemHeavyNoseCone("heavy_nose_cone");
-        AsteroidsItems.orionDrive = new ItemOrionDrive("orion_drive");
-        AsteroidsItems.titaniumHelmet = new ItemArmorAsteroids(EquipmentSlotType.HEAD, "helmet");
-        AsteroidsItems.titaniumChestplate = new ItemArmorAsteroids(EquipmentSlotType.CHEST, "chestplate");
-        AsteroidsItems.titaniumLeggings = new ItemArmorAsteroids(EquipmentSlotType.LEGS, "leggings");
-        AsteroidsItems.titaniumBoots = new ItemArmorAsteroids(EquipmentSlotType.FEET, "boots");
-        AsteroidsItems.titaniumAxe = new ItemAxeAsteroids("titanium_axe");
-        AsteroidsItems.titaniumPickaxe = new ItemPickaxeAsteroids("titanium_pickaxe");
-        AsteroidsItems.titaniumSpade = new ItemSpadeAsteroids("titanium_shovel");
-        AsteroidsItems.titaniumHoe = new ItemHoeAsteroids("titanium_hoe");
-        AsteroidsItems.titaniumSword = new ItemSwordAsteroids("titanium_sword");
-        AsteroidsItems.strangeSeed = new ItemStrangeSeed("strange_seed");
+        reg.register(thing.setRegistryName(name));
+    }
 
-        AsteroidsItems.registerItems();
+    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, String name)
+    {
+        register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+    }
 
-        AsteroidsItems.registerHarvestLevels();
+    public static Item.Properties defaultBuilder() {
+        return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
+    }
+
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> evt)
+    {
+        IForgeRegistry<Item> r = evt.getRegistry();
+        register(r, new ItemGrappleHook(defaultBuilder()), AsteroidItemNames.grapple);
+        register(r, new ItemTier3Rocket(defaultBuilder()), AsteroidItemNames.rocketTierThree);
+        register(r, new ItemTier3Rocket(defaultBuilder()), AsteroidItemNames.rocketTierThreeCargo1);
+        register(r, new ItemTier3Rocket(defaultBuilder()), AsteroidItemNames.rocketTierThreeCargo2);
+        register(r, new ItemTier3Rocket(defaultBuilder()), AsteroidItemNames.rocketTierThreeCargo3);
+        register(r, new ItemTier3Rocket(defaultBuilder()), AsteroidItemNames.rocketTierThreeCreative);
+        register(r, new ItemAstroMiner(defaultBuilder().maxDamage(0).maxStackSize(1)), AsteroidItemNames.astroMiner);
+        register(r, new ItemThermalPadding(defaultBuilder()), AsteroidItemNames.thermalHelm);
+        register(r, new ItemThermalPadding(defaultBuilder()), AsteroidItemNames.thermalChestplate);
+        register(r, new ItemThermalPadding(defaultBuilder()), AsteroidItemNames.thermalLeggings);
+        register(r, new ItemThermalPadding(defaultBuilder()), AsteroidItemNames.thermalBoots);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.ingotTitanium);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.engineT2);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.rocketFinsT2);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.shardIron);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.shardTitanium);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.reinforcedPlateT3);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.compressedTitanium);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.thermalCloth);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.beamCore);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.dustTitanium);
+        register(r, new ItemCanisterMethane(defaultBuilder()), AsteroidItemNames.methaneCanister);
+        register(r, new ItemCanisterLiquidOxygen(defaultBuilder()), AsteroidItemNames.canisterLOX);
+        register(r, new ItemCanisterLiquidNitrogen(defaultBuilder()), AsteroidItemNames.canisterLN2);
+        register(r, new ItemCanisterLiquidArgon(defaultBuilder()), AsteroidItemNames.canisterLAr);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.atmosphericValve);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.heavyNoseCone);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.orionDrive);
+        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.orionDrive);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.HEAD, defaultBuilder()), AsteroidItemNames.thermalHelm);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.CHEST, defaultBuilder()), AsteroidItemNames.thermalChestplate);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.LEGS, defaultBuilder()), AsteroidItemNames.thermalLeggings);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.FEET, defaultBuilder()), AsteroidItemNames.thermalBoots);
+        register(r, new ItemAxeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumAxe);
+        register(r, new ItemPickaxeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumPickaxe);
+        register(r, new ItemSpadeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumSpade);
+        register(r, new ItemHoeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumHoe);
+        register(r, new ItemSwordAsteroids(defaultBuilder()), AsteroidItemNames.titaniumSword);
+        register(r, new ItemStrangeSeed(defaultBuilder()), AsteroidItemNames.strangeSeed1);
+        register(r, new ItemStrangeSeed(defaultBuilder()), AsteroidItemNames.strangeSeed2);
 
         GalacticraftCore.proxy.registerCanister(new PartialCanister(AsteroidsItems.methaneCanister, Constants.MOD_ID_PLANETS, "methane_canister_partial", 7));
         GalacticraftCore.proxy.registerCanister(new PartialCanister(AsteroidsItems.canisterLOX, Constants.MOD_ID_PLANETS, "canister_partial_lox", 7));
         GalacticraftCore.proxy.registerCanister(new PartialCanister(AsteroidsItems.canisterLN2, Constants.MOD_ID_PLANETS, "canister_partial_ln2", 7));
     }
 
-    public static void oreDictRegistrations()
-    {
-        OreDictionary.registerOre("compressedTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
-        OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
-        OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
-        OreDictionary.registerOre("dustTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 9));
-    }
+//    public static void oreDictRegistrations()
+//    {
+//        OreDictionary.registerOre("compressedTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 6));
+//        OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 0));
+//        OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
+//        OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
+//        OreDictionary.registerOre("dustTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 9));
+//    }
+//
+//    public static void registerHarvestLevels()
+//    {
+//        AsteroidsItems.titaniumPickaxe.setHarvestLevel("pickaxe", 5);
+//        AsteroidsItems.titaniumAxe.setHarvestLevel("axe", 5);
+//        AsteroidsItems.titaniumSpade.setHarvestLevel("shovel", 5);
+//    }
 
-    public static void registerHarvestLevels()
-    {
-        AsteroidsItems.titaniumPickaxe.setHarvestLevel("pickaxe", 5);
-        AsteroidsItems.titaniumAxe.setHarvestLevel("axe", 5);
-        AsteroidsItems.titaniumSpade.setHarvestLevel("shovel", 5);
-    }
-
-    private static void registerItems()
-    {
-        registerItem(AsteroidsItems.grapple);
-        registerItem(AsteroidsItems.tier3Rocket);
-        registerItem(AsteroidsItems.astroMiner);
-        registerItem(AsteroidsItems.thermalPadding);
-        registerItem(AsteroidsItems.basicItem);
-        registerItem(AsteroidsItems.methaneCanister);
-        registerItem(AsteroidsItems.canisterLOX);
-        registerItem(AsteroidsItems.canisterLN2);
-        //registerItem(AsteroidsItems.canisterLAr);
-        registerItem(AsteroidsItems.atmosphericValve);
-        registerItem(AsteroidsItems.heavyNoseCone);
-        registerItem(AsteroidsItems.orionDrive);
-        registerItem(AsteroidsItems.titaniumHelmet);
-        registerItem(AsteroidsItems.titaniumChestplate);
-        registerItem(AsteroidsItems.titaniumLeggings);
-        registerItem(AsteroidsItems.titaniumBoots);
-        registerItem(AsteroidsItems.titaniumAxe);
-        registerItem(AsteroidsItems.titaniumPickaxe);
-        registerItem(AsteroidsItems.titaniumSpade);
-        registerItem(AsteroidsItems.titaniumHoe);
-        registerItem(AsteroidsItems.titaniumSword);
-        registerItem(AsteroidsItems.strangeSeed);
-        
-        ARMOR_TITANIUM.setRepairItem(new ItemStack(AsteroidsItems.basicItem, 1, 0));
-        
-        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.canisterLOX);
-        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.methaneCanister);
-        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.canisterLN2);
-    }
-
-    public static void registerItem(Item item)
-    {
-        String name = item.getUnlocalizedName().substring(5);
-        GCCoreUtil.registerGalacticraftItem(name, item);
-        GalacticraftCore.itemListTrue.add(item);
-        item.setRegistryName(name);
-        GalacticraftPlanets.proxy.postRegisterItem(item);
-    }
+//    private static void registerItems()
+//    {
+//        registerItem(AsteroidsItems.grapple);
+//        registerItem(AsteroidsItems.tier3Rocket);
+//        registerItem(AsteroidsItems.astroMiner);
+//        registerItem(AsteroidsItems.thermalPadding);
+//        registerItem(AsteroidsItems.methaneCanister);
+//        registerItem(AsteroidsItems.canisterLOX);
+//        registerItem(AsteroidsItems.canisterLN2);
+//        //registerItem(AsteroidsItems.canisterLAr);
+//        registerItem(AsteroidsItems.atmosphericValve);
+//        registerItem(AsteroidsItems.heavyNoseCone);
+//        registerItem(AsteroidsItems.orionDrive);
+//        registerItem(AsteroidsItems.titaniumHelmet);
+//        registerItem(AsteroidsItems.titaniumChestplate);
+//        registerItem(AsteroidsItems.titaniumLeggings);
+//        registerItem(AsteroidsItems.titaniumBoots);
+//        registerItem(AsteroidsItems.titaniumAxe);
+//        registerItem(AsteroidsItems.titaniumPickaxe);
+//        registerItem(AsteroidsItems.titaniumSpade);
+//        registerItem(AsteroidsItems.titaniumHoe);
+//        registerItem(AsteroidsItems.titaniumSword);
+//        registerItem(AsteroidsItems.strangeSeed);
+//
+//        ARMOR_TITANIUM.setRepairItem(new ItemStack(AsteroidsItems.basicItem, 1, 0));
+//
+//        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.canisterLOX);
+//        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.methaneCanister);
+//        GCItems.canisterTypes.add((ItemCanisterGeneric) AsteroidsItems.canisterLN2);
+//    }
+//
+//    public static void registerItem(Item item)
+//    {
+//        String name = item.getUnlocalizedName().substring(5);
+//        GCCoreUtil.registerGalacticraftItem(name, item);
+//        GalacticraftCore.itemListTrue.add(item);
+//        item.setRegistryName(name);
+//        GalacticraftPlanets.proxy.postRegisterItem(item);
+//    }
 }

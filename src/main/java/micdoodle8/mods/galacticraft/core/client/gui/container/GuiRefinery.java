@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiRefinery extends GuiContainerGC
+public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
 {
     private static final ResourceLocation refineryTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/refinery.png");
 

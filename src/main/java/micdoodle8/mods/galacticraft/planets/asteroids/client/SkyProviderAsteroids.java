@@ -1,30 +1,29 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import com.mojang.blaze3d.platform.GlStateManager;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
+
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class SkyProviderAsteroids extends IRenderHandler
+public class SkyProviderAsteroids implements IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation galaxyTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/planets/galaxy.png");
@@ -36,7 +35,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 
     private float sunSize;
 
-    public SkyProviderAsteroids(IGalacticraftWorldProvider asteroidsProvider)
+    public SkyProviderAsteroids(IGalacticraftDimension asteroidsProvider)
     {
         this.sunSize = 17.5F * asteroidsProvider.getSolarSize();
 
@@ -88,7 +87,7 @@ public class SkyProviderAsteroids extends IRenderHandler
     }
 
     @Override
-    public void render(float partialTicks, ClientWorld world, Minecraft mc)
+    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc)
     {
         float var10;
         float var11;

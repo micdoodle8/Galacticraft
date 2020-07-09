@@ -19,7 +19,7 @@
 //import net.minecraft.util.Hand;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockEnclosed extends ItemBlockDesc
@@ -38,7 +38,7 @@
 //
 //        try
 //        {
-//            name = BlockEnclosed.EnumEnclosedBlockType.byMetadata(par1ItemStack.getItemDamage()).getName();
+//            name = BlockEnclosed.EnumEnclosedBlockType.byMetadata(par1ItemStack.getDamage()).getName();
 //            name = name.substring(9, name.length()); // Remove "enclosed_"
 //        }
 //        catch (Exception e)
@@ -53,7 +53,7 @@
 //    public ActionResultType onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ)
 //    {
 //        ItemStack itemstack = playerIn.getHeldItem(hand);
-//        int metadata = this.getMetadata(itemstack.getItemDamage());
+//        int metadata = this.getMetadata(itemstack.getDamage());
 //        if (metadata == EnumEnclosedBlockType.ME_CABLE.getMeta() && CompatibilityManager.isAppEngLoaded())
 //        {
 //            BlockState iblockstate = worldIn.getBlockState(pos);
@@ -62,23 +62,23 @@
 //
 //            if (!block.isReplaceable(worldIn, pos))
 //            {
-//                pos = pos.offset(side);
+//                pos = pos.offset(LogicalSide);
 //            }
 //
 //            if (itemstack.getCount() == 0)
 //            {
 //                return ActionResultType.FAIL;
 //            }
-//            else if (!playerIn.canPlayerEdit(pos, side, itemstack))
+//            else if (!playerIn.canPlayerEdit(pos, LogicalSide, itemstack))
 //            {
 //                return ActionResultType.FAIL;
 //            }
-//            else if (worldIn.mayPlace(this.block, pos, false, side, null))
+//            else if (worldIn.mayPlace(this.block, pos, false, LogicalSide, null))
 //            {
 //                int i = this.getMetadata(itemstack.getMetadata());
-//                BlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
+//                BlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, LogicalSide, hitX, hitY, hitZ, i, playerIn);
 //
-//                if (placeBlockAt(itemstack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, iblockstate1))
+//                if (placeBlockAt(itemstack, playerIn, worldIn, pos, LogicalSide, hitX, hitY, hitZ, iblockstate1))
 //                {
 //                    SoundType soundType = this.getBlock().getSoundType(iblockstate, worldIn, pos, playerIn);
 //                    worldIn.playSound(playerIn, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
@@ -86,14 +86,14 @@
 //
 //                    ItemStack itemME = AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1);
 //                    itemME.setCount(2); //Fool AppEng into not destroying anything in the player inventory
-//                    AEApi.instance().partHelper().placeBus( itemME, origPos, side, playerIn, hand, worldIn );
-//                    //Emulate appeng.parts.PartPlacement.place( is, pos, side, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
+//                    AEApi.instance().partHelper().placeBus( itemME, origPos, LogicalSide, playerIn, hand, worldIn );
+//                    //Emulate appeng.parts.PartPlacement.place( is, pos, LogicalSide, player, w, PartPlacement.PlaceType.INTERACT_SECOND_PASS, 0 );
 //                    try
 //                    {
 //                        Class clazzpp = Class.forName("appeng.parts.PartPlacement");
 //                        Class enumPlaceType = Class.forName("appeng.parts.PartPlacement$PlaceType");
 //                        Method methPl = clazzpp.getMethod("place", ItemStack.class, BlockPos.class, Direction.class, PlayerEntity.class, Hand.class, World.class, enumPlaceType, int.class);
-//                        methPl.invoke(null, itemME, origPos, side, playerIn, hand, worldIn, enumPlaceType.getEnumConstants()[2], 0 );
+//                        methPl.invoke(null, itemME, origPos, LogicalSide, playerIn, hand, worldIn, enumPlaceType.getEnumConstants()[2], 0 );
 //                    } catch (Exception e)
 //                    {
 //                        e.printStackTrace();
@@ -108,7 +108,7 @@
 //        }
 //        else
 //        {
-//            return super.onItemUse(playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+//            return super.onItemUse(playerIn, worldIn, pos, hand, LogicalSide, hitX, hitY, hitZ);
 //        }
 //    }
 //

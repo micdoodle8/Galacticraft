@@ -1,29 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
-import java.util.List;
-import java.util.Random;
-
-public class BlockSpout extends Block implements ISortableBlock, ITileEntityProvider
+public class BlockSpout extends Block
 {
     public BlockSpout(Properties builder)
     {
@@ -37,11 +24,11 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
@@ -49,27 +36,34 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
         return new TileEntitySpout();
     }
 
-    @Override
-    public Item getItemDropped(BlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(VenusBlocks.venusBlock);
-    }
+//    @Override
+//    public Item getItemDropped(BlockState state, Random rand, int fortune)
+//    {
+//        return Item.getItemFromBlock(VenusBlocks.venusBlock);
+//    } TODO Block drops
+
+//    @Override
+//    public int damageDropped(BlockState state)
+//    {
+//        return BlockVenusRock.EnumBlockBasicVenus.ROCK_SOFT.getMeta();
+//    }
+
+//    @Override
+//    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
+//    {
+//        return super.getDrops(world, pos, state, fortune);
+//    }
+
 
     @Override
-    public int damageDropped(BlockState state)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT.getMeta();
+        return super.getShape(state, worldIn, pos, context);
     }
 
-    @Override
-    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
-    {
-        return super.getDrops(world, pos, state, fortune);
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return (face == Direction.UP) ? BlockFaceShape.BOWL : BlockFaceShape.SOLID;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return (face == Direction.UP) ? BlockFaceShape.BOWL : BlockFaceShape.SOLID;
+//    }
 }

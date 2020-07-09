@@ -48,10 +48,9 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 
     private final OctavesNoiseGenerator depthNoise;
 
-
-    public MoonChunkGenerator(IWorld worldIn, BiomeProvider dimension, MoonGenSettings settingsIn)
+    public MoonChunkGenerator(IWorld worldIn, BiomeProvider biomeProvider, MoonGenSettings settingsIn)
     {
-        super(worldIn, dimension, 4, 8, 128, settingsIn, true);
+        super(worldIn, biomeProvider, 4, 8, 128, settingsIn, true);
         depthNoise = new OctavesNoiseGenerator(randomSeed, 16);
     }
 

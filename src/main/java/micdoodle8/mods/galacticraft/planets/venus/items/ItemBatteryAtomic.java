@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -8,24 +7,23 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemBatteryAtomic extends ItemElectricBase implements ISortableItem
 {
     public ItemBatteryAtomic(Item.Properties properties)
     {
         super(properties);
-        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -54,10 +52,10 @@ public class ItemBatteryAtomic extends ItemElectricBase implements ISortableItem
     }
 
     @Override
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
-        tooltip.add(EnumColor.ORANGE + GCCoreUtil.translate("gui.message.low_energy_output.name"));
+        tooltip.add(new StringTextComponent(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc")));
+        tooltip.add(new StringTextComponent(EnumColor.ORANGE + GCCoreUtil.translate("gui.message.low_energy_output.name")));
     }
 
     @Override
@@ -95,14 +93,14 @@ public class ItemBatteryAtomic extends ItemElectricBase implements ISortableItem
         return super.discharge(theItem, energy, doTransfer);
     }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> par3List)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            par3List.add(new ItemStack(this, 1, 0));
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> par3List)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            par3List.add(new ItemStack(this, 1, 0));
+//        }
+//    }
 
     @Override
     public EnumSortCategoryItem getCategory(int meta)

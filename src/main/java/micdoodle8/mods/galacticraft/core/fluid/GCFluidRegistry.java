@@ -29,7 +29,7 @@ public class GCFluidRegistry
         itemRegister = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MOD_ID_CORE);
     }
 
-    public FluidRegistrationEntry<ForgeFlowingFluid.Source, ForgeFlowingFluid.Flowing, FlowingFluidBlock, BucketItem> register(String name, FluidAttributes.Builder builder) {
+    public FluidRegistrationEntry<ForgeFlowingFluid.Source, ForgeFlowingFluid.Flowing, FlowingFluidBlock, BucketItem> register(String name, FluidAttributes.Builder builder, Material blockMaterial) {
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
         //Create the registry object with dummy entries that we can use as part of the supplier but that works as use in suppliers
@@ -45,7 +45,7 @@ public class GCFluidRegistry
                 new Item.Properties().maxStackSize(1).containerItem(Items.BUCKET))));
         //Note: The block properties used here is a copy of the ones for water
         fluidRegistryObject.updateBlock(blockRegister.register(name, () -> new FlowingFluidBlock(fluidRegistryObject::getStillFluid,
-                Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops())));
+                Block.Properties.create(blockMaterial).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops())));
         return fluidRegistryObject;
     }
 
@@ -167,11 +167,11 @@ public class GCFluidRegistry
 //        //If any other mod has registered "fuel" or "oil" and GC has not, then allow GC's appropriate canisters to be fillable with that one as well
 ////        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
 ////        {
-////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 ////        }
 ////        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
 ////        {
-////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 //            //And allow Buildcraft oil buckets to be filled with oilgc
 ////            if (CompatibilityManager.isBCraftEnergyLoaded())
 ////            {
@@ -254,7 +254,7 @@ public class GCFluidRegistry
 //            {
 //                EntityMeteorChunk meteor = new EntityMeteorChunk(worldIn);
 //                meteor.setPosition(position.getX(), position.getY(), position.getZ());
-//                if (stack.getItemDamage() > 0)
+//                if (stack.getDamage() > 0)
 //                {
 //                    meteor.setFire(20);
 //                    meteor.isHot = true;

@@ -1,14 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 public class ModelFlag extends Model
@@ -60,9 +59,9 @@ public class ModelFlag extends Model
 
             float windLevel = 1.0F;
 
-            if (entity.world.getDimension() instanceof IGalacticraftWorldProvider)
+            if (entity.world.getDimension() instanceof IGalacticraftDimension)
             {
-                windLevel = ((IGalacticraftWorldProvider) entity.world.getDimension()).getWindLevel();
+                windLevel = ((IGalacticraftDimension) entity.world.getDimension()).getWindLevel();
             }
 
             for (int i = 0; i < entity.flagData.getWidth(); i++)

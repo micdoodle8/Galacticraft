@@ -13,7 +13,7 @@
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockCreativeGC extends BlockItem

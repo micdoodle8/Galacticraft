@@ -5,7 +5,7 @@
 //import net.minecraft.block.Block;
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockAluminumWire extends ItemBlockDesc
@@ -27,7 +27,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemstack)
 //    {
-//        String name = BlockAluminumWire.EnumWireType.values()[itemstack.getItemDamage()].getName();
+//        String name = BlockAluminumWire.EnumWireType.values()[itemstack.getDamage()].getName();
 //        return this.getBlock().getUnlocalizedName() + "." + name;
 //    }
 //

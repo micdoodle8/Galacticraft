@@ -245,6 +245,32 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 //        return null;
 //    }
 
+
+    @Override
+    public int getTanks()
+    {
+        return this.fuelTank.getTanks();
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        return this.fuelTank.getFluidInTank(tank);
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        return this.fuelTank.getTankCapacity(tank);
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        return this.fuelTank.isFluidValid(tank, stack);
+    }
+
     @Override
     public boolean shouldUseEnergy()
     {

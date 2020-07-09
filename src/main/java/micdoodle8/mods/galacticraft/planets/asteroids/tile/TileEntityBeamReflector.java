@@ -1,17 +1,23 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILaserNode
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidBlockNames.beamReflector)
+    public static TileEntityType<TileEntityBeamReflector> TYPE;
+
     public Vector3 color = new Vector3(0, 1, 0);
     private EnergyStorage storage = new EnergyStorage(10, 1);
 
@@ -23,15 +29,15 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
 
     public TileEntityBeamReflector()
     {
-        super("container.beam_reflector.name");
+        super(TYPE);
     }
 
     @Override
     public Vector3 getInputPoint()
     {
         float distance = 0.15F;
-        Vector3 deviation = new Vector3(Math.sin(Math.toRadians(this.yaw - 180)) * distance, 0, Math.cos(Math.toRadians(this.yaw - 180)) * distance);
-        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 1.13228 / 2.0, this.getPos().getZ() + 0.5);
+        Vector3 deviation = new Vector3((float)Math.sin(Math.toRadians(this.yaw - 180)) * distance, 0, (float)Math.cos(Math.toRadians(this.yaw - 180)) * distance);
+        Vector3 headVec = new Vector3((float)this.getPos().getX() + 0.5F, (float)this.getPos().getY() + 1.13228F / 2.0F, (float)this.getPos().getZ() + 0.5F);
         headVec.translate(deviation.clone().invert());
         return headVec;
     }
@@ -39,7 +45,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     @Override
     public Vector3 getOutputPoint(boolean offset)
     {
-        return new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 1.13228 / 2.0, this.getPos().getZ() + 0.5);
+        return new Vector3(this.getPos().getX() + 0.5F, this.getPos().getY() + 1.13228F / 2.0F, this.getPos().getZ() + 0.5F);
     }
 
     @Override

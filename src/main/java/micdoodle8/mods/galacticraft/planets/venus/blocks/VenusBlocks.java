@@ -2,9 +2,14 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
+import micdoodle8.mods.galacticraft.planets.venus.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,7 +22,7 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Constants.MOD_ID_PLANETS)
 public class VenusBlocks
 {
-    @ObjectHolder(VenusBlockNames.venusBlock) public static Block venusBlock;
+//    @ObjectHolder(VenusBlockNames.venusBlock) public static Block venusBlock;
     @ObjectHolder(VenusBlockNames.spout) public static Block spout;
     @ObjectHolder(VenusBlockNames.bossSpawner) public static Block bossSpawner;
     @ObjectHolder(VenusBlockNames.treasureChestTier3) public static Block treasureChestTier3;
@@ -29,6 +34,20 @@ public class VenusBlocks
     @ObjectHolder(VenusBlockNames.solarArrayModule) public static Block solarArrayModule;
     @ObjectHolder(VenusBlockNames.solarArrayController) public static Block solarArrayController;
     @ObjectHolder(VenusBlockNames.laserTurret) public static Block laserTurret;
+    @ObjectHolder(VenusBlockNames.rockSoft) public static Block rockSoft;
+    @ObjectHolder(VenusBlockNames.rockHard) public static Block rockHard;
+    @ObjectHolder(VenusBlockNames.rockMagma) public static Block rockMagma;
+    @ObjectHolder(VenusBlockNames.rockVolcanicDeposit) public static Block rockVolcanicDeposit;
+    @ObjectHolder(VenusBlockNames.dungeonBrick1) public static Block dungeonBrick1;
+    @ObjectHolder(VenusBlockNames.dungeonBrick2) public static Block dungeonBrick2;
+    @ObjectHolder(VenusBlockNames.oreAluminum) public static Block oreAluminum;
+    @ObjectHolder(VenusBlockNames.oreCopper) public static Block oreCopper;
+    @ObjectHolder(VenusBlockNames.oreGalena) public static Block oreGalena;
+    @ObjectHolder(VenusBlockNames.oreQuartz) public static Block oreQuartz;
+    @ObjectHolder(VenusBlockNames.oreSilicon) public static Block oreSilicon;
+    @ObjectHolder(VenusBlockNames.oreTin) public static Block oreTin;
+    @ObjectHolder(VenusBlockNames.leadBlock) public static Block leadBlock;
+    @ObjectHolder(VenusBlockNames.oreSolarDust) public static Block oreSolarDust;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)
@@ -36,7 +55,26 @@ public class VenusBlocks
         IForgeRegistry<Block> r = evt.getRegistry();
 
         Block.Properties builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(2.2F);
-        register(r, new BlockBasicVenus(builder), VenusBlockNames.venusBlock);
+        register(r, new BlockVenusRock(builder), VenusBlockNames.rockSoft);
+        register(r, new BlockVenusRock(builder), VenusBlockNames.rockMagma);
+        register(r, new BlockVenusRock(builder), VenusBlockNames.rockVolcanicDeposit);
+        register(r, new BlockVenusRock(builder), VenusBlockNames.leadBlock);
+
+        builder = builder.hardnessAndResistance(3.0F);
+        register(r, new BlockVenusRock(builder), VenusBlockNames.rockHard);
+
+        builder = builder.hardnessAndResistance(5.0F);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreAluminum);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreCopper);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreGalena);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreQuartz);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreSilicon);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreTin);
+        register(r, new BlockOreVenus(builder), VenusBlockNames.oreSolarDust);
+
+        builder = builder.hardnessAndResistance(40.0F);
+        register(r, new BlockDungeonBrick(builder), VenusBlockNames.dungeonBrick1);
+        register(r, new BlockDungeonBrick(builder), VenusBlockNames.dungeonBrick2);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(4.5F);
         register(r, new BlockSpout(builder), VenusBlockNames.spout);
@@ -133,4 +171,19 @@ public class VenusBlocks
 //
 //        OreDictionary.registerOre("blockLead", BlockBasicVenus.EnumBlockBasicVenus.LEAD_BLOCK.getItemStack());
 //    }
+
+    @SubscribeEvent
+    public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt)
+    {
+        IForgeRegistry<TileEntityType<?>> r = evt.getRegistry();
+
+        register(r, TileEntityType.Builder.create(TileEntityCrashedProbe::new, crashedProbe).build(null), VenusBlockNames.crashedProbe);
+        register(r, TileEntityType.Builder.create(TileEntityDungeonSpawner::new, bossSpawner).build(null), VenusBlockNames.bossSpawner);
+        register(r, TileEntityType.Builder.create(TileEntityGeothermalGenerator::new, geothermalGenerator).build(null), VenusBlockNames.geothermalGenerator);
+        register(r, TileEntityType.Builder.create(TileEntityLaserTurret::new, laserTurret).build(null), VenusBlockNames.laserTurret);
+        register(r, TileEntityType.Builder.create(TileEntitySolarArrayController::new, solarArrayController).build(null), VenusBlockNames.solarArrayController);
+        register(r, TileEntityType.Builder.create(TileEntitySolarArrayModule::new, solarArrayModule).build(null), VenusBlockNames.solarArrayModule);
+        register(r, TileEntityType.Builder.create(TileEntitySpout::new, spout).build(null), VenusBlockNames.spout);
+        register(r, TileEntityType.Builder.create(TileEntityTreasureChestVenus::new, treasureChestTier3).build(null), VenusBlockNames.treasureChestTier3);
+    }
 }

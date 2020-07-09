@@ -24,8 +24,6 @@ public class InventorySlimeling implements IInventory
         this.slimeling = slimeling;
     }
 
-
-
     @Override
     public int getSizeInventory()
     {
@@ -38,11 +36,11 @@ public class InventorySlimeling implements IInventory
         return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.slimeling_inventory.name");
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return GCCoreUtil.translate("container.slimeling_inventory.name");
+//    }
 
     @Override
     public ItemStack removeStackFromSlot(int par1)
@@ -180,8 +178,8 @@ public class InventorySlimeling implements IInventory
             if (!this.stacks.get(i).isEmpty())
             {
                 nbttagcompound = new CompoundNBT();
-                nbttagcompound.setByte("Slot", (byte) i);
-                this.stacks.get(i).writeToNBT(nbttagcompound);
+                nbttagcompound.putByte("Slot", (byte) i);
+                this.stacks.get(i).write(nbttagcompound);
                 tagList.add(nbttagcompound);
             }
         }
@@ -203,7 +201,7 @@ public class InventorySlimeling implements IInventory
     @Override
     public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
-        return !this.slimeling.isDead && par1EntityPlayer.getDistanceSq(this.slimeling) <= 64.0D;
+        return this.slimeling.isAlive() && par1EntityPlayer.getDistanceSq(this.slimeling) <= 64.0D;
     }
 
     @Override
@@ -253,9 +251,9 @@ public class InventorySlimeling implements IInventory
 //        return false;
 //    }
 
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
-    }
+//    @Override
+//    public ITextComponent getDisplayName()
+//    {
+//        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
+//    }
 }

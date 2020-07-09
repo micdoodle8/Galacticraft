@@ -101,7 +101,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     		this.disableConnections = newDisableConnections;
         	if (!this.world.isRemote)
             {
-        		this.setNetwork(null);  //Force a full network refresh of this and conductors either side
+        		this.setNetwork(null);  //Force a full network refresh of this and conductors either LogicalSide
             }
     	}
 
@@ -205,7 +205,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 //    @Override
 //    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side)
 //    {
-//    	return this.disableConnections() ? false : super.acceptsEnergyFrom(emitter, side);
+//    	return this.disableConnections() ? false : super.acceptsEnergyFrom(emitter, LogicalSide);
 //    }
 //
 //    //IC2
@@ -219,7 +219,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 //    @Override
 //    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction side)
 //    {
-//    	return this.disableConnections() ? false : super.emitsEnergyTo(receiver, side);
+//    	return this.disableConnections() ? false : super.emitsEnergyTo(receiver, LogicalSide);
 //    }
 //
 //    //RF
@@ -240,6 +240,6 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 //    @Override
 //    public boolean canReceiveEnergy(Direction side)
 //    {
-//    	return this.disableConnections() ? false : super.canReceiveEnergy(side);
+//    	return this.disableConnections() ? false : super.canReceiveEnergy(LogicalSide);
 //    }
 }

@@ -277,7 +277,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
 //    public int receiveGas(Direction side, GasStack stack)
 //    {
-//        return this.receiveGas(side, stack, true);
+//        return this.receiveGas(LogicalSide, stack, true);
 //    }
 //
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)

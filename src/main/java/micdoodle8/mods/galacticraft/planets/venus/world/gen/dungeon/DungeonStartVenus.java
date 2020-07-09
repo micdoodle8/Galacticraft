@@ -1,27 +1,30 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
+
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_START;
 
 public class DungeonStartVenus extends EntranceCraterVenus
 {
     public List<StructurePiece> attachedComponents = Lists.newArrayList();
     public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
-    public DungeonStartVenus()
-    {
+    public DungeonStartVenus(TemplateManager templateManager, CompoundNBT nbt) {
+        super(CVENUS_DUNGEON_START, nbt);
     }
 
     public DungeonStartVenus(World world, DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(configuration, rand, blockPosX, blockPosZ);
+        super(CVENUS_DUNGEON_START, configuration, rand, blockPosX, blockPosZ);
     }
 
     @Override

@@ -5,7 +5,7 @@
 //import net.minecraft.item.BlockItem;
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockWallGC extends BlockItem
@@ -42,7 +42,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemstack)
 //    {
-//        int meta = itemstack.getItemDamage();
+//        int meta = itemstack.getDamage();
 //
 //        if (meta < 0 || meta >= types.length)
 //        {

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -15,17 +16,17 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityElectrolyzer;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiWaterElectrolyzer extends GuiContainerGC
+public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
 {
     private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gas_liquefier.png");
 
@@ -40,17 +41,17 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
     private GuiElementInfoRegion gasTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiWaterElectrolyzer(PlayerInventory playerInv, TileEntityElectrolyzer tileEntity)
+    public GuiWaterElectrolyzer(ContainerElectrolyzer container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerElectrolyzer(playerInv, tileEntity, Minecraft.getInstance().player));
-        this.tileEntity = tileEntity;
+        super(container, playerInv, title);
+        this.tileEntity = container.getElectrolyzer();
         this.ySize = 168;
     }
 
     @Override
-    public void initGui()
+    public void init()
     {
-        super.initGui();
+        super.init();
 
         this.gasTankRegion.xPosition = (this.width - this.xSize) / 2 + 7;
         this.gasTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
@@ -90,24 +91,15 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.buttons.add(this.buttonDisable = new Button(0, this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name")));
-    }
-
-    @Override
-    protected void actionPerformed(Button par1GuiButton)
-    {
-        switch (par1GuiButton.id)
-        {
-        case 0:
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) -> {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.tileEntity.getWorld()), new Object[] { this.tileEntity.getPos(), 0 }));
-            break;
-        }
+        }));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.title.getFormattedText(), 30, 5, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 30, 5, 4210752);
         String displayText = "";
         int yOffset = -18;
 
@@ -140,13 +132,13 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
             displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");
         }
 
-        this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
-        this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefy_stop.name");
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 56, 45 + 23 + yOffset, 4210752);
-        this.fontRenderer.drawString(displayText, 62, 45 + 33 + yOffset, 4210752);
-        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
-        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
+        this.buttonDisable.active = this.tileEntity.disableCooldown == 0;
+        this.buttonDisable.setMessage(this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefy_stop.name"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 56, 45 + 23 + yOffset, 4210752);
+        this.font.drawString(displayText, 62, 45 + 33 + yOffset, 4210752);
+        //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
+        //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
     }
 
     @Override
@@ -157,18 +149,18 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         int edgeLeft = (this.width - this.xSize) / 2;
         int edgeTop = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(edgeLeft, edgeTop, 0, 0, this.xSize, this.ySize);
+        this.blit(edgeLeft, edgeTop, 0, 0, this.xSize, this.ySize);
 
         int waterLevel = this.tileEntity.getScaledGasLevel(38);
         //Water
         this.minecraft.textureManager.bindTexture(GuiWaterElectrolyzer.gasTextures);
-        this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - waterLevel, 1 + 4 * 17, 38 - waterLevel, 16, waterLevel);
+        this.blit(edgeLeft + 7, edgeTop + 17 + 49 - waterLevel, 1 + 4 * 17, 38 - waterLevel, 16, waterLevel);
         //Oxygen
         int displayInt = this.tileEntity.getScaledFuelLevel(38);
-        this.drawTexturedModalRect(edgeLeft + 132, edgeTop + 17 + 49 - displayInt, 34 + 1, 38 - displayInt, 16, displayInt);
+        this.blit(edgeLeft + 132, edgeTop + 17 + 49 - displayInt, 34 + 1, 38 - displayInt, 16, displayInt);
         //Hydrogen
         displayInt = this.tileEntity.getScaledFuelLevel2(38);
-        this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 17 + 1, 38 - displayInt, 16, displayInt);
+        this.blit(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 17 + 1, 38 - displayInt, 16, displayInt);
 
         this.addToolTips();
 
@@ -176,10 +168,10 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         if (this.tileEntity.getEnergyStoredGC() > 0)
         {
-            this.drawTexturedModalRect(edgeLeft + 28, edgeTop + 16, 208, 0, 11, 10);
+            this.blit(edgeLeft + 28, edgeTop + 16, 208, 0, 11, 10);
         }
 
-        this.drawTexturedModalRect(edgeLeft + 42, edgeTop + 17, 176, 38, Math.min(this.tileEntity.getScaledElecticalLevel(54), 54), 7);
+        this.blit(edgeLeft + 42, edgeTop + 17, 176, 38, Math.min(this.tileEntity.getScaledElecticalLevel(54), 54), 7);
     }
 
     private void addToolTips()
@@ -193,14 +185,14 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         FluidStack gasTankContents = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
+            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getAttributes().getTranslationKey());
             fuelTankDesc.add("(" + gasname + ")");
         }
         else
         {
             fuelTankDesc.add(" ");
         }
-        int fuelLevel = gasTankContents != null ? gasTankContents.amount : 0;
+        int fuelLevel = gasTankContents != null ? gasTankContents.getAmount() : 0;
         int fuelCapacity = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getCapacity() : 0;
         fuelTankDesc.add(EnumColor.YELLOW + " " + fuelLevel + " / " + fuelCapacity);
         this.fuelTankRegion.tooltipStrings = fuelTankDesc;
@@ -210,14 +202,14 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
         gasTankContents = this.tileEntity.liquidTank2 != null ? this.tileEntity.liquidTank2.getFluid() : null;
         if (gasTankContents != null)
         {
-            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getUnlocalizedName());
+            String gasname = GCCoreUtil.translate(gasTankContents.getFluid().getAttributes().getTranslationKey());
             fuelTankDesc.add("(" + gasname + ")");
         }
         else
         {
             fuelTankDesc.add(" ");
         }
-        fuelLevel = gasTankContents != null ? gasTankContents.amount : 0;
+        fuelLevel = gasTankContents != null ? gasTankContents.getAmount() : 0;
         fuelCapacity = this.tileEntity.liquidTank2 != null ? this.tileEntity.liquidTank2.getCapacity() : 0;
         fuelTankDesc.add(EnumColor.YELLOW + " " + fuelLevel + " / " + fuelCapacity);
         this.fuelTank2Region.tooltipStrings = fuelTankDesc;

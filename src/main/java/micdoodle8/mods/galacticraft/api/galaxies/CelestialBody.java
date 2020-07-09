@@ -35,7 +35,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
     protected LinkedList<Biome> biomeInfo;
     public LinkedList<Biome> biomesToGenerate;
-    public BiomeGenBaseGC[] biomesToAdapt;
+    public BiomeGC[] biomesToAdapt;
     protected Map<SpawnListEntry, EntityClassification> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
@@ -328,22 +328,22 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     {
         this.biomeInfo = new LinkedList<Biome>();
         this.biomesToGenerate = new LinkedList<Biome>();
-        LinkedList<BiomeGenBaseGC> adaptiveBiomes = new LinkedList<>();
+        LinkedList<BiomeGC> adaptiveBiomes = new LinkedList<>();
         int index = 0;
         for (Biome b : biomes)
         {
             this.biomeInfo.add(b);
-            if (b instanceof BiomeGenBaseGC && ((BiomeGenBaseGC)b).isAdaptiveBiome)
+            if (b instanceof BiomeGC && ((BiomeGC)b).isAdaptiveBiome)
             {
-                this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGenBaseGC) b));
-                adaptiveBiomes.add((BiomeGenBaseGC) b);
+                this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGC) b));
+                adaptiveBiomes.add((BiomeGC) b);
             }
             else
             {
                 this.biomesToGenerate.add(b);
             }
         }
-        this.biomesToAdapt = adaptiveBiomes.toArray(new BiomeGenBaseGC[adaptiveBiomes.size()]);
+        this.biomesToAdapt = adaptiveBiomes.toArray(new BiomeGC[adaptiveBiomes.size()]);
     }
 
     public List<Biome> getBiomes()
@@ -376,11 +376,11 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public List<Block> getSurfaceBlocks()
     {
-        if (this.providerClass != null && IGalacticraftWorldProvider.class.isAssignableFrom(this.providerClass))
+        if (this.providerClass != null && IGalacticraftDimension.class.isAssignableFrom(this.providerClass))
         {
             try
             {
-                return ((IGalacticraftWorldProvider)this.providerClass.newInstance()).getSurfaceBlocks();
+                return ((IGalacticraftDimension)this.providerClass.newInstance()).getSurfaceBlocks();
             } catch (Exception e)
             {
                 e.printStackTrace();

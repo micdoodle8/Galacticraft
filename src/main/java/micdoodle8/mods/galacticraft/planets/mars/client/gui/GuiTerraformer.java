@@ -18,13 +18,14 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
+public class GuiTerraformer extends GuiContainerGC<ContainerTerraformer> implements ICheckBoxCallback
 {
     private static final ResourceLocation terraformerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/terraformer.png");
     private TileEntityTerraformer terraformer;
@@ -34,37 +35,37 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
     private GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0, this);
 
-    public GuiTerraformer(PlayerInventory playerInv, TileEntityTerraformer terraformer)
+    public GuiTerraformer(ContainerTerraformer container, PlayerInventory playerInv, ITextComponent title)
     {
-        super(new ContainerTerraformer(playerInv, terraformer, Minecraft.getInstance().player));
+        super(container, playerInv, title);
         this.ySize = 237;
         this.terraformer = terraformer;
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
         if (this.terraformer.disableCooldown > 0)
         {
-            this.enableTreesButton.enabled = false;
-            this.enableGrassButton.enabled = false;
+            this.enableTreesButton.active = false;
+            this.enableGrassButton.active = false;
         }
         else
         {
-            this.enableTreesButton.enabled = true;
-            this.enableGrassButton.enabled = true;
+            this.enableTreesButton.active = true;
+            this.enableGrassButton.active = true;
         }
 
-        this.enableTreesButton.displayString = GCCoreUtil.translate(this.terraformer.treesDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.trees.name");
-        this.enableGrassButton.displayString = GCCoreUtil.translate(this.terraformer.grassDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.grass.name");
+        this.enableTreesButton.setMessage(GCCoreUtil.translate(this.terraformer.treesDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.trees.name"));
+        this.enableGrassButton.setMessage(GCCoreUtil.translate(this.terraformer.grassDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.grass.name"));
 
-        super.drawScreen(par1, par2, par3);
+        super.render(mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public void initGui()
+    public void init()
     {
-        super.initGui();
+        super.init();
         this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 44;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 47;
@@ -87,44 +88,27 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableTreesButton = new Button(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"));
-        this.enableGrassButton = new Button(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"));
+        this.enableTreesButton = new Button(var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.terraformer.getPos(), 0 }));
+        });
+        this.enableGrassButton = new Button(var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.terraformer.getPos(), 1 }));
+        });
         this.buttons.add(this.enableTreesButton);
         this.buttons.add(this.enableGrassButton);
-        this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
+        this.checkboxRenderBubble = new GuiElementCheckbox(this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
         this.buttons.add(this.checkboxRenderBubble);
-    }
-
-    @Override
-    protected void actionPerformed(Button par1GuiButton)
-    {
-        if (par1GuiButton.enabled)
-        {
-            switch (par1GuiButton.id)
-            {
-            case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.terraformer.getPos(), 0 }));
-                break;
-            case 1:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.terraformer.getPos(), 1 }));
-                break;
-            case 2:
-                break;
-            default:
-                break;
-            }
-        }
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String displayString = terraformer.getName();
-        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
-        this.fontRenderer.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
-        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
-        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
+        String displayString = getTitle().getFormattedText();
+        this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 5, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
+        this.font.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
+        //		this.font.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
+        //		this.font.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
     }
 
     private String getStatus()
@@ -188,11 +172,11 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.minecraft.textureManager.bindTexture(GuiTerraformer.terraformerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
+        this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int scale = this.terraformer.getScaledElecticalLevel(54);
-        this.drawTexturedModalRect(var5 + 45, var6 + 48, 176, 26, Math.min(scale, 54), 7);
+        this.blit(var5 + 45, var6 + 48, 176, 26, Math.min(scale, 54), 7);
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
@@ -206,7 +190,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.waterTankInfoRegion.tooltipStrings = processDesc;
 
         waterLevel = this.terraformer.getScaledWaterLevel(26);
-        this.drawTexturedModalRect((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - waterLevel, 176, 26 - waterLevel, 39, waterLevel);
+        this.blit((this.width - this.xSize) / 2 + 56, (this.height - this.ySize) / 2 + 17 + 27 - waterLevel, 176, 26 - waterLevel, 39, waterLevel);
 
         this.checkboxRenderBubble.isSelected = this.terraformer.shouldRenderBubble;
     }

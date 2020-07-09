@@ -1,32 +1,40 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_CHEST;
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_TREASURE;
+
 public class RoomChestVenus extends RoomEmptyVenus
 {
-    public RoomChestVenus()
+    public RoomChestVenus(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CVENUS_DUNGEON_CHEST, nbt);
     }
 
     public RoomChestVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
-        super(configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
+        super(CVENUS_DUNGEON_CHEST, configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random rand, MutableBoundingBox boundingBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
-        if (super.addComponentParts(worldIn, rand, boundingBox))
+        if (super.addComponentParts(worldIn, random, chunkBox, pos))
         {
             int chestX = this.sizeX / 2;
             int chestY = 1;
@@ -39,11 +47,11 @@ public class RoomChestVenus extends RoomEmptyVenus
             if (chest != null)
             {
                 ResourceLocation chesttype = RoomTreasureVenus.VENUSCHEST;
-                if (worldIn.dimension instanceof IGalacticraftWorldProvider)
+                if (worldIn.getDimension() instanceof IGalacticraftDimension)
                 {
-                    chesttype = ((IGalacticraftWorldProvider)worldIn.dimension).getDungeonChestType();
+                    chesttype = ((IGalacticraftDimension)worldIn.getDimension()).getDungeonChestType();
                 }
-                chest.setLootTable(RoomTreasureVenus.VENUSCHEST, rand.nextLong());
+                chest.setLootTable(chesttype, random.nextLong());
             }
 
             return true;

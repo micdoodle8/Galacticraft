@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.template.TemplateManager;
 
 public abstract class SizedPiece extends DirectionalPiece
 {
@@ -11,9 +10,9 @@ public abstract class SizedPiece extends DirectionalPiece
     protected int sizeY;
     protected int sizeZ;
 
-    public SizedPiece(IStructurePieceType type)
+    public SizedPiece(IStructurePieceType type, CompoundNBT nbt)
     {
-        super(type);
+        super(type, nbt);
     }
 
     public SizedPiece(IStructurePieceType type, DungeonConfiguration configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
@@ -35,9 +34,9 @@ public abstract class SizedPiece extends DirectionalPiece
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT nbt)
     {
-        super.readStructureFromNBT(nbt, manager);
+        super.readStructureFromNBT(nbt);
 
         this.sizeX = nbt.getInt("sizeX");
         this.sizeY = nbt.getInt("sizeY");

@@ -41,7 +41,7 @@
 //
 //        if (playerBase == null)
 //        {
-//            player.sendMessage(new StringTextComponent("Galacticraft player instance null server-side. This is a bug."));
+//            player.sendMessage(new StringTextComponent("Galacticraft player instance null server-LogicalSide. This is a bug."));
 //            return null;
 //        }
 //

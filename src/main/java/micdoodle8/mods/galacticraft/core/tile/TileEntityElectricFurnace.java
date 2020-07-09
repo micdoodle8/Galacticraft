@@ -149,7 +149,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             }
         } else
         {
-            //Smoother client side animation before the networked fields get updated
+            //Smoother client LogicalSide animation before the networked fields get updated
             if (this.processTicks > 0 && this.processTicks < this.processTimeRequired)
             {
                 this.processTicks--;

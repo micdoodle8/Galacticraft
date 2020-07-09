@@ -1,25 +1,25 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemSwordMars extends SwordItem implements ISortableItem
 {
-    public ItemSwordMars(ToolMaterial par2EnumToolMaterial)
+    public ItemSwordMars(Item.Properties builder)
     {
-        super(par2EnumToolMaterial);
+        super(EnumItemTierMars.DESH, 3, -2.4F, builder);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ItemSwordMars extends SwordItem implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @OnlyIn(Dist.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
@@ -45,9 +45,11 @@ public class ItemSwordMars extends SwordItem implements ISortableItem
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        if (state.getBlockHardness(worldIn, pos) > 0.2001F)
+        if (state.getBlockHardness(worldIn, pos) != 0.0F)
         {
-            stack.damageItem(2, entityLiving);
+            stack.damageItem(2, entityLiving, (e) -> {
+                e.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+            });
         }
 
         return true;

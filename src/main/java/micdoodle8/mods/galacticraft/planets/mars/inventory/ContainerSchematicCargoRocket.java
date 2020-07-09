@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -8,20 +10,26 @@ import net.minecraft.block.Blocks;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerSchematicCargoRocket extends Container
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.SCHEMATIC_CARGO_ROCKET)
+    public static ContainerType<ContainerSchematicCargoRocket> TYPE;
+
     public InventorySchematicCargoRocket craftMatrix = new InventorySchematicCargoRocket(this);
     public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerSchematicCargoRocket(PlayerInventory playerInv, BlockPos pos)
+    public ContainerSchematicCargoRocket(int containerId, PlayerInventory playerInv)
     {
+        super(TYPE, containerId);
         int change = 27;
         this.world = playerInv.player.world;
         this.addSlot(new SlotRocketBenchResult(playerInv.player, this.craftMatrix, this.craftResult, 0, 142, 69 + change));
@@ -29,37 +37,37 @@ public class ContainerSchematicCargoRocket extends Container
         int var7;
 
         // Cone
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 1, 48, -9 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 1, 48, -9 + change, playerInv.player));
 
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 2, 48, -9 + 18 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 2, 48, -9 + 18 + change, playerInv.player));
 
         // Body
         for (var6 = 0; var6 < 3; ++var6)
         {
-            this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 3 + var6, 39, -7 + var6 * 18 + 16 + 18 + change, pos, playerInv.player));
+            this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 3 + var6, 39, -7 + var6 * 18 + 16 + 18 + change, playerInv.player));
         }
 
         // Body Right
         for (var6 = 0; var6 < 3; ++var6)
         {
-            this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 6 + var6, 57, -7 + var6 * 18 + 16 + 18 + change, pos, playerInv.player));
+            this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 6 + var6, 57, -7 + var6 * 18 + 16 + 18 + change, playerInv.player));
         }
 
         // Left fins
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 9, 21, 63 + change, pos, playerInv.player));
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 10, 21, 81 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 9, 21, 63 + change, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 10, 21, 81 + change, playerInv.player));
 
         // Engine
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 11, 48, 81 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 11, 48, 81 + change, playerInv.player));
 
         // Right fins
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 12, 75, 63 + change, pos, playerInv.player));
-        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 13, 75, 81 + change, pos, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 12, 75, 63 + change, playerInv.player));
+        this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 13, 75, 81 + change, playerInv.player));
 
         // Addons
         for (int var8 = 0; var8 < 3; var8++)
         {
-            this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 14 + var8, 93 + var8 * 26, -15 + change, pos, playerInv.player));
+            this.addSlot(new SlotSchematicCargoRocket(this.craftMatrix, 14 + var8, 93 + var8 * 26, -15 + change, playerInv.player));
         }
 
         change = 9;

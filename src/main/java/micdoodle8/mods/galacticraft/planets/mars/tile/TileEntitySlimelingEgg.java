@@ -1,22 +1,31 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSlimelingEgg;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.management.PreYggdrasilConverter;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.UUID;
 
 public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileEntity
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.slimelingEgg)
+    public static TileEntityType<TileEntitySlimelingEgg> TYPE;
+
     public int timeToHatch = -1;
     public String lastTouchedPlayerUUID = "";
-    public String lastTouchedPlayerName = "";
+
+    public TileEntitySlimelingEgg()
+    {
+        super(TYPE);
+    }
 
     @Override
     public void tick()
@@ -30,31 +39,30 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileE
             else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
             {
                 BlockState state = this.world.getBlockState(this.getPos());
-                int metadata = state.getBlock().getMetaFromState(state) % 3;
+                BlockSlimelingEgg.EnumEggColor color = state.get(BlockSlimelingEgg.EGG_COLOR);
 
                 float colorRed = 0.0F;
                 float colorGreen = 0.0F;
                 float colorBlue = 0.0F;
 
-                switch (metadata)
+                switch (color)
                 {
-                case 0:
+                case RED:
                     colorRed = 1.0F;
                     break;
-                case 1:
+                case BLUE:
                     colorBlue = 1.0F;
                     break;
-                case 2:
+                case YELLOW:
                     colorRed = 1.0F;
                     colorGreen = 1.0F;
                     break;
                 }
 
-                EntitySlimeling slimeling = new EntitySlimeling(this.world, colorRed, colorGreen, colorBlue);
+                EntitySlimeling slimeling = EntitySlimeling.createEntitySlimeling(this.world, colorRed, colorGreen, colorBlue);
 
                 slimeling.setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                 slimeling.setOwnerId(UUID.fromString(this.lastTouchedPlayerUUID));
-                slimeling.setOwnerUsername(this.lastTouchedPlayerName);
 
                 if (!this.world.isRemote)
                 {
@@ -77,22 +85,12 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileE
         super.read(nbt);
         this.timeToHatch = nbt.getInt("TimeToHatch");
 
-        String uuid;
-        if (nbt.contains("OwnerUUID", 8))
-        {
-            uuid = nbt.getString("OwnerUUID");
-        }
-        else
-        {
-            uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.world.getMinecraftServer(), nbt.getString("Owner"));
-        }
+        String uuid = nbt.getString("OwnerUUID");
 
         if (uuid.length() > 0)
         {
             lastTouchedPlayerUUID = uuid;
         }
-
-        this.lastTouchedPlayerName = nbt.getString("OwnerUsername");
     }
 
     @Override
@@ -101,13 +99,12 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileE
         super.write(nbt);
         nbt.putInt("TimeToHatch", this.timeToHatch);
         nbt.putString("OwnerUUID", this.lastTouchedPlayerUUID);
-        nbt.putString("OwnerUsername", this.lastTouchedPlayerName);
         return nbt;
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
-    {
-        return oldState.getBlock() != newSate.getBlock();
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
+//    {
+//        return oldState.getBlock() != newSate.getBlock();
+//    }
 }

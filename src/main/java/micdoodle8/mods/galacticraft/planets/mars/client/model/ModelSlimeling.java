@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelSlimeling extends ModelBase
+public class ModelSlimeling extends EntityModel<EntitySlimeling>
 {
     RendererModel tail3;
     RendererModel tail2;
@@ -104,10 +104,10 @@ public class ModelSlimeling extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void render(EntitySlimeling entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         super.render(entity, par2, par3, par4, par5, par6, par7);
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
+        this.setRotationAngles(entity, par2, par3, par4, par5, par6, par7);
         this.bodyMain.render(par7);
     }
 
@@ -119,7 +119,7 @@ public class ModelSlimeling extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
+    public void setRotationAngles(EntitySlimeling slimeling, float par1, float par2, float par3, float par4, float par5, float par6)
     {
         this.tail1.rotateAngleY = MathHelper.cos(par1 * 0.6662F) * 0.2F * par2;
         this.tail2.rotateAngleY = MathHelper.cos(par1 * 0.6662F) * 0.2F * par2;

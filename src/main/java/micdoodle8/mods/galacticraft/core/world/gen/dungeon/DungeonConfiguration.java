@@ -1,12 +1,21 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.Dynamic;
+import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.gen.feature.EndSpikeFeature;
+import net.minecraft.world.gen.feature.EndSpikeFeatureConfig;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class DungeonConfiguration
+import java.util.List;
+
+public class DungeonConfiguration implements IFeatureConfig
 {
     private BlockState brickBlock;
     private int yPosition;
@@ -105,5 +114,39 @@ public class DungeonConfiguration
     public Class<?> getTreasureRoom()
     {
         return treasureRoom;
+    }
+
+    @Override
+    public <T> Dynamic<T> serialize(DynamicOps<T> ops)
+    {
+        ImmutableMap.Builder<T, T> builder = ImmutableMap.builder();
+        builder.put(ops.createString("brickBlock"), ops.createString(this.brickBlock.getBlock().getRegistryName().toString()));
+        builder.put(ops.createString("yPosition"), ops.createInt(this.yPosition));
+        builder.put(ops.createString("hallwayLengthMin"), ops.createInt(this.hallwayLengthMin));
+        builder.put(ops.createString("hallwayLengthMax"), ops.createInt(this.hallwayLengthMax));
+        builder.put(ops.createString("hallwayHeight"), ops.createInt(this.hallwayHeight));
+        builder.put(ops.createString("roomHeight"), ops.createInt(this.roomHeight));
+        builder.put(ops.createString("bossRoom"), ops.createString(this.bossRoom.getName()));
+        builder.put(ops.createString("treasureRoom"), ops.createString(this.treasureRoom.getName()));
+        return new Dynamic<>(ops, ops.createMap(builder.build()));
+    }
+
+    public static <T> DungeonConfiguration deserialize(Dynamic<T> ops) {
+        BlockState state = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ops.get("brickBlock").asString().get())).getDefaultState();
+        try
+        {
+            return new DungeonConfiguration(state, ops.get("yPosition").asInt(0),
+                    ops.get("yPosition").asInt(0),
+                    ops.get("hallwayLengthMin").asInt(0),
+                    ops.get("hallwayLengthMax").asInt(0),
+                    ops.get("hallwayHeight").asInt(0),
+                    Class.forName(ops.get("bossRoom").asString().get()),
+                    Class.forName(ops.get("treasureRoom").asString().get()));
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.LogicalSide;
 
+import javax.annotation.Nonnull;
 import java.util.EnumSet;
 
 public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandlerWrapper
@@ -362,7 +363,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
 //    public int receiveGas(Direction side, GasStack stack)
 //    {
-//        return this.receiveGas(side, stack, true);
+//        return this.receiveGas(LogicalSide, stack, true);
 //    }
 //
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
@@ -374,19 +375,19 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
 //    public GasStack drawGas(Direction side, int amount)
 //    {
-//        return this.drawGas(side, amount, true);
+//        return this.drawGas(LogicalSide, amount, true);
 //    }
 //
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
 //    public boolean canReceiveGas(Direction side, Gas type)
 //    {
-//        return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
+//        return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(LogicalSide);
 //    }
 //
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
 //    public boolean canDrawGas(Direction side, Gas type)
 //    {
-//        return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
+//        return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(LogicalSide);
 //    }
 //
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
@@ -450,4 +451,30 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 //
 //        return new FluidTankInfo[] {};
 //    }
+
+
+    @Override
+    public int getTanks()
+    {
+        return this.tank.getTanks();
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        return this.tank.getFluidInTank(tank);
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        return this.tank.getTankCapacity(tank);
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        return this.tank.isFluidValid(tank, stack);
+    }
 }

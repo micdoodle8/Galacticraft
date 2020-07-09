@@ -32,7 +32,7 @@
 //import net.minecraft.util.math.MathHelper;
 //import net.minecraftforge.api.distmarker.Dist;
 //import net.minecraftforge.api.distmarker.OnlyIn;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.util.ArrayList;
@@ -111,7 +111,7 @@
 //        this.angularVelocityRadians = angle;
 //        this.skyAngularVelocity = angle * 180F / 3.1415927F;
 //
-//        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+//        if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
 //        {
 //            this.updateSkyProviderSpinRate();
 //        }
@@ -177,7 +177,7 @@
 //     * player cannot place thrusters on outlying disconnected blocks and expect
 //     * them to have an effect.
 //     * <p/>
-//     * Note: this check will briefly load, server-side, all chunks which have
+//     * Note: this check will briefly load, server-LogicalSide, all chunks which have
 //     * spacestation blocks in them or 1 block adjacent to those.
 //     *
 //     * @param baseBlock
@@ -255,13 +255,13 @@
 //                    thisssBoundsMaxZ = vec.z;
 //                }
 //
-//                for (int side = 0; side < 6; side++)
+//                for (int LogicalSide = 0; LogicalSide < 6; LogicalSide++)
 //                {
-//                    if ((bits & (1 << side)) == 1)
+//                    if ((bits & (1 << LogicalSide)) == 1)
 //                    {
 //                        continue;
 //                    }
-//                    BlockVec3 sideVec = vec.newVecSide(side);
+//                    BlockVec3 sideVec = vec.newVecSide(LogicalSide);
 //
 //                    if (sideVec != null && !this.checked.contains(sideVec))
 //                    {
@@ -282,7 +282,7 @@
 //                            }
 //                            float m = 1.0F;
 //                            //Liquids have a mass of 1, stone, metal blocks etc will be heavier
-//                            if (!(b instanceof BlockLiquid))
+//                            if (!(b instanceof FlowingFluidBlock))
 //                            {
 //                                //For most blocks, hardness gives a good idea of mass
 //                                m = b.getBlockHardness(state, this.worldProvider.getWorld(), sideVec.toBlockPos());

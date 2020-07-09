@@ -1,24 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemGrappleHook extends BowItem implements ISortableItem
 {
@@ -27,8 +23,8 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
     public ItemGrappleHook(Item.Properties properties)
     {
         super(properties);
-        this.setUnlocalizedName(assetName);
-        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
+//        this.setMaxStackSize(1);
         //this.setTextureName("arrow");
     }
 
@@ -38,7 +34,7 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
         return false;
     }
 
-    @OnlyIn(Dist.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
@@ -65,30 +61,31 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
         boolean canShoot = player.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack string = ItemStack.EMPTY;
 
-        if (stringEntries == null) stringEntries = OreDictionary.getOres("string");
+//        if (stringEntries == null) stringEntries = OreDictionary.getOres("string");
 
         for (ItemStack itemstack : player.inventory.mainInventory)
         {
-            if (!canShoot && OreDictionary.containsMatch(false, stringEntries, itemstack))
-            {
-                string = itemstack;
-                canShoot = true;
-            }
+//            if (!canShoot && OreDictionary.containsMatch(false, stringEntries, itemstack))
+//            {
+//                string = itemstack;
+//                canShoot = true;
+//            } TODO Oredict
         }
 
         if (canShoot)
         {
-            ItemStack pickupString = string == ItemStack.EMPTY ? ItemStack.EMPTY : new ItemStack(string.getItem(), 1, string.getItemDamage(), string.getTagCompound());
-            EntityGrapple grapple = new EntityGrapple(worldIn, player, 2.0F, pickupString);
+            ItemStack pickupString = string == ItemStack.EMPTY ? ItemStack.EMPTY : new ItemStack(string.getItem(), 1);
+            pickupString.setTag(string.getTag());
+            EntityGrapple grapple = EntityGrapple.createEntityGrapple(worldIn, player, 2.0F, pickupString);
 
-            worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
+            worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (Item.random.nextFloat() * 0.4F + 1.2F) + 0.5F);
 
             if (!worldIn.isRemote)
             {
                 worldIn.addEntity(grapple);
             }
 
-            stack.damageItem(1, player);
+            stack.damageItem(1, player, (e) -> {});
             grapple.canBePickedUp = player.abilities.isCreativeMode ? 2 : 1;
 
             if (!player.abilities.isCreativeMode)
@@ -108,13 +105,13 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    public int getUseDuration(ItemStack stack)
     {
         return 72000;
     }
 
     @Override
-    public UseAction getItemUseAction(ItemStack par1ItemStack)
+    public UseAction getUseAction(ItemStack stack)
     {
         return UseAction.BOW;
     }

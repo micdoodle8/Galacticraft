@@ -15,7 +15,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack par1ItemStack)
 //    {
-//        if (par1ItemStack.getItemDamage() == 1)
+//        if (par1ItemStack.getDamage() == 1)
 //        {
 //            return this.getBlock().getUnlocalizedName() + ".filled";
 //        }

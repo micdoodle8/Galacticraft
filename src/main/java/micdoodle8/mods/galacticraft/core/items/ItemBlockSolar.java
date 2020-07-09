@@ -5,7 +5,7 @@
 //import net.minecraft.block.Block;
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockSolar extends ItemBlockDesc
@@ -20,7 +20,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack par1ItemStack)
 //    {
-//        int index = Math.min(Math.max(par1ItemStack.getItemDamage() / 4, 0), BlockSolar.EnumSolarType.values().length);
+//        int index = Math.min(Math.max(par1ItemStack.getDamage() / 4, 0), BlockSolar.EnumSolarType.values().length);
 //
 //        String name = BlockSolar.EnumSolarType.values()[index].getName();
 //

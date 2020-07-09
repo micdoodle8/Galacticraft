@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceWireless;
@@ -10,20 +9,27 @@ import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.*;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidBlockNames.beamReceiver)
+    public static TileEntityType<TileEntityBeamReceiver> TYPE;
+
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public Direction facing = null;
     private int preLoadFacing = -1;
@@ -35,7 +41,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
     public TileEntityBeamReceiver()
     {
-        super("container.beam_receiver.name");
+        super(TYPE);
     }
 
     @Override
@@ -136,12 +142,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @Override
     public Vector3 getInputPoint()
     {
-        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
+        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5F, this.getPos().getY() + 0.5F, this.getPos().getZ() + 0.5F);
         if (this.facing != null)
         {
-            headVec.x += this.facing.getFrontOffsetX() * 0.1F;
-            headVec.y += this.facing.getFrontOffsetY() * 0.1F;
-            headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+            headVec.x += this.facing.getXOffset() * 0.1F;
+            headVec.y += this.facing.getYOffset() * 0.1F;
+            headVec.z += this.facing.getZOffset() * 0.1F;
         }
         return headVec;
     }
@@ -149,12 +155,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @Override
     public Vector3 getOutputPoint(boolean offset)
     {
-        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5);
+        Vector3 headVec = new Vector3(this.getPos().getX() + 0.5F, this.getPos().getY() + 0.5F, this.getPos().getZ() + 0.5F);
         if (this.facing != null)
         {
-            headVec.x += this.facing.getFrontOffsetX() * 0.1F;
-            headVec.y += this.facing.getFrontOffsetY() * 0.1F;
-            headVec.z += this.facing.getFrontOffsetZ() * 0.1F;
+            headVec.x += this.facing.getXOffset() * 0.1F;
+            headVec.y += this.facing.getYOffset() * 0.1F;
+            headVec.z += this.facing.getZOffset() * 0.1F;
         }
         return headVec;
     }
@@ -174,7 +180,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, this.facing);
 
-        if (tile == null || tile.isInvalid())
+        if (tile == null || tile.isRemoved())
         {
             this.setFacing(null);
         }

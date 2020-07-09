@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 
-public class ModelTier2Rocket extends ModelBase
+public class ModelTier2Rocket extends EntityModel<EntityTier2Rocket>
 {
     // Roof, Floor, Bottom
     RendererModel[] inside = new RendererModel[3];
@@ -16,7 +16,7 @@ public class ModelTier2Rocket extends ModelBase
     RendererModel[][] boosters = new RendererModel[4][3];
     // 3 booster base parts, starting from bottom
     RendererModel[] base = new RendererModel[3];
-    // 7 side pars, first four are the front, then right, and so on
+    // 7 LogicalSide pars, first four are the front, then right, and so on
     RendererModel[] sides = new RendererModel[7];
 
     public ModelTier2Rocket()
@@ -366,7 +366,7 @@ public class ModelTier2Rocket extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void render(EntityTier2Rocket entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         for (final RendererModel model : this.inside)
         {
@@ -416,8 +416,8 @@ public class ModelTier2Rocket extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity)
+    public void setRotationAngles(EntityTier2Rocket entity, float par1, float par2, float par3, float par4, float par5, float par6)
     {
-        super.setRotationAngles(par1, par2, par3, par4, par5, par6, entity);
+        super.setRotationAngles(entity, par1, par2, par3, par4, par5, par6);
     }
 }

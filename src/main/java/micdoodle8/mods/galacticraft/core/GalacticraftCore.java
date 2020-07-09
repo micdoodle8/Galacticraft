@@ -9,14 +9,13 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
-import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import micdoodle8.mods.galacticraft.api.world.BiomeGC;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenCelestial;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.dimension.*;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
@@ -35,19 +34,20 @@ import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
-import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import net.minecraft.block.Block;
 //import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
@@ -118,7 +118,7 @@ public class GalacticraftCore
     public static LinkedList<ItemStack> itemList = new LinkedList<>();
     public static LinkedList<Item> itemListTrue = new LinkedList<>();
     public static LinkedList<Block> blocksList = new LinkedList<>();
-    public static LinkedList<BiomeGenBaseGC> biomesList = new LinkedList<>();
+    public static LinkedList<BiomeGC> biomesList = new LinkedList<>();
 
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
@@ -183,12 +183,12 @@ public class GalacticraftCore
 
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
         GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
-        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
+        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonBiome);
 
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.oxygenCompressor)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTierOne));
 
-//        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+//        if (FMLCommonHandler.instance().getSide() == LogicalSide.CLIENT)
 //        {
 //            GCBlocks.finalizeSort();
 //            GCItems.finalizeSort();
@@ -332,7 +332,7 @@ public class GalacticraftCore
 //        case 4:
 //            return itemstack.getItem() instanceof ItemParaChute;
 //        case 5:
-//            return itemstack.getItem() == GCItems.basicItem && itemstack.getItemDamage() == 19;
+//            return itemstack.getItem() == GCItems.basicItem && itemstack.getDamage() == 19;
 //        case 6:
 //            return this.thermalArmorSlotValid(itemstack, 0);
 //        case 7:
@@ -382,7 +382,7 @@ public class GalacticraftCore
             GalacticraftCore.planetNeptune.setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(1.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(2.25F, 2.25F)).setRelativeOrbitTime(164.84118291347207009857612267251F);
         }
 
-        MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
+//        MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
@@ -440,7 +440,7 @@ public class GalacticraftCore
         	e.printStackTrace();
         }
 
-//        if (event.getSide() == Side.SERVER)
+//        if (event.getSide() == LogicalSide.SERVER)
 //        {
 //            this.loadLanguageCore("en_US");
 //        } TODO ?
@@ -723,7 +723,7 @@ public class GalacticraftCore
 //            GCItems.registerItems(event.getRegistry());
 //
 //            //RegisterSorted for blocks cannot be run until all the items have been registered
-//            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+//            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
 //            {
 //                for (Item item : GalacticraftCore.itemListTrue)
 //                {
@@ -762,27 +762,27 @@ public class GalacticraftCore
 //            }
 //        }
 //
-//        @SubscribeEvent
-//        public static void registerBiomes(RegistryEvent.Register<Biome> event)
-//        {
-//            // First, final steps of item registration
-//            GalacticraftCore.handler.registerTorchTypes();
-//            GalacticraftCore.handler.registerItemChanges();
-//
-//            for (BiomeGenBaseGC biome : GalacticraftCore.biomesList)
-//            {
-//                event.getRegistry().register(biome);
-//                if (!ConfigManagerCore.disableBiomeTypeRegistrations)
-//                {
-//                    biome.registerTypes(biome);
-//                }
-//            }
-//        }
+        @SubscribeEvent
+        public static void registerBiomes(RegistryEvent.Register<Biome> event)
+        {
+            // First, final steps of item registration
+            GalacticraftCore.handler.registerTorchTypes();
+            GalacticraftCore.handler.registerItemChanges();
+
+            for (BiomeGC biome : GalacticraftCore.biomesList)
+            {
+                event.getRegistry().register(biome);
+                if (!ConfigManagerCore.disableBiomeTypeRegistrations)
+                {
+                    biome.registerTypes(biome);
+                }
+            }
+        }
 //
 //        @SubscribeEvent
 //        public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
 //        {
-//            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+//            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
 //            {
 //                GCSounds.registerSounds(event.getRegistry());
 //            }

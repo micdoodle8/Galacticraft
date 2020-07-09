@@ -76,7 +76,7 @@ public class BlockPad extends BlockAdvancedTile implements IPartialSealableBlock
 //            return false;
 //        }
 //
-//        if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == GCBlocks.landingPad && side == Direction.UP)
+//        if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == GCBlocks.landingPad && LogicalSide == Direction.UP)
 //        {
 //            return false;
 //        }

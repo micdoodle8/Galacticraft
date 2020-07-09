@@ -66,6 +66,6 @@ public class ArmorItemGC extends ArmorItem implements ISortableItem
 //    @Override
 //    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
 //    {
-//        return repair.getItem() == GCItems.basicItem && repair.getItemDamage() == 9;
+//        return repair.getItem() == GCItems.basicItem && repair.getDamage() == 9;
 //    }
 }

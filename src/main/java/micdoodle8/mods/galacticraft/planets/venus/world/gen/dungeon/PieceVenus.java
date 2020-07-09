@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.StructurePiece;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 
 import java.util.Random;
 
@@ -12,26 +12,41 @@ public abstract class PieceVenus extends StructurePiece
 {
     protected DungeonConfigurationVenus configuration;
 
-    public PieceVenus()
+    public PieceVenus(IStructurePieceType type)
     {
+        super(type, 0);
     }
 
-    public PieceVenus(DungeonConfigurationVenus configuration)
+    public PieceVenus(IStructurePieceType type, DungeonConfigurationVenus configuration)
     {
+        this(type);
         this.configuration = configuration;
     }
 
+    public PieceVenus(IStructurePieceType type, CompoundNBT tagCompound) {
+        super(type, tagCompound);
+        this.readStructureFromNBT(tagCompound);
+    }
+
     @Override
+    protected void readAdditional(CompoundNBT tagCompound)
+    {
+        // This is actually write, incorrect name mapping
+        this.writeStructureToNBT(tagCompound);
+    }
+
     protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         this.configuration.writeToNBT(tagCompound);
     }
 
-    @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
-        this.configuration = new DungeonConfigurationVenus();
-        this.configuration.readFromNBT(tagCompound);
+        if (this.configuration == null)
+        {
+            this.configuration = new DungeonConfigurationVenus();
+            this.configuration.readFromNBT(tagCompound);
+        }
     }
 
     protected MutableBoundingBox getExtension(Direction direction, int length, int width)

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -105,5 +106,12 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.CANISTER;
+    }
+
+    public static ItemStack createEmptyCanister(int count)
+    {
+        ItemStack stack = new ItemStack(GCItems.oilCanister, count);
+        stack.setDamage(ItemCanisterGeneric.EMPTY);
+        return stack;
     }
 }

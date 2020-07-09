@@ -1,24 +1,30 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerAstroMinerDock extends Container
 {
-    private TileEntityMinerBase tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.ASTRO_MINER_DOCK)
+    public static ContainerType<ContainerAstroMinerDock> TYPE;
 
-    public ContainerAstroMinerDock(PlayerInventory playerInv, IInventory tile)
+    private TileEntityMinerBase minerBase;
+
+    public ContainerAstroMinerDock(int containerId, PlayerInventory playerInv, TileEntityMinerBase minerBase)
     {
-        this.tileEntity = (TileEntityMinerBase) tile;
-        this.addSlot(new SlotSpecific(tile, 0, 230, 108, IItemElectric.class));
+        super(TYPE, containerId);
+        this.minerBase = minerBase;
+        this.addSlot(new SlotSpecific(minerBase, 0, 230, 108, IItemElectric.class));
 
         int i;
         int j;
@@ -27,7 +33,7 @@ public class ContainerAstroMinerDock extends Container
         {
             for (j = 0; j < 12; ++j)
             {
-                this.addSlot(new Slot(tile, j + i * 12 + 1, 8 + j * 18, 18 + i * 18));
+                this.addSlot(new Slot(minerBase, j + i * 12 + 1, 8 + j * 18, 18 + i * 18));
             }
         }
 
@@ -47,10 +53,15 @@ public class ContainerAstroMinerDock extends Container
         }
     }
 
+    public TileEntityMinerBase getMinerBase()
+    {
+        return minerBase;
+    }
+
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.minerBase.isUsableByPlayer(var1);
     }
 
     @Override

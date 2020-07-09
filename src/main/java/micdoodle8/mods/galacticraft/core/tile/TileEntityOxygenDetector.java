@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
@@ -37,7 +37,7 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickableTil
             if (this.getBlockState().getBlock() instanceof BlockOxygenDetector)
             {
                 boolean oxygenFound = false;
-                if (this.world.getDimension() instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.world.getDimension()).hasBreathableAtmosphere())
+                if (this.world.getDimension() instanceof IGalacticraftDimension && !((IGalacticraftDimension)this.world.getDimension()).hasBreathableAtmosphere())
                 {
                     oxygenFound = OxygenUtil.isAABBInBreathableAirBlock(this.world, this.oxygenSearch, false);
                 }

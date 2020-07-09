@@ -48,7 +48,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 
     private int requiresUpdate = 0;
     private boolean doneClientUpdate = false;
-    //Used on client side only
+    //Used on client LogicalSide only
     public boolean refreshOnUpdate = false;
     private AxisAlignedBB renderAABB;
     private static final boolean LOGGING = false;
@@ -861,7 +861,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     /**
-     * Get the Minecraft direction which is on the left side
+     * Get the Minecraft direction which is on the left LogicalSide
      * for the block orientation given by metadata
      */
     private Direction getLeft(Direction direction)
@@ -882,7 +882,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     /**
-     * Get the Minecraft direction which is on the right side
+     * Get the Minecraft direction which is on the right LogicalSide
      * for the block orientation given by metadata
      */
     private Direction getRight(Direction direction)
@@ -1112,7 +1112,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     private void joinUp()
     {
         Direction facing = this.getBlockState().get(BlockScreen.FACING);
-//    	EnumFacing side = EnumFacing.getFront(this.getRight(facing));
+//    	EnumFacing LogicalSide = EnumFacing.getFront(this.getRight(facing));
         Direction side = getFront().rotateY();
         BlockVec3 vec = new BlockVec3(this);
         for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
@@ -1144,7 +1144,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     private void joinDown()
     {
         Direction facing = this.getBlockState().get(BlockScreen.FACING);
-//    	EnumFacing side = EnumFacing.getFront(this.getRight(facing));
+//    	EnumFacing LogicalSide = EnumFacing.getFront(this.getRight(facing));
         Direction side = getFront().rotateY();
         BlockVec3 vec = new BlockVec3(this);
         for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)

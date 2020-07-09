@@ -122,7 +122,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        return "item." + ItemMeteorChunk.names[itemStack.getItemDamage()];
+//        return "item." + ItemMeteorChunk.names[itemStack.getDamage()];
 //    }
 
     @Override

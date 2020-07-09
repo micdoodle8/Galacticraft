@@ -1,8 +1,14 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
+import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonChunkGenerator;
+import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonGenSettings;
+import micdoodle8.mods.galacticraft.core.dimension.chunk.OrbitGenSettings;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkGeneratorOrbit;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,9 +39,10 @@ public abstract class DimensionSpaceStation extends DimensionSpace
 //    }
 
     @Override
-    public Class<? extends ChunkGenerator> getChunkProviderClass()
+    public ChunkGenerator<?> createChunkGenerator()
     {
-        return ChunkGeneratorOrbit.class;
+        OrbitGenSettings settings = new OrbitGenSettings();
+        return new ChunkGeneratorOrbit(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings().setBiome(BiomeOrbit.space)), settings);
     }
 
     @Override

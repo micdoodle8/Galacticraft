@@ -4,13 +4,12 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
@@ -137,7 +136,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
             {
                 this.solarStrength = 0;
 
-                if (this.world.isDaytime() && (this.world.getDimension() instanceof IGalacticraftWorldProvider || !this.world.isRaining() && !this.world.isThundering()))
+                if (this.world.isDaytime() && (this.world.getDimension() instanceof IGalacticraftDimension || !this.world.isRaining() && !this.world.isThundering()))
                 {
                     double distance = 100.0D;
                     double sinA = -Math.sin((this.currentAngle - 77.5D) / Constants.RADIANS_TO_DEGREES_D);

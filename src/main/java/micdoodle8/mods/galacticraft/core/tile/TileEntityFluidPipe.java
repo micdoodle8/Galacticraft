@@ -29,6 +29,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nonnull;
+
 public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fluidPipe)
@@ -258,6 +260,31 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 //        return new FluidTankInfo[0];
 //    }
 
+    @Override
+    public int getTanks()
+    {
+        return 0;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        return false;
+    }
+
     public boolean switchType()
     {
         if (this.ticks < 10)
@@ -349,14 +376,14 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 //        {
 //            return 0;
 //        }
-//        return this.fill(side, mekEquivalent, doTransfer);
+//        return this.fill(LogicalSide, mekEquivalent, doTransfer);
 //    }
 //
 //    @Override
 //    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
 //    public int receiveGas(Direction side, GasStack stack)
 //    {
-//        return this.receiveGas(side, stack, true);
+//        return this.receiveGas(LogicalSide, stack, true);
 //    }
 //
 //    @Override

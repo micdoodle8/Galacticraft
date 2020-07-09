@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.api.item.ISensorGlassesArmor;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -243,7 +243,7 @@ public class TickHandlerClient
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
 
-            if (player.world.getDimension() instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()) && !minecraft.gameSettings.showDebugInfo)
+            if (player.world.getDimension() instanceof IGalacticraftDimension && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()) && !minecraft.gameSettings.showDebugInfo)
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 
@@ -263,7 +263,7 @@ public class TickHandlerClient
                 OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
             }
 
-            if (playerBaseClient != null && player.world.getDimension() instanceof IGalacticraftWorldProvider && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()))
+            if (playerBaseClient != null && player.world.getDimension() instanceof IGalacticraftDimension && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()))
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay(TickHandlerClient.tickCount);
             }
@@ -578,7 +578,7 @@ public class TickHandlerClient
                 player.setMotion(player.getMotion().x, 0.0, player.getMotion().z);
             }
 
-            if (world != null && world.getDimension() instanceof IGalacticraftWorldProvider && OxygenUtil.noAtmosphericCombustion(world.getDimension()) && ((IGalacticraftWorldProvider) world.getDimension()).shouldDisablePrecipitation())
+            if (world != null && world.getDimension() instanceof IGalacticraftDimension && OxygenUtil.noAtmosphericCombustion(world.getDimension()) && ((IGalacticraftDimension) world.getDimension()).shouldDisablePrecipitation())
             {
                 world.setRainStrength(0.0F);
             }

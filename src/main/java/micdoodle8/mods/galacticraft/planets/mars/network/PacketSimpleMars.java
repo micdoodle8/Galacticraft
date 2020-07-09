@@ -1,19 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.network;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketBase;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiCargoRocket;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiLaunchControllerAdvanced;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
@@ -25,10 +17,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,26 +32,26 @@ public class PacketSimpleMars extends PacketBase
     public static enum EnumSimplePacketMars
     {
         // SERVER
-        S_UPDATE_SLIMELING_DATA(Side.SERVER, Integer.class, Integer.class, String.class),
-        S_WAKE_PLAYER(Side.SERVER),
-        S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
-        S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
-        S_SWITCH_LAUNCH_CONTROLLER_GUI(Side.SERVER, BlockPos.class, Integer.class),
+        S_UPDATE_SLIMELING_DATA(LogicalSide.SERVER, Integer.class, Integer.class, String.class),
+        S_WAKE_PLAYER(LogicalSide.SERVER),
+        S_UPDATE_ADVANCED_GUI(LogicalSide.SERVER, Integer.class, BlockPos.class, Integer.class),
+        S_UPDATE_CARGO_ROCKET_STATUS(LogicalSide.SERVER, Integer.class, Integer.class),
+        S_SWITCH_LAUNCH_CONTROLLER_GUI(LogicalSide.SERVER, BlockPos.class, Integer.class),
         // CLIENT
-        C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
-        C_OPEN_CUSTOM_GUI_TILE(Side.CLIENT, Integer.class, Integer.class, BlockPos.class),
-        C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, BlockPos.class);
+//        C_OPEN_CUSTOM_GUI(LogicalSide.CLIENT, Integer.class, Integer.class, Integer.class),
+//        C_OPEN_CUSTOM_GUI_TILE(LogicalSide.CLIENT, Integer.class, Integer.class, BlockPos.class),
+        C_BEGIN_CRYOGENIC_SLEEP(LogicalSide.CLIENT, BlockPos.class);
 
-        private Side targetSide;
+        private LogicalSide targetSide;
         private Class<?>[] decodeAs;
 
-        private EnumSimplePacketMars(Side targetSide, Class<?>... decodeAs)
+        private EnumSimplePacketMars(LogicalSide targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;
         }
 
-        public Side getTargetSide()
+        public LogicalSide getTargetSide()
         {
             return this.targetSide;
         }
@@ -136,61 +129,61 @@ public class PacketSimpleMars extends PacketBase
 
         switch (this.type)
         {
-        case C_OPEN_CUSTOM_GUI:
-            int entityID = 0;
-            Entity entity = null;
-
-            switch ((Integer) this.data.get(1))
-            {
-            case 0:
-                entityID = (Integer) this.data.get(2);
-                entity = player.world.getEntityByID(entityID);
-
-                if (entity != null && entity instanceof EntitySlimeling)
-                {
-                    Minecraft.getInstance().displayGuiScreen(new GuiSlimelingInventory(player, (EntitySlimeling) entity));
-                }
-
-                player.openContainer.windowId = (Integer) this.data.get(0);
-                break;
-            case 1:
-                entityID = (Integer) this.data.get(2);
-                entity = player.world.getEntityByID(entityID);
-
-                if (entity != null && entity instanceof EntityCargoRocket)
-                {
-                    Minecraft.getInstance().displayGuiScreen(new GuiCargoRocket(player.inventory, (EntityCargoRocket) entity));
-                }
-
-                player.openContainer.windowId = (Integer) this.data.get(0);
-                break;
-            }
-
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
-            break;
-        case C_OPEN_CUSTOM_GUI_TILE:
-            BlockPos pos;
-            TileEntity tile;
-
-            switch ((Integer) this.data.get(1))
-            {
-            case 0:
-                pos = (BlockPos) this.data.get(2);
-                tile = player.world.getTileEntity(pos);
-
-                if (tile != null && tile instanceof TileEntityLaunchController)
-                {
-                    Minecraft.getInstance().displayGuiScreen(new GuiLaunchControllerAdvanced(player.inventory, (TileEntityLaunchController) tile));
-                }
-
-                player.openContainer.windowId = (Integer) this.data.get(0);
-                break;
-            }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
-            break;
+//        case C_OPEN_CUSTOM_GUI:
+//            int entityID = 0;
+//            Entity entity = null;
+//
+//            switch ((Integer) this.data.get(1))
+//            {
+//            case 0:
+//                entityID = (Integer) this.data.get(2);
+//                entity = player.world.getEntityByID(entityID);
+//
+//                if (entity instanceof EntitySlimeling)
+//                {
+//                    Minecraft.getInstance().displayGuiScreen(new GuiSlimelingInventory(player, (EntitySlimeling) entity));
+//                }
+//
+//                player.openContainer.windowId = (Integer) this.data.get(0);
+//                break;
+//            case 1:
+//                entityID = (Integer) this.data.get(2);
+//                entity = player.world.getEntityByID(entityID);
+//
+//                if (entity != null && entity instanceof EntityCargoRocket)
+//                {
+//                    Minecraft.getInstance().displayGuiScreen(new GuiCargoRocket(player.inventory, (EntityCargoRocket) entity));
+//                }
+//
+//                player.openContainer.windowId = (Integer) this.data.get(0);
+//                break;
+//            }
+//
+//            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
+//            break;
+//        case C_OPEN_CUSTOM_GUI_TILE:
+//            BlockPos pos;
+//            TileEntity tile;
+//
+//            switch ((Integer) this.data.get(1))
+//            {
+//            case 0:
+//                pos = (BlockPos) this.data.get(2);
+//                tile = player.world.getTileEntity(pos);
+//
+//                if (tile != null && tile instanceof TileEntityLaunchController)
+//                {
+//                    Minecraft.getInstance().displayGuiScreen(new GuiLaunchControllerAdvanced(player.inventory, (TileEntityLaunchController) tile));
+//                }
+//
+//                player.openContainer.windowId = (Integer) this.data.get(0);
+//                break;
+//            }
+//            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
+//            break;
         case C_BEGIN_CRYOGENIC_SLEEP:
-            pos = (BlockPos) this.data.get(0);
-            tile = player.world.getTileEntity(pos);
+            BlockPos pos = (BlockPos) this.data.get(0);
+            TileEntity tile = player.world.getTileEntity(pos);
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
@@ -232,7 +225,7 @@ public class PacketSimpleMars extends PacketBase
                     if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.slimelingName = (String) this.data.get(2);
-                        slimeling.setName(slimeling.slimelingName);
+                        slimeling.setSlimelingName(slimeling.slimelingName);
                     }
                     break;
                 case 2:
@@ -262,14 +255,14 @@ public class PacketSimpleMars extends PacketBase
                 case 6:
                     if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
-                        MarsUtil.openSlimelingInventory(playerBase, slimeling);
+//                        MarsUtil.openSlimelingInventory(playerBase, slimeling);  TODO guis
                     }
                     break;
                 }
             }
             break;
         case S_WAKE_PLAYER:
-            BlockPos c = playerBase.bedLocation;
+            BlockPos c = playerBase.getBedLocation(playerBase.dimension);
 
             if (c != null)
             {
@@ -355,10 +348,10 @@ public class PacketSimpleMars extends PacketBase
                 switch ((Integer) this.data.get(1))
                 {
                 case 0:
-                    MarsUtil.openAdvancedLaunchController(playerBase, launchController);
+//                    MarsUtil.openAdvancedLaunchController(playerBase, launchController);  TODO guis
                     break;
                 case 1:
-                    player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, player.world, pos.getX(), pos.getY(), pos.getZ());
+//                    player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, player.world, pos.getX(), pos.getY(), pos.getZ()); TODO guis
                     break;
                 }
             }

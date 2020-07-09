@@ -174,9 +174,9 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     {
         EnumRocketType type = EnumRocketType.values()[stack.getDamage()];
 
-        if (!type.getTooltip().isEmpty())
+        if (!type.getTooltip().getFormattedText().isEmpty())
         {
-            tooltip.add(new StringTextComponent(type.getTooltip()));
+            tooltip.add(type.getTooltip());
         }
 
         if (type.getPreFueled())

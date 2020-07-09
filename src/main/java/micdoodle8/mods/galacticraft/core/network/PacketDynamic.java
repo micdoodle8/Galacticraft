@@ -160,7 +160,7 @@ public class PacketDynamic extends PacketBase
         this.handleData(LogicalSide.SERVER, player);
     }
 
-    private void handleData(LogicalSide side, PlayerEntity player)
+    private void handleData(LogicalSide LogicalSide, PlayerEntity player)
     {
         switch (this.type)
         {
@@ -175,7 +175,7 @@ public class PacketDynamic extends PacketBase
                 }
 
                 //Treat any packet received by a server from a client as an update request specifically to that client
-                if (side == LogicalSide.SERVER && player instanceof ServerPlayerEntity && entity != null)
+                if (LogicalSide == LogicalSide.SERVER && player instanceof ServerPlayerEntity && entity != null)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (ServerPlayerEntity) player);
                 }
@@ -196,7 +196,7 @@ public class PacketDynamic extends PacketBase
                     }
 
                     //Treat any packet received by a server from a client as an update request specifically to that client
-                    if (side == LogicalSide.SERVER && player instanceof ServerPlayerEntity && tile != null)
+                    if (LogicalSide == LogicalSide.SERVER && player instanceof ServerPlayerEntity && tile != null)
                     {
                         GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (ServerPlayerEntity) player);
                     }

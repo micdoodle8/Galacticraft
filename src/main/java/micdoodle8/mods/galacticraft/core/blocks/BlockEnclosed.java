@@ -34,7 +34,7 @@
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.RayTraceResult;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.lang.reflect.Constructor;
@@ -434,7 +434,7 @@
 //    @Override
 //    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 //    {
-//        int metadata = stack.getItemDamage();
+//        int metadata = stack.getDamage();
 //        if (metadata >= EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta() && metadata <= EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta())
 //        {
 //        	try

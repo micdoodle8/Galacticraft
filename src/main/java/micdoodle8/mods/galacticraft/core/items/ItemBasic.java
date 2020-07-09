@@ -20,7 +20,7 @@
 //import net.minecraft.world.World;
 //import net.minecraftforge.api.distmarker.Dist;
 //import net.minecraftforge.api.distmarker.OnlyIn;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.util.List;
@@ -66,12 +66,12 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        if (itemStack.getItemDamage() > 14 && itemStack.getItemDamage() < 19)
+//        if (itemStack.getDamage() > 14 && itemStack.getDamage() < 19)
 //        {
 //            return this.getUnlocalizedName() + ".canned_food";
 //        }
 //
-//        return this.getUnlocalizedName() + "." + ItemBasic.names[itemStack.getItemDamage()];
+//        return this.getUnlocalizedName() + "." + ItemBasic.names[itemStack.getDamage()];
 //    }
 //
 //    @Override
@@ -100,11 +100,11 @@
 //    @OnlyIn(Dist.CLIENT)
 //    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
 //    {
-//        if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
+//        if (par1ItemStack.getDamage() > 14 && par1ItemStack.getDamage() < 19)
 //        {
-//            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate(this.getUnlocalizedName() + "." + ItemBasic.names[par1ItemStack.getItemDamage()] + ".name"));
+//            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate(this.getUnlocalizedName() + "." + ItemBasic.names[par1ItemStack.getDamage()] + ".name"));
 //        }
-//        else if (par1ItemStack.getItemDamage() == 19)
+//        else if (par1ItemStack.getDamage() == 19)
 //        {
 //            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequency_module.desc.0"));
 //            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate("gui.frequency_module.desc.1"));
@@ -115,7 +115,7 @@
 //    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
 //    {
 //        ItemStack itemStackIn = playerIn.getHeldItem(hand);
-//        if (itemStackIn.getItemDamage() == 19)
+//        if (itemStackIn.getDamage() == 19)
 //        {
 //            if (playerIn instanceof ServerPlayerEntity)
 //            {
@@ -136,7 +136,7 @@
 //    @Override
 //    public boolean onLeftClickEntity(ItemStack itemStack, PlayerEntity player, Entity entity)
 //    {
-//        if (itemStack.getItemDamage() != 19)
+//        if (itemStack.getDamage() != 19)
 //        {
 //            return false;
 //        }
@@ -183,7 +183,7 @@
 //    @Override
 //    public float getSmeltingExperience(ItemStack item)
 //    {
-//        switch (item.getItemDamage())
+//        switch (item.getDamage())
 //        {
 //        case 6:
 //        case 7:

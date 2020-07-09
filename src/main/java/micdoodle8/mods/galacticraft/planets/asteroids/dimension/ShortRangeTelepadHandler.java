@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerS
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.WorldSavedData;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -24,7 +25,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
 
     public static class TelepadEntry
     {
-        public int dimensionID;
+        public DimensionType dimensionID;
         public BlockVec3 position;
         public boolean enabled;
 
@@ -54,7 +55,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     }
 
     @Override
-    public void readFromNBT(CompoundNBT nbt)
+    public void read(CompoundNBT nbt)
     {
         ListNBT tagList = nbt.getList("TelepadList", 10);
         tileMap.clear();
@@ -62,34 +63,42 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         for (int i = 0; i < tagList.size(); i++)
         {
             CompoundNBT nbt2 = tagList.getCompound(i);
-            int address = nbt2.getInteger("Address");
-            DimensionType dimID = nbt2.getInteger("DimID");
-            int posX = nbt2.getInteger("PosX");
-            int posY = nbt2.getInteger("PosY");
-            int posZ = nbt2.getInteger("PosZ");
-            boolean enabled = true;
-            if (nbt2.contains("Enabled"))
+            int address = nbt2.getInt("Address");
+            int dimId = nbt.getInt("dimension");
+            DimensionType dimType = DimensionType.getById(dimId);
+            if (dimType == null)
             {
-                enabled = nbt2.getBoolean("Enabled");
+                throw new IllegalArgumentException("Invalid map dimension: " + i);
             }
-            tileMap.put(address, new TelepadEntry(dimID, new BlockVec3(posX, posY, posZ), enabled));
+            else
+            {
+                int posX = nbt2.getInt("PosX");
+                int posY = nbt2.getInt("PosY");
+                int posZ = nbt2.getInt("PosZ");
+                boolean enabled = true;
+                if (nbt2.contains("Enabled"))
+                {
+                    enabled = nbt2.getBoolean("Enabled");
+                }
+                tileMap.put(address, new TelepadEntry(dimType, new BlockVec3(posX, posY, posZ), enabled));
+            }
         }
     }
 
     @Override
-    public CompoundNBT writeToNBT(CompoundNBT nbt)
+    public CompoundNBT write(CompoundNBT nbt)
     {
         ListNBT tagList = new ListNBT();
 
         for (Map.Entry<Integer, TelepadEntry> e : tileMap.entrySet())
         {
             CompoundNBT nbt2 = new CompoundNBT();
-            nbt2.setInteger("Address", e.getKey());
-            nbt2.setInteger("DimID", e.getValue().dimensionID);
-            nbt2.setInteger("PosX", e.getValue().position.x);
-            nbt2.setInteger("PosY", e.getValue().position.y);
-            nbt2.setInteger("PosZ", e.getValue().position.z);
-            nbt2.setBoolean("Enabled", e.getValue().enabled);
+            nbt2.putInt("Address", e.getKey());
+            nbt2.putInt("DimID", e.getValue().dimensionID.getId());
+            nbt2.putInt("PosX", e.getValue().position.x);
+            nbt2.putInt("PosY", e.getValue().position.y);
+            nbt2.putInt("PosZ", e.getValue().position.z);
+            nbt2.putBoolean("Enabled", e.getValue().enabled);
             tagList.add(nbt2);
         }
 
@@ -103,7 +112,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             if (telepad.addressValid)
             {
-                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().dimension.getDimension(), new BlockVec3(telepad), !telepad.getDisabled(0));
+                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().dimension.getDimension().getType(), new BlockVec3(telepad), !telepad.getDisabled(0));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
 
                 if (previous == null || !previous.equals(newEntry))

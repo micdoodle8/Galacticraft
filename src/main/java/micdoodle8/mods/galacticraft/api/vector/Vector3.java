@@ -445,9 +445,9 @@ public class Vector3 implements Cloneable
     }
 
     /**
-     * Gets a position relative to a position's side
+     * Gets a position relative to a position's LogicalSide
      *
-     * @return The position relative to the original position's side
+     * @return The position relative to the original position's LogicalSide
      */
     public Vector3 modifyPositionFromSide(Direction side, float amount)
     {

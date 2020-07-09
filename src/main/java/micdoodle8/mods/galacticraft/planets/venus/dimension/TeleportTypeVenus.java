@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.dimension;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -22,7 +22,7 @@ public class TeleportTypeVenus implements ITeleportType
     }
 
     @Override
-    public Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -53,20 +53,20 @@ public class TeleportTypeVenus implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vector3(x, 900.0, z);
+            return new Vector3D(x, 900.0, z);
         }
 
         return null;
     }
 
     @Override
-    public Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity)
+    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3(entity.posX, 900.0, entity.posZ);
+        return new Vector3D(entity.posX, 900.0, entity.posZ);
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         return null;
     }
@@ -87,7 +87,7 @@ public class TeleportTypeVenus implements ITeleportType
 
                 if (!newWorld.isRemote)
                 {
-                    EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
+                    EntityEntryPodVenus entryPod = EntityEntryPodVenus.createEntityEntryPodVenus(player);
 
                     boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                     entryPod.forceSpawn = true;

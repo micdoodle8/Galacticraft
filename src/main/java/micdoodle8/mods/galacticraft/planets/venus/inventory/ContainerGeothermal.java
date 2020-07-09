@@ -1,23 +1,33 @@
 package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
+import micdoodle8.mods.galacticraft.core.inventory.GCContainerNames;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerGeothermal extends Container
 {
-    private TileEntityGeothermalGenerator tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.GEOTHERMAL)
+    public static ContainerType<ContainerGeothermal> TYPE;
 
-    public ContainerGeothermal(PlayerInventory playerInv, TileEntityGeothermalGenerator geothermalGenerator)
+    private TileEntityGeothermalGenerator generator;
+
+    public ContainerGeothermal(int containerId, PlayerInventory playerInv, TileEntityGeothermalGenerator generator)
     {
-        this.tileEntity = geothermalGenerator;
-        this.addSlot(new SlotSpecific(geothermalGenerator, 0, 152, 83, IItemElectric.class));
+        super(TYPE, containerId);
+        this.generator = generator;
+        this.addSlot(new SlotSpecific(generator, 0, 152, 83, IItemElectric.class));
 
         int var6;
         int var7;
@@ -38,10 +48,15 @@ public class ContainerGeothermal extends Container
         }
     }
 
+    public TileEntityGeothermalGenerator getGenerator()
+    {
+        return generator;
+    }
+
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.generator.isUsableByPlayer(var1);
     }
 
     @Override

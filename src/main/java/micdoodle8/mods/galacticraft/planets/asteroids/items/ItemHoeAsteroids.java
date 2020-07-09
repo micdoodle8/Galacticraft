@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.item.*;
 import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemHoeAsteroids extends HoeItem implements ISortableItem
 {
     public ItemHoeAsteroids(Item.Properties builder)
     {
-        super(AsteroidsItems.TOOL_TITANIUM);
-        this.setUnlocalizedName(assetName);
+        super(EnumItemTierAsteroids.TITANIUM, 0.0F, builder);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 

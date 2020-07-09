@@ -1,34 +1,58 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityProjectileTNT extends DamagingProjectileEntity
 {
-    public EntityProjectileTNT(World par1World)
+    public EntityProjectileTNT(EntityType<? extends EntityProjectileTNT> type, World worldIn)
     {
-        super(par1World);
-        this.setSize(1.0F, 1.0F);
+        super(type, worldIn);
+//        this.setSize(1.0F, 1.0F);
     }
 
-    public EntityProjectileTNT(World par1World, LivingEntity par2EntityLivingBase, double par3, double par5, double par7)
+    public static EntityProjectileTNT createEntityProjectileTNT(World world, LivingEntity entityShooting, double motX, double motY, double motZ)
     {
-        super(par1World, par2EntityLivingBase, par3, par5, par7);
-        this.setSize(1.0F, 1.0F);
+        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(MarsEntities.PROJECTILE_TNT.get(), world);
+//        this.setSize(1.0F, 1.0F);
+        projectileTNT.shootingEntity = entityShooting;
+        projectileTNT.setLocationAndAngles(entityShooting.posX, entityShooting.posY, entityShooting.posZ, entityShooting.rotationYaw, entityShooting.rotationPitch);
+        projectileTNT.setPosition(projectileTNT.posX, projectileTNT.posY, projectileTNT.posZ);
+        projectileTNT.setMotion(Vec3d.ZERO);
+        motX = motX + projectileTNT.rand.nextGaussian() * 0.4D;
+        motY = motY + projectileTNT.rand.nextGaussian() * 0.4D;
+        motZ = motZ + projectileTNT.rand.nextGaussian() * 0.4D;
+        double d0 = (double) MathHelper.sqrt(motX * motX + motY * motY + motZ * motZ);
+        projectileTNT.accelerationX = motX / d0 * 0.1D;
+        projectileTNT.accelerationY = motY / d0 * 0.1D;
+        projectileTNT.accelerationZ = motZ / d0 * 0.1D;
+        return projectileTNT;
     }
+//
+//    @OnlyIn(Dist.CLIENT)
+//    public EntityProjectileTNT(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+//    {
+//        super(par1World, par2, par4, par6, par8, par10, par12);
+////        this.setSize(0.3125F, 0.3125F);
+//    }
 
-    @OnlyIn(Dist.CLIENT)
-    public EntityProjectileTNT(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
+    @Override
+    public IPacket<?> createSpawnPacket()
     {
-        super(par1World, par2, par4, par6, par8, par10, par12);
-        this.setSize(0.3125F, 0.3125F);
+        return new SSpawnObjectPacket(this);
     }
 
     @Override
@@ -42,20 +66,24 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
     {
         if (!this.world.isRemote)
         {
-            if (movingObjectPosition.entityHit != null && !(movingObjectPosition.entityHit instanceof CreeperEntity))
+            if (movingObjectPosition.getType() == RayTraceResult.Type.ENTITY)
             {
-                float difficulty = 0;
-                switch (this.world.getDifficulty())
+                EntityRayTraceResult entityResult = (EntityRayTraceResult)movingObjectPosition;
+                if (!(entityResult.getEntity() instanceof CreeperEntity))
                 {
-                case HARD : difficulty = 2F;
-                    break;
-                case NORMAL : difficulty = 1F;
-                    break;
+                    float difficulty = 0;
+                    switch (this.world.getDifficulty())
+                    {
+                    case HARD : difficulty = 2F;
+                        break;
+                    case NORMAL : difficulty = 1F;
+                        break;
+                    }
+                    entityResult.getEntity().attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
                 }
-                movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
             }
 
-            this.world.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean("mobGriefing"));
+            this.world.createExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
             this.remove();
         }
     }

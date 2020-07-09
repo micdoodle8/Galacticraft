@@ -1,14 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.solarArrayModule)
+    public static TileEntityType<TileEntitySolarArrayModule> TYPE;
+
     public TileEntitySolarArrayModule()
     {
-        super("container.solar_array_module.name");
+        super(TYPE);
     }
 
     @Override

@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
+public class GuiOxygenDistributor extends GuiContainerGC<ContainerOxygenDistributor> implements ICheckBoxCallback
 {
     private static final ResourceLocation distributorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_distributor.png");
 

@@ -1,21 +1,28 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class TileEntityTelepadFake extends TileBaseElectricBlock
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidBlockNames.fakeTelepad)
+    public static TileEntityType<TileEntityTelepadFake> TYPE;
+
     // The the position of the main block
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public BlockPos mainBlockPosition;
@@ -25,7 +32,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
 
     public TileEntityTelepadFake()
     {
-        super("tile.telepadfake.name");
+        super(TYPE);
     }
 
     @Override
@@ -111,7 +118,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
 
         if (mainTelepad == null)
         {
-            this.world.setBlockToAir(this.mainBlockPosition);
+            this.world.removeBlock(this.mainBlockPosition, false);
         }
         else
         {
@@ -135,7 +142,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     {
         super.read(nbt);
         CompoundNBT tagCompound = nbt.getCompound("mainBlockPosition");
-        this.setMainBlockInternal(new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z")));
+        this.setMainBlockInternal(new BlockPos(tagCompound.getInt("x"), tagCompound.getInt("y"), tagCompound.getInt("z")));
     }
 
     @Override

@@ -24,7 +24,7 @@
 //import net.minecraft.world.World;
 //import net.minecraftforge.fluids.FluidActionResult;
 //import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class BlockFluidTank extends Block implements IShiftDescription, ISortableBlock, ITileEntityProvider
@@ -161,7 +161,7 @@
 //    @Override
 //    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
 //    {
-//        if (super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ))
+//        if (super.onBlockActivated(worldIn, pos, state, playerIn, hand, LogicalSide, hitX, hitY, hitZ))
 //        {
 //            return true;
 //        }

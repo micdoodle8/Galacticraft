@@ -1,23 +1,33 @@
 package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
+import micdoodle8.mods.galacticraft.core.inventory.GCContainerNames;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
+import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySolarArrayController;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerSolarArrayController extends Container
 {
-    private TileEntitySolarArrayController tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.SOLAR_ARRAY_CONTROLLER)
+    public static ContainerType<ContainerSolarArrayController> TYPE;
 
-    public ContainerSolarArrayController(PlayerInventory playerInv, TileEntitySolarArrayController solarGen)
+    private TileEntitySolarArrayController controller;
+
+    public ContainerSolarArrayController(int containerId, PlayerInventory playerInv, TileEntitySolarArrayController controller)
     {
-        this.tileEntity = solarGen;
-        this.addSlot(new SlotSpecific(solarGen, 0, 152, 91, IItemElectric.class));
+        super(TYPE, containerId);
+        this.controller = controller;
+        this.addSlot(new SlotSpecific(controller, 0, 152, 91, IItemElectric.class));
 
         int var6;
         int var7;
@@ -38,10 +48,15 @@ public class ContainerSolarArrayController extends Container
         }
     }
 
+    public TileEntitySolarArrayController getController()
+    {
+        return controller;
+    }
+
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.tileEntity.isUsableByPlayer(var1);
+        return this.controller.isUsableByPlayer(var1);
     }
 
     @Override

@@ -1,56 +1,50 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
-import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-
-import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class TileEntityMinerBaseRenderer extends TileEntityRenderer<TileEntityMinerBase>
 {
-    public static OBJModel.OBJBakedModel minerBaseModelBaked;
+    private static OBJModel.OBJBakedModel minerBaseModelBaked;
 
-    public IBakedModel getBakedModel()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (minerBaseModelBaked == null)
+        try
         {
-            OBJModel minerBaseModel;
-            try
-            {
-                minerBaseModel = (OBJModel) OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "minerbase0.obj"));
-                minerBaseModel = (OBJModel) minerBaseModel.process(ImmutableMap.of("ambient", "false"));
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-            Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
-            minerBaseModelBaked = (OBJModel.OBJBakedModel) minerBaseModel.bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM, spriteFunction);
+            minerBaseModelBaked = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "minerbase0.obj"), ImmutableList.of("dock"), TRSRTransformation.identity(), ImmutableMap.of("ambient", "false"));
         }
-        return minerBaseModelBaked;
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void render(TileEntityMinerBase tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+    public void render(TileEntityMinerBase tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
         if (!tile.isMaster)
         {
@@ -82,7 +76,8 @@ public class TileEntityMinerBaseRenderer extends TileEntityRenderer<TileEntityMi
         light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 1), 0);
         j += light % 65536;
         k += light / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 8.0F, k / 8.0F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j / 8.0F, (float)k / 8.0F);
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 8.0F, k / 8.0F);
 
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -110,8 +105,9 @@ public class TileEntityMinerBaseRenderer extends TileEntityRenderer<TileEntityMi
 
         Tessellator tessellator = Tessellator.getInstance();
         tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-        GlStateManager.translate(-tile.getPos().getX(), -tile.getPos().getY(), -tile.getPos().getZ());
-        Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(tile.getWorld(), getBakedModel(), tile.getWorld().getBlockState(tile.getPos()), tile.getPos(), tessellator.getBuffer(), false);
+        GlStateManager.translatef(-tile.getPos().getX(), -tile.getPos().getY(), -tile.getPos().getZ());
+        IModelData data = minerBaseModelBaked.getModelData(tile.getWorld(), tile.getPos(), tile.getBlockState(), ModelDataManager.getModelData(tile.getWorld(), tile.getPos()));
+        Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(tile.getWorld(), minerBaseModelBaked, tile.getWorld().getBlockState(tile.getPos()), tile.getPos(), tessellator.getBuffer(), false, new Random(), 42, data);
         tessellator.draw();
 
         RenderHelper.enableStandardItemLighting();

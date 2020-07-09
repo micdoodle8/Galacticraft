@@ -1,17 +1,17 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderWebShot extends EntityRenderer<EntityWebShot>
@@ -28,13 +28,13 @@ public class RenderWebShot extends EntityRenderer<EntityWebShot>
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
+        GlStateManager.translatef((float) x, (float) y + 0.5F, (float) z);
         this.bindEntityTexture(entity);
-        GlStateManager.rotate((entity.ticksExisted + partialTicks) * 50.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef((entity.ticksExisted + partialTicks) * 50.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-        GlStateManager.translate(-0.5F, -1F, 0.5F);
-        blockrendererdispatcher.renderBlockBrightness(Blocks.WEB.getDefaultState(), 1.0F);
-        GlStateManager.translate(0.0F, 0.0F, 1.0F);
+        GlStateManager.translatef(-0.5F, -1F, 0.5F);
+        blockrendererdispatcher.renderBlockBrightness(Blocks.COBWEB.getDefaultState(), 1.0F);
+        GlStateManager.translatef(0.0F, 0.0F, 1.0F);
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
     }

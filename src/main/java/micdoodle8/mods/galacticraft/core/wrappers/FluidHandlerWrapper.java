@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import javax.annotation.Nonnull;
 
 public class FluidHandlerWrapper implements IFluidHandler
 {
@@ -20,20 +20,28 @@ public class FluidHandlerWrapper implements IFluidHandler
     }
 
     @Override
-    public IFluidTankProperties[] getTankProperties()
+    public int getTanks()
     {
-        FluidTankInfo[] infos = wrapper.getTankInfo(side); 
-        if (infos != null)
-        {
-            FluidTankProperties[] properties = new FluidTankProperties[infos.length];
-            for (int i = 0; i < infos.length; i++)
-            {
-                FluidTankInfo info = infos[i];
-                properties[i] = new FluidTankProperties(info.fluid, info.capacity, this.wrapper.canFill(side, null), this.wrapper.canDrain(side, null));
-            }
-            return properties;
-        }
-        return new IFluidTankProperties[]{};
+        return wrapper.getTanks();
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        return wrapper.getFluidInTank(tank);
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        return wrapper.getTankCapacity(tank);
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        return wrapper.isFluidValid(tank, stack);
     }
 
     @Override
@@ -50,9 +58,9 @@ public class FluidHandlerWrapper implements IFluidHandler
     @Override
     public FluidStack drain(FluidStack resource, IFluidHandler.FluidAction action)
     {
-        if (wrapper.canDrain(side, resource != null ? resource.getFluid() : null))
+        if (wrapper.canDrain(side, resource != FluidStack.EMPTY ? resource.getFluid() : Fluids.EMPTY))
         {
-            return wrapper.drain(side, resource, doDrain);
+            return wrapper.drain(side, resource, action);
         }
 
         return null;
@@ -61,9 +69,9 @@ public class FluidHandlerWrapper implements IFluidHandler
     @Override
     public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
     {
-        if (wrapper.canDrain(side, null))
+        if (wrapper.canDrain(side, Fluids.EMPTY))
         {
-            return wrapper.drain(side, maxDrain, doDrain);
+            return wrapper.drain(side, maxDrain, action);
         }
 
         return null;

@@ -7,7 +7,7 @@
 //import net.minecraft.client.renderer.entity.MobRenderer;
 //import net.minecraft.client.renderer.entity.EntityRendererManager;
 //import net.minecraft.util.ResourceLocation;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import org.lwjgl.opengl.GL11;

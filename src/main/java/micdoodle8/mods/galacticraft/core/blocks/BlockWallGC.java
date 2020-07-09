@@ -20,7 +20,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.world.IBlockReader;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class BlockWallGC extends Block /* Do not extend BlockWall */ implements ISortableBlock
@@ -234,7 +234,7 @@
 //    @Override
 //    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
-//        return side == Direction.DOWN ? super.shouldSideBeRendered(blockState, blockAccess, pos, side) : true;
+//        return LogicalSide == Direction.DOWN ? super.shouldSideBeRendered(blockState, blockAccess, pos, LogicalSide) : true;
 //    }
 //
 //    @Override

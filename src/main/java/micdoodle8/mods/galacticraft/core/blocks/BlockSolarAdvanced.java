@@ -84,7 +84,7 @@ public class BlockSolarAdvanced extends BlockTileGC implements IShiftDescription
 //        }
 //
 //        return true;
-//        // return new BlockVec3(x1, y1, z1).newVecSide(side ^ 1).getBlock(world) != GCBlocks.fakeBlock; TODO
+//        // return new BlockVec3(x1, y1, z1).newVecSide(LogicalSide ^ 1).getBlock(world) != GCBlocks.fakeBlock; TODO
 //    }
 
     @Override

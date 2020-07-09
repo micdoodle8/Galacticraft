@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
@@ -10,35 +10,33 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
-import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.DimensionAsteroids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+@OnlyIn(Dist.CLIENT)
 public class AsteroidsEventHandlerClient
 {
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onClientTick(ClientTickEvent event)
+    public void onClientTick(TickEvent.ClientTickEvent event)
     {
         Minecraft minecraft = Minecraft.getInstance();
         ClientWorld world = minecraft.world;
 
         if (world != null)
         {
-            if (world.getDimension() instanceof WorldProviderAsteroids)
+            if (world.getDimension() instanceof DimensionAsteroids)
             {
                 if (world.getDimension().getSkyRenderer() == null)
                 {
-                    world.getDimension().setSkyRenderer(new SkyProviderAsteroids((IGalacticraftWorldProvider) world.getDimension()));
+                    world.getDimension().setSkyRenderer(new SkyProviderAsteroids((IGalacticraftDimension) world.getDimension()));
                 }
 
                 if (world.getDimension().getCloudRenderer() == null)

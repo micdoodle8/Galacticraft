@@ -12,23 +12,18 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,18 +35,23 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     public int headsRemaining = 3;
     private Entity targetEntity;
 
-    public EntityCreeperBoss(World par1World)
+    public EntityCreeperBoss(EntityType<? extends EntityCreeperBoss> type, World worldIn)
     {
-        super(par1World);
-        this.setSize(2.0F, 7.0F);
-        this.isImmuneToFire = true;
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIArrowAttack(this, 1.0D, 25, 20.0F));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, PlayerEntity.class, 8.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, PlayerEntity.class, 0, true, false, null));
+        super(type, worldIn);
+//        this.setSize(2.0F, 7.0F);
+//        this.isImmuneToFire = true;
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new EntityAIArrowAttack(this, 1.0D, 25, 20.0F));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 0, true, false, null));
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
     }
 
     @Override
@@ -91,11 +91,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected void applyEntityAttributes()
+    protected void registerAttributes()
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05F);
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05F);
     }
 
     @Override
@@ -150,13 +150,13 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         {
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.world), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.world), new Object[] { getSoundPitch() - 0.1F }), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
             }
         }
     }
 
     @Override
-    public void onLivingUpdate()
+    public void livingTick()
     {
         this.ticks++;
 
@@ -179,7 +179,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         {
             if (this.getDistanceSq(player) < 400.0D)
             {
-                this.getNavigator().getPathToEntityLiving(player);
+                this.getNavigator().getPathToEntityLiving(player, 0);
                 this.targetEntity = player;
             }
         }
@@ -188,51 +188,51 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             this.targetEntity = null;
         }
 
-        super.onLivingUpdate();
+        super.livingTick();
     }
 
-    @Override
-    protected Item getDropItem()
-    {
-        return Items.ARROW;
-    }
-
-    @Override
-    public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
-    {
-        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
-        entityitem.motionY = -2.0D;
-        entityitem.setDefaultPickupDelay();
-        if (this.captureDrops)
-        {
-            this.capturedDrops.add(entityitem);
-        }
-        else
-        {
-            this.world.addEntity(entityitem);
-        }
-        return entityitem;
-    }
-
-    @Override
-    protected void dropFewItems(boolean b, int i)
-    {
-        if (this.rand.nextInt(200) - i >= 5)
-        {
-            return;
-        }
-
-        if (i > 0)
-        {
-            final ItemStack var2 = new ItemStack(Items.BOW);
-            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5, false);
-            this.entityDropItem(var2, 0.0F);
-        }
-        else
-        {
-            this.dropItem(Items.BOW, 1);
-        }
-    }
+//    @Override
+//    protected Item getDropItem()
+//    {
+//        return Items.ARROW;
+//    }
+//
+//    @Override
+//    public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
+//    {
+//        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+//        entityitem.motionY = -2.0D;
+//        entityitem.setDefaultPickupDelay();
+//        if (this.captureDrops)
+//        {
+//            this.capturedDrops.add(entityitem);
+//        }
+//        else
+//        {
+//            this.world.addEntity(entityitem);
+//        }
+//        return entityitem;
+//    }
+//
+//    @Override
+//    protected void dropFewItems(boolean b, int i)
+//    {
+//        if (this.rand.nextInt(200) - i >= 5)
+//        {
+//            return;
+//        }
+//
+//        if (i > 0)
+//        {
+//            final ItemStack var2 = new ItemStack(Items.BOW);
+//            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5, false);
+//            this.entityDropItem(var2, 0.0F);
+//        }
+//        else
+//        {
+//            this.dropItem(Items.BOW, 1);
+//        }
+//    } TODO Item drops
 
     @Override
     public boolean canBreath()
@@ -257,11 +257,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             {
                 for (ISchematicPage page : stats.getUnlockedSchematics())
                 {
-                    if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
+                    if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3)
                     {
                         hasT3Rocket = true;
                     }
-                    else if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3 + 1)
+                    else if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3 + 1)
                     {
                         hasAstroMiner = true;
                     }
@@ -309,7 +309,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         double d6 = entitylivingbase.posX - d3;
         double d7 = entitylivingbase.posY + entitylivingbase.getEyeHeight() * 0.5D - d4;
         double d8 = entitylivingbase.posZ - d5;
-        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(this.world, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
+        EntityProjectileTNT projectileTNT = EntityProjectileTNT.createEntityProjectileTNT(this.world, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
 
         projectileTNT.posY = d4;
         projectileTNT.posX = d3;
@@ -326,7 +326,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     public void dropKey()
     {
-        this.entityDropItem(new ItemStack(MarsItems.key, 1, 0), 0.5F);
+        this.entityDropItem(new ItemStack(MarsItems.key, 1), 0.5F);
     }
 
     @Override
@@ -335,8 +335,8 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         return BossInfo.Color.YELLOW;
     }
 
-    @Override
-    public void setSwingingArms(boolean swingingArms) {}
+//    @Override
+//    public void setSwingingArms(boolean swingingArms) {}
 
     @Override
     public void onKillCommand()

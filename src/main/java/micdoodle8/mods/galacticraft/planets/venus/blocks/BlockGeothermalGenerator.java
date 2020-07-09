@@ -1,36 +1,28 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntityProvider, IShiftDescription, IPartialSealableBlock, ISortableBlock
+public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescription, IPartialSealableBlock
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -55,23 +47,24 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     @Override
     public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ());
+//        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ()); TODO gui
         return true;
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
-        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
+//        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+//        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
+        worldIn.setBlockState(pos, this.getDefaultState().with(FACING, placer.getHorizontalFacing()), 3);
     }
 
     @Override
     public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
-        world.setBlockState(pos, this.getStateFromMeta(change), 3);
+        BlockState state = world.getBlockState(pos);
+        Direction change = state.get(FACING).rotateY();
+        world.setBlockState(pos, state.with(FACING, change), 3);
         return true;
     }
 
@@ -82,13 +75,13 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -105,18 +98,18 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.MACHINE;
+//    }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
-        return this.getDefaultState().with(FACING, enumfacing);
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
+//        return this.getDefaultState().with(FACING, enumfacing);
+//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
@@ -124,15 +117,15 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
         builder.add(FACING, ACTIVE);
     }
 
-    @Override
-    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (!(tile instanceof TileEntityGeothermalGenerator))
-        {
-            return state;
-        }
-        TileEntityGeothermalGenerator generator = (TileEntityGeothermalGenerator) tile;
-        return state.with(ACTIVE, generator.hasValidSpout() && !generator.getDisabled(0));
-    }
+//    @Override
+//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        TileEntity tile = worldIn.getTileEntity(pos);
+//        if (!(tile instanceof TileEntityGeothermalGenerator))
+//        {
+//            return state;
+//        }
+//        TileEntityGeothermalGenerator generator = (TileEntityGeothermalGenerator) tile;
+//        return state.with(ACTIVE, generator.hasValidSpout() && !generator.getDisabled(0));
+//    }
 }

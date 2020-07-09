@@ -1,42 +1,35 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortableBlock
+public class BlockCavernousVine extends Block implements IShearable, IShiftDescription
 {
     public static final EnumProperty<EnumVineType> VINE_TYPE = EnumProperty.create("vinetype", EnumVineType.class);
 
@@ -61,9 +54,9 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         }
 
         private final static EnumVineType[] values = values();
-        public static EnumVineType byMetadata(int meta)
+        public static EnumVineType byId(int id)
         {
-            return values[meta % values.length];
+            return values[id % values.length];
         }
 
         @Override
@@ -79,14 +72,14 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest)
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid)
     {
-        if (world.setBlockToAir(pos))
+        if (world.removeBlock(pos, false))
         {
             int y2 = pos.getY() - 1;
             while (world.getBlockState(new BlockPos(pos.getX(), y2, pos.getZ())).getBlock() == this)
             {
-                world.setBlockToAir(new BlockPos(pos.getX(), y2, pos.getZ()));
+                world.removeBlock(new BlockPos(pos.getX(), y2, pos.getZ()), false);
                 y2--;
             }
 
@@ -105,7 +98,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
 
         if (!this.canBlockStay(worldIn, pos))
         {
@@ -118,12 +111,13 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     {
         if (entityIn instanceof LivingEntity)
         {
-            if (entityIn instanceof PlayerEntity && ((PlayerEntity) entityIn).capabilities.isFlying)
+            if (entityIn instanceof PlayerEntity && ((PlayerEntity) entityIn).abilities.isFlying)
             {
                 return;
             }
 
-            entityIn.motionY = 0.06F;
+//            entityIn.motionY = 0.06F;
+            entityIn.setMotion(entityIn.getMotion().x, 0.06F, entityIn.getMotion().z);
             entityIn.rotationYaw += 0.4F;
 
             ((LivingEntity) entityIn).addPotionEffect(new EffectInstance(Effects.POISON, 5, 20, false, true));
@@ -155,25 +149,31 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
+
+//    @Override
+//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
+//    {
+//        return null;
+//    }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return null;
+        return VoxelShapes.empty();
     }
 
-    @Override
-    public boolean canPlaceBlockOnSide(World world, BlockPos pos, Direction facing)
-    {
-        return facing == Direction.DOWN && world.getBlockState(pos.up()).getBlockFaceShape(world, pos.up(), facing) == BlockFaceShape.SOLID;
-    }
+//    @Override
+//    public boolean canPlaceBlockOnSide(World world, BlockPos pos, Direction facing)
+//    {
+//        return facing == Direction.DOWN && world.getBlockState(pos.up()).getBlockFaceShape(world, pos.up(), facing) == BlockFaceShape.SOLID;
+//    }
 
-    public int getVineLength(IBlockAccess world, BlockPos pos)
+    public int getVineLength(IBlockReader world, BlockPos pos)
     {
         int vineCount = 0;
         int y2 = pos.getY();
@@ -187,7 +187,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         return vineCount;
     }
 
-    public int getVineLight(IBlockAccess world, BlockPos pos)
+    public int getVineLight(IBlockReader world, BlockPos pos)
     {
         int vineCount = 0;
         int y2 = pos.getY();
@@ -201,8 +201,15 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         return Math.max(19 - vineCount, 0);
     }
 
+//    @Override
+//    public int tickRate(World par1World)
+//    {
+//        return 50;
+//    }
+
+
     @Override
-    public int tickRate(World par1World)
+    public int tickRate(IWorldReader worldIn)
     {
         return 50;
     }
@@ -223,8 +230,8 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
                 }
             }
 
-            worldIn.setBlockState(pos.down(), this.getStateFromMeta(this.getVineLength(worldIn, pos) % 3), 2);
-            worldIn.checkLight(pos);
+            worldIn.setBlockState(pos.down(), state.with(VINE_TYPE, EnumVineType.byId(this.getVineLength(worldIn, pos))), 2);
+            worldIn.getChunkProvider().getLightManager().checkBlock(pos);
         }
 
     }
@@ -239,46 +246,47 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 //        }
 //    }
 
-    @Override
-    public Item getItemDropped(BlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(Blocks.AIR);
-    }
+//    @Override
+//    public Item getItemDropped(BlockState state, Random rand, int fortune)
+//    {
+//        return Item.getItemFromBlock(Blocks.AIR);
+//    }
+//
+//    @Override
+//    public int quantityDropped(Random par1Random)
+//    {
+//        return 0;
+//    }
 
     @Override
-    public int quantityDropped(Random par1Random)
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos)
+    public boolean isShearable(@Nonnull ItemStack item, IWorldReader world, BlockPos pos)
     {
         return true;
     }
 
+    @Nonnull
     @Override
-    public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
+    public List<ItemStack> onSheared(@Nonnull ItemStack item, IWorld world, BlockPos pos, int fortune)
     {
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(new ItemStack(this, 1, 0));
+        ArrayList<ItemStack> ret = new ArrayList<>();
+        ret.add(new ItemStack(this, 1));
         return ret;
     }
 
     @Override
-    public boolean isLadder(BlockState state, IBlockAccess world, BlockPos pos, LivingEntity entity)
+    public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity)
     {
         return true;
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -290,11 +298,11 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(VINE_TYPE, EnumVineType.byMetadata(meta));
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(VINE_TYPE, EnumVineType.byMetadata(meta));
+//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
@@ -302,9 +310,9 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         builder.add(VINE_TYPE);
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.GENERAL;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.GENERAL;
+//    }
 }

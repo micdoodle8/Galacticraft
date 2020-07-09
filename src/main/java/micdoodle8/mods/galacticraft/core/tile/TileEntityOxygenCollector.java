@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
@@ -112,7 +112,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
 
                     if (!this.isInitialised)
                     {
-                        this.noAtmosphericOxygen = (this.world.getDimension() instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.world.getDimension()).isGasPresent(EnumAtmosphericGas.OXYGEN));
+                        this.noAtmosphericOxygen = (this.world.getDimension() instanceof IGalacticraftDimension && !((IGalacticraftDimension) this.world.getDimension()).isGasPresent(EnumAtmosphericGas.OXYGEN));
                         this.isInitialised = true;
                     }
 
@@ -253,19 +253,19 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
     }
 
 //    @Override
-//    public boolean canReceiveGas(EnumFacing side, Gas type)
+//    public boolean canReceiveGas(EnumFacing LogicalSide, Gas type)
 //    {
 //    	return false;
 //    }
 //
 //    @Override
-//    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+//    public int receiveGas(EnumFacing LogicalSide, GasStack stack, boolean doTransfer)
 //    {
 //    	return 0;
 //    }
 //
 //    @Override
-//    public int receiveGas(EnumFacing side, GasStack stack)
+//    public int receiveGas(EnumFacing LogicalSide, GasStack stack)
 //    {
 //    	return 0;
 //    }

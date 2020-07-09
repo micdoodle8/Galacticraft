@@ -55,7 +55,7 @@
 //            }
 //        }
 //
-//        Direction facing = Direction.byIndex(side.getIndex() ^ 1);
+//        Direction facing = Direction.byIndex(LogicalSide.getIndex() ^ 1);
 //        return world.getBlockState(pos.add(facing.getXOffset(), facing.getYOffset(), facing.getZOffset())).getBlock() != GCBlocks.fakeBlock;
 //    }
 //

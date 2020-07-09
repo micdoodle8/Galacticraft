@@ -62,7 +62,7 @@
 //            ClientProxyCore.playerClientHandler.onBuild(7, (ClientPlayerEntity) playerIn);
 //        }
 //
-//        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
+//        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, LogicalSide, hitX, hitY, hitZ);
 //    }
 //
 //    @Override
@@ -224,7 +224,7 @@
 //                return 0.875F;
 //            }
 //        }
-//        if (here.getBlock() instanceof BlockLiquid)
+//        if (here.getBlock() instanceof FlowingFluidBlock)
 //        {
 //            return Math.min(1 - BlockLiquid.getLiquidHeightPercent(here.getValue(BlockLiquid.LEVEL)), 14f / 16);
 //        }

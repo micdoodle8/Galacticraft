@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.model;
 
 import micdoodle8.mods.galacticraft.core.client.model.ModelRendererGC;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.Entity;
+import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelSpiderQueen extends ModelBase
+public class ModelSpiderQueen extends EntityModel<EntitySpiderQueen>
 {
     ModelRendererGC head;
     ModelRendererGC body;
@@ -259,10 +259,10 @@ public class ModelSpiderQueen extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntitySpiderQueen entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
         head.render(f5);
         body.render(f5);
         for (int i = 0; i < 3; ++i)
@@ -304,7 +304,7 @@ public class ModelSpiderQueen extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float f1, float f2, float f3, float f4, float f5, float f6, Entity entityIn)
+    public void setRotationAngles(EntitySpiderQueen entityIn, float f1, float f2, float f3, float f4, float f5, float f6)
     {
         float movement = f1;
         float increment = -1.0F;

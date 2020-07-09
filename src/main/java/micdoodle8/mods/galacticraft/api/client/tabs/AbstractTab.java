@@ -41,7 +41,7 @@
 //		}
 //		if (this.visible)
 //		{
-//		    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+//		    GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //			int yTexPos = this.enabled ? 3 : 32;
 //			int ySize = this.enabled ? 25 : 32;

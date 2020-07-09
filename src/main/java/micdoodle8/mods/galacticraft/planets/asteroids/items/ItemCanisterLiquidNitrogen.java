@@ -17,10 +17,14 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -32,8 +36,8 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
 
     public ItemCanisterLiquidNitrogen(Item.Properties builder)
     {
-        super(assetName);
-        this.setAllowedFluid("liquidnitrogen");
+        super(builder);
+//        this.setAllowedFluid("liquidnitrogen");
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
@@ -47,21 +51,21 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
         }
     }*/
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        if (itemStack.getMaxDamage() - itemStack.getItemDamage() == 0)
-        {
-            return "item.empty_gas_canister";
-        }
-
-        if (itemStack.getItemDamage() == 1)
-        {
-            return "item.canister.liquid_nitrogen.full";
-        }
-
-        return "item.canister.liquid_nitrogen.partial";
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemStack)
+//    {
+//        if (itemStack.getMaxDamage() - itemStack.getDamage() == 0)
+//        {
+//            return "item.empty_gas_canister";
+//        }
+//
+//        if (itemStack.getDamage() == 1)
+//        {
+//            return "item.canister.liquid_nitrogen.full";
+//        }
+//
+//        return "item.canister.liquid_nitrogen.partial";
+//    }
 
     /*@Override
     public IIcon getIconFromDamage(int par1)
@@ -78,11 +82,11 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
+        if (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(GCCoreUtil.translate("item.canister.liquid_nitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.liquid_nitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
         }
     }
 
@@ -104,30 +108,31 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     {
         ItemStack itemStack = playerIn.getHeldItem(hand);
 
-        int damage = itemStack.getItemDamage() + 125;
+        int damage = itemStack.getDamage() + 125;
         if (damage > itemStack.getMaxDamage())
         {
             return new ActionResult<>(ActionResultType.PASS, itemStack);
         }
 
-        RayTraceResult movingobjectposition = this.rayTrace(worldIn, playerIn, true);
+        RayTraceResult movingobjectposition = Item.rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.ANY);
 
-        if (movingobjectposition == null || movingobjectposition.typeOfHit == RayTraceResult.Type.MISS)
+        if (movingobjectposition.getType() == RayTraceResult.Type.MISS)
         {
             return new ActionResult<>(ActionResultType.PASS, itemStack);
         }
         else
         {
-            if (movingobjectposition.typeOfHit == RayTraceResult.Type.BLOCK)
+            if (movingobjectposition.getType() == RayTraceResult.Type.BLOCK)
             {
-                BlockPos pos = movingobjectposition.getBlockPos();
+                BlockRayTraceResult blockResult = (BlockRayTraceResult) movingobjectposition;
+                BlockPos pos = blockResult.getPos();
 
                 if (!worldIn.canMineBlockBody(playerIn, pos))
                 {
                     return new ActionResult<>(ActionResultType.PASS, itemStack);
                 }
 
-                if (!playerIn.canPlayerEdit(pos, movingobjectposition.sideHit, itemStack))
+                if (!playerIn.canPlayerEdit(pos, blockResult.getFace(), itemStack))
                 {
                     return new ActionResult<>(ActionResultType.PASS, itemStack);
                 }
@@ -135,13 +140,13 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
                 //Material material = par2World.getBlock(i, j, k).getMaterial();
                 BlockState state = worldIn.getBlockState(pos);
                 Block b = state.getBlock();
-                int meta = b.getMetaFromState(state);
+//                int meta = b.getMetaFromState(state);
 
                 Block result = this.canFreeze(b);
                 if (result != null)
                 {
                     this.setNewDamage(itemStack, damage);
-                    worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.NEUTRAL, 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
+                    worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.NEUTRAL, 1.0F, Item.random.nextFloat() * 0.4F + 0.8F);
                     worldIn.setBlockState(pos, result.getDefaultState(), 3);
                     return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
                 }

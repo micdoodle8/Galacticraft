@@ -4,23 +4,25 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelCreeperBoss;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class RenderCreeperBoss extends MobRenderer<EntityCreeperBoss>
+import javax.annotation.Nullable;
+
+public class RenderCreeperBoss extends MobRenderer<EntityCreeperBoss, ModelCreeperBoss>
 {
     private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/creeper.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/power.png");
-    private final ModelBase creeperModel = new ModelCreeperBoss(2.0F);
+    private final ModelCreeperBoss creeperModel = new ModelCreeperBoss(2.0F);
 
     public RenderCreeperBoss(EntityRendererManager renderManager)
     {
         super(renderManager, new ModelCreeperBoss(), 1.0F);
     }
 
+    @Nullable
     @Override
     protected ResourceLocation getEntityTexture(EntityCreeperBoss entity)
     {

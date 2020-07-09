@@ -1,25 +1,25 @@
 package micdoodle8.mods.galacticraft.planets.venus.client;
 
-import java.lang.reflect.Field;
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.client.IRenderHandler;
+import org.lwjgl.opengl.GL11;
 
-public class WeatherRendererVenus extends IRenderHandler
+import java.lang.reflect.Field;
+import java.util.Random;
+
+public class WeatherRendererVenus implements IRenderHandler
 {
     private final Random random = new Random();
     private final float[] rainXCoords = new float[1024];
@@ -42,7 +42,7 @@ public class WeatherRendererVenus extends IRenderHandler
     }
 
     @Override
-    public void render(float partialTicks, ClientWorld world, Minecraft mc)
+    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc)
     {
         float strength = world.getRainStrength(partialTicks);
 
@@ -50,11 +50,11 @@ public class WeatherRendererVenus extends IRenderHandler
         {
             int rendererUpdateCount = 0;
             try {
-                Field fieldRUC = mc.entityRenderer.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "rendererUpdateCount" : "field_78529_t");
+                Field fieldRUC = mc.gameRenderer.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "rendererUpdateCount" : "field_78529_t");
                 fieldRUC.setAccessible(true);
-                rendererUpdateCount = fieldRUC.getInt(mc.entityRenderer);
+                rendererUpdateCount = fieldRUC.getInt(mc.gameRenderer);
             } catch (Exception e) { }
-            mc.entityRenderer.enableLightmap();
+            mc.gameRenderer.enableLightmap();
             Entity entity = mc.getRenderViewEntity();
 
             Tessellator tessellator = Tessellator.getInstance();
@@ -77,7 +77,7 @@ public class WeatherRendererVenus extends IRenderHandler
 
             int drawFlag = -1;
             worldrenderer.setTranslation(-d0, -d1, -d2);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
             int px = MathHelper.floor(entity.posX);
@@ -90,7 +90,7 @@ public class WeatherRendererVenus extends IRenderHandler
                 for (int x = px - r; x <= px + r; ++x)
                 {
                     mutablePos.setPos(x, 0, z);
-                    int yHeight = world.getPrecipitationHeight(mutablePos).getY() + 4 - (int)(4.8F * strength);
+                    int yHeight = world.getHeight(Heightmap.Type.MOTION_BLOCKING, mutablePos).getY() + 4 - (int)(4.8F * strength);
                     int y = py - r;
                     int ymax = py + r;
 
@@ -159,7 +159,7 @@ public class WeatherRendererVenus extends IRenderHandler
             GlStateManager.enableCull();
             GlStateManager.disableBlend();
             GlStateManager.alphaFunc(516, 0.1F);
-            mc.entityRenderer.disableLightmap();
+            mc.gameRenderer.disableLightmap();
         }
     }
 }

@@ -60,7 +60,7 @@ public class MapUtil
 
     public static ArrayList<BlockVec3> biomeColours = new ArrayList<BlockVec3>(40);
     private static Random rand = new Random();
-	private static byte[] overworldImageBytesPart; //Used client side only
+	private static byte[] overworldImageBytesPart; //Used client LogicalSide only
 	private static byte[] overworldImageCompressed = null;
     
     //Map size definitions

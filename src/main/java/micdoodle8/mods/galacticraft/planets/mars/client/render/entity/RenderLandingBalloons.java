@@ -1,30 +1,31 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import com.google.common.collect.ImmutableList;
-
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoader;
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
 {
-    private IBakedModel balloonModel;
+    private static IBakedModel balloonModel;
     protected ModelBalloonParachute parachuteModel = new ModelBalloonParachute();
 
     public RenderLandingBalloons(EntityRendererManager manager)
@@ -33,18 +34,15 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
         this.shadowSize = 1.2F;
     }
 
-    private void updateModels()
+    public static void updateModels(ModelLoader modelLoader)
     {
-        if (this.balloonModel == null)
+        try
         {
-            try
-            {
-                this.balloonModel = ClientUtil.modelFromOBJ(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "landing_balloon.obj"), ImmutableList.of("Sphere"));
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
+            balloonModel = ClientUtil.modelFromOBJ(modelLoader, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "landing_balloon.obj"), ImmutableList.of("Sphere"));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -60,12 +58,11 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
         float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y + 0.8F, (float) z);
-        GlStateManager.rotate(entityYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(pitch, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translatef((float) x, (float) y + 0.8F, (float) z);
+        GlStateManager.rotatef(entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotatef(180.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotatef(pitch, 0.0F, 0.0F, 1.0F);
 
-        this.updateModels();
         this.bindEntityTexture(entity);
 
         if (Minecraft.isAmbientOcclusionEnabled())
@@ -85,7 +82,7 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
         if (entity.posY >= 500.0F)
         {
             GlStateManager.pushMatrix();
-            GlStateManager.translate((float) x - 1.25F, (float) y - 0.93F, (float) z - 0.3F);
+            GlStateManager.translatef((float) x - 1.25F, (float) y - 0.93F, (float) z - 0.3F);
             GlStateManager.scalef(2.5F, 3.0F, 2.5F);
             this.parachuteModel.renderAll();
             GlStateManager.popMatrix();

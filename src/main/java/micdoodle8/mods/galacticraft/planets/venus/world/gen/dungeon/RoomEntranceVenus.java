@@ -1,21 +1,29 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_EMPTY;
+import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_ENTRANCE;
+
 public class RoomEntranceVenus extends SizedPieceVenus
 {
-    public RoomEntranceVenus()
+    public RoomEntranceVenus(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CVENUS_DUNGEON_ENTRANCE, nbt);
     }
 
     public RoomEntranceVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
+        super(CVENUS_DUNGEON_ENTRANCE, configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
         this.setCoordBaseMode(Direction.SOUTH);
         int sX = this.sizeX / 2;
         int sZ = this.sizeZ / 2;
@@ -24,7 +32,7 @@ public class RoomEntranceVenus extends SizedPieceVenus
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {

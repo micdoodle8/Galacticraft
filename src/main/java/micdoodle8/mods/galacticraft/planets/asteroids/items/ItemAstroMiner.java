@@ -9,38 +9,33 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
-import javax.annotation.Nullable;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 {
     public ItemAstroMiner(Item.Properties properties)
     {
         super(properties);
-        this.setMaxDamage(0);
-        this.setMaxStackSize(1);
-        this.setUnlocalizedName(assetName);
+//        this.setMaxDamage(0);
+//        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
     }
 
@@ -51,17 +46,21 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
 //        return GalacticraftCore.galacticraftItemsTab;
 //    }
 
+
     @Override
-    public ActionResultType onItemUseFirst(PlayerEntity playerIn, World worldIn, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand)
+    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context)
     {
         TileEntity tile = null;
+        PlayerEntity playerIn = context.getPlayer();
+        World worldIn = context.getWorld();
+        BlockPos pos = context.getPos();
 
         if (playerIn == null)
         {
@@ -116,7 +115,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 GCPlayerStats stats = GCPlayerStats.get(playerIn);
 
                 int astroCount = stats.getAstroMinerCount();
-                if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.abilities.isCreativeMode))
+                if (astroCount >= ConfigManagerPlanets.astroMinerMax && (!playerIn.abilities.isCreativeMode))
                 {
                     playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
                     return ActionResultType.FAIL;
@@ -131,7 +130,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 if (!playerIn.abilities.isCreativeMode)
                 {
                     stats.setAstroMinerCount(stats.getAstroMinerCount() + 1);
-                    playerIn.getHeldItem(hand).shrink(1);
+                    playerIn.getHeldItem(context.getHand()).shrink(1);
                 }
                 return ActionResultType.SUCCESS;
             }
@@ -139,12 +138,12 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
         return ActionResultType.PASS;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        //TODO
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+//    {
+//        //TODO
+//    }
 
     @Override
     public boolean shouldHoldLeftHandUp(PlayerEntity player)

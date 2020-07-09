@@ -96,7 +96,7 @@
 //
 //    private static boolean isDifferentStairs(BlockState state, IBlockReader worldIn, BlockPos pos, Direction side)
 //    {
-//        BlockState iblockstate = worldIn.getBlockState(pos.offset(side));
+//        BlockState iblockstate = worldIn.getBlockState(pos.offset(LogicalSide));
 //        return !isBlockStairs(iblockstate) || iblockstate.get(FACING) != state.get(FACING) || iblockstate.get(HALF) != state.get(HALF);
 //    }
 //}

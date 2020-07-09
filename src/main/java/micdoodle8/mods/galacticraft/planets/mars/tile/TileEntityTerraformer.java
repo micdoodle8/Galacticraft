@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
@@ -12,34 +14,47 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTerraformer;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.BushBlock;
 import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullSupplier;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IBubbleProviderColored, IFluidHandlerWrapper
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.terraformer)
+    public static TileEntityType<TileEntityTerraformer> TYPE;
+
     private final int tankCapacity = 2000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank waterTank = new FluidTank(this.tankCapacity);
@@ -66,7 +81,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public TileEntityTerraformer()
     {
-        super("container.tile_terraformer.name");
+        super(TYPE);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
         this.inventory = NonNullList.withSize(14, ItemStack.EMPTY);
     }
@@ -109,9 +124,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         if (!this.world.isRemote)
         {
             final FluidStack liquid = FluidUtil.getFluidContained(this.getInventory().get(0));
-            if (FluidUtil.isFluidStrict(liquid, FluidRegistry.WATER.getName()))
+            if (FluidUtil.isFluidStrict(liquid, Fluids.WATER.getRegistryName().getPath()))
             {
-                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.getInventory(), 0, liquid.amount);
+                FluidUtil.loadFromContainer(waterTank, Fluids.WATER, this.getInventory(), 0, liquid.getAmount());
             }
 
             this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && !this.getFirstBonemealStack().isEmpty() && this.waterTank.getFluid() != FluidStack.EMPTY && this.waterTank.getFluid().getAmount() > 0;
@@ -177,9 +192,18 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 switch (this.world.rand.nextInt(40))
                 {
                 case 0:
-                    if (this.world.isBlockFullCube(new BlockPos(vec.getX() - 1, vec.getY(), vec.getZ())) && this.world.isBlockFullCube(new BlockPos(vec.getX() + 1, vec.getY(), vec.getZ())) && this.world.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() - 1)) && this.world.isBlockFullCube(new BlockPos(vec.getX(), vec.getY(), vec.getZ() + 1)))
+                    boolean water = true;
+                    for (Direction dir : Direction.values())
                     {
-                        id = Blocks.FLOWING_WATER;
+                        if (dir.getAxis().isHorizontal() && this.world.getBlockState(vec.offset(dir)).getShape(world, vec.offset(dir)) != VoxelShapes.fullCube())
+                        {
+                            water = false;
+                            break;
+                        }
+                    }
+                    if (water)
+                    {
+                        id = Blocks.WATER;
                     }
                     else
                     {
@@ -196,10 +220,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 if (id == Blocks.GRASS)
                 {
                     this.useCount[0]++;
-                    this.waterTank.drain(1, true);
+                    this.waterTank.drain(1, IFluidHandler.FluidAction.EXECUTE);
                     this.checkUsage(1);
                 }
-                else if (id == Blocks.FLOWING_WATER)
+                else if (id == Blocks.WATER)
                 {
                     this.checkUsage(2);
                 }
@@ -231,38 +255,43 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
                 if (!flag && sapling != null)
                 {
-                    Block b = Block.getBlockFromItem(sapling.getItem());
-                    this.world.setBlockState(vecSapling, b.getStateFromMeta(sapling.getItemDamage()), 3);
-                    if (b instanceof SaplingBlock)
-                    {
-                        if (this.world.getLightFromNeighbors(vecSapling) >= 9)
+                    Item item = sapling.getItem();
+                    if (item instanceof BlockItem) {
+                        if (((BlockItem)item).tryPlace(new DirectionalPlaceContext(world, vecSapling, Direction.DOWN, sapling, Direction.UP)) == ActionResultType.SUCCESS)
                         {
-                            ((SaplingBlock) b).grow(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
-                            this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
-                        }
-                    }
-                    else if (b instanceof BushBlock)
-                    {
-                        if (this.world.getLightFromNeighbors(vecSapling) >= 5)
-                        //Hammer the tick tick a few times to try to get it to grow - it won't always
-                        {
-                            for (int j = 0; j < 12; j++)
+                            Block b = world.getBlockState(vecSapling).getBlock();
+                            if (b instanceof SaplingBlock)
                             {
-                                if (this.world.getBlockState(vecSapling).getBlock() == b)
+                                if (this.world.getLightSubtracted(vecSapling, 0) >= 9)
                                 {
-                                    ((BushBlock) b).updateTick(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
-                                }
-                                else
-                                {
+                                    ((SaplingBlock) b).grow(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
                                     this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
-                                    break;
+                                }
+                            }
+                            else if (b instanceof BushBlock)
+                            {
+                                if (this.world.getLightSubtracted(pos, 0) >= 5)
+                                //Hammer the tick tick a few times to try to get it to grow - it won't always
+                                {
+                                    for (int j = 0; j < 12; j++)
+                                    {
+                                        if (this.world.getBlockState(vecSapling).getBlock() == b)
+                                        {
+                                            b.tick(this.world.getBlockState(vecSapling), this.world, vecSapling, this.world.rand);
+                                        }
+                                        else
+                                        {
+                                            this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
 
                     this.useCount[1]++;
-                    this.waterTank.drain(50, true);
+                    this.waterTank.drain(50, IFluidHandler.FluidAction.EXECUTE);
                     this.checkUsage(0);
                 }
             }
@@ -342,7 +371,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             }
             break;
         case 2:
-            this.waterTank.drain(50, true);
+            this.waterTank.drain(50, IFluidHandler.FluidAction.EXECUTE);
             break;
         }
     }
@@ -446,7 +475,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (nbt.contains("waterTank"))
         {
-            this.waterTank.read(nbt.getCompound("waterTank"));
+            this.waterTank.readFromNBT(nbt.getCompound("waterTank"));
         }
 
         if (nbt.contains("bubbleVisible"))
@@ -460,11 +489,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         super.write(nbt);
         nbt.putFloat("BubbleSize", this.bubbleSize);
-        nbt.setIntArray("UseCountArray", this.useCount);
+        nbt.putIntArray("UseCountArray", this.useCount);
 
         if (this.waterTank.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("waterTank", this.waterTank.write(new CompoundNBT()));
+            nbt.put("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
         }
 
         nbt.putBoolean("bubbleVisible", this.shouldRenderBubble);
@@ -500,11 +529,11 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return false;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
@@ -512,15 +541,15 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         switch (slotID)
         {
         case 0:
-            FluidStack stack = net.minecraftforge.fluids.FluidUtil.getFluidContained(itemstack);
-            return stack != null && stack.getFluid() == FluidRegistry.WATER;
+            LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(itemstack);
+            return holder.isPresent() && holder.orElse(null).getFluid() == Fluids.WATER;
         case 1:
             return ItemElectricBase.isElectricItem(itemstack.getItem());
         case 2:
         case 3:
         case 4:
         case 5:
-            return itemstack.getItem() == Items.DYE && itemstack.getItemDamage() == 15;
+            return itemstack.getItem() == Items.BONE_MEAL;
         case 6:
         case 7:
         case 8:
@@ -620,7 +649,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean canFill(Direction from, Fluid fluid)
     {
-        return (fluid == null || "water".equals(fluid.getName())) && from != this.getElectricInputDirection();
+        return (fluid == null || "water".equals(fluid.getRegistryName().getPath())) && from != this.getElectricInputDirection();
     }
 
     @Override
@@ -636,10 +665,36 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return used;
     }
 
+//    @Override
+//    public FluidTankInfo[] getTankInfo(Direction from)
+//    {
+//        return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
+//    }
+
+
     @Override
-    public FluidTankInfo[] getTankInfo(Direction from)
+    public int getTanks()
     {
-        return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
+        return 1;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        return tank == 0 ? this.waterTank.getFluid() : FluidStack.EMPTY;
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        return tank == 0 ? this.waterTank.getCapacity() : 0;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        return tank == 0 && this.waterTank.isFluidValid(stack);
     }
 
     @Override
@@ -670,12 +725,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public Direction getFront()
     {
-        BlockState state = this.world.getBlockState(getPos());
-        if (state.getBlock() instanceof BlockMachineMars)
-        {
-            return state.get(BlockMachineMars.FACING);
-        }
-        return Direction.NORTH;
+        return this.world.getBlockState(getPos()).get(BlockTerraformer.FACING);
     }
 
     @Override
@@ -684,20 +734,38 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         return getFront().rotateY();
     }
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, Direction facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-    }
+//    @Override
+//    public boolean hasCapability(Capability<?> capability, Direction facing)
+//    {
+//        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+//    }
+
+    private LazyOptional<IFluidHandler> holder = null;
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, Direction facing)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            return (T) new FluidHandlerWrapper(this, facing);
+            if (holder == null)
+            {
+                holder = LazyOptional.of(new NonNullSupplier<IFluidHandler>()
+                {
+                    @Nonnull
+                    @Override
+                    public IFluidHandler get()
+                    {
+                        return new FluidHandlerWrapper(TileEntityTerraformer.this, facing);
+                    }
+                });
+            }
+            return holder.cast();
         }
+//        if (EnergyUtil.checkMekGasHandler(capability))
+//        {
+//            return (T) this;
+//        }  TODO Mek support
         return super.getCapability(capability, facing);
     }
 

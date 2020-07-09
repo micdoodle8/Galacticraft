@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -14,13 +16,14 @@ public abstract class SizedPiece extends Piece
     protected int sizeY;
     protected int sizeZ;
 
-    public SizedPiece()
+    public SizedPiece(IStructurePieceType type, CompoundNBT nbt)
     {
+        super(type, nbt);
     }
 
-    public SizedPiece(BaseConfiguration configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
+    public SizedPiece(IStructurePieceType type, BaseConfiguration configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
-        super(configuration);
+        super(type, configuration);
         this.direction = direction;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -49,17 +52,17 @@ public abstract class SizedPiece extends Piece
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound)
     {
-        super.readStructureFromNBT(tagCompound, manager);
+        super.readStructureFromNBT(tagCompound);
 
-        this.sizeX = tagCompound.getInteger("sX");
-        this.sizeY = tagCompound.getInteger("sY");
-        this.sizeZ = tagCompound.getInteger("sZ");
+        this.sizeX = tagCompound.getInt("sX");
+        this.sizeY = tagCompound.getInt("sY");
+        this.sizeZ = tagCompound.getInt("sZ");
 
         if (tagCompound.contains("dir"))
         {
-            this.direction = Direction.byIndex(tagCompound.getInteger("dir"));
+            this.direction = Direction.byIndex(tagCompound.getInt("dir"));
         }
         else
         {

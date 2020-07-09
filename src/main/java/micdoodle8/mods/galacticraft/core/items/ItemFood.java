@@ -15,7 +15,7 @@
 //import net.minecraft.util.NonNullList;
 //import net.minecraft.util.SoundCategory;
 //import net.minecraft.world.World;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import javax.annotation.Nullable;
@@ -49,13 +49,13 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        if (itemStack.getItemDamage() < 4)
+//        if (itemStack.getDamage() < 4)
 //        {
 //            return "item.basic_item.canned_food";
 //        }
 //        else
 //        {
-//            return "item.food." + ItemFood.names[itemStack.getItemDamage()];
+//            return "item.food." + ItemFood.names[itemStack.getDamage()];
 //        }
 //    }
 //
@@ -86,11 +86,11 @@
 //    @OnlyIn(Dist.CLIENT)
 //    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
 //    {
-//        if (par1ItemStack.getItemDamage() < 4)
+//        if (par1ItemStack.getDamage() < 4)
 //        {
-//            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.basic_item." + ItemFood.names[par1ItemStack.getItemDamage()] + ".name"));
+//            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.basic_item." + ItemFood.names[par1ItemStack.getDamage()] + ".name"));
 //        }
-//        else if (par1ItemStack.getItemDamage() == 8)
+//        else if (par1ItemStack.getDamage() == 8)
 //        {
 //            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.food.cheeseburger.desc"));
 //        }
@@ -99,7 +99,7 @@
 //    @Override
 //    public int getHealAmount(ItemStack par1ItemStack)
 //    {
-//        switch (par1ItemStack.getItemDamage())
+//        switch (par1ItemStack.getDamage())
 //        {
 //        case 0:
 //            return 8;
@@ -129,7 +129,7 @@
 //    @Override
 //    public float getSaturationModifier(ItemStack par1ItemStack)
 //    {
-//        switch (par1ItemStack.getItemDamage())
+//        switch (par1ItemStack.getDamage())
 //        {
 //        case 0:
 //            return 0.3F;
@@ -164,7 +164,7 @@
 //            ((PlayerEntity) entityLiving).getFoodStats().addStats(this, stack);
 //        }
 //        worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-//        if (!worldIn.isRemote && (stack.getItemDamage() < 4 || stack.getItemDamage() == 9))
+//        if (!worldIn.isRemote && (stack.getDamage() < 4 || stack.getDamage() == 9))
 //        {
 //            entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
 //        }

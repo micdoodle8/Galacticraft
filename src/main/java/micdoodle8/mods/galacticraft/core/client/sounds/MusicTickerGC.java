@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.sounds;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -17,7 +17,7 @@ public class MusicTickerGC extends MusicTicker
     public void tick()
     {
         MusicTicker.MusicType musictype = this.client.getAmbientMusicType();
-        if (Minecraft.getInstance().world != null && Minecraft.getInstance().world.dimension instanceof IGalacticraftWorldProvider)
+        if (Minecraft.getInstance().world != null && Minecraft.getInstance().world.dimension instanceof IGalacticraftDimension)
         {
             musictype = ClientProxyCore.MUSIC_TYPE_MARS;
         }

@@ -10,7 +10,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class GCPlayerBaseSP extends ClientPlayerBase
@@ -45,11 +45,11 @@
 //    }
 //
 //    @Override
-//    public void onLivingUpdate()
+//    public void livingTick()
 //    {
-//        this.getClientHandler().onLivingUpdatePre(this.player);
-//        super.onLivingUpdate();
-//        this.getClientHandler().onLivingUpdatePost(this.player);
+//        this.getClientHandler().livingTickPre(this.player);
+//        super.livingTick();
+//        this.getClientHandler().livingTickPost(this.player);
 //    }
 //
 //    @Override

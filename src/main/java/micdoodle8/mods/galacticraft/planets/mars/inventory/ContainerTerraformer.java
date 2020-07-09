@@ -1,18 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BushBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.ItemTags;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -20,16 +22,20 @@ import java.util.List;
 
 public class ContainerTerraformer extends Container
 {
-    private final TileEntityTerraformer tileEntity;
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.TERRAFORMER)
+    public static ContainerType<ContainerTerraformer> TYPE;
+
+    private final TileEntityTerraformer terraformer;
     private static LinkedList<ItemStack> saplingList = null;
 
-    public ContainerTerraformer(PlayerInventory playerInv, TileEntityTerraformer tileEntity, PlayerEntity player)
+    public ContainerTerraformer(int containerId, PlayerInventory playerInv, TileEntityTerraformer terraformer)
     {
-        this.tileEntity = tileEntity;
+        super(TYPE, containerId);
+        this.terraformer = terraformer;
 
-        this.addSlot(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET)));
+        this.addSlot(new SlotSpecific(this.terraformer, 0, 25, 19, new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET)));
 
-        this.addSlot(new SlotSpecific(tileEntity, 1, 25, 39, IItemElectric.class));
+        this.addSlot(new SlotSpecific(this.terraformer, 1, 25, 39, IItemElectric.class));
 
         int var6;
         int var7;
@@ -40,7 +46,7 @@ public class ContainerTerraformer extends Container
 
             if (var6 == 0)
             {
-                stacks.add(new ItemStack(Items.DYE, 1, 15));
+                stacks.add(new ItemStack(Items.BONE_MEAL, 1));
             }
             else if (var6 == 1)
             {
@@ -58,7 +64,7 @@ public class ContainerTerraformer extends Container
 
             for (var7 = 0; var7 < 4; ++var7)
             {
-                this.addSlot(new SlotSpecific(tileEntity, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
+                this.addSlot(new SlotSpecific(this.terraformer, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
             }
         }
 
@@ -75,20 +81,20 @@ public class ContainerTerraformer extends Container
             this.addSlot(new Slot(playerInv, var6, 8 + var6 * 18, 213));
         }
 
-        tileEntity.openInventory(player);
+        this.terraformer.openInventory(playerInv.player);
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.closeInventory(entityplayer);
+        this.terraformer.closeInventory(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.terraformer.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -126,7 +132,7 @@ public class ContainerTerraformer extends Container
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (var4.getItem() == Items.DYE && var4.getItemDamage() == 15)
+                else if (var4.getItem() == Items.BONE_MEAL)
                 {
                     if (!this.mergeItemStack(var4, 2, 6, false))
                     {
@@ -202,34 +208,39 @@ public class ContainerTerraformer extends Container
     {
         ContainerTerraformer.saplingList = new LinkedList<>();
 
-        for (Block b : Block.REGISTRY)
+        for (Item item : ItemTags.SAPLINGS.getAllElements())
         {
-            if (b instanceof BushBlock)
-            {
-                try
-                {
-                    Item item = Item.getItemFromBlock(b);
-                    if (item != Items.AIR)
-                    {
-                        //item.getSubItems(item, null, subItemsList); - can't use because clientside only
-                        ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
-                        String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
-                        for (int i = 1; i < 16; i++)
-                        {
-                            ItemStack testStack = new ItemStack(item, 1, i);
-                            String testName = item.getUnlocalizedName(testStack);
-                            if (testName.equals("") || testName.equals(basicName))
-                            {
-                                break;
-                            }
-                            ContainerTerraformer.saplingList.add(testStack);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                }
-            }
+            ContainerTerraformer.saplingList.add(new ItemStack(item, 1));
         }
+
+//        for (Block b : Block.REGISTRY)
+//        {
+//            if (b instanceof BushBlock)
+//            {
+//                try
+//                {
+//                    Item item = Item.getItemFromBlock(b);
+//                    if (item != Items.AIR)
+//                    {
+//                        //item.getSubItems(item, null, subItemsList); - can't use because clientside only
+//                        ContainerTerraformer.saplingList.add(new ItemStack(item, 1, 0));
+//                        String basicName = item.getUnlocalizedName(new ItemStack(item, 1, 0));
+//                        for (int i = 1; i < 16; i++)
+//                        {
+//                            ItemStack testStack = new ItemStack(item, 1, i);
+//                            String testName = item.getUnlocalizedName(testStack);
+//                            if (testName.equals("") || testName.equals(basicName))
+//                            {
+//                                break;
+//                            }
+//                            ContainerTerraformer.saplingList.add(testStack);
+//                        }
+//                    }
+//                }
+//                catch (Exception e)
+//                {
+//                }
+//            }
+//        }
     }
 }

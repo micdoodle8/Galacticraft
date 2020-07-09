@@ -2,67 +2,65 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem, ISortableItem
 {
     private static int indexOffset = 0;
     
-    public ItemSchematicTier2()
+    public ItemSchematicTier2(Item.Properties properties)
     {
-        super("schematic");
+        super(properties);
     }
 
-    @OnlyIn(Dist.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTab()
 //    {
 //        return GalacticraftCore.galacticraftItemsTab;
 //    }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            for (int i = 0; i < 3; i++)
+//            {
+//                list.add(new ItemStack(this, 1, i));
+//            }
+//        }
+//    }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        switch (par1ItemStack.getItemDamage())
+        if (this == MarsItems.schematicRocketT3)
         {
-        case 0:
-            tooltip.add(GCCoreUtil.translate("schematic.rocket_t3.name"));
-            break;
-        case 1:
-            tooltip.add(GCCoreUtil.translate("schematic.cargo_rocket.name"));
-            break;
-        case 2:
-            tooltip.add(GCCoreUtil.translate("schematic.astro_miner.name"));
-            break;
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.rocket_t3.name")));
+        }
+        else if (this == MarsItems.schematicAstroMiner)
+        {
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.astro_miner.name")));
+        }
+        else
+        {
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.cargo_rocket.name")));
         }
     }
 
@@ -87,15 +85,15 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
      */
     public static void registerSchematicItems()
     {
-        indexOffset = SchematicRegistry.registerSchematicItem(new ItemStack(MarsItems.schematic, 1, 0));
-        SchematicRegistry.registerSchematicItem(new ItemStack(MarsItems.schematic, 1, 1));
-        SchematicRegistry.registerSchematicItem(new ItemStack(MarsItems.schematic, 1, 2));
+        indexOffset = SchematicRegistry.registerSchematicItem(new ItemStack(MarsItems.schematicAstroMiner, 1));
+        SchematicRegistry.registerSchematicItem(new ItemStack(MarsItems.schematicRocketT3, 1));
+        SchematicRegistry.registerSchematicItem(new ItemStack(MarsItems.schematicCargoRocket, 1));
     }
 
     /**
      * Make sure the order of these will match the index values
      */
-    @SideOnly(value=Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void registerTextures()
     {
         SchematicRegistry.registerTexture(new ResourceLocation("galacticraftplanets", "textures/items/schematic_rocket_t3.png"));

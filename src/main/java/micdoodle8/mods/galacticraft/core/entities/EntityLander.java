@@ -3,15 +3,14 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCParticles;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityParticleData;
-import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,12 +24,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICameraZoomEntity
 {
@@ -98,11 +94,11 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 //        return GCCoreUtil.translate("container.lander.name");
 //    }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand)
@@ -253,11 +249,11 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public Vector3 getMotionVec()
+    public Vector3D getMotionVec()
     {
         if (this.onGround)
         {
-            return new Vector3(0, 0, 0);
+            return new Vector3D(0, 0, 0);
         }
 
         if (this.ticks >= 40 && this.ticks < 45)
@@ -265,7 +261,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             this.setMotion(this.getMotion().x, this.getInitialMotionY(), this.getMotion().z);
         }
 
-        return new Vector3((float)this.getMotion().x, (float)(this.ticks < 40 ? 0 : this.getMotion().y), (float)this.getMotion().z);
+        return new Vector3D((float)this.getMotion().x, (float)(this.ticks < 40 ? 0 : this.getMotion().y), (float)this.getMotion().z);
     }
 
     @Override

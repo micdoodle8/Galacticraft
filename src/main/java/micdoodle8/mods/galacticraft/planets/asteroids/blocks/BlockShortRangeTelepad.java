@@ -1,42 +1,37 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
-import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
+import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.AsteroidParticles;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription
 {
     protected static final VoxelShape AABB_TELEPAD = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
 
@@ -70,11 +65,11 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
 //        return false;
 //    }
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
@@ -139,7 +134,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
                 {
                     ((PlayerEntity) placer).sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                 }
-                ((PlayerEntity) placer).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(this), 1, 0));
+                ((PlayerEntity) placer).inventory.addItemStackToInventory(new ItemStack(Item.getItemFromBlock(this), 1));
             }
 
             return;
@@ -203,50 +198,40 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         if (tileAt instanceof TileEntityShortRangeTelepad)
         {
             TileEntityShortRangeTelepad telepad = (TileEntityShortRangeTelepad) tileAt;
-            float teleportTimeScaled = Math.min(1.0F, telepad.teleportTime / (float) TileEntityShortRangeTelepad.MAX_TELEPORT_TIME);
-            float f;
-            float r;
-            float g;
-            float b;
 
             for (int i = 0; i < 6; i++)
             {
+                BlockPosParticleData data = new BlockPosParticleData(AsteroidParticles.TELEPAD_UP, pos);
                 for (int j = 0; j < 4; j++)
                 {
-                    f = rand.nextFloat() * 0.6F + 0.4F;
-                    r = f * 0.3F;
-                    g = f * (0.3F + (teleportTimeScaled * 0.7F));
-                    b = f * (1.0F - (teleportTimeScaled * 0.7F));
-                    GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.1, pos.getZ() + 0.2 + rand.nextDouble() * 0.6), new Vector3(0.0, 1.4, 0.0), telepad, false);
+                    worldIn.addParticle(data, pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.1, pos.getZ() + 0.2 + rand.nextDouble() * 0.6, 0.0, 1.4, 0.0);
+//                    GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.1, pos.getZ() + 0.2 + rand.nextDouble() * 0.6), new Vector3(0.0, 1.4, 0.0), telepad, false);
                 }
 
-                f = rand.nextFloat() * 0.6F + 0.4F;
-                r = f * 0.3F;
-                g = f * (0.3F + (teleportTimeScaled * 0.7F));
-                b = f * (1.0F - (teleportTimeScaled * 0.7F));
-                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.0 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), telepad, true);
-                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + 0.8 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble()), new Vector3(0.0, -2.95, 0.0), telepad, true);
-                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.2 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), telepad, true);
-                GalacticraftPlanets.addParticle("portalBlue", new Vector3(pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.8 + rand.nextDouble() * 0.2), new Vector3(0.0, -2.95, 0.0), telepad, true);
+                data = new BlockPosParticleData(AsteroidParticles.TELEPAD_DOWN, pos);
+                worldIn.addParticle(data, pos.getX() + 0.0 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble(), 0.0, -2.95, 0.0);
+                worldIn.addParticle(data, pos.getX() + 0.8 + rand.nextDouble() * 0.2, pos.getY() + 2.9, pos.getZ() + rand.nextDouble(), 0.0, -2.95, 0.0);
+                worldIn.addParticle(data, pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.2 + rand.nextDouble() * 0.2, 0.0, -2.95, 0.0);
+                worldIn.addParticle(data, pos.getX() + rand.nextDouble(), pos.getY() + 2.9, pos.getZ() + 0.8 + rand.nextDouble() * 0.2, 0.0, -2.95, 0.0);
             }
         }
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
 
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
-    }
+//    @Override
+//    public EnumSortCategoryBlock getCategory(int meta)
+//    {
+//        return EnumSortCategoryBlock.MACHINE;
+//    }
 }

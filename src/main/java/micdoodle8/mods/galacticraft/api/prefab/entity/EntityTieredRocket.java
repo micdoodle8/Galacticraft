@@ -7,13 +7,10 @@ import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
-import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -58,7 +55,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     static {
         try
         {
-            Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
+            Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerPlanets");
             marsConfigAllDimsAllowed = marsConfig.getField("launchControllerAllDims");
         } catch (Exception ignore)
         {
@@ -314,9 +311,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     {
                     	boolean dimensionAllowed = this.targetDimension == DimensionType.OVERWORLD;
 
-                    	if (targetDim instanceof IGalacticraftWorldProvider)
+                    	if (targetDim instanceof IGalacticraftDimension)
                     	{
-                    		if (((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier()))
+                    		if (((IGalacticraftDimension) targetDim).canSpaceshipTierPass(this.getRocketTier()))
                     			dimensionAllowed = true;
                     		else
                     			dimensionAllowed = false;
@@ -416,7 +413,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             this.remove();
         }
         
-        //Client side, non-launch controlled, do nothing - no reason why it can't continue flying until the GUICelestialSelection activates
+        //Client LogicalSide, non-launch controlled, do nothing - no reason why it can't continue flying until the GUICelestialSelection activates
     }
 
     @Override

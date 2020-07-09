@@ -2,9 +2,14 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.DecoBlock;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
+import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,7 +20,8 @@ import net.minecraftforge.registries.ObjectHolder;
 public class AsteroidBlocks
 {
     @ObjectHolder(AsteroidBlockNames.blockWalkway) public static Block blockWalkway;
-    @ObjectHolder(AsteroidBlockNames.blockBasic) public static Block blockBasic;
+    @ObjectHolder(AsteroidBlockNames.blockWalkwayFluid) public static Block blockWalkwayFluid;
+    @ObjectHolder(AsteroidBlockNames.blockWalkwayWire) public static Block blockWalkwayWire;
     //	public static Block machineFrame;
     @ObjectHolder(AsteroidBlockNames.beamReflector) public static Block beamReflector;
     @ObjectHolder(AsteroidBlockNames.beamReceiver) public static Block beamReceiver;
@@ -25,6 +31,14 @@ public class AsteroidBlocks
     @ObjectHolder(AsteroidBlockNames.blockMinerBase) public static Block blockMinerBase;
     @ObjectHolder(AsteroidBlockNames.minerBaseFull) public static Block minerBaseFull;
     @ObjectHolder(AsteroidBlockNames.spaceWart) public static Block spaceWart;
+    @ObjectHolder(AsteroidBlockNames.rock0) public static Block rock0;
+    @ObjectHolder(AsteroidBlockNames.rock1) public static Block rock1;
+    @ObjectHolder(AsteroidBlockNames.rock2) public static Block rock2;
+    @ObjectHolder(AsteroidBlockNames.oreAluminum) public static Block oreAluminum;
+    @ObjectHolder(AsteroidBlockNames.oreIlmenite) public static Block oreIlmenite;
+    @ObjectHolder(AsteroidBlockNames.oreIron) public static Block oreIron;
+    @ObjectHolder(AsteroidBlockNames.asteroidDeco) public static Block asteroidDeco;
+    @ObjectHolder(AsteroidBlockNames.titaniumBlock) public static Block titaniumBlock;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)
@@ -33,9 +47,18 @@ public class AsteroidBlocks
 
         Block.Properties builder = Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F).sound(SoundType.METAL);
         register(r, new BlockWalkway(builder), AsteroidBlockNames.blockWalkway);
+        register(r, new BlockWalkway(builder), AsteroidBlockNames.blockWalkwayFluid);
+        register(r, new BlockWalkway(builder), AsteroidBlockNames.blockWalkwayWire);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F);
-        register(r, new BlockBasicAsteroids(builder), AsteroidBlockNames.blockBasic);
+        register(r, new BlockAsteroidRock(builder), AsteroidBlockNames.rock0);
+        register(r, new BlockAsteroidRock(builder), AsteroidBlockNames.rock1);
+        register(r, new BlockAsteroidRock(builder), AsteroidBlockNames.rock2);
+        register(r, new OreBlockAsteroids(builder), AsteroidBlockNames.oreAluminum);
+        register(r, new OreBlockAsteroids(builder), AsteroidBlockNames.oreIlmenite);
+        register(r, new OreBlockAsteroids(builder), AsteroidBlockNames.oreIron);
+        register(r, new DecoBlock(builder), AsteroidBlockNames.asteroidDeco);
+        register(r, new DecoBlock(builder), AsteroidBlockNames.titaniumBlock);
 
         builder = Block.Properties.create(Material.IRON).sound(SoundType.METAL);
         register(r, new BlockBeamReflector(builder), AsteroidBlockNames.beamReflector);
@@ -103,4 +126,17 @@ public class AsteroidBlocks
 //
 //        OreDictionary.registerOre("blockTitanium", new ItemStack(AsteroidBlocks.blockBasic, 1, 7));
 //    }
+
+    @SubscribeEvent
+    public static void initTileEntities(RegistryEvent.Register<TileEntityType<?>> evt)
+    {
+        IForgeRegistry<TileEntityType<?>> r = evt.getRegistry();
+
+        register(r, TileEntityType.Builder.create(TileEntityBeamReceiver::new, beamReceiver).build(null), AsteroidBlockNames.beamReceiver);
+        register(r, TileEntityType.Builder.create(TileEntityBeamReflector::new, beamReflector).build(null), AsteroidBlockNames.beamReflector);
+        register(r, TileEntityType.Builder.create(TileEntityMinerBaseSingle::new, blockMinerBase).build(null), AsteroidBlockNames.blockMinerBase);
+        register(r, TileEntityType.Builder.create(TileEntityMinerBase::new, minerBaseFull).build(null), AsteroidBlockNames.minerBaseFull);
+        register(r, TileEntityType.Builder.create(TileEntityShortRangeTelepad::new, shortRangeTelepad).build(null), AsteroidBlockNames.shortRangeTelepad);
+        register(r, TileEntityType.Builder.create(TileEntityTelepadFake::new, fakeTelepad).build(null), AsteroidBlockNames.fakeTelepad);
+    }
 }

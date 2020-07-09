@@ -6,41 +6,21 @@ import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlanetsProxy implements IGuiHandler
+public class PlanetsProxy
 {
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            module.preInit(event);
-        }
-    }
-
-    public void registerVariants()
-    {
-
-    }
-
-    public void init(FMLInitializationEvent event)
+    public void init(FMLCommonSetupEvent event)
     {
         for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
             module.init(event);
-        }
-    }
-
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            module.postInit(event);
         }
     }
 
@@ -60,41 +40,41 @@ public class PlanetsProxy implements IGuiHandler
         }
     }
 
-    @Override
-    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
-    {
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            List<Integer> guiIDs = new ArrayList<Integer>();
-            module.getGuiIDs(guiIDs);
-            if (guiIDs.contains(ID))
-            {
-                return module.getGuiElement(Side.SERVER, ID, player, world, x, y, z);
-            }
-        }
+//    @Override
+//    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
+//    {
+//        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
+//        {
+//            List<Integer> guiIDs = new ArrayList<Integer>();
+//            module.getGuiIDs(guiIDs);
+//            if (guiIDs.contains(ID))
+//            {
+//                return module.getGuiElement(LogicalSide.SERVER, ID, player, world, x, y, z);
+//            }
+//        }
+//
+//        return null;
+//    }
+//
+//    @Override
+//    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
+//    {
+//        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
+//        {
+//            List<Integer> guiIDs = new ArrayList<Integer>();
+//            module.getGuiIDs(guiIDs);
+//            if (guiIDs.contains(ID))
+//            {
+//                return module.getGuiElement(LogicalSide.CLIENT, ID, player, world, x, y, z);
+//            }
+//        }
+//
+//        return null;
+//    }
 
-        return null;
-    }
-
-    @Override
-    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
-    {
-        for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
-        {
-            List<Integer> guiIDs = new ArrayList<Integer>();
-            module.getGuiIDs(guiIDs);
-            if (guiIDs.contains(ID))
-            {
-                return module.getGuiElement(Side.CLIENT, ID, player, world, x, y, z);
-            }
-        }
-
-        return null;
-    }
-
-    public void postRegisterItem(Item item)
-    {
-    }
+//    public void postRegisterItem(Item item)
+//    {
+//    }
 
     public void unregisterNetwork(SolarModuleNetwork solarNetwork)
     {

@@ -450,14 +450,14 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 if (id >= ((ShapedRecipesGC) recipe).recipeItems.length) continue;
             	ItemStack itemstack1 = ((ShapedRecipesGC) recipe).recipeItems[id];
-//                if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
+//                if (stack.getItem() == itemstack1.getItem() && (itemstack1.getDamage() == 32767 || stack.getDamage() == itemstack1.getDamage()))
                 if (stack.getItem() == itemstack1.getItem() && stack.getDamage() == itemstack1.getDamage())
                 {
                 	for (int i = 0; i < ((ShapedRecipesGC) recipe).recipeItems.length; i++)
                 	{
                 		if (i == id) continue;
                         ItemStack itemstack2 = ((ShapedRecipesGC) recipe).recipeItems[i];
-//                        if (stack.getItem() == itemstack2.getItem() && (itemstack2.getItemDamage() == 32767 || stack.getItemDamage() == itemstack2.getItemDamage())) TODO ???
+//                        if (stack.getItem() == itemstack2.getItem() && (itemstack2.getDamage() == 32767 || stack.getDamage() == itemstack2.getDamage())) TODO ???
                         if (stack.getItem() == itemstack2.getItem() &&stack.getDamage() == itemstack2.getDamage())
                         {
                         	ItemStack is3 = this.getStackInSlot(id + 3);

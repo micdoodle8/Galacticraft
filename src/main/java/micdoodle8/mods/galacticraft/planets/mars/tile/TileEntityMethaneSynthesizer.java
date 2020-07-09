@@ -1,18 +1,17 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -20,32 +19,42 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.PlanetFluids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMethaneSynthesizer;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.miccore.Annotations;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullSupplier;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper
 {
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.methaneSynthesizer)
+    public static TileEntityType<TileEntityMethaneSynthesizer> TYPE;
+
     private final int tankCapacity = 4000;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -64,37 +73,50 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public TileEntityMethaneSynthesizer()
     {
-        super("tile.mars_machine.5.name");
+        super(TYPE);
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 45);
         this.setTierGC(2);
         this.inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     }
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, Direction facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return true;
+//    @Override
+//    public boolean hasCapability(Capability<?> capability, Direction facing)
+//    {
+//        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+//            return true;
+//
+//        if (EnergyUtil.checkMekGasHandler(capability))
+//        	return true;
+//
+//        return super.hasCapability(capability, facing);
+//    }
 
-        if (EnergyUtil.checkMekGasHandler(capability))
-        	return true;
-       
-        return super.hasCapability(capability, facing);  
-    }
+    private LazyOptional<IFluidHandler> holder = null;
 
+    @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, Direction facing)
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            return (T) new FluidHandlerWrapper(this, facing);
+            if (holder == null)
+            {
+                holder = LazyOptional.of(new NonNullSupplier<IFluidHandler>()
+                {
+                    @Nonnull
+                    @Override
+                    public IFluidHandler get()
+                    {
+                        return new FluidHandlerWrapper(TileEntityMethaneSynthesizer.this, facing);
+                    }
+                });
+            }
+            return holder.cast();
         }
-
-        if (EnergyUtil.checkMekGasHandler(capability))
-        {
-            return (T) this;
-        }
-
+//        if (EnergyUtil.checkMekGasHandler(capability))
+//        {
+//            return (T) this;
+//        }  TODO Mek support
         return super.getCapability(capability, facing);
     }
 
@@ -113,7 +135,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             //If somehow it has CO2 in a CO2-free dimension, flush it out
             if (this.hasCO2 == 0 && this.gasTank2.getFluidAmount() > 0)
             {
-                this.gasTank2.drain(this.gasTank2.getFluidAmount(), true);
+                this.gasTank2.drain(this.gasTank2.getFluidAmount(), IFluidHandler.FluidAction.EXECUTE);
             }
 
             //First, see if any gas needs to be put into the hydogen storage
@@ -124,7 +146,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             ItemStack inputCanister = this.getInventory().get(2);
             if (!inputCanister.isEmpty())
             {
-                if (inputCanister.getItem() instanceof ItemAtmosphericValve && this.hasCO2 > 0)
+                if (inputCanister.getItem() == AsteroidsItems.atmosphericValve && this.hasCO2 > 0)
                 {
                     //CO2 -> CO2 tank
                     if (this.gasTank2.getFluidAmount() < this.gasTank2.getCapacity())
@@ -135,8 +157,8 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                         {
                             if (!OxygenUtil.inOxygenBubble(this.world, this.getPos().getX() + 0.5D, this.getPos().getY() + 1D, this.getPos().getZ() + 0.5D))
                             {
-                                FluidStack gcAtmosphere = FluidRegistry.getFluidStack("carbondioxide", 4);
-                                this.gasTank2.fill(gcAtmosphere, true);
+                                FluidStack gcAtmosphere = new FluidStack(PlanetFluids.GAS_CARBON_DIOXIDE.getFluid(), 4);
+                                this.gasTank2.fill(gcAtmosphere, IFluidHandler.FluidAction.EXECUTE);
                             }
                         }
                     }
@@ -201,9 +223,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                 FluidUtil.tryFillContainer(tank, liquid, this.getInventory(), slot, AsteroidsItems.methaneCanister);
             }
         }
-        else if (!this.getInventory().get(slot).isEmpty() && this.getInventory().get(slot).getItem() instanceof ItemAtmosphericValve)
+        else if (!this.getInventory().get(slot).isEmpty() && this.getInventory().get(slot).getItem() == AsteroidsItems.atmosphericValve)
         {
-            tank.drain(4, true);
+            tank.drain(4, IFluidHandler.FluidAction.EXECUTE);
         }
     }
 
@@ -277,7 +299,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (this.noCoal && this.coalPartial == 0)
         {
-            if (this.gasTank2.getFluid() == FluidStack.EMPTY || this.gasTank2.drain(1, true).amount < 1)
+            if (this.gasTank2.getFluid() == FluidStack.EMPTY || this.gasTank2.drain(1, IFluidHandler.FluidAction.EXECUTE).getAmount() < 1)
             {
                 return;
             }
@@ -294,7 +316,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                 this.coalPartial = 0;
             }
         }
-        this.gasTank.drain(this.placeIntoFluidTanks(2) * 8, true);
+        this.gasTank.drain(this.placeIntoFluidTanks(2) * 8, IFluidHandler.FluidAction.EXECUTE);
     }
 
     private int placeIntoFluidTanks(int amountToDrain)
@@ -307,7 +329,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             {
                 amountToDrain = fuelSpace;
             }
-            this.liquidTank.fill(FluidRegistry.getFluidStack("methane", amountToDrain), true);
+            this.liquidTank.fill(new FluidStack(PlanetFluids.GAS_METHANE.getFluid(), amountToDrain), IFluidHandler.FluidAction.EXECUTE);
         }
         else
         {
@@ -325,17 +347,17 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
         if (nbt.contains("gasTank"))
         {
-            this.gasTank.read(nbt.getCompound("gasTank"));
+            this.gasTank.readFromNBT(nbt.getCompound("gasTank"));
         }
 
         if (nbt.contains("gasTank2"))
         {
-            this.gasTank2.read(nbt.getCompound("gasTank2"));
+            this.gasTank2.readFromNBT(nbt.getCompound("gasTank2"));
         }
 
         if (nbt.contains("liquidTank"))
         {
-            this.liquidTank.read(nbt.getCompound("liquidTank"));
+            this.liquidTank.readFromNBT(nbt.getCompound("liquidTank"));
         }
     }
 
@@ -347,27 +369,27 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
         if (this.gasTank.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("gasTank", this.gasTank.write(new CompoundNBT()));
+            nbt.put("gasTank", this.gasTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.gasTank2.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("gasTank2", this.gasTank2.write(new CompoundNBT()));
+            nbt.put("gasTank2", this.gasTank2.writeToNBT(new CompoundNBT()));
         }
 
         if (this.liquidTank.getFluid() != FluidStack.EMPTY)
         {
-            nbt.put("liquidTank", this.liquidTank.write(new CompoundNBT()));
+            nbt.put("liquidTank", this.liquidTank.writeToNBT(new CompoundNBT()));
         }
 
         return nbt;
     }
 
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
-    }
+//    @Override
+//    public boolean hasCustomName()
+//    {
+//        return true;
+//    }
 
     // ISidedInventory Implementation:
 
@@ -425,7 +447,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         case 1:
             return false;
         case 2:
-            return itemstack.getItem() instanceof ItemAtmosphericValve;
+            return itemstack.getItem() == AsteroidsItems.atmosphericValve;
         case 3:
             return itemstack.getItem() == MarsItems.carbonFragments;
         case 4:
@@ -471,7 +493,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         {
             if (resource != null && resource.isFluidEqual(this.liquidTank.getFluid()))
             {
-                return this.liquidTank.drain(resource.amount, doDrain);
+                return this.liquidTank.drain(resource.getAmount(), action);
             }
         }
 
@@ -483,7 +505,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (from == getHydrogenInputDirection().getOpposite())
         {
-            return this.liquidTank.drain(maxDrain, doDrain);
+            return this.liquidTank.drain(maxDrain, action);
         }
 
         return null;
@@ -494,7 +516,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         if (from == this.getHydrogenInputDirection())
         {
-            return fluid == null || "hydrogen".equals(fluid.getName());
+            return fluid == null || "hydrogen".equals(fluid.getRegistryName().getPath());
         }
 
         return false;
@@ -516,81 +538,127 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         return used;
     }
 
+//    @Override
+//    public FluidTankInfo[] getTankInfo(Direction from)
+//    {
+//        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
+//
+//        if (from == this.getHydrogenInputDirection())
+//        {
+//            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
+//        }
+//        else if (from == this.getHydrogenInputDirection().getOpposite())
+//        {
+//            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
+//        }
+//
+//        return tankInfo;
+//    }
+
     @Override
-    public FluidTankInfo[] getTankInfo(Direction from)
+    public int getTanks()
     {
-        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
+        return 2;
+    }
 
-        if (from == this.getHydrogenInputDirection())
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        switch (tank)
         {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.gasTank) };
+        case 0:
+            return this.gasTank.getFluid();
+        case 1:
+            return this.liquidTank.getFluid();
         }
-        else if (from == this.getHydrogenInputDirection().getOpposite())
-        {
-            tankInfo = new FluidTankInfo[] { new FluidTankInfo(this.liquidTank) };
-        }
-
-        return tankInfo;
+        return FluidStack.EMPTY;
     }
 
     @Override
-    public int getBlockMetadata()
+    public int getTankCapacity(int tank)
     {
-        return this.getBlockType().getMetaFromState(this.world.getBlockState(getPos()));
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
-    {
-        if (!stack.getGas().getName().equals("hydrogen"))
+        switch (tank)
         {
-            return 0;
+        case 0:
+            return this.gasTank.getCapacity();
+        case 1:
+            return this.liquidTank.getCapacity();
         }
-        int used = 0;
-        //System.out.println("Giving gas amount "+stack.amount);
-        if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
+        return 0;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        switch (tank)
         {
-            used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), doTransfer);
+        case 0:
+            return this.gasTank.isFluidValid(stack);
+        case 1:
+            return this.liquidTank.isFluidValid(stack);
         }
-        return used;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(Direction side, GasStack stack)
-    {
-        return this.receiveGas(side, stack, true);
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
-    {
-        return null;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(Direction side, int amount)
-    {
-        return null;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveGas(Direction side, Gas type)
-    {
-        //System.out.println("Testing receipt of gas "+type.getName());
-        return type.getName().equals("hydrogen") && side.equals(this.getHydrogenInputDirection());
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canDrawGas(Direction side, Gas type)
-    {
         return false;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
-    public boolean canTubeConnect(Direction side)
-    {
-        return side.equals(this.getHydrogenInputDirection());
-    }
+//    @Override
+//    public int getBlockMetadata()
+//    {
+//        return this.getBlockType().getMetaFromState(this.world.getBlockState(getPos()));
+//    }
+
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
+//    {
+//        if (!stack.getGas().getName().equals("hydrogen"))
+//        {
+//            return 0;
+//        }
+//        int used = 0;
+//        //System.out.println("Giving gas amount "+stack.amount);
+//        if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
+//        {
+//            used = this.gasTank.fill(FluidRegistry.getFluidStack("hydrogen", stack.amount), doTransfer);
+//        }
+//        return used;
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public int receiveGas(Direction side, GasStack stack)
+//    {
+//        return this.receiveGas(LogicalSide, stack, IFluidHandler.FluidAction.EXECUTE);
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
+//    {
+//        return null;
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public GasStack drawGas(Direction side, int amount)
+//    {
+//        return null;
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public boolean canReceiveGas(Direction side, Gas type)
+//    {
+//        //System.out.println("Testing receipt of gas "+type.getName());
+//        return type.getName().equals("hydrogen") && LogicalSide.equals(this.getHydrogenInputDirection());
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
+//    public boolean canDrawGas(Direction side, Gas type)
+//    {
+//        return false;
+//    }
+//
+//    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
+//    public boolean canTubeConnect(Direction side)
+//    {
+//        return LogicalSide.equals(this.getHydrogenInputDirection());
+//    }
 
     @Override
     public boolean canConnect(Direction direction, NetworkType type)
@@ -616,7 +684,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public int getHydrogenRequest(Direction direction)
     {
-        return this.receiveHydrogen(direction, 1000000F, false);
+        return this.receiveHydrogen(direction, 1000000F, IFluidHandler.FluidAction.SIMULATE);
     }
 
     public boolean shouldPullHydrogen()
@@ -624,12 +692,12 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         return this.gasTank.getFluidAmount() < this.gasTank.getCapacity();
     }
 
-    public int receiveHydrogen(Direction from, float receive, boolean doReceive)
+    public int receiveHydrogen(Direction from, float receive, IFluidHandler.FluidAction action)
     {
         if (from == this.getHydrogenInputDirection() && this.shouldPullHydrogen())
         {
-            FluidStack fluidToFill = FluidRegistry.getFluidStack("hydrogen", (int) (receive));
-            return this.gasTank.fill(fluidToFill, doReceive);
+            FluidStack fluidToFill = new FluidStack(GCFluids.HYDROGEN.getFluid(), (int) (receive));
+            return this.gasTank.fill(fluidToFill, action);
         }
 
         return 0;
@@ -639,11 +707,11 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public Direction getFront()
     {
         BlockState state = this.world.getBlockState(getPos());
-        if (state.getBlock() instanceof BlockMachineMarsT2)
-        {
-            return state.get(BlockMachineMarsT2.FACING);
-        }
-        return Direction.NORTH;
+//        if (state.getBlock() instanceof BlockMachineMarsT2)
+//        {
+//            return state.get(BlockMachineMarsT2.FACING);
+//        }
+        return state.get(BlockMethaneSynthesizer.FACING);
     }
 
     public Direction getHydrogenInputDirection()
@@ -666,8 +734,8 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
                 if (gasRequested > 0)
                 {
-                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(AsteroidsModule.fluidMethaneGas, Math.min(gasRequested, provide)), true);
-                    this.liquidTank.drain(usedGas, true);
+                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(PlanetFluids.GAS_METHANE.getFluid(), Math.min(gasRequested, provide)), IFluidHandler.FluidAction.EXECUTE);
+                    this.liquidTank.drain(usedGas, IFluidHandler.FluidAction.EXECUTE);
                     return true;
                 }
             }

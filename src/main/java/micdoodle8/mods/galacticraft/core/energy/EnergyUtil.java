@@ -266,7 +266,7 @@ public class EnergyUtil
      * Similar to getAdjacentPowerConnections but specific to energy receivers only
      * Adds the adjacent power connections found to the passed acceptors, directions parameter Lists
      * (Note: an acceptor can therefore sometimes be entered in the Lists more than once, with a different direction each time:
-     * this would represent GC wires connected to the acceptor on more than one side.)
+     * this would represent GC wires connected to the acceptor on more than one LogicalSide.)
      * 
      * @param conductor
      * @param connectedAcceptors
@@ -569,7 +569,7 @@ public class EnergyUtil
      * Parameters:
      *
      * @param tileAdj  - the tile under test, it might be an energy tile from another mod
-     * @param inputAdj - the energy input side for that tile which is under test
+     * @param inputAdj - the energy input LogicalSide for that tile which is under test
      */
     public static boolean otherModCanReceive(TileEntity tileAdj, Direction inputAdj)
     {
@@ -611,7 +611,7 @@ public class EnergyUtil
      * Parameters:
      *
      * @param tileAdj - the tile under test, it might be an energy tile from another mod
-     * @param side    - the energy output side for that tile which is under test
+     * @param side    - the energy output LogicalSide for that tile which is under test
      */
     public static boolean otherModCanProduce(TileEntity tileAdj, Direction side)
     {
@@ -622,10 +622,10 @@ public class EnergyUtil
 
 //        if (isIC2Loaded && tileAdj instanceof IEnergyEmitter)
 //        {
-//            return ((IEnergyEmitter) tileAdj).emitsEnergyTo(null, side);
+//            return ((IEnergyEmitter) tileAdj).emitsEnergyTo(null, LogicalSide);
 //        }
 //
-//        if (isBCReallyLoaded && hasCapability(tileAdj, MjAPI.CAP_PASSIVE_PROVIDER, side))
+//        if (isBCReallyLoaded && hasCapability(tileAdj, MjAPI.CAP_PASSIVE_PROVIDER, LogicalSide))
 //        {
 //            return true;
 //        }
@@ -883,7 +883,7 @@ public class EnergyUtil
     
 //    public static boolean hasCapability(ICapabilityProvider dimension, Capability<?> capability, Direction side)
 //    {
-//        return (dimension == null || capability == null) ? false : dimension.hasCapability(capability, side);
+//        return (dimension == null || capability == null) ? false : dimension.hasCapability(capability, LogicalSide);
 //    }
 
     public static <T> LazyOptional<T> getCapability(ICapabilityProvider dimension, Capability<T> capability, Direction side)

@@ -2,20 +2,19 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -26,9 +25,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
 
 public abstract class EntityAdvancedMotion extends InventoryEntity implements IControllableEntity, IEntityFullSync
 {
@@ -199,7 +195,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
     public abstract void onGroundHit();
 
-    public abstract Vector3 getMotionVec();
+    public abstract Vector3D getMotionVec();
 
     /**
      * Can be called in the superclass init method
@@ -333,7 +329,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
         if (this.world.isRemote)
         {
-            Vector3 mot = this.getMotionVec();
+            Vector3D mot = this.getMotionVec();
             this.setMotion(mot.x, mot.y, mot.z);
         }
         //Necessary on both server and client to achieve a correct this.onGround setting

@@ -6,17 +6,23 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomBoss;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
+import static micdoodle8.mods.galacticraft.planets.mars.world.gen.MarsFeatures.CMARS_DUNGEON_BOSS;
+
 public class RoomBossMars extends RoomBoss
 {
-    public RoomBossMars()
+    public RoomBossMars(TemplateManager templateManager, CompoundNBT nbt)
     {
+        super(CMARS_DUNGEON_BOSS, nbt);
     }
 
     public RoomBossMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
@@ -30,7 +36,7 @@ public class RoomBossMars extends RoomBoss
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
+    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos chunkPos)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {

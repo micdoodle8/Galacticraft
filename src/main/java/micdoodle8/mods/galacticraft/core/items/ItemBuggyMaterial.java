@@ -8,7 +8,7 @@
 //import net.minecraft.item.Item;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.util.NonNullList;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBuggyMaterial extends Item implements ISortableItem
@@ -57,7 +57,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemStack)
 //    {
-//        return this.getUnlocalizedName() + "." + ItemBuggyMaterial.names[itemStack.getItemDamage()];
+//        return this.getUnlocalizedName() + "." + ItemBuggyMaterial.names[itemStack.getDamage()];
 //    }
 //
 //    /*@Override

@@ -5,7 +5,7 @@
 //import net.minecraft.block.Block;
 //import net.minecraft.item.Rarity;
 //import net.minecraft.item.ItemStack;
-//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //public class ItemBlockBase extends ItemBlockDesc
@@ -33,7 +33,7 @@
 //    @Override
 //    public String getUnlocalizedName(ItemStack itemstack)
 //    {
-//        String name = BlockBasic.EnumBlockBasic.values()[Math.min(Math.max(itemstack.getItemDamage() - 3, 0), 10)].getName();
+//        String name = BlockBasic.EnumBlockBasic.values()[Math.min(Math.max(itemstack.getDamage() - 3, 0), 10)].getName();
 //
 //        return this.getBlock().getUnlocalizedName() + "." + name;
 //    }

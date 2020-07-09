@@ -364,7 +364,53 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         return used;
     }
 
-//    @Override
+    @Override
+    public int getTanks()
+    {
+        return 2;
+    }
+
+    @Nonnull
+    @Override
+    public FluidStack getFluidInTank(int tank)
+    {
+        switch (tank)
+        {
+        case 0:
+            return this.oilTank.getFluid();
+        case 1:
+            return this.fuelTank.getFluid();
+        }
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public int getTankCapacity(int tank)
+    {
+        switch (tank)
+        {
+        case 0:
+            return this.oilTank.getCapacity();
+        case 1:
+            return this.fuelTank.getCapacity();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+    {
+        switch (tank)
+        {
+        case 0:
+            return this.oilTank.isFluidValid(stack);
+        case 1:
+            return this.fuelTank.isFluidValid(stack);
+        }
+        return false;
+    }
+
+    //    @Override
 //    public FluidTankInfo[] getTankInfo(Direction from)
 //    {
 //        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};

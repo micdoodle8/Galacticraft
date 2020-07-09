@@ -281,13 +281,13 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
         {
         default:
         case ALUMINUM_WIRE:
-            return new TileEntityAluminumWire(1);
+            return new TileEntityAluminumWire.TileEntityAluminumWireT1();
         case ALUMINUM_WIRE_HEAVY:
-            return new TileEntityAluminumWire(2);
+            return new TileEntityAluminumWire.TileEntityAluminumWireT2();
         case ALUMINUM_WIRE_SWITCHED:
-            return new TileEntityAluminumWireSwitch(1);
+            return new TileEntityAluminumWireSwitch.TileEntityAluminumWireSwitchableT1();
         case ALUMINUM_WIRE_SWITCHED_HEAVY:
-            return new TileEntityAluminumWireSwitch(2);
+            return new TileEntityAluminumWireSwitch.TileEntityAluminumWireSwitchableT2();
         }
     }
 
