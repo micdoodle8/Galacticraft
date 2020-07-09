@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 
 public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
 {
-    private ItemStack output;
-    private HashMap<Integer, ItemStack> input;
+    private final ItemStack output;
+    private final HashMap<Integer, ItemStack> input;
 
     public NasaWorkbenchRecipe(ItemStack output, HashMap<Integer, ItemStack> input)
     {

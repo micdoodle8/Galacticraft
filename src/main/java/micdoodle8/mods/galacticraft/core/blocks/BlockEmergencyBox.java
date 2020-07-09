@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, IPartialSealableBlock
 {
     public static final BooleanProperty KIT = BooleanProperty.create("kit");
-    
+
     public BlockEmergencyBox(Properties builder)
     {
         super(builder);
@@ -96,7 +96,6 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
 //    }
 
 
-
 //    @Override
 //    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
@@ -123,7 +122,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
         {
             if (!world.isRemote)
             {
-                ((TileEntityEmergencyBox)tile).click(player, hit.getFace(), state.get(KIT));
+                ((TileEntityEmergencyBox) tile).click(player, hit.getFace(), state.get(KIT));
             }
             return true;
         }
@@ -153,7 +152,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
     {
         return direction.ordinal() < 2;
     }
-    
+
 //    @Override
 //    public boolean isSideSolid(BlockState state, IBlockReader world, BlockPos pos, Direction direction)
 //    {

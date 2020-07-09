@@ -95,15 +95,15 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-		GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-		GlStateManager.scalef(0.8F, 0.8F, 0.8F);
-        ClientUtil.drawBakedModel(this.rocketModel);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GlStateManager.scalef(0.8F, 0.8F, 0.8F);
+        ClientUtil.drawBakedModel(rocketModel);
 
         Vector3 teamColor = ClientUtil.updateTeamColor(PlayerUtil.getName(Minecraft.getInstance().player), true);
 
         if (teamColor != null)
         {
-            int color = ColorUtil.to32BitColor(255, (int)(teamColor.floatZ() * 255), (int)(teamColor.floatY() * 255), (int)(teamColor.floatX() * 255));
+            int color = ColorUtil.to32BitColor(255, (int) (teamColor.floatZ() * 255), (int) (teamColor.floatY() * 255), (int) (teamColor.floatX() * 255));
             GlStateManager.disableTexture();
             ClientUtil.drawBakedModelColored(coneModel, color);
         }

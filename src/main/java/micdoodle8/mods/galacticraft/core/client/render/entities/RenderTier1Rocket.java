@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 @OnlyIn(Dist.CLIENT)
 public class RenderTier1Rocket extends EntityRenderer<EntityTier1Rocket>
 {
-    private ResourceLocation spaceshipTexture;
+    private final ResourceLocation spaceshipTexture;
 
     protected EntityModel<EntityTier1Rocket> rocketModel;
 
@@ -72,7 +72,7 @@ public class RenderTier1Rocket extends EntityRenderer<EntityTier1Rocket>
 
         GL11.glPopMatrix();
     }
-    
+
     @Override
     public boolean shouldRender(EntityTier1Rocket rocket, ICamera camera, double camX, double camY, double camZ)
     {

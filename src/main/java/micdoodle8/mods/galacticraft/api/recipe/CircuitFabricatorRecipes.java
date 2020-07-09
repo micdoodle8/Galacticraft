@@ -9,8 +9,8 @@ import java.util.List;
 
 public class CircuitFabricatorRecipes
 {
-    private static List<NonNullList<Object>> recipeInputs = new ArrayList<>();
-    private static List<ItemStack> recipeOutputs = new ArrayList<>();
+    private static final List<NonNullList<Object>> recipeInputs = new ArrayList<>();
+    private static final List<ItemStack> recipeOutputs = new ArrayList<>();
 
     public static ArrayList<ArrayList<ItemStack>> slotValidItems = new ArrayList<>(5);
 
@@ -20,9 +20,8 @@ public class CircuitFabricatorRecipes
      * <p/>
      * 0: Diamond  1: Silicon  2: Silicon  3: Redstone dust  4: Recipe item
      *
-     * @param output  ItemStack
-     * @param inputList  Object array.  Must contain only null, ItemStack, or List<ItemStack>.
-     * 
+     * @param output    ItemStack
+     * @param inputList Object array.  Must contain only null, ItemStack, or List<ItemStack>.
      * @return
      */
     public static void addRecipe(ItemStack output, List<Object> inputList)
@@ -37,7 +36,7 @@ public class CircuitFabricatorRecipes
             {
                 continue;
             }
-            if (o instanceof List<?> && ((List)o).size() > 0)
+            if (o instanceof List<?> && ((List) o).size() > 0)
             {
                 continue;
             }
@@ -51,8 +50,9 @@ public class CircuitFabricatorRecipes
         validateItems(inputList);
     }
 
-    /** Add the recipe ingredients to the valid items for each slot
-     * 
+    /**
+     * Add the recipe ingredients to the valid items for each slot
+     *
      * @param inputList
      */
     private static void validateItems(List<Object> inputList)
@@ -76,7 +76,7 @@ public class CircuitFabricatorRecipes
             }
             else if (input instanceof List<?>)
             {
-                for (ItemStack stack : (List<ItemStack>)input)
+                for (ItemStack stack : (List<ItemStack>) input)
                 {
                     validateItem(i, stack);
                 }
@@ -130,9 +130,9 @@ public class CircuitFabricatorRecipes
                 Object recipeStack = recipe.get(i);
                 ItemStack inputStack = inputList.get(i);
 
-                if (recipeStack instanceof ItemStack && ((ItemStack)recipeStack).isEmpty() || inputStack.isEmpty())
+                if (recipeStack instanceof ItemStack && ((ItemStack) recipeStack).isEmpty() || inputStack.isEmpty())
                 {
-                    if (!(recipeStack instanceof ItemStack && ((ItemStack)recipeStack).isEmpty()) || !inputStack.isEmpty())
+                    if (!(recipeStack instanceof ItemStack && ((ItemStack) recipeStack).isEmpty()) || !inputStack.isEmpty())
                     {
                         found = false;
                         break;
@@ -140,7 +140,7 @@ public class CircuitFabricatorRecipes
                 }
                 else if (recipeStack instanceof ItemStack)
                 {
-                    ItemStack stack = ((ItemStack) recipeStack); 
+                    ItemStack stack = ((ItemStack) recipeStack);
                     if (stack.getItem() != inputStack.getItem() || stack.getDamage() != inputStack.getDamage() || !RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                     {
                         found = false;
@@ -150,7 +150,7 @@ public class CircuitFabricatorRecipes
                 else if (recipeStack instanceof List<?>)
                 {
                     boolean listMatchOne = false;
-                    for (ItemStack stack : (List<ItemStack>)recipeStack)
+                    for (ItemStack stack : (List<ItemStack>) recipeStack)
                     {
                         if (stack.getItem() == inputStack.getItem() && stack.getDamage() == inputStack.getDamage() && RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                         {
@@ -170,23 +170,23 @@ public class CircuitFabricatorRecipes
             {
                 return recipeOutputs.get(count);
             }
-            
+
             count++;
         }
 
         return ItemStack.EMPTY;
     }
-    
+
     public static List<NonNullList<Object>> getRecipes()
     {
         return recipeInputs;
     }
-    
+
     public static ItemStack getOutput(int count)
     {
         return recipeOutputs.get(count);
     }
-    
+
     /**
      * Caution: call this BEFORE the JEI plugin registers recipes - or else the removed recipe will still be shown in JEI.
      */
@@ -201,13 +201,19 @@ public class CircuitFabricatorRecipes
                 recipeOutputs.remove(count);
                 // Do not increment count if we just removed the element!
             }
-            else count++;
+            else
+            {
+                count++;
+            }
         }
     }
-    
+
     public static void replaceRecipeIngredient(ItemStack ingredient, List<ItemStack> replacement)
     {
-        if (ingredient == null) return;
+        if (ingredient == null)
+        {
+            return;
+        }
         CircuitFabricatorRecipes.slotValidItems.clear();
         Object newIngredient = replacement;
 
@@ -223,7 +229,7 @@ public class CircuitFabricatorRecipes
 
                 if (recipeStack instanceof ItemStack)
                 {
-                    ItemStack stack = ((ItemStack) recipeStack); 
+                    ItemStack stack = ((ItemStack) recipeStack);
                     if (stack.getItem() == ingredient.getItem() && stack.getDamage() == ingredient.getDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                     {
                         recipe.set(i, newIngredient);
@@ -232,7 +238,7 @@ public class CircuitFabricatorRecipes
                 else if (recipeStack instanceof List<?>)
                 {
                     boolean listMatchOne = false;
-                    for (ItemStack stack : (List<ItemStack>)recipeStack)
+                    for (ItemStack stack : (List<ItemStack>) recipeStack)
                     {
                         if (stack.getItem() == ingredient.getItem() && stack.getDamage() == ingredient.getDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                         {

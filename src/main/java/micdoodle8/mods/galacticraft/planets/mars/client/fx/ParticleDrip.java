@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleDrip extends SpriteTexturedParticle
 {
-    private IAnimatedSprite animatedSprite;
+    private final IAnimatedSprite animatedSprite;
     private int bobTimer;
 
     public ParticleDrip(World world, double x, double y, double z, IAnimatedSprite animatedSprite)
@@ -104,11 +104,14 @@ public class ParticleDrip extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             return new ParticleDrip(worldIn, x, y, z, this.spriteSet);
         }
     }

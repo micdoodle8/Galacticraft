@@ -21,7 +21,7 @@ public class ContainerGeothermal extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.GEOTHERMAL)
     public static ContainerType<ContainerGeothermal> TYPE;
 
-    private TileEntityGeothermalGenerator generator;
+    private final TileEntityGeothermalGenerator generator;
 
     public ContainerGeothermal(int containerId, PlayerInventory playerInv, TileEntityGeothermalGenerator generator)
     {
@@ -116,7 +116,7 @@ public class ContainerGeothermal extends Container
                 }
                 else
                 {
-                   slot.putStack(ItemStack.EMPTY);
+                    slot.putStack(ItemStack.EMPTY);
                 }
             }
             else

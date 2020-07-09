@@ -5,9 +5,9 @@ package micdoodle8.mods.galacticraft.api.entity;
  */
 public interface ITelemetry
 {
-	void transmitData(int[] data);
-	
-	void receiveData(int[] data, String[] str);
-	
-	void adjustDisplay(int[] data);
+    void transmitData(int[] data);
+
+    void receiveData(int[] data, String[] str);
+
+    void adjustDisplay(int[] data);
 }

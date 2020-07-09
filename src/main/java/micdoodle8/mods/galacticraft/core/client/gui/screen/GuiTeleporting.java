@@ -15,7 +15,7 @@ public class GuiTeleporting extends Screen
     {
         super(new StringTextComponent("Teleporting"));
         this.targetDimensionID = targetDimensionID;
-        String[] possibleStrings = new String[] { "Taking one small step", "Taking one giant leap", "Prepare for entry!" };
+        String[] possibleStrings = new String[]{"Taking one small step", "Taking one giant leap", "Prepare for entry!"};
         this.message = possibleStrings[(int) (Math.random() * possibleStrings.length)];
         TickHandlerClient.teleportingGui = this;
     }
@@ -38,7 +38,7 @@ public class GuiTeleporting extends Screen
     public void tick()
     {
         super.tick();
-		if (minecraft.player != null && minecraft.player.world != null)
+        if (minecraft.player != null && minecraft.player.world != null)
         {
             // Screen will exit when the player is in the target dimension and has started moving down
             if (minecraft.player.world.getDimension().getType() == this.targetDimensionID)

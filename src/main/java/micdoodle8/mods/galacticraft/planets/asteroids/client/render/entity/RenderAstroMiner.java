@@ -106,7 +106,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
         int ais = astroMiner.AIstate;
         boolean active = ais > EntityAstroMiner.AISTATE_ATBASE;
         float time = astroMiner.ticksExisted + partialTickTime;
-        float sinOfTheTime = (MathHelper.sin(time / 4) + 1F)/4F + 0.5F;
+        float sinOfTheTime = (MathHelper.sin(time / 4) + 1F) / 4F + 0.5F;
         float wx = active ? this.wobbleX.getNoise(time) + this.wobbleXX.getNoise(time) : 0F;
         float wy = active ? this.wobbleY.getNoise(time) + this.wobbleYY.getNoise(time) : 0F;
         float wz = active ? this.wobbleZ.getNoise(time) + this.wobbleZZ.getNoise(time) : 0F;
@@ -135,7 +135,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
         final float rotPitch = astroMiner.prevRotationPitch + (astroMiner.rotationPitch - astroMiner.prevRotationPitch) * partialTickTime;
         final float rotYaw = astroMiner.prevRotationYaw + (astroMiner.rotationYaw - astroMiner.prevRotationYaw) * partialTickTime;
 
-        GlStateManager.translatef((float)x, (float)y + 1.4F, (float)z);
+        GlStateManager.translatef((float) x, (float) y + 1.4F, (float) z);
         float partBlock;
 
         switch (astroMiner.facing)
@@ -230,7 +230,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
                 int afterglowCount = 0;
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
-                GlStateManager.translatef((float)(x - astroMiner.posX), (float)(y - astroMiner.posY), (float)(z - astroMiner.posZ));
+                GlStateManager.translatef((float) (x - astroMiner.posX), (float) (y - astroMiner.posY), (float) (z - astroMiner.posZ));
 
                 for (Integer blockTime : new ArrayList<Integer>(astroMiner.laserTimes))
                 {
@@ -263,7 +263,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
                     {
                         this.doLaser(astroMiner, blockLaser);
                     }
-                    count ++;
+                    count++;
                 }
                 if (astroMiner.retraction > 0F)
                 {
@@ -577,7 +577,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
     {
         return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
-    
+
     @Override
     public boolean shouldRender(EntityAstroMiner miner, ICamera camera, double camX, double camY, double camZ)
     {

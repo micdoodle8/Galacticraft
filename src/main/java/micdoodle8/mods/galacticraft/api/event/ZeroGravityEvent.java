@@ -50,7 +50,7 @@ public abstract class ZeroGravityEvent extends LivingEvent
     /**
      * Cancel this to block the sneak override on Zero G dimensions
      * when descending (no sneak) or landing (sneak during impact)
-     * 
+     * <p>
      * (This sneaking will mostly be cancelled anyhow if the Motion
      * event is cancelled)
      */

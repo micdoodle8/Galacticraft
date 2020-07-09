@@ -50,7 +50,7 @@ public class SpaceRaceManager
         {
             boolean playerOnline = false;
 
-            for (ServerPlayerEntity player: PlayerUtil.getPlayersOnline())
+            for (ServerPlayerEntity player : PlayerUtil.getPlayersOnline())
             {
                 if (race.getPlayerNames().contains(PlayerUtil.getName(player)))
                 {
@@ -183,16 +183,22 @@ public class SpaceRaceManager
             SpaceRaceManager.sendSpaceRaceData(server, playerToRemove, race);
         }
     }
-    
+
     public static void teamUnlockSchematic(ServerPlayerEntity player, ItemStack stack)
     {
         SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(player));
-        if (race == null) return;
+        if (race == null)
+        {
+            return;
+        }
         MinecraftServer server = player.server;
         for (String member : race.getPlayerNames())
         {
-            if (player.getName().getString().equalsIgnoreCase(member)) continue;
-            
+            if (player.getName().getString().equalsIgnoreCase(member))
+            {
+                continue;
+            }
+
             ServerPlayerEntity memberObj = PlayerUtil.getPlayerForUsernameVanilla(server, member);
             if (memberObj != null)
             {

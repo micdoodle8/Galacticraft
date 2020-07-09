@@ -258,7 +258,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         if (this.getTarget() != null)
         {
             Vector3 direction = Vector3.subtract(this.getOutputPoint(false), this.getTarget().getInputPoint()).normalize();
-            this.pitch = (float) -Vector3.getAngle(new Vector3(-direction.x, -direction.y, -direction.z), new Vector3(0, 1, 0)) * Constants.RADIANS_TO_DEGREES + 90;
+            this.pitch = -Vector3.getAngle(new Vector3(-direction.x, -direction.y, -direction.z), new Vector3(0, 1, 0)) * Constants.RADIANS_TO_DEGREES + 90;
             this.yaw = (float) -(Math.atan2(direction.z, direction.x) * Constants.RADIANS_TO_DEGREES) + 90;
         }
     }

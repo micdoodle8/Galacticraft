@@ -80,7 +80,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
         //Signal no rotate
         return -20.0F;
     }
-    
+
 //    @Override
 //    public boolean shouldSpawnParticles()
 //    {

@@ -146,7 +146,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                         if (this.boss instanceof MobEntity)
                         {
                             MobEntity bossLiving = (MobEntity) this.boss;
-                            bossLiving.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(bossLiving)), SpawnReason.SPAWNER, (ILivingEntityData)null, (CompoundNBT)null);
+                            bossLiving.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(bossLiving)), SpawnReason.SPAWNER, null, null);
                             this.world.addEntity(bossLiving);
                             this.playSpawnSound(bossLiving);
                             this.spawned = true;
@@ -292,11 +292,13 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     {
         this.chestPos = chestPos;
     }
-    
+
     public AxisAlignedBB getRangeBounds()
     {
         if (this.rangeBounds == null)
+        {
             this.rangeBounds = new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
+        }
 
         return this.rangeBounds;
     }
@@ -304,7 +306,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public AxisAlignedBB getRangeBoundsPlus11()
     {
         if (this.rangeBoundsPlus11 == null)
+        {
             this.rangeBoundsPlus11 = this.getRangeBounds().grow(11, 11, 11);
+        }
 
         return this.rangeBoundsPlus11;
     }

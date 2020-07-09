@@ -72,7 +72,7 @@ public class ItemArmorMars extends ArmorItem implements ISortableItem
     {
         return EnumSortCategoryItem.ARMOR;
     }
-    
+
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {

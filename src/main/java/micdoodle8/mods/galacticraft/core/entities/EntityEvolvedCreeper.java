@@ -19,9 +19,9 @@ import java.util.UUID;
 
 public class EntityEvolvedCreeper extends CreeperEntity implements IEntityBreathable
 {
-//    private float sizeXBase = -1.0F;
+    //    private float sizeXBase = -1.0F;
 //    private float sizeYBase;
-    private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.<Boolean>createKey(EntityEvolvedCreeper.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.createKey(EntityEvolvedCreeper.class, DataSerializers.BOOLEAN);
     private static final UUID babySpeedBoostUUID = UUID.fromString("ef67a435-32a4-4efd-b218-e7431438b109");
     private static final AttributeModifier babySpeedBoostModifier = new AttributeModifier(babySpeedBoostUUID, "Baby speed boost evolved creeper", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
 
@@ -46,6 +46,7 @@ public class EntityEvolvedCreeper extends CreeperEntity implements IEntityBreath
         super.registerData();
         this.dataManager.register(IS_CHILD, false);
     }
+
     @Override
     protected void registerAttributes()
     {
@@ -102,7 +103,7 @@ public class EntityEvolvedCreeper extends CreeperEntity implements IEntityBreath
 //    protected final void setCreeperScale(float scale)
 //    {
 //        super.setSize(this.sizeXBase * scale, this.sizeYBase * scale);
-        //FMLLog.info("" + this.sizeYBase + " " + scale);
+    //FMLLog.info("" + this.sizeYBase + " " + scale);
 //    }
 
     @Override

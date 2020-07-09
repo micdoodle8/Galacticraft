@@ -9,7 +9,7 @@ public abstract class LaunchParticle extends SpriteTexturedParticle
     {
         super(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
     }
-    
+
 //    @Override
 //    public void move(double x, double y, double z)
 //    {

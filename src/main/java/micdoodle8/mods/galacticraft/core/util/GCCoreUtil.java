@@ -37,7 +37,7 @@ public class GCCoreUtil
 {
     public static int nextID = 0;
     private static boolean deobfuscated;
-    private static String lastLang = "";
+    private static final String lastLang = "";
     public static boolean langDisable;
     private static MinecraftServer serverCached;
 
@@ -220,26 +220,28 @@ public class GCCoreUtil
         BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
         String line;
         String supplemented = "entity." + assetprefix.toLowerCase() + ".";
-        
+
         //TODO:  We could also load en_US here and have any language keys not in the other lang set to the en_US value
-        
-        while((line = br.readLine()) != null)
+
+        while ((line = br.readLine()) != null)
         {
             line = line.trim();
             if (!line.isEmpty())
             {
                 langLines.add(line);
-                if (line.substring(0, 7).equals("entity."))
+                if (line.startsWith("entity."))
                 {
                     langLines.add(supplemented + line.substring(7));
                 }
             }
         }
-        
+
         ByteArrayOutputStream outputstream = new ByteArrayOutputStream();
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputstream, Charsets.UTF_8.newEncoder()));
         for (String outLine : langLines)
+        {
             writer.write(outLine + "\n");
+        }
         writer.close();
 
         return new ByteArrayInputStream(outputstream.toByteArray());
@@ -310,16 +312,16 @@ public class GCCoreUtil
         }
         return null;
     }
-    
+
     public static Iterable<ServerWorld> getWorldServerList(World world)
     {
         if (world instanceof ServerWorld)
         {
-            return ((ServerWorld)world).getServer().getWorlds();
+            return ((ServerWorld) world).getServer().getWorlds();
         }
         return GCCoreUtil.getWorldServerList();
     }
-    
+
     public static void sendToAllDimensions(EnumSimplePacket packetType, Object[] data)
     {
         for (ServerWorld world : GCCoreUtil.getWorldServerList())
@@ -357,10 +359,10 @@ public class GCCoreUtil
      */
     public static Random getRandom(BlockPos pos)
     {
-        long blockSeed = ((pos.getY() << 28) + pos.getX() + 30000000 << 28) + pos.getZ() + 30000000;  
+        long blockSeed = ((pos.getY() << 28) + pos.getX() + 30000000 << 28) + pos.getZ() + 30000000;
         return new Random(blockSeed);
     }
-    
+
     /**
      * Returns the angle of the compass (0 - 360 degrees) needed to reach the given position offset
      */
@@ -417,42 +419,72 @@ public class GCCoreUtil
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (y > 0) result.add(new BlockPos(x, y - 1, z));
-        if (y < 255) result.add(new BlockPos(x, y + 1, z));
+        if (y > 0)
+        {
+            result.add(new BlockPos(x, y - 1, z));
+        }
+        if (y < 255)
+        {
+            result.add(new BlockPos(x, y + 1, z));
+        }
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
         result.add(new BlockPos(x + 1, y, z));
         return result;
     }
-    
+
     //For performance
     public static void getPositionsAdjoining(int x, int y, int z, List<BlockPos> result)
     {
         result.clear();
-        if (y > 0) result.add(new BlockPos(x, y - 1, z));
-        if (y < 255) result.add(new BlockPos(x, y + 1, z));
+        if (y > 0)
+        {
+            result.add(new BlockPos(x, y - 1, z));
+        }
+        if (y < 255)
+        {
+            result.add(new BlockPos(x, y + 1, z));
+        }
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
         result.add(new BlockPos(x + 1, y, z));
     }
-    
+
     public static void getPositionsAdjoiningLoaded(int x, int y, int z, List<BlockPos> result, World world)
     {
         result.clear();
-        if (y > 0) result.add(new BlockPos(x, y - 1, z));
-        if (y < 255) result.add(new BlockPos(x, y + 1, z));
+        if (y > 0)
+        {
+            result.add(new BlockPos(x, y - 1, z));
+        }
+        if (y < 255)
+        {
+            result.add(new BlockPos(x, y + 1, z));
+        }
         BlockPos pos = new BlockPos(x, y, z - 1);
-        if ((z & 15) > 0 || world.isBlockLoaded(pos)) result.add(pos);
+        if ((z & 15) > 0 || world.isBlockLoaded(pos))
+        {
+            result.add(pos);
+        }
         pos = new BlockPos(x, y, z + 1);
-        if ((z & 15) < 15 || world.isBlockLoaded(pos)) result.add(pos);
+        if ((z & 15) < 15 || world.isBlockLoaded(pos))
+        {
+            result.add(pos);
+        }
         pos = new BlockPos(x - 1, y, z);
-        if ((x & 15) > 0 || world.isBlockLoaded(pos)) result.add(pos);
+        if ((x & 15) > 0 || world.isBlockLoaded(pos))
+        {
+            result.add(pos);
+        }
         pos = new BlockPos(x + 1, y, z);
-        if ((x & 15) < 15 || world.isBlockLoaded(pos)) result.add(pos);
+        if ((x & 15) < 15 || world.isBlockLoaded(pos))
+        {
+            result.add(pos);
+        }
     }
-    
+
     //For performance
     public static void getPositionsAdjoining(BlockPos pos, List<BlockPos> result)
     {
@@ -460,27 +492,33 @@ public class GCCoreUtil
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (y > 0) result.add(new BlockPos(x, y - 1, z));
-        if (y < 255) result.add(new BlockPos(x, y + 1, z));
+        if (y > 0)
+        {
+            result.add(new BlockPos(x, y - 1, z));
+        }
+        if (y < 255)
+        {
+            result.add(new BlockPos(x, y + 1, z));
+        }
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
         result.add(new BlockPos(x + 1, y, z));
     }
-    
+
     public static void spawnItem(World world, BlockPos pos, ItemStack stack)
     {
         float var = 0.7F;
         while (!stack.isEmpty())
         {
-	        double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-	        double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-	        double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-	        ItemEntity entityitem = new ItemEntity(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.split(world.rand.nextInt(21) + 10));
-	
-	        entityitem.setPickupDelay(10);
-	
-	        world.addEntity(entityitem);
+            double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+            double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+            double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+            ItemEntity entityitem = new ItemEntity(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.split(world.rand.nextInt(21) + 10));
+
+            entityitem.setPickupDelay(10);
+
+            world.addEntity(entityitem);
         }
     }
 

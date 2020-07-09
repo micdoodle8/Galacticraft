@@ -48,7 +48,7 @@ public class PacketDynamicInventory extends PacketBase
     {
         super(GCCoreUtil.getDimensionID(tile.getWorld()));
         assert tile instanceof IInventory : "Tile does not implement " + IInventory.class.getSimpleName();
-        IInventory chest = ((IInventory) tile); 
+        IInventory chest = ((IInventory) tile);
         this.type = 1;
         this.identifier = tile.getPos();
         int size = chest.getSizeInventory();
@@ -58,7 +58,9 @@ public class PacketDynamicInventory extends PacketBase
             this.stacks[size] = ((TileEntityCrafting) chest).getMemoryHeld();
         }
         else
+        {
             this.stacks = new ItemStack[size];
+        }
 
         for (int i = 0; i < size; i++)
         {
@@ -78,11 +80,16 @@ public class PacketDynamicInventory extends PacketBase
         return packet;
     }
 
-    public static void handle(final PacketDynamicInventory message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+    public static void handle(final PacketDynamicInventory message, Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() ->
+        {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
+            {
                 message.handleClientSide(ctx.get().getSender());
-            } else {
+            }
+            else
+            {
                 message.handleServerSide(ctx.get().getSender());
             }
         });

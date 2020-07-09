@@ -31,8 +31,8 @@ import net.minecraft.util.text.StringTextComponent;
 public class PlayerClient implements IPlayerClient
 {
     private boolean saveSneak;
-	private double downMot2;
-	public static boolean startup;
+    private double downMot2;
+    public static boolean startup;
 
     @Override
     public void move(ClientPlayerEntity player, MoverType type, Vec3d motion)
@@ -113,7 +113,7 @@ public class PlayerClient implements IPlayerClient
 //            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
 //        }
     }
-    
+
     public void cancelLimbSwing(ClientPlayerEntity player)
     {
         player.limbSwing -= player.limbSwingAmount;
@@ -146,30 +146,30 @@ public class PlayerClient implements IPlayerClient
             }
             else
             {
-		    	if (stats.isInFreefallLast() && this.downMot2 < -0.008D)
+                if (stats.isInFreefallLast() && this.downMot2 < -0.008D)
                 {
-		    		stats.setLandingTicks(5 - (int)(Math.min(this.downMot2, stats.getDownMotionLast()) * 40));
-		    		if (stats.getLandingTicks() > stats.getMaxLandingticks())
-		    		{
-	                    if (stats.getLandingTicks() > stats.getMaxLandingticks() + 4)
-	                    {
+                    stats.setLandingTicks(5 - (int) (Math.min(this.downMot2, stats.getDownMotionLast()) * 40));
+                    if (stats.getLandingTicks() > stats.getMaxLandingticks())
+                    {
+                        if (stats.getLandingTicks() > stats.getMaxLandingticks() + 4)
+                        {
 //	                        stats.getFreefallHandler().pjumpticks = stats.getLandingTicks() - stats.getMaxLandingticks() - 5;  TODO Freefall handler
                         }
-		    		    stats.setLandingTicks(stats.getMaxLandingticks());
-		    		}
-		    		float dYmax = 0.3F * stats.getLandingTicks() / stats.getMaxLandingticks();
-		    		float factor = 1F;
-		    		for (int i = 0; i <= stats.getLandingTicks(); i++)
-		    		{
-    	                stats.getLandingYOffset()[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.getLandingTicks()) * factor;
-    	                factor *= 0.97F;
+                        stats.setLandingTicks(stats.getMaxLandingticks());
                     }
-		    	}
-	        }
+                    float dYmax = 0.3F * stats.getLandingTicks() / stats.getMaxLandingticks();
+                    float factor = 1F;
+                    for (int i = 0; i <= stats.getLandingTicks(); i++)
+                    {
+                        stats.getLandingYOffset()[i] = dYmax * MathHelper.sin(i * 3.1415926F / stats.getLandingTicks()) * factor;
+                        factor *= 0.97F;
+                    }
+                }
+            }
 
-	        if (stats.getLandingTicks() > 0)
-	        {
-	            stats.setLandingTicks(stats.getLandingTicks() - 1);
+            if (stats.getLandingTicks() > 0)
+            {
+                stats.setLandingTicks(stats.getLandingTicks() - 1);
                 player.limbSwing *= 0.8F;
                 player.limbSwingAmount = 0F;
             }
@@ -185,13 +185,15 @@ public class PlayerClient implements IPlayerClient
 
         if (ridingThirdPersonEntity && !stats.isLastRidingCameraZoomEntity())
         {
-            if(!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            {
                 Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+            }
         }
 
         if (player.getRidingEntity() instanceof ICameraZoomEntity)
         {
-            if(!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.disableVehicleCameraChanges)
             {
                 stats.setLastZoomed(true);
                 TickHandlerClient.zoom(((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom());
@@ -199,10 +201,10 @@ public class PlayerClient implements IPlayerClient
         }
         else if (stats.isLastZoomed())
         {
-        	if(!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.disableVehicleCameraChanges)
             {
-	            stats.setLastZoomed(false);
-	            TickHandlerClient.zoom(4.0F);
+                stats.setLastZoomed(false);
+                TickHandlerClient.zoom(4.0F);
             }
         }
 
@@ -220,7 +222,7 @@ public class PlayerClient implements IPlayerClient
         if (gearData != null)
         {
             stats.setUsingParachute(gearData.getParachute() != null);
-            if(!GalacticraftCore.isHeightConflictingModInstalled)
+            if (!GalacticraftCore.isHeightConflictingModInstalled)
             {
 //                if (gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT)
 //                {
@@ -381,7 +383,7 @@ public class PlayerClient implements IPlayerClient
         }
         flag |= 1 << i;
         stats.setBuildFlags((flag & 511) + (repeatCount << 9));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionID(player.world), new Object[] { stats.getBuildFlags() }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionID(player.world), new Object[]{stats.getBuildFlags()}));
         switch (i)
         {
         case 0:

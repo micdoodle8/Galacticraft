@@ -20,7 +20,7 @@ import java.util.List;
 public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/ingot_compressor.png");
-    private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
+    private final GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
     private TileEntityIngotCompressor compressor;
 
@@ -88,7 +88,7 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
 
         if (this.compressor.processTicks > 0)
         {
-            process = (int) ((double) this.compressor.processTicks / (double) this.compressor.PROCESS_TIME_REQUIRED * 100);
+            process = (int) ((double) this.compressor.processTicks / (double) TileEntityIngotCompressor.PROCESS_TIME_REQUIRED * 100);
         }
         else
         {

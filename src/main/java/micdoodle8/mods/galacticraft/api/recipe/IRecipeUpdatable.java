@@ -11,13 +11,13 @@ public interface IRecipeUpdatable
      * Replace all inputs which match ItemStack inputA
      * with a List<ItemStack> (probably representing OreDict output).
      */
-    public void replaceInput(ItemStack ingredient, List<ItemStack> replacement);
+    void replaceInput(ItemStack ingredient, List<ItemStack> replacement);
 
     /**
      * Replace all inputs which are lists containing ItemStack ingredient
      * with simple ItemStack of ingredient.
-     * 
+     *
      * @param ingredient
      */
-    public void replaceInput(ItemStack ingredient);
+    void replaceInput(ItemStack ingredient);
 }

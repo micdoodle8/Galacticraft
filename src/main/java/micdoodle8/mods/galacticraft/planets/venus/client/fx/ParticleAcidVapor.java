@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleAcidVapor extends SpriteTexturedParticle
 {
-    private IAnimatedSprite animatedSprite;
+    private final IAnimatedSprite animatedSprite;
     private final float smokeParticleScale;
 
     public ParticleAcidVapor(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double motionX, double motionY, double motionZ, IAnimatedSprite animatedSprite)
@@ -24,15 +24,15 @@ public class ParticleAcidVapor extends SpriteTexturedParticle
         this.motionX += motionX / 10.0F;
         this.motionY += motionY;
         this.motionZ += motionZ / 10.0F;
-        this.particleRed = (float)(Math.random() * 0.10000001192092896D + 0.8);
+        this.particleRed = (float) (Math.random() * 0.10000001192092896D + 0.8);
         this.particleGreen = particleRed;
-        this.particleBlue = (float)(Math.random() * 0.10000001192092896D);
+        this.particleBlue = (float) (Math.random() * 0.10000001192092896D);
         this.particleAlpha = 1.0F;
 //        this.particleScale *= 0.75F;
         this.particleScale *= 2.5F;
         this.smokeParticleScale = this.particleScale;
-        this.maxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
-        this.maxAge = (int)((float)this.maxAge * 2.5F);
+        this.maxAge = (int) (8.0D / (Math.random() * 0.8D + 0.2D));
+        this.maxAge = (int) ((float) this.maxAge * 2.5F);
         this.canCollide = true;
         this.animatedSprite = animatedSprite;
     }
@@ -86,11 +86,14 @@ public class ParticleAcidVapor extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             return new ParticleAcidVapor(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, spriteSet);
         }
     }

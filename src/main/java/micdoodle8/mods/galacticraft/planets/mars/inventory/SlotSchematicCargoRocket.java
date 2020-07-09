@@ -18,7 +18,7 @@ import net.minecraft.world.dimension.DimensionType;
 public class SlotSchematicCargoRocket extends Slot
 {
     private final int index;
-//    private final BlockPos pos;
+    //    private final BlockPos pos;
     private final PlayerEntity player;
 
     public SlotSchematicCargoRocket(IInventory par2IInventory, int par3, int par4, int par5, PlayerEntity player)
@@ -43,13 +43,17 @@ public class SlotSchematicCargoRocket extends Slot
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         if (par1ItemStack == null)
+        {
             return false;
+        }
 
         List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getCargoRocketRecipes();
         for (INasaWorkbenchRecipe recipe : recipes)
         {
             if (ItemStack.areItemsEqual(par1ItemStack, recipe.getRecipeInput().get(this.index)))
+            {
                 return true;
+            }
         }
         return false;
     }

@@ -132,7 +132,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                 {
                     boolean done = false;
                     Direction currentFacing = state.get(property);
-                    
+
                     // Special case: horizontal facings should be rotated around the Y axis - this includes most of GC's own blocks
                     if (values.size() == 4 && !values.contains(Direction.UP) && !values.contains(Direction.DOWN))
                     {
@@ -153,7 +153,9 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                     }
 
                     ItemStack stack = context.getPlayer().getHeldItem(context.getHand()).copy();
-                    stack.damageItem(1, context.getPlayer(), (entity) -> {});
+                    stack.damageItem(1, context.getPlayer(), (entity) ->
+                    {
+                    });
                     context.getPlayer().setHeldItem(context.getHand(), stack);
 
                     TileEntity tile = context.getWorld().getTileEntity(context.getPos());

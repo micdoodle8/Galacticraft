@@ -28,7 +28,7 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
     private final TileEntityGeothermalGenerator geothermalGenerator;
 
     private Button buttonEnableSolar;
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
     public GuiGeothermal(ContainerGeothermal container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -59,8 +59,9 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
 //        float sunVisible = Math.round(this.geothermalGenerator.solarStrength / 9.0F * 1000) / 10.0F;
 //        sunGenDesc.add(this.geothermalGenerator.solarStrength > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
 //        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
-        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 19, 72, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.geothermalGenerator.getPos(), 0 }));
+        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 19, 72, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.geothermalGenerator.getPos(), 0}));
         }));
     }
 
@@ -142,7 +143,7 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
         if (this.geothermalGenerator.hasValidSpout())
         {
             int ySize = 16 * this.geothermalGenerator.generateWatts / (TileEntityGeothermalGenerator.MAX_GENERATE_GJ_PER_TICK - 1);
-            this.blit(var5 + 33, var6 + 21 + (16 - ySize), 176, (int) (10 + ((this.geothermalGenerator.ticks / 3) % 7) * 16) + (16 - ySize), 46, ySize);
+            this.blit(var5 + 33, var6 + 21 + (16 - ySize), 176, 10 + ((this.geothermalGenerator.ticks / 3) % 7) * 16 + (16 - ySize), 46, ySize);
         }
 
         this.blit(var5 + 97, var6 + 25, 187, 0, Math.min(this.geothermalGenerator.getScaledElecticalLevel(54), 54), 7);

@@ -75,11 +75,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
     private ItemStack producingStack = ItemStack.EMPTY;
-    private static final int[] allSlots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    private static final int[] allSlots = new int[]{0, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     protected boolean advanced;
 
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
-    private static Random randnum = new Random();
+    private static final Random randnum = new Random();
 
     public TileEntityElectricIngotCompressor(TileEntityType<?> type)
     {
@@ -106,9 +106,13 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                     if (this.processTicks >= this.processTimeRequired)
                     {
                         if (this.advanced)
+                        {
                             this.world.playSound(null, this.getPos(), GCSounds.advanced_compressor, SoundCategory.BLOCKS, 0.23F, this.world.rand.nextFloat() * 0.1F + 9.5F);
+                        }
                         else
+                        {
                             this.world.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.12F, this.world.rand.nextFloat() * 0.1F - 9.5F);
+                        }
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -200,7 +204,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 if (this.getInventory().get(slot).getCount() + resultItemStack.getCount() > resultItemStack.getMaxStackSize())
                 {
-					resultItemStack.grow(this.getInventory().get(slot).getCount() - resultItemStack.getMaxStackSize());
+                    resultItemStack.grow(this.getInventory().get(slot).getCount() - resultItemStack.getMaxStackSize());
                     GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
                     this.getInventory().get(slot).setCount(resultItemStack.getMaxStackSize());
                 }
@@ -237,7 +241,8 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         super.read(nbt);
         this.advanced = nbt.getBoolean("adv");
-        if (this.advanced)  {
+        if (this.advanced)
+        {
             this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
             this.processTimeRequired = processTimeRequiredBase;
             this.setTierGC(3);
@@ -367,7 +372,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         if (par1 >= this.inventory.size())
         {
-        	this.markDirty();
+            this.markDirty();
             return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.inventory.size());
         }
 
@@ -380,7 +385,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         }
         else
         {
-        	return ItemStack.EMPTY;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -436,7 +441,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 ItemStack stackInSlot = this.getStackInSlot(slotID);
                 return !stackInSlot.isEmpty() && stackInSlot.isItemEqual(itemStack);
             }
-        	return this.isItemCompressorInput(itemStack, slotID - 3);
+            return this.isItemCompressorInput(itemStack, slotID - 3);
         }
 
         return false;
@@ -448,24 +453,30 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             if (recipe instanceof ShapedRecipesGC)
             {
-                if (id >= ((ShapedRecipesGC) recipe).recipeItems.length) continue;
-            	ItemStack itemstack1 = ((ShapedRecipesGC) recipe).recipeItems[id];
+                if (id >= ((ShapedRecipesGC) recipe).recipeItems.length)
+                {
+                    continue;
+                }
+                ItemStack itemstack1 = ((ShapedRecipesGC) recipe).recipeItems[id];
 //                if (stack.getItem() == itemstack1.getItem() && (itemstack1.getDamage() == 32767 || stack.getDamage() == itemstack1.getDamage()))
                 if (stack.getItem() == itemstack1.getItem() && stack.getDamage() == itemstack1.getDamage())
                 {
-                	for (int i = 0; i < ((ShapedRecipesGC) recipe).recipeItems.length; i++)
-                	{
-                		if (i == id) continue;
+                    for (int i = 0; i < ((ShapedRecipesGC) recipe).recipeItems.length; i++)
+                    {
+                        if (i == id)
+                        {
+                            continue;
+                        }
                         ItemStack itemstack2 = ((ShapedRecipesGC) recipe).recipeItems[i];
 //                        if (stack.getItem() == itemstack2.getItem() && (itemstack2.getDamage() == 32767 || stack.getDamage() == itemstack2.getDamage())) TODO ???
-                        if (stack.getItem() == itemstack2.getItem() &&stack.getDamage() == itemstack2.getDamage())
+                        if (stack.getItem() == itemstack2.getItem() && stack.getDamage() == itemstack2.getDamage())
                         {
-                        	ItemStack is3 = this.getStackInSlot(id + 3);
-                        	ItemStack is4 = this.getStackInSlot(i + 3);
-                        	return is3.isEmpty() || !is4.isEmpty() && is3.getCount() < is4.getCount();
+                            ItemStack is3 = this.getStackInSlot(id + 3);
+                            ItemStack is4 = this.getStackInSlot(i + 3);
+                            return is3.isEmpty() || !is4.isEmpty() && is3.getCount() < is4.getCount();
                         }
-                	}
-                	return true;
+                    }
+                    return true;
                 }
             }
 //            else if (recipe instanceof ShapelessOreRecipeGC)
@@ -527,7 +538,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         if (side == Direction.DOWN)
         {
-            return new int[] { 1, 2 };
+            return new int[]{1, 2};
         }
         ArrayList<Integer> removeSlots = new ArrayList<>();
         ArrayList<Integer> doneSlots = new ArrayList<>();
@@ -571,11 +582,17 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             }
             if (!slotsWithSameItem.isEmpty())
             {
-                if (lowestSlot != i) removeSlots.add(i);
+                if (lowestSlot != i)
+                {
+                    removeSlots.add(i);
+                }
                 for (Integer k : slotsWithSameItem)
                 {
                     doneSlots.add(k);
-                    if (k.intValue() != lowestSlot) removeSlots.add(k);
+                    if (k.intValue() != lowestSlot)
+                    {
+                        removeSlots.add(k);
+                    }
                 }
             }
         }
@@ -621,7 +638,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -655,15 +672,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT };
+        return new Face[]{Face.LEFT};
     }
-    
+
     private MachineSidePack[] machineSides;
 
     @Override
@@ -682,13 +699,13 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

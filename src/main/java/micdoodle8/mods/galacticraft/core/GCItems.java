@@ -25,113 +25,217 @@ import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 @ObjectHolder(Constants.MOD_ID_CORE)
 public class GCItems
 {
-    @ObjectHolder(ItemNames.oxTankLight) public static Item oxTankLight;
-    @ObjectHolder(ItemNames.oxTankMedium) public static Item oxTankMedium;
-    @ObjectHolder(ItemNames.oxTankHeavy) public static Item oxTankHeavy;
-    @ObjectHolder(ItemNames.oxMask) public static Item oxMask;
-    @ObjectHolder(ItemNames.rocketTierOne) public static Item rocketTierOne;
-    @ObjectHolder(ItemNames.rocketTierOneCargo1) public static Item rocketTierOneCargo1;
-    @ObjectHolder(ItemNames.rocketTierOneCargo2) public static Item rocketTierOneCargo2;
-    @ObjectHolder(ItemNames.rocketTierOneCargo3) public static Item rocketTierOneCargo3;
-    @ObjectHolder(ItemNames.rocketTierOneCreative) public static Item rocketTierOneCreative;
-    @ObjectHolder(ItemNames.sensorGlasses) public static Item sensorGlasses;
-    @ObjectHolder(ItemNames.sensorLens) public static Item sensorLens;
-    @ObjectHolder(ItemNames.steelPickaxe) public static Item steelPickaxe;
-    @ObjectHolder(ItemNames.steelAxe) public static Item steelAxe;
-    @ObjectHolder(ItemNames.steelHoe) public static Item steelHoe;
-    @ObjectHolder(ItemNames.steelSpade) public static Item steelSpade;
-    @ObjectHolder(ItemNames.steelSword) public static Item steelSword;
-    @ObjectHolder(ItemNames.steelHelmet) public static Item steelHelmet;
-    @ObjectHolder(ItemNames.steelChestplate) public static Item steelChestplate;
-    @ObjectHolder(ItemNames.steelLeggings) public static Item steelLeggings;
-    @ObjectHolder(ItemNames.steelBoots) public static Item steelBoots;
-    @ObjectHolder(ItemNames.oxygenVent) public static Item oxygenVent;
-    @ObjectHolder(ItemNames.oxygenFan) public static Item oxygenFan;
-    @ObjectHolder(ItemNames.oxygenConcentrator) public static Item oxygenConcentrator;
-//    @ObjectHolder(ItemNames.rocketEngine) public static Item rocketEngine;
-    @ObjectHolder(ItemNames.heavyPlatingTier1) public static Item heavyPlatingTier1;
-    @ObjectHolder(ItemNames.partNoseCone) public static Item partNoseCone;
-    @ObjectHolder(ItemNames.partFins) public static Item partFins;
-    @ObjectHolder(ItemNames.buggy) public static Item buggy;
-    @ObjectHolder(ItemNames.buggyInventory1) public static Item buggyInventory1;
-    @ObjectHolder(ItemNames.buggyInventory2) public static Item buggyInventory2;
-    @ObjectHolder(ItemNames.buggyInventory3) public static Item buggyInventory3;
-    @ObjectHolder(ItemNames.flag) public static Item flag;
-    @ObjectHolder(ItemNames.oxygenGear) public static Item oxygenGear;
-    @ObjectHolder(ItemNames.canvas) public static Item canvas;
-    @ObjectHolder(ItemNames.flagPole) public static Item flagPole;
-    @ObjectHolder(ItemNames.oilCanister) public static Item oilCanister;
-    @ObjectHolder(ItemNames.fuelCanister) public static Item fuelCanister;
-    @ObjectHolder(ItemNames.oxygenCanisterInfinite) public static Item oxygenCanisterInfinite;
-    @ObjectHolder(ItemNames.schematicBuggy) public static Item schematicBuggy;
-    @ObjectHolder(ItemNames.schematicRocketT2) public static Item schematicRocketT2;
-    @ObjectHolder(ItemNames.key) public static Item key;
-//    @ObjectHolder(ItemNames.foodItem) public static Item foodItem;
-    @ObjectHolder(ItemNames.battery) public static Item battery;
-    @ObjectHolder(ItemNames.infiniteBatery) public static Item infiniteBatery;
-    @ObjectHolder(ItemNames.wrench) public static Item wrench;
-    @ObjectHolder(ItemNames.cheeseCurd) public static Item cheeseCurd;
-    @ObjectHolder(ItemNames.meteoricIronRaw) public static Item meteoricIronRaw;
-    @ObjectHolder(ItemNames.cheeseBlock) public static Item cheeseBlock;
-    @ObjectHolder(ItemNames.prelaunchChecklist) public static Item prelaunchChecklist;
-    @ObjectHolder(ItemNames.dungeonFinder) public static Item dungeonFinder;
-//    @ObjectHolder(ItemNames.ic2compat) public static Item ic2compat;
-    @ObjectHolder(ItemNames.emergencyKit) public static Item emergencyKit;
-    @ObjectHolder(ItemNames.solarModule0) public static Item solarModule0;
-    @ObjectHolder(ItemNames.solarModule1) public static Item solarModule1;
-    @ObjectHolder(ItemNames.rawSilicon) public static Item rawSilicon;
-    @ObjectHolder(ItemNames.ingotCopper) public static Item ingotCopper;
-    @ObjectHolder(ItemNames.ingotTin) public static Item ingotTin;
-    @ObjectHolder(ItemNames.ingotAluminum) public static Item ingotAluminum;
-    @ObjectHolder(ItemNames.compressedCopper) public static Item compressedCopper;
-    @ObjectHolder(ItemNames.compressedTin) public static Item compressedTin;
-    @ObjectHolder(ItemNames.compressedAluminum) public static Item compressedAluminum;
-    @ObjectHolder(ItemNames.compressedSteel) public static Item compressedSteel;
-    @ObjectHolder(ItemNames.compressedBronze) public static Item compressedBronze;
-    @ObjectHolder(ItemNames.compressedIron) public static Item compressedIron;
-    @ObjectHolder(ItemNames.compressedWaferSolar) public static Item compressedWaferSolar;
-    @ObjectHolder(ItemNames.compressedWaferBasic) public static Item compressedWaferBasic;
-    @ObjectHolder(ItemNames.compressedWaferAdvanced) public static Item compressedWaferAdvanced;
-    @ObjectHolder(ItemNames.frequencyModule) public static Item frequencyModule;
-    @ObjectHolder(ItemNames.ambientThermalController) public static Item ambientThermalController;
-    @ObjectHolder(ItemNames.buggyMaterialWheel) public static Item buggyMaterialWheel;
-    @ObjectHolder(ItemNames.buggyMaterialSeat) public static Item buggyMaterialSeat;
-    @ObjectHolder(ItemNames.buggyMaterialStorage) public static Item buggyMaterialStorage;
-    @ObjectHolder(ItemNames.canisterTin) public static Item canisterTin;
-    @ObjectHolder(ItemNames.canisterCopper) public static Item canisterCopper;
-    @ObjectHolder(ItemNames.dehydratedApple) public static Item dehydratedApple;
-    @ObjectHolder(ItemNames.dehydratedCarrot) public static Item dehydratedCarrot;
-    @ObjectHolder(ItemNames.dehydratedMelon) public static Item dehydratedMelon;
-    @ObjectHolder(ItemNames.dehydratedPotato) public static Item dehydratedPotato;
-    @ObjectHolder(ItemNames.cheeseSlice) public static Item cheeseSlice;
-    @ObjectHolder(ItemNames.burgerBun) public static Item burgerBun;
-    @ObjectHolder(ItemNames.beefPattyRaw) public static Item beefPattyRaw;
-    @ObjectHolder(ItemNames.beefPattyCooked) public static Item beefPattyCooked;
-    @ObjectHolder(ItemNames.cheeseburger) public static Item cheeseburger;
-    @ObjectHolder(ItemNames.cannedBeef) public static Item cannedBeef;
-    @ObjectHolder(ItemNames.meteorChunk) public static Item meteorChunk;
-    @ObjectHolder(ItemNames.meteorChunkHot) public static Item meteorChunkHot;
-    @ObjectHolder(ItemNames.ingotMeteoricIron) public static Item ingotMeteoricIron;
-    @ObjectHolder(ItemNames.compressedMeteoricIron) public static Item compressedMeteoricIron;
-    @ObjectHolder(ItemNames.lunarSapphire) public static Item lunarSapphire;
-    @ObjectHolder(ItemNames.parachutePlain) public static Item parachutePlain;
-    @ObjectHolder(ItemNames.parachuteBlack) public static Item parachuteBlack;
-    @ObjectHolder(ItemNames.parachuteBlue) public static Item parachuteBlue;
-    @ObjectHolder(ItemNames.parachuteLime) public static Item parachuteLime;
-    @ObjectHolder(ItemNames.parachuteBrown) public static Item parachuteBrown;
-    @ObjectHolder(ItemNames.parachuteDarkBlue) public static Item parachuteDarkBlue;
-    @ObjectHolder(ItemNames.parachuteDarkGray) public static Item parachuteDarkGray;
-    @ObjectHolder(ItemNames.parachuteDarkGreen) public static Item parachuteDarkGreen;
-    @ObjectHolder(ItemNames.parachuteGray) public static Item parachuteGray;
-    @ObjectHolder(ItemNames.parachuteMagenta) public static Item parachuteMagenta;
-    @ObjectHolder(ItemNames.parachuteOrange) public static Item parachuteOrange;
-    @ObjectHolder(ItemNames.parachutePink) public static Item parachutePink;
-    @ObjectHolder(ItemNames.parachutePurple) public static Item parachutePurple;
-    @ObjectHolder(ItemNames.parachuteRed) public static Item parachuteRed;
-    @ObjectHolder(ItemNames.parachuteTeal) public static Item parachuteTeal;
-    @ObjectHolder(ItemNames.parachuteYellow) public static Item parachuteYellow;
-    @ObjectHolder(ItemNames.rocketEngineT1) public static Item rocketEngineT1;
-    @ObjectHolder(ItemNames.rocketBoosterT1) public static Item rocketBoosterT1;
+    @ObjectHolder(ItemNames.oxTankLight)
+    public static Item oxTankLight;
+    @ObjectHolder(ItemNames.oxTankMedium)
+    public static Item oxTankMedium;
+    @ObjectHolder(ItemNames.oxTankHeavy)
+    public static Item oxTankHeavy;
+    @ObjectHolder(ItemNames.oxMask)
+    public static Item oxMask;
+    @ObjectHolder(ItemNames.rocketTierOne)
+    public static Item rocketTierOne;
+    @ObjectHolder(ItemNames.rocketTierOneCargo1)
+    public static Item rocketTierOneCargo1;
+    @ObjectHolder(ItemNames.rocketTierOneCargo2)
+    public static Item rocketTierOneCargo2;
+    @ObjectHolder(ItemNames.rocketTierOneCargo3)
+    public static Item rocketTierOneCargo3;
+    @ObjectHolder(ItemNames.rocketTierOneCreative)
+    public static Item rocketTierOneCreative;
+    @ObjectHolder(ItemNames.sensorGlasses)
+    public static Item sensorGlasses;
+    @ObjectHolder(ItemNames.sensorLens)
+    public static Item sensorLens;
+    @ObjectHolder(ItemNames.steelPickaxe)
+    public static Item steelPickaxe;
+    @ObjectHolder(ItemNames.steelAxe)
+    public static Item steelAxe;
+    @ObjectHolder(ItemNames.steelHoe)
+    public static Item steelHoe;
+    @ObjectHolder(ItemNames.steelSpade)
+    public static Item steelSpade;
+    @ObjectHolder(ItemNames.steelSword)
+    public static Item steelSword;
+    @ObjectHolder(ItemNames.steelHelmet)
+    public static Item steelHelmet;
+    @ObjectHolder(ItemNames.steelChestplate)
+    public static Item steelChestplate;
+    @ObjectHolder(ItemNames.steelLeggings)
+    public static Item steelLeggings;
+    @ObjectHolder(ItemNames.steelBoots)
+    public static Item steelBoots;
+    @ObjectHolder(ItemNames.oxygenVent)
+    public static Item oxygenVent;
+    @ObjectHolder(ItemNames.oxygenFan)
+    public static Item oxygenFan;
+    @ObjectHolder(ItemNames.oxygenConcentrator)
+    public static Item oxygenConcentrator;
+    //    @ObjectHolder(ItemNames.rocketEngine) public static Item rocketEngine;
+    @ObjectHolder(ItemNames.heavyPlatingTier1)
+    public static Item heavyPlatingTier1;
+    @ObjectHolder(ItemNames.partNoseCone)
+    public static Item partNoseCone;
+    @ObjectHolder(ItemNames.partFins)
+    public static Item partFins;
+    @ObjectHolder(ItemNames.buggy)
+    public static Item buggy;
+    @ObjectHolder(ItemNames.buggyInventory1)
+    public static Item buggyInventory1;
+    @ObjectHolder(ItemNames.buggyInventory2)
+    public static Item buggyInventory2;
+    @ObjectHolder(ItemNames.buggyInventory3)
+    public static Item buggyInventory3;
+    @ObjectHolder(ItemNames.flag)
+    public static Item flag;
+    @ObjectHolder(ItemNames.oxygenGear)
+    public static Item oxygenGear;
+    @ObjectHolder(ItemNames.canvas)
+    public static Item canvas;
+    @ObjectHolder(ItemNames.flagPole)
+    public static Item flagPole;
+    @ObjectHolder(ItemNames.oilCanister)
+    public static Item oilCanister;
+    @ObjectHolder(ItemNames.fuelCanister)
+    public static Item fuelCanister;
+    @ObjectHolder(ItemNames.oxygenCanisterInfinite)
+    public static Item oxygenCanisterInfinite;
+    @ObjectHolder(ItemNames.schematicBuggy)
+    public static Item schematicBuggy;
+    @ObjectHolder(ItemNames.schematicRocketT2)
+    public static Item schematicRocketT2;
+    @ObjectHolder(ItemNames.key)
+    public static Item key;
+    //    @ObjectHolder(ItemNames.foodItem) public static Item foodItem;
+    @ObjectHolder(ItemNames.battery)
+    public static Item battery;
+    @ObjectHolder(ItemNames.infiniteBatery)
+    public static Item infiniteBatery;
+    @ObjectHolder(ItemNames.wrench)
+    public static Item wrench;
+    @ObjectHolder(ItemNames.cheeseCurd)
+    public static Item cheeseCurd;
+    @ObjectHolder(ItemNames.meteoricIronRaw)
+    public static Item meteoricIronRaw;
+    @ObjectHolder(ItemNames.cheeseBlock)
+    public static Item cheeseBlock;
+    @ObjectHolder(ItemNames.prelaunchChecklist)
+    public static Item prelaunchChecklist;
+    @ObjectHolder(ItemNames.dungeonFinder)
+    public static Item dungeonFinder;
+    //    @ObjectHolder(ItemNames.ic2compat) public static Item ic2compat;
+    @ObjectHolder(ItemNames.emergencyKit)
+    public static Item emergencyKit;
+    @ObjectHolder(ItemNames.solarModule0)
+    public static Item solarModule0;
+    @ObjectHolder(ItemNames.solarModule1)
+    public static Item solarModule1;
+    @ObjectHolder(ItemNames.rawSilicon)
+    public static Item rawSilicon;
+    @ObjectHolder(ItemNames.ingotCopper)
+    public static Item ingotCopper;
+    @ObjectHolder(ItemNames.ingotTin)
+    public static Item ingotTin;
+    @ObjectHolder(ItemNames.ingotAluminum)
+    public static Item ingotAluminum;
+    @ObjectHolder(ItemNames.compressedCopper)
+    public static Item compressedCopper;
+    @ObjectHolder(ItemNames.compressedTin)
+    public static Item compressedTin;
+    @ObjectHolder(ItemNames.compressedAluminum)
+    public static Item compressedAluminum;
+    @ObjectHolder(ItemNames.compressedSteel)
+    public static Item compressedSteel;
+    @ObjectHolder(ItemNames.compressedBronze)
+    public static Item compressedBronze;
+    @ObjectHolder(ItemNames.compressedIron)
+    public static Item compressedIron;
+    @ObjectHolder(ItemNames.compressedWaferSolar)
+    public static Item compressedWaferSolar;
+    @ObjectHolder(ItemNames.compressedWaferBasic)
+    public static Item compressedWaferBasic;
+    @ObjectHolder(ItemNames.compressedWaferAdvanced)
+    public static Item compressedWaferAdvanced;
+    @ObjectHolder(ItemNames.frequencyModule)
+    public static Item frequencyModule;
+    @ObjectHolder(ItemNames.ambientThermalController)
+    public static Item ambientThermalController;
+    @ObjectHolder(ItemNames.buggyMaterialWheel)
+    public static Item buggyMaterialWheel;
+    @ObjectHolder(ItemNames.buggyMaterialSeat)
+    public static Item buggyMaterialSeat;
+    @ObjectHolder(ItemNames.buggyMaterialStorage)
+    public static Item buggyMaterialStorage;
+    @ObjectHolder(ItemNames.canisterTin)
+    public static Item canisterTin;
+    @ObjectHolder(ItemNames.canisterCopper)
+    public static Item canisterCopper;
+    @ObjectHolder(ItemNames.dehydratedApple)
+    public static Item dehydratedApple;
+    @ObjectHolder(ItemNames.dehydratedCarrot)
+    public static Item dehydratedCarrot;
+    @ObjectHolder(ItemNames.dehydratedMelon)
+    public static Item dehydratedMelon;
+    @ObjectHolder(ItemNames.dehydratedPotato)
+    public static Item dehydratedPotato;
+    @ObjectHolder(ItemNames.cheeseSlice)
+    public static Item cheeseSlice;
+    @ObjectHolder(ItemNames.burgerBun)
+    public static Item burgerBun;
+    @ObjectHolder(ItemNames.beefPattyRaw)
+    public static Item beefPattyRaw;
+    @ObjectHolder(ItemNames.beefPattyCooked)
+    public static Item beefPattyCooked;
+    @ObjectHolder(ItemNames.cheeseburger)
+    public static Item cheeseburger;
+    @ObjectHolder(ItemNames.cannedBeef)
+    public static Item cannedBeef;
+    @ObjectHolder(ItemNames.meteorChunk)
+    public static Item meteorChunk;
+    @ObjectHolder(ItemNames.meteorChunkHot)
+    public static Item meteorChunkHot;
+    @ObjectHolder(ItemNames.ingotMeteoricIron)
+    public static Item ingotMeteoricIron;
+    @ObjectHolder(ItemNames.compressedMeteoricIron)
+    public static Item compressedMeteoricIron;
+    @ObjectHolder(ItemNames.lunarSapphire)
+    public static Item lunarSapphire;
+    @ObjectHolder(ItemNames.parachutePlain)
+    public static Item parachutePlain;
+    @ObjectHolder(ItemNames.parachuteBlack)
+    public static Item parachuteBlack;
+    @ObjectHolder(ItemNames.parachuteBlue)
+    public static Item parachuteBlue;
+    @ObjectHolder(ItemNames.parachuteLime)
+    public static Item parachuteLime;
+    @ObjectHolder(ItemNames.parachuteBrown)
+    public static Item parachuteBrown;
+    @ObjectHolder(ItemNames.parachuteDarkBlue)
+    public static Item parachuteDarkBlue;
+    @ObjectHolder(ItemNames.parachuteDarkGray)
+    public static Item parachuteDarkGray;
+    @ObjectHolder(ItemNames.parachuteDarkGreen)
+    public static Item parachuteDarkGreen;
+    @ObjectHolder(ItemNames.parachuteGray)
+    public static Item parachuteGray;
+    @ObjectHolder(ItemNames.parachuteMagenta)
+    public static Item parachuteMagenta;
+    @ObjectHolder(ItemNames.parachuteOrange)
+    public static Item parachuteOrange;
+    @ObjectHolder(ItemNames.parachutePink)
+    public static Item parachutePink;
+    @ObjectHolder(ItemNames.parachutePurple)
+    public static Item parachutePurple;
+    @ObjectHolder(ItemNames.parachuteRed)
+    public static Item parachuteRed;
+    @ObjectHolder(ItemNames.parachuteTeal)
+    public static Item parachuteTeal;
+    @ObjectHolder(ItemNames.parachuteYellow)
+    public static Item parachuteYellow;
+    @ObjectHolder(ItemNames.rocketEngineT1)
+    public static Item rocketEngineT1;
+    @ObjectHolder(ItemNames.rocketBoosterT1)
+    public static Item rocketBoosterT1;
 
 //    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
 //    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 6, 8, 3 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
@@ -142,7 +246,8 @@ public class GCItems
     public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
     public static HashMap<ItemStack, ItemStack> itemChanges = new HashMap<>(4, 1.0F);
 
-    public static Item.Properties defaultBuilder() {
+    public static Item.Properties defaultBuilder()
+    {
         return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
     }
 
@@ -274,7 +379,7 @@ public class GCItems
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.fuelCanister);
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.oilCanister);
     }
-    
+
 //    public static void oreDictRegistrations()
 //    {
 //        for (int i = 0; i < ItemBasic.names.length; i++)
@@ -310,8 +415,7 @@ public class GCItems
 //        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
 //        OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
 //    }
-    
-    
+
 
 //    /**
 //     * Do not call this until after mod loading is complete

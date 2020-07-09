@@ -19,14 +19,14 @@ import java.util.Random;
 public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman, ModelEvolvedEnderman>
 {
     private static final ResourceLocation endermanTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/evolved_enderman.png");
-    private ModelEvolvedEnderman endermanModel;
-    private Random rnd = new Random();
+    private final ModelEvolvedEnderman endermanModel;
+    private final Random rnd = new Random();
     private boolean texSwitch;
 
     public RenderEvolvedEnderman(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedEnderman(), 0.5F);
-        this.endermanModel = (ModelEvolvedEnderman)super.entityModel;
+        this.endermanModel = super.entityModel;
         this.addLayer(new LayerEvolvedEndermanEyes(this));
         this.addLayer(new LayerEvolvedEndermanHeldBlock(this));
     }
@@ -59,7 +59,7 @@ public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman, Mo
             OverlaySensorGlasses.postRenderMobs();
         }
     }
-    
+
     @Override
     protected void preRenderCallback(EntityEvolvedEnderman entity, float partialTickTime)
     {

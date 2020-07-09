@@ -25,7 +25,7 @@ import net.minecraftforge.common.ForgeHooks;
 public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathable, ITumblable
 {
     private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntityEvolvedZombie.class, DataSerializers.FLOAT);
-    private int conversionTime = 0;
+    private final int conversionTime = 0;
     private float tumbling = 0F;
     private float tumbleAngle = 0F;
 
@@ -42,9 +42,11 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
         double difficulty = 0;
         switch (this.world.getDifficulty())
         {
-        case HARD : difficulty = 2D;
+        case HARD:
+            difficulty = 2D;
             break;
-        case NORMAL : difficulty = 1D;
+        case NORMAL:
+            difficulty = 1D;
             break;
         }
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D + 0.04D * difficulty);
@@ -147,15 +149,19 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     @Override
     public void setTumbling(float value)
     {
-        if (value !=0F)
+        if (value != 0F)
         {
             if (this.tumbling == 0F)
+            {
                 this.tumbling = (this.world.rand.nextFloat() + 0.5F) * value;
+            }
         }
         else
+        {
             this.tumbling = 0F;
+        }
     }
-    
+
     @Override
     public void tick()
     {
@@ -182,7 +188,9 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
                 {
                     this.tumbleAngle *= 0.8F;
                     if (Math.abs(this.tumbleAngle) < 1F)
+                    {
                         this.tumbleAngle = 0F;
+                    }
                 }
             }
         }
@@ -224,7 +232,7 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     {
         float angle = this.tumbleAngle - partial * this.tumbling;
         if (angle > 360F)
-        {   
+        {
             this.tumbleAngle -= 360F;
             angle -= 360F;
         }
@@ -240,7 +248,10 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     public float getTumbleAxisX()
     {
         double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
-        if (velocity2 == 0D) return 1F;
+        if (velocity2 == 0D)
+        {
+            return 1F;
+        }
         return (float) (this.getMotion().z / MathHelper.sqrt(velocity2));
     }
 
@@ -248,7 +259,10 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     public float getTumbleAxisZ()
     {
         double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
-        if (velocity2 == 0D) return 0F;
+        if (velocity2 == 0D)
+        {
+            return 0F;
+        }
         return (float) (this.getMotion().x / MathHelper.sqrt(velocity2));
     }
 }

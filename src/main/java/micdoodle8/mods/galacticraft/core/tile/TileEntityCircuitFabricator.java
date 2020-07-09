@@ -213,12 +213,12 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         if (side == Direction.DOWN)
         {
-            return new int[] { 6 };
+            return new int[]{6};
         }
 
         //Offer whichever silicon slot has less silicon
         boolean siliconFlag = !this.getInventory().get(2).isEmpty() && (this.getInventory().get(3).isEmpty() || this.getInventory().get(3).getCount() < this.getInventory().get(2).getCount());
-        return siliconFlag ? new int[] { 0, 1, 3, 4, 5 } : new int[] { 0, 1, 2, 4, 5 };
+        return siliconFlag ? new int[]{0, 1, 3, 4, 5} : new int[]{0, 1, 2, 4, 5};
     }
 
     @Override
@@ -271,15 +271,15 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT };
+        return new Face[]{Face.LEFT};
     }
-    
+
     private MachineSidePack[] machineSides;
 
     @Override
@@ -298,13 +298,13 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

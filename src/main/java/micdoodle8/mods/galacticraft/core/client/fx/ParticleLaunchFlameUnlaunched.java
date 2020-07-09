@@ -22,7 +22,8 @@ public class ParticleLaunchFlameUnlaunched extends ParticleLaunchFlame
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 

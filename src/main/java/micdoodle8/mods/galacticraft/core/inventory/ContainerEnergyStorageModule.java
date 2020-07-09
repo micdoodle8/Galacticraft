@@ -17,7 +17,7 @@ public class ContainerEnergyStorageModule extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ENERGY_STORAGE_MODULE)
     public static ContainerType<ContainerEnergyStorageModule> TYPE;
 
-    private TileEntityEnergyStorageModule tileEntity;
+    private final TileEntityEnergyStorageModule tileEntity;
 
     public ContainerEnergyStorageModule(int containerId, PlayerInventory playerInv, TileEntityEnergyStorageModule batteryBox)
     {

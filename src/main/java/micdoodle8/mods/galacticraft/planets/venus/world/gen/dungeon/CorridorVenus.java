@@ -71,13 +71,13 @@ public class CorridorVenus extends SizedPieceVenus
                             j == 0 || j == this.boundingBox.getYSize() - 1 ||
                             (this.getDirection().getAxis() == Direction.Axis.X && (k == 1 || k == this.boundingBox.getZSize() - 2)))
                     {
-                        DungeonConfigurationVenus venusConfig = (DungeonConfigurationVenus) this.configuration;
+                        DungeonConfigurationVenus venusConfig = this.configuration;
                         this.setBlockState(worldIn, j == 0 || j == this.boundingBox.getYSize() - 1 ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, this.boundingBox);
                     }
                     else if ((this.getDirection().getAxis() == Direction.Axis.Z && (i == 0 || i == this.boundingBox.getXSize() - 1)) ||
                             (this.getDirection().getAxis() == Direction.Axis.X && (k == 0 || k == this.boundingBox.getZSize() - 1)))
                     {
-                        DungeonConfigurationVenus venusConfig = (DungeonConfigurationVenus) this.configuration;
+                        DungeonConfigurationVenus venusConfig = this.configuration;
                         this.setBlockState(worldIn, j == 0 || j == this.boundingBox.getYSize() - 1 ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, this.boundingBox);
                     }
                     else

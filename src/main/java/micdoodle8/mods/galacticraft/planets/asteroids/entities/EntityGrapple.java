@@ -274,7 +274,9 @@ public class EntityGrapple extends Entity implements IProjectile
                     {
                         this.shootingEntity.setMotion((this.posX - this.shootingEntity.posX) / 16.0F, (this.posY - this.shootingEntity.posY) / 16.0F, (this.posZ - this.shootingEntity.posZ) / 16.0F);
                         if (this.shootingEntity instanceof ServerPlayerEntity)
-                        	GalacticraftCore.handler.preventFlyingKicks((ServerPlayerEntity) this.shootingEntity);
+                        {
+                            GalacticraftCore.handler.preventFlyingKicks((ServerPlayerEntity) this.shootingEntity);
+                        }
                     }
 
                     if (!this.world.isRemote && this.ticksInGround < 5)
@@ -361,7 +363,7 @@ public class EntityGrapple extends Entity implements IProjectile
             {
                 PlayerEntity entityplayer = (PlayerEntity) ((EntityRayTraceResult) castResult).getEntity();
 
-                if (entityplayer.abilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !((PlayerEntity) this.shootingEntity).canAttackPlayer(entityplayer))
+                if (entityplayer.abilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !this.shootingEntity.canAttackPlayer(entityplayer))
                 {
                     castResult = null;
                 }
@@ -445,7 +447,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (!this.world.isRemote && (this.ticksInGround - 1) % 10 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, GCCoreUtil.getDimensionID(this.world), new Object[] { this.getEntityId(), new Vector3(this) }), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 150, GCCoreUtil.getDimensionID(this.world)));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, GCCoreUtil.getDimensionID(this.world), new Object[]{this.getEntityId(), new Vector3(this)}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 150, GCCoreUtil.getDimensionID(this.world)));
         }
     }
 
@@ -459,7 +461,8 @@ public class EntityGrapple extends Entity implements IProjectile
             compound.putShort("zTile", (short) this.hitVec.getZ());
         }
         compound.putShort("life", (short) this.ticksInGround);
-        if (this.inBlockState != null) {
+        if (this.inBlockState != null)
+        {
             compound.put("inBlockState", NBTUtil.writeBlockState(this.inBlockState));
         }
         compound.putByte("shake", (byte) this.arrowShake);
@@ -477,7 +480,8 @@ public class EntityGrapple extends Entity implements IProjectile
         }
 
         this.ticksInGround = compound.getShort("life");
-        if (compound.contains("inBlockState", 10)) {
+        if (compound.contains("inBlockState", 10))
+        {
             this.inBlockState = NBTUtil.readBlockState(compound.getCompound("inBlockState"));
         }
         this.arrowShake = compound.getByte("shake") & 255;
@@ -492,9 +496,12 @@ public class EntityGrapple extends Entity implements IProjectile
             this.canBePickedUp = compound.getBoolean("player") ? 1 : 0;
         }
 
-        if (compound.contains("stringStack")) {
+        if (compound.contains("stringStack"))
+        {
             this.updateStringStack(new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(compound.getString("stringStack"))))));
-        } else {
+        }
+        else
+        {
             this.updateStringStack(new ItemStack(Items.STRING));
         }
     }
@@ -575,7 +582,8 @@ public class EntityGrapple extends Entity implements IProjectile
         return this.dataManager.get(IS_PULLING);
     }
 
-    public ItemStack getStringItemStack() {
+    public ItemStack getStringItemStack()
+    {
         return this.dataManager.get(STRING_ITEM_STACK);
     }
 }

@@ -49,7 +49,7 @@ public class RoomChestVenus extends RoomEmptyVenus
                 ResourceLocation chesttype = RoomTreasureVenus.VENUSCHEST;
                 if (worldIn.getDimension() instanceof IGalacticraftDimension)
                 {
-                    chesttype = ((IGalacticraftDimension)worldIn.getDimension()).getDungeonChestType();
+                    chesttype = ((IGalacticraftDimension) worldIn.getDimension()).getDungeonChestType();
                 }
                 chest.setLootTable(chesttype, random.nextLong());
             }

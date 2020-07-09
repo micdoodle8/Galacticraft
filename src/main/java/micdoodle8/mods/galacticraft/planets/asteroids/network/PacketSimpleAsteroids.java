@@ -27,7 +27,7 @@ import java.util.List;
 
 public class PacketSimpleAsteroids extends PacketBase
 {
-    public static enum EnumSimplePacketAsteroids
+    public enum EnumSimplePacketAsteroids
     {
         // SERVER
         S_UPDATE_ADVANCED_GUI(LogicalSide.SERVER, Integer.class, BlockPos.class, Integer.class),
@@ -35,10 +35,10 @@ public class PacketSimpleAsteroids extends PacketBase
         C_TELEPAD_SEND(LogicalSide.CLIENT, BlockVec3.class, Integer.class),
         C_UPDATE_GRAPPLE_POS(LogicalSide.CLIENT, Integer.class, Vector3.class);
 
-        private LogicalSide targetSide;
-        private Class<?>[] decodeAs;
+        private final LogicalSide targetSide;
+        private final Class<?>[] decodeAs;
 
-        private EnumSimplePacketAsteroids(LogicalSide targetSide, Class<?>... decodeAs)
+        EnumSimplePacketAsteroids(LogicalSide targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;

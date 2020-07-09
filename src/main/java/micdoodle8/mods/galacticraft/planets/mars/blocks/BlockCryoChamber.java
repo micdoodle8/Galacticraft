@@ -192,6 +192,6 @@ public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, 
     @Override
     public boolean isSealed(World world, BlockPos pos, Direction direction)
     {
-	    return false;
+        return false;
     }
 }

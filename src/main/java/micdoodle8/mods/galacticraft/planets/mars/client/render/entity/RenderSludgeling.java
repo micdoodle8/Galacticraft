@@ -45,7 +45,7 @@ public class RenderSludgeling extends MobRenderer<EntitySludgeling, ModelSludgel
     {
         return texSwitch ? OverlaySensorGlasses.altTexture : sludgelingTexture;
     }
-    
+
     @Override
     protected void preRenderCallback(EntitySludgeling entity, float par2)
     {

@@ -41,7 +41,9 @@ public class BiomeAsteroids extends BiomeGC
         this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SKELETON.get(), 1500, 1, 1));
         this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_CREEPER.get(), 2000, 1, 1));
         if (challengeMode)
+        {
             this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ENDERMAN.get(), 250, 1, 1));
+        }
     }
 
     @Override

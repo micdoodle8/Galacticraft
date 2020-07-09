@@ -37,7 +37,7 @@ public class SkyProviderMars implements IRenderHandler
     public int starList;
     public int glSkyList;
     public int glSkyList2;
-    private float sunSize;
+    private final float sunSize;
 
     public SkyProviderMars(IGalacticraftDimension marsProvider)
     {
@@ -126,7 +126,7 @@ public class SkyProviderMars implements IRenderHandler
         GL11.glDisable(GL11.GL_FOG);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         RenderHelper.disableStandardItemLighting();
         float f7;
         float f8;

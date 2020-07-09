@@ -20,9 +20,15 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
     protected ItemStack output = null;
     protected ArrayList<Object> input = new ArrayList<Object>();
 
-    public ShapelessOreRecipeGC(Block result, Object... recipe){ this(new ItemStack(result), recipe); }
+    public ShapelessOreRecipeGC(Block result, Object... recipe)
+    {
+        this(new ItemStack(result), recipe);
+    }
 
-    public ShapelessOreRecipeGC(Item  result, Object... recipe){ this(new ItemStack(result), recipe); }
+    public ShapelessOreRecipeGC(Item result, Object... recipe)
+    {
+        this(new ItemStack(result), recipe);
+    }
 
     public ShapelessOreRecipeGC(ItemStack result, Object... recipe)
     {
@@ -31,24 +37,24 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
         {
             if (in instanceof ItemStack)
             {
-                input.add(((ItemStack)in).copy());
+                input.add(((ItemStack) in).copy());
             }
             else if (in instanceof Item)
             {
-                input.add(new ItemStack((Item)in));
+                input.add(new ItemStack((Item) in));
             }
             else if (in instanceof Block)
             {
-                input.add(new ItemStack((Block)in));
+                input.add(new ItemStack((Block) in));
             }
             else if (in instanceof String)
             {
-                input.add(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", (String)in)));
+                input.add(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", (String) in)));
             }
             else
             {
                 StringBuilder ret = new StringBuilder("Invalid compressor shapeless ore recipe: ");
-                for (Object tmp :  recipe)
+                for (Object tmp : recipe)
                 {
                     ret.append(tmp).append(", ");
                 }
@@ -58,15 +64,25 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
         }
     }
 
+    @Override
     public boolean canFit(int width, int height)
     {
         return width * height >= input.size();
     }
-    
-    public ItemStack getRecipeOutput(){ return output; }
 
-    public ItemStack getCraftingResult(CraftingInventory var1){ return output.copy(); }
+    @Override
+    public ItemStack getRecipeOutput()
+    {
+        return output;
+    }
 
+    @Override
+    public ItemStack getCraftingResult(CraftingInventory var1)
+    {
+        return output.copy();
+    }
+
+    @Override
     public boolean matches(CraftingInventory var1, World world)
     {
         List<Object> required = new LinkedList<>(input);
@@ -91,8 +107,10 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
                         Collection<ResourceLocation> tags1 = ItemTags.getCollection().getOwningTags(((ItemStack) next).getItem());
                         Collection<ResourceLocation> tags2 = ItemTags.getCollection().getOwningTags(slot.getItem());
                         match = false;
-                        for (ResourceLocation res : tags1) {
-                            if (tags2.contains(res)) {
+                        for (ResourceLocation res : tags1)
+                        {
+                            if (tags2.contains(res))
+                            {
                                 match = true;
                                 break;
                             }
@@ -149,8 +167,10 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
                         Collection<ResourceLocation> tags1 = ItemTags.getCollection().getOwningTags(((ItemStack) next).getItem());
                         Collection<ResourceLocation> tags2 = ItemTags.getCollection().getOwningTags(slot.getItem());
                         match = false;
-                        for (ResourceLocation res : tags1) {
-                            if (tags2.contains(res)) {
+                        for (ResourceLocation res : tags1)
+                        {
+                            if (tags2.contains(res))
+                            {
                                 match = true;
                                 break;
                             }
@@ -166,8 +186,10 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
 //                        }
                         Collection<ResourceLocation> tags = ItemTags.getCollection().getOwningTags(slot.getItem());
                         match = false;
-                        for (ResourceLocation res : tags) {
-                            if (next == ItemTags.getCollection().get(res)) {
+                        for (ResourceLocation res : tags)
+                        {
+                            if (next == ItemTags.getCollection().get(res))
+                            {
                                 match = true;
                                 break;
                             }
@@ -237,7 +259,9 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingI
         for (Object b : test)
         {
             if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && RecipeUtil.areItemStackTagsEqual(stack, (ItemStack) b))
+            {
                 return true;
+            }
         }
         return false;
     }

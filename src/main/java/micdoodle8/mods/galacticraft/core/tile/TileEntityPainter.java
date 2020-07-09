@@ -44,10 +44,10 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     public static Map<DimensionType, Set<BlockVec3>> loadedTilesForDim = new HashMap<>();
 
     public int range = RANGE_DEFAULT;  //currently unused
-    
-    public int[] glassColor = new int[]{ -1, -1, -1 };  //Size of this array must match GlassType enum
+
+    public int[] glassColor = new int[]{-1, -1, -1};  //Size of this array must match GlassType enum
     public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
-    
+
     public int guiColor = 0xffffff;
 
     public TileEntityPainter()
@@ -77,13 +77,15 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         }
         else if (item instanceof BlockItem)
         {
-            Block b = ((BlockItem)item).getBlock();
+            Block b = ((BlockItem) item).getBlock();
             try
             {
                 MaterialColor mc = b.getDefaultState().getMaterialColor(world, null);
                 color = mc.colorValue;
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+            }
         }
         else
         {
@@ -105,7 +107,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         }
 
         Item item = itemStack.getItem();
-        
+
         if (item instanceof IPaintable)
         {
             //TODO  e.g. flags, eggs, rockets???
@@ -113,7 +115,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         else if (item instanceof BlockItem)
         {
             color = ColorUtil.lighten(color, 0.03F);
-            Block b = ((BlockItem)item).getBlock();
+            Block b = ((BlockItem) item).getBlock();
             int result = 0;
             if (b instanceof IPaintable)
             {
@@ -130,7 +132,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
 //            } TODO Space glass
         }
     }
-    
+
     private void setGlassColors(int color1, int color2, int color3)
     {
         boolean changes = false;
@@ -153,7 +155,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
 //        if (changes)
 //            ColorUtil.updateColorsForArea(this.world), this.pos, this.range, this.glassColor[0], this.glassColor[1], this.glassColor[2]);;
     }
-    
+
     @Override
     public void read(CompoundNBT nbt)
     {
@@ -191,16 +193,16 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     {
         DimensionType dimID = GCCoreUtil.getDimensionID(world);
         Set<BlockVec3> loaded = loadedTilesForDim.get(dimID);
-        
+
         if (loaded == null)
         {
             loaded = new HashSet<BlockVec3>();
             loadedTilesForDim.put(dimID, loaded);
         }
-        
+
         return loaded;
     }
-    
+
     @Override
     public void onLoad()
     {
@@ -211,14 +213,14 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         }
         else
         {
-            this.getLoadedTiles(this.world).add(new BlockVec3(this.pos));
+            getLoadedTiles(this.world).add(new BlockVec3(this.pos));
         }
     }
 
     @Override
     public void onChunkUnloaded()
     {
-        this.getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
+        getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
         super.onChunkUnloaded();
     }
 
@@ -226,7 +228,9 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     public void remove()
     {
         if (!this.world.isRemote)
-            this.getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
+        {
+            getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
+        }
         super.remove();
     }
 
@@ -237,7 +241,10 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         List<ServerPlayerEntity> allPlayers = PlayerUtil.getPlayersOnline();
         for (final ServerPlayerEntity player : allPlayers)
         {
-            if (player.dimension != dimID) continue;
+            if (player.dimension != dimID)
+            {
+                continue;
+            }
 
             BlockVec3 playerPos = new BlockVec3(player);
             BlockVec3 nearest = null;
@@ -251,13 +258,13 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
                     nearest = bv;
                 }
             }
-            
+
             if (nearest != null)
             {
                 TileEntity te = nearest.getTileEntity(world);
                 if (te instanceof TileEntityPainter)
                 {
-                    ((TileEntityPainter)te).dominantToPlayer(player);
+                    ((TileEntityPainter) te).dominantToPlayer(player);
                 }
             }
 
@@ -287,7 +294,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
             this.buttonPressed(index, entityPlayer);
         }
     }
-    
+
     public void buttonPressed(int index, PlayerEntity player)
     {
         switch (index)

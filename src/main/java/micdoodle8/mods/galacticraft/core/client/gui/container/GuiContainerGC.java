@@ -39,7 +39,6 @@ public abstract class GuiContainerGC<T extends Container> extends ContainerScree
     }
 
 
-
     @Override
     public void init(Minecraft mc, int width, int height)
     {

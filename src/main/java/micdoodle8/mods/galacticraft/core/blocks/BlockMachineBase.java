@@ -70,7 +70,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IMachineSides)
         {
-            ((IMachineSides)tile).nextSideConfiguration(tile);
+            ((IMachineSides) tile).nextSideConfiguration(tile);
             return true;
         }
         return false;

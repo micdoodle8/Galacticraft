@@ -60,6 +60,7 @@ public class BlockElectrolyzer extends BlockMachineBase
         }
 
         private final static EnumMachineType[] values = values();
+
         @Override
         public EnumMachineType fromMetadata(int meta)
         {
@@ -79,9 +80,9 @@ public class BlockElectrolyzer extends BlockMachineBase
         }
 
         @FunctionalInterface
-        private static interface TileConstructor
+        private interface TileConstructor
         {
-              TileEntity create();
+            TileEntity create();
         }
 
         @Override

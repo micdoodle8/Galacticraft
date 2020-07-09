@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFluidPipe>
 {
-    private static HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
+    private static final HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
     public static IBakedModel[] fluidPipeModels = new IBakedModel[6];
 
     private final int stages = 100;
@@ -66,21 +66,23 @@ public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFl
                 {
                     GL11.glPushMatrix();
                     if (sideTile instanceof TileEntityFluidTank)
+                    {
                         switch (facing)
                         {
                         case SOUTH:
-                            GL11.glTranslatef(0F, 0F, 1/16F);
+                            GL11.glTranslatef(0F, 0F, 1 / 16F);
                             break;
                         case NORTH:
-                            GL11.glTranslatef(0F, 0F, -1/16F);
+                            GL11.glTranslatef(0F, 0F, -1 / 16F);
                             break;
                         case EAST:
-                            GL11.glTranslatef(1/16F, 0F, 0F);
+                            GL11.glTranslatef(1 / 16F, 0F, 0F);
                             break;
                         case WEST:
-                            GL11.glTranslatef(-1/16F, 0F, 0F);
+                            GL11.glTranslatef(-1 / 16F, 0F, 0F);
                             break;
                         }
+                    }
                     ClientUtil.drawBakedModel(fluidPipeModels[facing.ordinal()]);
                     GL11.glPopMatrix();
                 }

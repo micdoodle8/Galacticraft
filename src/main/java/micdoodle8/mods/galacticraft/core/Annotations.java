@@ -9,18 +9,18 @@ import java.lang.annotation.Target;
 
 public interface Annotations
 {
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.METHOD)
-	public @interface RuntimeInterface
-	{
-		String clazz();
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface RuntimeInterface
+    {
+        String clazz();
 
-		String modID();
+        String modID();
 
         String deobfName() default "";
-	      
-		String[] altClasses() default {};
-	}
+
+        String[] altClasses() default {};
+    }
 
 //	@Retention(RetentionPolicy.RUNTIME)
 //	@Target(ElementType.METHOD)
@@ -29,12 +29,12 @@ public interface Annotations
 //		String version();
 //	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface NetworkedField
-	{
-		LogicalSide targetSide();
-	}
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface NetworkedField
+    {
+        LogicalSide targetSide();
+    }
 
 //    @Retention(RetentionPolicy.RUNTIME)
 //    @Target(ElementType.METHOD)

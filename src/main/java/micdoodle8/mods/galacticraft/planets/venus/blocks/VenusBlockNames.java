@@ -4,7 +4,7 @@ public class VenusBlockNames
 {
     public static final String torchWeb = "web_torch";
     public static final String scorchedRock = "venus_rock_scorched";
-//    public static final String venusBlock = "venus";
+    //    public static final String venusBlock = "venus";
     public static final String geothermalGenerator = "geothermal_generator";
     public static final String bossSpawner = "boss_spawner_venus";
     public static final String crashedProbe = "crashed_probe";

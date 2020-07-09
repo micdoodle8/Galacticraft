@@ -81,7 +81,10 @@ public class SchematicRegistry
     {
         // Used internally to add page to player's list of unlocked schematics.
         // No need to subscribe to this event
-        if (page != null) MinecraftForge.EVENT_BUS.post(new Unlock(player, page));
+        if (page != null)
+        {
+            MinecraftForge.EVENT_BUS.post(new Unlock(player, page));
+        }
     }
 
     /**
@@ -100,7 +103,7 @@ public class SchematicRegistry
             if (schematic != null)
             {
                 SchematicRegistry.addUnlockedPage(player, schematic);
-                
+
                 return schematic;
             }
         }
@@ -139,33 +142,37 @@ public class SchematicRegistry
         // to subscribe to this event.
         MinecraftForge.EVENT_BUS.post(new FlipPage(cs, null, currentIndex, -1));
     }
-    
+
     public static void registerTexture(ResourceLocation loc)
     {
         textures.add(loc);
     }
-    
+
     public static ResourceLocation getSchematicTexture(int index)
     {
         if (index < textures.size())
+        {
             return textures.get(index);
-        
+        }
+
         GCLog.debug("couldn't find render texture for " + index);
         return textures.get(0);
     }
-    
+
     public static int registerSchematicItem(ItemStack item)
     {
         int index = schematicItems.size();
         schematicItems.add(item);
         return index;
     }
-    
+
     public static ItemStack getSchematicItem(int index)
     {
         if (index < schematicItems.size())
+        {
             return schematicItems.get(index).copy();
-        
+        }
+
         GCLog.debug("couldn't find schematic item for " + index);
         return schematicItems.get(0).copy();
     }

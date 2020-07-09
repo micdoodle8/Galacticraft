@@ -11,7 +11,8 @@ import net.minecraft.util.LazyLoadBase;
 
 public enum EnumItemTierGC implements IItemTier
 {
-    STEEL(3, 768, 5.0F, 2, 8, () -> {
+    STEEL(3, 768, 5.0F, 2, 8, () ->
+    {
         return Ingredient.fromItems(GCItems.compressedSteel);
     });
 
@@ -22,7 +23,8 @@ public enum EnumItemTierGC implements IItemTier
     private final int enchantability;
     private final LazyLoadBase<Ingredient> repairMaterial;
 
-    private EnumItemTierGC(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
+    EnumItemTierGC(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn)
+    {
         this.harvestLevel = harvestLevelIn;
         this.maxUses = maxUsesIn;
         this.efficiency = efficiencyIn;
@@ -31,27 +33,39 @@ public enum EnumItemTierGC implements IItemTier
         this.repairMaterial = new LazyLoadBase<>(repairMaterialIn);
     }
 
-    public int getMaxUses() {
+    @Override
+    public int getMaxUses()
+    {
         return this.maxUses;
     }
 
-    public float getEfficiency() {
+    @Override
+    public float getEfficiency()
+    {
         return this.efficiency;
     }
 
-    public float getAttackDamage() {
+    @Override
+    public float getAttackDamage()
+    {
         return this.attackDamage;
     }
 
-    public int getHarvestLevel() {
+    @Override
+    public int getHarvestLevel()
+    {
         return this.harvestLevel;
     }
 
-    public int getEnchantability() {
+    @Override
+    public int getEnchantability()
+    {
         return this.enchantability;
     }
 
-    public Ingredient getRepairMaterial() {
+    @Override
+    public Ingredient getRepairMaterial()
+    {
         return this.repairMaterial.getValue();
     }
 }

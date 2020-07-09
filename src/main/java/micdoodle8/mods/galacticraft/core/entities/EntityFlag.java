@@ -196,7 +196,7 @@ public class EntityFlag extends Entity
             this.flagData = ClientUtil.updateFlagData(this.getOwner(), Minecraft.getInstance().player.getDistance(this) < 50.0D);
         }
 
-        Vector3 vec = new Vector3((float)this.posX, (float)this.posY, (float)this.posZ);
+        Vector3 vec = new Vector3((float) this.posX, (float) this.posY, (float) this.posZ);
         vec = vec.translate(new Vector3(0, -1, 0));
         final Block blockAt = vec.getBlock(this.world);
 

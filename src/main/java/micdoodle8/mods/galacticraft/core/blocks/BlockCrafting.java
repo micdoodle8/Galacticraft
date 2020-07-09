@@ -64,7 +64,7 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
 
         if (!worldIn.isRemote)
         {
-            INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerCrafting(w, p, (TileEntityCrafting)worldIn.getTileEntity(pos)), new TranslationTextComponent("container.magneticcrafting.name"));
+            INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerCrafting(w, p, (TileEntityCrafting) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.magneticcrafting.name"));
             NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
         }
         return true;
@@ -131,16 +131,16 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
 
     public static Direction getFacingFromEntity(World worldIn, BlockPos clickedBlock, LivingEntity entityIn)
     {
-        if (MathHelper.abs((float)entityIn.posX - (float)clickedBlock.getX()) < 3.0F && MathHelper.abs((float)entityIn.posZ - (float)clickedBlock.getZ()) < 3.0F)
+        if (MathHelper.abs((float) entityIn.posX - (float) clickedBlock.getX()) < 3.0F && MathHelper.abs((float) entityIn.posZ - (float) clickedBlock.getZ()) < 3.0F)
         {
-            double d0 = entityIn.posY + (double)entityIn.getEyeHeight();
+            double d0 = entityIn.posY + (double) entityIn.getEyeHeight();
 
-            if (d0 - (double)clickedBlock.getY() > 2.0D)
+            if (d0 - (double) clickedBlock.getY() > 2.0D)
             {
                 return Direction.UP;
             }
 
-            if ((double)clickedBlock.getY() - d0 > 1.0D)
+            if ((double) clickedBlock.getY() - d0 > 1.0D)
             {
                 return Direction.DOWN;
             }
@@ -154,7 +154,7 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
 //    {
 //        return EnumSortCategoryBlock.GENERAL;
 //    }
-    
+
     @Override
     public String getShiftDescription(ItemStack stack)
     {

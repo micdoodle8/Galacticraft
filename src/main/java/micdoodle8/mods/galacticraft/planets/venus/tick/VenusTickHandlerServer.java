@@ -14,7 +14,7 @@ import java.util.List;
 
 public class VenusTickHandlerServer
 {
-    private static List<SolarModuleNetwork> solarModuleNetworks = Lists.newArrayList();
+    private static final List<SolarModuleNetwork> solarModuleNetworks = Lists.newArrayList();
     public static LinkedList<TileEntitySolarTransmitter> solarTransmitterUpdates = new LinkedList<>();
 
     public static void addSolarNetwork(SolarModuleNetwork network)

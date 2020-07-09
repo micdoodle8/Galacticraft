@@ -52,10 +52,12 @@ public class GuiExtendedInventory extends DisplayEffectsScreen<ContainerExtended
 //        TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
 //        TabRegistry.addTabsToList(this.buttons); TODO Inventory tabs
 
-        this.buttons.add(new Button(this.guiLeft + 10, this.guiTop + 71, 7, 7, "", (button) -> {
+        this.buttons.add(new Button(this.guiLeft + 10, this.guiTop + 71, 7, 7, "", (button) ->
+        {
             GuiExtendedInventory.rotation += 10.0F;
         }));
-        this.buttons.add(new Button(this.guiLeft + 51, this.guiTop + 71, 7, 7, "", (button) -> {
+        this.buttons.add(new Button(this.guiLeft + 51, this.guiTop + 71, 7, 7, "", (button) ->
+        {
             GuiExtendedInventory.rotation -= 10.0F;
         }));
     }

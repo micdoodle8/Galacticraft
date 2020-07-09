@@ -122,7 +122,7 @@ public class ContainerSchematicTier1Rocket extends Container
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
-        final Slot var3 = (Slot) this.inventorySlots.get(par1);
+        final Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {

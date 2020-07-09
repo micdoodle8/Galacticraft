@@ -22,7 +22,7 @@ public class ModelSpiderQueen extends EntityModel<EntitySpiderQueen>
     ModelRendererGC rearLeft;
     ModelRendererGC rearRight;
 
-    private float legLength0;
+    private final float legLength0;
 
     public ModelSpiderQueen()
     {

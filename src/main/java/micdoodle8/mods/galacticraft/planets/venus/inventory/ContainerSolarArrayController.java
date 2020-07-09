@@ -21,7 +21,7 @@ public class ContainerSolarArrayController extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.SOLAR_ARRAY_CONTROLLER)
     public static ContainerType<ContainerSolarArrayController> TYPE;
 
-    private TileEntitySolarArrayController controller;
+    private final TileEntitySolarArrayController controller;
 
     public ContainerSolarArrayController(int containerId, PlayerInventory playerInv, TileEntitySolarArrayController controller)
     {

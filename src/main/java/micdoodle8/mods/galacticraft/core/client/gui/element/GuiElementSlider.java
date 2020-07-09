@@ -15,8 +15,8 @@ import java.util.Collections;
 
 public class GuiElementSlider extends Button
 {
-    private Vector3 firstColor;
-    private Vector3 lastColor;
+    private final Vector3 firstColor;
+    private final Vector3 lastColor;
     private final boolean isVertical;
     private int sliderPos;
 
@@ -27,7 +27,9 @@ public class GuiElementSlider extends Button
 
     public GuiElementSlider(int x, int y, int width, int height, boolean vertical, Vector3 firstColor, Vector3 lastColor, String message)
     {
-        super(x, y, width, height, message, (button) -> {});
+        super(x, y, width, height, message, (button) ->
+        {
+        });
         this.isVertical = vertical;
         this.firstColor = firstColor;
         this.lastColor = lastColor;
@@ -56,7 +58,7 @@ public class GuiElementSlider extends Button
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
-            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
+            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GL11.glShadeModel(GL11.GL_SMOOTH);
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder worldRenderer = tessellator.getBuffer();
@@ -109,7 +111,7 @@ public class GuiElementSlider extends Button
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
+                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
@@ -136,13 +138,13 @@ public class GuiElementSlider extends Button
         if (this.isHovered())
         {
             Minecraft minecraft = Minecraft.getInstance();
-            int i = (int)(minecraft.mouseHelper.getMouseX() * (double)minecraft.mainWindow.getScaledWidth() / (double)minecraft.mainWindow.getWidth());
-            int j = (int)(minecraft.mouseHelper.getMouseY() * (double)minecraft.mainWindow.getScaledHeight() / (double)minecraft.mainWindow.getHeight());
+            int i = (int) (minecraft.mouseHelper.getMouseX() * (double) minecraft.mainWindow.getScaledWidth() / (double) minecraft.mainWindow.getWidth());
+            int j = (int) (minecraft.mouseHelper.getMouseY() * (double) minecraft.mainWindow.getScaledHeight() / (double) minecraft.mainWindow.getHeight());
             FontRenderer font = Minecraft.getInstance().fontRenderer;
             net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Collections.singletonList(this.getMessage()), i, j, width, height, -1, font);
         }
     }
-    
+
     public void setSliderPos(float pos)
     {
         this.sliderPos = (int) Math.floor(this.height * pos);

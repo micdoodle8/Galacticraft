@@ -45,8 +45,8 @@ public class EntityMeteorChunk extends Entity implements IProjectile
     private int ticksInGround;
     private int ticksInAir;
     private boolean inGround;
-    private float randYawInc;
-    private float randPitchInc;
+    private final float randYawInc;
+    private final float randPitchInc;
 
     private int knockbackStrength;
 

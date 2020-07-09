@@ -65,11 +65,11 @@ public class LayerHeldItemGC extends LayerRenderer<AbstractClientPlayerEntity, P
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
             }
             // Forge: moved this call down, fixes incorrect offset while sneaking.
-            ((BipedModel<AbstractClientPlayerEntity>)this.livingEntityRenderer.getEntityModel()).postRenderArm(0.0625F, handSide);
+            ((BipedModel<AbstractClientPlayerEntity>) this.livingEntityRenderer.getEntityModel()).postRenderArm(0.0625F, handSide);
             GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
             boolean flag = handSide == HandSide.LEFT;
-            GlStateManager.translatef((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
+            GlStateManager.translatef((float) (flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
             Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(p_188358_1_, p_188358_2_, p_188358_3_, flag);
             GlStateManager.popMatrix();
         }

@@ -9,7 +9,8 @@ import net.minecraft.util.LazyLoadBase;
 
 public enum EnumItemTierVenus implements IItemTier
 {
-    VOLCANIC_TOOL(3, 1561, 32.0F, 1.5F, 10, () -> {
+    VOLCANIC_TOOL(3, 1561, 32.0F, 1.5F, 10, () ->
+    {
 //        return Ingredient.fromTag(ItemTags.PLANKS);
         return null; // TODO
     });
@@ -21,7 +22,8 @@ public enum EnumItemTierVenus implements IItemTier
     private final int enchantability;
     private final LazyLoadBase<Ingredient> repairMaterial;
 
-    private EnumItemTierVenus(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
+    EnumItemTierVenus(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn)
+    {
         this.harvestLevel = harvestLevelIn;
         this.maxUses = maxUsesIn;
         this.efficiency = efficiencyIn;
@@ -30,27 +32,39 @@ public enum EnumItemTierVenus implements IItemTier
         this.repairMaterial = new LazyLoadBase<>(repairMaterialIn);
     }
 
-    public int getMaxUses() {
+    @Override
+    public int getMaxUses()
+    {
         return this.maxUses;
     }
 
-    public float getEfficiency() {
+    @Override
+    public float getEfficiency()
+    {
         return this.efficiency;
     }
 
-    public float getAttackDamage() {
+    @Override
+    public float getAttackDamage()
+    {
         return this.attackDamage;
     }
 
-    public int getHarvestLevel() {
+    @Override
+    public int getHarvestLevel()
+    {
         return this.harvestLevel;
     }
 
-    public int getEnchantability() {
+    @Override
+    public int getEnchantability()
+    {
         return this.enchantability;
     }
 
-    public Ingredient getRepairMaterial() {
+    @Override
+    public Ingredient getRepairMaterial()
+    {
         return this.repairMaterial.getValue();
     }
 }

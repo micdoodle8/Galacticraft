@@ -19,7 +19,7 @@ public class DungeonStart extends EntranceCrater
     public List<StructurePiece> attachedComponents = Lists.newArrayList();
     public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
-//    public DungeonStart(IStructurePieceType type)
+    //    public DungeonStart(IStructurePieceType type)
 //    {
 //        super(type);
 //    }
@@ -29,7 +29,8 @@ public class DungeonStart extends EntranceCrater
         super(CMOON_DUNGEON_START, world, configuration, rand, blockPosX, blockPosZ);
     }
 
-    public DungeonStart(TemplateManager templateManager, CompoundNBT nbt) {
+    public DungeonStart(TemplateManager templateManager, CompoundNBT nbt)
+    {
         super(CMOON_DUNGEON_START, nbt);
     }
 

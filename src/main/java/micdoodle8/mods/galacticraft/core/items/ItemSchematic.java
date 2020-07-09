@@ -130,15 +130,15 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
     {
         return new EntityHangingSchematic(GCEntities.HANGING_SCHEMATIC.get(), worldIn, pos, clickedSide, index);
     }
-    
+
     /**
-    *  Higher tiers should override - see ItemSchematicTier2 for example
-    **/
+     * Higher tiers should override - see ItemSchematicTier2 for example
+     **/
     protected int getIndex(int damage)
     {
         return damage;
     }
-    
+
     /**
      * Make sure the number of these will match the index values
      */
@@ -147,7 +147,7 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
         SchematicRegistry.registerSchematicItem(new ItemStack(GCItems.schematicBuggy, 1));
         SchematicRegistry.registerSchematicItem(new ItemStack(GCItems.schematicRocketT2, 1));
     }
-    
+
     /**
      * Make sure the order of these will match the index values
      */

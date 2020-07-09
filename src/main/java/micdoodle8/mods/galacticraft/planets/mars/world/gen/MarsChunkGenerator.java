@@ -11,10 +11,13 @@ import net.minecraft.world.gen.OctavesNoiseGenerator;
 
 public class MarsChunkGenerator extends NoiseChunkGenerator<MarsGenSettings>
 {
-    private static final float[] BIOME_WEIGHTS = Util.make(new float[25], (weights) -> {
-        for(int xw = -2; xw <= 2; ++xw) {
-            for(int zw = -2; zw <= 2; ++zw) {
-                float weight = 10.0F / (float)Math.sqrt((float)(xw * xw + zw * zw) + 0.2F);
+    private static final float[] BIOME_WEIGHTS = Util.make(new float[25], (weights) ->
+    {
+        for (int xw = -2; xw <= 2; ++xw)
+        {
+            for (int zw = -2; zw <= 2; ++zw)
+            {
+                float weight = 10.0F / (float) Math.sqrt((float) (xw * xw + zw * zw) + 0.2F);
                 weights[xw + 2 + (zw + 2) * 5] = weight;
             }
         }
@@ -134,21 +137,25 @@ public class MarsChunkGenerator extends NoiseChunkGenerator<MarsGenSettings>
 
     // get depth / scale
     @Override
-    protected double[] func_222549_a(int x, int z) {
+    protected double[] func_222549_a(int x, int z)
+    {
         double[] depthAndScale = new double[2];
         float scaleF1 = 0.0F;
         float depthF1 = 0.0F;
         float divisor = 0.0F;
         float baseDepth = this.biomeProvider.func_222366_b(x, z).getDepth();
 
-        for(int xMod = -2; xMod <= 2; ++xMod) {
-            for(int zMod = -2; zMod <= 2; ++zMod) {
+        for (int xMod = -2; xMod <= 2; ++xMod)
+        {
+            for (int zMod = -2; zMod <= 2; ++zMod)
+            {
                 Biome biomeAt = this.biomeProvider.func_222366_b(x + xMod, z + zMod);
                 float biomeDepth = biomeAt.getDepth();
                 float biomeScale = biomeAt.getScale();
 
                 float weight = BIOME_WEIGHTS[xMod + 2 + (zMod + 2) * 5] / (biomeDepth + 2.0F);
-                if (biomeAt.getDepth() > baseDepth) {
+                if (biomeAt.getDepth() > baseDepth)
+                {
                     weight /= 2.0F;
                 }
 
@@ -162,22 +169,28 @@ public class MarsChunkGenerator extends NoiseChunkGenerator<MarsGenSettings>
         depthF1 /= divisor;
         scaleF1 = scaleF1 * 0.9F + 0.1F;
         depthF1 = (depthF1 * 4.0F - 1.0F) / 8.0F;
-        depthAndScale[0] = (double)depthF1 + this.getSpecialDepth(x, z);
+        depthAndScale[0] = (double) depthF1 + this.getSpecialDepth(x, z);
         depthAndScale[1] = scaleF1;
         return depthAndScale;
     }
 
-    private double getSpecialDepth(int x, int z) {
+    private double getSpecialDepth(int x, int z)
+    {
         double sDepth = this.depthNoise.func_215462_a(x * 200, 10.0D, z * 200, 1.0D, 0.0D, true) / 8000.0D;
-        if (sDepth < 0.0D) {
+        if (sDepth < 0.0D)
+        {
             sDepth = -sDepth * 0.3D;
         }
 
         sDepth = sDepth * 3.0D - 2.0D;
-        if (sDepth < 0.0D) {
+        if (sDepth < 0.0D)
+        {
             sDepth /= 28.0D;
-        } else {
-            if (sDepth > 1.0D) {
+        }
+        else
+        {
+            if (sDepth > 1.0D)
+            {
                 sDepth = 1.0D;
             }
 
@@ -189,11 +202,13 @@ public class MarsChunkGenerator extends NoiseChunkGenerator<MarsGenSettings>
 
     // yoffset
     @Override
-    protected double func_222545_a(double depth, double scale, int yy) {
+    protected double func_222545_a(double depth, double scale, int yy)
+    {
         // The higher this value is, the higher the terrain is!
         final double baseSize = 17D;
-        double yOffsets = ((double)yy - (baseSize + depth * baseSize / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / scale;
-        if (yOffsets < 0.0D) {
+        double yOffsets = ((double) yy - (baseSize + depth * baseSize / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / scale;
+        if (yOffsets < 0.0D)
+        {
             yOffsets *= 4.0D;
         }
 

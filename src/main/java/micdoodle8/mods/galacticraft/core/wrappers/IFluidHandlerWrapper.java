@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public interface IFluidHandlerWrapper 
+public interface IFluidHandlerWrapper
 {
     int fill(Direction from, FluidStack resource, IFluidHandler.FluidAction fillAction);
 

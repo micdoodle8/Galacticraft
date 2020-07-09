@@ -78,7 +78,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         super(type);
         this.initialised = true;
-	    this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }
 
     protected void setTier2()
@@ -147,7 +147,8 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             {
                 this.processTicks = 0;
             }
-        } else
+        }
+        else
         {
             //Smoother client LogicalSide animation before the networked fields get updated
             if (this.processTicks > 0 && this.processTicks < this.processTimeRequired)
@@ -162,7 +163,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        ItemStack stack = this.getInventory().get(1); 
+        ItemStack stack = this.getInventory().get(1);
         if (stack.isEmpty())
         {
             return false;
@@ -182,14 +183,14 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         }
 
 
-		if (this.tierGC == 1)
+        if (this.tierGC == 1)
         {
-	        if (!this.getInventory().get(2).isEmpty())
+            if (!this.getInventory().get(2).isEmpty())
             {
                 return (this.getInventory().get(2).isItemEqual(result) && this.getInventory().get(2).getCount() < 64);
             }
         }
-        
+
         //Electric Arc Furnace
         if (this.getInventory().get(2).isEmpty() || this.getInventory().get(3).isEmpty())
         {
@@ -241,7 +242,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                 else if (this.getInventory().get(2).isItemEqual(resultItemStack))
                 {
                     space2 = (64 - this.getInventory().get(2).getCount()) / resultItemStack.getCount();
-                    if (space2 > 2) space2 = 2;
+                    if (space2 > 2)
+                    {
+                        space2 = 2;
+                    }
                     this.getInventory().get(2).grow(resultItemStack.getCount() * space2);
                 }
                 if (space2 < 2)
@@ -257,7 +261,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
                     else if (this.getInventory().get(3).isItemEqual(resultItemStack))
                     {
                         space3 = (64 - this.getInventory().get(3).getCount()) / resultItemStack.getCount();
-                        if (space3 > 2 - space2) space3 = 2 - space2;
+                        if (space3 > 2 - space2)
+                        {
+                            space3 = 2 - space2;
+                        }
                         this.getInventory().get(3).grow(resultItemStack.getCount() * space3);
                     }
                 }
@@ -325,7 +332,8 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             return false;
         }
-        return slotID == 1 ? true/*!FurnaceRecipes.instance().getSmeltingResult(itemStack).isEmpty() TODO Furnace slots */ : slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
+        /*!FurnaceRecipes.instance().getSmeltingResult(itemStack).isEmpty() TODO Furnace slots */
+        return slotID == 1 || slotID == 0 && ItemElectricBase.isElectricItem(itemStack.getItem());
     }
 
     @Override
@@ -333,9 +341,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         if (this.tierGC == 2)
         {
-            return new int[] { 0, 1, 2, 3 };
+            return new int[]{0, 1, 2, 3};
         }
-        return new int[] { 0, 1, 2 };
+        return new int[]{0, 1, 2};
     }
 
     @Override
@@ -365,7 +373,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -388,12 +396,14 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void openInventory(PlayerEntity player) {
+    public void openInventory(PlayerEntity player)
+    {
         playersUsing.add(player);
     }
 
     @Override
-    public void closeInventory(PlayerEntity player) {
+    public void closeInventory(PlayerEntity player)
+    {
         playersUsing.remove(player);
     }
 
@@ -403,15 +413,15 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT };
+        return new Face[]{Face.LEFT};
     }
-    
+
     private MachineSidePack[] machineSides;
 
     @Override
@@ -430,13 +440,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

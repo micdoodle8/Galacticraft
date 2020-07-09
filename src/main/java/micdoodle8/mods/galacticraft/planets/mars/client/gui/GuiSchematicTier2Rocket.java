@@ -31,10 +31,12 @@ public class GuiSchematicTier2Rocket extends GuiContainerGC<ContainerSchematicTi
     {
         super.init();
         this.buttons.clear();
-        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) -> {
+        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
+        {
             SchematicRegistry.flipToPrevPage(this, this.pageIndex);
         }));
-        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) -> {
+        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
+        {
             SchematicRegistry.flipToNextPage(this, this.pageIndex);
         }));
     }

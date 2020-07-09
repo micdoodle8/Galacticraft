@@ -119,10 +119,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public static ResourceLocation playerHead = null;
     public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/saturn_rings.png");
     public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/uranus_rings.png");
-//    private static List<Item> itemsToRegisterJson = Lists.newArrayList();
-    private static ModelResourceLocation fuelLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "fuel", "fluid");
-    private static ModelResourceLocation oilLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "oil", "fluid");
-    private static List<PartialCanister> canisters = Lists.newArrayList();
+    //    private static List<Item> itemsToRegisterJson = Lists.newArrayList();
+    private static final ModelResourceLocation fuelLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "fuel", "fluid");
+    private static final ModelResourceLocation oilLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "oil", "fluid");
+    private static final List<PartialCanister> canisters = Lists.newArrayList();
 
     @Override
     public void init()
@@ -196,14 +196,19 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                 e.printStackTrace();
             }
         }
-        
+
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
 
-        try {
+        try
+        {
             Field ftc = Minecraft.getInstance().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
             ftc.setAccessible(true);
             ftc.set(Minecraft.getInstance(), new MusicTickerGC(Minecraft.getInstance()));
-        } catch (Exception e) {e.printStackTrace();} 
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -221,7 +226,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //            GalacticraftPlanets.instance.loadLanguagePlanets(lang);
 //        } TODO lang?
     }
-    
+
     @Override
     public void postRegisterItem(Item item)
     {
@@ -773,7 +778,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
 //    private static void addVariants()
 //    {
-        //BlockItem variants: 
+    //BlockItem variants:
 //        addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
 //        addCoreVariant("basic_block_core", "deco_block_0", "deco_block_1", "ore_copper_gc", "ore_tin_gc", "ore_aluminum_gc", "ore_silicon", "block_copper_gc", "block_tin_gc", "block_aluminum_gc", "block_meteoric_iron_gc", "block_silicon_gc");
 //        addCoreVariant("air_lock_frame", "air_lock_frame", "air_lock_controller");
@@ -797,7 +802,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //        addCoreVariant("panel_lighting", "panel_lighting", "panel_lighting_1", "panel_lighting_2", "panel_lighting_3", "panel_lighting_4");
 //        addCoreVariant("emergency_box", "emergency_box", "emergency_box_full");
 
-        //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
+    //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
 //        addCoreVariant("canister", "canister", "canister_copper");
 //        addCoreVariant("engine", "engine", "tier1booster");
 //        addCoreVariant("parachute", "parachute", "parachute_black", "parachute_blue", "parachute_lime", "parachute_brown", "parachute_darkblue", "parachute_darkgray", "parachute_darkgreen", "parachute_gray", "parachute_magenta", "parachute_orange", "parachute_pink", "parachute_purple", "parachute_red", "parachute_teal", "parachute_yellow");
@@ -839,7 +844,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         catch (IOException e)
         {
             GCLog.severe("Error getting capes list URL");
-            if (ConfigManagerCore.enableDebug) e.printStackTrace();
+            if (ConfigManagerCore.enableDebug)
+            {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -851,7 +859,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug) e.printStackTrace();
+            if (ConfigManagerCore.enableDebug)
+            {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -865,7 +876,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug) e.printStackTrace();
+            if (ConfigManagerCore.enableDebug)
+            {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -885,7 +899,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)e.printStackTrace();
+            if (ConfigManagerCore.enableDebug)
+            {
+                e.printStackTrace();
+            }
         }
         finally
         {
@@ -895,7 +912,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             }
             catch (IOException e)
             {
-                if (ConfigManagerCore.enableDebug) e.printStackTrace();
+                if (ConfigManagerCore.enableDebug)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -931,7 +951,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             this.partialTicks = partialTicks;
         }
     }
-    
+
     @Override
     public PlayerGearData getGearData(PlayerEntity player)
     {
@@ -943,7 +963,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA2, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA2, GCCoreUtil.getDimensionID(player.world), new Object[]{id}));
                 ClientProxyCore.gearDataRequests.add(id);
             }
         }

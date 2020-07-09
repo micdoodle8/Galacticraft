@@ -28,7 +28,7 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
     private final TileEntitySolarArrayController solarController;
 
     private Button buttonEnableSolar;
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
     public GuiSolarArrayController(ContainerSolarArrayController container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -56,11 +56,12 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 90, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> sunGenDesc = new ArrayList<String>();
-        float sunVisible = Math.round((this.solarController.getActualArraySize() / (float)this.solarController.getPossibleArraySize()) * 1000) / 10.0F;
+        float sunVisible = Math.round((this.solarController.getActualArraySize() / (float) this.solarController.getPossibleArraySize()) * 1000) / 10.0F;
         sunGenDesc.add(sunVisible > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
-        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.solarController.getPos(), 0 }));
+        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.solarController.getPos(), 0}));
         }));
     }
 
@@ -103,7 +104,7 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.raining.name");
         }
 
-        float sunVisible = (float) Math.floor(this.solarController.getActualArraySize() / (float)this.solarController.getPossibleArraySize());
+        float sunVisible = (float) Math.floor(this.solarController.getActualArraySize() / (float) this.solarController.getPossibleArraySize());
 
         if (sunVisible == 0)
         {
@@ -143,7 +144,7 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
             this.blit(var5 + 83, var6 + 24, 176, 0, 11, 10);
         }
 
-        float sunVisible = (float) Math.floor(this.solarController.getActualArraySize() / (float)this.solarController.getPossibleArraySize());
+        float sunVisible = (float) Math.floor(this.solarController.getActualArraySize() / (float) this.solarController.getPossibleArraySize());
 
         if (sunVisible > 0.0F)
         {

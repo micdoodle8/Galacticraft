@@ -17,8 +17,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class LayerEvolvedEndermanEyes extends LayerRenderer<EntityEvolvedEnderman, ModelEvolvedEnderman>
 {
     private static final ResourceLocation EYES_TEXTURE = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/evolved_enderman_eyes.png");
-    
-    private RenderEvolvedEnderman render;
+
+    private final RenderEvolvedEnderman render;
 
     public LayerEvolvedEndermanEyes(RenderEvolvedEnderman render)
     {

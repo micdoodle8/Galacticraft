@@ -131,6 +131,6 @@ public class BlockLaunchController extends BlockTileGC implements IShiftDescript
     @Override
     public boolean isSealed(World world, BlockPos pos, Direction direction)
     {
-	    return true;
+        return true;
     }
 }

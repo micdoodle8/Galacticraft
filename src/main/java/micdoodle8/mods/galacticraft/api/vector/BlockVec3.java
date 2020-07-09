@@ -22,11 +22,11 @@ import net.minecraft.world.server.ServerChunkProvider;
 import javax.annotation.Nullable;
 
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
- * 
+ *
  * But for speed it uses integer arithmetic not doubles, for block coordinates
  * This reduces unnecessary type conversion between integers and doubles and back again.
  * (Minecraft block coordinates are always integers, only entity coordinates are doubles.)
- * 
+ *
  */
 public class BlockVec3 implements Cloneable
 {
@@ -652,7 +652,10 @@ public class BlockVec3 implements Cloneable
 
     public static BlockVec3 read(CompoundNBT nbt, String prefix)
     {
-        if (!nbt.contains(prefix + "_x") || !nbt.contains(prefix + "_y") || !nbt.contains(prefix + "_z")) return null;
+        if (!nbt.contains(prefix + "_x") || !nbt.contains(prefix + "_y") || !nbt.contains(prefix + "_z"))
+        {
+            return null;
+        }
         int readX = nbt.getInt(prefix + "_x");
         int readY = nbt.getInt(prefix + "_y");
         int readZ = nbt.getInt(prefix + "_z");

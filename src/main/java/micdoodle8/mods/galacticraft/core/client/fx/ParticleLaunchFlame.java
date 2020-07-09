@@ -24,10 +24,10 @@ import java.util.UUID;
 
 public class ParticleLaunchFlame extends SpriteTexturedParticle
 {
-    private IAnimatedSprite animatedSprite;
-    private float smokeParticleScale;
-    private boolean spawnSmokeShort;
-    private UUID ridingEntity;
+    private final IAnimatedSprite animatedSprite;
+    private final float smokeParticleScale;
+    private final boolean spawnSmokeShort;
+    private final UUID ridingEntity;
 
     public ParticleLaunchFlame(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, boolean launched, EntityParticleData particleData, IAnimatedSprite animatedSprite)
     {
@@ -124,7 +124,7 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
                     if (var5 instanceof LivingEntity && var5.isAlive() && !var5.isBurning() && !var5.getUniqueID().equals(this.ridingEntity))
                     {
                         var5.setFire(3);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[] { var5.getEntityId() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[]{var5.getEntityId()}));
                     }
                 }
             }
@@ -148,7 +148,8 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 

@@ -98,7 +98,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             }
         }
     }
-    
+
     private int getProcessTimeRequired()
     {
         return (this.poweredByTierGC > 1) ? 1 : TileEntityRefinery.PROCESS_TIME_REQUIRED;
@@ -204,7 +204,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1, 2 };
+        return new int[]{0, 1, 2};
     }
 
     @Override
@@ -289,12 +289,12 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         return getFront().rotateY();
     }
-    
+
     private Direction getFuelPipe()
     {
         return getFront().rotateYCCW();
     }
-    
+
     @Override
     public boolean canDrain(Direction from, Fluid fluid)
     {
@@ -475,7 +475,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         if (direction == null)
         {
             return false;
-        } 
+        }
         if (type == NetworkType.POWER)
         {
             return direction == this.getElectricInputDirection();

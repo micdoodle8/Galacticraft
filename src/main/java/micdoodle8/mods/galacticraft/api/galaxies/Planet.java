@@ -34,7 +34,7 @@ public class Planet extends CelestialBody
         this.parentSolarSystem = galaxy;
         return this;
     }
-    
+
     public static void addMobToSpawn(String planetName, SpawnListEntry entry, EntityClassification classification)
     {
         GalaxyRegistry.getCelestialBodyFromUnlocalizedName("planet." + planetName).addMobInfo(entry, classification);

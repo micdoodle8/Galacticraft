@@ -19,7 +19,7 @@ public class ContainerCoalGenerator extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.COAL_GENERATOR)
     public static ContainerType<ContainerCoalGenerator> TYPE;
 
-    private IInventory inventory;
+    private final IInventory inventory;
 
     public ContainerCoalGenerator(int containerId, PlayerInventory playerInv)
     {

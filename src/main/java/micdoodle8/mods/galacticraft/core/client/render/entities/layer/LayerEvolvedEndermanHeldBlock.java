@@ -30,7 +30,8 @@ public class LayerEvolvedEndermanHeldBlock extends LayerRenderer<EntityEvolvedEn
     public void render(EntityEvolvedEnderman entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         BlockState blockstate = entity.getHeldBlockState();
-        if (blockstate != null) {
+        if (blockstate != null)
+        {
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
             GlStateManager.translatef(0.0F, 0.6875F, -0.75F);
@@ -42,7 +43,7 @@ public class LayerEvolvedEndermanHeldBlock extends LayerRenderer<EntityEvolvedEn
             int i = entity.getBrightnessForRender();
             int j = i % 65536;
             int k = i / 65536;
-            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j, (float)k);
+            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
             Minecraft.getInstance().getBlockRendererDispatcher().renderBlockBrightness(blockstate, 1.0F);

@@ -193,7 +193,8 @@ public class BlockNasaWorkbench extends Block implements IShiftDescription, IPar
 //    }
 
     @Override
-    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
+    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param)
+    {
         super.eventReceived(state, worldIn, pos, id, param);
         TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(id, param);
@@ -201,8 +202,9 @@ public class BlockNasaWorkbench extends Block implements IShiftDescription, IPar
 
     @Override
     @Nullable
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 }

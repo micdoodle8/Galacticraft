@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 public class WorldGenEggs extends Feature<NoFeatureConfig>
 {
-    private BlockState eggBlock;
+    private final BlockState eggBlock;
 
     public WorldGenEggs(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn, BlockState eggIn)
     {
@@ -35,7 +35,10 @@ public class WorldGenEggs extends Feature<NoFeatureConfig>
         int k1 = pos.getZ() + rand.nextInt(8) - rand.nextInt(8);
         BlockPos newPos = new BlockPos(i1, j1, k1);
 
-        if (!worldIn.isBlockLoaded(newPos.add(1, 0, 1))) return false;
+        if (!worldIn.isBlockLoaded(newPos.add(1, 0, 1)))
+        {
+            return false;
+        }
 
         if (worldIn.isAirBlock(newPos) && (j1 < 127 || !worldIn.getDimension().isNether()))
         {

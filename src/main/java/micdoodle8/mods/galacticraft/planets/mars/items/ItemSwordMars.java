@@ -47,7 +47,8 @@ public class ItemSwordMars extends SwordItem implements ISortableItem
     {
         if (state.getBlockHardness(worldIn, pos) != 0.0F)
         {
-            stack.damageItem(2, entityLiving, (e) -> {
+            stack.damageItem(2, entityLiving, (e) ->
+            {
                 e.sendBreakAnimation(EquipmentSlotType.MAINHAND);
             });
         }

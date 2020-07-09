@@ -47,7 +47,8 @@ public class GalacticraftPlanets
     public static PlanetsProxy proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> () -> new PlanetsProxy());
 
     @OnlyIn(Dist.CLIENT)
-    private static Supplier<PlanetsProxy> getClientProxy() {
+    private static Supplier<PlanetsProxy> getClientProxy()
+    {
         //NOTE: This extra method is needed to avoid classloading issues on servers
         return PlanetsProxyClient::new;
     }

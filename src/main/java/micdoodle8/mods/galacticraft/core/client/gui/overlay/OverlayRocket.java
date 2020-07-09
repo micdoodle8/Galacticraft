@@ -32,7 +32,7 @@ public class OverlayRocket extends Overlay
             {
                 return;
             }
-            int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
 //            mc.entityRenderer.setupOverlayRendering();
             GlStateManager.depthMask(true);
             GlStateManager.enableTexture();
@@ -84,7 +84,7 @@ public class OverlayRocket extends Overlay
             final int i = rocket.getBrightnessForRender();
             int j = i % 65536;
             int k = i / 65536;
-            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j, (float)k);
+            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableColorMaterial();
             GlStateManager.translatef(var1 + 4, var2 + 6, 50F);
@@ -94,7 +94,7 @@ public class OverlayRocket extends Overlay
 
             try
             {
-                spaceshipRender.doRender((EntitySpaceshipBase)mc.player.getRidingEntity(), 0, 0, 0, 0, 0);
+                spaceshipRender.doRender((EntitySpaceshipBase) mc.player.getRidingEntity(), 0, 0, 0, 0, 0);
             }
             catch (Exception e)
             {

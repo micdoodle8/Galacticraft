@@ -19,26 +19,45 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class AsteroidBlocks
 {
-    @ObjectHolder(AsteroidBlockNames.blockWalkway) public static Block blockWalkway;
-    @ObjectHolder(AsteroidBlockNames.blockWalkwayFluid) public static Block blockWalkwayFluid;
-    @ObjectHolder(AsteroidBlockNames.blockWalkwayWire) public static Block blockWalkwayWire;
+    @ObjectHolder(AsteroidBlockNames.blockWalkway)
+    public static Block blockWalkway;
+    @ObjectHolder(AsteroidBlockNames.blockWalkwayFluid)
+    public static Block blockWalkwayFluid;
+    @ObjectHolder(AsteroidBlockNames.blockWalkwayWire)
+    public static Block blockWalkwayWire;
     //	public static Block machineFrame;
-    @ObjectHolder(AsteroidBlockNames.beamReflector) public static Block beamReflector;
-    @ObjectHolder(AsteroidBlockNames.beamReceiver) public static Block beamReceiver;
-    @ObjectHolder(AsteroidBlockNames.shortRangeTelepad) public static Block shortRangeTelepad;
-    @ObjectHolder(AsteroidBlockNames.fakeTelepad) public static Block fakeTelepad;
-    @ObjectHolder(AsteroidBlockNames.blockDenseIce) public static Block blockDenseIce;
-    @ObjectHolder(AsteroidBlockNames.blockMinerBase) public static Block blockMinerBase;
-    @ObjectHolder(AsteroidBlockNames.minerBaseFull) public static Block minerBaseFull;
-    @ObjectHolder(AsteroidBlockNames.spaceWart) public static Block spaceWart;
-    @ObjectHolder(AsteroidBlockNames.rock0) public static Block rock0;
-    @ObjectHolder(AsteroidBlockNames.rock1) public static Block rock1;
-    @ObjectHolder(AsteroidBlockNames.rock2) public static Block rock2;
-    @ObjectHolder(AsteroidBlockNames.oreAluminum) public static Block oreAluminum;
-    @ObjectHolder(AsteroidBlockNames.oreIlmenite) public static Block oreIlmenite;
-    @ObjectHolder(AsteroidBlockNames.oreIron) public static Block oreIron;
-    @ObjectHolder(AsteroidBlockNames.asteroidDeco) public static Block asteroidDeco;
-    @ObjectHolder(AsteroidBlockNames.titaniumBlock) public static Block titaniumBlock;
+    @ObjectHolder(AsteroidBlockNames.beamReflector)
+    public static Block beamReflector;
+    @ObjectHolder(AsteroidBlockNames.beamReceiver)
+    public static Block beamReceiver;
+    @ObjectHolder(AsteroidBlockNames.shortRangeTelepad)
+    public static Block shortRangeTelepad;
+    @ObjectHolder(AsteroidBlockNames.fakeTelepad)
+    public static Block fakeTelepad;
+    @ObjectHolder(AsteroidBlockNames.blockDenseIce)
+    public static Block blockDenseIce;
+    @ObjectHolder(AsteroidBlockNames.blockMinerBase)
+    public static Block blockMinerBase;
+    @ObjectHolder(AsteroidBlockNames.minerBaseFull)
+    public static Block minerBaseFull;
+    @ObjectHolder(AsteroidBlockNames.spaceWart)
+    public static Block spaceWart;
+    @ObjectHolder(AsteroidBlockNames.rock0)
+    public static Block rock0;
+    @ObjectHolder(AsteroidBlockNames.rock1)
+    public static Block rock1;
+    @ObjectHolder(AsteroidBlockNames.rock2)
+    public static Block rock2;
+    @ObjectHolder(AsteroidBlockNames.oreAluminum)
+    public static Block oreAluminum;
+    @ObjectHolder(AsteroidBlockNames.oreIlmenite)
+    public static Block oreIlmenite;
+    @ObjectHolder(AsteroidBlockNames.oreIron)
+    public static Block oreIron;
+    @ObjectHolder(AsteroidBlockNames.asteroidDeco)
+    public static Block asteroidDeco;
+    @ObjectHolder(AsteroidBlockNames.titaniumBlock)
+    public static Block titaniumBlock;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)

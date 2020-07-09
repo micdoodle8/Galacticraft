@@ -110,7 +110,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     public ItemStack getStackInSlot(int slot)
     {
 //    	this.fillWithLoot(null);
-    	return super.getStackInSlot(slot);
+        return super.getStackInSlot(slot);
     }
 
     @Override

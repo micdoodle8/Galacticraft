@@ -121,7 +121,7 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IMachineSides)
         {
-            ((IMachineSides)tile).nextSideConfiguration(tile);
+            ((IMachineSides) tile).nextSideConfiguration(tile);
             return true;
         }
         return false;

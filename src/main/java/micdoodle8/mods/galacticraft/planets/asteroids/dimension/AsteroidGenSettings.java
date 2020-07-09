@@ -2,28 +2,36 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import net.minecraft.world.gen.GenerationSettings;
 
-public class AsteroidGenSettings extends GenerationSettings {
-    public int getBiomeSize() {
+public class AsteroidGenSettings extends GenerationSettings
+{
+    public int getBiomeSize()
+    {
         return 4;
     }
 
-    public int getRiverSize() {
+    public int getRiverSize()
+    {
         return 4;
     }
 
-    public int getBiomeId() {
+    public int getBiomeId()
+    {
         return -1;
     }
 
-    public int getBedrockFloorHeight() {
+    @Override
+    public int getBedrockFloorHeight()
+    {
         return 0;
     }
 
-    public int getHomeTreeDistance() {
+    public int getHomeTreeDistance()
+    {
         return 20;
     }
 
-    public int getHomeTreeSeparation() {
+    public int getHomeTreeSeparation()
+    {
         return 4;
     }
 }

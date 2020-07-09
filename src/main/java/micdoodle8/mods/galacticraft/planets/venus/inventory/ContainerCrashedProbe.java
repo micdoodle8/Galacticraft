@@ -19,7 +19,7 @@ public class ContainerCrashedProbe extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.CRASHED_PROBE)
     public static ContainerType<ContainerCrashedProbe> TYPE;
 
-    private TileEntityCrashedProbe probe;
+    private final TileEntityCrashedProbe probe;
 
     public ContainerCrashedProbe(int containerId, PlayerInventory playerInv, TileEntityCrashedProbe probe)
     {

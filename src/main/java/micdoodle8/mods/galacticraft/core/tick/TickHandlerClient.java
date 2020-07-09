@@ -69,12 +69,12 @@ public class TickHandlerClient
     private static boolean lastInvKeyPressed;
     private static long tickCount;
     public static boolean spaceRaceGuiScheduled = false;
-//    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
-    private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
+    //    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
+    private static final Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static GuiTeleporting teleportingGui;
     public static volatile boolean menuReset = true;
     public static volatile boolean updateJEIhiding = false;
-    
+
     public static void resetClient()
     {
         ClientProxyCore.playerItemData.clear();
@@ -89,7 +89,7 @@ public class TickHandlerClient
             TickHandlerClient.missingRequirementThread = new ThreadRequirementMissing(LogicalSide.CLIENT);
             TickHandlerClient.missingRequirementThread.start();
         }
-        
+
         MapUtil.resetClient();
 //        GCBlocks.spaceGlassVanilla.resetColor();
 //        GCBlocks.spaceGlassClear.resetColor();
@@ -281,7 +281,7 @@ public class TickHandlerClient
             if (player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit())
             {
                 // Remove "Press shift to dismount" message when shift-exiting is disabled (not ideal, but the only option)
-                String str = I18n.format("mount.onboard", new Object[] { minecraft.gameSettings.keyBindSneak.getLocalizedName() });
+                String str = I18n.format("mount.onboard", minecraft.gameSettings.keyBindSneak.getLocalizedName());
                 if (minecraft.ingameGUI.overlayMessage.equals(str))
                 {
                     minecraft.ingameGUI.overlayMessage = "";
@@ -320,7 +320,7 @@ public class TickHandlerClient
 
                 if (map.containsKey(Type.SKIN))
                 {
-                    ClientProxyCore.playerHead = minecraft.getSkinManager().loadSkin((MinecraftProfileTexture)map.get(Type.SKIN), Type.SKIN);
+                    ClientProxyCore.playerHead = minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
                 }
                 else
                 {
@@ -329,7 +329,7 @@ public class TickHandlerClient
             }
 
             TickHandlerClient.tickCount++;
-            
+
             if (!GalacticraftCore.proxy.isPaused())
             {
                 Iterator<FluidNetwork> it = TickHandlerClient.fluidNetworks.iterator();
@@ -356,7 +356,7 @@ public class TickHandlerClient
                 {
                     if (tile instanceof IBubbleProviderColored)
                     {
-                        BubbleRenderer.addBubble((IBubbleProviderColored)tile);
+                        BubbleRenderer.addBubble((IBubbleProviderColored) tile);
                     }
                 }
 
@@ -367,7 +367,7 @@ public class TickHandlerClient
                     // Update JEI to hide adventure mode recipes when not in adventure mode
 //                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes, !ConfigManagerCore.challengeRecipes); TODO JEI
                 }
-                
+
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
                 {
                     Iterator<Footprint> fpIt = fpList.iterator();
@@ -425,7 +425,7 @@ public class TickHandlerClient
                             }
                         }
                     }
-                    
+
                     TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor(player.posX), MathHelper.floor(player.posY), MathHelper.floor(player.posZ));
                     if (nearestSealer != null && !nearestSealer.sealed)
                     {
@@ -450,8 +450,11 @@ public class TickHandlerClient
                 }
             }
 
-            if (ClientProxyCore.leakTrace != null) this.spawnLeakParticles();
-            
+            if (ClientProxyCore.leakTrace != null)
+            {
+                this.spawnLeakParticles();
+            }
+
             if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
             {
 //                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.posX, (int) player.posY, (int) player.posZ); TODO Gui
@@ -472,7 +475,7 @@ public class TickHandlerClient
                 if (rocket.prevRotationPitch != rocket.rotationPitch || rocket.prevRotationYaw != rocket.rotationYaw)
                 {
 //                    GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.getRidingEntity()));
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, rocket.dimension, new Object[] { rocket.rotationPitch, rocket.rotationYaw }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, rocket.dimension, new Object[]{rocket.rotationPitch, rocket.rotationYaw}));
                 }
             }
 
@@ -549,7 +552,7 @@ public class TickHandlerClient
                 if (hasChanged)
                 {
 //                    GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(ship));
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, ship.dimension, new Object[] { ship.rotationPitch, ship.rotationYaw }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, ship.dimension, new Object[]{ship.rotationPitch, ship.rotationYaw}));
                 }
             }
 
@@ -592,11 +595,11 @@ public class TickHandlerClient
 
             if (player.getRidingEntity() != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.world), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.world), new Object[]{}));
                 ClientProxyCore.lastSpacebarDown = true;
             }
 
-            if (!(this.screenConnectionsUpdateList.isEmpty()))
+            if (!(screenConnectionsUpdateList.isEmpty()))
             {
                 HashSet<TileEntityScreen> updateListCopy = (HashSet<TileEntityScreen>) screenConnectionsUpdateList.clone();
                 screenConnectionsUpdateList.clear();
@@ -630,12 +633,21 @@ public class TickHandlerClient
         Random rand = new Random();
         for (int i = ClientProxyCore.leakTrace.size() - 1; i >= 0; i--)
         {
-            if (i == 1) continue;
+            if (i == 1)
+            {
+                continue;
+            }
             BlockVec3 curr = ClientProxyCore.leakTrace.get(i);
             int nx = i - 2;
-            if (i > 2 && rand.nextInt(3) == 0) nx --;
+            if (i > 2 && rand.nextInt(3) == 0)
+            {
+                nx--;
+            }
             BlockVec3 vec;
-            if (i > 1) vec = ClientProxyCore.leakTrace.get(nx).clone();
+            if (i > 1)
+            {
+                vec = ClientProxyCore.leakTrace.get(nx).clone();
+            }
             else
             {
                 vec = curr.clone().translate(0, -2, 0);
@@ -671,7 +683,7 @@ public class TickHandlerClient
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();

@@ -155,7 +155,7 @@ public class RoomBoss extends SizedPiece
     {
         super.writeStructureToNBT(tagCompound);
 
-        if(this.chestPos != null)
+        if (this.chestPos != null)
         {
             tagCompound.putInt("chestX", this.chestPos.getX());
             tagCompound.putInt("chestY", this.chestPos.getY());

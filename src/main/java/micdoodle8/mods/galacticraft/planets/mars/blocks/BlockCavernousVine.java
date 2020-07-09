@@ -42,7 +42,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         private final int meta;
         private final String name;
 
-        private EnumVineType(int meta, String name)
+        EnumVineType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -54,6 +54,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         }
 
         private final static EnumVineType[] values = values();
+
         public static EnumVineType byId(int id)
         {
             return values[id % values.length];

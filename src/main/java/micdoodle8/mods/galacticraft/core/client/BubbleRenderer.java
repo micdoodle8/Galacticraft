@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
 import java.util.List;
 
 public class BubbleRenderer
@@ -49,7 +50,7 @@ public class BubbleRenderer
         Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.pushMatrix();
-        
+
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
         GlStateManager.disableLighting();
@@ -83,7 +84,7 @@ public class BubbleRenderer
             GL11.glScalef(dimension.getBubbleSize(), dimension.getBubbleSize(), dimension.getBubbleSize());
 
             Vector3 colorVec = dimension.getColor();
-            int color = ColorUtil.to32BitColor(30, (int)(colorVec.z * 255), (int)(colorVec.y * 255), (int)(colorVec.x * 255));
+            int color = ColorUtil.to32BitColor(30, (int) (colorVec.z * 255), (int) (colorVec.y * 255), (int) (colorVec.x * 255));
             ClientUtil.drawBakedModelColored(sphere, color);
 
             GL11.glPopMatrix();

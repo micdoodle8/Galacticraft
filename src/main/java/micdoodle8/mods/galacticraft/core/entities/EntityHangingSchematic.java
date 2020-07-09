@@ -52,7 +52,7 @@ public class EntityHangingSchematic extends HangingEntity
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        
+
         if (this.sendToClient)
         {
             this.sendToClient = false;
@@ -66,7 +66,7 @@ public class EntityHangingSchematic extends HangingEntity
             if (!this.world.isRemote && this.isAlive() && !this.onValidSurface())
             {
                 this.remove();
-                this.onBroken((Entity)null);
+                this.onBroken(null);
             }
         }
     }
@@ -105,7 +105,7 @@ public class EntityHangingSchematic extends HangingEntity
         {
             if (brokenEntity instanceof PlayerEntity)
             {
-                PlayerEntity entityplayer = (PlayerEntity)brokenEntity;
+                PlayerEntity entityplayer = (PlayerEntity) brokenEntity;
 
                 if (entityplayer.abilities.isCreativeMode)
                 {
@@ -127,9 +127,9 @@ public class EntityHangingSchematic extends HangingEntity
     public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch)
     {
         BlockPos blockpos = this.hangingPosition.add(x - this.posX, y - this.posY, z - this.posZ);
-        this.setPosition((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
+        this.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
@@ -139,9 +139,9 @@ public class EntityHangingSchematic extends HangingEntity
     public void sendToClient(World worldIn, BlockPos blockpos)
     {
         DimensionType dimID = GCCoreUtil.getDimensionID(worldIn);
-        GCCoreUtil.sendToAllAround(new PacketSimple(EnumSimplePacket.C_SPAWN_HANGING_SCHEMATIC, dimID, new Object[] { blockpos, this.getEntityId(), this.facingDirection.ordinal(), this.schematic }), worldIn, dimID, blockpos, 150D);
+        GCCoreUtil.sendToAllAround(new PacketSimple(EnumSimplePacket.C_SPAWN_HANGING_SCHEMATIC, dimID, new Object[]{blockpos, this.getEntityId(), this.facingDirection.ordinal(), this.schematic}), worldIn, dimID, blockpos, 150D);
     }
-    
+
     public void setSendToClient()
     {
         this.sendToClient = true;

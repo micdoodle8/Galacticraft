@@ -262,7 +262,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 
             final float x2 = (float) (this.posX + x1 + this.getMotion().x);
             final float z2 = (float) (this.posZ + z1 + this.getMotion().z);
-            Vector3 motionVec = new Vector3(x1 + (float)this.getMotion().x, y1 + (float)this.getMotion().y, z1 + (float)this.getMotion().z);
+            Vector3 motionVec = new Vector3(x1 + (float) this.getMotion().x, y1 + (float) this.getMotion().y, z1 + (float) this.getMotion().z);
             Vector3 d1 = new Vector3(y1 * 0.1F, -x1 * 0.1F, z1 * 0.1F).rotate(315 - this.rotationYaw, motionVec);
             Vector3 d2 = new Vector3(x1 * 0.1F, -z1 * 0.1F, y1 * 0.1F).rotate(315 - this.rotationYaw, motionVec);
             Vector3 d3 = new Vector3(-y1 * 0.1F, x1 * 0.1F, z1 * 0.1F).rotate(315 - this.rotationYaw, motionVec);
@@ -297,7 +297,10 @@ public class EntityTier3Rocket extends EntityTieredRocket
             return;
         }
 
-        if (this.ticksExisted % 2 == 0) return;
+        if (this.ticksExisted % 2 == 0)
+        {
+            return;
+        }
 
         y2 += 1.6D;
         double x1 = motionVec.x;

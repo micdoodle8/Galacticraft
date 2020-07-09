@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.LazyOptional;
 public abstract class TileBaseUniversalConductor extends TileBaseConductor implements net.minecraftforge.energy.IEnergyStorage
 {
     protected boolean isAddedToEnergyNet;
-    private float IC2surplusJoules = 0F;
+    private final float IC2surplusJoules = 0F;
 
     public TileBaseUniversalConductor(TileEntityType<?> type)
     {
@@ -207,7 +207,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
 //
 //        return true;
 //    }
-    
+
     //ForgeEnergy
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate)
@@ -221,7 +221,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
         return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
     }
-    
+
     //ForgeEnergy OR BuildCraft (method name clash!)
     @Override
     public boolean canReceive()
@@ -252,7 +252,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int extractEnergy(int maxExtract, boolean simulate)
     {
-         return 0;
+        return 0;
     }
 
     //ForgeEnergy
@@ -423,7 +423,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
 //        }
 //        return this.getNetwork().getRequest(this) / EnergyConfigHandler.MEKANISM_RATIO;
 //    }
-    
+
 //    @Override
 //    public boolean hasCapability(Capability<?> capability, Direction facing)
 //    {

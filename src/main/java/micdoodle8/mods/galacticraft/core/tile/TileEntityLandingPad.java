@@ -51,7 +51,10 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
     {
         if (!this.initialised)
         {
-            if (!this.world.isRemote) this.onCreate(this.world, this.getPos());
+            if (!this.world.isRemote)
+            {
+                this.onCreate(this.world, this.getPos());
+            }
             this.initialiseMultiTiles(this.getPos(), this.world);
             this.initialised = true;
         }
@@ -64,7 +67,7 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
 
             for (final Object o : list)
             {
-                if (o instanceof IDockable && ((Entity)o).isAlive())
+                if (o instanceof IDockable && ((Entity) o).isAlive())
                 {
                     final IDockable fuelable = (IDockable) o;
 
@@ -124,7 +127,7 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
     {
         return EnumBlockMultiType.ROCKET_PAD;
     }
-    
+
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {
@@ -133,7 +136,10 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
         {
             for (int z = -1; z < 2; z++)
             {
-                if (x == 0 && z == 0) continue;
+                if (x == 0 && z == 0)
+                {
+                    continue;
+                }
                 positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }
@@ -198,24 +204,26 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
 
         for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
         {
-        	this.testConnectedTile(x, this.getPos().getZ() - 2, connectedTiles);
-        	this.testConnectedTile(x, this.getPos().getZ() + 2, connectedTiles);
+            this.testConnectedTile(x, this.getPos().getZ() - 2, connectedTiles);
+            this.testConnectedTile(x, this.getPos().getZ() + 2, connectedTiles);
         }
 
-        for (int z = this.getPos().getZ() -1; z < this.getPos().getZ() + 2; z++)
-                {
-        	this.testConnectedTile(this.getPos().getX() - 2, z, connectedTiles);
-        	this.testConnectedTile(this.getPos().getX() + 2, z, connectedTiles);
+        for (int z = this.getPos().getZ() - 1; z < this.getPos().getZ() + 2; z++)
+        {
+            this.testConnectedTile(this.getPos().getX() - 2, z, connectedTiles);
+            this.testConnectedTile(this.getPos().getX() + 2, z, connectedTiles);
         }
 
         return connectedTiles;
     }
-    
+
     private void testConnectedTile(int x, int z, HashSet<ILandingPadAttachable> connectedTiles)
     {
         BlockPos testPos = new BlockPos(x, this.getPos().getY(), z);
         if (!this.world.isBlockLoaded(testPos))
+        {
             return;
+        }
 
         final TileEntity tile = this.world.getTileEntity(testPos);
 

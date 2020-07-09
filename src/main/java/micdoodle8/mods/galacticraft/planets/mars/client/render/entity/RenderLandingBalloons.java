@@ -76,7 +76,7 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
 
         GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
         GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-        ClientUtil.drawBakedModel(this.balloonModel);
+        ClientUtil.drawBakedModel(balloonModel);
         GlStateManager.popMatrix();
 
         if (entity.posY >= 500.0F)
@@ -89,7 +89,7 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
         }
         RenderHelper.enableStandardItemLighting();
     }
-    
+
     @Override
     public boolean shouldRender(EntityLandingBalloons lander, ICamera camera, double camX, double camY, double camZ)
     {

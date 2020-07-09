@@ -18,7 +18,7 @@ public class ContainerDeconstructor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.DECONSTRUCTOR)
     public static ContainerType<ContainerDeconstructor> TYPE;
 
-    private IInventory inventory;
+    private final IInventory inventory;
 
     public ContainerDeconstructor(int containerId, PlayerInventory playerInv)
     {
@@ -81,7 +81,7 @@ public class ContainerDeconstructor extends Container
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
-        Slot var3 = (Slot) this.inventorySlots.get(par1);
+        Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {

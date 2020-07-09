@@ -18,7 +18,7 @@ public class ContainerFuelLoader extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.FUEL_LOADER)
     public static ContainerType<ContainerFuelLoader> TYPE;
 
-    private TileEntityFuelLoader fuelLoader;
+    private final TileEntityFuelLoader fuelLoader;
 
     public ContainerFuelLoader(int containerId, PlayerInventory playerInv, TileEntityFuelLoader fuelLoader)
     {

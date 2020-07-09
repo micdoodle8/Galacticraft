@@ -461,7 +461,7 @@ public class GuiCelestialSelection extends Screen
                 if (this.isValid(this.renamingString + pastestring))
                 {
                     this.renamingString = this.renamingString + pastestring;
-                    this.renamingString = this.renamingString.substring(0, Math.min(String.valueOf(this.renamingString).length(), MAX_SPACE_STATION_NAME_LENGTH));
+                    this.renamingString = this.renamingString.substring(0, Math.min(this.renamingString.length(), MAX_SPACE_STATION_NAME_LENGTH));
                 }
 
                 return true;
@@ -481,13 +481,17 @@ public class GuiCelestialSelection extends Screen
     }
 
     @Override
-    public boolean charTyped(char character, int modifiers) {
-        if (renamingSpaceStation && SharedConstants.isAllowedCharacter(character)) {
+    public boolean charTyped(char character, int modifiers)
+    {
+        if (renamingSpaceStation && SharedConstants.isAllowedCharacter(character))
+        {
             this.renamingString = this.renamingString + character;
             this.renamingString = this.renamingString.substring(0, Math.min(this.renamingString.length(), MAX_SPACE_STATION_NAME_LENGTH));
 
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -644,7 +648,7 @@ public class GuiCelestialSelection extends Screen
                     {
                         this.minecraft.gameSettings.thirdPersonView = 0;
                     }
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { dimensionID }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{dimensionID}));
                     minecraft.displayGuiScreen(new GuiTeleporting(dimensionID));
                 }
                 catch (Exception e)
@@ -668,8 +672,8 @@ public class GuiCelestialSelection extends Screen
     public boolean mouseDragged(double x, double y, int activeButton, double relOffsetX, double relOffsetY)
     {
         // TODO Test celestial selection mouse accuracy
-        int mouseX = (int) (x / (double)this.minecraft.mainWindow.getScaledWidth() / (double)this.minecraft.mainWindow.getWidth());
-        int mouseY = (int) (y / (double)this.minecraft.mainWindow.getScaledHeight() / (double)this.minecraft.mainWindow.getHeight());
+        int mouseX = (int) (x / (double) this.minecraft.mainWindow.getScaledWidth() / (double) this.minecraft.mainWindow.getWidth());
+        int mouseY = (int) (y / (double) this.minecraft.mainWindow.getScaledHeight() / (double) this.minecraft.mainWindow.getHeight());
 
         if (mouseDragging && lastMovePosX != -1 && activeButton == 0)
         {
@@ -753,7 +757,7 @@ public class GuiCelestialSelection extends Screen
     {
         super.mouseClicked(x, y, button);
         boolean clickHandled = false;
-        
+
         final int LHS = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE;
         final int RHS = width - LHS;
         final int TOP = LHS;
@@ -775,7 +779,7 @@ public class GuiCelestialSelection extends Screen
                     {
                         if (recipe.matches(this.minecraft.player, false) || this.minecraft.player.abilities.isCreativeMode)
                         {
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.selectedBody.getDimensionID() }));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.selectedBody.getDimensionID()}));
                             //Zoom in on Overworld to show the new SpaceStation if not already zoomed
                             if (!this.isZoomed())
                             {
@@ -821,8 +825,8 @@ public class GuiCelestialSelection extends Screen
         // Need unscaled mouse coords
 //        int mouseX = Mouse.getX();
 //        int mouseY = Mouse.getY() * -1 + Minecraft.getInstance().displayHeight - 1;
-        int mouseX = (int) (x / (double)this.minecraft.mainWindow.getScaledWidth() / (double)this.minecraft.mainWindow.getWidth());
-        int mouseY = (int) (y / (double)this.minecraft.mainWindow.getScaledHeight() / (double)this.minecraft.mainWindow.getHeight());
+        int mouseX = (int) (x / (double) this.minecraft.mainWindow.getScaledWidth() / (double) this.minecraft.mainWindow.getWidth());
+        int mouseY = (int) (y / (double) this.minecraft.mainWindow.getScaledHeight() / (double) this.minecraft.mainWindow.getHeight());
 
         if (this.selectedBody instanceof Satellite)
         {
@@ -846,7 +850,7 @@ public class GuiCelestialSelection extends Screen
                         {
                             this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(strName).setStationName(this.renamingString);
 //	                    	this.spaceStationNames.put(strName, this.renamingString);
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.renamingString, spacestationID }));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.renamingString, spacestationID}));
                         }
                         this.renamingSpaceStation = false;
                     }
@@ -1007,13 +1011,13 @@ public class GuiCelestialSelection extends Screen
         if (!clickHandled)
         {
             List<CelestialBody> children = this.getChildren(this.isZoomed() && !(this.selectedParent instanceof Planet) ? this.selectedBody : this.selectedParent);
-    
+
             yPos = TOP + 50;
             for (CelestialBody child : children)
             {
                 clickHandled = this.testClicked(child, child.equals(this.selectedBody) ? 5 : 0, yPos, mouseX, mouseY/*x, y*/, false);
                 yPos += 14;
-    
+
                 if (!clickHandled && !this.isZoomed() && child.equals(this.selectedBody))
                 {
                     List<CelestialBody> grandchildren = this.getChildren(child);
@@ -1028,13 +1032,17 @@ public class GuiCelestialSelection extends Screen
                         yPos += 14;
                         gOffset += 14;
                         if (clickHandled)
+                        {
                             break;
+                        }
                     }
-                    yPos += this.animateGrandchildren - gOffset; 
+                    yPos += this.animateGrandchildren - gOffset;
                 }
-    
+
                 if (clickHandled)
+                {
                     break;
+                }
             }
         }
 
@@ -1060,7 +1068,8 @@ public class GuiCelestialSelection extends Screen
                             {
 //                                this.unselectCelestialBody();
                             }
-                            else */if (this.isZoomed())
+                            else */
+                            if (this.isZoomed())
                             {
                                 this.selectionState = EnumSelection.SELECTED;
                             }
@@ -1184,7 +1193,10 @@ public class GuiCelestialSelection extends Screen
                 this.selectedBody = body;
                 this.ticksSinceSelectionF = 0;
                 this.ticksSinceSelection = 0;
-                if (grandchild) this.selectionState = EnumSelection.ZOOMED;
+                if (grandchild)
+                {
+                    this.selectionState = EnumSelection.ZOOMED;
+                }
                 if (this.isZoomed())
                 {
                     this.ticksSinceMenuOpenF = 0;
@@ -1300,9 +1312,11 @@ public class GuiCelestialSelection extends Screen
 
         this.drawSelectionCursor(fb, worldMatrix);
 
-        try {
+        try
+        {
             this.drawButtons(mousePosX, mousePosY);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             if (!this.errorLogged)
             {
@@ -1346,7 +1360,7 @@ public class GuiCelestialSelection extends Screen
                 this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
                 float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelectionF / 2.0F) * 0.5F + 0.5F) : 1.0F;
                 GL11.glColor4f(1.0F, 1.0F, 0.0F, 1 * colMod);
-                int width = (int)Math.floor((getWidthForCelestialBody(this.selectedBody) / 2.0) * (this.selectedBody instanceof IChildBody ? 9.0 : 30.0));
+                int width = (int) Math.floor((getWidthForCelestialBody(this.selectedBody) / 2.0) * (this.selectedBody instanceof IChildBody ? 9.0 : 30.0));
 
                 this.blit(-width, -width, width * 2, width * 2, 266, 29, 100, 100, false, false);
             }
@@ -1384,7 +1398,10 @@ public class GuiCelestialSelection extends Screen
 
     protected Vector3 getCelestialBodyPosition(CelestialBody cBody)
     {
-        if (cBody == null) return new Vector3(0.0F, 0.0F, 0.0F);
+        if (cBody == null)
+        {
+            return new Vector3(0.0F, 0.0F, 0.0F);
+        }
         if (cBody instanceof Star)
         {
             if (cBody.getUnlocalizedName().equalsIgnoreCase("star.sol"))
@@ -1531,7 +1548,7 @@ public class GuiCelestialSelection extends Screen
                 this.blit(LHS, BOT - 13, 88, 13, 0, 392, 148, 22, false, true);
                 this.blit(RHS - 88, BOT - 13, 88, 13, 0, 392, 148, 22, true, true);
                 int menuTopLeft = TOP - 115 + height / 2 - 4;
-                int posX = LHS + Math.min((int)this.ticksSinceSelectionF * 10, 133) - 134;
+                int posX = LHS + Math.min((int) this.ticksSinceSelectionF * 10, 133) - 134;
                 int posX2 = (int) (LHS + Math.min(this.ticksSinceSelectionF * 1.25F, 15) - 15);
                 int fontPosY = menuTopLeft + GuiCelestialSelection.BORDER_EDGE_SIZE + this.font.FONT_HEIGHT / 2 - 2;
                 this.blit(posX, menuTopLeft + 12, 133, 196, 0, 0, 266, 392, false, false);
@@ -1607,7 +1624,7 @@ public class GuiCelestialSelection extends Screen
             this.font.drawString(str, LHS + 40 - font.getStringWidth(str) / 2, TOP + 1, WHITE);
 
             int scale = (int) Math.min(95, this.ticksSinceMenuOpenF * 12.0F);
-            boolean planetZoomedNotMoon = this.isZoomed() && !(this.selectedParent instanceof Planet); 
+            boolean planetZoomedNotMoon = this.isZoomed() && !(this.selectedParent instanceof Planet);
 
             // Parent frame:
             GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
@@ -1831,7 +1848,7 @@ public class GuiCelestialSelection extends Screen
 
                                 Iterator<ItemStack> it = items.iterator();
                                 int count = 0;
-                                int toRenderIndex = ((int)this.ticksSinceMenuOpenF / 20) % items.size();
+                                int toRenderIndex = ((int) this.ticksSinceMenuOpenF / 20) % items.size();
                                 ItemStack toRender = null;
                                 while (it.hasNext())
                                 {
@@ -2025,7 +2042,7 @@ public class GuiCelestialSelection extends Screen
                     int sliderPos = this.zoomTooltipPos;
                     if (zoomTooltipPos != 38)
                     {
-                        sliderPos = Math.min((int)this.ticksSinceSelectionF * 2, 38);
+                        sliderPos = Math.min((int) this.ticksSinceSelectionF * 2, 38);
                         this.zoomTooltipPos = sliderPos;
                     }
 
@@ -2119,7 +2136,7 @@ public class GuiCelestialSelection extends Screen
         for (int i = 0; i < children.size(); i++)
         {
             CelestialBody child = children.get(i);
-            int xOffset = xOffsetBase + (child.equals(this.selectedBody) ? 5 : 0);  
+            int xOffset = xOffsetBase + (child.equals(this.selectedBody) ? 5 : 0);
             final int scale = (int) Math.min(95.0F, Math.max(0.0F, (this.ticksSinceMenuOpenF * 25.0F) - 95 * i));
 
             this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
@@ -2143,7 +2160,7 @@ public class GuiCelestialSelection extends Screen
                 int color = 14737632;
                 this.font.drawString(child.getLocalizedName(), 7 + xOffset, yOffsetBase + yOffset + 2, color);
             }
-            
+
             yOffset += 14;
             if (recursive && child.equals(this.selectedBody))
             {
@@ -2429,7 +2446,7 @@ public class GuiCelestialSelection extends Screen
 
     /**
      * Returns the transparency of the selected body.
-     *
+     * <p>
      * Hidden bodies will return 0.0, opaque bodies will return 1.0, and ones fading in/out will pass between those two values
      */
     public float getAlpha(CelestialBody body)
@@ -2476,7 +2493,7 @@ public class GuiCelestialSelection extends Screen
     public static class StationDataGUI
     {
         private String stationName;
-        private DimensionType stationDimensionID;
+        private final DimensionType stationDimensionID;
 
         public StationDataGUI(String stationName, DimensionType stationDimensionID)
         {

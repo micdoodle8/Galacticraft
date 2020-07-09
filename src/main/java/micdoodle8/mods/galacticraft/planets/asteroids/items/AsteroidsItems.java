@@ -15,45 +15,84 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class AsteroidsItems
 {
-    @ObjectHolder(AsteroidItemNames.grapple) public static Item grapple;
-    @ObjectHolder(AsteroidItemNames.rocketTierThree) public static Item rocketTierThree;
-    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo1) public static Item rocketTierThreeCargo1;
-    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo2) public static Item rocketTierThreeCargo2;
-    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo3) public static Item rocketTierThreeCargo3;
-    @ObjectHolder(AsteroidItemNames.rocketTierThreeCreative) public static Item rocketTierThreeCreative;
-    @ObjectHolder(AsteroidItemNames.astroMiner) public static Item astroMiner;
-    @ObjectHolder(AsteroidItemNames.thermalHelm) public static Item thermalHelm;
-    @ObjectHolder(AsteroidItemNames.thermalChestplate) public static Item thermalChestplate;
-    @ObjectHolder(AsteroidItemNames.thermalLeggings) public static Item thermalLeggings;
-    @ObjectHolder(AsteroidItemNames.thermalBoots) public static Item thermalBoots;
-    @ObjectHolder(AsteroidItemNames.methaneCanister) public static Item methaneCanister;
-    @ObjectHolder(AsteroidItemNames.canisterLOX) public static Item canisterLOX;
-    @ObjectHolder(AsteroidItemNames.canisterLN2) public static Item canisterLN2;
-    @ObjectHolder(AsteroidItemNames.canisterLAr) public static Item canisterLAr;
-    @ObjectHolder(AsteroidItemNames.atmosphericValve) public static Item atmosphericValve;
-    @ObjectHolder(AsteroidItemNames.heavyNoseCone) public static Item heavyNoseCone;
-    @ObjectHolder(AsteroidItemNames.orionDrive) public static Item orionDrive;
-    @ObjectHolder(AsteroidItemNames.titaniumHelmet) public static Item titaniumHelmet;
-    @ObjectHolder(AsteroidItemNames.titaniumChestplate) public static Item titaniumChestplate;
-    @ObjectHolder(AsteroidItemNames.titaniumLeggings) public static Item titaniumLeggings;
-    @ObjectHolder(AsteroidItemNames.titaniumBoots) public static Item titaniumBoots;
-    @ObjectHolder(AsteroidItemNames.titaniumAxe) public static Item titaniumAxe;
-    @ObjectHolder(AsteroidItemNames.titaniumPickaxe) public static Item titaniumPickaxe;
-    @ObjectHolder(AsteroidItemNames.titaniumSpade) public static Item titaniumSpade;
-    @ObjectHolder(AsteroidItemNames.titaniumHoe) public static Item titaniumHoe;
-    @ObjectHolder(AsteroidItemNames.titaniumSword) public static Item titaniumSword;
-    @ObjectHolder(AsteroidItemNames.strangeSeed1) public static Item strangeSeed1;
-    @ObjectHolder(AsteroidItemNames.strangeSeed2) public static Item strangeSeed2;
-    @ObjectHolder(AsteroidItemNames.ingotTitanium) public static Item ingotTitanium;
-    @ObjectHolder(AsteroidItemNames.engineT2) public static Item engineT2;
-    @ObjectHolder(AsteroidItemNames.rocketFinsT2) public static Item rocketFinsT2;
-    @ObjectHolder(AsteroidItemNames.shardIron) public static Item shardIron;
-    @ObjectHolder(AsteroidItemNames.shardTitanium) public static Item shardTitanium;
-    @ObjectHolder(AsteroidItemNames.reinforcedPlateT3) public static Item reinforcedPlateT3;
-    @ObjectHolder(AsteroidItemNames.compressedTitanium) public static Item compressedTitanium;
-    @ObjectHolder(AsteroidItemNames.thermalCloth) public static Item thermalCloth;
-    @ObjectHolder(AsteroidItemNames.beamCore) public static Item beamCore;
-    @ObjectHolder(AsteroidItemNames.dustTitanium) public static Item dustTitanium;
+    @ObjectHolder(AsteroidItemNames.grapple)
+    public static Item grapple;
+    @ObjectHolder(AsteroidItemNames.rocketTierThree)
+    public static Item rocketTierThree;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo1)
+    public static Item rocketTierThreeCargo1;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo2)
+    public static Item rocketTierThreeCargo2;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCargo3)
+    public static Item rocketTierThreeCargo3;
+    @ObjectHolder(AsteroidItemNames.rocketTierThreeCreative)
+    public static Item rocketTierThreeCreative;
+    @ObjectHolder(AsteroidItemNames.astroMiner)
+    public static Item astroMiner;
+    @ObjectHolder(AsteroidItemNames.thermalHelm)
+    public static Item thermalHelm;
+    @ObjectHolder(AsteroidItemNames.thermalChestplate)
+    public static Item thermalChestplate;
+    @ObjectHolder(AsteroidItemNames.thermalLeggings)
+    public static Item thermalLeggings;
+    @ObjectHolder(AsteroidItemNames.thermalBoots)
+    public static Item thermalBoots;
+    @ObjectHolder(AsteroidItemNames.methaneCanister)
+    public static Item methaneCanister;
+    @ObjectHolder(AsteroidItemNames.canisterLOX)
+    public static Item canisterLOX;
+    @ObjectHolder(AsteroidItemNames.canisterLN2)
+    public static Item canisterLN2;
+    @ObjectHolder(AsteroidItemNames.canisterLAr)
+    public static Item canisterLAr;
+    @ObjectHolder(AsteroidItemNames.atmosphericValve)
+    public static Item atmosphericValve;
+    @ObjectHolder(AsteroidItemNames.heavyNoseCone)
+    public static Item heavyNoseCone;
+    @ObjectHolder(AsteroidItemNames.orionDrive)
+    public static Item orionDrive;
+    @ObjectHolder(AsteroidItemNames.titaniumHelmet)
+    public static Item titaniumHelmet;
+    @ObjectHolder(AsteroidItemNames.titaniumChestplate)
+    public static Item titaniumChestplate;
+    @ObjectHolder(AsteroidItemNames.titaniumLeggings)
+    public static Item titaniumLeggings;
+    @ObjectHolder(AsteroidItemNames.titaniumBoots)
+    public static Item titaniumBoots;
+    @ObjectHolder(AsteroidItemNames.titaniumAxe)
+    public static Item titaniumAxe;
+    @ObjectHolder(AsteroidItemNames.titaniumPickaxe)
+    public static Item titaniumPickaxe;
+    @ObjectHolder(AsteroidItemNames.titaniumSpade)
+    public static Item titaniumSpade;
+    @ObjectHolder(AsteroidItemNames.titaniumHoe)
+    public static Item titaniumHoe;
+    @ObjectHolder(AsteroidItemNames.titaniumSword)
+    public static Item titaniumSword;
+    @ObjectHolder(AsteroidItemNames.strangeSeed1)
+    public static Item strangeSeed1;
+    @ObjectHolder(AsteroidItemNames.strangeSeed2)
+    public static Item strangeSeed2;
+    @ObjectHolder(AsteroidItemNames.ingotTitanium)
+    public static Item ingotTitanium;
+    @ObjectHolder(AsteroidItemNames.engineT2)
+    public static Item engineT2;
+    @ObjectHolder(AsteroidItemNames.rocketFinsT2)
+    public static Item rocketFinsT2;
+    @ObjectHolder(AsteroidItemNames.shardIron)
+    public static Item shardIron;
+    @ObjectHolder(AsteroidItemNames.shardTitanium)
+    public static Item shardTitanium;
+    @ObjectHolder(AsteroidItemNames.reinforcedPlateT3)
+    public static Item reinforcedPlateT3;
+    @ObjectHolder(AsteroidItemNames.compressedTitanium)
+    public static Item compressedTitanium;
+    @ObjectHolder(AsteroidItemNames.thermalCloth)
+    public static Item thermalCloth;
+    @ObjectHolder(AsteroidItemNames.beamCore)
+    public static Item beamCore;
+    @ObjectHolder(AsteroidItemNames.dustTitanium)
+    public static Item dustTitanium;
 
 //    public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 4, 760, 14.0F, 4.0F, 16);
 //    public static ArmorItem.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 7, 10, 5 }, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
@@ -68,7 +107,8 @@ public class AsteroidsItems
         register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
     }
 
-    public static Item.Properties defaultBuilder() {
+    public static Item.Properties defaultBuilder()
+    {
         return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
     }
 

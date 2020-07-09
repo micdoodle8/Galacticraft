@@ -18,7 +18,7 @@ public class ContainerOxygenCollector extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_COLLECTOR)
     public static ContainerType<ContainerOxygenCollector> TYPE;
 
-    private TileEntityOxygenCollector collector;
+    private final TileEntityOxygenCollector collector;
 
     public ContainerOxygenCollector(int containerId, PlayerInventory playerInv, TileEntityOxygenCollector collector)
     {

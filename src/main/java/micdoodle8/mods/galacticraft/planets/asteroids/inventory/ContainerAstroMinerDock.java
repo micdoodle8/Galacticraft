@@ -18,7 +18,7 @@ public class ContainerAstroMinerDock extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.ASTRO_MINER_DOCK)
     public static ContainerType<ContainerAstroMinerDock> TYPE;
 
-    private TileEntityMinerBase minerBase;
+    private final TileEntityMinerBase minerBase;
 
     public ContainerAstroMinerDock(int containerId, PlayerInventory playerInv, TileEntityMinerBase minerBase)
     {

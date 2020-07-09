@@ -22,32 +22,56 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Constants.MOD_ID_PLANETS)
 public class VenusBlocks
 {
-//    @ObjectHolder(VenusBlockNames.venusBlock) public static Block venusBlock;
-    @ObjectHolder(VenusBlockNames.spout) public static Block spout;
-    @ObjectHolder(VenusBlockNames.bossSpawner) public static Block bossSpawner;
-    @ObjectHolder(VenusBlockNames.treasureChestTier3) public static Block treasureChestTier3;
-    @ObjectHolder(VenusBlockNames.torchWeb) public static Block torchWeb;
-//    public static Block sulphuricAcid; TODO
-    @ObjectHolder(VenusBlockNames.geothermalGenerator) public static Block geothermalGenerator;
-    @ObjectHolder(VenusBlockNames.crashedProbe) public static Block crashedProbe;
-    @ObjectHolder(VenusBlockNames.scorchedRock) public static Block scorchedRock;
-    @ObjectHolder(VenusBlockNames.solarArrayModule) public static Block solarArrayModule;
-    @ObjectHolder(VenusBlockNames.solarArrayController) public static Block solarArrayController;
-    @ObjectHolder(VenusBlockNames.laserTurret) public static Block laserTurret;
-    @ObjectHolder(VenusBlockNames.rockSoft) public static Block rockSoft;
-    @ObjectHolder(VenusBlockNames.rockHard) public static Block rockHard;
-    @ObjectHolder(VenusBlockNames.rockMagma) public static Block rockMagma;
-    @ObjectHolder(VenusBlockNames.rockVolcanicDeposit) public static Block rockVolcanicDeposit;
-    @ObjectHolder(VenusBlockNames.dungeonBrick1) public static Block dungeonBrick1;
-    @ObjectHolder(VenusBlockNames.dungeonBrick2) public static Block dungeonBrick2;
-    @ObjectHolder(VenusBlockNames.oreAluminum) public static Block oreAluminum;
-    @ObjectHolder(VenusBlockNames.oreCopper) public static Block oreCopper;
-    @ObjectHolder(VenusBlockNames.oreGalena) public static Block oreGalena;
-    @ObjectHolder(VenusBlockNames.oreQuartz) public static Block oreQuartz;
-    @ObjectHolder(VenusBlockNames.oreSilicon) public static Block oreSilicon;
-    @ObjectHolder(VenusBlockNames.oreTin) public static Block oreTin;
-    @ObjectHolder(VenusBlockNames.leadBlock) public static Block leadBlock;
-    @ObjectHolder(VenusBlockNames.oreSolarDust) public static Block oreSolarDust;
+    //    @ObjectHolder(VenusBlockNames.venusBlock) public static Block venusBlock;
+    @ObjectHolder(VenusBlockNames.spout)
+    public static Block spout;
+    @ObjectHolder(VenusBlockNames.bossSpawner)
+    public static Block bossSpawner;
+    @ObjectHolder(VenusBlockNames.treasureChestTier3)
+    public static Block treasureChestTier3;
+    @ObjectHolder(VenusBlockNames.torchWeb)
+    public static Block torchWeb;
+    //    public static Block sulphuricAcid; TODO
+    @ObjectHolder(VenusBlockNames.geothermalGenerator)
+    public static Block geothermalGenerator;
+    @ObjectHolder(VenusBlockNames.crashedProbe)
+    public static Block crashedProbe;
+    @ObjectHolder(VenusBlockNames.scorchedRock)
+    public static Block scorchedRock;
+    @ObjectHolder(VenusBlockNames.solarArrayModule)
+    public static Block solarArrayModule;
+    @ObjectHolder(VenusBlockNames.solarArrayController)
+    public static Block solarArrayController;
+    @ObjectHolder(VenusBlockNames.laserTurret)
+    public static Block laserTurret;
+    @ObjectHolder(VenusBlockNames.rockSoft)
+    public static Block rockSoft;
+    @ObjectHolder(VenusBlockNames.rockHard)
+    public static Block rockHard;
+    @ObjectHolder(VenusBlockNames.rockMagma)
+    public static Block rockMagma;
+    @ObjectHolder(VenusBlockNames.rockVolcanicDeposit)
+    public static Block rockVolcanicDeposit;
+    @ObjectHolder(VenusBlockNames.dungeonBrick1)
+    public static Block dungeonBrick1;
+    @ObjectHolder(VenusBlockNames.dungeonBrick2)
+    public static Block dungeonBrick2;
+    @ObjectHolder(VenusBlockNames.oreAluminum)
+    public static Block oreAluminum;
+    @ObjectHolder(VenusBlockNames.oreCopper)
+    public static Block oreCopper;
+    @ObjectHolder(VenusBlockNames.oreGalena)
+    public static Block oreGalena;
+    @ObjectHolder(VenusBlockNames.oreQuartz)
+    public static Block oreQuartz;
+    @ObjectHolder(VenusBlockNames.oreSilicon)
+    public static Block oreSilicon;
+    @ObjectHolder(VenusBlockNames.oreTin)
+    public static Block oreTin;
+    @ObjectHolder(VenusBlockNames.leadBlock)
+    public static Block leadBlock;
+    @ObjectHolder(VenusBlockNames.oreSolarDust)
+    public static Block oreSolarDust;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)

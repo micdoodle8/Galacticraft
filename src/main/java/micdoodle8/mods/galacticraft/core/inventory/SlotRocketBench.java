@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 public class SlotRocketBench extends Slot
 {
     private final int index;
-//    private final BlockPos pos;
+    //    private final BlockPos pos;
     private final PlayerEntity player;
 
     public SlotRocketBench(IInventory par2IInventory, int par3, int par4, int par5, PlayerEntity player)
@@ -42,13 +42,17 @@ public class SlotRocketBench extends Slot
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         if (par1ItemStack == null)
+        {
             return false;
+        }
 
         List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getRocketT1Recipes();
         for (INasaWorkbenchRecipe recipe : recipes)
         {
             if (ItemStack.areItemsEqual(par1ItemStack, recipe.getRecipeInput().get(this.index)))
+            {
                 return true;
+            }
         }
         return false;
     }

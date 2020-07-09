@@ -52,12 +52,12 @@ public abstract class DimensionSpaceStation extends DimensionSpace
 //        spinManager.updateSpin();
     }
 
-	@OnlyIn(Dist.CLIENT)
-	public abstract void setSpinDeltaPerTick(float angle);
+    @OnlyIn(Dist.CLIENT)
+    public abstract void setSpinDeltaPerTick(float angle);
 
     @OnlyIn(Dist.CLIENT)
     public abstract float getSkyRotation();
 
     @OnlyIn(Dist.CLIENT)
-	public abstract void createSkyProvider();
+    public abstract void createSkyProvider();
 }

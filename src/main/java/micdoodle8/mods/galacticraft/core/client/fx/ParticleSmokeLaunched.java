@@ -22,11 +22,14 @@ public class ParticleSmokeLaunched extends ParticleLaunchSmoke
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             return new ParticleSmokeLaunched(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteSet);
         }
     }

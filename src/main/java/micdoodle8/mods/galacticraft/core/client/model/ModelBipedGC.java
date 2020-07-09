@@ -25,7 +25,10 @@ public class ModelBipedGC
 {
     public static void setRotationAngles(BipedModel<?> biped, float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-        if (!(par7Entity instanceof PlayerEntity)) return;
+        if (!(par7Entity instanceof PlayerEntity))
+        {
+            return;
+        }
         final PlayerEntity player = (PlayerEntity) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
         final float floatPI = 3.1415927F;

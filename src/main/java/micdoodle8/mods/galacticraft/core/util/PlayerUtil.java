@@ -140,19 +140,19 @@ public class PlayerUtil
             }
             if (!profile.getProperties().containsKey("textures"))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, dimID, new Object[] { strName }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_PLAYERSKIN, dimID, new Object[]{strName}));
             }
         }
         return profile;
     }
-    
+
     public static ServerPlayerEntity getPlayerByUUID(UUID theUUID)
     {
         List<ServerPlayerEntity> players = PlayerUtil.getPlayersOnline();
         ServerPlayerEntity entityplayermp;
         for (int i = players.size() - 1; i >= 0; --i)
         {
-            entityplayermp = (ServerPlayerEntity) players.get(i);
+            entityplayermp = players.get(i);
 
             if (entityplayermp.getUniqueID().equals(theUUID))
             {
@@ -161,8 +161,8 @@ public class PlayerUtil
         }
         return null;
     }
-    
-    
+
+
     public static List<ServerPlayerEntity> getPlayersOnline()
     {
         return GCCoreUtil.getServer().getPlayerList().getPlayers();
@@ -173,13 +173,19 @@ public class PlayerUtil
     {
         return player.server.getPlayerList().getPlayers().contains(player);
     }
-    
+
     public static String getName(PlayerEntity player)
     {
-        if (player == null) return null;
-        
-        if (player.getGameProfile() == null) return null;
-        
+        if (player == null)
+        {
+            return null;
+        }
+
+        if (player.getGameProfile() == null)
+        {
+            return null;
+        }
+
         return player.getGameProfile().getName();
     }
 }

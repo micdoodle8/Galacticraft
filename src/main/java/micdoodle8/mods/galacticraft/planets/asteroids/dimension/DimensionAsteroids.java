@@ -43,7 +43,7 @@ import java.util.TreeMap;
 public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
-    private HashSet<AsteroidData> asteroids = new HashSet<>();
+    private final HashSet<AsteroidData> asteroids = new HashSet<>();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
     private double solarMultiplier = -1D;
@@ -140,12 +140,17 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
         return 96;
     }
 
+    @Override
     @Nullable
-    public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid) {
-        for(int i = chunkPosIn.getXStart(); i <= chunkPosIn.getXEnd(); ++i) {
-            for(int j = chunkPosIn.getZStart(); j <= chunkPosIn.getZEnd(); ++j) {
+    public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid)
+    {
+        for (int i = chunkPosIn.getXStart(); i <= chunkPosIn.getXEnd(); ++i)
+        {
+            for (int j = chunkPosIn.getZStart(); j <= chunkPosIn.getZEnd(); ++j)
+            {
                 BlockPos blockpos = this.findSpawn(i, j, checkValid);
-                if (blockpos != null) {
+                if (blockpos != null)
+                {
                     return blockpos;
                 }
             }
@@ -154,29 +159,42 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
         return null;
     }
 
+    @Override
     @Nullable
-    public BlockPos findSpawn(int posX, int posZ, boolean checkValid) {
+    public BlockPos findSpawn(int posX, int posZ, boolean checkValid)
+    {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
         Biome biome = this.world.getBiome(blockpos$mutableblockpos);
         BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
-        if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN)) {
+        if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN))
+        {
             return null;
-        } else {
+        }
+        else
+        {
             Chunk chunk = this.world.getChunk(posX >> 4, posZ >> 4);
             int i = chunk.getTopBlockY(Heightmap.Type.MOTION_BLOCKING, posX & 15, posZ & 15);
-            if (i < 0) {
+            if (i < 0)
+            {
                 return null;
-            } else if (chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, posX & 15, posZ & 15) > chunk.getTopBlockY(Heightmap.Type.OCEAN_FLOOR, posX & 15, posZ & 15)) {
+            }
+            else if (chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, posX & 15, posZ & 15) > chunk.getTopBlockY(Heightmap.Type.OCEAN_FLOOR, posX & 15, posZ & 15))
+            {
                 return null;
-            } else {
-                for(int j = i + 1; j >= 0; --j) {
+            }
+            else
+            {
+                for (int j = i + 1; j >= 0; --j)
+                {
                     blockpos$mutableblockpos.setPos(posX, j, posZ);
                     BlockState blockstate1 = this.world.getBlockState(blockpos$mutableblockpos);
-                    if (!blockstate1.getFluidState().isEmpty()) {
+                    if (!blockstate1.getFluidState().isEmpty())
+                    {
                         break;
                     }
 
-                    if (blockstate1.equals(blockstate)) {
+                    if (blockstate1.equals(blockstate))
+                    {
                         return blockpos$mutableblockpos.up().toImmutable();
                     }
                 }
@@ -353,12 +371,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
             this.loadAsteroidSavedData();
         }
 
-        if (this.asteroids.size() == 0)
-        {
-            return false;
-        }
-        
-        return true;
+        return this.asteroids.size() != 0;
     }
 
     public BlockVec3 getClosestAsteroidXZ(int x, int y, int z, boolean mark)
@@ -617,7 +630,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
     {
         return RoomTreasure.MOONCHEST;
     }
-    
+
     @Override
     public boolean hasSkyLight()
     {

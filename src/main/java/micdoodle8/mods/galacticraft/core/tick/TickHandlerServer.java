@@ -52,10 +52,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TickHandlerServer
 {
-    private static Map<DimensionType, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
-    private static Map<DimensionType, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
-    private static Map<DimensionType, Set<BlockPos>> edgeChecks = new TreeMap<>();
-    private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
+    private static final Map<DimensionType, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
+    private static final Map<DimensionType, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
+    private static final Map<DimensionType, Set<BlockPos>> edgeChecks = new TreeMap<>();
+    private static final LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
     public static Map<DimensionType, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<>();
     public static List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
@@ -63,10 +63,10 @@ public class TickHandlerServer
     private static long tickCount;
     public static LinkedList<TileEntityFluidTransmitter> oxygenTransmitterUpdates = new LinkedList<TileEntityFluidTransmitter>();
     public static LinkedList<TileBaseConductor> energyTransmitterUpdates = new LinkedList<TileBaseConductor>();
-    private static CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
+    private static final CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
     private final int MAX_BLOCKS_PER_TICK = 50000;
-//    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
-    private static List<FluidNetwork> fluidNetworks = Lists.newArrayList();
+    //    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
+    private static final List<FluidNetwork> fluidNetworks = Lists.newArrayList();
     public static int timerHoustonCommand;
 
     public static void addFluidNetwork(FluidNetwork network)
@@ -253,7 +253,7 @@ public class TickHandlerServer
 //                    CommandGCHouston.reset(); TODO Commands
                 }
             }
-            
+
             for (ScheduledDimensionChange change : TickHandlerServer.scheduledDimensionChanges)
             {
                 try
@@ -278,7 +278,7 @@ public class TickHandlerServer
                     }
 
                     stats.setTeleportCooldown(10);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().world), new Object[] {}), change.getPlayer());
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().world), new Object[]{}), change.getPlayer());
                 }
                 catch (Exception e)
                 {
@@ -312,7 +312,7 @@ public class TickHandlerServer
             }
 
             SpaceRaceManager.tick();
-            
+
             TileEntityOxygenSealer.onServerTick();
 
             if (TickHandlerServer.tickCount % 33 == 0)
@@ -322,7 +322,7 @@ public class TickHandlerServer
                 for (ServerWorld world : worlds)
                 {
                     TileEntityPainter.onServerTick(world);
-                }                    
+                }
             }
             if (TickHandlerServer.tickCount % 100 == 0)
             {
@@ -394,8 +394,8 @@ public class TickHandlerServer
                     {
                         if (GCCoreUtil.getDimensionID(world) == targetPoint.dim)
                         {
-                            long chunkKey = ChunkPos.asLong((int) targetPoint.x >> 4, (int) targetPoint.z >> 4);
-                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new PacketDistributor.TargetPoint(targetPoint.x, targetPoint.y, targetPoint.z, 50, targetPoint.dim));
+                            long chunkKey = ChunkPos.asLong(targetPoint.x >> 4, targetPoint.z >> 4);
+                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[]{chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z)}), new PacketDistributor.TargetPoint(targetPoint.x, targetPoint.y, targetPoint.z, 50, targetPoint.dim));
 
 
 //                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.getDimension().dimensionId);
@@ -516,7 +516,7 @@ public class TickHandlerServer
         }
     }
 
-    private static Set<DimensionType> worldsNeedingUpdate = new HashSet<DimensionType>();
+    private static final Set<DimensionType> worldsNeedingUpdate = new HashSet<DimensionType>();
 
     public static void markWorldNeedsUpdate(DimensionType dimension)
     {
@@ -592,7 +592,7 @@ public class TickHandlerServer
             if (world.getDimension() instanceof IOrbitDimension)
             {
                 DimensionType dim = ((IOrbitDimension) world.getDimension()).getPlanetIdToOrbit();
-                int minY = ((IOrbitDimension)world.getDimension()).getYCoordToTeleportToPlanet();
+                int minY = ((IOrbitDimension) world.getDimension()).getYCoordToTeleportToPlanet();
                 world.getEntities().filter(e -> e.posY <= minY && e.world == world).forEach(e -> WorldUtil.transferEntityToDimension(e, dim, world, false, null));
             }
 

@@ -20,7 +20,8 @@ import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 public class MarsContainers
 {
     @SubscribeEvent
-    public static void initContainers(RegistryEvent.Register<ContainerType<?>> evt) {
+    public static void initContainers(RegistryEvent.Register<ContainerType<?>> evt)
+    {
         IForgeRegistry<ContainerType<?>> r = evt.getRegistry();
 
         ContainerType<ContainerElectrolyzer> electrolyzer = IForgeContainerType.create((windowId, inv, data) -> new ContainerElectrolyzer(windowId, inv, (TileEntityElectrolyzer) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
@@ -43,7 +44,8 @@ public class MarsContainers
         register(r, slimeling, MarsContainerNames.SLIMELING);
         register(r, terraformer, MarsContainerNames.TERRAFORMER);
 
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
+        {
             ScreenManager.registerFactory(electrolyzer, GuiWaterElectrolyzer::new);
             ScreenManager.registerFactory(gasLiquefier, GuiGasLiquefier::new);
             ScreenManager.registerFactory(launchController, GuiLaunchController::new);

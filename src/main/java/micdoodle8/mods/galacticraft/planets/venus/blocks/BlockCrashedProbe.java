@@ -80,7 +80,7 @@ public class BlockCrashedProbe extends BlockTileGC
     {
         final TileEntity tile = worldIn.getTileEntity(pos);
 
-        if (tile instanceof TileEntityCrashedProbe && ((TileEntityCrashedProbe)tile).getDropCore())
+        if (tile instanceof TileEntityCrashedProbe && ((TileEntityCrashedProbe) tile).getDropCore())
         {
             spawnItem(worldIn, pos);
         }

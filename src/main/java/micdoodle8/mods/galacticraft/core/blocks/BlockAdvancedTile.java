@@ -32,7 +32,7 @@ public abstract class BlockAdvancedTile extends BlockAdvanced
             TileEntity tileentity = worldIn.getTileEntity(pos);
             if (tileentity instanceof IInventory)
             {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)tileentity);
+                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
                 worldIn.updateComparatorOutputLevel(pos, this);
             }
 

@@ -45,7 +45,10 @@ public class TileEntityBuggyFueler extends TileEntityFake implements IMultiBlock
     {
         if (!this.initialised)
         {
-            if (!this.world.isRemote) this.onCreate(this.world, this.getPos());
+            if (!this.world.isRemote)
+            {
+                this.onCreate(this.world, this.getPos());
+            }
             this.initialiseMultiTiles(this.getPos(), this.world);
             this.initialised = true;
         }
@@ -117,7 +120,10 @@ public class TileEntityBuggyFueler extends TileEntityFake implements IMultiBlock
         {
             for (int z = -1; z < 2; z++)
             {
-                if (x == 0 && z == 0) continue;
+                if (x == 0 && z == 0)
+                {
+                    continue;
+                }
                 positions.add(new BlockPos(placedPosition.getX() + x, y, placedPosition.getZ() + z));
             }
         }

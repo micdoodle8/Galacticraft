@@ -285,7 +285,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1 };
+        return new int[]{0, 1};
     }
 
     @Override
@@ -587,7 +587,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public void setOxygenStored(int amount)
     {
-        this.liquidTank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), (int) amount));
+        this.liquidTank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), amount));
     }
 
     @Override
@@ -826,11 +826,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public Direction getFront()
     {
-    	BlockState state = this.world.getBlockState(getPos());
+        BlockState state = this.world.getBlockState(getPos());
 //    	if (state.getBlock() instanceof BlockMachineMarsT2)
 //    	{
 //    		return state.get(BlockMachineMarsT2.FACING);
 //    	}
-    	return state.get(BlockElectrolyzer.FACING);
+        return state.get(BlockElectrolyzer.FACING);
     }
 }

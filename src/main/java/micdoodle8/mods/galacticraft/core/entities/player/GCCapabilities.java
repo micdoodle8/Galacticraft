@@ -48,7 +48,9 @@ public class GCCapabilities
             }
 
             @Override
-            public void readNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side, INBT nbt) { }
+            public void readNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side, INBT nbt)
+            {
+            }
         }, StatsClientCapability::new);
     }
 }

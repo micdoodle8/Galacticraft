@@ -19,7 +19,7 @@ public class ContainerOxygenSealer extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_SEALER)
     public static ContainerType<ContainerOxygenSealer> TYPE;
 
-    private TileEntityOxygenSealer sealer;
+    private final TileEntityOxygenSealer sealer;
 
     public ContainerOxygenSealer(int containerId, PlayerInventory playerInv, TileEntityOxygenSealer sealer)
     {

@@ -11,7 +11,7 @@ public interface IPlanetsModuleClient
 {
 //    public void registerVariants();
 
-    public void init(FMLCommonSetupEvent event);
+    void init(FMLCommonSetupEvent event);
 
 //    public void getGuiIDs(List<Integer> idList);
 

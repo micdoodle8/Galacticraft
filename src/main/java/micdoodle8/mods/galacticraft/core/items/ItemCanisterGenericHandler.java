@@ -29,7 +29,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     @Override
     public ItemStack getContainer()
     {
-    	return container;  //never varies
+        return container;  //never varies
     }
 
     @Nonnull
@@ -37,16 +37,16 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
         {
-        	return ((ItemCanisterGeneric)container.getItem()).getFluid(container);
+            return ((ItemCanisterGeneric) container.getItem()).getFluid(container);
         }
-    	return FluidStack.EMPTY;
+        return FluidStack.EMPTY;
     }
 
     protected void setFluid(FluidStack fluid)
     {
         if (this.canFillFluidType(fluid))
         {
-        	((ItemCanisterGeneric)container.getItem()).setDamage(container, ItemCanisterGeneric.EMPTY - fluid.getAmount());
+            container.getItem().setDamage(container, ItemCanisterGeneric.EMPTY - fluid.getAmount());
         }
     }
 
@@ -84,12 +84,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
             }
         }
 
-        if (stack.getFluid().getRegistryName() == ((ItemCanisterGeneric) container.getItem()).getAllowedFluid())
-        {
-            return true;
-        }
-
-        return false;
+        return stack.getFluid().getRegistryName() == ((ItemCanisterGeneric) container.getItem()).getAllowedFluid();
     }
 
     //    @Override
@@ -107,7 +102,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
         {
-        	return ((ItemCanisterGeneric)container.getItem()).fill(container, resource, action);
+            return ((ItemCanisterGeneric) container.getItem()).fill(container, resource, action);
         }
         return 0;
     }
@@ -117,7 +112,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
         {
-        	return ((ItemCanisterGeneric)container.getItem()).drain(container, maxDrain, action);
+            return ((ItemCanisterGeneric) container.getItem()).drain(container, maxDrain, action);
         }
         return null;
     }
@@ -127,7 +122,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (this.canDrainFluidType(resource))
         {
-        	return ((ItemCanisterGeneric)container.getItem()).drain(container, resource.getAmount(), action);
+            return ((ItemCanisterGeneric) container.getItem()).drain(container, resource.getAmount(), action);
         }
         return null;
     }
@@ -136,7 +131,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric && fluid != null && fluid != FluidStack.EMPTY)
         {
-        	return ((ItemCanisterGeneric)container.getItem()).getAllowedFluid() == fluid.getFluid().getRegistryName();
+            return ((ItemCanisterGeneric) container.getItem()).getAllowedFluid() == fluid.getFluid().getRegistryName();
         }
         return false;
     }
@@ -150,7 +145,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
         {
-        	((ItemCanisterGeneric)container.getItem()).setDamage(container, ItemCanisterGeneric.EMPTY);;
+            container.getItem().setDamage(container, ItemCanisterGeneric.EMPTY);
         }
     }
 

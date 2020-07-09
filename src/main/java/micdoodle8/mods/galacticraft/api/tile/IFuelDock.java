@@ -14,5 +14,5 @@ public interface IFuelDock
 
     IDockable getDockedEntity();
 
-	void dockEntity(IDockable entity);
+    void dockEntity(IDockable entity);
 }

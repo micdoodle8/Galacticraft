@@ -170,7 +170,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         ((ServerPlayerEntity) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionID(this.world), new Object[] { finalPos, e.getEntityId() }), GCCoreUtil.getDimensionID(this.world));
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionID(this.world), new Object[]{finalPos, e.getEntityId()}), GCCoreUtil.getDimensionID(this.world));
                                 }
 
                                 if (containedEntities.size() > 0)
@@ -289,7 +289,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         List<BlockPos> positions = new LinkedList<>();
         this.getPositions(placedPosition, positions);
         for (BlockPos vecToAdd : positions)
+        {
             ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().with(BlockTelepadFake.TOP, vecToAdd.getY() == placedPosition.getY() + 2));
+        }
     }
 
     @Override
@@ -313,7 +315,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             {
                 for (int z = -1; z <= 1; z++)
                 {
-                    if (x == 0 && y == 0 && z == 0) continue;
+                    if (x == 0 && y == 0 && z == 0)
+                    {
+                        continue;
+                    }
                     positions.add(placedPosition.add(x, y, z));
                 }
             }
@@ -360,7 +365,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
 //    @Override
@@ -539,7 +544,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         this.targetAddress = address;
         this.updateTarget();
     }
-   
+
     public void setOwner(String owner)
     {
         this.owner = owner;

@@ -264,7 +264,6 @@ public class EntityTier2Rocket extends EntityTieredRocket
             }
 
             final double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.getMotion().y + (!this.getLaunched() ? 2.5D : 1D);
-;
 
             final double x2 = this.posX + x1 - this.getMotion().x;
             final double z2 = this.posZ + z1 - this.getMotion().z;
@@ -272,8 +271,11 @@ public class EntityTier2Rocket extends EntityTieredRocket
             final double y3 = y + y1 / 2D;
             final double z3 = z2 + z1 / 2D;
 
-            if (this.ticksExisted % 2 == 0 && !this.getLaunched()) return;
-            
+            if (this.ticksExisted % 2 == 0 && !this.getLaunched())
+            {
+                return;
+            }
+
 //            String flame = this.getLaunched() ? GCParticles.LAUNCH_FLAME_LAUNCHED : GCParticles.LAUNCH_FLAME_IDLE;
 
             LivingEntity riddenByEntity = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);

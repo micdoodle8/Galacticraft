@@ -26,7 +26,7 @@ public class TileEntityFake extends TileEntity
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fakeBlock)
     public static TileEntityType<TileEntityFake> TYPE;
     //NOTE: No need for networking in 1.8+: see comment in initialiseMultiTiles()
-    
+
     // The the position of the main block
     public BlockPos mainBlockPosition;
 
@@ -143,14 +143,14 @@ public class TileEntityFake extends TileEntity
 
     protected boolean initialiseMultiTiles(BlockPos pos, World world)
     {
-        IMultiBlock thisTile = (IMultiBlock)this;
-        
+        IMultiBlock thisTile = (IMultiBlock) this;
+
         //Client can create its own fake blocks and tiles - no need for networking in 1.8+
         if (world.isRemote)
         {
             thisTile.onCreate(world, pos);
         }
-        
+
         List<BlockPos> positions = new ArrayList<>();
         thisTile.getPositions(pos, positions);
         boolean result = true;

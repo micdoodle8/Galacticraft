@@ -41,18 +41,18 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
-    private ItemStack producingStack = ItemStack.EMPTY;
+    private final ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
     public static List<ItemStack> salvageable = new LinkedList<>();
     public static List<INasaWorkbenchRecipe> knownRecipes = new LinkedList<>();
     private int recursiveCount;
-    
+
     static
     {
         initialiseItemList();
     }
-    
+
     private static void initialiseItemList()
     {
 //        if (GalacticraftCore.isPlanetsLoaded)
@@ -89,7 +89,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         knownRecipes.addAll(GalacticraftRegistry.getRocketT1Recipes());
         knownRecipes.addAll(GalacticraftRegistry.getBuggyBenchRecipes());
     }
-    
+
     public static void initialiseRecipeListPlanets()
     {
         knownRecipes.addAll(GalacticraftRegistry.getRocketT2Recipes());
@@ -111,7 +111,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         for (ItemStack inList : salvageable)
         {
             if (ItemStack.areItemsEqual(inList, itemStack))
+            {
                 return;
+            }
         }
         salvageable.add(itemStack.copy());
     }
@@ -121,7 +123,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         for (ItemStack inList : salvageable)
         {
             if (ItemStack.areItemsEqual(inList, stack))
+            {
                 return true;
+            }
         }
         return false;
     }
@@ -189,7 +193,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         salvaged = this.randomChanceList(salvaged);
         if (salvaged != null)
         {
-            for (ItemStack output: salvaged)
+            for (ItemStack output : salvaged)
             {
                 this.addToOutputMatrix(output);
             }
@@ -226,7 +230,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                         Iterator<ItemStack> it = ingredients2.iterator();
                         while (it.hasNext())
                         {
-                            if (ItemStack.areItemStacksEqual(it.next(), done)) it.remove();  //prevent recursive A->{B}  B->{A} type recipe chains
+                            if (ItemStack.areItemStacksEqual(it.next(), done))
+                            {
+                                it.remove();  //prevent recursive A->{B}  B->{A} type recipe chains
+                            }
                         }
                     }
                     List<ItemStack> recursive = this.getSalvageable(ingredients2, stack);
@@ -299,7 +306,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         for (INasaWorkbenchRecipe recipe : knownRecipes)
         {
-            ItemStack test = (ItemStack) recipe.getRecipeOutput();
+            ItemStack test = recipe.getRecipeOutput();
             if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
             {
                 return toItemStackList(recipe.getRecipeInput().values());
@@ -330,7 +337,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 //        } TODO Deconstructor recipes
         return null;
     }
-    
+
     private List<ItemStack> expandRecipeInputs(List<?> inputs)
     {
         List<ItemStack> ret = new LinkedList<>();
@@ -344,7 +351,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         }
         return ret;
     }
-    
+
     private ItemStack parseRecipeInput(Object input)
     {
         if (input instanceof Ingredient)
@@ -397,7 +404,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 }
             }
         }
-        
+
         return null;
     }
 
@@ -444,7 +451,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         super.read(par1NBTTagCompound);
         this.processTicks = par1NBTTagCompound.getInt("smeltingTicks");
-        
+
         this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
@@ -465,7 +472,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         {
             return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
-        
+
         return slotID == 1;
     }
 
@@ -474,10 +481,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         if (side == Direction.DOWN)
         {
-            return new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            return new int[]{2, 3, 4, 5, 6, 7, 8, 9, 10};
         }
-        
-        return new int[] { 1 };
+
+        return new int[]{1};
     }
 
     @Override
@@ -495,7 +502,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     @Override
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -529,15 +536,15 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT };
+        return new Face[]{Face.LEFT};
     }
-    
+
     private MachineSidePack[] machineSides;
 
     @Override
@@ -556,13 +563,13 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

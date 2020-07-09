@@ -37,7 +37,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     public static TileEntityType<TileEntityFluidPipe> TYPE;
 
     public FluidTankGC buffer = new FluidTankGC(1000, this);
-    private boolean dataRequest = false;
+    private final boolean dataRequest = false;
     private AxisAlignedBB renderAABB;
 
     public TileEntityFluidPipe()
@@ -123,7 +123,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         {
 //            this.world.notifyLightSet(getPos());
             world.getChunkProvider().getLightManager().checkBlock(getPos());
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[] { GCCoreUtil.getDimensionID(this.world), this.getPos() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[]{GCCoreUtil.getDimensionID(this.world), this.getPos()}));
         }
     }
 
@@ -239,7 +239,6 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     {
         return null;
     }
-
 
 
     @Override
@@ -446,6 +445,6 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 //    		return (T) this;
 //    	}
 
-    	return super.getCapability(capability, facing);
+        return super.getCapability(capability, facing);
     }
 }

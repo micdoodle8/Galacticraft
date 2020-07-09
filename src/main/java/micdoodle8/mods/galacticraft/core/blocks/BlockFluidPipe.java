@@ -40,11 +40,11 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
 
     public static boolean ignoreDrop = false;
 
-    private EnumPipeMode mode;
+    private final EnumPipeMode mode;
 
     private static final float MIN = 0.35F;
     private static final float MAX = 0.65F;
-    protected static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[] {
+    protected static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
 
             Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, MAX),  // No connection                                  000000
             Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, 1.0D), // South                                          000001
@@ -244,7 +244,7 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
 
                     worldIn.setBlockState(pos, state.with(COLOR, dyeColor));
 
-                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionID(worldIn), new Object[] { pos }), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 40.0, GCCoreUtil.getDimensionID(worldIn)));
+                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionID(worldIn), new Object[]{pos}), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 40.0, GCCoreUtil.getDimensionID(worldIn)));
 
                     if (colorBefore != dyeColor && !playerIn.abilities.isCreativeMode)
                     {

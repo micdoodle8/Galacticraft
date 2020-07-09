@@ -12,14 +12,14 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderPlanet
 {
-    private static TextureManager textureManager = Minecraft.getInstance().textureManager;
+    private static final TextureManager textureManager = Minecraft.getInstance().textureManager;
 
-    private static ResourceLocation textureEuropa = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/europa.png");
-    private static ResourceLocation textureGanymede = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/ganymede.png");
-    private static ResourceLocation textureIo = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/io.png");
-    private static ResourceLocation textureSaturn = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/saturn.png");
-    private static ResourceLocation textureJupiterInner = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/jupiter_inner.png");
-    private static ResourceLocation textureJupiterUpper = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/jupiter_upper.png");
+    private static final ResourceLocation textureEuropa = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/europa.png");
+    private static final ResourceLocation textureGanymede = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/ganymede.png");
+    private static final ResourceLocation textureIo = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/io.png");
+    private static final ResourceLocation textureSaturn = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/saturn.png");
+    private static final ResourceLocation textureJupiterInner = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/jupiter_inner.png");
+    private static final ResourceLocation textureJupiterUpper = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/jupiter_upper.png");
 
     public static void renderPlanet(int textureId, float scale, float ticks, float relSize)
     {

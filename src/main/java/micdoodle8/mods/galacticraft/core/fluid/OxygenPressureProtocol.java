@@ -31,7 +31,8 @@ public class OxygenPressureProtocol
                 {
                     continue;
                 }
-                if (!nonPermeableBlocks.contains(block)) {
+                if (!nonPermeableBlocks.contains(block))
+                {
                     nonPermeableBlocks.add(block);
                 }
 

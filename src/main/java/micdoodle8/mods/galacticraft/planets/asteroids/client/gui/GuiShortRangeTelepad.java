@@ -30,12 +30,12 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
 {
     private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/short_range_telepad.png");
 
-    private TileEntityShortRangeTelepad telepad;
+    private final TileEntityShortRangeTelepad telepad;
 
     private Button enableControllerButton;
     private GuiElementTextBox address;
     private GuiElementTextBox targetAddress;
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
 
     public GuiShortRangeTelepad(ContainerShortRangeTelepad container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -47,14 +47,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
     @Override
     public void render(int mouseX, int mouseY, float partialTicks)
     {
-        if (this.telepad.disableCooldown > 0)
-        {
-            this.enableControllerButton.active = false;
-        }
-        else
-        {
-            this.enableControllerButton.active = true;
-        }
+        this.enableControllerButton.active = this.telepad.disableCooldown <= 0;
 
         this.enableControllerButton.setMessage(this.telepad.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name"));
 
@@ -87,8 +80,9 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableControllerButton = new Button(var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.telepad.getPos(), 0 }));
+        this.enableControllerButton = new Button(var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.telepad.getPos(), 0}));
         });
         this.address = new GuiElementTextBox(this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.targetAddress = new GuiElementTextBox(this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
@@ -173,12 +167,12 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         if (textBox.equals(this.address))
         {
             this.telepad.address = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{0, this.telepad.getPos(), this.telepad.address}));
         }
         else if (textBox.equals(this.targetAddress))
         {
             this.telepad.targetAddress = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{1, this.telepad.getPos(), this.telepad.targetAddress}));
         }
     }
 

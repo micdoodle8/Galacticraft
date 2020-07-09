@@ -19,7 +19,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     public static TileEntityType<TileEntityBeamReflector> TYPE;
 
     public Vector3 color = new Vector3(0, 1, 0);
-    private EnergyStorage storage = new EnergyStorage(10, 1);
+    private final EnergyStorage storage = new EnergyStorage(10, 1);
 
 //    @Override
 //    public void tick()
@@ -36,8 +36,8 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     public Vector3 getInputPoint()
     {
         float distance = 0.15F;
-        Vector3 deviation = new Vector3((float)Math.sin(Math.toRadians(this.yaw - 180)) * distance, 0, (float)Math.cos(Math.toRadians(this.yaw - 180)) * distance);
-        Vector3 headVec = new Vector3((float)this.getPos().getX() + 0.5F, (float)this.getPos().getY() + 1.13228F / 2.0F, (float)this.getPos().getZ() + 0.5F);
+        Vector3 deviation = new Vector3((float) Math.sin(Math.toRadians(this.yaw - 180)) * distance, 0, (float) Math.cos(Math.toRadians(this.yaw - 180)) * distance);
+        Vector3 headVec = new Vector3((float) this.getPos().getX() + 0.5F, (float) this.getPos().getY() + 1.13228F / 2.0F, (float) this.getPos().getZ() + 0.5F);
         headVec.translate(deviation.clone().invert());
         return headVec;
     }
@@ -132,9 +132,9 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     {
         super.setTarget(target);
     }
-    
+
     private AxisAlignedBB renderAABB;
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()

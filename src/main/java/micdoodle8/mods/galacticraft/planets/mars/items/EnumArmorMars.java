@@ -14,7 +14,8 @@ import java.util.function.Supplier;
 
 public enum EnumArmorMars implements IArmorMaterial
 {
-    ARMOR_DESH("desh", 42, new int[] { 4, 7, 9, 4 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0F, () -> {
+    ARMOR_DESH("desh", 42, new int[]{4, 7, 9, 4}, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0F, () ->
+    {
         return Ingredient.fromItems(Items.LEATHER);
         // TODO
     });
@@ -47,7 +48,8 @@ public enum EnumArmorMars implements IArmorMaterial
     private final float toughness;
     private final LazyLoadBase<Ingredient> repairMaterial;
 
-    private EnumArmorMars(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float p_i48533_8_, Supplier<Ingredient> repairMaterialSupplier) {
+    EnumArmorMars(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float p_i48533_8_, Supplier<Ingredient> repairMaterialSupplier)
+    {
         this.name = nameIn;
         this.maxDamageFactor = maxDamageFactorIn;
         this.damageReductionAmountArray = damageReductionAmountsIn;
@@ -57,32 +59,46 @@ public enum EnumArmorMars implements IArmorMaterial
         this.repairMaterial = new LazyLoadBase<>(repairMaterialSupplier);
     }
 
-    public int getDurability(EquipmentSlotType slotIn) {
+    @Override
+    public int getDurability(EquipmentSlotType slotIn)
+    {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
     }
 
-    public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+    @Override
+    public int getDamageReductionAmount(EquipmentSlotType slotIn)
+    {
         return this.damageReductionAmountArray[slotIn.getIndex()];
     }
 
-    public int getEnchantability() {
+    @Override
+    public int getEnchantability()
+    {
         return this.enchantability;
     }
 
-    public SoundEvent getSoundEvent() {
+    @Override
+    public SoundEvent getSoundEvent()
+    {
         return this.soundEvent;
     }
 
-    public Ingredient getRepairMaterial() {
+    @Override
+    public Ingredient getRepairMaterial()
+    {
         return this.repairMaterial.getValue();
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
-    public float getToughness() {
+    @Override
+    public float getToughness()
+    {
         return this.toughness;
     }
 }

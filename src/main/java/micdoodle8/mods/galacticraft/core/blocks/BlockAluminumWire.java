@@ -28,7 +28,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
     private static final float MINH = 0.3F;
     private static final float MAX = 0.62F;
     private static final float MAXH = 0.7F;
-    protected static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[] {
+    protected static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
 
             Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, MAX),  // No connection                                  0000000
             Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, 1.0D), // South                                          0000001
@@ -63,7 +63,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
             Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East                       0011101
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East West                        0011110
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East West                 0011111
-    
+
             Block.makeCuboidShape(MIN, MIN, MIN, MAX, 1.0D, MAX),  // Up                                            0100000
             Block.makeCuboidShape(MIN, MIN, MIN, MAX, 1.0D, 1.0D), // Up South                                      0100001
             Block.makeCuboidShape(0.0D, MIN, MIN, MAX, 1.0D, MAX), // Up West                                       0100010
@@ -97,7 +97,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
             Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                   0111101
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East West                    0111110
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East West             0111111
-    
+
             Block.makeCuboidShape(MINH, MINH, MINH, MAXH, MAXH, MAXH),  // No connection                            1000000
             Block.makeCuboidShape(MINH, MINH, MINH, MAXH, MAXH, 1.0D), // South                                     1000001
             Block.makeCuboidShape(0.0D, MINH, MINH, MAXH, MAXH, MAXH), // West                                      1000010
@@ -131,7 +131,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
             Block.makeCuboidShape(MINH, 0.0D, 0.0D, 1.0D, MAXH, 1.0D), // Down North South East                     1011101
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAXH, MAXH), // Down North East West                      1011110
             Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAXH, 1.0D), // Down North South East West                1011111
-    
+
             Block.makeCuboidShape(MINH, MINH, MINH, MAXH, 1.0D, MAXH),  // Up                                       1100000
             Block.makeCuboidShape(MINH, MINH, MINH, MAXH, 1.0D, 1.0D), // Up South                                  1100001
             Block.makeCuboidShape(0.0D, MINH, MINH, MAXH, 1.0D, MAXH), // Up West                                   1100010
@@ -188,6 +188,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
         }
 
         private final static EnumWireType[] values = values();
+
         public static EnumWireType byMetadata(int meta)
         {
             return values[meta % values.length];

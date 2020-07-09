@@ -8,38 +8,38 @@ import java.lang.reflect.Method;
 /**
  * A static method for other mods to access the Galacticraft
  * extended inventory.
- * 
+ * <p>
  * Call: AccessInventoryGC.getGCInventoryForPlayer(player)
  */
 public class AccessInventoryGC
 {
-	private static Class<?> playerStatsClass;
-	private static Method getStats;
-	private static Method getExtendedInventory;
+    private static Class<?> playerStatsClass;
+    private static Method getStats;
+    private static Method getExtendedInventory;
 
-	public static IInventoryGC getGCInventoryForPlayer(ServerPlayerEntity player)
-	{
-		try
-		{
-			if (playerStatsClass == null || getStats == null || getExtendedInventory == null)
-			{
-				playerStatsClass = Class.forName("micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats");
-				getStats = playerStatsClass.getMethod("get", Entity.class);
-				getExtendedInventory = playerStatsClass.getMethod("getExtendedInventory");
-			}
+    public static IInventoryGC getGCInventoryForPlayer(ServerPlayerEntity player)
+    {
+        try
+        {
+            if (playerStatsClass == null || getStats == null || getExtendedInventory == null)
+            {
+                playerStatsClass = Class.forName("micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats");
+                getStats = playerStatsClass.getMethod("get", Entity.class);
+                getExtendedInventory = playerStatsClass.getMethod("getExtendedInventory");
+            }
 
-			Object stats = getStats.invoke(null, player);
-			if (stats == null)
-			{
-				return null;
-			}
-			return (IInventoryGC)getExtendedInventory.invoke(stats);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+            Object stats = getStats.invoke(null, player);
+            if (stats == null)
+            {
+                return null;
+            }
+            return (IInventoryGC) getExtendedInventory.invoke(stats);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

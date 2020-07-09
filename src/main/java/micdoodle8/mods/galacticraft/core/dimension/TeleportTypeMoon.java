@@ -51,7 +51,7 @@ public class TeleportTypeMoon implements ITeleportType
                 }
                 else if (z < -limit)
                 {
-                    x *= - limit / z;
+                    x *= -limit / z;
                     z = -limit;
                 }
             }

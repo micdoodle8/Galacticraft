@@ -43,11 +43,11 @@ public class KeyHandlerClient extends KeyHandler
     public static KeyBinding downKey;
     public static KeyBinding spaceKey;
     public static KeyBinding leftShiftKey;
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     public KeyHandlerClient()
     {
-        super(new KeyBinding[] { KeyHandlerClient.galaxyMap, KeyHandlerClient.openFuelGui, KeyHandlerClient.toggleAdvGoggles }, new boolean[] { false, false, false }, KeyHandlerClient.getVanillaKeyBindings(), new boolean[] { false, true, true, true, true, true, true });
+        super(new KeyBinding[]{KeyHandlerClient.galaxyMap, KeyHandlerClient.openFuelGui, KeyHandlerClient.toggleAdvGoggles}, new boolean[]{false, false, false}, KeyHandlerClient.getVanillaKeyBindings(), new boolean[]{false, true, true, true, true, true, true});
     }
 
     private static KeyBinding[] getVanillaKeyBindings()
@@ -61,7 +61,7 @@ public class KeyHandlerClient extends KeyHandler
         KeyHandlerClient.downKey = KeyHandlerClient.mc.gameSettings.keyBindBack;
         KeyHandlerClient.spaceKey = KeyHandlerClient.mc.gameSettings.keyBindJump;
         KeyHandlerClient.leftShiftKey = KeyHandlerClient.mc.gameSettings.keyBindSneak;
-        return new KeyBinding[] { invKey, KeyHandlerClient.accelerateKey, KeyHandlerClient.decelerateKey, KeyHandlerClient.leftKey, KeyHandlerClient.rightKey, KeyHandlerClient.spaceKey, KeyHandlerClient.leftShiftKey };
+        return new KeyBinding[]{invKey, KeyHandlerClient.accelerateKey, KeyHandlerClient.decelerateKey, KeyHandlerClient.leftKey, KeyHandlerClient.rightKey, KeyHandlerClient.spaceKey, KeyHandlerClient.leftShiftKey};
     }
 
     @Override
@@ -90,7 +90,7 @@ public class KeyHandlerClient extends KeyHandler
             {
                 if (playerBase.getRidingEntity() instanceof EntitySpaceshipBase || playerBase.getRidingEntity() instanceof EntityBuggy)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { PlayerUtil.getName(playerBase) }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[]{PlayerUtil.getName(playerBase)}));
                 }
             }
             else if (kb == KeyHandlerClient.toggleAdvGoggles)
@@ -152,13 +152,13 @@ public class KeyHandlerClient extends KeyHandler
                     if (kb == KeyHandlerClient.leftShiftKey)
                     {
                         autoRocket.setMotion(autoRocket.getMotion().x, autoRocket.getMotion().y - 0.02, autoRocket.getMotion().z);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[] { autoRocket.getEntityId(), false }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[]{autoRocket.getEntityId(), false}));
                     }
 
                     if (kb == KeyHandlerClient.spaceKey)
                     {
                         autoRocket.setMotion(autoRocket.getMotion().x, autoRocket.getMotion().y + 0.02, autoRocket.getMotion().z);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[] { autoRocket.getEntityId(), true }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[]{autoRocket.getEntityId(), true}));
                     }
                 }
             }

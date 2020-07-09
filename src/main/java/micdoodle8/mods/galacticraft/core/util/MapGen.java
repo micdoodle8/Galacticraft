@@ -41,7 +41,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
     private final int tickLimit;
     private int imagefactor;
 
-//    private BiomeCache biomeCache;
+    //    private BiomeCache biomeCache;
     private Layer genBiomes;
     private Layer biomeIndexLayer;
     public File biomeMapFile;
@@ -57,8 +57,8 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
     private WorldInfo worldInfo;
     private OverworldGenSettings settings = null;
 
-    private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
-    private Biome[] biomesGridHeights = null;
+    private final int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
+    private final Biome[] biomesGridHeights = null;
     private int[] biomeCount = null;
     private final DimensionType dimID;
 
@@ -121,7 +121,8 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
 //        this.biomeCache = new BiomeCache(this);
 //        String options = worldInfo.getGeneratorOptions();
         Layer[] agenlayer;
-        try {
+        try
+        {
 //            if (options != null)
             {
                 this.settings = new OverworldGenSettings();
@@ -166,7 +167,10 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
      */
     private int checkProgress(File file)
     {
-        if (!file.exists()) return 0;
+        if (!file.exists())
+        {
+            return 0;
+        }
 
         if (file.length() != biomeMapSizeX * biomeMapSizeZ * 2)
         {
@@ -178,7 +182,8 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
         {
             int len = (int) file.length();
             FileChannel fc;
-            try {
+            try
+            {
                 fc = (FileChannel.open(file.toPath()));
                 fc.position(len - 8);
                 byte[] flagdata = new byte[8];
@@ -196,7 +201,8 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
                     return -1;
                 }
                 fc.close();
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
@@ -208,7 +214,8 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
                     this.biomeAndHeightArray = FileUtils.readFileToByteArray(file);
                     this.initialiseSmallerArrays();
                     return progress;
-                } catch (IOException e)
+                }
+                catch (IOException e)
                 {
                     e.printStackTrace();
                     this.biomeAndHeightArray = null;
@@ -225,35 +232,43 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
     @Override
     public void run()
     {
-    	//Allow some time for the pause on any other map gen thread to become effective
-    	try {
-			Thread.currentThread().sleep(90);
-		} catch (InterruptedException e) {}
+        //Allow some time for the pause on any other map gen thread to become effective
+        try
+        {
+            Thread.sleep(90);
+        }
+        catch (InterruptedException e)
+        {
+        }
 
 //        long seed = worldInfo.getSeed();
 //        this.initialise(seed); TODO
 
-    	//Generate this map from start to finish within the thread
-    	while (!this.aborted.get())
-    	{
-    	    if (this.paused.get())
-    	    {
-    	        try {
-    	            //Sleep for a bit, next time around maybe will not be paused?
-    	            Thread.currentThread().sleep(1211);
-    	        } catch (InterruptedException e) {}
-    	    }
-    	    else
-    	    {
-    	        //Do the actual work of the thread
-    	        if (this.BiomeMapOneTick())
-    	        {
-    	            break;  //finished!
-    	        }
-    	    }
-    	}
+        //Generate this map from start to finish within the thread
+        while (!this.aborted.get())
+        {
+            if (this.paused.get())
+            {
+                try
+                {
+                    //Sleep for a bit, next time around maybe will not be paused?
+                    Thread.sleep(1211);
+                }
+                catch (InterruptedException e)
+                {
+                }
+            }
+            else
+            {
+                //Do the actual work of the thread
+                if (this.BiomeMapOneTick())
+                {
+                    break;  //finished!
+                }
+            }
+        }
 
-       	this.finishedCalculating.set(true);
+        this.finishedCalculating.set(true);
     }
 
     public void pause()
@@ -275,7 +290,9 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
     {
         int progX = this.progressX.get();
         if (progX > biomeMapSizeX - imagefactor)
+        {
             return;
+        }
 
         GCLog.debug("Saving partial map image progress " + progX);
         int offset = this.biomeAndHeightArray.length;
@@ -318,7 +335,9 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
     public void writeOutputFile(boolean sendToClientImmediately)
     {
         if (this.biomeAndHeightArray == null)
+        {
             return;
+        }
 
         if (!this.aborted.get())  //It should be error-free if it wasn't aborted
         {
@@ -360,14 +379,14 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
         }
         for (int i = 16; i < len; i += i)
         {
-          System.arraycopy(array, 0, array, i, i + i > len ? i : len - i);
+            System.arraycopy(array, 0, array, i, i + i > len ? i : len - i);
         }
     }
 
-	/*
-	 * Return false while there are further ticks to carry out
-	 * Return true when completed
-	 */
+    /*
+     * Return false while there are further ticks to carry out
+     * Return true when completed
+     */
     public boolean BiomeMapOneTick()
     {
         if (this.biomeAndHeightArray == null)

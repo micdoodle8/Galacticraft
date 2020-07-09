@@ -53,7 +53,7 @@ public class ThreadVersionCheck extends Thread
                 InputStreamReader streamReader = new InputStreamReader(http.getInputStream());
                 in = new BufferedReader(streamReader);
                 String str;
-                String str2[] = null;
+                String[] str2 = null;
 
                 while ((str = in.readLine()) != null)
                 {
@@ -77,11 +77,11 @@ public class ThreadVersionCheck extends Thread
 
                             if (sideToCheck.equals(LogicalSide.CLIENT))
                             {
-                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
+                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer + ".xxx" + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
                             }
                             else if (sideToCheck.equals(LogicalSide.SERVER))
                             {
-                                GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + " http://micdoodle8.com/");
+                                GCLog.severe("New Galacticraft version available! v" + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer + ".xxx" + " http://micdoodle8.com/");
                             }
                         }
                         break;

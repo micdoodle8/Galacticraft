@@ -62,7 +62,7 @@ public class BlockOreVenus extends Block implements IDetectableResource, IPlanta
     {
         if (state.getBlock() == VenusBlocks.oreQuartz || state.getBlock() == VenusBlocks.oreSilicon)
         {
-            return MathHelper.nextInt(world instanceof World ? ((World)world).rand : new Random(), 2, 5);
+            return MathHelper.nextInt(world instanceof World ? ((World) world).rand : new Random(), 2, 5);
         }
         return 0;
     }

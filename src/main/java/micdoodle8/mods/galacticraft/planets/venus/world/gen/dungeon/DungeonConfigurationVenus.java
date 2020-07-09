@@ -70,7 +70,8 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
         return new Dynamic<>(ops, ops.createMap(builder.build()));
     }
 
-    public static <T> DungeonConfigurationVenus deserialize(Dynamic<T> ops) {
+    public static <T> DungeonConfigurationVenus deserialize(Dynamic<T> ops)
+    {
         BlockState state = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ops.get("brickBlock").asString().get())).getDefaultState();
         BlockState stateFloor = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ops.get("brickBlockFloor").asString().get())).getDefaultState();
         try

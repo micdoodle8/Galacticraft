@@ -173,7 +173,9 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         }
     }
 
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
+    {
         return this.litVersion.getDrops(state, builder);
     }
 

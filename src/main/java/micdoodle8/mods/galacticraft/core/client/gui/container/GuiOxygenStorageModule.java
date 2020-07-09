@@ -20,7 +20,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
 {
     private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_storage_module.png");
 
-    private TileEntityOxygenStorageModule tileEntity;
+    private final TileEntityOxygenStorageModule tileEntity;
 
     public GuiOxygenStorageModule(ContainerOxygenStorageModule container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -49,7 +49,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
         String guiTitle = GCCoreUtil.translate("tile.machine2.6.name");
         this.font.drawString(guiTitle, this.xSize / 2 - this.font.getStringWidth(guiTitle) / 2, 6, 4210752);
         String displayJoules = (int) (this.tileEntity.getOxygenStored() + 0.5F) + " " + GCCoreUtil.translate("gui.message.of.name");
-        String displayMaxJoules = "" + (int) this.tileEntity.getMaxOxygenStored();
+        String displayMaxJoules = "" + this.tileEntity.getMaxOxygenStored();
         String maxOutputLabel = GCCoreUtil.translate("gui.max_output.desc") + ": " + TileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20 + GCCoreUtil.translate("gui.per_second");
 
         this.font.drawString(displayJoules, 122 - this.font.getStringWidth(displayJoules) / 2 - 35, 30, 4210752);

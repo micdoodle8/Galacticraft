@@ -32,7 +32,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC<ContainerLaunchC
 {
     private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launch_controller.png");
 
-    private TileEntityLaunchController launchController;
+    private final TileEntityLaunchController launchController;
 
     private GuiElementCheckbox enablePadRemovalButton;
     private GuiElementCheckbox launchWhenCheckbox;
@@ -112,13 +112,14 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC<ContainerLaunchC
         this.enablePadRemovalButton = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
         this.launchWhenCheckbox = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
         this.dropdownTest = new GuiElementDropdown(this, xLeft + 52, yTop + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
-        this.closeAdvancedConfig = new Button( xLeft + 5, yTop + 5, 20, 20, "<", (button) -> {
+        this.closeAdvancedConfig = new Button(xLeft + 5, yTop + 5, 20, 20, "<", (button) ->
+        {
             if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.launchController.getPos(), 1 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.launchController.getPos(), 1}));
         });
         this.buttons.add(this.enablePadRemovalButton);
         this.buttons.add(this.launchWhenCheckbox);
@@ -190,7 +191,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC<ContainerLaunchC
         if (dropdown.equals(this.dropdownTest))
         {
             this.launchController.launchDropdownSelection = selection;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 1, this.launchController.getPos(), this.launchController.launchDropdownSelection }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{1, this.launchController.getPos(), this.launchController.launchDropdownSelection}));
         }
     }
 
@@ -211,12 +212,12 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC<ContainerLaunchC
         if (checkbox.equals(this.enablePadRemovalButton))
         {
             this.launchController.launchPadRemovalDisabled = !newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0}));
         }
         else if (checkbox.equals(this.launchWhenCheckbox))
         {
             this.launchController.launchSchedulingEnabled = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0}));
         }
     }
 

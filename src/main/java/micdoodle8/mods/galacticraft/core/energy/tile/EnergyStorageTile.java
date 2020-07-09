@@ -49,7 +49,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     {
         return this.write(new CompoundNBT());
     }
-    
+
     public abstract ReceiverMode getModeFromDirection(Direction direction);
 
     @Override

@@ -73,13 +73,14 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
     {
         return true;
     }
-    
-    
+
+
     @Override
     public void livingTick()
     {
         ClientProxyCore.playerClientHandler.onTickPre(this);
-        try {
+        try
+        {
             if (this.world.getDimension() instanceof IZeroGDimension)
             {
                 //  from: EntityPlayerSP
@@ -104,7 +105,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 {
                     if (this.mc.currentScreen != null && !this.mc.currentScreen.isPauseScreen())
                     {
-                        this.mc.displayGuiScreen((Screen)null);
+                        this.mc.displayGuiScreen(null);
                     }
 
                     if (this.timeInPortal == 0.0F)
@@ -169,12 +170,12 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                     this.movementInput.moveForward *= 0.5F;
                 }
                 //-----------END CUSTOM
-                    
-                this.pushOutOfBlocks(this.posX - (double)this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ + (double)this.getWidth() * 0.35D);
-                this.pushOutOfBlocks(this.posX - (double)this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ - (double)this.getWidth() * 0.35D);
-                this.pushOutOfBlocks(this.posX + (double)this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ - (double)this.getWidth() * 0.35D);
-                this.pushOutOfBlocks(this.posX + (double)this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ + (double)this.getWidth() * 0.35D);
-                boolean flag4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.abilities.allowFlying;
+
+                this.pushOutOfBlocks(this.posX - (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ + (double) this.getWidth() * 0.35D);
+                this.pushOutOfBlocks(this.posX - (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ - (double) this.getWidth() * 0.35D);
+                this.pushOutOfBlocks(this.posX + (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ - (double) this.getWidth() * 0.35D);
+                this.pushOutOfBlocks(this.posX + (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ + (double) this.getWidth() * 0.35D);
+                boolean flag4 = (float) this.getFoodStats().getFoodLevel() > 6.0F || this.abilities.allowFlying;
 
                 if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= 0.8F && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS))
                 {
@@ -218,7 +219,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 // -from: EntityPlayer
 
                 //Omit fly toggle timer
-                
+
                 if (this.world.getDifficulty() == Difficulty.PEACEFUL && this.world.getGameRules().getBoolean(GameRules.NATURAL_REGENERATION))
                 {
                     if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0)
@@ -238,12 +239,12 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 //  from: EntityLivingBase
                 if (this.newPosRotationIncrements > 0)
                 {
-                    double d0 = this.posX + (this.interpTargetX - this.posX) / (double)this.newPosRotationIncrements;
-                    double d1 = this.posY + (this.interpTargetY - this.posY) / (double)this.newPosRotationIncrements;
-                    double d2 = this.posZ + (this.interpTargetZ - this.posZ) / (double)this.newPosRotationIncrements;
-                    double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double)this.rotationYaw);
-                    this.rotationYaw = (float)((double)this.rotationYaw + d3 / (double)this.newPosRotationIncrements);
-                    this.rotationPitch = (float)((double)this.rotationPitch + (this.interpTargetPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
+                    double d0 = this.posX + (this.interpTargetX - this.posX) / (double) this.newPosRotationIncrements;
+                    double d1 = this.posY + (this.interpTargetY - this.posY) / (double) this.newPosRotationIncrements;
+                    double d2 = this.posZ + (this.interpTargetZ - this.posZ) / (double) this.newPosRotationIncrements;
+                    double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
+                    this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.newPosRotationIncrements);
+                    this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
                     --this.newPosRotationIncrements;
                     this.setPosition(d0, d1, d2);
                     this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -278,8 +279,10 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                     this.randomYawVelocity = 0.0F;
                 }
                 else
+                {
                     this.updateEntityActionState();
-                
+                }
+
                 this.world.getProfiler().endSection();
                 this.world.getProfiler().startSection("travel");
                 this.moveStrafing *= 0.98F;
@@ -288,9 +291,12 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
 
                 // CUSTOM--------------
                 AxisAlignedBB aABB = this.getBoundingBox();
-                if ((aABB.minY % 1D) == 0.5D) this.setBoundingBox(aABB.offset(0D, 0.00001D, 0D));
+                if ((aABB.minY % 1D) == 0.5D)
+                {
+                    this.setBoundingBox(aABB.offset(0D, 0.00001D, 0D));
+                }
                 //-----------END CUSTOM
-                
+
                 //NOTE: No Elytra movement from this.updateElytra() in a zero G dimension
                 this.travel(new Vec3d(this.moveStrafing, this.moveVertical, this.moveForward));
                 this.world.getProfiler().endSection();
@@ -304,14 +310,14 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 this.world.getProfiler().endSection();
 
                 // -from: EntityPlayer
-                
+
                 //Omit IAttributeInstance - seems relevant only on server
-                
+
                 //Omit        this.jumpMovementFactor = this.speedInAir;
                 //(no bounding in space)
-                
+
                 float f = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
-                float f1 = (float)(Math.atan(-this.getMotion().y * 0.20000000298023224D) * 15.0D);
+                float f1 = (float) (Math.atan(-this.getMotion().y * 0.20000000298023224D) * 15.0D);
 
                 if (f > 0.1F)
                 {
@@ -348,7 +354,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
 
                     for (int i = 0; i < list.size(); ++i)
                     {
-                        Entity entity = (Entity)list.get(i);
+                        Entity entity = list.get(i);
 
                         if (entity.isAlive())
                         {
@@ -408,13 +414,17 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
             if (stats.getLandingTicks() > 0)
             {
                 if (this.lastLandingTicks == 0)
+                {
                     this.lastLandingTicks = stats.getLandingTicks();
+                }
 
                 this.sneakLast = stats.getLandingTicks() < this.lastLandingTicks;
                 return sneakLast;
             }
             else
+            {
                 this.lastLandingTicks = 0;
+            }
 //            if (stats.getFreefallHandler().pjumpticks > 0)
 //            {
 //                this.sneakLast = true;
@@ -423,7 +433,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
             if (EventHandlerClient.sneakRenderOverride)
             {
                 if (this.movementInput != null && this.movementInput.sneak != this.sneakLast)
-                { 
+                {
                     return false;
                 }
                 //                if (stats.freefallHandler.testFreefall(this)) return false;
@@ -433,7 +443,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
 //                    return false;
 //                } TODO Freefall
             }
-            this.sneakLast = this.movementInput == null ? false : this.movementInput.sneak;
+            this.sneakLast = this.movementInput != null && this.movementInput.sneak;
         }
         else
         {
@@ -526,7 +536,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
             // Don't draw any cape if riding a rocket (the cape renders outside the rocket model!)
             return null;
         }
-        
+
         ResourceLocation vanillaCape = super.getLocationCape();
 
         if (!this.checkedCape)
@@ -543,13 +553,16 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
 
         return vanillaCape;
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender()
     {
-        double height = this.posY + (double)this.getEyeHeight();
-        if (height > 255D) height = 255D;
+        double height = this.posY + (double) this.getEyeHeight();
+        if (height > 255D)
+        {
+            height = 255D;
+        }
         BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
         return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
     }

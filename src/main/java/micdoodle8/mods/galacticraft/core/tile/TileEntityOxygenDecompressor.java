@@ -71,7 +71,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1 };
+        return new int[]{0, 1};
     }
 
     @Override

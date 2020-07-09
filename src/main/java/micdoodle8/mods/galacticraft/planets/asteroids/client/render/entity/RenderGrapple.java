@@ -111,7 +111,7 @@ public class RenderGrapple extends EntityRenderer<EntityGrapple>
     {
         return new ResourceLocation("missing");
     }
-    
+
     @Override
     public boolean shouldRender(EntityGrapple entity, ICamera camera, double camX, double camY, double camZ)
     {

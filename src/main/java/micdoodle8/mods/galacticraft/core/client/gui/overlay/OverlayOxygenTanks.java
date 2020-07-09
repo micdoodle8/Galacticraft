@@ -23,8 +23,8 @@ public class OverlayOxygenTanks extends Overlay
      */
     public static void renderOxygenTankIndicator(Minecraft mc, int heatLevel, int oxygenInTank1, int oxygenInTank2, boolean right, boolean top, boolean invalid)
     {
-        int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
-        int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+        int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
+        int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
 //        mc.entityRenderer.setupOverlayRendering();
         GlStateManager.enableBlend();
         GlStateManager.disableAlphaTest();

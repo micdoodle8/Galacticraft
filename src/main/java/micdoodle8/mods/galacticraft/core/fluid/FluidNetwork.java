@@ -46,8 +46,8 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     public Map<BlockPos, IFluidHandler> acceptors = Maps.newHashMap();
     public Map<BlockPos, EnumSet<Direction>> acceptorDirections = Maps.newHashMap();
     public final Set<IBufferTransmitter<FluidStack>> pipes = Sets.newHashSet();
-    private Set<IBufferTransmitter<FluidStack>> pipesAdded = Sets.newHashSet();
-    private Set<DelayQueue> updateQueue = Sets.newLinkedHashSet();
+    private final Set<IBufferTransmitter<FluidStack>> pipesAdded = Sets.newHashSet();
+    private final Set<DelayQueue> updateQueue = Sets.newLinkedHashSet();
     public FluidStack buffer;
     private int capacity;
     private World world;
@@ -455,7 +455,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             {
                 continue;
             }
-            
+
             TileEntity tile = this.world.getTileEntity(coords);
 
             if (tile == null)

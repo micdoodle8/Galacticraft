@@ -29,7 +29,7 @@ import java.util.List;
 
 public class PacketSimpleMars extends PacketBase
 {
-    public static enum EnumSimplePacketMars
+    public enum EnumSimplePacketMars
     {
         // SERVER
         S_UPDATE_SLIMELING_DATA(LogicalSide.SERVER, Integer.class, Integer.class, String.class),
@@ -42,10 +42,10 @@ public class PacketSimpleMars extends PacketBase
 //        C_OPEN_CUSTOM_GUI_TILE(LogicalSide.CLIENT, Integer.class, Integer.class, BlockPos.class),
         C_BEGIN_CRYOGENIC_SLEEP(LogicalSide.CLIENT, BlockPos.class);
 
-        private LogicalSide targetSide;
-        private Class<?>[] decodeAs;
+        private final LogicalSide targetSide;
+        private final Class<?>[] decodeAs;
 
-        private EnumSimplePacketMars(LogicalSide targetSide, Class<?>... decodeAs)
+        EnumSimplePacketMars(LogicalSide targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;

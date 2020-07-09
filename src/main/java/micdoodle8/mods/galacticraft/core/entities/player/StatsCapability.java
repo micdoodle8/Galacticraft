@@ -133,8 +133,8 @@ public class StatsCapability extends GCPlayerStats
     public int glassColor1 = -1;
     public int glassColor2 = -1;
     public int glassColor3 = -1;
-    
-//    private BlockState[] panelLightingBases = new BlockState[BlockPanelLighting.PANELTYPES_LENGTH]; TODO Panel Lighting
+
+    //    private BlockState[] panelLightingBases = new BlockState[BlockPanelLighting.PANELTYPES_LENGTH]; TODO Panel Lighting
     private int panelLightingColor = 0xf0f0e0;
 
     public StatsCapability()
@@ -1026,12 +1026,12 @@ public class StatsCapability extends GCPlayerStats
 
         for (int i = 0; i < this.stacks.size(); ++i)
         {
-            ItemStack itemstack = (ItemStack)this.stacks.get(i);
+            ItemStack itemstack = this.stacks.get(i);
 
             if (!itemstack.isEmpty())
             {
                 CompoundNBT nbttagcompound = new CompoundNBT();
-                nbttagcompound.putByte("Slot", (byte)i);
+                nbttagcompound.putByte("Slot", (byte) i);
                 itemstack.write(nbttagcompound);
                 nbttaglist.add(nbttagcompound);
             }
@@ -1067,11 +1067,11 @@ public class StatsCapability extends GCPlayerStats
             }
         }
         nbt.put("AstroData", astroList);
-        
+
         nbt.putInt("GlassColor1", this.glassColor1);
         nbt.putInt("GlassColor2", this.glassColor2);
         nbt.putInt("GlassColor3", this.glassColor3);
-        
+
 //        ListNBT panelList = new ListNBT();
 //        for (int i = 0; i < BlockPanelLighting.PANELTYPES_LENGTH; ++i)
 //        {
@@ -1084,7 +1084,7 @@ public class StatsCapability extends GCPlayerStats
 //            panelList.add(stateNBT);
 //        } TODO Panel Lighting
 //        nbt.put("PanLi", panelList);
-        
+
         nbt.putInt("PanCo", this.panelLightingColor);
     }
 
@@ -1269,7 +1269,7 @@ public class StatsCapability extends GCPlayerStats
                 this.panelLightingColor = nbt.getInt("PanCo");
             }
 
-            
+
             GCLog.debug("Loading GC player data for " + PlayerUtil.getName(player.get()) + " : " + this.buildFlags);
 
             this.sentFlags = false;
@@ -1328,9 +1328,11 @@ public class StatsCapability extends GCPlayerStats
             this.glassColor3 = color3;
         }
         if (changes)
+        {
             ColorUtil.sendUpdatedColorsToPlayer(this);
+        }
     }
-    
+
     @Override
     public int getGlassColor1()
     {

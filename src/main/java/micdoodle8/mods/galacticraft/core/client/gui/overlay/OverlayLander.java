@@ -20,8 +20,8 @@ public class OverlayLander extends Overlay
         Minecraft mc = Minecraft.getInstance();
         if (mc.player.getRidingEntity() instanceof EntityLander)
         {
-            int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
-            int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
 //        mc.entityRenderer.setupOverlayRendering();
 
             GlStateManager.pushMatrix();
@@ -40,7 +40,7 @@ public class OverlayLander extends Overlay
 
             if (mc.player.getRidingEntity().getMotion().y != 0.0D)
             {
-                String string = GCCoreUtil.translate("gui.lander.velocity") + ": " + Math.round(((EntityLander) mc.player.getRidingEntity()).getMotion().y * 1000) / 100.0D + " " + GCCoreUtil.translate("gui.lander.velocityu");
+                String string = GCCoreUtil.translate("gui.lander.velocity") + ": " + Math.round(mc.player.getRidingEntity().getMotion().y * 1000) / 100.0D + " " + GCCoreUtil.translate("gui.lander.velocityu");
                 int color = ColorUtil.to32BitColor(255, (int) Math.floor(Math.abs(mc.player.getRidingEntity().getMotion().y) * 51.0D), 255 - (int) Math.floor(Math.abs(mc.player.getRidingEntity().getMotion().y) * 51.0D), 0);
                 mc.fontRenderer.drawString(string, width / 2.0F - mc.fontRenderer.getStringWidth(string) / 2.0F, height / 3.0F, color);
             }

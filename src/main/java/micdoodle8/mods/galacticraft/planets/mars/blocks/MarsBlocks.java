@@ -22,30 +22,53 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Constants.MOD_ID_PLANETS)
 public class MarsBlocks
 {
-//    @ObjectHolder(MarsBlockNames.blockSludge) public static Block blockSludge; TODO liquids
-    @ObjectHolder(MarsBlockNames.vine) public static Block vine;
-    @ObjectHolder(MarsBlockNames.slimelingEgg) public static Block slimelingEgg;
-    @ObjectHolder(MarsBlockNames.treasureChestTier2) public static Block treasureChestTier2;
-    @ObjectHolder(MarsBlockNames.cryoChamber) public static Block cryoChamber;
-    @ObjectHolder(MarsBlockNames.launchController) public static Block launchController;
-    @ObjectHolder(MarsBlockNames.terraformer) public static Block terraformer;
-    @ObjectHolder(MarsBlockNames.methaneSynthesizer) public static Block methaneSynthesizer;
-    @ObjectHolder(MarsBlockNames.gasLiquefier) public static Block gasLiquefier;
-    @ObjectHolder(MarsBlockNames.electrolyzer) public static Block electrolyzer;
-    @ObjectHolder(MarsBlockNames.creeperEgg) public static Block creeperEgg;
-    @ObjectHolder(MarsBlockNames.marsCobblestoneStairs) public static Block marsCobblestoneStairs;
-    @ObjectHolder(MarsBlockNames.marsBricksStairs) public static Block marsBricksStairs;
-    @ObjectHolder(MarsBlockNames.bossSpawner) public static Block bossSpawner;
-    @ObjectHolder(MarsBlockNames.oreCopper) public static Block oreCopper;
-    @ObjectHolder(MarsBlockNames.oreTin) public static Block oreTin;
-    @ObjectHolder(MarsBlockNames.oreDesh) public static Block oreDesh;
-    @ObjectHolder(MarsBlockNames.oreIron) public static Block oreIron;
-    @ObjectHolder(MarsBlockNames.cobblestone) public static Block cobblestone;
-    @ObjectHolder(MarsBlockNames.rockSurface) public static Block rockSurface;
-    @ObjectHolder(MarsBlockNames.rockMiddle) public static Block rockMiddle;
-    @ObjectHolder(MarsBlockNames.dungeonBrick) public static Block dungeonBrick;
-    @ObjectHolder(MarsBlockNames.deshBlock) public static Block deshBlock;
-    @ObjectHolder(MarsBlockNames.stone) public static Block stone;
+    //    @ObjectHolder(MarsBlockNames.blockSludge) public static Block blockSludge; TODO liquids
+    @ObjectHolder(MarsBlockNames.vine)
+    public static Block vine;
+    @ObjectHolder(MarsBlockNames.slimelingEgg)
+    public static Block slimelingEgg;
+    @ObjectHolder(MarsBlockNames.treasureChestTier2)
+    public static Block treasureChestTier2;
+    @ObjectHolder(MarsBlockNames.cryoChamber)
+    public static Block cryoChamber;
+    @ObjectHolder(MarsBlockNames.launchController)
+    public static Block launchController;
+    @ObjectHolder(MarsBlockNames.terraformer)
+    public static Block terraformer;
+    @ObjectHolder(MarsBlockNames.methaneSynthesizer)
+    public static Block methaneSynthesizer;
+    @ObjectHolder(MarsBlockNames.gasLiquefier)
+    public static Block gasLiquefier;
+    @ObjectHolder(MarsBlockNames.electrolyzer)
+    public static Block electrolyzer;
+    @ObjectHolder(MarsBlockNames.creeperEgg)
+    public static Block creeperEgg;
+    @ObjectHolder(MarsBlockNames.marsCobblestoneStairs)
+    public static Block marsCobblestoneStairs;
+    @ObjectHolder(MarsBlockNames.marsBricksStairs)
+    public static Block marsBricksStairs;
+    @ObjectHolder(MarsBlockNames.bossSpawner)
+    public static Block bossSpawner;
+    @ObjectHolder(MarsBlockNames.oreCopper)
+    public static Block oreCopper;
+    @ObjectHolder(MarsBlockNames.oreTin)
+    public static Block oreTin;
+    @ObjectHolder(MarsBlockNames.oreDesh)
+    public static Block oreDesh;
+    @ObjectHolder(MarsBlockNames.oreIron)
+    public static Block oreIron;
+    @ObjectHolder(MarsBlockNames.cobblestone)
+    public static Block cobblestone;
+    @ObjectHolder(MarsBlockNames.rockSurface)
+    public static Block rockSurface;
+    @ObjectHolder(MarsBlockNames.rockMiddle)
+    public static Block rockMiddle;
+    @ObjectHolder(MarsBlockNames.dungeonBrick)
+    public static Block dungeonBrick;
+    @ObjectHolder(MarsBlockNames.deshBlock)
+    public static Block deshBlock;
+    @ObjectHolder(MarsBlockNames.stone)
+    public static Block stone;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)

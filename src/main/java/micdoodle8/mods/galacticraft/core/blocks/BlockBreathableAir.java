@@ -42,9 +42,18 @@ public class BlockBreathableAir extends BlockThermalAir
             if (Blocks.AIR == state.getBlock())
             {
                 Direction side;
-                if (pos.getX() != fromPos.getX()) side = pos.getX() > fromPos.getX() ? Direction.EAST : Direction.WEST;
-                else if (pos.getY() != fromPos.getY()) side = pos.getY() > fromPos.getY() ? Direction.UP : Direction.DOWN;
-                else side = pos.getZ() > fromPos.getZ() ? Direction.SOUTH : Direction.NORTH;
+                if (pos.getX() != fromPos.getX())
+                {
+                    side = pos.getX() > fromPos.getX() ? Direction.EAST : Direction.WEST;
+                }
+                else if (pos.getY() != fromPos.getY())
+                {
+                    side = pos.getY() > fromPos.getY() ? Direction.UP : Direction.DOWN;
+                }
+                else
+                {
+                    side = pos.getZ() > fromPos.getZ() ? Direction.SOUTH : Direction.NORTH;
+                }
                 if (OxygenPressureProtocol.canBlockPassAir(worldIn, state, fromPos, side))
                 {
                     worldIn.setBlockState(fromPos, GCBlocks.breatheableAir.getDefaultState(), 6);

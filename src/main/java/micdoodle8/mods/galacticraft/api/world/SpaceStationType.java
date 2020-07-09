@@ -8,7 +8,7 @@ import net.minecraft.world.dimension.DimensionType;
  */
 public class SpaceStationType
 {
-//    private final int spaceStationID;
+    //    private final int spaceStationID;
     private final DimensionType planetID;
     private SpaceStationRecipe recipe;
 

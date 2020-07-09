@@ -98,11 +98,14 @@ public class ParticleSmokeSmall extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             ParticleSmokeSmall particleSmokeSmall = new ParticleSmokeSmall(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
             particleSmokeSmall.selectSpriteRandomly(this.spriteSet);
             return particleSmokeSmall;

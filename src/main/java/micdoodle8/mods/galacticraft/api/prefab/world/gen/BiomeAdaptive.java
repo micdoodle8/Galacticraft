@@ -70,7 +70,7 @@ public class BiomeAdaptive extends BiomeGC
         if (index >= biomeList.size())
         {
             BiomeAdaptive newAdaptive = new BiomeAdaptive(index, biome);
-            Registry.register(Registry.BIOME, index, "Outer Space" + (index == 0 ? "" : " "+ index), newAdaptive);
+            Registry.register(Registry.BIOME, index, "Outer Space" + (index == 0 ? "" : " " + index), newAdaptive);
             biomeList.add(newAdaptive);
             return newAdaptive;
         }
@@ -108,7 +108,9 @@ public class BiomeAdaptive extends BiomeGC
         for (BiomeAdaptive b : biomeList)
         {
             if (b.setBodyInstance(body))
+            {
                 break;
+            }
         }
     }
 
@@ -572,12 +574,14 @@ public class BiomeAdaptive extends BiomeGC
 
     @Override
     @Nullable
-    public String getParent() {
+    public String getParent()
+    {
         return biomeTrue.getParent();
     }
 
     @Override
-    public Biome getRiver() {
+    public Biome getRiver()
+    {
         return biomeTrue.getRiver();
     }
 }

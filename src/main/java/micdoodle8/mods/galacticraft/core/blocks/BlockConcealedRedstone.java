@@ -375,6 +375,7 @@ public class BlockConcealedRedstone extends Block
         }
     }
 
+    @Override
     public boolean canProvidePower(BlockState state)
     {
         return this.canProvidePower;
@@ -404,6 +405,7 @@ public class BlockConcealedRedstone extends Block
         return BlockRenderLayer.CUTOUT;
     }
 
+    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(POWER);

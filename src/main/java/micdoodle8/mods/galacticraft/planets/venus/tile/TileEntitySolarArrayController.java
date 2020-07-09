@@ -47,7 +47,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     public static final int MAX_GENERATE_WATTS = 1000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int generateWatts = 0;
-    private Set<ITransmitter> solarArray = Sets.newHashSet();
+    private final Set<ITransmitter> solarArray = Sets.newHashSet();
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int connectedInfo = 0;
 
@@ -175,8 +175,14 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
         float angle = this.world.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
-        if (!(this.world.getDimension() instanceof DimensionSpaceStation)) celestialAngle += 12.5F;
-        if (this.world.getDimension() instanceof DimensionVenus) celestialAngle = 180F - celestialAngle;
+        if (!(this.world.getDimension() instanceof DimensionSpaceStation))
+        {
+            celestialAngle += 12.5F;
+        }
+        if (this.world.getDimension() instanceof DimensionVenus)
+        {
+            celestialAngle = 180F - celestialAngle;
+        }
         celestialAngle %= 360;
         boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.getDimension() instanceof DimensionSpaceStation;
 
@@ -323,7 +329,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override

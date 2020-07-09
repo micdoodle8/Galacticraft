@@ -25,7 +25,7 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
 {
     private static final ResourceLocation painterTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/painter.png");
 
-    private TileEntityPainter painter;
+    private final TileEntityPainter painter;
 
     public GuiPainter(ContainerPainter container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -39,16 +39,19 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
     protected void init()
     {
         super.init();
-        this.buttons.add(new Button(this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.painter.getPos(), 0 }));
+        this.buttons.add(new Button(this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.painter.getPos(), 0}));
             painter.buttonPressed(0, this.minecraft.player);
         }));
-        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.painter.getPos(), 1 }));
+        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.painter.getPos(), 1}));
             painter.buttonPressed(1, this.minecraft.player);
         }));
-        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.painter.getPos(), 2 }));
+        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.painter.getPos(), 2}));
             painter.buttonPressed(2, this.minecraft.player);
         }));
     }
@@ -90,10 +93,10 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
         int height = 18;
         int width = 18;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos((double)(x + 0F), (double)(y + height), (double)this.blitOffset).endVertex();
-        worldrenderer.pos((double)(x + width), (double)(y + height), (double)this.blitOffset).endVertex();
-        worldrenderer.pos((double)(x + width), (double)(y + 0), (double)this.blitOffset).endVertex();
-        worldrenderer.pos((double)(x + 0F), (double)(y + 0), (double)this.blitOffset).endVertex();
+        worldrenderer.pos(x + 0F, y + height, this.blitOffset).endVertex();
+        worldrenderer.pos(x + width, y + height, this.blitOffset).endVertex();
+        worldrenderer.pos(x + width, y + 0, this.blitOffset).endVertex();
+        worldrenderer.pos(x + 0F, y + 0, this.blitOffset).endVertex();
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }

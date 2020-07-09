@@ -190,7 +190,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     {
         return this.autoRegisterDimension;
     }
-    
+
     public DimensionType getDimensionID()
     {
         return this.dimensionID;
@@ -309,10 +309,10 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         }
     }
 
-	public void setUnreachable()
-	{
-		this.isReachable = false;
-	}
+    public void setUnreachable()
+    {
+        this.isReachable = false;
+    }
 
     public String getDimensionSuffix()
     {
@@ -324,7 +324,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         this.dimensionSuffix = dimensionSuffix;
     }
 
-    public void setBiomeInfo(Biome ...  biomes)
+    public void setBiomeInfo(Biome... biomes)
     {
         this.biomeInfo = new LinkedList<Biome>();
         this.biomesToGenerate = new LinkedList<Biome>();
@@ -333,7 +333,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         for (Biome b : biomes)
         {
             this.biomeInfo.add(b);
-            if (b instanceof BiomeGC && ((BiomeGC)b).isAdaptiveBiome)
+            if (b instanceof BiomeGC && ((BiomeGC) b).isAdaptiveBiome)
             {
                 this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGC) b));
                 adaptiveBiomes.add((BiomeGC) b);
@@ -368,7 +368,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
             {
                 if (biome instanceof IMobSpawnBiome)
                 {
-                    ((IMobSpawnBiome)biome).initialiseMobLists(this.mobInfo);
+                    ((IMobSpawnBiome) biome).initialiseMobLists(this.mobInfo);
                 }
             }
         }
@@ -380,8 +380,9 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         {
             try
             {
-                return ((IGalacticraftDimension)this.providerClass.newInstance()).getSurfaceBlocks();
-            } catch (Exception e)
+                return ((IGalacticraftDimension) this.providerClass.newInstance()).getSurfaceBlocks();
+            }
+            catch (Exception e)
             {
                 e.printStackTrace();
             }

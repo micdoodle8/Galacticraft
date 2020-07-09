@@ -26,7 +26,7 @@ public class TileEntityNasaWorkbench extends TileEntityFake implements IMultiBlo
     public static TileEntityType<TileEntityNasaWorkbench> TYPE;
 
     private boolean initialised;
-    
+
     public TileEntityNasaWorkbench()
     {
         super(TYPE);
@@ -63,7 +63,7 @@ public class TileEntityNasaWorkbench extends TileEntityFake implements IMultiBlo
     {
         return EnumBlockMultiType.NASA_WORKBENCH;
     }
-    
+
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {

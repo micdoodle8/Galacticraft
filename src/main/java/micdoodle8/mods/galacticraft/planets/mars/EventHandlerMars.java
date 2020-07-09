@@ -215,9 +215,9 @@ public class EventHandlerMars
                 {
                     final TileEntityLaunchController launchController = (TileEntityLaunchController) connectedTile;
                     if (launchController.getEnergyStoredGC() > 0.0F && launchController.launchPadRemovalDisabled && !launchController.getDisabled(0))
-                {
-                    	event.allow = false;
-                    	return;
+                    {
+                        event.allow = false;
+                        return;
                     }
                     break;
                 }

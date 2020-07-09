@@ -42,9 +42,9 @@ public class SkyProviderOverworld implements IRenderHandler
 //        }
 //    }
 
-    private int starGLCallList = GLAllocation.generateDisplayLists(7);
-    private int glSkyList;
-    private int glSkyList2;
+    private final int starGLCallList = GLAllocation.generateDisplayLists(7);
+    private final int glSkyList;
+    private final int glSkyList2;
     private final ResourceLocation planetToRender = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
 
     public SkyProviderOverworld()
@@ -122,7 +122,7 @@ public class SkyProviderOverworld implements IRenderHandler
     {
         if (!ClientProxyCore.overworldTextureRequestSent)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.world), new Object[] {}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.world), new Object[]{}));
             ClientProxyCore.overworldTextureRequestSent = true;
         }
 

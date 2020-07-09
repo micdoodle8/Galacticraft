@@ -16,7 +16,7 @@ public class ContainerParaChest extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.PARACHEST)
     public static ContainerType<ContainerParaChest> TYPE;
 
-    private TileEntityParaChest paraChest;
+    private final TileEntityParaChest paraChest;
     public int numRows;
 
     public ContainerParaChest(int containerId, PlayerInventory playerInv, TileEntityParaChest paraChest)

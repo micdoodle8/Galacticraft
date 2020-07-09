@@ -67,19 +67,19 @@ public class LayerOxygenParachute extends LayerRenderer<AbstractClientPlayerEnti
                 {
                     Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.PLAYER_TEXTURE);
 
-                    this.parachute[0].rotateAngleZ = (float) (30F / Constants.RADIANS_TO_DEGREES);
-                    this.parachute[2].rotateAngleZ = (float) -(30F / Constants.RADIANS_TO_DEGREES);
-                    this.parachuteStrings[0].rotateAngleZ = (float) (155F / Constants.RADIANS_TO_DEGREES);
-                    this.parachuteStrings[0].rotateAngleX = (float) (23F / Constants.RADIANS_TO_DEGREES);
+                    this.parachute[0].rotateAngleZ = 30F / Constants.RADIANS_TO_DEGREES;
+                    this.parachute[2].rotateAngleZ = -(30F / Constants.RADIANS_TO_DEGREES);
+                    this.parachuteStrings[0].rotateAngleZ = 155F / Constants.RADIANS_TO_DEGREES;
+                    this.parachuteStrings[0].rotateAngleX = 23F / Constants.RADIANS_TO_DEGREES;
                     this.parachuteStrings[0].setRotationPoint(-9.0F, -7.0F, 2.0F);
-                    this.parachuteStrings[1].rotateAngleZ = (float) (155F / Constants.RADIANS_TO_DEGREES);
-                    this.parachuteStrings[1].rotateAngleX = (float) -(23F / Constants.RADIANS_TO_DEGREES);
+                    this.parachuteStrings[1].rotateAngleZ = 155F / Constants.RADIANS_TO_DEGREES;
+                    this.parachuteStrings[1].rotateAngleX = -(23F / Constants.RADIANS_TO_DEGREES);
                     this.parachuteStrings[1].setRotationPoint(-9.0F, -7.0F, 2.0F);
-                    this.parachuteStrings[2].rotateAngleZ = (float) -(155F / Constants.RADIANS_TO_DEGREES);
-                    this.parachuteStrings[2].rotateAngleX = (float) (23F / Constants.RADIANS_TO_DEGREES);
+                    this.parachuteStrings[2].rotateAngleZ = -(155F / Constants.RADIANS_TO_DEGREES);
+                    this.parachuteStrings[2].rotateAngleX = 23F / Constants.RADIANS_TO_DEGREES;
                     this.parachuteStrings[2].setRotationPoint(9.0F, -7.0F, 2.0F);
-                    this.parachuteStrings[3].rotateAngleZ = (float) -(155F / Constants.RADIANS_TO_DEGREES);
-                    this.parachuteStrings[3].rotateAngleX = (float) -(23F / Constants.RADIANS_TO_DEGREES);
+                    this.parachuteStrings[3].rotateAngleZ = -(155F / Constants.RADIANS_TO_DEGREES);
+                    this.parachuteStrings[3].rotateAngleX = -(23F / Constants.RADIANS_TO_DEGREES);
                     this.parachuteStrings[3].setRotationPoint(9.0F, -7.0F, 2.0F);
 
                     GlStateManager.pushMatrix();

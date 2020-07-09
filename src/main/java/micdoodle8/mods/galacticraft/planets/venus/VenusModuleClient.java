@@ -35,7 +35,7 @@ import java.util.List;
 
 public class VenusModuleClient implements IPlanetsModuleClient
 {
-    private static ModelResourceLocation sulphuricAcidLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid", "fluid");
+    private static final ModelResourceLocation sulphuricAcidLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid", "fluid");
 
     @Override
     public void init(FMLCommonSetupEvent event)

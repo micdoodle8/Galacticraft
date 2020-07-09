@@ -110,8 +110,10 @@ public abstract class BlockAdvanced extends Block
         {
             Item item = itemStack.getItem();
             if (item == GCItems.wrench)
+            {
                 return false;
-            
+            }
+
             Class<? extends Item> wrenchClass = item.getClass();
 
             /**
@@ -131,10 +133,10 @@ public abstract class BlockAdvanced extends Block
 
             if (CompatibilityManager.isIc2Loaded())
             {
-            /**
-             * Industrialcraft
-             */
-                if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric )
+                /**
+                 * Industrialcraft
+                 */
+                if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric)
                 {
                     return itemStack.getDamage() < itemStack.getMaxDamage();
                 }
@@ -174,7 +176,7 @@ public abstract class BlockAdvanced extends Block
              */
             try
             {
-                if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric )
+                if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric)
                 {
                     Method methodWrenchDamage = wrenchClass.getMethod("damage", ItemStack.class, Integer.TYPE, PlayerEntity.class);
                     methodWrenchDamage.invoke(itemStack.getItem(), itemStack, 1, entityPlayer);

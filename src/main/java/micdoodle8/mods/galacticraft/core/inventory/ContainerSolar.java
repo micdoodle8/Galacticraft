@@ -17,7 +17,7 @@ public class ContainerSolar extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SOLAR)
     public static ContainerType<ContainerSolar> TYPE;
 
-    private TileEntitySolar solar;
+    private final TileEntitySolar solar;
 
     public ContainerSolar(int containerId, PlayerInventory playerInv, TileEntitySolar solar)
     {
@@ -112,7 +112,7 @@ public class ContainerSolar extends Container
                 }
                 else
                 {
-                   slot.putStack(ItemStack.EMPTY);
+                    slot.putStack(ItemStack.EMPTY);
                 }
             }
             else

@@ -25,7 +25,7 @@ public class GCEntities
     public static final RegistryObject<EntityType<EntityEvolvedEnderman>> EVOLVED_ENDERMAN = register(GCEntityNames.evolvedEnderman, GCEntities::evolvedEnderman);
     public static final RegistryObject<EntityType<EntityEvolvedWitch>> EVOLVED_WITCH = register(GCEntityNames.evolvedWitch, GCEntities::evolvedWitch);
     public static final RegistryObject<EntityType<EntitySkeletonBoss>> SKELETON_BOSS = register(GCEntityNames.skeletonBoss, GCEntities::skeletonBoss);
-//    public static final RegistryObject<EntityType<EntityAlienVillager>> ALIEN_VILLAGER = register(GCEntityNames.alienVillager, GCEntities::alienVillager);
+    //    public static final RegistryObject<EntityType<EntityAlienVillager>> ALIEN_VILLAGER = register(GCEntityNames.alienVillager, GCEntities::alienVillager);
     public static final RegistryObject<EntityType<EntityTier1Rocket>> ROCKET_T1 = register(GCEntityNames.rocketTier1, GCEntities::rocketTier1);
     public static final RegistryObject<EntityType<EntityMeteor>> METEOR = register(GCEntityNames.meteor, GCEntities::meteor);
     public static final RegistryObject<EntityType<EntityMeteor>> METEOR_HUGE = register(GCEntityNames.meteorHuge, GCEntities::meteorHuge);
@@ -37,11 +37,13 @@ public class GCEntities
     public static final RegistryObject<EntityType<EntityCelestialFake>> CELESTIAL_FAKE = register(GCEntityNames.celestialFake, GCEntities::celestialFake);
     public static final RegistryObject<EntityType<EntityHangingSchematic>> HANGING_SCHEMATIC = register(GCEntityNames.hangingSchematic, GCEntities::hangingSchematic);
 
-    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
+    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup)
+    {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
-    private static EntityType.Builder<EntityEvolvedSpider> evolvedSpider() {
+    private static EntityType.Builder<EntityEvolvedSpider> evolvedSpider()
+    {
         return EntityType.Builder.create(EntityEvolvedSpider::new, EntityClassification.MONSTER)
                 .size(1.5F, 1.0F)
                 .setUpdateInterval(10)
@@ -49,7 +51,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityEvolvedZombie> evolvedZombie() {
+    private static EntityType.Builder<EntityEvolvedZombie> evolvedZombie()
+    {
         return EntityType.Builder.create(EntityEvolvedZombie::new, EntityClassification.MONSTER)
                 .size(0.6F, 1.95F)
                 .setUpdateInterval(10)
@@ -57,7 +60,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityEvolvedCreeper> evolvedCreeper() {
+    private static EntityType.Builder<EntityEvolvedCreeper> evolvedCreeper()
+    {
         return EntityType.Builder.create(EntityEvolvedCreeper::new, EntityClassification.MONSTER)
                 .size(0.7F, 2.2F)
                 .setUpdateInterval(10)
@@ -65,7 +69,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityEvolvedSkeleton> evolvedSkeleton() {
+    private static EntityType.Builder<EntityEvolvedSkeleton> evolvedSkeleton()
+    {
         return EntityType.Builder.create(EntityEvolvedSkeleton::new, EntityClassification.MONSTER)
                 .size(0.6F, 1.99F)
                 .setUpdateInterval(10)
@@ -73,7 +78,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityEvolvedEnderman> evolvedEnderman() {
+    private static EntityType.Builder<EntityEvolvedEnderman> evolvedEnderman()
+    {
         return EntityType.Builder.create(EntityEvolvedEnderman::new, EntityClassification.MONSTER)
                 .size(0.6F, 2.9F)
                 .setUpdateInterval(10)
@@ -81,7 +87,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityEvolvedWitch> evolvedWitch() {
+    private static EntityType.Builder<EntityEvolvedWitch> evolvedWitch()
+    {
         return EntityType.Builder.create(EntityEvolvedWitch::new, EntityClassification.MONSTER)
                 .size(0.6F, 1.95F)
                 .setUpdateInterval(10)
@@ -89,7 +96,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntitySkeletonBoss> skeletonBoss() {
+    private static EntityType.Builder<EntitySkeletonBoss> skeletonBoss()
+    {
         return EntityType.Builder.create(EntitySkeletonBoss::new, EntityClassification.MONSTER)
                 .size(1.5F, 4.0F)
                 .immuneToFire()
@@ -106,7 +114,8 @@ public class GCEntities
 //                .setShouldReceiveVelocityUpdates(true);
 //    } TODO Villagers
 
-    private static EntityType.Builder<EntityTier1Rocket> rocketTier1() {
+    private static EntityType.Builder<EntityTier1Rocket> rocketTier1()
+    {
         return EntityType.Builder.create(EntityTier1Rocket::new, EntityClassification.MISC)
                 .size(1.2F, 3.5F)
                 .setUpdateInterval(1)
@@ -114,7 +123,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityMeteor> meteor() {
+    private static EntityType.Builder<EntityMeteor> meteor()
+    {
         return EntityType.Builder.create(EntityMeteor::new, EntityClassification.MISC)
                 .size(1.0F, 1.0F)
                 .setUpdateInterval(5)
@@ -122,7 +132,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityMeteor> meteorHuge() {
+    private static EntityType.Builder<EntityMeteor> meteorHuge()
+    {
         return EntityType.Builder.create(EntityMeteor::new, EntityClassification.MISC)
                 .size(6.0F, 6.0F)
                 .setUpdateInterval(5)
@@ -130,7 +141,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityBuggy> buggy() {
+    private static EntityType.Builder<EntityBuggy> buggy()
+    {
         return EntityType.Builder.create(EntityBuggy::new, EntityClassification.MISC)
                 .size(1.4F, 0.6F)
                 .immuneToFire()
@@ -139,7 +151,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityFlag> flag() {
+    private static EntityType.Builder<EntityFlag> flag()
+    {
         return EntityType.Builder.<EntityFlag>create(EntityFlag::new, EntityClassification.MISC)
                 .size(0.4F, 3F)
                 .setUpdateInterval(5)
@@ -147,7 +160,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityParachest> parachest() {
+    private static EntityType.Builder<EntityParachest> parachest()
+    {
         return EntityType.Builder.<EntityParachest>create(EntityParachest::new, EntityClassification.MISC)
                 .size(1.0F, 1.0F)
                 .setUpdateInterval(5)
@@ -155,7 +169,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityLander> lander() {
+    private static EntityType.Builder<EntityLander> lander()
+    {
         return EntityType.Builder.<EntityLander>create(EntityLander::new, EntityClassification.MISC)
                 .size(3.0F, 4.25F)
                 .setUpdateInterval(5)
@@ -163,7 +178,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityMeteorChunk> meteorChunk() {
+    private static EntityType.Builder<EntityMeteorChunk> meteorChunk()
+    {
         return EntityType.Builder.<EntityMeteorChunk>create(EntityMeteorChunk::new, EntityClassification.MISC)
                 .size(0.25F, 0.25F)
                 .setUpdateInterval(5)
@@ -171,7 +187,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityCelestialFake> celestialFake() {
+    private static EntityType.Builder<EntityCelestialFake> celestialFake()
+    {
         return EntityType.Builder.<EntityCelestialFake>create(EntityCelestialFake::new, EntityClassification.MISC)
                 .size(3.0F, 1.0F)
                 .setUpdateInterval(5)
@@ -179,7 +196,8 @@ public class GCEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityHangingSchematic> hangingSchematic() {
+    private static EntityType.Builder<EntityHangingSchematic> hangingSchematic()
+    {
         return EntityType.Builder.<EntityHangingSchematic>create(EntityHangingSchematic::new, EntityClassification.MISC)
                 .size(0.5F, 0.5F)
                 .setUpdateInterval(5)

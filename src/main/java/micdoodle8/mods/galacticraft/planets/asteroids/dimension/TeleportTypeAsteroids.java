@@ -59,7 +59,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                     x = limit;
                 }
                 else if (x < -limit)
-                {   
+                {
                     z *= -limit / x;
                     x = -limit;
                 }
@@ -70,7 +70,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 }
                 else if (z < -limit)
                 {
-                    x *= - limit / z;
+                    x *= -limit / z;
                     z = -limit;
                 }
             }

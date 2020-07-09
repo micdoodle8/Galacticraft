@@ -89,7 +89,10 @@ public class EntityParachest extends Entity implements IPacketReceiver
     @Override
     public void writeAdditional(CompoundNBT nbt)
     {
-        if (world.isRemote) return;
+        if (world.isRemote)
+        {
+            return;
+        }
         nbt.putInt("CargoLength", this.cargo.size());
         ItemStackHelper.saveAllItems(nbt, this.cargo);
 

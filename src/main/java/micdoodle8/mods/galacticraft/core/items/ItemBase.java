@@ -67,7 +67,7 @@ public class ItemBase extends Item implements ISortableItem
         this.smeltingXP = f;
         return this;
     }
-    
+
     @Override
     public float getSmeltingExperience(ItemStack item)
     {

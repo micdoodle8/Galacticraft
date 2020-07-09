@@ -22,8 +22,8 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/electric_ingot_compressor.png");
     private TileEntityElectricIngotCompressor compressor;
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
-    private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
+    private final GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
     public GuiElectricIngotCompressor(ContainerElectricIngotCompressor container, PlayerInventory playerInv, ITextComponent title)
     {

@@ -98,7 +98,7 @@ public class GameScreenBasic implements IGameScreen
                 this.textureManager.bindTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"));
                 if (!ClientProxyCore.overworldTextureRequestSent)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{}));
                     ClientProxyCore.overworldTextureRequestSent = true;
                 }
 ////                 Overworld texture is 48x48 in a 64x64 .png file

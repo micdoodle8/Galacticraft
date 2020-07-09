@@ -19,7 +19,7 @@ public class ContainerOxygenDistributor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_DISTRIBUTOR)
     public static ContainerType<ContainerOxygenDistributor> TYPE;
 
-    private TileEntityOxygenDistributor distributor;
+    private final TileEntityOxygenDistributor distributor;
 
     public ContainerOxygenDistributor(int containerId, PlayerInventory playerInv, TileEntityOxygenDistributor distributor)
     {
@@ -62,7 +62,7 @@ public class ContainerOxygenDistributor extends Container
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        final Slot slot = this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())

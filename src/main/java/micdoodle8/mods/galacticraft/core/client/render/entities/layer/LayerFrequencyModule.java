@@ -51,8 +51,8 @@ public class LayerFrequencyModule extends LayerRenderer<AbstractClientPlayerEnti
 
                     GlStateManager.rotatef(180, 1, 0, 0);
                     GlStateManager.pushMatrix();
-                    GlStateManager.rotatef((float) (this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleY * -Constants.RADIANS_TO_DEGREES), 0, 1, 0);
-                    GlStateManager.rotatef((float) (this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleX * Constants.RADIANS_TO_DEGREES), 1, 0, 0);
+                    GlStateManager.rotatef(this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleY * -Constants.RADIANS_TO_DEGREES, 0, 1, 0);
+                    GlStateManager.rotatef(this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleX * Constants.RADIANS_TO_DEGREES, 1, 0, 0);
                     GlStateManager.scalef(0.3F, 0.3F, 0.3F);
 
                     if (wearingHelmet)
@@ -64,11 +64,11 @@ public class LayerFrequencyModule extends LayerRenderer<AbstractClientPlayerEnti
                         GlStateManager.translatef(-0.9F, player.isSneaking() ? 0.1F : 0.9F, 0);
                     }
 
-                    ClientUtil.drawBakedModel(this.moduleModel);
+                    ClientUtil.drawBakedModel(moduleModel);
                     GlStateManager.translatef(0.0F, 1.3F, 0.0F);
                     GlStateManager.rotatef((float) (Math.sin(player.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
                     GlStateManager.rotatef((float) (Math.cos(player.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
-                    ClientUtil.drawBakedModel(this.radarModel);
+                    ClientUtil.drawBakedModel(radarModel);
                     GlStateManager.popMatrix();
                     GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                     GlStateManager.popMatrix();

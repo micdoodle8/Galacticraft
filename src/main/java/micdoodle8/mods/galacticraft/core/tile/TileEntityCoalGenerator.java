@@ -143,7 +143,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override
@@ -192,7 +192,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override

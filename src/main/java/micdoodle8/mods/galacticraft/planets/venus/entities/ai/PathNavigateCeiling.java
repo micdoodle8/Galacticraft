@@ -41,12 +41,12 @@ public class PathNavigateCeiling extends PathNavigator
     @Override
     protected Vec3d getEntityPosition()
     {
-        return new Vec3d(this.entity.posX, (double)this.getPathablePosY(), this.entity.posZ);
+        return new Vec3d(this.entity.posX, this.getPathablePosY(), this.entity.posZ);
     }
 
     private int getPathablePosY()
     {
-        return (int)(this.entity.getBoundingBox().minY + 0.5D);
+        return (int) (this.entity.getBoundingBox().minY + 0.5D);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class PathNavigateCeiling extends PathNavigator
             sizeX = sizeX + 2;
             sizeZ = sizeZ + 2;
 
-            if (!this.isSafeToStandAt(i, (int)current.y, j, sizeX, sizeY, sizeZ, current, d0, d1))
+            if (!this.isSafeToStandAt(i, (int) current.y, j, sizeX, sizeY, sizeZ, current, d0, d1))
             {
                 return false;
             }
@@ -80,8 +80,8 @@ public class PathNavigateCeiling extends PathNavigator
                 sizeZ = sizeZ - 2;
                 double d4 = 1.0D / Math.abs(d0);
                 double d5 = 1.0D / Math.abs(d1);
-                double d6 = (double)(i) - current.x;
-                double d7 = (double)(j) - current.z;
+                double d6 = (double) (i) - current.x;
+                double d7 = (double) (j) - current.z;
 
                 if (d0 >= 0.0D)
                 {
@@ -117,7 +117,7 @@ public class PathNavigateCeiling extends PathNavigator
                         l1 = j1 - j;
                     }
 
-                    if (!this.isSafeToStandAt(i, (int)current.y, j, sizeX, sizeY, sizeZ, current, d0, d1))
+                    if (!this.isSafeToStandAt(i, (int) current.y, j, sizeX, sizeY, sizeZ, current, d0, d1))
                     {
                         return false;
                     }
@@ -143,8 +143,8 @@ public class PathNavigateCeiling extends PathNavigator
             {
                 for (int l = j; l < j + sizeZ; ++l)
                 {
-                    double d0 = (double)k + 0.5D - currentPos.x;
-                    double d1 = (double)l + 0.5D - currentPos.z;
+                    double d0 = (double) k + 0.5D - currentPos.x;
+                    double d1 = (double) l + 0.5D - currentPos.z;
 
                     if (d0 * distanceX + d1 * distanceZ >= 0.0D)
                     {
@@ -176,16 +176,12 @@ public class PathNavigateCeiling extends PathNavigator
     private boolean isPositionClear(int minX, int minY, int minZ, int sizeX, int sizeY, int sizeZ, Vec3d currentPos, double distanceX, double distanceZ)
     {
         Stream<BlockPos> stream = BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(minX + sizeX - 1, minY + sizeY - 1, minZ + sizeZ - 1));
-        stream = stream.filter((pos) -> ((double)pos.getX() + 0.5D - currentPos.x) * distanceX + ((double)pos.getZ() + 0.5D - currentPos.z) * distanceZ >= 0.0D);
-        return stream.allMatch((pos) -> {
+        stream = stream.filter((pos) -> ((double) pos.getX() + 0.5D - currentPos.x) * distanceX + ((double) pos.getZ() + 0.5D - currentPos.z) * distanceZ >= 0.0D);
+        return stream.allMatch((pos) ->
+        {
             BlockState state = this.world.getBlockState(pos);
 
-            if (!state.allowsMovement(world, pos, PathType.LAND))
-            {
-                return false;
-            }
-
-            return true;
+            return state.allowsMovement(world, pos, PathType.LAND);
         });
     }
 }

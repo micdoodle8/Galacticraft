@@ -40,10 +40,12 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
         double difficulty = 0;
         switch (this.world.getDifficulty())
         {
-        case HARD : difficulty = 2D;
-        break;
-        case NORMAL : difficulty = 1D;
-        break;
+        case HARD:
+            difficulty = 2D;
+            break;
+        case NORMAL:
+            difficulty = 1D;
+            break;
         default:
             break;
         }
@@ -81,7 +83,7 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
         {
             EntityEvolvedSkeleton entityskeleton = new EntityEvolvedSkeleton(GCEntities.EVOLVED_SKELETON.get(), world);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.onInitialSpawn(worldIn, difficultyIn, reason, (ILivingEntityData)null, (CompoundNBT)null);
+            entityskeleton.onInitialSpawn(worldIn, difficultyIn, reason, null, null);
             this.world.addEntity(entityskeleton);
             entityskeleton.startRiding(this);
         }
@@ -92,13 +94,13 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
 
             if (this.world.getDifficulty() == Difficulty.HARD && this.world.rand.nextFloat() < 0.1F * difficultyIn.getClampedAdditionalDifficulty())
             {
-                ((SpiderEntity.GroupData)spawnDataIn).setRandomEffect(this.world.rand);
+                ((SpiderEntity.GroupData) spawnDataIn).setRandomEffect(this.world.rand);
             }
         }
 
         if (spawnDataIn instanceof SpiderEntity.GroupData)
         {
-            Effect potion = ((SpiderEntity.GroupData)spawnDataIn).effect;
+            Effect potion = ((SpiderEntity.GroupData) spawnDataIn).effect;
 
             if (potion != null)
             {

@@ -24,12 +24,7 @@ public class SlotExtendedInventory extends Slot
     {
         int gearID = GalacticraftRegistry.findMatchingGearID(itemstack, getTypeFromSlot());
 
-        if (gearID >= 0)
-        {
-            return true;
-        }
-
-        return false;
+        return gearID >= 0;
     }
 
     private EnumExtendedInventorySlot getTypeFromSlot()

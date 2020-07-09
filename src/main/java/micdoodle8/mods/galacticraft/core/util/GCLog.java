@@ -7,8 +7,8 @@ import org.apache.logging.log4j.Logger;
 
 public class GCLog
 {
-    
-    private static Logger log = LogManager.getFormatterLogger(Constants.MOD_NAME_SIMPLE);
+
+    private static final Logger log = LogManager.getFormatterLogger(Constants.MOD_NAME_SIMPLE);
 
     public static void info(String message, Object... params)
     {

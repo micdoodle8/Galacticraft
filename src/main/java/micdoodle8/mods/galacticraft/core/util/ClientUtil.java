@@ -47,7 +47,7 @@ public class ClientUtil
     {
         return getClientTimeTotal();
     }
-    
+
     public static long getClientTimeTotal()
     {
         return (long) (Minecraft.getInstance().world.getGameTime() * 66.666666666666);
@@ -103,7 +103,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{playerName}));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -120,7 +120,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{playerName}));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -179,12 +179,12 @@ public class ClientUtil
     {
         return modelFromOBJ(loader, loc, ImmutableList.of("main"));
     }
-    
+
     public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups) throws IOException
     {
         return modelFromOBJ(loader, loc, visibleGroups, TRSRTransformation.identity(), ImmutableMap.of());
     }
-    
+
     public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups, IModelState parentState, ImmutableMap<String, String> customData) throws IOException
     {
         IModel<?> model = OBJLoaderGC.instance.loadModel(loc);

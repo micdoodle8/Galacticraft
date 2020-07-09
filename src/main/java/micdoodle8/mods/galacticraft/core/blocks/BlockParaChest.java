@@ -193,9 +193,12 @@ public class BlockParaChest extends Block implements IShiftDescription
     public static boolean isCatSittingAbove(World worldIn, BlockPos pos)
     {
         List<CatEntity> list = worldIn.getEntitiesWithinAABB(CatEntity.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1));
-        if (!list.isEmpty()) {
-            for(CatEntity catentity : list) {
-                if (catentity.isSitting()) {
+        if (!list.isEmpty())
+        {
+            for (CatEntity catentity : list)
+            {
+                if (catentity.isSitting())
+                {
                     return true;
                 }
             }
@@ -261,16 +264,18 @@ public class BlockParaChest extends Block implements IShiftDescription
 //    }
 
     @Override
-    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
+    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param)
+    {
         super.eventReceived(state, worldIn, pos, id, param);
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 
     @Override
     @Nullable
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 }

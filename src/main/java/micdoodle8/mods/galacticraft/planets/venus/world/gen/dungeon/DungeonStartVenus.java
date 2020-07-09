@@ -18,7 +18,8 @@ public class DungeonStartVenus extends EntranceCraterVenus
     public List<StructurePiece> attachedComponents = Lists.newArrayList();
     public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
-    public DungeonStartVenus(TemplateManager templateManager, CompoundNBT nbt) {
+    public DungeonStartVenus(TemplateManager templateManager, CompoundNBT nbt)
+    {
         super(CVENUS_DUNGEON_START, nbt);
     }
 

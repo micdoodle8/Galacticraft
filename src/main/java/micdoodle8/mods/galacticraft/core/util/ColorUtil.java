@@ -25,8 +25,8 @@ public class ColorUtil
     static Vector3 black = new Vector3(0, 0, 0);
     static Vector3 mud = new Vector3(94, 81, 74);
 
-    static float[] colorwheelAngles = { -110F, -30F, 0F, 60F, 120F, 180F, 215F, 250F, 330F, 360F, 420F, 480F };
-    static Vector3[] colorwheelColors = { blue, magenta, red, orange, yellow, green, cyan, blue, magenta, red, orange, yellow };
+    static float[] colorwheelAngles = {-110F, -30F, 0F, 60F, 120F, 180F, 215F, 250F, 330F, 360F, 420F, 480F};
+    static Vector3[] colorwheelColors = {blue, magenta, red, orange, yellow, green, cyan, blue, magenta, red, orange, yellow};
 
     private static Vector3 hue_to_rgb(float deg)
     {
@@ -169,7 +169,7 @@ public class ColorUtil
         int rr = gg >> 8;
         gg &= 255;
         int bb = color2 & 255;
-        
+
         r = (r + rr) / 2;
         g = (g + gg) / 2;
         b = (b + bb) / 2;
@@ -179,7 +179,7 @@ public class ColorUtil
         return r | g | b;
     }
 
-    
+
     public static Vector3 toVec3(int col)
     {
         int gg = col >> 8;
@@ -242,13 +242,16 @@ public class ColorUtil
 
     /**
      * Lighten to the specified intensity
+     *
      * @param col
      * @return
      */
     public static int lightenFully(int col, int intensity)
     {
         if (intensity == 0)
+        {
             return 0;
+        }
         int gg = col >> 8;
         int rr = gg >> 8;
         gg &= 255;
@@ -313,12 +316,12 @@ public class ColorUtil
     public static void sendUpdatedColorsToPlayer(GCPlayerStats stats)
     {
         DimensionType dimID = stats.getPlayer().get().dimension;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[] { Integer.valueOf(stats.getGlassColor1()), Integer.valueOf(stats.getGlassColor2()), Integer.valueOf(stats.getGlassColor3()) }), stats.getPlayer().get());
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[]{Integer.valueOf(stats.getGlassColor1()), Integer.valueOf(stats.getGlassColor2()), Integer.valueOf(stats.getGlassColor3())}), stats.getPlayer().get());
     }
-    
+
     public static void updateColorsForArea(DimensionType dimID, BlockPos pos, int range, int color1, int color2, int color3)
     {
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[] { color1, color2, color3 }), new TargetPoint(pos.getX(), pos.getY(), pos.getZ(), range, dimID));
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[]{color1, color2, color3}), new TargetPoint(pos.getX(), pos.getY(), pos.getZ(), range, dimID));
     }
 
     public static void setGLColor(int col)

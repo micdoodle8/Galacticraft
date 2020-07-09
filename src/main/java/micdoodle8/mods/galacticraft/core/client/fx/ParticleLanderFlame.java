@@ -22,9 +22,9 @@ import java.util.UUID;
 @OnlyIn(Dist.CLIENT)
 public class ParticleLanderFlame extends SpriteTexturedParticle
 {
-    private IAnimatedSprite animatedSprite;
-    private float smokeParticleScale;
-    private UUID ridingEntity;
+    private final IAnimatedSprite animatedSprite;
+    private final float smokeParticleScale;
+    private final UUID ridingEntity;
 
     public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityParticleData particleData, IAnimatedSprite animatedSprite)
     {
@@ -117,7 +117,7 @@ public class ParticleLanderFlame extends SpriteTexturedParticle
                     if (var5 instanceof LivingEntity && var5.isAlive() && !var5.isBurning() && !var5.getUniqueID().equals(this.ridingEntity))
                     {
                         var5.setFire(3);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[] { var5.getEntityId() }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[]{var5.getEntityId()}));
                     }
                 }
             }
@@ -141,11 +141,14 @@ public class ParticleLanderFlame extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(EntityParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(EntityParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             return new ParticleLanderFlame(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn, this.spriteSet);
         }
     }

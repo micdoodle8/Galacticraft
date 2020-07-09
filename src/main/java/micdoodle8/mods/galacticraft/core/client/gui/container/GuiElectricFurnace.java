@@ -22,10 +22,10 @@ public class GuiElectricFurnace extends GuiContainerGC<ContainerElectricFurnace>
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/electric_furnace.png");
     private static final ResourceLocation arcFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/electric_arc_furnace.png");
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
 
     private TileEntityElectricFurnace furnace;
-    private ResourceLocation texture;
+    private final ResourceLocation texture;
 
     public GuiElectricFurnace(ContainerElectricFurnace container, PlayerInventory playerInv, ITextComponent title)
     {

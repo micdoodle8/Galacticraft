@@ -96,16 +96,16 @@ public abstract class SizedPiece extends Piece
         {
             switch (this.getCoordBaseMode())
             {
-                case NORTH:
-                    return this.boundingBox.minX + x;
-                case SOUTH:
-                    return this.boundingBox.maxX - x;
-                case WEST:
-                    return this.boundingBox.maxX - z;
-                case EAST:
-                    return this.boundingBox.minX + z;
-                default:
-                    return x;
+            case NORTH:
+                return this.boundingBox.minX + x;
+            case SOUTH:
+                return this.boundingBox.maxX - x;
+            case WEST:
+                return this.boundingBox.maxX - z;
+            case EAST:
+                return this.boundingBox.minX + z;
+            default:
+                return x;
             }
         }
     }
@@ -121,16 +121,16 @@ public abstract class SizedPiece extends Piece
         {
             switch (this.getCoordBaseMode())
             {
-                case NORTH:
-                    return this.boundingBox.minZ + z;
-                case SOUTH:
-                    return this.boundingBox.maxZ - z;
-                case WEST:
-                    return this.boundingBox.minZ + x;
-                case EAST:
-                    return this.boundingBox.maxZ - x;
-                default:
-                    return z;
+            case NORTH:
+                return this.boundingBox.minZ + z;
+            case SOUTH:
+                return this.boundingBox.maxZ - z;
+            case WEST:
+                return this.boundingBox.minZ + x;
+            case EAST:
+                return this.boundingBox.maxZ - x;
+            default:
+                return z;
             }
         }
     }

@@ -53,10 +53,12 @@ public class AsteroidsPlayerHandler
             {
                 final int f = 50;
 
-                if (player.world.rand.nextInt(f) == 0 && player.posY < 260D) {
+                if (player.world.rand.nextInt(f) == 0 && player.posY < 260D)
+                {
                     final PlayerEntity closestPlayer = player.world.getClosestPlayer(player, 100);
 
-                    if (closestPlayer == null || closestPlayer.getEntityId() <= player.getEntityId()) {
+                    if (closestPlayer == null || closestPlayer.getEntityId() <= player.getEntityId())
+                    {
                         double x, y, z;
                         double motX, motY, motZ;
                         double r = player.world.rand.nextInt(60) + 30D;

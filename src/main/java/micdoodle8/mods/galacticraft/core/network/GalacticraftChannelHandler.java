@@ -20,16 +20,18 @@ public class GalacticraftChannelHandler
 {
     private static int messageID = 0;
 
-    private static int getUniqueId() {
+    private static int getUniqueId()
+    {
         return messageID++;
     }
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(Constants.MOD_ID_CORE, "main"))
-        .clientAcceptedVersions(getProtocolVersion()::equals)
-        .serverAcceptedVersions(getProtocolVersion()::equals)
-        .networkProtocolVersion(GalacticraftChannelHandler::getProtocolVersion).simpleChannel();
+            .clientAcceptedVersions(getProtocolVersion()::equals)
+            .serverAcceptedVersions(getProtocolVersion()::equals)
+            .networkProtocolVersion(GalacticraftChannelHandler::getProtocolVersion).simpleChannel();
 
-    private static String getProtocolVersion() {
+    private static String getProtocolVersion()
+    {
         return GalacticraftCore.instance == null ? "999.999.999" : GalacticraftCore.instance.versionNumber.toString();
     }
 
@@ -49,7 +51,8 @@ public class GalacticraftChannelHandler
      * @param message - the message to send
      * @param player  - the player to send it to
      */
-    public <MSG> void sendTo(MSG message, ServerPlayerEntity player) {
+    public <MSG> void sendTo(MSG message, ServerPlayerEntity player)
+    {
         INSTANCE.sendTo(message, player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
     }
 
@@ -58,7 +61,8 @@ public class GalacticraftChannelHandler
      *
      * @param message - message to send
      */
-    public <MSG> void sendToAll(MSG message) {
+    public <MSG> void sendToAll(MSG message)
+    {
         INSTANCE.send(PacketDistributor.ALL.noArg(), message);
     }
 
@@ -68,7 +72,8 @@ public class GalacticraftChannelHandler
      * @param message   - the message to send
      * @param dimension - the dimension to target
      */
-    public <MSG> void sendToDimension(MSG message, DimensionType dimension) {
+    public <MSG> void sendToDimension(MSG message, DimensionType dimension)
+    {
         INSTANCE.send(PacketDistributor.DIMENSION.with(() -> dimension), message);
     }
 
@@ -77,28 +82,36 @@ public class GalacticraftChannelHandler
      *
      * @param message - the message to send
      */
-    public <MSG> void sendToServer(MSG message) {
+    public <MSG> void sendToServer(MSG message)
+    {
         INSTANCE.sendToServer(message);
     }
 
-    public <MSG> void sendToAllTracking(MSG message, Entity entity) {
+    public <MSG> void sendToAllTracking(MSG message, Entity entity)
+    {
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
     }
 
-    public <MSG> void sendToAllAround(MSG message, PacketDistributor.TargetPoint point) {
+    public <MSG> void sendToAllAround(MSG message, PacketDistributor.TargetPoint point)
+    {
         INSTANCE.send(PacketDistributor.NEAR.with(() -> point), message);
     }
 
-    public <MSG> void sendToAllTracking(MSG message, TileEntity tile) {
+    public <MSG> void sendToAllTracking(MSG message, TileEntity tile)
+    {
         sendToAllTracking(message, tile.getWorld(), tile.getPos());
     }
 
-    public <MSG> void sendToAllTracking(MSG message, World world, BlockPos pos) {
-        if (world instanceof ServerWorld) {
+    public <MSG> void sendToAllTracking(MSG message, World world, BlockPos pos)
+    {
+        if (world instanceof ServerWorld)
+        {
             //If we have a ServerWorld just directly figure out the ChunkPos so as to not require looking up the chunk
             // This provides a decent performance boost over using the packet distributor
             ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false).forEach(p -> sendTo(message, p));
-        } else {
+        }
+        else
+        {
             //Otherwise fallback to entities tracking the chunk if some mod did something odd and our world is not a ServerWorld
             INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos.getX() >> 4, pos.getZ() >> 4)), message);
         }

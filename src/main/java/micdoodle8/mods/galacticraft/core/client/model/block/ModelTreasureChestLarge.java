@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.tileentity.model.LargeChestModel;
 
 public class ModelTreasureChestLarge extends LargeChestModel
 {
-    public RendererModel keyParts[] = new RendererModel[6];
+    public RendererModel[] keyParts = new RendererModel[6];
 
     public ModelTreasureChestLarge()
     {

@@ -59,11 +59,16 @@ public class PacketFluidNetworkUpdate extends PacketBase
         return packet;
     }
 
-    public static void handle(final PacketFluidNetworkUpdate message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+    public static void handle(final PacketFluidNetworkUpdate message, Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() ->
+        {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
+            {
                 message.handleClientSide(ctx.get().getSender());
-            } else {
+            }
+            else
+            {
                 message.handleServerSide(ctx.get().getSender());
             }
         });

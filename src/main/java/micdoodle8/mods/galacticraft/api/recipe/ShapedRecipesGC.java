@@ -24,11 +24,13 @@ public class ShapedRecipesGC implements IRecipe<CraftingInventory>
         this.recipeOutput = output;
     }
 
+    @Override
     public ItemStack getRecipeOutput()
     {
         return this.recipeOutput;
     }
 
+    @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv)
     {
         NonNullList<ItemStack> aitemstack = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
@@ -111,11 +113,13 @@ public class ShapedRecipesGC implements IRecipe<CraftingInventory>
         return true;
     }
 
+    @Override
     public ItemStack getCraftingResult(CraftingInventory inv)
     {
         return this.getRecipeOutput().copy();
     }
 
+    @Override
     public boolean canFit(int width, int height)
     {
         return width >= 3 && height >= 3;

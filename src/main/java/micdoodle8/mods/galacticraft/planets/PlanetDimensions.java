@@ -39,65 +39,86 @@ public class PlanetDimensions
     public static final RegistryObject<ModDimension> ASTEROIDS_MOD_DIMENSION = register(NAME_ASTEROIDS, PlanetDimensions::asteroidsFactory);
     public static final RegistryObject<ModDimension> VENUS_MOD_DIMENSION = register(NAME_VENUS, PlanetDimensions::venusFactory);
 
-    private static ModDimension marsFactory() {
-        return new ModDimension() {
+    private static ModDimension marsFactory()
+    {
+        return new ModDimension()
+        {
             @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+            {
                 return DimensionMars::new;
             }
         };
     }
 
-    private static ModDimension asteroidsFactory() {
-        return new ModDimension() {
+    private static ModDimension asteroidsFactory()
+    {
+        return new ModDimension()
+        {
             @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+            {
                 return DimensionAsteroids::new;
             }
         };
     }
 
-    private static ModDimension venusFactory() {
-        return new ModDimension() {
+    private static ModDimension venusFactory()
+    {
+        return new ModDimension()
+        {
             @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+            {
                 return DimensionVenus::new;
             }
         };
     }
 
-    private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup) {
+    private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup)
+    {
         return DIMENSIONS.register(name, sup);
     }
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS)
-    public static class EventDimensionType {
+    public static class EventDimensionType
+    {
         @SubscribeEvent
-        public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
+        public static void onModDimensionRegister(final RegisterDimensionsEvent event)
+        {
             ResourceLocation id = new ResourceLocation(Constants.MOD_ID_PLANETS, NAME_MARS);
-            if (DimensionType.byName(id) == null) {
+            if (DimensionType.byName(id) == null)
+            {
                 MARS_DIMENSION = DimensionManager.registerDimension(id, MARS_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
                 MARS_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(MARS_DIMENSION, false);
-            } else {
+            }
+            else
+            {
                 MARS_DIMENSION = DimensionType.byName(id);
             }
 
             id = new ResourceLocation(Constants.MOD_ID_PLANETS, NAME_ASTEROIDS);
-            if (DimensionType.byName(id) == null) {
+            if (DimensionType.byName(id) == null)
+            {
                 ASTEROIDS_DIMENSION = DimensionManager.registerDimension(id, ASTEROIDS_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
                 ASTEROIDS_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(ASTEROIDS_DIMENSION, false);
-            } else {
+            }
+            else
+            {
                 ASTEROIDS_DIMENSION = DimensionType.byName(id);
             }
 
             id = new ResourceLocation(Constants.MOD_ID_PLANETS, NAME_VENUS);
-            if (DimensionType.byName(id) == null) {
+            if (DimensionType.byName(id) == null)
+            {
                 VENUS_DIMENSION = DimensionManager.registerDimension(id, VENUS_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
                 VENUS_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(VENUS_DIMENSION, false);
-            } else {
+            }
+            else
+            {
                 VENUS_DIMENSION = DimensionType.byName(id);
             }
         }

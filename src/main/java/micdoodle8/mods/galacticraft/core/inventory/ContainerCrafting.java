@@ -30,7 +30,7 @@ public class ContainerCrafting extends Container
     public TileEntityCrafting tileCrafting;
     public PersistantInventoryCrafting craftMatrix;
     public IInventory craftResult = new CraftResultInventory();
-    private NonNullList<ItemStack> memory = NonNullList.withSize(9, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> memory = NonNullList.withSize(9, ItemStack.EMPTY);
 
     public ContainerCrafting(int containerId, PlayerInventory playerInv, TileEntityCrafting crafting)
     {
@@ -79,7 +79,9 @@ public class ContainerCrafting extends Container
 
         //Override this method to trick vanilla networking into carrying our memory at end of its packets
         for (int i = 0; i < 9; i++)
-            list.add(((TileEntityCrafting) this.tileCrafting).memory.get(i));
+        {
+            list.add(this.tileCrafting.memory.get(i));
+        }
 
         return list;
     }
@@ -90,10 +92,14 @@ public class ContainerCrafting extends Container
         for (int i = 0; i < list.size(); ++i)
         {
             if (i < 46)
+            {
                 this.getSlot(i).putStack(list.get(i));
+            }
             else if (i < 55)
-                //Read memory clientside from the end of the vanilla packet, see getInventory()
-                ((TileEntityCrafting) this.tileCrafting).memory.set(i - 46, list.get(i));
+            //Read memory clientside from the end of the vanilla packet, see getInventory()
+            {
+                this.tileCrafting.memory.set(i - 46, list.get(i));
+            }
         }
     }
 
@@ -103,7 +109,7 @@ public class ContainerCrafting extends Container
     @Override
     public void onCraftMatrixChanged(IInventory inventoryIn)
     {
-        World world = ((TileEntityCrafting) tileCrafting).getWorld();
+        World world = tileCrafting.getWorld();
         Optional<ICraftingRecipe> optional = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, world);
         this.craftResult.setInventorySlotContents(0, optional.get().getCraftingResult(this.craftMatrix));
     }
@@ -217,7 +223,10 @@ public class ContainerCrafting extends Container
             {
                 ItemStack target = slot.getStack();
                 ItemStack target2 = this.memory.get(i - 1);
-                if (target2.isEmpty()) continue;
+                if (target2.isEmpty())
+                {
+                    continue;
+                }
                 if (target.isEmpty())
                 {
                     target = target2.copy();
@@ -228,7 +237,10 @@ public class ContainerCrafting extends Container
                     int availSpace = target.getMaxStackSize() - target.getCount();
                     acceptQuantity.add(availSpace);
                     acceptTotal += availSpace;
-                    if (availSpace < minQuantity) minQuantity = availSpace;
+                    if (availSpace < minQuantity)
+                    {
+                        minQuantity = availSpace;
+                    }
                 }
             }
         }
@@ -253,7 +265,9 @@ public class ContainerCrafting extends Container
         if (stack.getCount() >= acceptTotal)
         {
             if (acceptTotal == 0)
+            {
                 return false;
+            }
 
             for (Slot slot : acceptSlots)
             {
@@ -326,7 +340,10 @@ public class ContainerCrafting extends Container
                     transfer++;
                     modulus--;
                 }
-                if (transfer > stack.getCount()) transfer = stack.getCount();
+                if (transfer > stack.getCount())
+                {
+                    transfer = stack.getCount();
+                }
                 stack.shrink(transfer);
                 target.grow(transfer);
                 if (target.getCount() > target.getMaxStackSize())
@@ -337,7 +354,9 @@ public class ContainerCrafting extends Container
                 }
                 slot.onSlotChanged();
                 if (stack.isEmpty())
+                {
                     break;
+                }
             }
         }
 
@@ -346,18 +365,18 @@ public class ContainerCrafting extends Container
 
     private boolean matchesCrafting(ItemStack itemstack1)
     {
-        if (((TileEntityCrafting) this.tileCrafting).overrideMemory(itemstack1, this.memory))
+        if (this.tileCrafting.overrideMemory(itemstack1, this.memory))
         {
             return true;
         }
 
         for (int i = 0; i < 9; i++)
         {
-            if (matchingStacks(itemstack1, ((TileEntityCrafting) this.tileCrafting).getMemory(i)) && (this.craftMatrix.getStackInSlot(i).isEmpty() || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
+            if (matchingStacks(itemstack1, this.tileCrafting.getMemory(i)) && (this.craftMatrix.getStackInSlot(i).isEmpty() || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    this.memory.set(j, ((TileEntityCrafting) this.tileCrafting).getMemory(j));
+                    this.memory.set(j, this.tileCrafting.getMemory(j));
                 }
                 return true;
             }

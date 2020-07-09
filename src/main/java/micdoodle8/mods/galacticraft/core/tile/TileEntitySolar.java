@@ -88,7 +88,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int generateWatts = 0;
 
-//    protected boolean initialised = false;
+    //    protected boolean initialised = false;
     private boolean initialisedMulti = false;
     private AxisAlignedBB renderAABB;
 
@@ -110,7 +110,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
 //            }
 //            this.initialised = true;
 //        }
-        
+
         if (!this.initialisedMulti)
         {
             this.initialisedMulti = this.initialiseMultiTiles(this.getPos(), this.world);
@@ -179,7 +179,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
                                 {
                                     BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
                                     BlockState state = blockAt.getBlockState(this.world);
-                                    
+
                                     if (state == null)
                                     {
                                         break;
@@ -249,7 +249,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
 
         if (!this.world.isRemote)
         {
-            int generated = this.getGenerate(); 
+            int generated = this.getGenerate();
             if (generated > 0)
             {
                 this.generateWatts = Math.min(Math.max(generated, 0), TileEntitySolar.MAX_GENERATE_WATTS);
@@ -259,15 +259,18 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
                 this.generateWatts = 0;
             }
         }
-        
+
         this.produce();
     }
 
     protected boolean initialiseMultiTiles(BlockPos pos, World world)
     {
         //Client can create its own fake blocks and tiles - no need for networking in 1.8+
-        if (world.isRemote) this.onCreate(world, pos);
-        
+        if (world.isRemote)
+        {
+            this.onCreate(world, pos);
+        }
+
         List<BlockPos> positions = new ArrayList<>();
         this.getPositions(pos, positions);
         boolean result = true;
@@ -349,12 +352,12 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
     {
         return (this.getTierGC() == 1) ? EnumBlockMultiType.SOLAR_PANEL_1 : EnumBlockMultiType.SOLAR_PANEL_0;
     }
-    
+
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {
         int buildHeight = this.world.getHeight() - 1;
-        int y = placedPosition.getY() + 1; 
+        int y = placedPosition.getY() + 1;
         if (y > buildHeight)
         {
             return;
@@ -374,7 +377,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
             }
         }
     }
-    
+
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
@@ -388,7 +391,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
 
             if (stateAt.getBlock() == GCBlocks.fakeBlock)
             {
-                EnumBlockMultiType type = (EnumBlockMultiType) stateAt.get(BlockMulti.MULTI_TYPE);
+                EnumBlockMultiType type = stateAt.get(BlockMulti.MULTI_TYPE);
                 if ((type == EnumBlockMultiType.SOLAR_PANEL_0 || type == EnumBlockMultiType.SOLAR_PANEL_1))
                 {
                     if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
@@ -471,7 +474,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
     {
         if (this.renderAABB == null)
         {
-            this.renderAABB = new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2); 
+            this.renderAABB = new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 4, getPos().getZ() + 2);
         }
         return this.renderAABB;
     }
@@ -519,7 +522,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override

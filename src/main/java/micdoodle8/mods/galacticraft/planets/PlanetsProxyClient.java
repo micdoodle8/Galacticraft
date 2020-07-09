@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PlanetsProxyClient extends PlanetsProxy
 {
-    private List<Item> itemsToRegisterJson = Lists.newArrayList();
+    private final List<Item> itemsToRegisterJson = Lists.newArrayList();
 
 //    @Override
 //    public void preInit(FMLPreInitializationEvent event)

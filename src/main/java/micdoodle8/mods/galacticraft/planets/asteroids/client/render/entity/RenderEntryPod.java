@@ -65,7 +65,7 @@ public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
 
         GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
         GlStateManager.scalef(0.65F, 0.6F, 0.65F);
-        ClientUtil.drawBakedModel(this.modelEntryPod);
+        ClientUtil.drawBakedModel(modelEntryPod);
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
     }
@@ -75,7 +75,7 @@ public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
     {
         return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
-    
+
     @Override
     public boolean shouldRender(EntityEntryPod lander, ICamera camera, double camX, double camY, double camZ)
     {

@@ -88,8 +88,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public static final int FAIL_RETURNPATHBLOCKED = 5;
     public static final int FAIL_ANOTHERWASLINKED = 8;
 
-    private boolean TEMPDEBUG = false;
-    private boolean TEMPFAST = false;
+    private final boolean TEMPDEBUG = false;
+    private final boolean TEMPFAST = false;
 
     public boolean serverTick = false;
     public int serverTickSave;
@@ -107,27 +107,27 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private BlockVec3 posTarget;
     private BlockVec3 posBase;
     private BlockVec3 waypointBase;
-    private LinkedList<BlockVec3> wayPoints = new LinkedList<>();
-    private LinkedList<BlockVec3> minePoints = new LinkedList<>();
+    private final LinkedList<BlockVec3> wayPoints = new LinkedList<>();
+    private final LinkedList<BlockVec3> minePoints = new LinkedList<>();
     private BlockVec3 minePointCurrent = null;
     private Direction baseFacing;
     public Direction facing;
     private Direction facingAI;
     private Direction lastFacing;
-    private static BlockVec3[] headings = {
+    private static final BlockVec3[] headings = {
             new BlockVec3(0, -1, 0),
             new BlockVec3(0, 1, 0),
             new BlockVec3(0, 0, -1),
             new BlockVec3(0, 0, 1),
             new BlockVec3(-1, 0, 0),
-            new BlockVec3(1, 0, 0) };
-    private static BlockVec3[] headings2 = {
+            new BlockVec3(1, 0, 0)};
+    private static final BlockVec3[] headings2 = {
             new BlockVec3(0, -3, 0),
             new BlockVec3(0, 2, 0),
             new BlockVec3(0, 0, -3),
             new BlockVec3(0, 0, 2),
             new BlockVec3(-3, 0, 0),
-            new BlockVec3(2, 0, 0) };
+            new BlockVec3(2, 0, 0)};
 
     private final int baseSafeRadius = 32;
     private final double speedbase = TEMPFAST ? 0.16D : 0.022D;
@@ -163,7 +163,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private int inventoryDrops;
     public boolean stopForTurn;
 
-    private static ArrayList<Block> noMineList = new ArrayList<>();
+    private static final ArrayList<Block> noMineList = new ArrayList<>();
     public static BlockState blockingBlock = Blocks.AIR.getDefaultState();
     private int givenFailMessage = 0;
     private BlockVec3 mineLast = null;
@@ -221,7 +221,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 //        this.dataManager.addObject(this.currentDamage, new Integer(0));
 //        this.dataManager.addObject(this.timeSinceHit, new Integer(0));
         this.noClip = true;
-        
+
         if (world != null && world.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
@@ -286,9 +286,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
         if (!oldstack.isEmpty())
         {
-        	this.markDirty();
+            this.markDirty();
         }
-    	return oldstack;
+        return oldstack;
     }
 
     @Override
@@ -533,11 +533,11 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                 }
                 else
                 {
-					if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
-					{
-	                    this.playerMP.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
-	                    this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
-	                    //Continue mining even though base was destroyed - maybe it will be replaced
+                    if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
+                    {
+                        this.playerMP.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
+                        this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
+                        //Continue mining even though base was destroyed - maybe it will be replaced
                     }
                 }
             }
@@ -558,7 +558,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
             return;
         }
-        
+
         if (this.lastFacing != this.facingAI)
         {
             this.lastFacing = this.facingAI;
@@ -575,7 +575,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         this.prevPosZ = this.posZ;
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
-        
+
         if (this.AIstate > AISTATE_ATBASE)
         {
             if (this.energyLevel <= 0)
@@ -744,7 +744,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     public void recall()
     {
-        if (this.AIstate > this.AISTATE_ATBASE && this.AIstate < this.AISTATE_RETURNING)
+        if (this.AIstate > AISTATE_ATBASE && this.AIstate < AISTATE_RETURNING)
         {
             AIstate = AISTATE_RETURNING;
             this.pathBlockedCount = 0;
@@ -870,7 +870,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
      */
     private boolean moveToTarget()
     {
-        if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS)
+        if (this.energyLevel < RETURNENERGY || this.inventoryDrops > RETURNDROPS)
         {
             AIstate = AISTATE_RETURNING;
             this.pathBlockedCount = 0;
@@ -925,7 +925,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
 
         BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
-        int otherEnd = (this.world.getDimension() instanceof DimensionAsteroids) ? this.MINE_LENGTH_AST : this.MINE_LENGTH;
+        int otherEnd = (this.world.getDimension() instanceof DimensionAsteroids) ? MINE_LENGTH_AST : MINE_LENGTH;
         if (this.baseFacing == Direction.NORTH || this.baseFacing == Direction.WEST)
         {
             otherEnd = -otherEnd;
@@ -974,7 +974,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
      */
     private boolean doMining()
     {
-        if (this.energyLevel < this.RETURNENERGY || this.inventoryDrops > this.RETURNDROPS || this.minePoints.size() == 0)
+        if (this.energyLevel < RETURNENERGY || this.inventoryDrops > RETURNDROPS || this.minePoints.size() == 0)
         {
             if (this.minePoints.size() > 0 && this.minePointCurrent != null)
             {
@@ -1551,12 +1551,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
 
         this.tryBlockLimit--;
-        
+
         //Collect the mined block - unless it's a plant or leaves in which case just break it
         if (!((b instanceof IPlantable && !(b instanceof SugarCaneBlock)) || b instanceof LeavesBlock))
         {
-		    ItemStack drops = gtFlag ? getGTDrops((ServerWorld) this.world, pos, b) : getPickBlock(this.world, pos, b);
-		    if (drops != null && !this.addToInventory(drops))
+            ItemStack drops = gtFlag ? getGTDrops((ServerWorld) this.world, pos, b) : getPickBlock(this.world, pos, b);
+            if (drops != null && !this.addToInventory(drops))
             {
                 //drop itemstack if AstroMiner can't hold it
                 dropStack(pos, drops);
@@ -1671,7 +1671,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             GCLog.info("AstroMiner was unable to mine anything from: " + b.getNameTextComponent().getFormattedText());
             return null;
         }
-            
+
 //        if (item.getHasSubtypes())
 //        {
 //            i = b.getMetaFromState(world.getBlockState(pos));
@@ -2151,7 +2151,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                 this.posX + xsize / 2D, this.posY + 1D + ysize / 2D, this.posZ + zsize / 2D));
     }
 
-    public EntitySize getSize(Pose poseIn) {
+    @Override
+    public EntitySize getSize(Pose poseIn)
+    {
         return minerSize;
     }
 
@@ -2172,7 +2174,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             {
                 if (this.playerMP == null && !this.spawnedInCreative)
                 {
-                    ((PlayerEntity) e).sendMessage(new StringTextComponent("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
+                    e.sendMessage(new StringTextComponent("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
                 }
                 this.remove();
                 return true;
@@ -2371,7 +2373,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
             if (item.hasTag())
             {
-                entityItem.getItem().setTag((CompoundNBT) item.getTag().copy());
+                entityItem.getItem().setTag(item.getTag().copy());
             }
         }
     }
@@ -2388,7 +2390,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public ISound setSoundUpdater(ClientPlayerEntity player)
     {
         this.soundUpdater = new SoundUpdaterMiner(player, this);
-        return (ISound) this.soundUpdater;
+        return this.soundUpdater;
     }
 
     public void stopRocketSound()
@@ -2459,7 +2461,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         int itemCount = 0;
         for (ItemStack stack : this.stacks)
         {
-        	itemCount += stack.getCount();
+            itemCount += stack.getCount();
         }
         this.mineCount = itemCount;
 
@@ -2471,7 +2473,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         {
             this.serverIndex = -1;
         }
-        
+
         if (nbt.contains("Energy"))
         {
             this.energyLevel = nbt.getInt("Energy");
@@ -2570,7 +2572,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     protected void writeAdditional(CompoundNBT nbt)
     {
-        if (world.isRemote) return;
+        if (world.isRemote)
+        {
+            return;
+        }
         final ListNBT var2 = new ListNBT();
 
         ItemStackHelper.saveAllItems(nbt, this.stacks);

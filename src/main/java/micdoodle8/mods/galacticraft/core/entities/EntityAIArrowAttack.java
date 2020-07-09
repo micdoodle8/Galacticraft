@@ -16,12 +16,12 @@ public class EntityAIArrowAttack extends Goal
     private LivingEntity attackTarget;
 
     private int rangedAttackTime;
-    private double entityMoveSpeed;
-    private int field_96561_g;
+    private final double entityMoveSpeed;
+    private final int field_96561_g;
 
-    private int maxRangedAttackTime;
-    private float field_96562_i;
-    private float field_82642_h;
+    private final int maxRangedAttackTime;
+    private final float field_96562_i;
+    private final float field_82642_h;
 
     public EntityAIArrowAttack(IRangedAttackMob par1IRangedAttackMob, double par2, int par4, float par5)
     {

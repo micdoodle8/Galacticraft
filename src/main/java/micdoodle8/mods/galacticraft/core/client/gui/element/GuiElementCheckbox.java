@@ -16,13 +16,13 @@ public class GuiElementCheckbox extends Widget
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
     public Boolean isSelected;
-    private ICheckBoxCallback parentGui;
-    private int textColor;
-    private int texWidth;
-    private int texHeight;
-    private int texX;
-    private int texY;
-    private boolean shiftOnHover;
+    private final ICheckBoxCallback parentGui;
+    private final int textColor;
+    private final int texWidth;
+    private final int texHeight;
+    private final int texX;
+    private final int texY;
+    private final boolean shiftOnHover;
 
     public GuiElementCheckbox(ICheckBoxCallback parentGui, int x, int y, String text)
     {
@@ -85,6 +85,7 @@ public class GuiElementCheckbox extends Widget
         tessellator.draw();
     }
 
+    @Override
     protected boolean clicked(double p_clicked_1_, double p_clicked_3_)
     {
         if (super.clicked(p_clicked_1_, p_clicked_3_))

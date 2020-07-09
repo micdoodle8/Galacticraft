@@ -142,7 +142,7 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
         {
             this.initialised = false;
         }
-        
+
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
@@ -243,11 +243,11 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
 
         return getElectricalInputDirections().contains(direction) || getElectricalOutputDirections().contains(direction);
     }
-    
+
     @Override
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -294,13 +294,13 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN, MachineSide.ELECTRIC_OUT };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN, MachineSide.ELECTRIC_OUT};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.RIGHT, Face.LEFT };
+        return new Face[]{Face.RIGHT, Face.LEFT};
     }
 
     private MachineSidePack[] machineSides;
@@ -321,13 +321,13 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

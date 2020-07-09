@@ -83,7 +83,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
                         continue;
                     }
 
-                    if (tileAdj instanceof TileBaseConductor && ((TileBaseConductor)tileAdj).canConnect(direction.getOpposite(), NetworkType.POWER))
+                    if (tileAdj instanceof TileBaseConductor && ((TileBaseConductor) tileAdj).canConnect(direction.getOpposite(), NetworkType.POWER))
                     {
                         IElectricityNetwork network = ((IConductor) tileAdj).getNetwork();
                         if (network != null)
@@ -163,7 +163,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         }
     }
 
-//    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = CompatibilityManager.modidIC2)
+    //    @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = CompatibilityManager.modidIC2)
 //    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction direction)
 //    {
 //        if (this.tileEntityInvalid) return false;
@@ -283,7 +283,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         }
         return super.getCapability(capability, facing);
     }
-    
+
     @Override
     public float getProvide(Direction direction)
     {
@@ -326,22 +326,22 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
 //
 //        return MathHelper.floor(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
 //    }
-    
+
     private static class ForgeEmitter implements net.minecraftforge.energy.IEnergyStorage
     {
-        private TileBaseUniversalElectrical tile;
+        private final TileBaseUniversalElectrical tile;
 
         public ForgeEmitter(TileBaseUniversalElectrical tileElectrical)
         {
             this.tile = tileElectrical;
         }
-        
+
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate)
         {
             return 0;
         }
-        
+
         @Override
         public boolean canReceive()
         {
@@ -352,7 +352,9 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         public int getEnergyStored()
         {
             if (EnergyConfigHandler.disableFEOutput)
+            {
                 return 0;
+            }
 
             return MathHelper.floor(tile.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
         }
@@ -361,7 +363,9 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         public int getMaxEnergyStored()
         {
             if (EnergyConfigHandler.disableFEOutput)
+            {
                 return 0;
+            }
 
             return MathHelper.floor(tile.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
         }
@@ -370,7 +374,9 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         public int extractEnergy(int maxExtract, boolean simulate)
         {
             if (!canExtract())
+            {
                 return 0;
+            }
 
             return MathHelper.floor(tile.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
         }

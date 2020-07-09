@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class LayerHeldItemEvolvedWitch extends LayerRenderer<EntityEvolvedWitch, ModelEvolvedWitch>
 {
-    private RenderEvolvedWitch witchRenderer;
+    private final RenderEvolvedWitch witchRenderer;
 
     public LayerHeldItemEvolvedWitch(RenderEvolvedWitch witchRenderer)
     {
@@ -43,21 +43,26 @@ public class LayerHeldItemEvolvedWitch extends LayerRenderer<EntityEvolvedWitch,
                 GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             }
 
-            ((ModelEvolvedWitch)this.witchRenderer.getEntityModel()).func_205073_b().postRender(0.0625F);
+            this.witchRenderer.getEntityModel().func_205073_b().postRender(0.0625F);
             GlStateManager.translatef(-0.0625F, 0.53125F, 0.21875F);
             Item item = itemstack.getItem();
-            if (Block.getBlockFromItem(item).getDefaultState().getRenderType() == BlockRenderType.ENTITYBLOCK_ANIMATED) {
+            if (Block.getBlockFromItem(item).getDefaultState().getRenderType() == BlockRenderType.ENTITYBLOCK_ANIMATED)
+            {
                 GlStateManager.translatef(0.0F, 0.0625F, -0.25F);
                 GlStateManager.rotatef(30.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotatef(-5.0F, 0.0F, 1.0F, 0.0F);
                 GlStateManager.scalef(0.375F, -0.375F, 0.375F);
-            } else if (item instanceof net.minecraft.item.BowItem) {
+            }
+            else if (item instanceof net.minecraft.item.BowItem)
+            {
                 GlStateManager.translatef(0.0F, 0.125F, -0.125F);
                 GlStateManager.rotatef(-45.0F, 0.0F, 1.0F, 0.0F);
                 GlStateManager.scalef(0.625F, -0.625F, 0.625F);
                 GlStateManager.rotatef(-100.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-            } else {
+            }
+            else
+            {
                 GlStateManager.translatef(0.1875F, 0.1875F, 0.0F);
                 GlStateManager.scalef(0.875F, 0.875F, 0.875F);
                 GlStateManager.rotatef(-20.0F, 0.0F, 0.0F, 1.0F);

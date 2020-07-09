@@ -16,7 +16,7 @@ public class ContainerOxygenStorageModule extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_STORAGE_MODULE)
     public static ContainerType<ContainerOxygenStorageModule> TYPE;
 
-    private TileEntityOxygenStorageModule storageModule;
+    private final TileEntityOxygenStorageModule storageModule;
 
     public ContainerOxygenStorageModule(int containerId, PlayerInventory playerInv, TileEntityOxygenStorageModule storageModule)
     {

@@ -171,35 +171,35 @@ public class SolarModuleNetwork implements IGridNetwork<SolarModuleNetwork, ITra
                 if (this.getTransmitters().size() > 0)
                 {
                     ITransmitter[] nextToSplit = new ITransmitter[6];
-                    boolean[] toDo = { true, true, true, true, true, true };
+                    boolean[] toDo = {true, true, true, true, true, true};
                     TileEntity tileEntity;
 
                     for (int j = 0; j < 6; j++)
                     {
                         switch (j)
                         {
-                            case 0:
-                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().down());
-                                break;
-                            case 1:
-                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().up());
-                                break;
-                            case 2:
-                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().north());
-                                break;
-                            case 3:
-                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().south());
-                                break;
-                            case 4:
-                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().west());
-                                break;
-                            case 5:
-                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().east());
-                                break;
-                            default:
-                                //Not reachable, only to prevent uninitiated compile errors
-                                tileEntity = null;
-                                break;
+                        case 0:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().down());
+                            break;
+                        case 1:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().up());
+                            break;
+                        case 2:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().north());
+                            break;
+                        case 3:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().south());
+                            break;
+                        case 4:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().west());
+                            break;
+                        case 5:
+                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().east());
+                            break;
+                        default:
+                            //Not reachable, only to prevent uninitiated compile errors
+                            tileEntity = null;
+                            break;
                         }
 
                         if (tileEntity instanceof ITransmitter)

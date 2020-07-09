@@ -15,22 +15,37 @@ import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 
 public class VenusItems
 {
-    @ObjectHolder(VenusItemNames.shieldController) public static Item shieldController;
-    @ObjectHolder(VenusItemNames.ingotLead) public static Item ingotLead;
-    @ObjectHolder(VenusItemNames.radioisotopeCore) public static Item radioisotopeCore;
-    @ObjectHolder(VenusItemNames.thermalFabric) public static Item thermalFabric;
-    @ObjectHolder(VenusItemNames.solarDust) public static Item solarDust;
-    @ObjectHolder(VenusItemNames.solarModule2) public static Item solarModule2;
-    @ObjectHolder(VenusItemNames.thinSolarWafer) public static Item thinSolarWafer;
-    @ObjectHolder(VenusItemNames.thermal_helmet_t2) public static Item thermal_helmet_t2;
-    @ObjectHolder(VenusItemNames.thermal_chestplate_t2) public static Item thermal_chestplate_t2;
-    @ObjectHolder(VenusItemNames.thermal_leggings_t2) public static Item thermal_leggings_t2;
-    @ObjectHolder(VenusItemNames.thermal_boots_t2) public static Item thermal_boots_t2;
-    @ObjectHolder(VenusItemNames.volcanicPickaxe) public static Item volcanicPickaxe;
-    @ObjectHolder(VenusItemNames.keyT3) public static Item keyT3;
-    @ObjectHolder(VenusItemNames.atomicBattery) public static Item atomicBattery;
+    @ObjectHolder(VenusItemNames.shieldController)
+    public static Item shieldController;
+    @ObjectHolder(VenusItemNames.ingotLead)
+    public static Item ingotLead;
+    @ObjectHolder(VenusItemNames.radioisotopeCore)
+    public static Item radioisotopeCore;
+    @ObjectHolder(VenusItemNames.thermalFabric)
+    public static Item thermalFabric;
+    @ObjectHolder(VenusItemNames.solarDust)
+    public static Item solarDust;
+    @ObjectHolder(VenusItemNames.solarModule2)
+    public static Item solarModule2;
+    @ObjectHolder(VenusItemNames.thinSolarWafer)
+    public static Item thinSolarWafer;
+    @ObjectHolder(VenusItemNames.thermal_helmet_t2)
+    public static Item thermal_helmet_t2;
+    @ObjectHolder(VenusItemNames.thermal_chestplate_t2)
+    public static Item thermal_chestplate_t2;
+    @ObjectHolder(VenusItemNames.thermal_leggings_t2)
+    public static Item thermal_leggings_t2;
+    @ObjectHolder(VenusItemNames.thermal_boots_t2)
+    public static Item thermal_boots_t2;
+    @ObjectHolder(VenusItemNames.volcanicPickaxe)
+    public static Item volcanicPickaxe;
+    @ObjectHolder(VenusItemNames.keyT3)
+    public static Item keyT3;
+    @ObjectHolder(VenusItemNames.atomicBattery)
+    public static Item atomicBattery;
 
-    public static Item.Properties defaultBuilder() {
+    public static Item.Properties defaultBuilder()
+    {
         return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
     }
 

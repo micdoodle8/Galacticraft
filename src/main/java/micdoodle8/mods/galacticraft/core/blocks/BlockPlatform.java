@@ -26,7 +26,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     public static final EnumProperty<EnumCorner> CORNER = EnumProperty.create("type", EnumCorner.class);
     public static final float HEIGHT = 0.875F;
     protected static final VoxelShape BOUNDING_BOX = Block.makeCuboidShape(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
-    protected static final VoxelShape BOUNDING_BOX_ZEROG = Block.makeCuboidShape(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);;
+    protected static final VoxelShape BOUNDING_BOX_ZEROG = Block.makeCuboidShape(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     public static boolean ignoreCollisionTests;
 
     public enum EnumCorner implements IStringSerializable
@@ -53,6 +53,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         }
 
         private final static EnumCorner[] values = values();
+
         public static EnumCorner byId(int meta)
         {
             return values[meta % values.length];

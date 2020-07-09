@@ -45,5 +45,5 @@ public class BasePlate extends SizedPiece
 
         return true;
     }
-    
+
 }

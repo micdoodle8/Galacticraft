@@ -79,15 +79,17 @@ public class RecipeUtil
 //    {
 //        return IC2Items.getItem(indentifier, variant);
 //    }
-    
+
     /**
      * An extended version of areItemStackTagsEqual which ignores LevelUp's "NoPlacing" tag on mined blocks
      */
     public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB)
     {
         if (ItemStack.areItemStackTagsEqual(stackA, stackB))
+        {
             return true;
-        
+        }
+
         CompoundNBT query = null;
         if (stackA.getTag() == null && stackB.getTag() != null)
         {
@@ -99,16 +101,14 @@ public class RecipeUtil
         }
         if (query != null)
         {
-            if (query.size() == 1 && query.contains("NoPlacing"))
-                return true;
+            return query.size() == 1 && query.contains("NoPlacing");
         }
 
-       return false;
+        return false;
     }
-    
+
     /**
-     * 
-     * @param itemstack - it is assumed this one is not null in calling code
+     * @param itemstack  - it is assumed this one is not null in calling code
      * @param itemstack1
      * @return
      */

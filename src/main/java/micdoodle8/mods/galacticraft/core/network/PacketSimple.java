@@ -143,7 +143,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         C_CLOSE_GUI(LogicalSide.CLIENT),
         C_RESET_THIRD_PERSON(LogicalSide.CLIENT),
         C_UPDATE_SPACESTATION_LIST(LogicalSide.CLIENT, Integer[].class),
-//        C_UPDATE_SPACESTATION_DATA(LogicalSide.CLIENT, Integer.class, CompoundNBT.class),
+        //        C_UPDATE_SPACESTATION_DATA(LogicalSide.CLIENT, Integer.class, CompoundNBT.class),
         C_UPDATE_SPACESTATION_CLIENT_ID(LogicalSide.CLIENT, String.class),
         C_UPDATE_PLANETS_LIST(LogicalSide.CLIENT, Integer[].class),
         C_UPDATE_CONFIGS(LogicalSide.CLIENT, Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class),
@@ -180,8 +180,8 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         C_SPAWN_HANGING_SCHEMATIC(LogicalSide.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class),
         C_LEAK_DATA(LogicalSide.CLIENT, BlockPos.class, Integer[].class);
 
-        private LogicalSide targetSide;
-        private Class<?>[] decodeAs;
+        private final LogicalSide targetSide;
+        private final Class<?>[] decodeAs;
 
         EnumSimplePacket(LogicalSide targetSide, Class<?>... decodeAs)
         {
@@ -203,7 +203,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
     private EnumSimplePacket type;
     private List<Object> data;
     static private String spamCheckString;
-    static private Map<ServerPlayerEntity, GameType> savedSettings = new HashMap<>();
+    static private final Map<ServerPlayerEntity, GameType> savedSettings = new HashMap<>();
 
     public PacketSimple()
     {
@@ -410,7 +410,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                     gearData = new PlayerGearData(player);
                     if (!ClientProxyCore.gearDataRequests.contains(gearDataPlayerID))
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA1, getDimensionID(), new Object[] { gearDataPlayerID }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA1, getDimensionID(), new Object[]{gearDataPlayerID}));
                         ClientProxyCore.gearDataRequests.add(gearDataPlayerID);
                     }
                 }
@@ -696,7 +696,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                 str = str.concat(solarSystem.getUnlocalizedName() + ";");
             }
 
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_COMPLETE_CBODY_HANDSHAKE, getDimensionID(), new Object[] { str }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_COMPLETE_CBODY_HANDSHAKE, getDimensionID(), new Object[]{str}));
             break;
         case C_UPDATE_ENERGYUNITS:
 //            CommandGCEnergyUnits.handleParamClientside((Integer) this.data.get(0)); TODO Commands
@@ -765,14 +765,14 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             TileEntity tile3 = player.world.getTileEntity((BlockPos) this.data.get(0));
             if (tile3 instanceof ITileClientUpdates)
             {
-                ((ITileClientUpdates)tile3).updateClient(this.data);
+                ((ITileClientUpdates) tile3).updateClient(this.data);
             }
             break;
         case C_LEAK_DATA:
             TileEntity tile4 = player.world.getTileEntity((BlockPos) this.data.get(0));
             if (tile4 instanceof TileEntityOxygenSealer)
             {
-                ((ITileClientUpdates)tile4).updateClient(this.data);
+                ((ITileClientUpdates) tile4).updateClient(this.data);
             }
             break;
         case C_SPAWN_HANGING_SCHEMATIC:
@@ -793,7 +793,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         {
             return;
         }
-        
+
         final MinecraftServer server = playerBase.server;
         final GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
@@ -883,7 +883,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
 
             if (entity instanceof LivingEntity)
             {
-                ((LivingEntity) entity).setFire(3);
+                entity.setFire(3);
             }
             break;
         case S_BIND_SPACE_STATION_ID:
@@ -921,7 +921,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                         schematicContainer.craftMatrix.setInventorySlotContents(0, stack);
                         schematicContainer.craftMatrix.markDirty();
 
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ADD_NEW_SCHEMATIC, getDimensionID(), new Object[] { page.getPageID() }), playerBase);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_ADD_NEW_SCHEMATIC, getDimensionID(), new Object[]{page.getPageID()}), playerBase);
                     }
                 }
             }
@@ -1235,7 +1235,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             {
                 return;
             }
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, getDimensionID(), new Object[] { strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString() }), playerBase);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_PLAYERSKIN, getDimensionID(), new Object[]{strName, property.getValue(), property.getSignature(), playerRequested.getUniqueID().toString()}), playerBase);
             break;
         case S_CONTROL_ENTITY:
             if (player.getRidingEntity() != null && player.getRidingEntity() instanceof IControllableEntity)
@@ -1256,7 +1256,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             }
             else if (player instanceof ServerPlayerEntity)
             {
-                ServerPlayerEntity emp = ((ServerPlayerEntity)player);
+                ServerPlayerEntity emp = ((ServerPlayerEntity) player);
                 try
                 {
                     Field f = emp.interactionManager.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "gameType" : "field_73091_c");
@@ -1277,7 +1277,8 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                         savedSettings.put(emp, emp.interactionManager.getGameType());
                         f.set(emp.interactionManager, GameType.SPECTATOR);
                     }
-                } catch (Exception ee)
+                }
+                catch (Exception ee)
                 {
                     ee.printStackTrace();
                 }
@@ -1319,7 +1320,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             TileEntity tile3 = player.world.getTileEntity((BlockPos) this.data.get(0));
             if (tile3 instanceof ITileClientUpdates)
             {
-                ((ITileClientUpdates)tile3).sendUpdateToClient(playerBase);
+                ((ITileClientUpdates) tile3).sendUpdateToClient(playerBase);
             }
             break;
         case S_REQUEST_CONTAINER_SLOT_REFRESH:
@@ -1351,13 +1352,13 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         }
     }
 
-	/*
+    /*
      *
-	 * BEGIN "net.minecraft.network.Packet" IMPLEMENTATION
-	 * 
-	 * This is for handling server->client packets before the player has joined the world
-	 * 
-	 */
+     * BEGIN "net.minecraft.network.Packet" IMPLEMENTATION
+     *
+     * This is for handling server->client packets before the player has joined the world
+     *
+     */
 
     @Override
     public void readPacketData(PacketBuffer var1)
@@ -1371,11 +1372,16 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         this.encodeInto(var1);
     }
 
-    public static void handle(final PacketSimple message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+    public static void handle(final PacketSimple message, Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() ->
+        {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
+            {
                 message.handleClientSide(ctx.get().getSender());
-            } else {
+            }
+            else
+            {
                 message.handleServerSide(ctx.get().getSender());
             }
         });
@@ -1403,11 +1409,11 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         }
     }
 
-	/*
+    /*
      *
-	 * END "net.minecraft.network.Packet" IMPLEMENTATION
-	 * 
-	 * This is for handling server->client packets before the player has joined the world
-	 * 
-	 */
+     * END "net.minecraft.network.Packet" IMPLEMENTATION
+     *
+     * This is for handling server->client packets before the player has joined the world
+     *
+     */
 }

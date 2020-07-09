@@ -60,7 +60,7 @@ public class RenderLander extends EntityRenderer<EntityLander>
         this.landerModel.render(lander, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }
-    
+
     @Override
     public boolean shouldRender(EntityLander lander, ICamera camera, double camX, double camY, double camZ)
     {

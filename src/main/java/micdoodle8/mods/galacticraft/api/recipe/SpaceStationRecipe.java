@@ -38,7 +38,7 @@ public class SpaceStationRecipe
             }
             else if (obj instanceof String)
             {
-                Collection<Item> items = ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", (String)obj)).getAllElements();
+                Collection<Item> items = ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", (String) obj)).getAllElements();
                 for (Item item : items)
                 {
                     this.input.put(item, amount);
@@ -153,7 +153,10 @@ public class SpaceStationRecipe
 
                             player.inventory.setInventorySlotContents(x, newStack);
                             amountRemoved += amountToRemove;
-                            if (amountRemoved == amountRequired) break;
+                            if (amountRemoved == amountRequired)
+                            {
+                                break;
+                            }
                         }
                     }
                     else if (next instanceof List)
@@ -173,7 +176,10 @@ public class SpaceStationRecipe
 
                                 player.inventory.setInventorySlotContents(x, newStack);
                                 amountRemoved += amountToRemove;
-                                if (amountRemoved == amountRequired) break InventoryLoop;
+                                if (amountRemoved == amountRequired)
+                                {
+                                    break InventoryLoop;
+                                }
                             }
                         }
                     }

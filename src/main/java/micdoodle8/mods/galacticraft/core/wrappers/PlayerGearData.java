@@ -12,7 +12,7 @@ public class PlayerGearData
     private int gear;
     private int leftTank;
     private int rightTank;
-    private int[] thermalPadding;
+    private final int[] thermalPadding;
     private ResourceLocation parachute;
     private int frequencyModule;
     private int shieldController;
@@ -20,7 +20,7 @@ public class PlayerGearData
     public PlayerGearData(PlayerEntity player)
     {
         this(player, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT,
-                new int[] { GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT });
+                new int[]{GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT, GCPlayerHandler.GEAR_NOT_PRESENT});
     }
 
     public PlayerGearData(PlayerEntity player, int mask, int gear, int leftTank, int rightTank, int frequencyModule, int[] thermalPadding)

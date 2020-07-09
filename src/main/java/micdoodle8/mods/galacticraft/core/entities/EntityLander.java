@@ -186,7 +186,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D));
 
             final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-            particleMap.put(new Vector3(), new Vector3((float)x1, (float)(y1 + this.getMotion().y / 2), (float)z1));
+            particleMap.put(new Vector3(), new Vector3((float) x1, (float) (y1 + this.getMotion().y / 2), (float) z1));
             LivingEntity passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
             this.world.addParticle(new EntityParticleData(GCParticles.LANDER_FLAME, passenger != null ? passenger.getUniqueID() : getUniqueID()),
                     this.posX, this.posY + 1D + this.getMotion().y / 2, this.posZ,
@@ -232,7 +232,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
                     entity.stopRiding();
                     if (entity instanceof ServerPlayerEntity)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[] {}), (ServerPlayerEntity) entity);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[]{}), (ServerPlayerEntity) entity);
                     }
                     entity.setMotion(0.0, 0.0, 0.0);
                     entity.setPosition(entity.posX, this.posY + this.getMountedYOffset(), entity.posZ);
@@ -261,7 +261,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             this.setMotion(this.getMotion().x, this.getInitialMotionY(), this.getMotion().z);
         }
 
-        return new Vector3D((float)this.getMotion().x, (float)(this.ticks < 40 ? 0 : this.getMotion().y), (float)this.getMotion().z);
+        return new Vector3D((float) this.getMotion().x, (float) (this.ticks < 40 ? 0 : this.getMotion().y), (float) this.getMotion().z);
     }
 
     @Override

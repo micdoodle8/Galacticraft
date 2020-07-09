@@ -99,6 +99,7 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     {
         return true;
     }
+
     //We don't use these because we use forge containers
     @Override
     public void openInventory(PlayerEntity player)

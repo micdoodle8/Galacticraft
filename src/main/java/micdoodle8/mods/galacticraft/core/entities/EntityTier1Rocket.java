@@ -155,7 +155,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 }
                 else
                 {
-                d = Math.min(d, 1);
+                    d = Math.min(d, 1);
                 }
 
                 if (d != 0.0)
@@ -264,7 +264,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             }
             else if (this.ticksExisted % 2 == 0)
             {
-                Object[] rider = new Object[] { riddenByEntity };
+                Object[] rider = new Object[]{riddenByEntity};
                 y += 0.6D;
                 EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity.getUniqueID());
                 this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);

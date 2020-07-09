@@ -34,7 +34,7 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
             // Don't draw any cape if riding a rocket (the cape renders outside the rocket model!)
             return null;
         }
-        
+
         ResourceLocation vanillaCape = super.getLocationCape();
 
         if (!this.checkedCape)
@@ -56,8 +56,11 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
     @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender()
     {
-        double height = this.posY + (double)this.getEyeHeight();
-        if (height > 255D) height = 255D;
+        double height = this.posY + (double) this.getEyeHeight();
+        if (height > 255D)
+        {
+            height = 255D;
+        }
         BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
         return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
     }

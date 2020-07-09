@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class BlockBrightBreathableAir extends BlockThermalAir
 {
     public static final BooleanProperty THERMAL = BooleanProperty.create("thermal");
-    
+
     public BlockBrightBreathableAir(Properties builder)
     {
         super(builder);
@@ -59,7 +59,7 @@ public class BlockBrightBreathableAir extends BlockThermalAir
         if (Blocks.AIR == blockIn)
         //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
-            OxygenPressureProtocol.onEdgeBlockUpdated((World) worldIn, pos);
+            OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
         }
     }
 
@@ -80,7 +80,7 @@ public class BlockBrightBreathableAir extends BlockThermalAir
 //    {
 //        return 15;
 //    }
-    
+
 //    @Override
 //    public int getLightOpacity(BlockState state)
 //    {

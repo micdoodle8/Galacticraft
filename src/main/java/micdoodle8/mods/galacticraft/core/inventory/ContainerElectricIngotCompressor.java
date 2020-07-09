@@ -19,7 +19,7 @@ public class ContainerElectricIngotCompressor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ELECTRIC_INGOT_COMPRESSOR)
     public static ContainerType<ContainerElectricIngotCompressor> TYPE;
 
-    private TileEntityElectricIngotCompressor tileEntity;
+    private final TileEntityElectricIngotCompressor tileEntity;
 
     public ContainerElectricIngotCompressor(int containerId, PlayerInventory playerInv, TileEntityElectricIngotCompressor tileEntity)
     {

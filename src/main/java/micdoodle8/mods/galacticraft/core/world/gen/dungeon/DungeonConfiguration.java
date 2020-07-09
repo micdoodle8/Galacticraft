@@ -131,7 +131,8 @@ public class DungeonConfiguration implements IFeatureConfig
         return new Dynamic<>(ops, ops.createMap(builder.build()));
     }
 
-    public static <T> DungeonConfiguration deserialize(Dynamic<T> ops) {
+    public static <T> DungeonConfiguration deserialize(Dynamic<T> ops)
+    {
         BlockState state = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ops.get("brickBlock").asString().get())).getDefaultState();
         try
         {

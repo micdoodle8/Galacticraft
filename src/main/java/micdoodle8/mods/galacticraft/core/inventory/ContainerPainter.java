@@ -18,13 +18,13 @@ public class ContainerPainter extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.PAINTER)
     public static ContainerType<ContainerPainter> TYPE;
 
-    private TileEntityPainter painter;
+    private final TileEntityPainter painter;
 
     public ContainerPainter(int containerId, PlayerInventory playerInv, TileEntityPainter painter)
     {
         super(TYPE, containerId);
         this.painter = painter;
- 
+
         // To be painted
         this.addSlot(new Slot(painter, 0, 40, 25));
         //TODO: slots which can only accept one item
@@ -74,7 +74,7 @@ public class ContainerPainter extends Container
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int index)
     {
         ItemStack stackOrig = ItemStack.EMPTY;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -93,7 +93,7 @@ public class ContainerPainter extends Container
             else if (index != 1 && index != 0)
             {
                 Item item = stack.getItem();
-                if (item instanceof IPaintable || (item instanceof BlockItem && ((BlockItem)item).getBlock() instanceof IPaintable))
+                if (item instanceof IPaintable || (item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof IPaintable))
                 {
                     if (!this.mergeOneItem(stack, 1, 2, false))
                     {
@@ -132,7 +132,7 @@ public class ContainerPainter extends Container
 
         return stackOrig;
     }
-    
+
     protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
@@ -143,7 +143,7 @@ public class ContainerPainter extends Container
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
                 if (slotStack.isEmpty())

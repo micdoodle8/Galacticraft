@@ -88,7 +88,7 @@ public class ContainerExtendedInventory extends Container
                 boolean flag = false;
                 for (int j = 36; j < 40; j++)
                 {
-                    if (((SlotArmorGC) this.inventorySlots.get(j)).isItemValid(stack))
+                    if (this.inventorySlots.get(j).isItemValid(stack))
                     {
                         if (!this.mergeOneItem(stack, j, j + 1, false))
                         {

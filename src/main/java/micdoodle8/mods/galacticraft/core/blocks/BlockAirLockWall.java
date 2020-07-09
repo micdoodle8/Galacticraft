@@ -48,9 +48,10 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock
         this.setDefaultState(this.stateContainer.getBaseState().with(CONNECTION_TYPE, EnumAirLockSealConnection.X));
     }
 
+    @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch(getConnection(worldIn, pos))
+        switch (getConnection(worldIn, pos))
         {
         case X:
             return AABB_X;

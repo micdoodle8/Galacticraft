@@ -21,7 +21,8 @@ public abstract class Piece extends StructurePiece
         this.configuration = configuration;
     }
 
-    public Piece(IStructurePieceType type, CompoundNBT tagCompound) {
+    public Piece(IStructurePieceType type, CompoundNBT tagCompound)
+    {
         super(type, tagCompound);
         this.readStructureFromNBT(tagCompound);
     }

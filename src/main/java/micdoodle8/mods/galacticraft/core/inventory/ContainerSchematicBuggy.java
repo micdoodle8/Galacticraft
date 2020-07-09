@@ -141,7 +141,7 @@ public class ContainerSchematicBuggy extends Container
                 {
                     for (int j = 1; j < 20; j++)
                     {
-                        if (((Slot) this.inventorySlots.get(j)).isItemValid(var4))
+                        if (this.inventorySlots.get(j).isItemValid(var4))
                         {
                             this.mergeOneItem(var4, j, j + 1, false);
                         }

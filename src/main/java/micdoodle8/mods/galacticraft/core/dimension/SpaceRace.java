@@ -33,8 +33,8 @@ public class SpaceRace
     private FlagData flagData;
     private Vector3 teamColor;
     private int ticksSpent;
-    private Map<CelestialBody, Integer> celestialBodyStatusList = new HashMap<>(4, 1F);
-    private Map<String, List<ItemStack>> schematicsToUnlock = new HashMap<>(4, 1F);
+    private final Map<CelestialBody, Integer> celestialBodyStatusList = new HashMap<>(4, 1F);
+    private final Map<String, List<ItemStack>> schematicsToUnlock = new HashMap<>(4, 1F);
 
     public SpaceRace()
     {

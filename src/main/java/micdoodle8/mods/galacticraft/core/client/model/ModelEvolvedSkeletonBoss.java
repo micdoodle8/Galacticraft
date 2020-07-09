@@ -9,38 +9,38 @@ import net.minecraft.util.math.MathHelper;
 
 public class ModelEvolvedSkeletonBoss extends EntityModel<EntitySkeletonBoss>
 {
-    private RendererModel upperHead;
-    private RendererModel pelvis;
-    private RendererModel sternum;
-    private RendererModel rightLeg;
-    private RendererModel rightArm;
-    private RendererModel spine;
-    private RendererModel leftArm;
-    private RendererModel leftLeg;
-    private RendererModel leftFrontBotRib;
-    private RendererModel leftFrontTopRib;
-    private RendererModel leftFront2ndRib;
-    private RendererModel leftFront3rdRib;
-    private RendererModel leftSideBotRib;
-    private RendererModel leftSide3rdRib;
-    private RendererModel leftSide2ndRib;
-    private RendererModel leftSideTopRib;
-    private RendererModel rightSideTopRib;
-    private RendererModel rightSide2ndRib;
-    private RendererModel rightSide3rdRib;
-    private RendererModel rightSideBotRib;
-    private RendererModel rightFrontBotRib;
-    private RendererModel rightFront3rdRib;
-    private RendererModel rightFront2ndRib;
-    private RendererModel rightFrontTopRib;
-    private RendererModel leftBackTopRib;
-    private RendererModel leftBack2ndRib;
-    private RendererModel leftBack3rdRib;
-    private RendererModel leftBackBotRib;
-    private RendererModel rightBackBotRib;
-    private RendererModel rightBack3rdRib;
-    private RendererModel rightBack2ndRib;
-    private RendererModel rightBackTopRib;
+    private final RendererModel upperHead;
+    private final RendererModel pelvis;
+    private final RendererModel sternum;
+    private final RendererModel rightLeg;
+    private final RendererModel rightArm;
+    private final RendererModel spine;
+    private final RendererModel leftArm;
+    private final RendererModel leftLeg;
+    private final RendererModel leftFrontBotRib;
+    private final RendererModel leftFrontTopRib;
+    private final RendererModel leftFront2ndRib;
+    private final RendererModel leftFront3rdRib;
+    private final RendererModel leftSideBotRib;
+    private final RendererModel leftSide3rdRib;
+    private final RendererModel leftSide2ndRib;
+    private final RendererModel leftSideTopRib;
+    private final RendererModel rightSideTopRib;
+    private final RendererModel rightSide2ndRib;
+    private final RendererModel rightSide3rdRib;
+    private final RendererModel rightSideBotRib;
+    private final RendererModel rightFrontBotRib;
+    private final RendererModel rightFront3rdRib;
+    private final RendererModel rightFront2ndRib;
+    private final RendererModel rightFrontTopRib;
+    private final RendererModel leftBackTopRib;
+    private final RendererModel leftBack2ndRib;
+    private final RendererModel leftBack3rdRib;
+    private final RendererModel leftBackBotRib;
+    private final RendererModel rightBackBotRib;
+    private final RendererModel rightBack3rdRib;
+    private final RendererModel rightBack2ndRib;
+    private final RendererModel rightBackTopRib;
 
     public ModelEvolvedSkeletonBoss()
     {
@@ -296,7 +296,7 @@ public class ModelEvolvedSkeletonBoss extends EntityModel<EntitySkeletonBoss>
     {
         final float floatPI = 3.1415927F;
 
-        final EntitySkeletonBoss boss = (EntitySkeletonBoss) entity;
+        final EntitySkeletonBoss boss = entity;
         super.setRotationAngles(entity, par1, par2, par3, par4, par5, par6);
         this.upperHead.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
         this.upperHead.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
@@ -362,10 +362,10 @@ public class ModelEvolvedSkeletonBoss extends EntityModel<EntitySkeletonBoss>
         this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 
-        if (((EntitySkeletonBoss) entity).deathTicks > 0)
+        if (entity.deathTicks > 0)
         {
-            this.leftArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) entity).deathTicks, 2) / 5.0F) / 3.0F / Constants.RADIANS_TO_DEGREES;
-            this.rightArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) entity).deathTicks, 2) / 5.0F) / 2.0F / Constants.RADIANS_TO_DEGREES;
+            this.leftArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(entity.deathTicks, 2) / 5.0F) / 3.0F / Constants.RADIANS_TO_DEGREES;
+            this.rightArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(entity.deathTicks, 2) / 5.0F) / 2.0F / Constants.RADIANS_TO_DEGREES;
         }
 
         if (boss.throwTimer + boss.postThrowDelay > 0)

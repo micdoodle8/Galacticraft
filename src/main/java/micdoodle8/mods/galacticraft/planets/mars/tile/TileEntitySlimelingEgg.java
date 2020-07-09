@@ -71,7 +71,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileE
 
                 slimeling.setTamed(true);
                 slimeling.getNavigator().clearPath();
-                slimeling.setAttackTarget((LivingEntity) null);
+                slimeling.setAttackTarget(null);
                 slimeling.setHealth(20.0F);
 
                 this.world.removeBlock(this.getPos(), false);

@@ -15,12 +15,12 @@ public interface IRocketType
         INVENTORY54(3, new TranslationTextComponent("gui.rocket_type.2"), false, 56),
         PREFUELED(4, new TranslationTextComponent("gui.rocket_type.3"), true, 2);
 
-        private int index;
-        private ITextComponent tooltip;
-        private boolean preFueled;
-        private int inventorySpace;
+        private final int index;
+        private final ITextComponent tooltip;
+        private final boolean preFueled;
+        private final int inventorySpace;
 
-        private EnumRocketType(int index, ITextComponent tooltip, boolean preFueled, int inventorySpace)
+        EnumRocketType(int index, ITextComponent tooltip, boolean preFueled, int inventorySpace)
         {
             this.index = index;
             this.tooltip = tooltip;

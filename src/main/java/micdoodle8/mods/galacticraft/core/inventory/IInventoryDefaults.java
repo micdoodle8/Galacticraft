@@ -9,23 +9,23 @@ import net.minecraft.util.text.TranslationTextComponent;
 /*
  * IInventory providing defaults for the eight methods
  * which we normally don't use in tiles and entities.
- * 
+ *
  * (It's not necessary to use the fields system where
  * we use a Container for the inventory.)
- * 
+ *
  * Override .hasCustomName() if true is required.
  */
 public interface IInventoryDefaults extends ISidedInventory
 {
     //We don't use these because we use forge containers
     @Override
-    public default void openInventory(PlayerEntity player)
+    default void openInventory(PlayerEntity player)
     {
     }
 
     //We don't use these because we use forge containers
     @Override
-    public default void closeInventory(PlayerEntity player)
+    default void closeInventory(PlayerEntity player)
     {
     }
 
@@ -47,7 +47,7 @@ public interface IInventoryDefaults extends ISidedInventory
 //    }
 
     @Override
-    public default void clear()
+    default void clear()
     {
 
     }

@@ -26,7 +26,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.LongFunction;
 
-public class VenusBiomeProvider extends BiomeProvider {
+public class VenusBiomeProvider extends BiomeProvider
+{
     private final Layer noiseLayer;
     private final Layer blockLayer;
 
@@ -38,7 +39,8 @@ public class VenusBiomeProvider extends BiomeProvider {
             BiomeVenus.venusValley
     );
 
-    public VenusBiomeProvider(final VenusBiomeProviderSettings settings) {
+    public VenusBiomeProvider(final VenusBiomeProviderSettings settings)
+    {
         final WorldInfo info = settings.getWorldInfo();
         final VenusGenSettings generatorSettings = settings.getGeneratorSettings();
         final Layer[] layers = buildVenusProcedure(info.getSeed(), info.getGenerator(), generatorSettings);
@@ -46,14 +48,16 @@ public class VenusBiomeProvider extends BiomeProvider {
         blockLayer = layers[1];
     }
 
-    private static Layer[] buildVenusProcedure(long seed, WorldType type, VenusGenSettings settings) {
+    private static Layer[] buildVenusProcedure(long seed, WorldType type, VenusGenSettings settings)
+    {
         final ImmutableList<IAreaFactory<LazyArea>> immutablelist = buildVenusProcedure(type, settings, procedure -> new LazyAreaLayerContext(25, seed, procedure));
         final Layer noiseLayer = new Layer(immutablelist.get(0));
         final Layer blockLayer = new Layer(immutablelist.get(1));
         return new Layer[]{noiseLayer, blockLayer};
     }
 
-    private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildVenusProcedure(final WorldType type, final VenusGenSettings settings, final LongFunction<C> context) {
+    private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildVenusProcedure(final WorldType type, final VenusGenSettings settings, final LongFunction<C> context)
+    {
 
         IAreaFactory<T> mainLayer = GenLayerVenusBiomes.INSTANCE.apply(context.apply(1));
         IAreaFactory<T> zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1000L), mainLayer);
@@ -67,23 +71,27 @@ public class VenusBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public Biome getBiome(int x, int z) {
+    public Biome getBiome(int x, int z)
+    {
         return blockLayer.func_215738_a(x, z);
     }
 
     // get noise biome
     @Override
-    public Biome func_222366_b(int x, int z) {
+    public Biome func_222366_b(int x, int z)
+    {
         return noiseLayer.func_215738_a(x, z);
     }
 
     @Override
-    public Biome[] getBiomes(int x, int z, int width, int length, boolean cacheFlag) {
+    public Biome[] getBiomes(int x, int z, int width, int length, boolean cacheFlag)
+    {
         return blockLayer.generateBiomes(x, z, width, length);
     }
 
     @Override
-    public Set<Biome> getBiomesInSquare(int centerX, int centerZ, int sideLength) {
+    public Set<Biome> getBiomesInSquare(int centerX, int centerZ, int sideLength)
+    {
         int x0 = centerX - sideLength >> 2;
         int z0 = centerZ - sideLength >> 2;
         int x1 = centerX + sideLength >> 2;
@@ -101,7 +109,8 @@ public class VenusBiomeProvider extends BiomeProvider {
      */
     @Nullable
     @Override
-    public BlockPos findBiomePosition(int x, int z, int range, List<Biome> allowedBiomes, Random random) {
+    public BlockPos findBiomePosition(int x, int z, int range, List<Biome> allowedBiomes, Random random)
+    {
         final int x0 = (x - range) >> 2;
         final int z0 = (z - range) >> 2;
         final int x1 = (x + range) >> 2;
@@ -112,11 +121,14 @@ public class VenusBiomeProvider extends BiomeProvider {
         final Biome[] biomes = noiseLayer.generateBiomes(x0, z0, w, h);
         BlockPos result = null;
         int found = 0;
-        for (int i = 0; i < w * h; i++) {
+        for (int i = 0; i < w * h; i++)
+        {
             final int xx = (x0 + i % w) << 2;
             final int zz = (z0 + i / w) << 2;
-            if (allowedBiomes.contains(biomes[i])) {
-                if (result == null || random.nextInt(found + 1) == 0) {
+            if (allowedBiomes.contains(biomes[i]))
+            {
+                if (result == null || random.nextInt(found + 1) == 0)
+                {
                     result = new BlockPos(xx, 0, zz);
                 }
                 found++;
@@ -128,10 +140,14 @@ public class VenusBiomeProvider extends BiomeProvider {
 
     // really is "can generate structure?"
     @Override
-    public boolean hasStructure(Structure<?> structure) {
-        return this.hasStructureCache.computeIfAbsent(structure, (structure1) -> {
-            for (Biome biome : possibleBiomes) {
-                if (biome.hasStructure(structure1)) {
+    public boolean hasStructure(Structure<?> structure)
+    {
+        return this.hasStructureCache.computeIfAbsent(structure, (structure1) ->
+        {
+            for (Biome biome : possibleBiomes)
+            {
+                if (biome.hasStructure(structure1))
+                {
                     return true;
                 }
             }
@@ -141,9 +157,12 @@ public class VenusBiomeProvider extends BiomeProvider {
     }
 
     @Override
-    public Set<BlockState> getSurfaceBlocks() {
-        if (surfaceBlocks.isEmpty()) {
-            for (Biome biome : possibleBiomes) {
+    public Set<BlockState> getSurfaceBlocks()
+    {
+        if (surfaceBlocks.isEmpty())
+        {
+            for (Biome biome : possibleBiomes)
+            {
                 surfaceBlocks.add(biome.getSurfaceBuilderConfig().getTop());
             }
         }

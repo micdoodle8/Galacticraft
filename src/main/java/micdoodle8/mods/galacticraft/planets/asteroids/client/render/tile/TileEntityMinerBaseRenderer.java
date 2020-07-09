@@ -76,7 +76,7 @@ public class TileEntityMinerBaseRenderer extends TileEntityRenderer<TileEntityMi
         light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 1), 0);
         j += light % 65536;
         k += light / 65536;
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j / 8.0F, (float)k / 8.0F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j / 8.0F, (float) k / 8.0F);
 //        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 8.0F, k / 8.0F);
 
         GL11.glPushMatrix();

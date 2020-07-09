@@ -50,7 +50,7 @@ public class Vector2 implements Cloneable
     {
         float xDifference = point1.x - point2.x;
         float yDiference = point1.y - point2.y;
-        return (float)Math.sqrt(xDifference * xDifference + yDiference * yDiference);
+        return (float) Math.sqrt(xDifference * xDifference + yDiference * yDiference);
     }
 
     public static float slope(Vector2 point1, Vector2 point2)
@@ -64,7 +64,7 @@ public class Vector2 implements Cloneable
     {
         float xDifference = this.x - target.x;
         float yDifference = this.y - target.y;
-        return (float)Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+        return (float) Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     }
 
     public Vector2 add(Vector2 par1)
@@ -101,12 +101,12 @@ public class Vector2 implements Cloneable
 
     public Vector2 ceil()
     {
-        return new Vector2((float)Math.ceil(this.x), (float)Math.ceil(this.y));
+        return new Vector2((float) Math.ceil(this.x), (float) Math.ceil(this.y));
     }
 
     public Vector2 floor()
     {
-        return new Vector2((float)Math.floor(this.x), (float)Math.floor(this.y));
+        return new Vector2((float) Math.floor(this.x), (float) Math.floor(this.y));
     }
 
     @Override

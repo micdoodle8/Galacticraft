@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 public interface ITumblable
 {
-    public void setTumbling(float value);
-    
-    public float getTumbleAngle(float partial);
+    void setTumbling(float value);
 
-    public float getTumbleAxisX();
+    float getTumbleAngle(float partial);
 
-    public float getTumbleAxisZ();
+    float getTumbleAxisX();
+
+    float getTumbleAxisZ();
 }

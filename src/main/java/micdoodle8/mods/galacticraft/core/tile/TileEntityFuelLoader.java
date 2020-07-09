@@ -130,7 +130,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.fuelTank.readFromNBT(par1NBTTagCompound.getCompound("fuelTank"));
         }
-        
+
         this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
@@ -143,7 +143,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
-        
+
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
         return nbt;
@@ -160,7 +160,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1 };
+        return new int[]{0, 1};
     }
 
     @Override
@@ -188,7 +188,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return (slotID == 1 && itemstack != null && itemstack.getItem() == GCItems.fuelCanister) || (slotID == 0 ? ItemElectricBase.isElectricItem(itemstack.getItem()) : false);
+        return (slotID == 1 && itemstack != null && itemstack.getItem() == GCItems.fuelCanister) || (slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem()));
     }
 
     @Override
@@ -286,12 +286,12 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public Direction getFront()
     {
-    	BlockState state = this.world.getBlockState(getPos());
-    	if (state.getBlock() instanceof BlockFuelLoader)
-    	{
-    		return state.get(BlockFuelLoader.FACING);
-    	}
-    	return Direction.NORTH;
+        BlockState state = this.world.getBlockState(getPos());
+        if (state.getBlock() instanceof BlockFuelLoader)
+        {
+            return state.get(BlockFuelLoader.FACING);
+        }
+        return Direction.NORTH;
     }
 
 //    @Override
@@ -331,7 +331,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         if (direction == null)
         {
             return false;
-        } 
+        }
         if (type == NetworkType.POWER)
         {
             return direction == this.getElectricInputDirection();
@@ -387,15 +387,15 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN, MachineSide.PIPE_IN };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN, MachineSide.PIPE_IN};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT, Face.RIGHT };
+        return new Face[]{Face.LEFT, Face.RIGHT};
     }
-    
+
     private MachineSidePack[] machineSides;
 
     @Override
@@ -414,13 +414,13 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

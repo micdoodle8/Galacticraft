@@ -16,8 +16,10 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Constants.MOD_ID_PLANETS)
 public class AsteroidParticles
 {
-    @ObjectHolder(AsteroidParticleTypeNames.telepadDown) public static ParticleType<BlockPosParticleData> TELEPAD_DOWN;
-    @ObjectHolder(AsteroidParticleTypeNames.telepadUp) public static ParticleType<BlockPosParticleData> TELEPAD_UP;
+    @ObjectHolder(AsteroidParticleTypeNames.telepadDown)
+    public static ParticleType<BlockPosParticleData> TELEPAD_DOWN;
+    @ObjectHolder(AsteroidParticleTypeNames.telepadUp)
+    public static ParticleType<BlockPosParticleData> TELEPAD_UP;
 
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
     {

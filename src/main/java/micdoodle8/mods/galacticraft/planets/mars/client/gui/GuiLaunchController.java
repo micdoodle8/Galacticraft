@@ -39,15 +39,15 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
 {
     private static final ResourceLocation launchControllerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/launch_controller.png");
 
-    private TileEntityLaunchController launchController;
+    private final TileEntityLaunchController launchController;
 
     private Button enableControllerButton;
     private Button hideDestinationFrequency;
     private Button openAdvancedConfig;
     private GuiElementTextBox frequency;
     private GuiElementTextBox destinationFrequency;
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
-    private GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
+    private final GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0, this);
 
     private int cannotEditTimer;
 
@@ -185,31 +185,34 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         this.buttons.clear();
         final int xLeft = (this.width - this.xSize) / 2;
         final int yTop = (this.height - this.ySize) / 2;
-        this.enableControllerButton = new Button(xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) -> {
+        this.enableControllerButton = new Button(xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        {
             if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, minecraft.world.getDimension().getType(), new Object[] { this.launchController.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, minecraft.world.getDimension().getType(), new Object[]{this.launchController.getPos(), 0}));
         });
-        this.frequency = new GuiElementTextBox( this, xLeft + 66, yTop + 16, 48, 20, "", true, 6, false);
-        this.destinationFrequency = new GuiElementTextBox( this, xLeft + 45, yTop + 16 + 22, 48, 20, "", true, 6, false);
-        this.hideDestinationFrequency = new Button(xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"), (button) -> {
+        this.frequency = new GuiElementTextBox(this, xLeft + 66, yTop + 16, 48, 20, "", true, 6, false);
+        this.destinationFrequency = new GuiElementTextBox(this, xLeft + 45, yTop + 16 + 22, 48, 20, "", true, 6, false);
+        this.hideDestinationFrequency = new Button(xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"), (button) ->
+        {
             if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, minecraft.world.getDimension().getType(), new Object[] { this.launchController.getPos(), 2 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, minecraft.world.getDimension().getType(), new Object[]{this.launchController.getPos(), 2}));
         });
-        this.openAdvancedConfig = new Button(xLeft + 48, yTop + 62, 80, 20, GCCoreUtil.translate("gui.launch_controller.advanced") + "...", (button) -> {
+        this.openAdvancedConfig = new Button(xLeft + 48, yTop + 62, 80, 20, GCCoreUtil.translate("gui.launch_controller.advanced") + "...", (button) ->
+        {
             if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.launchController.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.launchController.getPos(), 0}));
         });
         this.buttons.add(this.enableControllerButton);
         this.buttons.add(this.frequency);
@@ -327,12 +330,12 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
             if (textBox.equals(this.frequency))
             {
                 this.launchController.frequency = textBox.getIntegerValue();
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 0, this.launchController.getPos(), this.launchController.frequency }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{0, this.launchController.getPos(), this.launchController.frequency}));
             }
             else if (textBox.equals(this.destinationFrequency))
             {
                 this.launchController.destFrequency = textBox.getIntegerValue();
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 2, this.launchController.getPos(), this.launchController.destFrequency }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{2, this.launchController.getPos(), this.launchController.destFrequency}));
             }
         }
     }

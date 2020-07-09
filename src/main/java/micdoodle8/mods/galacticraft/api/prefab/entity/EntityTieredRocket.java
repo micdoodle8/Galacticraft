@@ -46,18 +46,20 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     public EnumRocketType rocketType;
     public float rumble;
     public int launchCooldown;
-    private ArrayList<BlockVec3Dim> preGenList = new ArrayList<>();
+    private final ArrayList<BlockVec3Dim> preGenList = new ArrayList<>();
     private Iterator<BlockVec3Dim> preGenIterator = null;
     static boolean preGenInProgress = false;
     static Field marsConfigAllDimsAllowed;
     private boolean heightHalved = false;
 
-    static {
+    static
+    {
         try
         {
             Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerPlanets");
             marsConfigAllDimsAllowed = marsConfig.getField("launchControllerAllDims");
-        } catch (Exception ignore)
+        }
+        catch (Exception ignore)
         {
         }
     }
@@ -199,8 +201,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     if (this.world instanceof ServerWorld)
                     {
                         mcserver = ((ServerWorld) this.world).getServer();
-	                	BlockVec3Dim coords = this.preGenIterator.next();
-	                    World w = mcserver.getWorld(coords.dim);
+                        BlockVec3Dim coords = this.preGenIterator.next();
+                        World w = mcserver.getWorld(coords.dim);
                         if (w != null)
                         {
                             w.getChunk(coords.x, coords.z);
@@ -295,8 +297,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (this.world.isRemote)
             {
-            	//stop the sounds on the client - but do not reset, the rocket may start again
-            	this.stopRocketSound();
+                //stop the sounds on the client - but do not reset, the rocket may start again
+                this.stopRocketSound();
                 return;
             }
 
@@ -309,64 +311,66 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     Dimension targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
                     if (targetDim != null && targetDim.getWorld() instanceof ServerWorld)
                     {
-                    	boolean dimensionAllowed = this.targetDimension == DimensionType.OVERWORLD;
+                        boolean dimensionAllowed = this.targetDimension == DimensionType.OVERWORLD;
 
-                    	if (targetDim instanceof IGalacticraftDimension)
-                    	{
-                    		if (((IGalacticraftDimension) targetDim).canSpaceshipTierPass(this.getRocketTier()))
-                    			dimensionAllowed = true;
-                    		else
-                    			dimensionAllowed = false;
-                    	}
-                    	else
-                    		//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
-                    		if (/*(this.targetDimension > 1 || this.targetDimension < -1) &&*/ marsConfigAllDimsAllowed != null)
-                    		{
-                    			try {
-                    				if (marsConfigAllDimsAllowed.getBoolean(null))
-                    				{
-                    					dimensionAllowed = true;
-                    				}
-                    			} catch (Exception e) { e.printStackTrace(); }
-                    		}
+                        if (targetDim instanceof IGalacticraftDimension)
+                        {
+                            dimensionAllowed = ((IGalacticraftDimension) targetDim).canSpaceshipTierPass(this.getRocketTier());
+                        }
+                        else
+                            //No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
+                            if (/*(this.targetDimension > 1 || this.targetDimension < -1) &&*/ marsConfigAllDimsAllowed != null)
+                            {
+                                try
+                                {
+                                    if (marsConfigAllDimsAllowed.getBoolean(null))
+                                    {
+                                        dimensionAllowed = true;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                    	if (dimensionAllowed)
-                    	{
-                    		if (!this.getPassengers().isEmpty())
-                    		{
-                    		    for (Entity passenger : this.getPassengers())
-                    		    {
-                    		        if (passenger instanceof ServerPlayerEntity)
-                    		        {
-                    		            WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (ServerWorld) targetDim.getWorld(), false, this);
-                    		        }
-                    		    }
-                    		}
-                    		else
-                    		{
-                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (ServerWorld)targetDim.getWorld(), false, null);
-                    		    if (e instanceof EntityAutoRocket)
-                    		    {
-                    		        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
-                    		        ((EntityAutoRocket)e).setLaunchPhase(EnumLaunchPhase.LANDING);
-                    		        ((EntityAutoRocket)e).setWaitForPlayer(false);
-                    		    }
-                    		    else
-                    		    {
-                    		        GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
-                    		        e.remove();
-                    		        this.remove();
-                    		    }
-                    		}
-                    		return;
-                    	}
+                        if (dimensionAllowed)
+                        {
+                            if (!this.getPassengers().isEmpty())
+                            {
+                                for (Entity passenger : this.getPassengers())
+                                {
+                                    if (passenger instanceof ServerPlayerEntity)
+                                    {
+                                        WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (ServerWorld) targetDim.getWorld(), false, this);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (ServerWorld) targetDim.getWorld(), false, null);
+                                if (e instanceof EntityAutoRocket)
+                                {
+                                    e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
+                                    ((EntityAutoRocket) e).setLaunchPhase(EnumLaunchPhase.LANDING);
+                                    ((EntityAutoRocket) e).setWaitForPlayer(false);
+                                }
+                                else
+                                {
+                                    GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
+                                    e.remove();
+                                    this.remove();
+                                }
+                            }
+                            return;
+                        }
                     }
                     //No destination world found - in this situation continue into regular take-off (as if Not launch controlled)
                 }
                 else
                 {
-                	//Same dimension controlled rocket flight
-                	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
+                    //Same dimension controlled rocket flight
+                    this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                     //Stop any lateral motion, otherwise it will update to an incorrect x,z position first tick after spawning above target
                     //Small upward motion initially, to keep clear of own flame trail from launch
                     this.setMotion(0.0, 0.1, 0.0);
@@ -387,9 +391,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             else
             {
                 //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
-            	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
-            	this.fuelTank.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-            	this.posY = Math.max(255, (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) - 200);
+                GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
+                this.fuelTank.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                this.posY = Math.max(255, (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) - 200);
                 return;
             }
         }
@@ -412,7 +416,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
             this.remove();
         }
-        
+
         //Client LogicalSide, non-launch controlled, do nothing - no reason why it can't continue flying until the GUICelestialSelection activates
     }
 
@@ -445,6 +449,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         return true;
     }
 
+    @Override
     public EntitySize getSize(Pose poseIn)
     {
         if (heightHalved)
@@ -471,7 +476,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.getDimension().getType(), new Object[] { }), (ServerPlayerEntity) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.getDimension().getType(), new Object[]{}), (ServerPlayerEntity) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setChatCooldown(0);
                 // Prevent player being dropped from the top of the rocket...
@@ -491,7 +496,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.getDimension().getType(), new Object[] { }), (ServerPlayerEntity) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.getDimension().getType(), new Object[]{}), (ServerPlayerEntity) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setChatCooldown(0);
                 player.startRiding(this);
@@ -506,8 +511,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public void writeAdditional(CompoundNBT nbt)
     {
-    	if (world.isRemote) return;
-    	nbt.putInt("Type", this.rocketType.getIndex());
+        if (world.isRemote)
+        {
+            return;
+        }
+        nbt.putInt("Type", this.rocketType.getIndex());
         super.writeAdditional(nbt);
     }
 
@@ -527,8 +535,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public int getSizeInventory()
     {
-        if (this.rocketType == null) return 2;
-    	return this.rocketType.getInventorySpace();
+        if (this.rocketType == null)
+        {
+            return 2;
+        }
+        return this.rocketType.getInventorySpace();
     }
 
     @Override

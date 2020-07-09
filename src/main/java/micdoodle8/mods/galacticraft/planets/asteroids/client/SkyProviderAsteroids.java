@@ -33,7 +33,7 @@ public class SkyProviderAsteroids implements IRenderHandler
     public int glSkyList;
     public int glSkyList2;
 
-    private float sunSize;
+    private final float sunSize;
 
     public SkyProviderAsteroids(IGalacticraftDimension asteroidsProvider)
     {

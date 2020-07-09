@@ -27,12 +27,12 @@ import java.util.*;
  */
 public class EnergyNetwork implements IElectricityNetwork
 {
-    private boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded() && !EnergyConfigHandler.disableMekanismOutput;
-    private boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput;
-    private boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
-    private boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
-    private boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
-    private boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
+    private final boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded() && !EnergyConfigHandler.disableMekanismOutput;
+    private final boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput;
+    private final boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
+    private final boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
+    private final boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
+    private final boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
 
     /* Re-written by radfast for better performance
      *
@@ -60,8 +60,8 @@ public class EnergyNetwork implements IElectricityNetwork
      *   Note: each position in those two linked lists matches
      *         so, an acceptor connected on two sides will be in connectedAcceptors twice
      */
-    private List<Object> connectedAcceptors = new LinkedList<Object>();
-    private List<Direction> connectedDirections = new LinkedList<Direction>();
+    private final List<Object> connectedAcceptors = new LinkedList<Object>();
+    private final List<Direction> connectedDirections = new LinkedList<Direction>();
 
     /*
      *  availableAcceptors is the acceptors which can receive energy (this tick)
@@ -69,11 +69,11 @@ public class EnergyNetwork implements IElectricityNetwork
      *    Note: each acceptor will only be included once in these collections
      *          (there is no point trying to put power into a machine twice from two different sides)
      */
-    private Set<Object> availableAcceptors = new HashSet<Object>();
-    private Map<Object, Direction> availableconnectedDirections = new HashMap<Object, Direction>();
+    private final Set<Object> availableAcceptors = new HashSet<Object>();
+    private final Map<Object, Direction> availableconnectedDirections = new HashMap<Object, Direction>();
 
-    private Map<Object, Float> energyRequests = new HashMap<Object, Float>();
-    private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
+    private final Map<Object, Float> energyRequests = new HashMap<Object, Float>();
+    private final List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
 
     private final Set<IConductor> conductors = new HashSet<IConductor>();
 
@@ -291,7 +291,7 @@ public class EnergyNetwork implements IElectricityNetwork
 //                    }
                     else if (isFELoaded && acceptor instanceof net.minecraftforge.energy.IEnergyStorage)
                     {
-                        net.minecraftforge.energy.IEnergyStorage forgeEnergy = (net.minecraftforge.energy.IEnergyStorage)acceptor;
+                        net.minecraftforge.energy.IEnergyStorage forgeEnergy = (net.minecraftforge.energy.IEnergyStorage) acceptor;
                         if (forgeEnergy.canReceive())
                         {
                             e = forgeEnergy.receiveEnergy(Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
@@ -440,7 +440,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     else if (isFELoaded && tileEntity instanceof net.minecraftforge.energy.IEnergyStorage)
                     {
                         final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-                        sentToAcceptor = ((net.minecraftforge.energy.IEnergyStorage)tileEntity).receiveEnergy(currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
+                        sentToAcceptor = ((net.minecraftforge.energy.IEnergyStorage) tileEntity).receiveEnergy(currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
                     }
                     else
                     {
@@ -465,7 +465,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 GCLog.severe("DEBUG Energy network loop issue, please report this");
                 if (debugTE instanceof TileEntity)
                 {
-                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(((TileEntity)debugTE).getWorld()) + " at " + ((TileEntity)debugTE).getPos() + " Type:" + debugTE.getClass().getSimpleName());
+                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(((TileEntity) debugTE).getWorld()) + " at " + ((TileEntity) debugTE).getPos() + " Type:" + debugTE.getClass().getSimpleName());
                 }
             }
         }
@@ -535,7 +535,7 @@ public class EnergyNetwork implements IElectricityNetwork
         if (tierfound == Integer.MAX_VALUE)
         {
             tierfound = 1;
-        }   
+        }
         this.networkTierGC = tierfound;
     }
 
@@ -579,7 +579,7 @@ public class EnergyNetwork implements IElectricityNetwork
         if (tierfound == Integer.MAX_VALUE)
         {
             tierfound = 1;
-        }   
+        }
         this.networkTierGC = tierfound;
     }
 
@@ -672,7 +672,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 if (this.getTransmitters().size() > 0)
                 {
                     TileEntity[] nextToSplit = new TileEntity[6];
-                    boolean[] toDo = { true, true, true, true, true, true };
+                    boolean[] toDo = {true, true, true, true, true, true};
                     TileEntity tileEntity;
 
                     BlockPos pos = ((TileEntity) splitPoint).getPos();
@@ -705,7 +705,7 @@ public class EnergyNetwork implements IElectricityNetwork
                             break;
                         }
 
-                        if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(Direction.byIndex(j ^ 1), NetworkType.POWER))
+                        if (tileEntity instanceof IConductor && ((IConductor) tileEntity).canConnect(Direction.byIndex(j ^ 1), NetworkType.POWER))
                         {
                             nextToSplit[j] = tileEntity;
                         }

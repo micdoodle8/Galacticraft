@@ -85,7 +85,7 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        long seed = (long)k * 341873128712L + (long)l * 132897987541L + generator.world.getWorldInfo().getSeed() + (long)(10387340 + generator.world.getDimension().getType().getId());
+        long seed = (long) k * 341873128712L + (long) l * 132897987541L + generator.world.getWorldInfo().getSeed() + (long) (10387340 + generator.world.getDimension().getType().getId());
         Random random = new Random();
         random.setSeed(seed);
         k = k * numChunks + random.nextInt(numChunks);
@@ -100,7 +100,10 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
     public static float directionToNearestDungeon(World world, double xpos, double zpos)
     {
         int spacing = ((IGalacticraftDimension) world.getDimension()).getDungeonSpacing();
-        if (spacing == 0) return 0F;
+        if (spacing == 0)
+        {
+            return 0F;
+        }
         int x = MathHelper.floor(xpos);
         int z = MathHelper.floor(zpos);
         int quadrantX = x % spacing;
@@ -147,7 +150,7 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
 
     public static class Start extends StructureStart
     {
-//        private DungeonConfiguration configuration;
+        //        private DungeonConfiguration configuration;
         DungeonStart startPiece;
 
         public Start(Structure<?> structure, int chunkX, int chunkZ, Biome biomeIn, MutableBoundingBox boundsIn, int referenceIn, long seed)
@@ -175,7 +178,7 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
         }
     }
 
-    public static void main(String args[])
+    public static void main(String[] args)
     {
 //        Random rand = new Random();
 //        Start start = new Start(null, rand, 0, 0, new DungeonConfiguration(null, 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class));

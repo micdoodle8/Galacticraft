@@ -42,12 +42,12 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
 {
     private static final DataParameter<Byte> BURROWED_COUNT = EntityDataManager.createKey(EntitySpiderQueen.class, DataSerializers.BYTE);
     public boolean shouldEvade;
-    private List<EntityJuicer> juicersSpawned = Lists.newArrayList();
+    private final List<EntityJuicer> juicersSpawned = Lists.newArrayList();
     private List<UUID> spawnedPreload;
 
     private int rangedAttackTime;
-    private int minRangedAttackTime;
-    private int maxRangedAttackTime;
+    private final int minRangedAttackTime;
+    private final int maxRangedAttackTime;
 
     public EntitySpiderQueen(EntityType<? extends EntitySpiderQueen> type, World worldIn)
     {
@@ -73,7 +73,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public double getMountedYOffset()
     {
-        return (double)(this.getHeight() * 0.5F);
+        return this.getHeight() * 0.5F;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     protected void registerData()
     {
         super.registerData();
-        this.dataManager.register(BURROWED_COUNT, (byte)-1);
+        this.dataManager.register(BURROWED_COUNT, (byte) -1);
     }
 
     public byte getBurrowedCount()
@@ -113,7 +113,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                 if (attackTarget != null)
                 {
                     double dX = attackTarget.posX - this.posX;
-                    double dY = attackTarget.getBoundingBox().minY + (double)(attackTarget.getHeight() / 3.0F) - this.posY;
+                    double dY = attackTarget.getBoundingBox().minY + (double) (attackTarget.getHeight() / 3.0F) - this.posY;
                     double dZ = attackTarget.posZ - this.posZ;
 
                     float distance = 5.0F;
@@ -133,7 +133,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                     else if (this.rangedAttackTime < 0)
                     {
                         float f2 = MathHelper.sqrt(d0) / distance;
-                        this.rangedAttackTime = MathHelper.floor(f2 * (float)(this.maxRangedAttackTime - this.minRangedAttackTime) + (float)this.minRangedAttackTime);
+                        this.rangedAttackTime = MathHelper.floor(f2 * (float) (this.maxRangedAttackTime - this.minRangedAttackTime) + (float) this.minRangedAttackTime);
                     }
                 }
             }
@@ -361,7 +361,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float damage)
     {
-        EntityWebShot entityarrow = EntityWebShot.createEntityWebShot(this.world, this, target, 0.8F, (float)(14 - this.world.getDifficulty().getId() * 4));
+        EntityWebShot entityarrow = EntityWebShot.createEntityWebShot(this.world, this, target, 0.8F, (float) (14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.addEntity(entityarrow);
     }
@@ -424,7 +424,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         }
         return entityitem;
     }
-    
+
     @Override
     public void dropKey()
     {

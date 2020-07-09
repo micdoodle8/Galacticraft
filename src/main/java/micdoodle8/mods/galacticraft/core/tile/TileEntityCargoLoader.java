@@ -154,7 +154,7 @@ public class TileEntityCargoLoader extends TileEntityCargoBase implements ISided
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return side != this.getElectricInputDirection() ? new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] { };
+        return side != this.getElectricInputDirection() ? new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14} : new int[]{};
     }
 
     @Override
@@ -171,7 +171,7 @@ public class TileEntityCargoLoader extends TileEntityCargoBase implements ISided
                 return true;
             }
         }
-        
+
         return false;
     }
 

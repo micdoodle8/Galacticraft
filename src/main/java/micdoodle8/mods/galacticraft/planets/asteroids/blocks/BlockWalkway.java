@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 public class BlockWalkway extends BlockTransmitter implements IShiftDescription
 {
-//    public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
+    //    public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
 //    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
 //    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
     protected static final VoxelShape AABB_UNCONNECTED = Block.makeCuboidShape(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);

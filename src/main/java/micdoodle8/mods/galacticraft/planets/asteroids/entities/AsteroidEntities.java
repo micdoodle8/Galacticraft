@@ -23,11 +23,13 @@ public class AsteroidEntities
     public static final RegistryObject<EntityType<EntitySmallAsteroid>> SMALL_ASTEROID = register(AsteroidEntityNames.SMALL_ASTEROID, AsteroidEntities::smallAsteroid);
     public static final RegistryObject<EntityType<EntityTier3Rocket>> ROCKET_T3 = register(AsteroidEntityNames.ROCKET_T3, AsteroidEntities::rocketT3);
 
-    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
+    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup)
+    {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
-    private static EntityType.Builder<EntityAstroMiner> astroMiner() {
+    private static EntityType.Builder<EntityAstroMiner> astroMiner()
+    {
         return EntityType.Builder.create(EntityAstroMiner::new, EntityClassification.MISC)
                 .size(2.6F, 1.8F)
                 .immuneToFire()
@@ -36,7 +38,8 @@ public class AsteroidEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityEntryPod> entryPod() {
+    private static EntityType.Builder<EntityEntryPod> entryPod()
+    {
         return EntityType.Builder.create(EntityEntryPod::new, EntityClassification.MISC)
                 .size(2.6F, 1.8F)
                 .immuneToFire()
@@ -45,7 +48,8 @@ public class AsteroidEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityGrapple> grapple() {
+    private static EntityType.Builder<EntityGrapple> grapple()
+    {
         return EntityType.Builder.create(EntityGrapple::new, EntityClassification.MISC)
                 .size(0.75F, 0.75F)
                 .immuneToFire()
@@ -54,7 +58,8 @@ public class AsteroidEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntitySmallAsteroid> smallAsteroid() {
+    private static EntityType.Builder<EntitySmallAsteroid> smallAsteroid()
+    {
         return EntityType.Builder.create(EntitySmallAsteroid::new, EntityClassification.MISC)
                 .size(1.0F, 1.0F)
                 .immuneToFire()
@@ -63,7 +68,8 @@ public class AsteroidEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityTier3Rocket> rocketT3() {
+    private static EntityType.Builder<EntityTier3Rocket> rocketT3()
+    {
         return EntityType.Builder.create(EntityTier3Rocket::new, EntityClassification.MISC)
                 .size(1.8F, 6.0F)
                 .immuneToFire()

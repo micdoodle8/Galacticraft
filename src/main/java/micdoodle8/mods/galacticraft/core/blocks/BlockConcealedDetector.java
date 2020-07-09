@@ -107,15 +107,17 @@ public class BlockConcealedDetector extends Block
     public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
     {
         if (blockAccess instanceof World && RedstoneUtil.isBlockReceivingDirectRedstone((World) blockAccess, pos))
+        {
             return 0;
-            
+        }
+
         return blockAccess.getBlockState(pos).get(DETECTED) ? 0 : 15;
     }
 
     public void updateState(World worldObj, BlockPos pos, boolean result)
     {
         BlockState bs = worldObj.getBlockState(pos);
-        if (result != (boolean) bs.get(DETECTED))
+        if (result != bs.get(DETECTED))
         {
             worldObj.setBlockState(pos, bs.with(DETECTED, result), 3);
         }

@@ -33,7 +33,7 @@ public class TeleportTypeOverworld implements ITeleportType
     @Override
     public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D((float)entity.posX, 250.0F, (float)entity.posZ);
+        return new Vector3D((float) entity.posX, 250.0F, (float) entity.posZ);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TeleportTypeOverworld implements ITeleportType
         final float x = (rand.nextFloat() * 2 - 1.0F) * 5.0F;
         final float z = (rand.nextFloat() * 2 - 1.0F) * 5.0F;
 
-        return new Vector3D((float)player.posX + x, 230.0F, (float)player.posZ + z);
+        return new Vector3D((float) player.posX + x, 230.0F, (float) player.posZ + z);
     }
 
     @Override

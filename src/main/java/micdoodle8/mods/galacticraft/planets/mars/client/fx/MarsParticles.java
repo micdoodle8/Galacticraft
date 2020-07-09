@@ -17,8 +17,10 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Constants.MOD_ID_PLANETS)
 public class MarsParticles
 {
-    @ObjectHolder(MarsParticleTypeNames.drip) public static BasicParticleType DRIP;
-    @ObjectHolder(MarsParticleTypeNames.cryo) public static BasicParticleType CRYO;
+    @ObjectHolder(MarsParticleTypeNames.drip)
+    public static BasicParticleType DRIP;
+    @ObjectHolder(MarsParticleTypeNames.cryo)
+    public static BasicParticleType CRYO;
 
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
     {

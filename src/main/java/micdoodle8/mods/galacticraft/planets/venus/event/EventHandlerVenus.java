@@ -48,13 +48,25 @@ public class EventHandlerVenus
             switch (event.armorIndex)
             {
             case 0:
-                if (event.armorStack.getItem() == VenusItems.thermal_helmet_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                if (event.armorStack.getItem() == VenusItems.thermal_helmet_t2)
+                {
+                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                }
             case 1:
-                if (event.armorStack.getItem() == VenusItems.thermal_chestplate_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                if (event.armorStack.getItem() == VenusItems.thermal_chestplate_t2)
+                {
+                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                }
             case 2:
-                if (event.armorStack.getItem() == VenusItems.thermal_leggings_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                if (event.armorStack.getItem() == VenusItems.thermal_leggings_t2)
+                {
+                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                }
             case 3:
-                if (event.armorStack.getItem() == VenusItems.thermal_boots_t2) event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                if (event.armorStack.getItem() == VenusItems.thermal_boots_t2)
+                {
+                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                }
             }
         }
     }

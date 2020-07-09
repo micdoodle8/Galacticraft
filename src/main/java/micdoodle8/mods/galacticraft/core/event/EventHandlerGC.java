@@ -349,7 +349,7 @@ public class EventHandlerGC
             }
         }
     }
-    
+
     @SubscribeEvent
     public void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
     {
@@ -358,10 +358,10 @@ public class EventHandlerGC
             event.setCanUpdate(true);
             return;
         }
-        
-		if (event.getEntity().world.getDimension() instanceof IZeroGDimension)
+
+        if (event.getEntity().world.getDimension() instanceof IZeroGDimension)
         {
-            if (((IZeroGDimension)event.getEntity().world.getDimension()).inFreefall(event.getEntity()))
+            if (((IZeroGDimension) event.getEntity().world.getDimension()).inFreefall(event.getEntity()))
             {
                 event.setCanUpdate(true);
 //                event.entity.move(event.entity.motionX, event.entity.motionY, event.entity.motionZ);
@@ -485,7 +485,7 @@ public class EventHandlerGC
     }
 
     /**
-     * xx, zz are the central position of 4 chunks: the chunk currently being populated + 1 in the x,z plane 
+     * xx, zz are the central position of 4 chunks: the chunk currently being populated + 1 in the x,z plane
      * We must not stray more than 1 chunk away from this position, that's 16 blocks
      */
     public static void generateOil(IWorld world, Random rand, int xx, int zz, boolean testFirst)
@@ -501,7 +501,7 @@ public class EventHandlerGC
             //The method loads blocks in the range (x - r - 1) to (x + r + 1) - whatever the randoms, all these positions must be inside the +/-1 chunk range
             //This can be minimum xx - 7 - 7 - 1, that's OK!
             //This can be maximum xx + 8 + 7 + 1, that's also OK!
-            
+
             if (testFirst && checkOilPresent(world, x, cy, z, r))
             {
                 return;
@@ -628,11 +628,7 @@ public class EventHandlerGC
         {
             return true;
         }
-        if (b instanceof GravelBlock)
-        {
-            return true;
-        }
-        return false;
+        return b instanceof GravelBlock;
     }
 
     @SubscribeEvent
@@ -691,7 +687,7 @@ public class EventHandlerGC
 //                benchY = ((GuiPositionedContainer)cs).getY();
 //                benchZ = ((GuiPositionedContainer)cs).getZ();
 //            }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { page.getPageID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_SCHEMATIC_PAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{page.getPageID()}));
 //            Minecraft.getInstance().player.openGui(GalacticraftCore.instance, page.getGuiID(), Minecraft.getInstance().player.world, benchX, benchY, benchZ); TODO Gui
         }
     }
@@ -894,7 +890,7 @@ public class EventHandlerGC
         ClientPlayerEntity entity = Minecraft.getInstance().player;
         ClientWorld worldclient = Minecraft.getInstance().world;
         //Disable any night vision effects on the sky, if the planet has no atmosphere
-        if (entity != null && ((LivingEntity) entity).isPotionActive(Effects.NIGHT_VISION))
+        if (entity != null && entity.isPotionActive(Effects.NIGHT_VISION))
         {
             if (worldclient.dimension instanceof IGalacticraftDimension && ((IGalacticraftDimension) worldclient.dimension).hasNoAtmosphere() && !((IGalacticraftDimension) worldclient.dimension).hasBreathableAtmosphere())
             {
@@ -913,7 +909,7 @@ public class EventHandlerGC
         }
     }
 
-    private List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
+    private final List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
 
     private static Field volumeField;
     private static Field pitchField;

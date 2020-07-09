@@ -60,13 +60,13 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
         if (player instanceof ServerPlayerEntity)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            
+
             for (int i = 0; i < SIZE; i++)
             {
                 ItemStack newGear = getContents(i);
                 if (newGear.getItem() instanceof IClickableItem)
                 {
-                    newGear = ((IClickableItem)newGear.getItem()).onItemRightClick(newGear, worldIn, player);
+                    newGear = ((IClickableItem) newGear.getItem()).onItemRightClick(newGear, worldIn, player);
                 }
                 if (newGear.getCount() >= 1)
                 {
@@ -79,31 +79,41 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
         }
         return new ActionResult<>(ActionResultType.PASS, itemStack);
     }
-    
+
     public static ItemStack getContents(int slot)
     {
         switch (slot)
         {
-        case 0: return new ItemStack(GCItems.oxMask);
-        case 1: return new ItemStack(GCItems.oxygenGear);
-        case 2: return new ItemStack(GCItems.oxTankLight);
-        case 3: return new ItemStack(GCItems.oxTankLight);
-        case 4: return new ItemStack(GCItems.steelPickaxe);
-        case 5: return new ItemStack(GCItems.dehydratedPotato, 1);
-        case 6: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HEALING);
-        case 7: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.LONG_NIGHT_VISION);
-        case 8: return new ItemStack(GCItems.parachuteRed, 1);
-        default: return null;
+        case 0:
+            return new ItemStack(GCItems.oxMask);
+        case 1:
+            return new ItemStack(GCItems.oxygenGear);
+        case 2:
+            return new ItemStack(GCItems.oxTankLight);
+        case 3:
+            return new ItemStack(GCItems.oxTankLight);
+        case 4:
+            return new ItemStack(GCItems.steelPickaxe);
+        case 5:
+            return new ItemStack(GCItems.dehydratedPotato, 1);
+        case 6:
+            return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HEALING);
+        case 7:
+            return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.LONG_NIGHT_VISION);
+        case 8:
+            return new ItemStack(GCItems.parachuteRed, 1);
+        default:
+            return null;
         }
     }
 
     public static Object[] getRecipe()
     {
-        Object[] result = new Object[]{ "EAB", "CID", "FGH", 'A', null, 'B', null, 'C', null, 'D', null, 'E', null, 'F', null, 'G', null, 'H', null, 'I', null };
+        Object[] result = new Object[]{"EAB", "CID", "FGH", 'A', null, 'B', null, 'C', null, 'D', null, 'E', null, 'F', null, 'G', null, 'H', null, 'I', null};
         for (int i = 0; i < SIZE; i++)
         {
-            result [i * 2 + 4] = getContents(i);
-        }        
+            result[i * 2 + 4] = getContents(i);
+        }
         return result;
     }
 

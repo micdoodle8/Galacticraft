@@ -140,7 +140,7 @@ public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILan
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return side != this.getElectricInputDirection() ? new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } : new int[] { };
+        return side != this.getElectricInputDirection() ? new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14} : new int[]{};
     }
 
     @Override

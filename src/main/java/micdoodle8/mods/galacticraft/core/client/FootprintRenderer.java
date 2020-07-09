@@ -84,7 +84,7 @@ public class FootprintRenderer
             {
                 int j = footprint.lightmapVal % 65536;
                 int k = footprint.lightmapVal / 65536;
-                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j, (float)k);
+                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
             }
 
             float ageScale = footprint.age / (float) Footprint.MAX_AGE;

@@ -19,7 +19,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 
     //	@NetworkedField(targetSide = LogicalSide.CLIENT)
     //	public float energyStored = 0;
-    private float IC2surplusInGJ = 0F;
+    private final float IC2surplusInGJ = 0F;
 
     public TileBaseUniversalElectrical(TileEntityType<?> type)
     {
@@ -171,7 +171,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             if (item instanceof IItemElectric)
             {
                 this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
-                this.poweredByTierGC = ((IItemElectric)item).getTierGC(itemStack);
+                this.poweredByTierGC = ((IItemElectric) item).getTierGC(itemStack);
             }
 //            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
 //            {
@@ -235,7 +235,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         {
 //            if (!this.isAddedToEnergyNet)
 //            {
-                // Register to the IC2 Network
+            // Register to the IC2 Network
 //                this.initIC();
 //            }
 
@@ -554,7 +554,6 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //	{
 //    	return 0D;
 //	}
-
     @Override
     public ReceiverMode getModeFromDirection(Direction direction)
     {
@@ -583,7 +582,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //            //This will do an initIC2 on next tick update.
 //        }
     }
-    
+
 //    @Override
 //    public boolean hasCapability(Capability<?> capability, Direction facing)
 //    {
@@ -603,7 +602,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //        }
 //        return super.getCapability(capability, facing);
 //    }
-    
+
 //    private static class ForgeReceiver implements net.minecraftforge.energy.IEnergyStorage
 //    {
 //        private TileBaseUniversalElectrical tile;

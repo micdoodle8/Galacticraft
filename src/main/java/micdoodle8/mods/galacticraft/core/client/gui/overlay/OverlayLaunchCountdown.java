@@ -20,8 +20,8 @@ public class OverlayLaunchCountdown extends Overlay
 
             count = (int) Math.floor(count / 10.0F);
 
-            int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
-            int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
 //        mc.entityRenderer.setupOverlayRendering();
 
             GlStateManager.pushMatrix();

@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 public class BlockTerraformer extends BlockTileGC implements IShiftDescription
 {
-//    public static final int TERRAFORMER_METADATA = 0;
+    //    public static final int TERRAFORMER_METADATA = 0;
 //    public static final int CRYOGENIC_CHAMBER_METADATA = 4;
 //    public static final int LAUNCH_CONTROLLER_METADATA = 8;
 //
@@ -97,11 +97,12 @@ public class BlockTerraformer extends BlockTileGC implements IShiftDescription
         return true;
     }
 
+    @Override
     @Nullable
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 
 //    @Override

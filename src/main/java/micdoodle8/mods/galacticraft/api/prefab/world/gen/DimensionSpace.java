@@ -22,7 +22,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
     public long preTickTime = Long.MIN_VALUE;
     private long saveTCO = 0L;
 //    static Field tickCounter;
-    
+
     static
     {
 //        try
@@ -34,10 +34,11 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //        }
     }
 
-    public DimensionSpace(World worldIn, DimensionType typeIn) {
+    public DimensionSpace(World worldIn, DimensionType typeIn)
+    {
         super(worldIn, typeIn);
     }
-    
+
     /**
      * The fog color in this dimension
      */
@@ -101,7 +102,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
             this.preTickTime = newTime;
             this.saveTCO = 0L;
         }
-        
+
         if (this.shouldDisablePrecipitation())
         {
             this.world.getWorldInfo().setRainTime(0);
@@ -148,7 +149,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
     {
         return this.getCelestialBody().atmosphere.isBreathable();
     }
-    
+
     @Override
     public boolean shouldDisablePrecipitation()
     {
@@ -178,7 +179,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
         {
             return 5.0D;
         }
-        return d * 100D; 
+        return d * 100D;
     }
 
     @Override
@@ -186,7 +187,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
     {
         return this.getCelestialBody().atmosphere.thermalLevel();
     }
-    
+
     @Override
     public float getWindLevel()
     {
@@ -202,7 +203,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //    @Override
 //    public boolean canBlockFreeze(BlockPos pos, boolean byWater)
 //    {
-        //TODO: if block is water and world temperature is low, freeze
+    //TODO: if block is water and world temperature is low, freeze
 //        return super.canBlockFreeze(pos, byWater);
 //    }
 
@@ -275,34 +276,34 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 
     /**
      * Do not override this.
-     * 
+     * <p>
      * Returns true on clients (to allow rendering of sky etc, maybe even clouds).
      * Returns false on servers (to disable Nether Portal mob spawning and sleeping in beds).
      */
     @Override
     public boolean isSurfaceWorld()
     {
-        return (this.world == null) ? false : this.world.isRemote;
+        return (this.world != null) && this.world.isRemote;
     }
 
     /**
      * This must normally return false, so that if the dimension is set for 'static' loading
      * it will not keep chunks around the dimension spawn position permanently loaded.
      * It is also needed to be false so that the 'Force Overworld Respawn' setting in core.conf
-     * will work correctly - see also WorldProviderS[ace.getRespawnDimension(). 
-     * 
+     * will work correctly - see also WorldProviderS[ace.getRespawnDimension().
+     * <p>
      * But: returning 'false' will cause beds to explode in this dimension.
      * If you want beds NOT to explode, you can override this, like in WorldProviderMoon.
      */
-	@Override
-	public boolean canRespawnHere()
-	{
-		return false;
-	}
-	
+    @Override
+    public boolean canRespawnHere()
+    {
+        return false;
+    }
+
     /**
      * Do NOT override this in your add-ons.
-     * 
+     * <p>
      * This controls whether the player will respawn in the space dimension or the Overworld
      * in accordance with the 'Force Overworld Respawn' setting on core.conf.
      */
@@ -314,10 +315,10 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 
     /**
      * If true, the the player should respawn in this dimension upon death.
-     * 
+     * <p>
      * Obeying the 'Force Overworld Respawn' setting from core.conf is an important protection
      * for players are endlessly dying in a space dimension: for example respawning
-     * in an airless environment with no oxygen tanks and no oxygen machinery.       
+     * in an airless environment with no oxygen tanks and no oxygen machinery.
      */
     public boolean shouldForceRespawn()
     {
@@ -328,7 +329,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
      * If false (the default) then Nether Portals will have no function on this world.
      * Nether Portals can still be constructed, if the player can make fire, they just
      * won't do anything.
-     * 
+     *
      * @return True if Nether Portals should work like on the Overworld.
      */
     @Override
@@ -411,14 +412,14 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //            }
 //            else
 //            {
-                long newTCO = time - world.getWorldInfo().getDayTime();
-                long diff = newTCO - this.timeCurrentOffset;
-                if (diff > 1L || diff < -1L)
-                {
-                    this.timeCurrentOffset = newTCO; 
+            long newTCO = time - world.getWorldInfo().getDayTime();
+            long diff = newTCO - this.timeCurrentOffset;
+            if (diff > 1L || diff < -1L)
+            {
+                this.timeCurrentOffset = newTCO;
 //                    this.saveTime();
-                    this.preTickTime = time;
-                }
+                this.preTickTime = time;
+            }
 //            }
             this.saveTCO = 0;
         }
@@ -433,7 +434,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //        } TODO
         return world.getWorldInfo().getDayTime() + this.timeCurrentOffset;
     }
-    
+
     /**
      * Adjust time offset on Galacticraft worlds when the Overworld time jumps and you don't want the time
      * on all the other Galacticraft worlds to jump also - see WorldUtil.setNextMorning() for example
@@ -447,7 +448,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //            this.saveTime();
         }
     }
-    
+
     public void adjustTime(long newTime)
     {
         long diff = newTime - this.preTickTime;
@@ -458,7 +459,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //            this.saveTime();
         }
     }
-    
+
 //    /**
 //     * Save this world's custom time (from timeCurrentOffset) into this world's villages.dat :)
 //     */

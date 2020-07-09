@@ -165,7 +165,9 @@ public class PlayerServer implements IPlayerServer
         if (noClip)
         {
             if (!noClipList.contains(player))
+            {
                 noClipList.add(player);
+            }
         }
         else
         {

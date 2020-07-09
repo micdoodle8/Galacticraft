@@ -78,6 +78,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         }
 
         private final static EnumBlockMultiType[] values = values();
+
         public static EnumBlockMultiType byMetadata(int meta)
         {
             return values[meta % values.length];
@@ -98,16 +99,20 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch ((EnumBlockMultiType)state.get(MULTI_TYPE))
+        switch (state.get(MULTI_TYPE))
         {
         case SOLAR_PANEL_0:
         case SOLAR_PANEL_1:
             boolean midPole = worldIn.getBlockState(pos.up()).getBlock() == this;
             boolean topPole = worldIn.getBlockState(pos.down()).getBlock() == this;
             if (topPole || midPole)
+            {
                 return midPole ? AABB_SOLAR_POLE : AABB_SOLAR;
+            }
             else
+            {
                 return AABB_SOLAR;
+            }
         case ROCKET_PAD:
         case BUGGY_FUEL_PAD:
             return AABB_PAD;
@@ -341,7 +346,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             BlockPos mainBlockPosition = ((TileEntityFake) tileEntity).mainBlockPosition;
 
-	        if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
+            if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
                 BlockState mainState = world.getBlockState(mainBlockPosition);
                 return mainState.getBlock().getBedDirection(mainState, world, mainBlockPosition);

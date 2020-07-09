@@ -23,48 +23,58 @@ public class FluidRegistrationEntry<STILL extends Fluid, FLOWING extends Fluid, 
     private RegistryObject<BLOCK> blockRO;
     private RegistryObject<BUCKET> bucketRO;
 
-    public FluidRegistrationEntry(String name) {
+    public FluidRegistrationEntry(String name)
+    {
         this.stillRO = RegistryObject.of(new ResourceLocation(Constants.MOD_ID_CORE, name), ForgeRegistries.FLUIDS);
         this.flowingRO = RegistryObject.of(new ResourceLocation(Constants.MOD_ID_CORE, "flowing_" + name), ForgeRegistries.FLUIDS);
         this.blockRO = RegistryObject.of(new ResourceLocation(Constants.MOD_ID_CORE, name), ForgeRegistries.BLOCKS);
         this.bucketRO = RegistryObject.of(new ResourceLocation(Constants.MOD_ID_CORE, name + "_bucket"), ForgeRegistries.ITEMS);
     }
 
-    public STILL getStillFluid() {
+    public STILL getStillFluid()
+    {
         return stillRO.get();
     }
 
-    public FLOWING getFlowingFluid() {
+    public FLOWING getFlowingFluid()
+    {
         return flowingRO.get();
     }
 
-    public BLOCK getBlock() {
+    public BLOCK getBlock()
+    {
         return blockRO.get();
     }
 
-    public BUCKET getBucket() {
+    public BUCKET getBucket()
+    {
         return bucketRO.get();
     }
 
     //Make sure these update methods are package local as only the FluidDeferredRegister should be messing with them
-    void updateStill(RegistryObject<STILL> stillRO) {
+    void updateStill(RegistryObject<STILL> stillRO)
+    {
         this.stillRO = Objects.requireNonNull(stillRO);
     }
 
-    void updateFlowing(RegistryObject<FLOWING> flowingRO) {
+    void updateFlowing(RegistryObject<FLOWING> flowingRO)
+    {
         this.flowingRO = Objects.requireNonNull(flowingRO);
     }
 
-    void updateBlock(RegistryObject<BLOCK> blockRO) {
+    void updateBlock(RegistryObject<BLOCK> blockRO)
+    {
         this.blockRO = Objects.requireNonNull(blockRO);
     }
 
-    void updateBucket(RegistryObject<BUCKET> bucketRO) {
+    void updateBucket(RegistryObject<BUCKET> bucketRO)
+    {
         this.bucketRO = Objects.requireNonNull(bucketRO);
     }
 
     @Nonnull
-    public STILL getFluid() {
+    public STILL getFluid()
+    {
         //Default our fluid to being the still variant
         return getStillFluid();
     }

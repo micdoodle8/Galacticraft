@@ -14,13 +14,12 @@ import javax.annotation.Nullable;
 /**
  * A block for advanced types of POWERED Galacticraft machine
  * with a base building purpose - e.g. Advanced Compressor
- *
+ * <p>
  * Note: this DOES implement IMachineSides, in comparison with BlockMachine3 which does not
- *
  */
 public class BlockIngotCompressorElectricAdvanced extends BlockMachineBase
 {
-//    public static final EnumProperty<EnumMachineAdvancedType> TYPE = EnumProperty.create("type", EnumMachineAdvancedType.class);
+    //    public static final EnumProperty<EnumMachineAdvancedType> TYPE = EnumProperty.create("type", EnumMachineAdvancedType.class);
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final EnumProperty SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 

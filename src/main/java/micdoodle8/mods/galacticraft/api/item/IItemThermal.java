@@ -12,13 +12,11 @@ public interface IItemThermal
     /**
      * Returns whether the provided itemstack is valid for the armor slot:
      *
-     * @param stack
-     *  The item to test
-     * @param armorSlot
-     *  0 - helmet
-     *  1 - chestplate
-     *  2 - leggings
-     *  3 - boots
+     * @param stack     The item to test
+     * @param armorSlot 0 - helmet
+     *                  1 - chestplate
+     *                  2 - leggings
+     *                  3 - boots
      */
     boolean isValidForSlot(ItemStack stack, int armorSlot);
 }

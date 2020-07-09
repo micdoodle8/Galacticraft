@@ -57,7 +57,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public static final int WATTS_PER_TICK = 1;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean launchPadRemovalDisabled = true;
-//    private Ticket chunkLoadTicket;
+    //    private Ticket chunkLoadTicket;
 //    private List<BlockPos> connectedPads = new ArrayList<BlockPos>();
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int frequency = -1;
@@ -79,7 +79,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
     private boolean frequencyCheckNeeded = false;
-//    private static Map<Integer, Long> tickCounts = new HashMap<>();
+    //    private static Map<Integer, Long> tickCounts = new HashMap<>();
 //    private static Map<Integer, Integer> instanceCounts = new HashMap<>();
     private static final TicketType<TileEntityLaunchController> TICKET_TYPE = TicketType.create(Constants.MOD_ID_PLANETS + ":chunk_loader", Comparator.comparing(TileEntity::getPos));
     public static final int TICKET_DISTANCE = 2;
@@ -109,9 +109,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
         if (!this.world.isRemote)
         {
-      		this.controlEnabled = this.launchSchedulingEnabled && this.hasEnoughEnergyToRun && !this.getDisabled(0);
-        	
-        	if (this.frequencyCheckNeeded)
+            this.controlEnabled = this.launchSchedulingEnabled && this.hasEnoughEnergyToRun && !this.getDisabled(0);
+
+            if (this.frequencyCheckNeeded)
             {
                 this.checkDestFrequencyValid();
                 this.frequencyCheckNeeded = false;
@@ -152,30 +152,36 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.world), new Object[] { 5, this.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.world), new Object[]{5, this.getPos(), 0}));
             }
         }
 
         World world = this.getWorld();
-        if (world != null && !world.isRemote && world.getChunkProvider() instanceof ServerChunkProvider) {
-            if (isFirstTick) {
+        if (world != null && !world.isRemote && world.getChunkProvider() instanceof ServerChunkProvider)
+        {
+            if (isFirstTick)
+            {
                 isFirstTick = false;
-                if (!ConfigManagerPlanets.launchControllerChunkLoad) {
+                if (!ConfigManagerPlanets.launchControllerChunkLoad)
+                {
                     //If we just loaded but are not actually able to operate
                     // release any tickets we have assigned to us that we loaded with
                     releaseChunkTickets(world, this.getPos());
                 }
             }
 
-            if (hasRegistered && prevWorld != null && (prevPos == null || prevWorld != world || prevPos != this.getPos())) {
+            if (hasRegistered && prevWorld != null && (prevPos == null || prevWorld != world || prevPos != this.getPos()))
+            {
                 releaseChunkTickets(prevWorld);
             }
 
-            if (hasRegistered && !ConfigManagerPlanets.launchControllerChunkLoad) {
+            if (hasRegistered && !ConfigManagerPlanets.launchControllerChunkLoad)
+            {
                 releaseChunkTickets(world);
             }
 
-            if (!hasRegistered) {
+            if (!hasRegistered)
+            {
                 registerChunkTickets(world);
             }
         }
@@ -201,7 +207,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 //            ForgeChunkManager.releaseTicket(this.chunkLoadTicket);
 //        }
 
-        if (!world.isRemote() && prevWorld != null) {
+        if (!world.isRemote() && prevWorld != null)
+        {
             releaseChunkTickets(prevWorld);
         }
     }
@@ -283,7 +290,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         this.requiresClientUpdate = GCCoreUtil.getEffectiveSide() == LogicalSide.SERVER;
         chunkSet.clear();
         ListNBT list = nbt.getList("LoaderChunkSet", net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
-        for (INBT element : list) {
+        for (INBT element : list)
+        {
             chunkSet.add(new ChunkPos(((LongNBT) element).getLong()));
         }
     }
@@ -300,7 +308,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         nbt.putBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
         nbt.putBoolean("HideTargetDestination", this.hideTargetDestination);
         ListNBT list = new ListNBT();
-        for (ChunkPos pos : chunkSet) {
+        for (ChunkPos pos : chunkSet)
+        {
             list.add(new LongNBT(pos.asLong()));
         }
         nbt.put("LoaderChunkSet", list);
@@ -322,7 +331,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override
@@ -536,7 +545,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         return getFront().rotateY();
     }
 
-    private void releaseChunkTickets(@Nonnull World world) {
+    private void releaseChunkTickets(@Nonnull World world)
+    {
         releaseChunkTickets(world, prevPos);
     }
 
@@ -547,19 +557,23 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         int chunkZMin = (pos.getX() - 2) >> 4;
         int chunkZMax = (pos.getZ() + 2) >> 4;
         Set<ChunkPos> set = new ObjectOpenHashSet<>();
-        for (int chunkX = chunkXMin; chunkX <= chunkXMax; chunkX++) {
-            for (int chunkZ = chunkZMin; chunkZ <= chunkZMax; chunkZ++) {
+        for (int chunkX = chunkXMin; chunkX <= chunkXMax; chunkX++)
+        {
+            for (int chunkZ = chunkZMin; chunkZ <= chunkZMax; chunkZ++)
+            {
                 set.add(new ChunkPos(chunkX, chunkZ));
             }
         }
         return set;
     }
 
-    private void releaseChunkTickets(@Nonnull World world, @Nullable BlockPos pos) {
+    private void releaseChunkTickets(@Nonnull World world, @Nullable BlockPos pos)
+    {
         ServerChunkProvider chunkProvider = (ServerChunkProvider) world.getChunkProvider();
         Iterator<ChunkPos> chunkIt = chunkSet.iterator();
 //        ChunkManager manager = ((ServerWorld) world).getChunkProvider().chunkManager;
-        while (chunkIt.hasNext()) {
+        while (chunkIt.hasNext())
+        {
             ChunkPos chunkPos = chunkIt.next();
 //            if (pos != null) {
 //                manager.deregisterChunk(chunkPos, pos);
@@ -571,14 +585,16 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         this.prevWorld = null;
     }
 
-    private void registerChunkTickets(@Nonnull World world) {
+    private void registerChunkTickets(@Nonnull World world)
+    {
         ServerChunkProvider chunkProvider = (ServerChunkProvider) world.getChunkProvider();
 //        ChunkManager manager = ChunkManager.getInstance((ServerWorld) world);
 
         prevPos = this.getPos();
         prevWorld = world;
 
-        for (ChunkPos chunkPos : this.getChunkSet()) {
+        for (ChunkPos chunkPos : this.getChunkSet())
+        {
             chunkProvider.func_217228_a(TICKET_TYPE, chunkPos, TICKET_DISTANCE, this);
 //            manager.registerChunk(chunkPos, prevPos);
             chunkSet.add(chunkPos);
@@ -590,11 +606,14 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     /**
      * Release and re-register tickets, call when chunkset changes
      */
-    public void refreshChunkTickets() {
-        if (prevWorld != null) {
+    public void refreshChunkTickets()
+    {
+        if (prevWorld != null)
+        {
             releaseChunkTickets(prevWorld);
         }
-        if (!world.isRemote()) {
+        if (!world.isRemote())
+        {
             registerChunkTickets(Objects.requireNonNull(world.getWorld()));
         }
     }

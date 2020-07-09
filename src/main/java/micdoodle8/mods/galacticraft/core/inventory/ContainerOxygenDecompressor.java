@@ -17,7 +17,7 @@ public class ContainerOxygenDecompressor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_DECOMPRESSOR)
     public static ContainerType<ContainerOxygenDecompressor> TYPE;
 
-    private TileEntityOxygenDecompressor decompressor;
+    private final TileEntityOxygenDecompressor decompressor;
 
     public ContainerOxygenDecompressor(int containerId, PlayerInventory playerInv, TileEntityOxygenDecompressor decompressor)
     {
@@ -120,7 +120,7 @@ public class ContainerOxygenDecompressor extends Container
                 }
                 else
                 {
-                   slot.putStack(ItemStack.EMPTY);
+                    slot.putStack(ItemStack.EMPTY);
                 }
             }
             else

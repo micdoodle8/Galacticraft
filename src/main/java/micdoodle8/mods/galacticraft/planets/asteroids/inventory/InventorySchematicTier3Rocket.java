@@ -50,7 +50,7 @@ public class InventorySchematicTier3Rocket implements IInventory
             this.markDirty();
             this.eventHandler.onCraftMatrixChanged(this);
         }
-    	return oldstack;
+        return oldstack;
     }
 
     @Override

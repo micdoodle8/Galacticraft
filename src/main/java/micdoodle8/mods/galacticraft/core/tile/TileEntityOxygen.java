@@ -57,14 +57,16 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
             return holder.cast();
+        }
 
 //    	if (EnergyUtil.checkMekGasHandler(capability))
 //    	{
 //    		return (T) this;
 //    	}
 
-    	return super.getCapability(capability, facing);
+        return super.getCapability(capability, facing);
     }
 
     public int getScaledOxygenLevel(int scale)
@@ -139,11 +141,11 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         return this.write(new CompoundNBT());
     }
-    
+
     @Override
     public void setOxygenStored(int oxygen)
     {
-        this.tank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), (int) Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));
+        this.tank.setFluid(new FluidStack(GCFluids.OXYGEN.getFluid(), Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));
     }
 
     @Override

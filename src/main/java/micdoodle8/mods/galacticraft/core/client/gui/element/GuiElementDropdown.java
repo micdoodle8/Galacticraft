@@ -18,11 +18,13 @@ public class GuiElementDropdown extends Button
     public String[] optionStrings;
     public int selectedOption = -1;
     public FontRenderer font;
-    private IDropboxCallback parentGui;
+    private final IDropboxCallback parentGui;
 
     public GuiElementDropdown(IDropboxCallback parentClass, int x, int y, String... text)
     {
-        super(x, y, 15, 15, "", (button) -> {});
+        super(x, y, 15, 15, "", (button) ->
+        {
+        });
         Minecraft minecraft = Minecraft.getInstance();
         this.parentGui = parentClass;
         this.font = minecraft.fontRenderer;
@@ -94,9 +96,10 @@ public class GuiElementDropdown extends Button
         }
     }
 
+    @Override
     protected boolean clicked(double p_clicked_1_, double p_clicked_3_)
     {
-        if (this.active && this.visible && p_clicked_1_ >= (double)this.x && p_clicked_3_ >= (double)this.y && p_clicked_1_ < (double)(this.x + this.width) && p_clicked_3_ < (double)(this.y + this.height * (dropdownClicked ? this.optionStrings.length : 1.0F)))
+        if (this.active && this.visible && p_clicked_1_ >= (double) this.x && p_clicked_3_ >= (double) this.y && p_clicked_1_ < (double) (this.x + this.width) && p_clicked_3_ < (double) (this.y + this.height * (dropdownClicked ? this.optionStrings.length : 1.0F)))
         {
             boolean canInteract = this.parentGui.canBeClickedBy(this, Minecraft.getInstance().player);
             if (!canInteract)

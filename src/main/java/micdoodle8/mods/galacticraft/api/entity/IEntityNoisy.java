@@ -12,9 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public interface IEntityNoisy
 {
-	@OnlyIn(Dist.CLIENT)
-	TickableSound getSoundUpdater();
+    @OnlyIn(Dist.CLIENT)
+    TickableSound getSoundUpdater();
 
-	@OnlyIn(Dist.CLIENT)
-	ISound setSoundUpdater(ClientPlayerEntity player);
+    @OnlyIn(Dist.CLIENT)
+    ISound setSoundUpdater(ClientPlayerEntity player);
 }

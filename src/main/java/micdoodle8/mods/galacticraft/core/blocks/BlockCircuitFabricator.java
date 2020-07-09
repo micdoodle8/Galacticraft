@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class BlockCircuitFabricator extends BlockMachineBase
 {
-//    public static final EnumProperty<EnumMachineExtendedType> TYPE = EnumProperty.create("type", EnumMachineExtendedType.class);
+    //    public static final EnumProperty<EnumMachineExtendedType> TYPE = EnumProperty.create("type", EnumMachineExtendedType.class);
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final EnumProperty SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 

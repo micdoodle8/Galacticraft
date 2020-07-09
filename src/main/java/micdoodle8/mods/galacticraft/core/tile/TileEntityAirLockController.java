@@ -275,7 +275,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                             }
                         }
                     }
-                    if (sealedSide) break;
+                    if (sealedSide)
+                    {
+                        break;
+                    }
                 }
                 // Now replace the airlock blocks with either air, or sealed air
                 for (x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
@@ -286,9 +289,13 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
                             if (sealedSide)
+                            {
                                 this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
+                            }
                             else
+                            {
                                 this.world.removeBlock(pos, false);
+                            }
                         }
                     }
                 }
@@ -324,7 +331,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                             }
                         }
                     }
-                    if (sealedSide) break;
+                    if (sealedSide)
+                    {
+                        break;
+                    }
                 }
                 // Now replace the airlock blocks with either air, or sealed air
                 for (x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
@@ -335,9 +345,13 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
                             if (sealedSide)
+                            {
                                 this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
+                            }
                             else
+                            {
                                 this.world.removeBlock(pos, false);
+                            }
                         }
                     }
                 }
@@ -370,7 +384,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                             }
                         }
                     }
-                    if (sealedSide) break;
+                    if (sealedSide)
+                    {
+                        break;
+                    }
                 }
                 // Now replace the airlock blocks with either air, or sealed air
                 for (z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
@@ -381,9 +398,13 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
                             if (sealedSide)
+                            {
                                 this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
+                            }
                             else
+                            {
                                 this.world.removeBlock(pos, false);
+                            }
                         }
                     }
                 }

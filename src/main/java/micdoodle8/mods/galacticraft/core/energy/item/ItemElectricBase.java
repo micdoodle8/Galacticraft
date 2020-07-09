@@ -22,7 +22,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 {
     private static Object itemManagerIC2;
     public float transferMax;
-//    private DefaultArtifactVersion mcVersion = null;
+    //    private DefaultArtifactVersion mcVersion = null;
     public static final int DAMAGE_RANGE = 100;
 
     public ItemElectricBase(Item.Properties builder)
@@ -180,7 +180,9 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         else //First time check item - maybe from addInformation() in a JEI recipe display?
         {
             if (itemStack.getDamage() == DAMAGE_RANGE)
+            {
                 return 0F;
+            }
 
             energyStored = this.getMaxElectricityStored(itemStack) * (DAMAGE_RANGE - itemStack.getDamage()) / DAMAGE_RANGE;
             itemStack.getTag().putFloat("electricity", energyStored);
@@ -203,10 +205,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
     public static boolean isElectricItem(Item item)
     {
-        if (item instanceof IItemElectricBase)
-        {
-            return true;
-        }
+        return item instanceof IItemElectricBase;
 
 //        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
 //        {
@@ -215,8 +214,6 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 //                return true;
 //            }
 //        } TODO
-
-        return false;
     }
 
     public static boolean isElectricItemEmpty(ItemStack itemstack)
@@ -242,12 +239,15 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
         return false;
     }
-    
+
     public static boolean isElectricItemCharged(ItemStack itemstack)
     {
-        if (itemstack == null) return false;        
+        if (itemstack == null)
+        {
+            return false;
+        }
         Item item = itemstack.getItem();
-        
+
         if (item instanceof IItemElectricBase)
         {
             return ((IItemElectricBase) item).getElectricityStored(itemstack) > 0;
@@ -263,7 +263,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
         return false;
     }
-    
+
     //For RF compatibility
 
 //    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyContainerItem", modID = "")

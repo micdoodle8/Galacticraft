@@ -31,13 +31,13 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickableTil
     @Override
     public void tick()
     {
-        if (!this.world.isRemote && ++this.ticks == 50) 
+        if (!this.world.isRemote && ++this.ticks == 50)
         {
             this.ticks = 0;
             if (this.getBlockState().getBlock() instanceof BlockOxygenDetector)
             {
                 boolean oxygenFound = false;
-                if (this.world.getDimension() instanceof IGalacticraftDimension && !((IGalacticraftDimension)this.world.getDimension()).hasBreathableAtmosphere())
+                if (this.world.getDimension() instanceof IGalacticraftDimension && !((IGalacticraftDimension) this.world.getDimension()).hasBreathableAtmosphere())
                 {
                     oxygenFound = OxygenUtil.isAABBInBreathableAirBlock(this.world, this.oxygenSearch, false);
                 }
@@ -59,7 +59,7 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickableTil
             }
         }
     }
-    
+
     @Override
     public void onLoad()
     {

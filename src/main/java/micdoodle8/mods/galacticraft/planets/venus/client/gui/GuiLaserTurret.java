@@ -38,7 +38,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
     private int cannotEditTimer;
 
     private Button buttonEnable;
-    private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
     public GuiLaserTurret(ContainerLaserTurret container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -68,19 +68,21 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 81, (this.height - this.ySize) / 2 + 92, 18, 18, batterySlotDesc, this.width, this.height, this));
         String enableString = !this.laserTurret.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name");
-        this.buttons.add(this.buttonEnable = new Button((this.width - this.xSize) / 2 + 7, this.height / 2 - 9, 72, 20, enableString, (button) -> {
+        this.buttons.add(this.buttonEnable = new Button((this.width - this.xSize) / 2 + 7, this.height / 2 - 9, 72, 20, enableString, (button) ->
+        {
             if (!this.minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.laserTurret.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.laserTurret.getPos(), 0}));
             laserTurret.setDisabled(0, !laserTurret.getDisabled(0));
             init();
         }));
         this.blacklistMode = new GuiElementCheckbox(this, this.width / 2 - 81, yTop + 26, GCCoreUtil.translate("gui.message.blacklist_mode.name"), ColorUtil.to32BitColor(255, 75, 75, 75));
         this.targetMeteors = new GuiElementCheckbox(this, this.width / 2 - 81, yTop + 40, GCCoreUtil.translate("gui.message.target_meteors.name"), ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.buttons.add(this.buttonEditList = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 55, 82, 20, GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ".name"), (button) -> {
+        this.buttons.add(this.buttonEditList = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 55, 82, 20, GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ".name"), (button) ->
+        {
             if (!this.minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
@@ -88,7 +90,8 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
             }
             Minecraft.getInstance().displayGuiScreen(new GuiLaserTurretEditList(laserTurret));
         }));
-        this.buttons.add(this.buttonEditPriority = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 78, 82, 20, GCCoreUtil.translate("gui.button.edit_priority.name"), (button) -> {
+        this.buttons.add(this.buttonEditPriority = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 78, 82, 20, GCCoreUtil.translate("gui.button.edit_priority.name"), (button) ->
+        {
             if (!this.minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
@@ -185,12 +188,12 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         if (checkbox.equals(this.blacklistMode))
         {
             this.laserTurret.blacklistMode = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 0, this.laserTurret.getPos(), this.laserTurret.blacklistMode ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{0, this.laserTurret.getPos(), this.laserTurret.blacklistMode ? 1 : 0}));
         }
         else if (checkbox.equals(this.targetMeteors))
         {
             this.laserTurret.targetMeteors = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 1, this.laserTurret.getPos(), this.laserTurret.targetMeteors ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{1, this.laserTurret.getPos(), this.laserTurret.targetMeteors ? 1 : 0}));
         }
     }
 

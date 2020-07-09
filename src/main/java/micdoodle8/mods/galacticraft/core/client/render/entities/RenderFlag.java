@@ -50,7 +50,7 @@ public class RenderFlag extends EntityRenderer<EntityFlag>
         this.modelFlag.render(entity, 0.0625F);
         GlStateManager.popMatrix();
     }
-    
+
     @Override
     public boolean shouldRender(EntityFlag lander, ICamera camera, double camX, double camY, double camZ)
     {

@@ -21,7 +21,7 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
     public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
-    private Map<Field, Object> lastSentData = new HashMap<Field, Object>(4, 1F);
+    private final Map<Field, Object> lastSentData = new HashMap<Field, Object>(4, 1F);
     private boolean networkDataChanged = false;
 
     public TileEntityAdvanced(TileEntityType<?> type)
@@ -32,72 +32,72 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
     @Override
     public void tick()
     {
-    	if (this.ticks == 0)
-    	{
-    		this.initiate();
+        if (this.ticks == 0)
+        {
+            this.initiate();
 
-    		if (this.isNetworkedTile())
-    		{
-    			if (this.fieldCacheClient == null || this.fieldCacheServer == null)
-    			{
-    				this.initFieldCache();
-    			}
+            if (this.isNetworkedTile())
+            {
+                if (this.fieldCacheClient == null || this.fieldCacheServer == null)
+                {
+                    this.initFieldCache();
+                }
 
-    			if (this.world != null && this.world.isRemote && this.fieldCacheClient.size() > 0)
-    			{
-    				//Request any networked information from server on first client tick (maybe client just logged on, but server networkdata didn't change recently)
-    				GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
-    			}
-    		}
-    	}
+                if (this.world != null && this.world.isRemote && this.fieldCacheClient.size() > 0)
+                {
+                    //Request any networked information from server on first client tick (maybe client just logged on, but server networkdata didn't change recently)
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+                }
+            }
+        }
 
-    	this.ticks++;
+        this.ticks++;
 
-    	if (this.isNetworkedTile() && this.ticks % this.getPacketCooldown() == 0)
-    	{
-    		if (this.world.isRemote && this.fieldCacheServer.size() > 0)
-    		{
-    			PacketDynamic packet = new PacketDynamic(this);
-    			if (networkDataChanged)
-    			{
-    				GalacticraftCore.packetPipeline.sendToServer(packet);
-    			}
-    		}
-    		else if (!this.world.isRemote && this.fieldCacheClient.size() > 0)
-    		{
-    			PacketDynamic packet = new PacketDynamic(this);
-    			if (networkDataChanged)
-    			{
-    				GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange(), GCCoreUtil.getDimensionID(this.world)));
-    			}
-    		}
-    	}
+        if (this.isNetworkedTile() && this.ticks % this.getPacketCooldown() == 0)
+        {
+            if (this.world.isRemote && this.fieldCacheServer.size() > 0)
+            {
+                PacketDynamic packet = new PacketDynamic(this);
+                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(packet);
+                }
+            }
+            else if (!this.world.isRemote && this.fieldCacheClient.size() > 0)
+            {
+                PacketDynamic packet = new PacketDynamic(this);
+                if (networkDataChanged)
+                {
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange(), GCCoreUtil.getDimensionID(this.world)));
+                }
+            }
+        }
     }
 
     private void initFieldCache()
     {
         try
-    {
-        this.fieldCacheClient = new LinkedHashSet<Field>();
-        this.fieldCacheServer = new LinkedHashSet<Field>();
-
-        for (Field field : this.getClass().getFields())
         {
-            if (field.isAnnotationPresent(NetworkedField.class))
-            {
-                NetworkedField f = field.getAnnotation(NetworkedField.class);
+            this.fieldCacheClient = new LinkedHashSet<Field>();
+            this.fieldCacheServer = new LinkedHashSet<Field>();
 
-                if (f.targetSide() == LogicalSide.CLIENT)
+            for (Field field : this.getClass().getFields())
+            {
+                if (field.isAnnotationPresent(NetworkedField.class))
                 {
-                    this.fieldCacheClient.add(field);
-                }
-                else
-                {
-                    this.fieldCacheServer.add(field);
+                    NetworkedField f = field.getAnnotation(NetworkedField.class);
+
+                    if (f.targetSide() == LogicalSide.CLIENT)
+                    {
+                        this.fieldCacheClient.add(field);
+                    }
+                    else
+                    {
+                        this.fieldCacheServer.add(field);
+                    }
                 }
             }
         }
-    }
         catch (Exception e)
         {
             e.printStackTrace();
@@ -130,8 +130,8 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-                this.initFieldCache();
-            }
+            this.initFieldCache();
+        }
 
         if (this.world.isRemote)
         {
@@ -200,8 +200,8 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-                this.initFieldCache();
-            }
+            this.initFieldCache();
+        }
 
 //        if (this.world.isRemote && this.fieldCacheClient.size() == 0)
 //        {

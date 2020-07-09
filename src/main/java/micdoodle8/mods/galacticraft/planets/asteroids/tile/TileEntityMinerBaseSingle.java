@@ -29,7 +29,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickableTi
         if (!this.world.isRemote && this.corner == 0)
         {
             final ArrayList<TileEntity> attachedBaseBlocks = new ArrayList<TileEntity>();
-            
+
             final int thisX = this.getPos().getX();
             final int thisY = this.getPos().getY();
             final int thisZ = this.getPos().getZ();

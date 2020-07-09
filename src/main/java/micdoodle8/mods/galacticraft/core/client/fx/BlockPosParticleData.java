@@ -15,38 +15,51 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockPosParticleData implements IParticleData
 {
-   public static final IParticleData.IDeserializer<BlockPosParticleData> DESERIALIZER = new IParticleData.IDeserializer<BlockPosParticleData>() {
-      public BlockPosParticleData deserialize(ParticleType<BlockPosParticleData> particleTypeIn, StringReader reader) throws CommandSyntaxException {
-         reader.expect(' ');
-         return new BlockPosParticleData(particleTypeIn, BlockPos.fromLong(reader.readLong()));
-      }
+    public static final IParticleData.IDeserializer<BlockPosParticleData> DESERIALIZER = new IParticleData.IDeserializer<BlockPosParticleData>()
+    {
+        @Override
+        public BlockPosParticleData deserialize(ParticleType<BlockPosParticleData> particleTypeIn, StringReader reader) throws CommandSyntaxException
+        {
+            reader.expect(' ');
+            return new BlockPosParticleData(particleTypeIn, BlockPos.fromLong(reader.readLong()));
+        }
 
-      public BlockPosParticleData read(ParticleType<BlockPosParticleData> particleTypeIn, PacketBuffer buffer) {
-         return new BlockPosParticleData(particleTypeIn, BlockPos.fromLong(buffer.readLong()));
-      }
-   };
-   private final ParticleType<BlockPosParticleData> particleType;
-   private final BlockPos blockPos;
+        @Override
+        public BlockPosParticleData read(ParticleType<BlockPosParticleData> particleTypeIn, PacketBuffer buffer)
+        {
+            return new BlockPosParticleData(particleTypeIn, BlockPos.fromLong(buffer.readLong()));
+        }
+    };
+    private final ParticleType<BlockPosParticleData> particleType;
+    private final BlockPos blockPos;
 
-   public BlockPosParticleData(ParticleType<BlockPosParticleData> particleTypeIn, BlockPos blockPos) {
-      this.particleType = particleTypeIn;
-      this.blockPos = blockPos;
-   }
+    public BlockPosParticleData(ParticleType<BlockPosParticleData> particleTypeIn, BlockPos blockPos)
+    {
+        this.particleType = particleTypeIn;
+        this.blockPos = blockPos;
+    }
 
-   public void write(PacketBuffer buffer) {
-      buffer.writeLong(this.blockPos.toLong());
-   }
+    @Override
+    public void write(PacketBuffer buffer)
+    {
+        buffer.writeLong(this.blockPos.toLong());
+    }
 
-   public String getParameters() {
-      return Registry.PARTICLE_TYPE.getKey(this.getType()) + " " + this.blockPos.toString();
-   }
+    @Override
+    public String getParameters()
+    {
+        return Registry.PARTICLE_TYPE.getKey(this.getType()) + " " + this.blockPos.toString();
+    }
 
-   public ParticleType<BlockPosParticleData> getType() {
-      return this.particleType;
-   }
+    @Override
+    public ParticleType<BlockPosParticleData> getType()
+    {
+        return this.particleType;
+    }
 
-   @OnlyIn(Dist.CLIENT)
-   public BlockPos getBlockPos() {
-      return this.blockPos;
-   }
+    @OnlyIn(Dist.CLIENT)
+    public BlockPos getBlockPos()
+    {
+        return this.blockPos;
+    }
 }

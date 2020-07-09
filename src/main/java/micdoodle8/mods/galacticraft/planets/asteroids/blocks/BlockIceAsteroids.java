@@ -50,14 +50,17 @@ public class BlockIceAsteroids extends BreakableBlock
         player.addStat(Stats.BLOCK_MINED.get(this));
         player.addExhaustion(0.025F);
 
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0) {
-            if (worldIn.dimension.getDimension().getType() == DimensionType.THE_NETHER || worldIn.dimension instanceof IGalacticraftDimension) {
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) == 0)
+        {
+            if (worldIn.dimension.getDimension().getType() == DimensionType.THE_NETHER || worldIn.dimension instanceof IGalacticraftDimension)
+            {
                 worldIn.removeBlock(pos, false);
                 return;
             }
 
             Material material = worldIn.getBlockState(pos.down()).getMaterial();
-            if (material.blocksMovement() || material.isLiquid()) {
+            if (material.blocksMovement() || material.isLiquid())
+            {
                 worldIn.setBlockState(pos, Blocks.WATER.getDefaultState());
             }
         }

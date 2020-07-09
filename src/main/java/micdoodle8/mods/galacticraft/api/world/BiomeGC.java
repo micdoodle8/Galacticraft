@@ -18,7 +18,7 @@ import net.minecraft.world.biome.Biome;
 public abstract class BiomeGC extends Biome implements IMobSpawnBiome
 {
     public final boolean isAdaptiveBiome;
-    
+
     protected BiomeGC(Biome.Builder biomeBuilder)
     {
         super(biomeBuilder);
@@ -41,14 +41,14 @@ public abstract class BiomeGC extends Biome implements IMobSpawnBiome
     public void registerTypes(Biome registering)
     {
     }
-    
+
     /**
      * The default implementation in BiomeGenBaseGC will attempt to allocate each
-     * SpawnListEntry in the CelestialBody's mobInfo to this biome's 
+     * SpawnListEntry in the CelestialBody's mobInfo to this biome's
      * Water, Cave, Monster or Creature lists according to whether the
      * spawnable entity's class is a subclass of EntityWaterMob, EntityAmbientCreature,
      * EntityMob or anything else (passive mobs or plain old EntityLiving).
-     * 
+     * <p>
      * Override this if different behaviour is required.
      */
     @Override

@@ -11,10 +11,10 @@ public interface IFuelable
     /**
      * Add fuel to the entity
      *
-     * @param fluid   The fluid to add. Be sure to check if the correct fluid is
-     *                being loaded before adding it.
+     * @param fluid  The fluid to add. Be sure to check if the correct fluid is
+     *               being loaded before adding it.
      * @param action Whether or not fluid should actually be added, or is just a
-     *                test.
+     *               test.
      * @return the amount of fluid that was added to the entity.
      */
     int addFuel(FluidStack fluid, IFluidHandler.FluidAction action);

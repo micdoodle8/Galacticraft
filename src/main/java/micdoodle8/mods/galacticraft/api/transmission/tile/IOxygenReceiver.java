@@ -15,9 +15,9 @@ public interface IOxygenReceiver extends IConnector
      * that was accepted. This should always return 0 if the block cannot
      * receive oxygen.
      *
-     * @param from      Orientation the oxygen is sent in from.
-     * @param receive   Maximum amount of oxygen to be sent into the block.
-     * @param action    Whether the transfer will be executed.
+     * @param from    Orientation the oxygen is sent in from.
+     * @param receive Maximum amount of oxygen to be sent into the block.
+     * @param action  Whether the transfer will be executed.
      * @return Amount of oxygen that was accepted by the block.
      */
     int receiveOxygen(Direction from, int receive, IFluidHandler.FluidAction action);
@@ -27,9 +27,9 @@ public interface IOxygenReceiver extends IConnector
      * provided. This should always return 0 if the tile entity cannot provide
      * oxygen.
      *
-     * @param from      Orientation the oxygen is requested from.
-     * @param request   Maximum amount of oxygen to be pushed out of the block.
-     * @param action    Whether the transfer will be executed.
+     * @param from    Orientation the oxygen is requested from.
+     * @param request Maximum amount of oxygen to be pushed out of the block.
+     * @param action  Whether the transfer will be executed.
      * @return Amount of oxygen that was given out by the block.
      */
     int provideOxygen(Direction from, int request, IFluidHandler.FluidAction action);

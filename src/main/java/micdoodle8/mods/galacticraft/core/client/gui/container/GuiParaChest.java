@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
 {
-    private static ResourceLocation[] parachestTexture = new ResourceLocation[4];
+    private static final ResourceLocation[] parachestTexture = new ResourceLocation[4];
 
     static
     {
@@ -21,8 +21,8 @@ public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
         }
     }
 
-    private PlayerInventory playerInv;
-    private TileEntityParaChest parachest;
+    private final PlayerInventory playerInv;
+    private final TileEntityParaChest parachest;
 
     private int inventorySlots = 0;
 

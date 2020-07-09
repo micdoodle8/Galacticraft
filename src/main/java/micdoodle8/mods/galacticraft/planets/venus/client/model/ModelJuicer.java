@@ -7,31 +7,31 @@ import net.minecraft.util.math.MathHelper;
 
 public class ModelJuicer extends EntityModel<EntityJuicer>
 {
-    private RendererModel body1;
-    private RendererModel body2;
-    private RendererModel head;
-    private RendererModel legRightFront1;
-    private RendererModel legRightFront2;
-    private RendererModel legLeftFront1;
-    private RendererModel legLeftFront2;
-    private RendererModel legRightMidFront1;
-    private RendererModel legRightMidFront2;
-    private RendererModel legLeftMidFront1;
-    private RendererModel legLeftMidFront2;
-    private RendererModel legRightMidBack1;
-    private RendererModel legRightMidBack2;
-    private RendererModel legLeftMidBack1;
-    private RendererModel legLeftMidBack2;
-    private RendererModel legRightBack1;
-    private RendererModel legRightBack2;
-    private RendererModel legLeftBack1;
-    private RendererModel legLeftBack2;
-    private RendererModel back;
-    private RendererModel tail0;
-    private RendererModel tail1;
-    private RendererModel stinger;
+    private final RendererModel body1;
+    private final RendererModel body2;
+    private final RendererModel head;
+    private final RendererModel legRightFront1;
+    private final RendererModel legRightFront2;
+    private final RendererModel legLeftFront1;
+    private final RendererModel legLeftFront2;
+    private final RendererModel legRightMidFront1;
+    private final RendererModel legRightMidFront2;
+    private final RendererModel legLeftMidFront1;
+    private final RendererModel legLeftMidFront2;
+    private final RendererModel legRightMidBack1;
+    private final RendererModel legRightMidBack2;
+    private final RendererModel legLeftMidBack1;
+    private final RendererModel legLeftMidBack2;
+    private final RendererModel legRightBack1;
+    private final RendererModel legRightBack2;
+    private final RendererModel legLeftBack1;
+    private final RendererModel legLeftBack2;
+    private final RendererModel back;
+    private final RendererModel tail0;
+    private final RendererModel tail1;
+    private final RendererModel stinger;
 
-    private float legLength0;
+    private final float legLength0;
 
     public ModelJuicer()
     {

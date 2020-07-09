@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
 {
-    private WorldGenSpaceStation spaceStation = new WorldGenSpaceStation();
+    private final WorldGenSpaceStation spaceStation = new WorldGenSpaceStation();
 //    private final Random rand;
 //    private final World world;
 

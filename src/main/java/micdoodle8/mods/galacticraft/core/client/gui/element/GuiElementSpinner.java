@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL11;
 public class GuiElementSpinner extends Button
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
-    private ISpinnerCallback parentGui;
-    private int textColor;
+    private final ISpinnerCallback parentGui;
+    private final int textColor;
     private boolean hoverUpper;
     private boolean hoverLower;
     public Integer value;
@@ -23,7 +23,9 @@ public class GuiElementSpinner extends Button
 
     public GuiElementSpinner(ISpinnerCallback parentGui, int x, int y, int textColor)
     {
-        super(x, y, 31, 20, "", (button) -> {});
+        super(x, y, 31, 20, "", (button) ->
+        {
+        });
         this.parentGui = parentGui;
         this.textColor = textColor;
     }

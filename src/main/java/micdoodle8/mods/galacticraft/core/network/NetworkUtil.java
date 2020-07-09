@@ -176,9 +176,9 @@ public class NetworkUtil
                 for (int i = 0; i < array.length; i++)
                 {
                     buffer.writeInt(array[i].dimension.getId());
-                    buffer.writeFloat((float) array[i].position.x);
-                    buffer.writeFloat((float) array[i].position.y + 1);
-                    buffer.writeFloat((float) array[i].position.z);
+                    buffer.writeFloat(array[i].position.x);
+                    buffer.writeFloat(array[i].position.y + 1);
+                    buffer.writeFloat(array[i].position.z);
                     buffer.writeFloat(array[i].rotation);
                     buffer.writeShort(array[i].age);
 
@@ -594,8 +594,8 @@ public class NetworkUtil
         }
         else if (a instanceof Float && b instanceof Float)
         {
-            float af = (Float) a; 
-            float bf = (Float) b; 
+            float af = (Float) a;
+            float bf = (Float) b;
             return af == bf || Math.abs(af - bf) < 0.01F;
         }
         else if (a instanceof Double && b instanceof Double)
@@ -659,7 +659,7 @@ public class NetworkUtil
         }
         else if (a instanceof FluidTank)
         {
-            FluidTank prevTank = (FluidTank)a;
+            FluidTank prevTank = (FluidTank) a;
             FluidStack prevFluid = prevTank.getFluid();
             prevFluid = prevFluid.copy();
             FluidTank tank = new FluidTank(prevTank.getCapacity());

@@ -197,4 +197,4 @@ public class MapGenAbandonedBase extends Structure<BaseConfiguration>
 //            this.recalculateStructureSize();
 //        }
     }
- }
+}

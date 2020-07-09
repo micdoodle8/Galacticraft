@@ -35,7 +35,7 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
         motX = motX + projectileTNT.rand.nextGaussian() * 0.4D;
         motY = motY + projectileTNT.rand.nextGaussian() * 0.4D;
         motZ = motZ + projectileTNT.rand.nextGaussian() * 0.4D;
-        double d0 = (double) MathHelper.sqrt(motX * motX + motY * motY + motZ * motZ);
+        double d0 = MathHelper.sqrt(motX * motX + motY * motY + motZ * motZ);
         projectileTNT.accelerationX = motX / d0 * 0.1D;
         projectileTNT.accelerationY = motY / d0 * 0.1D;
         projectileTNT.accelerationZ = motZ / d0 * 0.1D;
@@ -68,22 +68,24 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
         {
             if (movingObjectPosition.getType() == RayTraceResult.Type.ENTITY)
             {
-                EntityRayTraceResult entityResult = (EntityRayTraceResult)movingObjectPosition;
+                EntityRayTraceResult entityResult = (EntityRayTraceResult) movingObjectPosition;
                 if (!(entityResult.getEntity() instanceof CreeperEntity))
                 {
                     float difficulty = 0;
                     switch (this.world.getDifficulty())
                     {
-                    case HARD : difficulty = 2F;
+                    case HARD:
+                        difficulty = 2F;
                         break;
-                    case NORMAL : difficulty = 1F;
+                    case NORMAL:
+                        difficulty = 1F;
                         break;
                     }
                     entityResult.getEntity().attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
                 }
             }
 
-            this.world.createExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+            this.world.createExplosion(null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
             this.remove();
         }
     }

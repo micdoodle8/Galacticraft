@@ -43,10 +43,11 @@ public class TileEntityTreasureChestRenderer extends TileEntityRenderer<TileEnti
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private void applyLidRotation(TileEntityTreasureChestVenus chest, float partialTicks, ChestModel model) {
-        float f = ((IChestLid)chest).getLidAngle(partialTicks);
+    private void applyLidRotation(TileEntityTreasureChestVenus chest, float partialTicks, ChestModel model)
+    {
+        float f = ((IChestLid) chest).getLidAngle(partialTicks);
         f = 1.0F - f;
         f = 1.0F - f * f * f;
-        model.getLid().rotateAngleX = -(f * ((float)Math.PI / 2F));
+        model.getLid().rotateAngleX = -(f * ((float) Math.PI / 2F));
     }
 }

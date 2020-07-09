@@ -55,14 +55,14 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
 
         public void render()
         {
-            this.panelMain.render(1.125F/44F);
+            this.panelMain.render(1.125F / 44F);
         }
     }
 
     public static final ResourceLocation platformTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/platform_moving.png");
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/light.png");
-    private ModelPlatform platform = new ModelPlatform();
-    private static Map<Integer, Float> lastYMap = new HashMap<>();
+    private final ModelPlatform platform = new ModelPlatform();
+    private static final Map<Integer, Float> lastYMap = new HashMap<>();
     private static float lastPartialTicks = -1F;
 
     @Override
@@ -104,7 +104,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                 else
                 {
                     int light = tileEntity.getBlendedLight();
-                    GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)(light % 65536), (float)(light / 65536));
+                    GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) (light % 65536), (float) (light / 65536));
                 }
                 GlStateManager.translatef(0F, 0.79F + yOffset, 0F);
                 this.bindTexture(TileEntityPlatformRenderer.platformTexture);
@@ -201,7 +201,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     worldRenderer.pos(-frameRadius, frameD, frameC).endVertex();
                     worldRenderer.pos(-frameRadius, frameA, frameC).endVertex();
                     tess.draw();
-                    
+
                     GlStateManager.popMatrix();
                 }
 
@@ -211,9 +211,11 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     float greyLevel = 125F / 255F;
                     switch (tileEntity.lightColor())
                     {
-                    case 1: GlStateManager.color4f(1.0F, 115F/255F, 115F/255F, 1.0F);
-                    break;
-                    default: GlStateManager.color4f(greyLevel, 1.0F, greyLevel, 1.0F);
+                    case 1:
+                        GlStateManager.color4f(1.0F, 115F / 255F, 115F / 255F, 1.0F);
+                        break;
+                    default:
+                        GlStateManager.color4f(greyLevel, 1.0F, greyLevel, 1.0F);
                     }
 
                     float frameY = 0.9376F;
@@ -267,8 +269,10 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
     private int tenLSB(int x)
     {
         if (x < 0)
+        {
             return x % 1024 + 1024;
-        
+        }
+
         return x % 1024;
     }
 }

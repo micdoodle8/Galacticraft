@@ -40,7 +40,7 @@ public class ItemStrangeSeed extends Item implements ISortableItem
     {
         return EnumSortCategoryItem.GENERAL;
     }
-    
+
 //    @Override
 //    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
@@ -50,7 +50,7 @@ public class ItemStrangeSeed extends Item implements ISortableItem
 //            list.add(new ItemStack(this, 1, 1));
 //        }
 //    }
-    
+
 //    @Override
 //    public int getMetadata(int par1)
 //    {

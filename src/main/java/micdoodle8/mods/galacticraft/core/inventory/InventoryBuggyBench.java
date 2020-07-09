@@ -19,7 +19,7 @@ public class InventoryBuggyBench implements IInventory
     public InventoryBuggyBench(Container par1Container)
     {
         final int size = 32;
-        this.stackList = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
+        this.stackList = NonNullList.withSize(size, ItemStack.EMPTY);
         this.eventHandler = par1Container;
         this.inventoryWidth = 5;
     }
@@ -64,7 +64,7 @@ public class InventoryBuggyBench implements IInventory
             this.markDirty();
             this.eventHandler.onCraftMatrixChanged(this);
         }
-    	return oldstack;
+        return oldstack;
     }
 
     @Override

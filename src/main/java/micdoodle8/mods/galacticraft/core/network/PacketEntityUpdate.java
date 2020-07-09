@@ -38,8 +38,8 @@ public class PacketEntityUpdate extends PacketBase
         super(dimID);
         this.entityID = entityID;
         this.position = position;
-        this.rotationYaw = (float) rotation.x;
-        this.rotationPitch = (float) rotation.y;
+        this.rotationYaw = rotation.x;
+        this.rotationPitch = rotation.y;
         this.motion = motion;
         this.onGround = onGround;
     }
@@ -61,11 +61,16 @@ public class PacketEntityUpdate extends PacketBase
         return packet;
     }
 
-    public static void handle(final PacketEntityUpdate message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+    public static void handle(final PacketEntityUpdate message, Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() ->
+        {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
+            {
                 message.handleClientSide(ctx.get().getSender());
-            } else {
+            }
+            else
+            {
                 message.handleServerSide(ctx.get().getSender());
             }
         });

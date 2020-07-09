@@ -75,7 +75,7 @@ public class ContainerBuggy extends Container
     public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack var3 = ItemStack.EMPTY;
-        final Slot var4 = (Slot) this.inventorySlots.get(par2);
+        final Slot var4 = this.inventorySlots.get(par2);
         final int b = this.inventorySlots.size() - 36;
 
         if (var4 != null && var4.getHasStack())

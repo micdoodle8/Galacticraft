@@ -54,6 +54,7 @@ public class BlockPadFull extends BlockAdvancedTile implements IPartialSealableB
         }
 
         private final static EnumLandingPadFullType[] values = values();
+
         public static EnumLandingPadFullType byMetadata(int meta)
         {
             return values[meta % values.length];

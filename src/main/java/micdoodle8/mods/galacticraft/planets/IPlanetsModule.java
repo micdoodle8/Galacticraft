@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface IPlanetsModule
 {
-    public void init(FMLCommonSetupEvent event);
+    void init(FMLCommonSetupEvent event);
 
-    public void serverInit(FMLServerStartedEvent event);
+    void serverInit(FMLServerStartedEvent event);
 
-    public void serverStarting(FMLServerStartingEvent event);
+    void serverStarting(FMLServerStartingEvent event);
 
 //    public void getGuiIDs(List<Integer> idList);
 

@@ -9,9 +9,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventoryTreasureChest implements IInventory
 {
-    private String name;
-    private IInventory upperChest;
-    private IInventory lowerChest;
+    private final String name;
+    private final IInventory upperChest;
+    private final IInventory lowerChest;
 
     public InventoryTreasureChest(String name, IInventory upper, IInventory lower)
     {

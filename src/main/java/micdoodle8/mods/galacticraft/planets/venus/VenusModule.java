@@ -77,7 +77,7 @@ public class VenusModule implements IPlanetsModule
 
 //        VenusBlocks.initBlocks();
 //        VenusItems.initItems();
-        
+
         VenusModule.planetVenus.setBiomeInfo(BiomeVenus.venusFlat, BiomeVenus.venusMountain, BiomeVenus.venusValley);
 
         // ========================================

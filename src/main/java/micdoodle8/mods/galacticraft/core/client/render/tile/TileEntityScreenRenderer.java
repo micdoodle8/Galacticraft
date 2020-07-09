@@ -19,10 +19,10 @@ import java.nio.FloatBuffer;
 public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScreen>
 {
     public static final ResourceLocation blockTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/screen_side.png");
-    private TextureManager textureManager = Minecraft.getInstance().textureManager;
-    private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
+    private final TextureManager textureManager = Minecraft.getInstance().textureManager;
+    private static final FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
-    private float yPlane = 0.91F;
+    private final float yPlane = 0.91F;
     float frame = 0.098F;
 
     @Override

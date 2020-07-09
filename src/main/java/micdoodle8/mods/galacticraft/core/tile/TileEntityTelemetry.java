@@ -54,9 +54,9 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.telemetry)
     public static TileEntityType<TileEntityTelemetry> TYPE;
 
-//    public Class<?> clientClass;
+    //    public Class<?> clientClass;
     public EntityType<?> clientType;
-    public int[] clientData = { -1 };
+    public int[] clientData = {-1};
     public String clientName;
     public GameProfile clientGameProfile = null;
 
@@ -103,7 +103,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
             }
 
             String name = null;
-            int[] data = { -1, -1, -1, -1, -1 };
+            int[] data = {-1, -1, -1, -1, -1};
             String strUUID = "";
 
             if (linkedEntity != null)
@@ -184,7 +184,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
                             data[3] = ((ServerPlayerEntity) eLiving).getFoodStats().getFoodLevel() * 5;
                             GCPlayerStats stats = GCPlayerStats.get(eLiving);
                             data[4] = stats.getAirRemaining() * 4096 + stats.getAirRemaining2();
-                            UUID uuid = ((ServerPlayerEntity) eLiving).getUniqueID();
+                            UUID uuid = eLiving.getUniqueID();
                             if (uuid != null)
                             {
                                 strUUID = uuid.toString();
@@ -221,7 +221,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
                         else if (eLiving instanceof ZombieEntity)
                         {
 //                            data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0; TODO Fix for MC 1.10
-                            data[4] = ((ZombieEntity) eLiving).isChild() ? 1 : 0;
+                            data[4] = eLiving.isChild() ? 1 : 0;
                         }
                     }
                 }
@@ -230,12 +230,12 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.world.getDimension().getType(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D, this.world.getDimension().getType()));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.world.getDimension().getType(), new Object[]{this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID}), new TargetPoint(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D, this.world.getDimension().getType()));
         }
     }
-    
+
     @OnlyIn(Dist.CLIENT)
-    public void receiveUpdate(List <Object> data, DimensionType dimID)
+    public void receiveUpdate(List<Object> data, DimensionType dimID)
     {
         String name = (String) data.get(1);
         if (name.startsWith("$"))
@@ -267,7 +267,6 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
         Long lsb = nbt.getLong("entityUUIDLeast");
         this.toUpdate = new UUID(msb, lsb);
     }
-
 
 
     @Override
@@ -400,7 +399,9 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
                     if (remove)
                     {
                         if (((TileEntityTelemetry) te).linkedEntity == player)
+                        {
                             ((TileEntityTelemetry) te).removeTrackedEntity();
+                        }
                     }
                     else
                     {
@@ -415,7 +416,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
     {
         for (BlockVec3Dim telemeter : loadedList)
         {
-			TileEntity te = telemeter.getTileEntityNoLoad();
+            TileEntity te = telemeter.getTileEntityNoLoad();
             if (te instanceof TileEntityTelemetry)
             {
                 if (((TileEntityTelemetry) te).linkedEntity == playerOld)

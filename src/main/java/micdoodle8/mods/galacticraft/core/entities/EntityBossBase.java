@@ -30,7 +30,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
     public int entitiesWithin;
     public int entitiesWithinLast;
 
-    private final ServerBossInfo bossInfo = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), getHealthBarColor(), BossInfo.Overlay.PROGRESS));
+    private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(), getHealthBarColor(), BossInfo.Overlay.PROGRESS);
 
     public EntityBossBase(EntityType<? extends EntityBossBase> type, World worldIn)
     {
@@ -72,7 +72,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)

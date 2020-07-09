@@ -38,7 +38,7 @@ public class RenderPlayerGC extends PlayerRenderer
     public static ResourceLocation thermalPaddingTexture1_T2;
     public static ResourceLocation heatShieldTexture;
     public static boolean flagThermalOverride = false;
-    private static Boolean isSmartRenderLoaded = null;
+    private static final Boolean isSmartRenderLoaded = null;
 
     public RenderPlayerGC()
     {
@@ -51,16 +51,20 @@ public class RenderPlayerGC extends PlayerRenderer
         this.entityModel = new PlayerModel<>(0.0F, smallArms);
         this.addGCLayers();
     }
-    
+
     private void addGCLayers()
     {
         Field f1 = null;
         Field f2 = null;
         Field f3 = null;
-        try {
+        try
+        {
             f1 = ArmorLayer.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "renderer" : "field_177190_a");
             f1.setAccessible(true);
-        } catch (Exception ignore) {}
+        }
+        catch (Exception ignore)
+        {
+        }
         // The following code removes the vanilla skull and item layer renderers and replaces them with the Galacticraft ones
         // Also updates all armor layers (including layers added by other mods) to reflect GC model limb positioning
         int itemLayerIndex = -1;
@@ -76,9 +80,13 @@ public class RenderPlayerGC extends PlayerRenderer
             {
                 if (f1 != null)
                 {
-                    try {
+                    try
+                    {
                         f1.set(layer, this);
-                    } catch (Exception ignore) { }
+                    }
+                    catch (Exception ignore)
+                    {
+                    }
                 }
             }
             else if (layer instanceof HeadLayer)
@@ -183,7 +191,7 @@ public class RenderPlayerGC extends PlayerRenderer
 //        {
 //            e.printStackTrace();
 //        } TODO Is this still needed?
-        
+
         this.addGCLayers();
     }
 
@@ -191,7 +199,10 @@ public class RenderPlayerGC extends PlayerRenderer
     {
         for (LayerRenderer<?, ?> oldLayer : this.layerRenderers)
         {
-            if (oldLayer.getClass() == test) return false;
+            if (oldLayer.getClass() == test)
+            {
+                return false;
+            }
         }
         return true;
     }

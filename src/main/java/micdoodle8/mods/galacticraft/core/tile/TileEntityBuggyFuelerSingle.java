@@ -36,7 +36,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
                 {
                     final TileEntity tile = this.world.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 
-                    if (tile instanceof TileEntityBuggyFuelerSingle && !tile.isRemoved() && ((TileEntityBuggyFuelerSingle)tile).corner == 0)
+                    if (tile instanceof TileEntityBuggyFuelerSingle && !tile.isRemoved() && ((TileEntityBuggyFuelerSingle) tile).corner == 0)
                     {
                         attachedLaunchPads.add(tile);
                     }
@@ -48,7 +48,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
                 for (final TileEntity tile : attachedLaunchPads)
                 {
                     this.world.removeTileEntity(tile.getPos());
-                    ((TileEntityBuggyFuelerSingle)tile).corner = 1;
+                    ((TileEntityBuggyFuelerSingle) tile).corner = 1;
                 }
 
                 this.world.setBlockState(this.getPos(), GCBlocks.buggyPad.getDefaultState(), 2);

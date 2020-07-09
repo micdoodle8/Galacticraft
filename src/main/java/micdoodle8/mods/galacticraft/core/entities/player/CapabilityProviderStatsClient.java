@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 public class CapabilityProviderStatsClient implements ICapabilityProvider
 {
-    private ClientPlayerEntity owner;
+    private final ClientPlayerEntity owner;
     private final LazyOptional<GCPlayerStatsClient> holder = LazyOptional.of(StatsClientCapability::new);
 
     public CapabilityProviderStatsClient(ClientPlayerEntity owner)

@@ -16,12 +16,12 @@ import java.lang.ref.WeakReference;
 @OnlyIn(Dist.CLIENT)
 public class ParticleTelepad extends SpriteTexturedParticle
 {
-    private float portalParticleScale;
-    private double portalPosX;
-    private double portalPosY;
-    private double portalPosZ;
-    private WeakReference<TileEntityShortRangeTelepad> telepad;
-    private boolean direction;
+    private final float portalParticleScale;
+    private final double portalPosX;
+    private final double portalPosY;
+    private final double portalPosZ;
+    private final WeakReference<TileEntityShortRangeTelepad> telepad;
+    private final boolean direction;
 
     public ParticleTelepad(World par1World, double x, double y, double z, double mX, double mY, double mZ, TileEntityShortRangeTelepad telepad, boolean direction)
     {
@@ -127,11 +127,14 @@ public class ParticleTelepad extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public DownFactory(IAnimatedSprite spriteSet) {
+        public DownFactory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BlockPosParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BlockPosParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             BlockPos pos = typeIn.getBlockPos();
             return new ParticleTelepad(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, (TileEntityShortRangeTelepad) worldIn.getTileEntity(pos), true);
         }
@@ -142,11 +145,14 @@ public class ParticleTelepad extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public UpFactory(IAnimatedSprite spriteSet) {
+        public UpFactory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BlockPosParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BlockPosParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             BlockPos pos = typeIn.getBlockPos();
             return new ParticleTelepad(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, (TileEntityShortRangeTelepad) worldIn.getTileEntity(pos), false);
         }

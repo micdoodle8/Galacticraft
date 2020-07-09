@@ -64,12 +64,14 @@ public class TileEntityCryogenicChamber extends TileEntityFake implements IMulti
 
         Either<PlayerEntity.SleepResult, Unit> enumstatus = this.sleepInBedAt(entityPlayer, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 
-        enumstatus.ifLeft((result) -> {
+        enumstatus.ifLeft((result) ->
+        {
             ((ServerPlayerEntity) entityPlayer).connection.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.world), new Object[] { this.getPos() }), (ServerPlayerEntity) entityPlayer);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.world), new Object[]{this.getPos()}), (ServerPlayerEntity) entityPlayer);
         });
 
-        enumstatus.ifRight((result) -> {
+        enumstatus.ifRight((result) ->
+        {
             GCPlayerStats stats = GCPlayerStats.get(entityPlayer);
             entityPlayer.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", stats.getCryogenicChamberCooldown() / 20)));
         });
@@ -144,7 +146,7 @@ public class TileEntityCryogenicChamber extends TileEntityFake implements IMulti
         this.getPositions(placedPosition, positions);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
-    
+
     @Override
     public BlockMulti.EnumBlockMultiType getMultiType()
     {

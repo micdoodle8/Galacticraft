@@ -24,11 +24,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
- * 
+ *
  * But for speed it uses integer arithmetic not doubles, for block coordinates
  * This reduces unnecessary type conversion between integers and doubles and back again.
  * (Minecraft block coordinates are always integers, only entity coordinates are doubles.)
- * 
+ *
  */
 public class BlockVec3Dim implements Cloneable
 {
@@ -43,7 +43,7 @@ public class BlockVec3Dim implements Cloneable
     private static int chunkCacheZ = 1876000; // outside the world edge
     // INVALID_VECTOR is used in cases where a null vector cannot be used
     public static final BlockVec3Dim INVALID_VECTOR = new BlockVec3Dim(-1, -1, -1, null);
-	
+
     public BlockVec3Dim()
     {
         this(0, 0, 0, null);
@@ -101,10 +101,13 @@ public class BlockVec3Dim implements Cloneable
             return null;
         }
 
-   		World world = getWorldForId(this.dim);
-   		if (world == null) return null;
-   
-   		int chunkx = this.x >> 4;
+        World world = getWorldForId(this.dim);
+        if (world == null)
+        {
+            return null;
+        }
+
+        int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
         try
         {
@@ -148,10 +151,13 @@ public class BlockVec3Dim implements Cloneable
             return null;
         }
 
-   		World world = getWorldForId(this.dim);
-   		if (world == null) return null;
+        World world = getWorldForId(this.dim);
+        if (world == null)
+        {
+            return null;
+        }
 
-   		int chunkx = this.x >> 4;
+        int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
         try
         {
@@ -188,11 +194,14 @@ public class BlockVec3Dim implements Cloneable
 
     public Block getBlock()
     {
-   		World world = this.getWorldForId(this.dim);
-   		if (world == null) return null;
+        World world = this.getWorldForId(this.dim);
+        if (world == null)
+        {
+            return null;
+        }
         return world.getBlockState(new BlockPos(this.x, this.y, this.z)).getBlock();
     }
-    
+
     public BlockVec3Dim modifyPositionFromSide(Direction side, int amount)
     {
         switch (side.ordinal())
@@ -272,7 +281,7 @@ public class BlockVec3Dim implements Cloneable
     @Override
     public String toString()
     {
-        return "BlockVec3 "+this.dim+":[" + this.x + "," + this.y + "," + this.z + "]";
+        return "BlockVec3 " + this.dim + ":[" + this.x + "," + this.y + "," + this.z + "]";
     }
 
     /**
@@ -280,25 +289,36 @@ public class BlockVec3Dim implements Cloneable
      */
     public TileEntity getTileEntity()
     {
-   		World world = this.getWorldForId(this.dim);
-   		if (world == null) return null;
+        World world = this.getWorldForId(this.dim);
+        if (world == null)
+        {
+            return null;
+        }
         return world.getTileEntity(new BlockPos(this.x, this.y, this.z));
     }
 
     public TileEntity getTileEntityNoLoad()
     {
         World world = getWorldForId(this.dim);
-        if (world == null) return null;
+        if (world == null)
+        {
+            return null;
+        }
         BlockPos pos = new BlockPos(this.x, this.y, this.z);
         if (world.isBlockLoaded(pos))
+        {
             return world.getTileEntity(pos);
+        }
         return null;
     }
 
     public BlockState getBlockMetadata()
     {
-   		World world = this.getWorldForId(this.dim);
-   		if (world == null) return null;
+        World world = this.getWorldForId(this.dim);
+        if (world == null)
+        {
+            return null;
+        }
         return world.getBlockState(new BlockPos(this.x, this.y, this.z));
     }
 
@@ -341,21 +361,27 @@ public class BlockVec3Dim implements Cloneable
 
     public void setBlock(BlockState block)
     {
-   		World world = this.getWorldForId(this.dim);
-   		if (world == null) return;
+        World world = this.getWorldForId(this.dim);
+        if (world == null)
+        {
+            return;
+        }
         world.setBlockState(new BlockPos(this.x, this.y, this.z), block, 3);
     }
 
     public boolean blockExists()
     {
-   		World world = this.getWorldForId(this.dim);
-   		if (world == null) return false;
+        World world = this.getWorldForId(this.dim);
+        if (world == null)
+        {
+            return false;
+        }
         return world.isBlockLoaded(new BlockPos(this.x, this.y, this.z));
     }
 
     /**
      * It is up to the calling method to check that the dimension matches
-     * 
+     *
      * @param vector
      * @return
      */

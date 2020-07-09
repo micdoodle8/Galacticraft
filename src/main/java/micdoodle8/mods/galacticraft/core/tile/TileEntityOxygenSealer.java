@@ -184,7 +184,10 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             if (this.disabled != this.lastDisabled)
             {
                 this.lastDisabled = this.disabled;
-                if (!this.disabled) this.stopSealThreadCooldown = this.threadCooldownTotal * 3 / 5;
+                if (!this.disabled)
+                {
+                    this.stopSealThreadCooldown = this.threadCooldownTotal * 3 / 5;
+                }
             }
 
             //TODO: if multithreaded, this codeblock should not run if the current threadSeal is flagged looping
@@ -206,15 +209,15 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             //TODO: if multithreaded, this.threadSeal needs to be atomic
             if (this.threadSeal != null)
             {
-            	if (this.threadSeal.looping.get())
-            	{
-            		this.calculatingSealed = this.active;
-            	}
-            	else
-            	{
-            		this.calculatingSealed = false;
-            		this.sealed = this.threadSeal.sealedFinal.get();
-            	}
+                if (this.threadSeal.looping.get())
+                {
+                    this.calculatingSealed = this.active;
+                }
+                else
+                {
+                    this.calculatingSealed = false;
+                    this.sealed = this.threadSeal.sealedFinal.get();
+                }
             }
             else
             {
@@ -224,7 +227,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             this.lastSealed = this.sealed;
         }
     }
-    
+
     public static void onServerTick()
     {
         TileEntityOxygenSealer.countEntities = TileEntityOxygenSealer.countTemp;
@@ -237,7 +240,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1 };
+        return new int[]{0, 1};
     }
 
     @Override
@@ -401,12 +404,16 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             int dy = vec.y;
             int composite;
             if (dx < 0 || dx > 255 || dz < 0 || dz > 255 || dy < 0)
+            {
                 composite = -1;
+            }
             else
+            {
                 composite = dz + ((dy + (dx << 8)) << 8);
+            }
             data[index++] = composite;
         }
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_LEAK_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { this.getPos(), data }), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_LEAK_DATA, GCCoreUtil.getDimensionID(player.world), new Object[]{this.getPos(), data}), player);
     }
 
     @Override
@@ -421,7 +428,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         this.leaksClient = new ArrayList<>();
         if (data.size() > 1)
         {
-            for (int i = 1; i < data.size(); i ++)
+            for (int i = 1; i < data.size(); i++)
             {
                 int comp = (Integer) data.get(i);
                 if (comp >= 0)

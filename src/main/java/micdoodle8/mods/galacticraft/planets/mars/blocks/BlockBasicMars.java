@@ -298,11 +298,14 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public int getExpDrop(BlockState state, IWorldReader world, BlockPos pos, int fortune, int silktouch)
     {
-        if (state.getBlock() != this) return 0;
-        
+        if (state.getBlock() != this)
+        {
+            return 0;
+        }
+
         if (this == MarsBlocks.oreDesh)
         {
-            Random rand = world instanceof World ? ((World)world).rand : new Random();
+            Random rand = world instanceof World ? ((World) world).rand : new Random();
             return MathHelper.nextInt(rand, 2, 5);
         }
 

@@ -30,7 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
     public final static int EMPTY = 1001; // One more than bucket
-    private static boolean isTELoaded = CompatibilityManager.isTELoaded();
+    private static final boolean isTELoaded = CompatibilityManager.isTELoaded();
 
     private ResourceLocation allowedFluid = null;
 
@@ -137,12 +137,12 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         int capacityPlusOne = container.getDamage();
         if (capacityPlusOne <= 1)
         {
-        	if (capacityPlusOne < 1)
-        	{
-	            //It shouldn't be possible, but just in case, set this to a proper filled item
-        		container.setDamage(1);
-        	}
-        	return 0;
+            if (capacityPlusOne < 1)
+            {
+                //It shouldn't be possible, but just in case, set this to a proper filled item
+                container.setDamage(1);
+            }
+            return 0;
         }
         if (capacityPlusOne >= ItemCanisterGeneric.EMPTY)
         {
@@ -162,9 +162,9 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             }
             if (capacityPlusOne > ItemCanisterGeneric.EMPTY)
             {
-	            //It shouldn't be possible, but just in case, set this to a proper empty item
-            	capacityPlusOne = ItemCanisterGeneric.EMPTY;
-	            container.setDamage(capacityPlusOne);
+                //It shouldn't be possible, but just in case, set this to a proper empty item
+                capacityPlusOne = ItemCanisterGeneric.EMPTY;
+                container.setDamage(capacityPlusOne);
             }
         }
 
@@ -189,7 +189,10 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         }
 
         FluidStack used = this.getFluid(container);
-        if (used != null && used.getAmount() > maxDrain) used.setAmount(maxDrain);
+        if (used != null && used.getAmount() > maxDrain)
+        {
+            used.setAmount(maxDrain);
+        }
         if (action.execute() && used != null && used.getAmount() > 0)
         {
             this.setNewDamage(container, container.getDamage() + used.getAmount());
@@ -213,23 +216,25 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 
     private void replaceEmptyCanisterItem(ItemStack container, Item newItem)
     {
-    	try
-    	{
-    		Class itemStack = container.getClass();
-    		Field itemId = itemStack.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "item" : "field_151002_e");
-    		itemId.setAccessible(true);
-    		itemId.set(container, newItem);
-    		Method forgeInit = itemStack.getDeclaredMethod("forgeInit");
-    		forgeInit.setAccessible(true);
-    		forgeInit.invoke(container);
-    	}
-    	catch (Exception ignore) { }
+        try
+        {
+            Class itemStack = container.getClass();
+            Field itemId = itemStack.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "item" : "field_151002_e");
+            itemId.setAccessible(true);
+            itemId.set(container, newItem);
+            Method forgeInit = itemStack.getDeclaredMethod("forgeInit");
+            forgeInit.setAccessible(true);
+            forgeInit.invoke(container);
+        }
+        catch (Exception ignore)
+        {
+        }
     }
 
     public FluidStack getFluid(ItemStack container)
     {
         ResourceLocation fluidName = ((ItemCanisterGeneric) container.getItem()).allowedFluid;
-        if (fluidName == null || container.getDamage() >= ItemCanisterGeneric.EMPTY )
+        if (fluidName == null || container.getDamage() >= ItemCanisterGeneric.EMPTY)
         {
             return null;
         }

@@ -61,7 +61,6 @@ public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton, 
     }
 
 
-
     @Override
     protected void applyRotations(EntityEvolvedSkeleton skellie, float pitch, float yaw, float partialTicks)
     {

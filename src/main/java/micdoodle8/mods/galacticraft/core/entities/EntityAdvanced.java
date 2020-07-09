@@ -22,13 +22,13 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     protected long ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
-    private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
+    private final Map<Field, Object> lastSentData = new HashMap<Field, Object>();
     private boolean networkDataChanged = false;
 
     public EntityAdvanced(EntityType<?> type, World world)
     {
         super(type, world);
-        
+
         if (world.isRemote)
         {
             //Empty packet client->server just to kickstart the server into sending this client an initial packet
@@ -216,7 +216,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
         }
 
 //Currently unused as there is no entity in Galacticraft with extraNetworkedData
-        
+
 //        if (changed)
 //        {
 //            this.addExtraNetworkedData(sendData);

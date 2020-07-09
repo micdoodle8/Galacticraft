@@ -120,7 +120,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
 //        this.isImmuneToFire = true;
-        
+
         if (world.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
@@ -379,7 +379,6 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
 
-
     @Override
     @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
@@ -571,7 +570,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public void writeAdditional(CompoundNBT nbt)
     {
-    	if (world.isRemote) return;
+        if (world.isRemote)
+        {
+            return;
+        }
         nbt.putInt("buggyType", this.buggyType.ordinal());
         final ListNBT var2 = new ListNBT();
 
@@ -698,7 +700,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         if (this.world.isRemote && (key == 6 || key == 8 || key == 9))
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, GCCoreUtil.getDimensionID(this.world), new Object[] { key }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, GCCoreUtil.getDimensionID(this.world), new Object[]{key}));
             return true;
         }
 
@@ -897,6 +899,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         return true;
     }
 
+    @Override
     public boolean inFlight()
     {
         return false;

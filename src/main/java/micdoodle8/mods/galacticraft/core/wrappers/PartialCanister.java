@@ -7,10 +7,10 @@ import net.minecraft.item.Item;
  */
 public class PartialCanister
 {
-    private Item item;
-    private String modID;
-    private String baseName;
-    private int textureCount;
+    private final Item item;
+    private final String modID;
+    private final String baseName;
+    private final int textureCount;
 
     public PartialCanister(Item item, String modID, String baseName, int textureCount)
     {

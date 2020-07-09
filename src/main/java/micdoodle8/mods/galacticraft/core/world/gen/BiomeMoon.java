@@ -10,9 +10,9 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 public class BiomeMoon extends BiomeGC
 {
     public static final BiomeMoon moonBiome = new BiomeMoon();
-//    public static final Biome moonFlat = new BiomeFlatMoon(new BiomeProperties("Moon").setBaseHeight(1.5F).setHeightVariation(0.4F).setRainfall(0.0F));
+    //    public static final Biome moonFlat = new BiomeFlatMoon(new BiomeProperties("Moon").setBaseHeight(1.5F).setHeightVariation(0.4F).setRainfall(0.0F));
     public static final BlockState TURF = GCBlocks.moonTurf.getDefaultState();
-//    public static final BlockState STONE = GCBlocks.moonStone.getDefaultState();
+    //    public static final BlockState STONE = GCBlocks.moonStone.getDefaultState();
     public static final BlockState DIRT = GCBlocks.moonDirt.getDefaultState();
     public static final SurfaceBuilderConfig MOON_CONFIG = new SurfaceBuilderConfig(TURF, DIRT, DIRT);
 
@@ -20,7 +20,7 @@ public class BiomeMoon extends BiomeGC
     {
         super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, MOON_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).parent(null), true);
     }
-    
+
 //    @Override
 //    public BiomeDecorator createBiomeDecorator()
 //    {

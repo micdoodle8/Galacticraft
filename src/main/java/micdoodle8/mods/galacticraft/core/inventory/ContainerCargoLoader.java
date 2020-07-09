@@ -20,7 +20,7 @@ public class ContainerCargoLoader extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.CARGO_LOADER)
     public static ContainerType<ContainerCargoLoader> TYPE;
 
-    private TileEntityCargoBase cargoTile;
+    private final TileEntityCargoBase cargoTile;
     private boolean locked;
 
     public ContainerCargoLoader(int containerId, PlayerInventory playerInv, TileEntityCargoBase cargoTile)
@@ -75,7 +75,7 @@ public class ContainerCargoLoader extends Container
         }
         return super.slotClick(slotId, dragType, clickTypeIn, player);
     }
-    
+
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {

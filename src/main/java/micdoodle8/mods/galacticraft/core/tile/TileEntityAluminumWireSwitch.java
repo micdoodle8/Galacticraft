@@ -83,86 +83,89 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     {
         return this.tier;
     }
-    
+
     @Override
     public void refresh()
     {
-    	boolean newDisableConnections = this.disableConnections();
-    	if (newDisableConnections && !this.disableConnections)
-    	{
-    		this.disableConnections = newDisableConnections;
-        	if (!this.world.isRemote)
+        boolean newDisableConnections = this.disableConnections();
+        if (newDisableConnections && !this.disableConnections)
+        {
+            this.disableConnections = newDisableConnections;
+            if (!this.world.isRemote)
             {
-        		this.disConnect();
+                this.disConnect();
             }
-    	}
-    	else if (!newDisableConnections && this.disableConnections)
-    	{
-    		this.disableConnections = newDisableConnections;
-        	if (!this.world.isRemote)
+        }
+        else if (!newDisableConnections && this.disableConnections)
+        {
+            this.disableConnections = newDisableConnections;
+            if (!this.world.isRemote)
             {
-        		this.setNetwork(null);  //Force a full network refresh of this and conductors either LogicalSide
+                this.setNetwork(null);  //Force a full network refresh of this and conductors either LogicalSide
             }
-    	}
+        }
 
-    	if (!this.world.isRemote)
+        if (!this.world.isRemote)
         {
             this.adjacentConnections = null;
             if (!this.disableConnections)
             {
-            	this.getNetwork().refresh();
+                this.getNetwork().refresh();
 
-            	BlockVec3 thisVec = new BlockVec3(this);
-            	for (Direction side : Direction.values())
-            	{
-            		if (this.canConnect(side, NetworkType.POWER))
-            		{
-            			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
+                BlockVec3 thisVec = new BlockVec3(this);
+                for (Direction side : Direction.values())
+                {
+                    if (this.canConnect(side, NetworkType.POWER))
+                    {
+                        TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
-            			if (tileEntity instanceof TileBaseConductor && ((TileBaseConductor)tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
-            			{
-                    		IGridNetwork otherNet = ((INetworkProvider) tileEntity).getNetwork();
-                    		if (!this.getNetwork().equals(otherNet))
-                    		{
-                    			if (!otherNet.getTransmitters().isEmpty())
-                    			{
-                    				otherNet.merge(this.getNetwork());
-                    			}
-                    		}
-            			}
-            		}
-            	}
+                        if (tileEntity instanceof TileBaseConductor && ((TileBaseConductor) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+                        {
+                            IGridNetwork otherNet = ((INetworkProvider) tileEntity).getNetwork();
+                            if (!this.getNetwork().equals(otherNet))
+                            {
+                                if (!otherNet.getTransmitters().isEmpty())
+                                {
+                                    otherNet.merge(this.getNetwork());
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-    
+
     private void disConnect()
     {
-    	EnergyNetwork net = (EnergyNetwork) this.getNetwork(); 
-    	if (net != null)
-    	{
-    		net.split(this);
-    	}
-	}
+        EnergyNetwork net = (EnergyNetwork) this.getNetwork();
+        if (net != null)
+        {
+            net.split(this);
+        }
+    }
 
     private boolean disableConnections()
     {
-    	return RedstoneUtil.isBlockReceivingRedstone(this.world, this.pos);
+        return RedstoneUtil.isBlockReceivingRedstone(this.world, this.pos);
     }
-    
-	@Override
+
+    @Override
     public boolean canConnect(Direction direction, NetworkType type)
     {
         return type == NetworkType.POWER && !this.disableConnections();
     }
-    
+
     @Override
     public IElectricityNetwork getNetwork()
     {
         if (this.network == null)
         {
             EnergyNetwork network = new EnergyNetwork();
-            if (!this.disableConnections) network.getTransmitters().add(this);
+            if (!this.disableConnections)
+            {
+                network.getTransmitters().add(this);
+            }
             this.setNetwork(network);
         }
 
@@ -175,26 +178,26 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
         if (this.adjacentConnections == null)
         {
             this.adjacentConnections = new TileEntity[6];
-            
+
             if (!this.disableConnections)
             {
-            	BlockVec3 thisVec = new BlockVec3(this);
-            	for (int i = 0; i < 6; i++)
-            	{
-            		Direction side = Direction.byIndex(i);
-            		if (this.canConnect(side, NetworkType.POWER))
-            		{
-            			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
+                BlockVec3 thisVec = new BlockVec3(this);
+                for (int i = 0; i < 6; i++)
+                {
+                    Direction side = Direction.byIndex(i);
+                    if (this.canConnect(side, NetworkType.POWER))
+                    {
+                        TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
-            			if (tileEntity instanceof IConnector)
-            			{
-            				if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
-            				{
-            					this.adjacentConnections[i] = tileEntity;
-            				}
-            			}
-            		}
-            	}
+                        if (tileEntity instanceof IConnector)
+                        {
+                            if (((IConnector) tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
+                            {
+                                this.adjacentConnections[i] = tileEntity;
+                            }
+                        }
+                    }
+                }
             }
         }
 

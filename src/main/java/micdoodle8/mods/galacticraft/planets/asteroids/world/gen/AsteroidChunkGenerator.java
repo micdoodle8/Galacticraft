@@ -36,7 +36,7 @@ import static net.minecraft.block.LeavesBlock.PERSISTENT;
 
 public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
 {
-//    final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;
+    //    final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;
 //    final byte ASTEROID_STONE_META_0 = 0;
 //    final byte ASTEROID_STONE_META_1 = 1;
 //    final byte ASTEROID_STONE_META_2 = 2;
@@ -45,16 +45,16 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
     private final BlockState ASTEROID_STONE_2 = AsteroidBlocks.rock2.getDefaultState();
 
     final Block DIRT = Blocks.DIRT;
-//    final byte DIRT_META = 0;
+    //    final byte DIRT_META = 0;
     final Block GRASS = Blocks.GRASS;
-//    final byte GRASS_META = 0;
+    //    final byte GRASS_META = 0;
     final Block LIGHT = Blocks.GLOWSTONE;
 //    final byte LIGHT_META = 0;
 //    TallGrassBlock.EnumType GRASS_TYPE = TallGrassBlock.EnumType.GRASS;
 //    final FlowerBlock FLOWER = Blocks.RED_FLOWER;
 
     final Block LAVA = Blocks.LAVA;
-//    final byte LAVA_META = 0;
+    //    final byte LAVA_META = 0;
     final Block WATER = Blocks.WATER;
 //    final byte WATER_META = 0;
 
@@ -117,9 +117,9 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
     private static final int LAVA_CHANCE = 2;
     private static final int GLOWSTONE_CHANCE = 20;
 
-    private LinkedList<AsteroidData> largeAsteroids = new LinkedList<AsteroidData>();
+    private final LinkedList<AsteroidData> largeAsteroids = new LinkedList<AsteroidData>();
     private int largeCount = 0;
-    private static HashSet<BlockVec3> chunksDone = new HashSet<BlockVec3>();
+    private static final HashSet<BlockVec3> chunksDone = new HashSet<BlockVec3>();
     private int largeAsteroidsLastChunkX;
     private int largeAsteroidsLastChunkZ;
 //    private final MapGenAbandonedBase dungeonGenerator = new MapGenAbandonedBase(); TODO Asteroid dungeons
@@ -153,20 +153,28 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_2, 5, .3));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_1, 7, .3));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_0, 11, .25));
-        
+
         if (!ConfigManagerPlanets.disableAluminumGenAsteroids)
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreAluminum.getDefaultState(), 5, .2));
+        {
+            this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreAluminum.getDefaultState(), 5, .2));
+        }
         if (!ConfigManagerPlanets.disableIlmeniteGenAsteroids)
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIlmenite.getDefaultState(), 4, .15));
+        {
+            this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIlmenite.getDefaultState(), 4, .15));
+        }
         if (!ConfigManagerPlanets.disableIronGenAsteroids)
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIron.getDefaultState(), 3, .2));
+        {
+            this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIron.getDefaultState(), 3, .2));
+        }
         if (ConfigManagerCore.enableSiliconOreGen)
+        {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.oreSilicon.getDefaultState(), 2, .15)); //TODO: Asteroids version of silicon ore
+        }
         //Solid Meteoric Iron - has no config to disable
         this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.oreMeteoricIron.getDefaultState(), 2, .13));
         //Diamond ore - has no config to disable
         this.coreHandler.addBlock(new SpecialAsteroidBlock(Blocks.DIAMOND_ORE.getDefaultState(), 1, .1));  //TODO: Asteroids version of diamond ore
-        
+
         this.shellHandler = new SpecialAsteroidBlockHandler();
         this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_0, 1, .15));
         this.shellHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_1, 3, .15));
@@ -311,14 +319,14 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
             asteroidShell = shell.state;
             shellThickness = 1.0 - shell.thickness;
         }
-        
+
         BlockState asteroidCore = core.state;
         BlockState asteroidRock0 = this.ASTEROID_STONE_0;
         BlockState asteroidRock1 = this.ASTEROID_STONE_1;
         BlockState airBlock = Blocks.AIR.getDefaultState();
         BlockState dirtBlock = this.DIRT.getDefaultState();
         BlockState grassBlock = this.GRASS.getDefaultState();
-        
+
         for (int x = xMax - 1; x >= xMin; x--)
         {
             int indexXY = (x - xMin) * ySize - yMin;
@@ -535,7 +543,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
     @Override
     public void makeBase(IWorld worldIn, IChunk chunkIn)
     {
-        ChunkPrimer chunkprimer = (ChunkPrimer)chunkIn;
+        ChunkPrimer chunkprimer = (ChunkPrimer) chunkIn;
         this.generateTerrain(chunkprimer.getPos().x, chunkprimer.getPos().z, chunkprimer, false);
     }
 
@@ -749,7 +757,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                 int asteroidY = asteroidIndex.asteroidYArray;
                 int asteroidSize = asteroidIndex.asteroidSizeArray;
                 boolean treesdone = false;
-                
+
                 if (ConfigManagerCore.challengeAsteroidPopulation || world.getRandom().nextInt(AsteroidChunkGenerator.TREE_CHANCE) == 0)
                 {
                     int treeType = world.getRandom().nextInt(3);
@@ -963,7 +971,10 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                             {
                                 count = 12;
                             }
-                            if (count > 12) count = 12;
+                            if (count > 12)
+                            {
+                                count = 12;
+                            }
 //                            chunk.setBlockState(new BlockPos(x - 1, y, z), GCBlocks.brightAir.getStateFromMeta(13 - count)); TODO ? Has bright air ever had metadata?
                             chunk.setBlockState(new BlockPos(x - 1, y, z), GCBlocks.brightAir.getDefaultState(), false);
 //                            ExtendedBlockStorage extendedblockstorage = chunk.getLastExtendedBlockStorage()[y >> 4];
@@ -1059,7 +1070,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
 
         return false;
     }
-    
+
     public static void reset()
     {
         chunksDone.clear();

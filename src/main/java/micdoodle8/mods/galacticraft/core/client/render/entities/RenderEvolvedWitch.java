@@ -27,7 +27,7 @@ public class RenderEvolvedWitch extends MobRenderer<EntityEvolvedWitch, ModelEvo
     @Override
     public void doRender(EntityEvolvedWitch entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        ((ModelEvolvedWitch)this.getEntityModel()).func_205074_a(entity.getHeldItemMainhand().isEmpty());
+        this.getEntityModel().func_205074_a(entity.getHeldItemMainhand().isEmpty());
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
         if (OverlaySensorGlasses.overrideMobTexture())
         {

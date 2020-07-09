@@ -65,7 +65,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     public void updateMemory(ItemStack craftingResult)
     {
         Optional<ICraftingRecipe> optional = this.getWorld().getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, this.getWorld());
-        if (optional.isPresent() && optional.get().getCraftingResult(this.craftMatrix).isEmpty()) return;
+        if (optional.isPresent() && optional.get().getCraftingResult(this.craftMatrix).isEmpty())
+        {
+            return;
+        }
 //        if (CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()) == ItemStack.EMPTY) return;
         this.setMemoryHeld(craftingResult);
         for (int i = 0; i < SIZEINVENTORY; i++)
@@ -99,7 +102,9 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     public ItemStack getStackInSlot(int par1)
     {
         if (par1 < SIZEINVENTORY)
+        {
             return this.craftMatrix.getStackInSlot(par1);
+        }
 
         //Results slot
         //First, try to clear the hidden output buffer before generating new results items
@@ -110,12 +115,18 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
         // Crafting Manager can produce concurrent modification exception in single player
         // if a server-LogicalSide tick (e.g. from a Hopper) calls this while client-LogicalSide is still initialising recipes
-        try {
+        try
+        {
             Optional<ICraftingRecipe> optional = this.getWorld().getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, this.getWorld());
             if (optional.isPresent())
+            {
                 return optional.get().getCraftingResult(this.craftMatrix);
+            }
 //            return CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld());
-        } catch (Exception ignore) { }
+        }
+        catch (Exception ignore)
+        {
+        }
         return ItemStack.EMPTY;
     }
 
@@ -198,7 +209,9 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             ItemStack stack = this.craftMatrix.getStackInSlot(i);
             ItemStack targetOther = this.memory.get(i);
             if (targetOther.isEmpty() && stack.isEmpty())
+            {
                 continue;
+            }
 
             if (targetOther.isEmpty() || stack.isEmpty() || !sameItem(targetOther, stack))
             {
@@ -303,7 +316,9 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         {
             this.craftMatrix.clear();
             for (int i = 0; i < SIZEINVENTORY; ++i)
+            {
                 this.memory.set(i, ItemStack.EMPTY);
+            }
             ListNBT contents = nbt.getList("Items", 10);
             if (!contents.isEmpty())
             {
@@ -390,44 +405,60 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     }
 
     @Override
     public boolean canInsertItem(int index, ItemStack stack, Direction direction)
     {
-        if (index >= SIZEINVENTORY || stack.isEmpty()) return false;
+        if (index >= SIZEINVENTORY || stack.isEmpty())
+        {
+            return false;
+        }
         boolean override = this.overriddenMemory();
         ItemStack target = override ? this.craftMatrix.getStackInSlot(index) : this.memory.get(index);
 
         if (!target.isEmpty() && sameItem(target, stack))
         {
             ItemStack is3 = this.getStackInSlot(index);
-            if (is3.isEmpty()) return true;
+            if (is3.isEmpty())
+            {
+                return true;
+            }
             int currentSize = is3.getCount();
 
             //If any other slot matching this item has a smaller stacksize, return false (and hopefully that slot will be filled instead)
             for (int i = 0; i < SIZEINVENTORY; i++)
             {
-                if (i == index) continue;
+                if (i == index)
+                {
+                    continue;
+                }
                 ItemStack targetOther = override ? this.craftMatrix.getStackInSlot(i) : this.memory.get(i);
 
                 //It's another memory slot matching this item, and may be a more suitable recipient if the stack count is lower
                 if (!targetOther.isEmpty() && sameItem(targetOther, stack))
                 {
                     ItemStack itemstack2;
-                    if (override) {
+                    if (override)
+                    {
                         itemstack2 = targetOther;   //Performance shortcut as we already know that targetOther is not empty
-                    } else {
+                    }
+                    else
+                    {
                         itemstack2 = this.craftMatrix.getStackInSlot(i);
                         if (itemstack2.isEmpty())
+                        {
                             return false;    //A totally empty slot in the recipe needs this item
+                        }
                     }
 
                     if (override || sameItem(stack, itemstack2))
                     {
                         if (itemstack2.getCount() < currentSize)
+                        {
                             return false;    //A less well-filled slot in the recipe needs this item
+                        }
                     }
                 }
             }
@@ -462,7 +493,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                 break;
             }
         }
-        if (allEmpty) return false;
+        if (allEmpty)
+        {
+            return false;
+        }
         Optional<ICraftingRecipe> optional = this.getWorld().getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, this.getWorld());
 //        if (!CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()).isEmpty())
         if (!optional.get().getCraftingResult(this.craftMatrix).isEmpty())
@@ -499,7 +533,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
     public boolean overriddenMemory()
     {
-        if (this.overriddenStatus != null) return this.overriddenStatus;
+        if (this.overriddenStatus != null)
+        {
+            return this.overriddenStatus;
+        }
         Optional<ICraftingRecipe> optional = this.getWorld().getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, this.getWorld());
 //        if (!CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()).isEmpty())
         if (!optional.get().getCraftingResult(this.craftMatrix).isEmpty())
@@ -570,7 +607,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         Optional<ICraftingRecipe> optional = this.getWorld().getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, this.getWorld());
 //        ItemStack stack = CraftingManager.findMatchingResult(memCopy, this.getWorld());
         ItemStack stack = optional.map(iCraftingRecipe -> iCraftingRecipe.getCraftingResult(memCopy)).orElse(ItemStack.EMPTY);
-        if (!stack.isEmpty()) this.setMemoryHeld(stack);
+        if (!stack.isEmpty())
+        {
+            this.setMemoryHeld(stack);
+        }
     }
 
     public void setStacksClientSide(ItemStack[] stacks)
@@ -579,7 +619,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         {
             this.setInventorySlotContents(i, stacks[i]);
         }
-        if (stacks.length > SIZEINVENTORY) this.setMemoryHeld(stacks[SIZEINVENTORY]);
+        if (stacks.length > SIZEINVENTORY)
+        {
+            this.setMemoryHeld(stacks[SIZEINVENTORY]);
+        }
     }
 
     @Override

@@ -40,7 +40,7 @@ import java.util.List;
 
 public class MarsModuleClient implements IPlanetsModuleClient
 {
-    private static ModelResourceLocation sludgeLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge", "fluid");
+    private static final ModelResourceLocation sludgeLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge", "fluid");
 
 //    @Override
 //    public void preInit(FMLPreInitializationEvent event)

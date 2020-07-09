@@ -43,8 +43,8 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
 
         public void render()
         {
-            this.setRotation(this.model, angle/Constants.RADIANS_TO_DEGREES, 0F, 0F);
-            this.model.render(1F/16F);
+            this.setRotation(this.model, angle / Constants.RADIANS_TO_DEGREES, 0F, 0F);
+            this.model.render(1F / 16F);
         }
     }
 
@@ -66,7 +66,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         public void render(float height)
         {
             this.model.setRotationPoint(0F, height, 0F);
-            this.model.render(1F/16F);
+            this.model.render(1F / 16F);
         }
     }
 
@@ -88,7 +88,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         public void render(float height)
         {
             this.model.setRotationPoint(0F, height * MASKSCALE, 0F);
-            this.model.render(1F/16F/MASKSCALE);
+            this.model.render(1F / 16F / MASKSCALE);
         }
     }
 
@@ -111,7 +111,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         public void render(float height)
         {
             this.model.setRotationPoint(0F, height * MASKSCALE, 0F);
-            this.model.render(1F/16F/MASKSCALE);
+            this.model.render(1F / 16F / MASKSCALE);
         }
     }
 
@@ -134,7 +134,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         public void render(float height)
         {
             this.model.setRotationPoint(0F, height * 2F, 0F);
-            this.model.render(1F/32F);
+            this.model.render(1F / 32F);
         }
     }
 
@@ -143,20 +143,23 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
     private static final ResourceLocation packTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/red.png");
     private static final ResourceLocation oxygenMaskTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/oxygen.png");
     private static final ResourceLocation oxygenTankTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/player.png");
-    private Flap flapA = new Flap();
-    private Flap flapB = new Flap();
-    private Flap flapC = new Flap();
-    private Flap flapD = new Flap();
-    private Plinth plat = new Plinth();
-    private Mask mask = new Mask();
-    private Tank tank = new Tank();
-    private Pack pack = new Pack();
+    private final Flap flapA = new Flap();
+    private final Flap flapB = new Flap();
+    private final Flap flapC = new Flap();
+    private final Flap flapD = new Flap();
+    private final Plinth plat = new Plinth();
+    private final Mask mask = new Mask();
+    private final Tank tank = new Tank();
+    private final Pack pack = new Pack();
 
     @Override
     public void render(TileEntityEmergencyBox emergencyBox, double x, double y, double z, float partialTicks, int destroyStage)
     {
         BlockState b = emergencyBox.getWorld().getBlockState(emergencyBox.getPos());
-        if (!(b.getBlock() instanceof BlockEmergencyBox)) return;
+        if (!(b.getBlock() instanceof BlockEmergencyBox))
+        {
+            return;
+        }
         GlStateManager.pushMatrix();
         GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 

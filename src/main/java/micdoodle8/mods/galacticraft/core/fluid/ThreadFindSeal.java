@@ -36,7 +36,7 @@ public class ThreadFindSeal
     private BlockVec3 head;
     private boolean sealed;
     private List<TileEntityOxygenSealer> sealers;
-    private static intBucket[] buckets;
+    private static final intBucket[] buckets;
     private static int checkedSize;
     private int checkCount;
     private HashMap<BlockVec3, TileEntityOxygenSealer> sealersAround;
@@ -52,8 +52,8 @@ public class ThreadFindSeal
     private List<BlockVec3> torchesToUpdate;
     private boolean foundAmbientThermal;
     public List<BlockVec3> leakTrace;
-    
-    static 
+
+    static
     {
         buckets = new intBucket[256];
         checkedInit();
@@ -343,7 +343,7 @@ public class ThreadFindSeal
         TileEntityOxygenSealer headSealer = this.sealersAround.get(this.head.clone().translate(0, -1, 0));
 
         //TODO: if multi-threaded, this final code block giving access to the sealer tiles needs to be threadsafe
-        
+
         // If it is sealed, cooldown can be extended as frequent checks are not needed
         if (headSealer != null)
         {
@@ -372,7 +372,7 @@ public class ThreadFindSeal
             long time3 = System.nanoTime();
             float total = (time3 - time1) / 1000000.0F;
             float looping = (time2 - time1) / 1000000.0F;
-            float replacing = (time3 - time2) / 1000000.0F; 
+            float replacing = (time3 - time2) / 1000000.0F;
             GCLog.info("Oxygen Sealer Check Completed at x" + this.head.x + " y" + this.head.y + " z" + this.head.z);
             GCLog.info("   Sealed: " + this.sealed + "  ~  " + this.sealers.size() + " sealers  ~  " + (checkedSize - 1) + " blocks");
             GCLog.info("   Total Time taken: " + String.format("%.2f", total) + "ms  ~  " + String.format("%.2f", looping) + " + " + String.format("%.2f", replacing) + "");
@@ -525,7 +525,10 @@ public class ThreadFindSeal
                                 }
                                 else
                                 {
-                                    if (state != null) checkedAdd(sideVec);
+                                    if (state != null)
+                                    {
+                                        checkedAdd(sideVec);
+                                    }
                                 }
                             }
                         }
@@ -543,8 +546,8 @@ public class ThreadFindSeal
 
     /**
      * Literally the only difference from unseal() should be this:
-     *        Block id = sideVec.getBlockID_noChunkLoad(world);
-     *        
+     * Block id = sideVec.getBlockID_noChunkLoad(world);
+     * <p>
      * In this code, there is a map edge check on the x, z coordinates (outside map edge at 30,000,000 blocks?)
      * This check is skipped in the "safe" version of the same code, for higher performance
      * because doing this check 50000 times when looking at blocks around a sealer at spawn is obviously dumb
@@ -629,7 +632,10 @@ public class ThreadFindSeal
                                 }
                                 else
                                 {
-                                    if (block != null) checkedAdd(sideVec);
+                                    if (block != null)
+                                    {
+                                        checkedAdd(sideVec);
+                                    }
                                 }
                             }
                         }
@@ -776,8 +782,8 @@ public class ThreadFindSeal
 
     /**
      * Again, literally the only difference from doLayer() should be these two lines:
-     *        Block id = sideVec.getBlockID_noChunkLoad(world);
-     *        
+     * Block id = sideVec.getBlockID_noChunkLoad(world);
+     * <p>
      * In this code, there is a map edge check on the x, z coordinates (outside map edge at 30,000,000 blocks?)
      * This check is skipped in the "safe" version of the same code, for higher performance
      * because doing this check 50000 times when looking at blocks around a sealer at spawn is obviously dumb
@@ -916,8 +922,14 @@ public class ThreadFindSeal
     {
         int dx = this.head.x - vec.x;
         int dz = this.head.z - vec.z;
-        if (dx < -8191 || dx > 8192) return;
-        if (dz < -8191 || dz > 8192) return;
+        if (dx < -8191 || dx > 8192)
+        {
+            return;
+        }
+        if (dz < -8191 || dz > 8192)
+        {
+            return;
+        }
         intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
         bucket.add(vec.y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) + ((vec.sideDoneBits & 0x1C0) << 18) << 4));
     }
@@ -929,8 +941,14 @@ public class ThreadFindSeal
     {
         int dx = this.head.x - vec.x;
         int dz = this.head.z - vec.z;
-        if (dx < -8191 || dx > 8192) return true;
-        if (dz < -8191 || dz > 8192) return true;
+        if (dx < -8191 || dx > 8192)
+        {
+            return true;
+        }
+        if (dz < -8191 || dz > 8192)
+        {
+            return true;
+        }
         intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
         return bucket.contains(vec.y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
     }
@@ -944,11 +962,17 @@ public class ThreadFindSeal
         {
         case 0:
             y--;
-            if (y < 0) return false;
+            if (y < 0)
+            {
+                return false;
+            }
             break;
         case 1:
             y++;
-            if (y > 255) return false;
+            if (y > 255)
+            {
+                return false;
+            }
             break;
         case 2:
             dz++;
@@ -962,8 +986,14 @@ public class ThreadFindSeal
         case 5:
             dx--;
         }
-        if (dx < -8191 || dx > 8192) return true;
-        if (dz < -8191 || dz > 8192) return true;
+        if (dx < -8191 || dx > 8192)
+        {
+            return true;
+        }
+        if (dz < -8191 || dz > 8192)
+        {
+            return true;
+        }
         intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
         return bucket.contains(y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
     }
@@ -972,8 +1002,14 @@ public class ThreadFindSeal
     {
         int dx = this.head.x - x;
         int dz = this.head.z - z;
-        if (dx < -8191 || dx > 8192) return null;
-        if (dz < -8191 || dz > 8192) return null;
+        if (dx < -8191 || dx > 8192)
+        {
+            return null;
+        }
+        if (dz < -8191 || dz > 8192)
+        {
+            return null;
+        }
         intBucket bucket = buckets[((dx & 15) << 4) + (dz & 15)];
         int LogicalSide = bucket.getMSB4shifted(y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
         if (LogicalSide >= 0)
@@ -1001,7 +1037,7 @@ public class ThreadFindSeal
         }
         checkedSize = 0;
     }
-    
+
     public List<BlockPos> checkedAll()
     {
         List<BlockPos> list = new LinkedList<BlockPos>();
@@ -1009,11 +1045,14 @@ public class ThreadFindSeal
         int z = head.z;
         for (int i = 0; i < 256; i++)
         {
-            int size = this.buckets[i].size();
-            if (size == 0) continue;
+            int size = buckets[i].size();
+            if (size == 0)
+            {
+                continue;
+            }
             int ddx = i >> 4;
             int ddz = i & 15;
-            int[] ints = this.buckets[i].contents();
+            int[] ints = buckets[i].contents();
             for (int j = 0; j < size; j++)
             {
                 int k = ints[j];
@@ -1021,8 +1060,14 @@ public class ThreadFindSeal
                 k >>= 4;
                 int dx = (k & 0x3FF0) + ddx;
                 int dz = ((k >> 10) & 0x3FF0) + ddz;
-                if (dx > 0x2000) dx -= 0x4000;
-                if (dz > 0x2000) dz -= 0x4000;
+                if (dx > 0x2000)
+                {
+                    dx -= 0x4000;
+                }
+                if (dz > 0x2000)
+                {
+                    dz -= 0x4000;
+                }
                 list.add(new BlockPos(x + dx, y, z + dz));
             }
         }
@@ -1040,29 +1085,35 @@ public class ThreadFindSeal
         while (!tracer.equals(start) && count < 90)
         {
             route.add(tracer);
-            switch(tracer.sideDoneBits >> 6)
+            switch (tracer.sideDoneBits >> 6)
             {
-                case 1: y--;
+            case 1:
+                y--;
                 break;
-                case 0: y++;
+            case 0:
+                y++;
                 break;
-                case 3: z--;
+            case 3:
+                z--;
                 break;
-                case 2: z++;
+            case 2:
+                z++;
                 break;
-                case 5: x--;
+            case 5:
+                x--;
                 break;
-                case 4: x++;
-                break;      
+            case 4:
+                x++;
+                break;
             }
-            tracer = checkedContainsTrace(x, y, z); 
+            tracer = checkedContainsTrace(x, y, z);
             if (tracer == null)
             {
                 return;
             }
-            count ++;
+            count++;
         }
-        
+
         this.leakTrace = new ArrayList<>();
         this.leakTrace.add(start);
         for (int j = route.size() - 1; j >= 0; j--)
@@ -1133,8 +1184,8 @@ public class ThreadFindSeal
 //            ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
 //            if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(vec.getBlockMetadata(this.world)))
 //            {
-                checkedAdd(vec);
-                return false;
+            checkedAdd(vec);
+            return false;
 //            }
         }
 
@@ -1245,12 +1296,14 @@ public class ThreadFindSeal
         private int maxSize = 64;  //default size
         private int size = 0;
         private int[] table = new int[maxSize];
-        
+
         public void add(int i)
         {
             if (this.contains(i))
+            {
                 return;
-            
+            }
+
             if (size >= maxSize)
             {
                 int[] newTable = new int[maxSize + maxSize];
@@ -1268,11 +1321,13 @@ public class ThreadFindSeal
             for (int i = size - 1; i >= 0; i--)
             {
                 if ((table[i] & 0xFFFFFFF) == test)
+                {
                     return true;
+                }
             }
             return false;
         }
-        
+
         public int getMSB4shifted(int test)
         {
             for (int i = size - 1; i >= 0; i--)
@@ -1284,17 +1339,17 @@ public class ThreadFindSeal
             }
             return -1;
         }
-        
+
         public void clear()
         {
             size = 0;
         }
-        
+
         public int size()
         {
             return size;
         }
-          
+
         public int[] contents()
         {
             return table;

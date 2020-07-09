@@ -9,7 +9,7 @@ public class BlockNames
     public static final String screen = "view_screen";
     public static final String machineBase3 = "machine3";
     public static final String panelLighting = "panel_lighting";
-//    public static final String machineBase2 = "machine2";
+    //    public static final String machineBase2 = "machine2";
     public static final String circuitFabricator = "circuit_fabricator";
     public static final String oxygenStorageModule = "oxygen_storage_module";
     public static final String deconstructor = "deconstructor";
@@ -22,7 +22,7 @@ public class BlockNames
     public static final String unlitTorch = "unlit_torch";
     public static final String gratingWater = "grating1";
     public static final String crudeOil = "oil";
-//    public static final String basicBlock = "basic_block_core";
+    //    public static final String basicBlock = "basic_block_core";
     public static final String spinThruster = "spin_thruster";
     public static final String slabGCHalf = "slab_gc_half";
     public static final String bossSpawner = "boss_spawner";
@@ -56,7 +56,7 @@ public class BlockNames
     public static final String cheeseBlock = "cheese";
     public static final String platform = "platform";
     public static final String unlitTorchLit = "unlit_torch_lit";
-//    public static final String machineBase = "machine";
+    //    public static final String machineBase = "machine";
     public static final String coalGenerator = "coal_generator";
     public static final String ingotCompressor = "ingot_compressor";
     public static final String ingotCompressorElectric = "ingot_compressor_electric";
@@ -65,7 +65,7 @@ public class BlockNames
     public static final String moonStoneStairs = "moon_stairs_stone";
     public static final String concealedRedstone = "concealed_redstone";
     public static final String parachest = "parachest";
-//    public static final String blockMoon = "basic_block_moon";
+    //    public static final String blockMoon = "basic_block_moon";
     public static final String oxygenDistributor = "distributor";
     public static final String spaceGlassVanilla = "space_glass_vanilla";
     public static final String concealedDetector = "concealed_detector";
@@ -87,7 +87,7 @@ public class BlockNames
     public static final String landingPad = "landing_pad";
     public static final String buggyPad = "buggy_pad";
     public static final String brightBreatheableAir = "bright_breathable_air";
-//    public static final String machineTiered = "machine_tiered";
+    //    public static final String machineTiered = "machine_tiered";
     public static final String storageModule = "storage_module";
     public static final String storageCluster = "storage_cluster";
     public static final String furnaceElectric = "furnace_electric";

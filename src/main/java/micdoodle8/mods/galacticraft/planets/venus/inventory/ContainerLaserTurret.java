@@ -21,7 +21,7 @@ public class ContainerLaserTurret extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusContainerNames.LASER_TURRET)
     public static ContainerType<ContainerLaserTurret> TYPE;
 
-    private TileEntityLaserTurret turret;
+    private final TileEntityLaserTurret turret;
 
     public ContainerLaserTurret(int containerId, PlayerInventory playerInv, TileEntityLaserTurret laserTurret)
     {
@@ -116,7 +116,7 @@ public class ContainerLaserTurret extends Container
                 }
                 else
                 {
-                   slot.putStack(ItemStack.EMPTY);
+                    slot.putStack(ItemStack.EMPTY);
                 }
             }
             else

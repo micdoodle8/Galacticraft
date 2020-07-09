@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
 {
-    private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
+    private static final ResourceLocation[] rocketTextures = new ResourceLocation[4];
 
     static
     {

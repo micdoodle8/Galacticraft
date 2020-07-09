@@ -58,13 +58,19 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     @Override
     public void onLoad()
     {
-        if (!this.world.isRemote) TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this));
+        if (!this.world.isRemote)
+        {
+            TileEntityOxygenDistributor.loadedTiles.add(new BlockVec3Dim(this));
+        }
     }
 
     @Override
     public void onChunkUnloaded()
     {
-        if (!this.world.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
+        if (!this.world.isRemote)
+        {
+            TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
+        }
         super.onChunkUnloaded();
     }
 
@@ -164,7 +170,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     {
         return Constants.RENDERDISTANCE_LONG;
     }
-    
+
     @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
@@ -326,7 +332,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1 };
+        return new int[]{0, 1};
     }
 
     @Override

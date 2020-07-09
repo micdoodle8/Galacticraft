@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemSwordAsteroids extends SwordItem implements ISortableItem
 {
-//    private double attackDamageD;
+    //    private double attackDamageD;
 //
     public ItemSwordAsteroids(Item.Properties builder)
     {
@@ -69,10 +69,11 @@ public class ItemSwordAsteroids extends SwordItem implements ISortableItem
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        float hardness = state.getBlockHardness(worldIn, pos); 
+        float hardness = state.getBlockHardness(worldIn, pos);
         if (hardness > 0F)
         {
-            stack.damageItem(hardness > 0.2001F ? 2 : 1, entityLiving, (e) -> {
+            stack.damageItem(hardness > 0.2001F ? 2 : 1, entityLiving, (e) ->
+            {
                 e.sendBreakAnimation(EquipmentSlotType.MAINHAND);
             });
         }

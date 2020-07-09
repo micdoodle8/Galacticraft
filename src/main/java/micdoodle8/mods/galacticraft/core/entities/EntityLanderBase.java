@@ -119,15 +119,20 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             {
                 if (this.world.getEntityByID(this.getEntityId()) == null)
                 {
-                    try {
+                    try
+                    {
                         ((ClientWorld) this.world).addEntity(this.getEntityId(), this);
-                    } catch (Exception e) { e.printStackTrace(); }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
 
                 this.posX = x;
                 this.posY = y;
                 this.posZ = z;
-                
+
                 int cx = MathHelper.floor(x / 16.0D);
                 int cz = MathHelper.floor(z / 16.0D);
 
@@ -141,12 +146,12 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                     this.addedToChunk = true;
                     this.world.getChunk(cx, cz).addEntity(this);
                 }
-                
+
                 this.syncAdjustFlag = false;
             }
         }
     }
-    
+
     @Override
     public int getScaledFuelLevel(int i)
     {
@@ -256,7 +261,10 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public void writeAdditional(CompoundNBT nbt)
     {
-        if (world.isRemote) return;
+        if (world.isRemote)
+        {
+            return;
+        }
         nbt.putInt("rocketStacksLength", this.stacks.size());
 
         ItemStackHelper.saveAllItems(nbt, this.stacks);
@@ -376,7 +384,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                 if (!this.hasReceivedPacket)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
-                this.hasReceivedPacket = true;
+                    this.hasReceivedPacket = true;
                 }
 
                 int cargoLength = buffer.readInt();
@@ -520,8 +528,11 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender()
     {
-        double height = this.posY + (double)this.getEyeHeight();
-        if (height > 255D) height = 255D;
+        double height = this.posY + (double) this.getEyeHeight();
+        if (height > 255D)
+        {
+            height = 255D;
+        }
         BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
         return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
     }

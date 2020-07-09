@@ -500,16 +500,16 @@ public class OxygenUtil
             boolean connectable = false;
             if (tileEntity instanceof IConnector)
             {
-            	connectable = ignoreConnect || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID);
+                connectable = ignoreConnect || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID);
             }
             else if (tileEntity != null)
             {
-            	connectable = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite()) != null;
+                connectable = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite()) != null;
             }
 
             if (connectable)
             {
-            	adjacentConnections[direction.ordinal()] = tileEntity;
+                adjacentConnections[direction.ordinal()] = tileEntity;
             }
         }
 

@@ -117,7 +117,7 @@ public class RenderEntryPodVenus extends EntityRenderer<EntityEntryPodVenus>
     {
         return new ResourceLocation("missing");
     }
-    
+
     @Override
     public boolean shouldRender(EntityEntryPodVenus lander, ICamera camera, double camX, double camY, double camZ)
     {

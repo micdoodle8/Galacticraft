@@ -33,7 +33,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
 {
     private IGridNetwork network;
     public TileEntity[] adjacentConnections = null;
-    private int pullAmount;
+    private final int pullAmount;
     private boolean validated = true;
 
     public TileEntityFluidTransmitter(TileEntityType<?> type, int pullAmount)

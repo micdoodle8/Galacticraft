@@ -112,7 +112,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         }
         else
         {
-            if (this.generateWatts > 0 && this.ticks % ((int) ((float)MAX_GENERATE_GJ_PER_TICK / (this.generateWatts + 1)) * 5 + 1) == 0)
+            if (this.generateWatts > 0 && this.ticks % ((int) ((float) MAX_GENERATE_GJ_PER_TICK / (this.generateWatts + 1)) * 5 + 1) == 0)
             {
                 double posX = pos.getX() + 0.5;
                 double posY = pos.getY() + 1.0;
@@ -230,7 +230,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override

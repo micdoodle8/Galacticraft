@@ -20,13 +20,13 @@ public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/crafting_table.png");
     TileEntityCrafting tileCrafting;
     List<String> memorySlotDesc = new ArrayList<String>();
-    
+
     public GuiCrafting(ContainerCrafting containerCrafting, PlayerInventory playerInv, ITextComponent title)
     {
         super(containerCrafting, playerInv, title);
-        this.tileCrafting = (TileEntityCrafting) containerCrafting.tileCrafting;
+        this.tileCrafting = containerCrafting.tileCrafting;
     }
-    
+
     @Override
     protected void init()
     {
@@ -40,8 +40,8 @@ public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        this.font.drawString(I18n.format("container.crafting", new Object[0]), 28, 6, 4210752);
-        this.font.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(I18n.format("container.crafting"), 28, 6, 4210752);
+        this.font.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
@@ -52,11 +52,14 @@ public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
-        
+
         ItemStack mem = this.tileCrafting.getMemoryHeld();
         boolean memoryStored = !mem.isEmpty();
         memorySlotDesc.clear();
         memorySlotDesc.add(GCCoreUtil.translate(memoryStored ? "gui.crafting_memory.desc.0" : "gui.crafting_memory.desc.1"));
-        if (mem != null && !mem.isEmpty()) this.itemRenderer.renderItemAndEffectIntoGUI(mem, i + 124, j + 59);
+        if (mem != null && !mem.isEmpty())
+        {
+            this.itemRenderer.renderItemAndEffectIntoGUI(mem, i + 124, j + 59);
+        }
     }
 }

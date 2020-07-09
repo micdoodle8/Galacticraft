@@ -30,7 +30,7 @@ public class OverlaySensorGlasses extends Overlay
     private static final ResourceLocation indicatorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/indicator.png");
     public static final ResourceLocation altTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/sensor_mobs.png");
 
-    private static Minecraft minecraft = Minecraft.getInstance();
+    private static final Minecraft minecraft = Minecraft.getInstance();
 
     private static int zoom = 0;
 
@@ -48,8 +48,8 @@ public class OverlaySensorGlasses extends Overlay
 //        final int k = scaledresolution.getScaledHeight();
 //        OverlaySensorGlasses.minecraft.entityRenderer.setupOverlayRendering();
         Minecraft mc = Minecraft.getInstance();
-        int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
-        int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+        int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
+        int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
@@ -94,8 +94,8 @@ public class OverlaySensorGlasses extends Overlay
             var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
 
             Minecraft mc = Minecraft.getInstance();
-            int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
-            int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
 //            final ScaledResolution var5 = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
 //            final int var6 = var5.getScaledWidth();
 //            final int var7 = var5.getScaledHeight();
@@ -132,7 +132,7 @@ public class OverlaySensorGlasses extends Overlay
             }
         }
     }
-    
+
     public static void preRenderMobs()
     {
         GL11.glEnable(GL11.GL_BLEND);
@@ -145,7 +145,7 @@ public class OverlaySensorGlasses extends Overlay
         int i = 15728880;
         int j = i % 65536;
         int k = i / 65536;
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j, (float)k);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
 //        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
         GL11.glTranslatef(0.0F, 0.045F, 0.0F);
         GL11.glScalef(1.07F, 1.035F, 1.07F);
@@ -157,7 +157,7 @@ public class OverlaySensorGlasses extends Overlay
 //        GL11.glEnable(GL11.GL_DEPTH_TEST);
 //        GL11.glDepthMask(true);
     }
-    
+
     public static boolean overrideMobTexture()
     {
         PlayerEntity player = Minecraft.getInstance().player;

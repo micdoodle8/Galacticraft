@@ -26,12 +26,12 @@ public class ConfigManagerCore
     public static boolean forceOverworldRespawn;
     public static boolean hardMode;
     public static boolean quickMode;
-	public static boolean challengeMode;
-	private static int challengeFlags;
-	public static boolean challengeRecipes;
-	public static boolean challengeMobDropsAndSpawning;
-	public static boolean challengeSpawnHandling;
-	public static boolean challengeAsteroidPopulation;
+    public static boolean challengeMode;
+    private static int challengeFlags;
+    public static boolean challengeRecipes;
+    public static boolean challengeMobDropsAndSpawning;
+    public static boolean challengeSpawnHandling;
+    public static boolean challengeAsteroidPopulation;
     public static boolean disableRocketsToOverworld;
     public static boolean disableSpaceStationCreation;
     public static boolean spaceStationsRequirePermission;
@@ -53,7 +53,7 @@ public class ConfigManagerCore
     public static int biomeIDbase = 102;
     public static boolean disableBiomeTypeRegistrations;
     public static String[] staticLoadDimensions = {};
-    public static String[] disableRocketLaunchDimensions = { DimensionType.THE_NETHER.getRegistryName().toString(), DimensionType.THE_END.getRegistryName().toString() };
+    public static String[] disableRocketLaunchDimensions = {DimensionType.THE_NETHER.getRegistryName().toString(), DimensionType.THE_END.getRegistryName().toString()};
     public static boolean disableRocketLaunchAllNonGC;
     public static int otherPlanetWorldBorders = 0;
     public static boolean keepLoadedNewSpaceStations;
@@ -121,7 +121,7 @@ public class ConfigManagerCore
     public static boolean invertMapMouseScroll;
 
     public static ArrayList<Object> clientSave = null;
-//    private static Map<String, List<String>> propOrder = new TreeMap<>();
+    //    private static Map<String, List<String>> propOrder = new TreeMap<>();
     private static String currentCat;
 
 //    public static void initialize(File file)
@@ -135,7 +135,7 @@ public class ConfigManagerCore
 //        ConfigManagerCore.config.save();
 //    }
 
-//    public static void syncConfig(boolean load)
+    //    public static void syncConfig(boolean load)
     public ConfigManagerCore()
     {
         try
@@ -631,7 +631,7 @@ public class ConfigManagerCore
 
             externalOilGen = COMMON_BUILDER.comment("List of non-galacticraft dimension IDs to generate oil in.")
                     .translation("gc.configgui.external_oil_gen")
-                    .define("oil_gen_in_external_dimension", new int[] { 0 }).get();
+                    .define("oil_gen_in_external_dimension", new int[]{0}).get();
 
             retrogenOil = COMMON_BUILDER.comment("If this is enabled, GC oil will be added to existing Overworld maps where possible.")
                     .translation("gc.configgui.enable_retrogen_oil")
@@ -687,7 +687,7 @@ public class ConfigManagerCore
 
             oregenIDs = COMMON_BUILDER.comment("Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  /ONLYMOON or /ONLYMARS if wanted on one planet only.  If nothing specified, defaults are /COMMON, /BOTH and /STANDARD.  Repeat lines to generate a huge quantity of ores.")
                     .translation("gc.configgui.other_mod_ore_gen_i_ds")
-                    .define("Other_mods_ores_for_gc_to_generate_on_the_moon_and_planets", new String[] {}).get();
+                    .define("Other_mods_ores_for_gc_to_generate_on_the_moon_and_planets", new String[]{}).get();
 
             disableBiomeTypeRegistrations = COMMON_BUILDER.comment("Biome Types will not be registered in the BiomeDictionary if this is set to true.")
                     .translation("gc.configgui.disable_biome_type_registrations")
@@ -807,17 +807,17 @@ public class ConfigManagerCore
 
             sealableIDs = COMMON_BUILDER.comment("List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata")
                     .translation("gc.configgui.sealable_i_ds")
-                    .define("external_sealable_ids", new String[] { Blocks.GLASS_PANE.getRegistryName().toString() }).get();
+                    .define("external_sealable_ids", new String[]{Blocks.GLASS_PANE.getRegistryName().toString()}).get();
 
             detectableIDs = COMMON_BUILDER.comment("List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.")
                     .translation("gc.configgui.detectable_i_ds")
-                    .define("external_detectable_ids", new String[] {
+                    .define("external_detectable_ids", new String[]{
                             Blocks.COAL_ORE.getRegistryName().getPath(),
                             Blocks.DIAMOND_ORE.getRegistryName().getPath(),
                             Blocks.GOLD_ORE.getRegistryName().getPath(),
                             Blocks.IRON_ORE.getRegistryName().getPath(),
                             Blocks.LAPIS_ORE.getRegistryName().getPath(),
-                            Blocks.REDSTONE_ORE.getRegistryName().getPath() }).get();
+                            Blocks.REDSTONE_ORE.getRegistryName().getPath()}).get();
 
             alternateCanisterRecipe = COMMON_BUILDER.comment("Enable this if the standard canister recipe causes a conflict.")
                     .translation("gc.configgui.alternate_canister_recipe")
@@ -1010,7 +1010,7 @@ public class ConfigManagerCore
                     .define("meteor_block_damage_enabled", true).get();
 
             COMMON_BUILDER.pop();
-            
+
             challengeModeUpdate();
         }
         catch (final Exception e)
@@ -1019,7 +1019,7 @@ public class ConfigManagerCore
             e.printStackTrace();
         }
     }
-    
+
     public boolean setLoaded(DimensionType newID)
     {
         boolean found = false;
@@ -1086,22 +1086,22 @@ public class ConfigManagerCore
 
     public static void challengeModeUpdate()
     {
-    	if (challengeMode)
-    	{
-    		challengeRecipes = (challengeFlags & 1) > 0;
-    		challengeMobDropsAndSpawning = (challengeFlags & 2) > 0;
+        if (challengeMode)
+        {
+            challengeRecipes = (challengeFlags & 1) > 0;
+            challengeMobDropsAndSpawning = (challengeFlags & 2) > 0;
             challengeAsteroidPopulation = (challengeFlags & 4) > 0;
-    		challengeSpawnHandling = (challengeFlags & 8) > 0;
-    	}
-    	else
-    	{
-    	    challengeRecipes = false;
+            challengeSpawnHandling = (challengeFlags & 8) > 0;
+        }
+        else
+        {
+            challengeRecipes = false;
             challengeMobDropsAndSpawning = false;
             challengeAsteroidPopulation = false;
             challengeSpawnHandling = false;
-    	}
+        }
     }
-    
+
     /**
      * Note for this to be effective, the prop = config.get() call has to provide a String[] as the default values
      * If you use an Integer[] then the config parser deletes all non-numerical lines from the config before GC even sees them

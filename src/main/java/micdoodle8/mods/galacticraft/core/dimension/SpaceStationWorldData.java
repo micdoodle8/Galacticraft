@@ -26,10 +26,10 @@ public class SpaceStationWorldData extends WorldSavedData
 {
     private String spaceStationName = "NoName";
     private String owner = "NoOwner";
-    private ArrayList<UUID> allowedPlayers;
+    private final ArrayList<UUID> allowedPlayers;
     private boolean allowAllPlayers;
     private DimensionType homePlanet;
-//    private DimensionType dimensionIdDynamic;
+    //    private DimensionType dimensionIdDynamic;
 //    private DimensionType dimensionIdStatic;
     private DimensionType dimensionType;
     private CompoundNBT dataCompound;

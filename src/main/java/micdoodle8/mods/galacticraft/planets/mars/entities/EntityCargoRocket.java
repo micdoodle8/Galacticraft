@@ -322,7 +322,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                         GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
                         e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                         ((EntityCargoRocket) e).setLaunchPhase(EnumLaunchPhase.LANDING);
-            			//No setDead() following successful transferEntityToDimension() - see javadoc on that
+                        //No setDead() following successful transferEntityToDimension() - see javadoc on that
                     }
                     else
                     {
@@ -365,7 +365,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public void writeAdditional(CompoundNBT nbt)
     {
-    	if (world.isRemote) return;
+        if (world.isRemote)
+        {
+            return;
+        }
         nbt.putInt("Type", this.rocketType.getIndex());
 
         super.writeAdditional(nbt);

@@ -33,7 +33,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.platform)
     public static TileEntityType<TileEntityPlatform> TYPE;
 
-    private static final int MAXRANGE = 16; 
+    private static final int MAXRANGE = 16;
     private EnumCorner corner = EnumCorner.NONE;
     private AxisAlignedBB detection = null;
     private boolean noCollide;
@@ -46,7 +46,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     private int lightB;
     private int deltaY;
     private boolean firstTickCheck;
-    
+
     public TileEntityPlatform()
     {
         super(TYPE);
@@ -57,7 +57,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         this();
         this.corner = corner;
     }
-    
+
     @Override
     public void read(CompoundNBT nbt)
     {
@@ -84,7 +84,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         {
             this.firstTickCheck = !this.checkIntact();
         }
-            
+
         if (this.corner == EnumCorner.NONE && !this.world.isRemote)
         {
             final List<TileEntityPlatform> adjacentPlatforms = new LinkedList<>();
@@ -92,20 +92,20 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
             final int thisY = this.getPos().getY();
             final int thisZ = this.getPos().getZ();
 
-            for (int x = - 1; x < 1; x++)
+            for (int x = -1; x < 1; x++)
             {
-                for (int z = - 1; z < 1; z++)
+                for (int z = -1; z < 1; z++)
                 {
                     BlockPos pos = new BlockPos(x + thisX, thisY, z + thisZ);
                     final TileEntity tile = this.world.isBlockLoaded(pos) ? this.world.getTileEntity(pos) : null;
 
-                    if (tile instanceof TileEntityPlatform && !tile.isRemoved() && ((TileEntityPlatform)tile).corner == EnumCorner.NONE)
+                    if (tile instanceof TileEntityPlatform && !tile.isRemoved() && ((TileEntityPlatform) tile).corner == EnumCorner.NONE)
                     {
                         final TileEntity tileUp = this.world.getTileEntity(pos.up());
                         final TileEntity tileDown = this.world.getTileEntity(pos.down());
                         if (!(tileUp instanceof TileEntityPlatform) && !(tileDown instanceof TileEntityPlatform))
                         {
-                           adjacentPlatforms.add((TileEntityPlatform) tile);
+                            adjacentPlatforms.add((TileEntityPlatform) tile);
                         }
                     }
                 }
@@ -130,7 +130,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     @OnlyIn(Dist.CLIENT)
     private void updateClient()
     {
-        this.lightOn  = false;
+        this.lightOn = false;
         if (this.colorTicks > 0)
         {
             if (--this.colorTicks == 0)
@@ -215,7 +215,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     }
 
     /**
-     * @return  0 for no platform, range for good platform, -1 for blocked platform
+     * @return 0 for no platform, range for good platform, -1 for blocked platform
      */
     private int checkNextPlatform(int dir)
     {
@@ -223,21 +223,42 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         final int thisY = this.getPos().getY();
         final int thisZ = this.getPos().getZ();
         int maxY = thisY + MAXRANGE * dir;
-        if (maxY > 255) maxY = 255;
-        if (maxY < 0) maxY = 0;
+        if (maxY > 255)
+        {
+            maxY = 255;
+        }
+        if (maxY < 0)
+        {
+            maxY = 0;
+        }
 
-        for (int y = thisY + dir; y != maxY; y+= dir)
+        for (int y = thisY + dir; y != maxY; y += dir)
         {
             int c1 = this.checkCorner(new BlockPos(thisX, y, thisZ), BlockPlatform.EnumCorner.NW);
-            if (c1 >= 2) return c1 - 3;
+            if (c1 >= 2)
+            {
+                return c1 - 3;
+            }
             c1 += this.checkCorner(new BlockPos(thisX + 1, y, thisZ), BlockPlatform.EnumCorner.NE) * 4;
-            if (c1 >= 8) return c1 - 3;
+            if (c1 >= 8)
+            {
+                return c1 - 3;
+            }
             c1 += this.checkCorner(new BlockPos(thisX, y, thisZ + 1), BlockPlatform.EnumCorner.SW) * 16;
-            if (c1 >= 32) return c1 - 3;
+            if (c1 >= 32)
+            {
+                return c1 - 3;
+            }
             c1 += this.checkCorner(new BlockPos(thisX + 1, y, thisZ + 1), BlockPlatform.EnumCorner.SE) * 64;
-            if (c1 >= 128) return c1 - 3;
+            if (c1 >= 128)
+            {
+                return c1 - 3;
+            }
             // Good platform on all four corners
-            if (c1 == 0) continue;
+            if (c1 == 0)
+            {
+                continue;
+            }
             if (this.motionObstructed(thisY + 1, y - thisY))
             {
                 return -1;
@@ -248,7 +269,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     }
 
     /**
-     * @return  0 for air, 1 for good platform, 2 for blocked platform, 3 for block
+     * @return 0 for air, 1 for good platform, 2 for blocked platform, 3 for block
      */
     private int checkCorner(BlockPos blockPos, EnumCorner corner)
     {
@@ -282,7 +303,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         }
         this.world.destroyBlock(this.pos, true);
     }
-    
+
     private void resetBlocks()
     {
         List<BlockPos> positions = new ArrayList<>();
@@ -371,12 +392,12 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
             count += checkState(new BlockPos(x - 1, y, z - 1), EnumCorner.NW);
             break;
         }
-        
+
         if (count >= 3)
         {
             return count == 3;
         }
-        
+
         this.resetBlocks();
         return true;
     }
@@ -384,7 +405,9 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     private int checkState(BlockPos blockPos, EnumCorner corner)
     {
         if (!this.world.isBlockLoaded(blockPos))
+        {
             return 4;
+        }
 
         BlockState bs = this.world.getBlockState(blockPos);
         if (bs.getBlock() == GCBlocks.platform && bs.get(BlockPlatform.CORNER) == corner)
@@ -449,7 +472,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     {
         return this.colorState;
     }
-    
+
     public boolean isMoving()
     {
         return this.moving;
@@ -466,11 +489,13 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         if (this.moving)
         {
             ClientPlayerEntity p = Minecraft.getInstance().player;
-            float playerY = (float)(p.lastTickPosY + (p.posY - p.lastTickPosY) * (double)partialTicks);
+            float playerY = (float) (p.lastTickPosY + (p.posY - p.lastTickPosY) * (double) partialTicks);
             return (playerY - this.pos.getY() - BlockPlatform.HEIGHT);
         }
         else
+        {
             return 0.0F;
+        }
     }
 
     @Override
@@ -500,25 +525,25 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         light = this.world.getCombinedLight(this.getPos().add(1, 1, 1), 0);
         j += light % 65536;
         k += light / 65536;
-        return j / 4 + k * 16384; 
+        return j / 4 + k * 16384;
     }
 
     @OnlyIn(Dist.CLIENT)
     public float getMeanLightX(float yOffset)
     {
-        float a = (float)(this.lightA % 65536);
-        float b = (float)(this.lightB % 65536);
-        float f = yOffset / deltaY; 
-        return (1 - f) * a + f * b;  
+        float a = (float) (this.lightA % 65536);
+        float b = (float) (this.lightB % 65536);
+        float f = yOffset / deltaY;
+        return (1 - f) * a + f * b;
     }
 
     @OnlyIn(Dist.CLIENT)
     public float getMeanLightZ(float yOffset)
     {
-        float a = (float)(this.lightA / 65536);
-        float b = (float)(this.lightB / 65536);
+        float a = (float) (this.lightA / 65536);
+        float b = (float) (this.lightB / 65536);
         float f = yOffset / deltaY;
-        return (1 - f) * a + f * b;  
+        return (1 - f) * a + f * b;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -527,7 +552,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         ClientPlayerEntity p = Minecraft.getInstance().player;
         int x = this.pos.getX() + 1;
         int z = this.pos.getZ() + 1;
-        double size = 9/16D;
+        double size = 9 / 16D;
         double height = p.getHeight() + velocityY;
         double depth = velocityY < 0D ? 0.179D : 0D;
         AxisAlignedBB bb = new AxisAlignedBB(x - size, y - depth, z - size, x + size, y + height, z + size);

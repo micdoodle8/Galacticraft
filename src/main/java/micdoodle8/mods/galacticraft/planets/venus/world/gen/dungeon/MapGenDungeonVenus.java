@@ -86,7 +86,7 @@ public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        long seed = (long)k * 341873128712L + (long)l * 132897987541L + generator.world.getWorldInfo().getSeed() + (long)(10387340 + generator.world.getDimension().getType().getId());
+        long seed = (long) k * 341873128712L + (long) l * 132897987541L + generator.world.getWorldInfo().getSeed() + (long) (10387340 + generator.world.getDimension().getType().getId());
         Random random = new Random();
         random.setSeed(seed);
         k = k * numChunks + random.nextInt(numChunks);
@@ -101,7 +101,10 @@ public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
     public static float directionToNearestDungeon(World world, double xpos, double zpos)
     {
         int spacing = ((IGalacticraftDimension) world.getDimension()).getDungeonSpacing();
-        if (spacing == 0) return 0F;
+        if (spacing == 0)
+        {
+            return 0F;
+        }
         int x = MathHelper.floor(xpos);
         int z = MathHelper.floor(zpos);
         int quadrantX = x % spacing;

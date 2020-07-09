@@ -23,7 +23,8 @@ public class CreativeTabGC extends ItemGroup
     }
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack createIcon()
+    {
         return this.itemForTab;
     }
 
@@ -39,9 +40,12 @@ public class CreativeTabGC extends ItemGroup
         return "itemGroup." + this.getTabLabel();
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
-    public void fill(NonNullList<ItemStack> items) {
-        for(Item item : Registry.ITEM) {
+    public void fill(NonNullList<ItemStack> items)
+    {
+        for (Item item : Registry.ITEM)
+        {
             item.fillItemGroup(this, items);
         }
     }

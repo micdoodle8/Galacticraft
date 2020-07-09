@@ -201,7 +201,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     this.processTicks = -8;
                 }
             }
-            
+
             this.produceOutput(this.getHydrogenInputDirection().getOpposite());
         }
     }
@@ -209,7 +209,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     private void produceOutput()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
@@ -396,7 +396,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1, 2, 3, 4 };
+        return new int[]{0, 1, 2, 3, 4};
     }
 
     @Override
@@ -718,7 +718,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         return this.getFront().rotateY();
     }
-    
+
     private boolean produceOutput(Direction outputDirection)
     {
         int provide = this.getMethaneProvide();

@@ -21,7 +21,7 @@ import java.util.HashMap;
 public abstract class TileEntityInventory extends TileEntity implements ISidedInventory
 {
     public NonNullList<ItemStack> inventory;
-    private HashMap<Direction, LazyOptional<IItemHandlerModifiable>> itemHandlers = new HashMap<>();
+    private final HashMap<Direction, LazyOptional<IItemHandlerModifiable>> itemHandlers = new HashMap<>();
 
     public TileEntityInventory(TileEntityType<?> type)
     {
@@ -157,8 +157,10 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side)
     {
-        if (!this.removed && cap == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (!this.itemHandlers.containsKey(side)) {
+        if (!this.removed && cap == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if (!this.itemHandlers.containsKey(side))
+            {
                 this.itemHandlers.put(side, LazyOptional.of(new NonNullSupplier<IItemHandlerModifiable>()
                 {
                     @Nonnull
@@ -168,7 +170,9 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
                         return new SidedInvWrapper(TileEntityInventory.this, side);
                     }
                 }));
-            } else {
+            }
+            else
+            {
                 return this.itemHandlers.get(side).cast();
             }
         }
@@ -195,7 +199,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
             this.getInventory().set(i, ItemStack.EMPTY);
         }
     }
-    
+
     @Override
     public synchronized void handleUpdateTag(CompoundNBT tag)
     {

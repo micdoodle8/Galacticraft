@@ -89,7 +89,7 @@ public class RoomTreasureVenus extends SizedPieceVenus
                         }
                         if (placeBlock)
                         {
-                            DungeonConfigurationVenus venusConfig = (DungeonConfigurationVenus) this.configuration;
+                            DungeonConfigurationVenus venusConfig = this.configuration;
                             this.setBlockState(worldIn, j == 0 || j == this.sizeY ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, boundingBox);
                         }
                         else

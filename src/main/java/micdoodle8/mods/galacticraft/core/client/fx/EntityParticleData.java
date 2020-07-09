@@ -12,14 +12,18 @@ import java.util.UUID;
 
 public class EntityParticleData implements IParticleData
 {
-    public static final IParticleData.IDeserializer<EntityParticleData> DESERIALIZER = new IParticleData.IDeserializer<EntityParticleData>() {
+    public static final IParticleData.IDeserializer<EntityParticleData> DESERIALIZER = new IParticleData.IDeserializer<EntityParticleData>()
+    {
+        @Override
         public EntityParticleData deserialize(ParticleType<EntityParticleData> particleTypeIn, StringReader reader) throws CommandSyntaxException
         {
             reader.expect(' ');
             return new EntityParticleData(particleTypeIn, UUID.fromString(reader.readString()));
         }
 
-        public EntityParticleData read(ParticleType<EntityParticleData> particleTypeIn, PacketBuffer buffer) {
+        @Override
+        public EntityParticleData read(ParticleType<EntityParticleData> particleTypeIn, PacketBuffer buffer)
+        {
             return new EntityParticleData(particleTypeIn, buffer.readUniqueId());
         }
     };

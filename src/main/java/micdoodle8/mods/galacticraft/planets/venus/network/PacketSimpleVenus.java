@@ -23,7 +23,7 @@ import java.util.List;
 
 public class PacketSimpleVenus extends PacketBase
 {
-    public static enum EnumSimplePacketVenus
+    public enum EnumSimplePacketVenus
     {
         // SERVER
         S_UPDATE_ADVANCED_GUI(LogicalSide.SERVER, Integer.class, BlockPos.class, Integer.class),
@@ -31,10 +31,10 @@ public class PacketSimpleVenus extends PacketBase
         S_MODIFY_LASER_TARGET(LogicalSide.SERVER, Integer.class, BlockPos.class, String.class);
         // CLIENT
 
-        private LogicalSide targetSide;
-        private Class<?>[] decodeAs;
+        private final LogicalSide targetSide;
+        private final Class<?>[] decodeAs;
 
-        private EnumSimplePacketVenus(LogicalSide targetSide, Class<?>... decodeAs)
+        EnumSimplePacketVenus(LogicalSide targetSide, Class<?>... decodeAs)
         {
             this.targetSide = targetSide;
             this.decodeAs = decodeAs;

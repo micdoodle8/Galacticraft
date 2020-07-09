@@ -259,7 +259,7 @@ public class BlockTelepadFake extends BlockAdvancedTile
 
             if (mainBlockPosition != null)
             {
-                manager.addBlockHitEffects(mainBlockPosition, (BlockRayTraceResult)target);
+                manager.addBlockHitEffects(mainBlockPosition, (BlockRayTraceResult) target);
             }
         }
 

@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-/**  PacketDynamic is used for updating data for regularly updating Entities and TileEntities 
+/**
+ * PacketDynamic is used for updating data for regularly updating Entities and TileEntities
  * Two types of PacketDynamic:
- *  Type 0: the identifier is an Entity ID
- *  Type 1: the identifier is a TileEntity's BlockPos
+ * Type 0: the identifier is an Entity ID
+ * Type 1: the identifier is a TileEntity's BlockPos
  */
 public class PacketDynamic extends PacketBase
 {
@@ -66,11 +67,16 @@ public class PacketDynamic extends PacketBase
         return packet;
     }
 
-    public static void handle(final PacketDynamic message, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT) {
+    public static void handle(final PacketDynamic message, Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() ->
+        {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
+            {
                 message.handleClientSide(ctx.get().getSender());
-            } else {
+            }
+            else
+            {
                 message.handleServerSide(ctx.get().getSender());
             }
         });
@@ -175,7 +181,7 @@ public class PacketDynamic extends PacketBase
                 }
 
                 //Treat any packet received by a server from a client as an update request specifically to that client
-                if (LogicalSide == LogicalSide.SERVER && player instanceof ServerPlayerEntity && entity != null)
+                if (LogicalSide == net.minecraftforge.fml.LogicalSide.SERVER && player instanceof ServerPlayerEntity && entity != null)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (ServerPlayerEntity) player);
                 }
@@ -196,7 +202,7 @@ public class PacketDynamic extends PacketBase
                     }
 
                     //Treat any packet received by a server from a client as an update request specifically to that client
-                    if (LogicalSide == LogicalSide.SERVER && player instanceof ServerPlayerEntity && tile != null)
+                    if (LogicalSide == net.minecraftforge.fml.LogicalSide.SERVER && player instanceof ServerPlayerEntity && tile != null)
                     {
                         GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (ServerPlayerEntity) player);
                     }

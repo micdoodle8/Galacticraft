@@ -35,12 +35,14 @@ public class PlanetFluids
     public static final FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> LIQUID_SULPHURIC_ACID = registerLiquid("sulphuricacid", fluidAttributes -> fluidAttributes.color(0xFF111111).density(6229).viscosity(1400));
     public static final FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> LIQUID_BACTERIAL_SLUDGE = registerLiquid("bacterialsludge", fluidAttributes -> fluidAttributes.color(0xFF111111).density(800).viscosity(1500), ACID_MATERIAL);
 
-    private static FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> registerLiquid(String name, UnaryOperator<FluidAttributes.Builder> fluidAttributes) {
+    private static FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> registerLiquid(String name, UnaryOperator<FluidAttributes.Builder> fluidAttributes)
+    {
         return GCFluids.FLUIDS.register(name, fluidAttributes.apply(FluidAttributes.builder(new ResourceLocation(Constants.MOD_ID_PLANETS, "block/liquid/liquid"),
                 new ResourceLocation(Constants.MOD_ID_PLANETS, "block/liquid/liquid_flow"))), Material.WATER);
     }
 
-    private static FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> registerLiquid(String name, UnaryOperator<FluidAttributes.Builder> fluidAttributes, Material blockMaterial) {
+    private static FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> registerLiquid(String name, UnaryOperator<FluidAttributes.Builder> fluidAttributes, Material blockMaterial)
+    {
         return GCFluids.FLUIDS.register(name, fluidAttributes.apply(FluidAttributes.builder(new ResourceLocation(Constants.MOD_ID_PLANETS, "block/liquid/liquid"),
                 new ResourceLocation(Constants.MOD_ID_PLANETS, "block/liquid/liquid_flow"))), blockMaterial);
     }

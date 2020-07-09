@@ -26,7 +26,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
 {
-    private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
+    private static final ResourceLocation[] rocketTextures = new ResourceLocation[4];
 
     static
     {
@@ -36,7 +36,7 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
         }
     }
 
-    private EntityCargoRocket rocket;
+    private final EntityCargoRocket rocket;
     private Button launchButton;
 
 //    public GuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket)
@@ -58,8 +58,9 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
         super.init();
         final int var6 = (this.height - this.ySize) / 2;
         final int var7 = (this.width - this.xSize) / 2;
-        this.launchButton = new Button(var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"), (button) -> {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.rocket.getEntityId(), 0 }));
+        this.launchButton = new Button(var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"), (button) ->
+        {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.rocket.getEntityId(), 0}));
         });
         this.buttons.add(this.launchButton);
         List<String> fuelTankDesc = new ArrayList<String>();
@@ -90,7 +91,7 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
         str = GCCoreUtil.translate("gui.message.status.name") + ":";
         this.font.drawString(str, 40 - this.font.getStringWidth(str) / 2, 9, 4210752);
 
-        String[] spltString = { "" };
+        String[] spltString = {""};
         String colour = EnumColor.YELLOW.toString();
 
         if (this.rocket.statusMessageCooldown == 0 || this.rocket.statusMessage == null)

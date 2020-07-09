@@ -92,7 +92,9 @@ public class BaseRoom extends SizedPiece
                 this.type = EnumRoomType.values()[typeNo];
             }
             else
+            {
                 this.type = EnumRoomType.EMPTY;
+            }
 
             int details = tagCompound.getInt("brD");
             this.deckTier = details & 15;
@@ -105,13 +107,13 @@ public class BaseRoom extends SizedPiece
             System.err.println(tagCompound.toString());
         }
     }
-    
+
     @Override
     public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBoundary, ChunkPos chunkPos)
     {
         BlockState blockAir = Blocks.AIR.getDefaultState();
         Block blockStair = GCBlocks.moonStoneStairs;
-        
+
         boolean axisEW = getDirection().getAxis() == Direction.Axis.X;
         int maxX = axisEW ? this.sizeZ : this.sizeX;
         int maxZ = axisEW ? this.sizeX : this.sizeZ;
@@ -161,9 +163,18 @@ public class BaseRoom extends SizedPiece
                         else if (this.configuration.getDeckType() == EnumBaseType.TUNNELER && (yy == 1 || yy == this.sizeY - 1))
                         {
                             int meta = 1;
-                            if (xx == 1) meta = 3;
-                            else if (xx == maxX - 1) meta = 2;
-                            else if (zz == 0) meta = 0;
+                            if (xx == 1)
+                            {
+                                meta = 3;
+                            }
+                            else if (xx == maxX - 1)
+                            {
+                                meta = 2;
+                            }
+                            else if (zz == 0)
+                            {
+                                meta = 0;
+                            }
                             if (this.direction == Direction.NORTH)
                             {
                                 meta ^= 3 ^ meta / 2;
@@ -173,7 +184,9 @@ public class BaseRoom extends SizedPiece
                                 meta ^= 2 + meta / 2;
                             }
                             else if (this.direction == Direction.EAST)
+                            {
                                 meta ^= 1;
+                            }
                             meta += (yy == 1) ? 0 : 4;
 //                            this.setBlockState(worldIn, blockStair.getStateFromMeta(meta), xx, yy, zz, chunkBoundary); TODO Stairs
                         }
@@ -200,20 +213,20 @@ public class BaseRoom extends SizedPiece
 
         return true;
     }
-    
+
     /**
      * Room contents boundaries are:
-     *    x from 1 to maxX
-     *    y from 1 to this.sizeY - 1
-     *    z from 1 to maxZ
+     * x from 1 to maxX
+     * y from 1 to this.sizeY - 1
+     * z from 1 to maxZ
      */
     private void buildRoomContents(IWorld worldIn, int x, int y, int z, int maxX, int maxZ, BlockPos blockpos, int randomInt)
     {
         BlockState state = Blocks.AIR.getDefaultState();
-        int semirand = ((blockpos.getY() * 379 +  blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
-        
-        int facing = 0; 
-        int facing1 = 0; 
+        int semirand = ((blockpos.getY() * 379 + blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
+
+        int facing = 0;
+        int facing1 = 0;
         int facing2 = 0;
         int facingLamp = 2;
         int facingScreen = 2;
@@ -525,16 +538,16 @@ public class BaseRoom extends SizedPiece
             if (tile instanceof IMultiBlock)
             {
                 List<BlockPos> positions = new LinkedList<>();
-                ((IMultiBlock)tile).getPositions(blockpos, positions);
+                ((IMultiBlock) tile).getPositions(blockpos, positions);
                 for (BlockPos pos : positions)
                 {
-                    worldIn.setBlockState(pos, GCBlocks.fakeBlock.getDefaultState().with(BlockMulti.MULTI_TYPE, ((IMultiBlock)tile).getMultiType()), 2);
+                    worldIn.setBlockState(pos, GCBlocks.fakeBlock.getDefaultState().with(BlockMulti.MULTI_TYPE, ((IMultiBlock) tile).getMultiType()), 2);
                 }
             }
-            
+
             if (tile instanceof TileEntityFluidTank)
             {
-                ((TileEntityFluidTank)tile).fill(null, new FluidStack(PlanetFluids.LIQUID_BACTERIAL_SLUDGE.getFluid(), 16000), IFluidHandler.FluidAction.EXECUTE);
+                ((TileEntityFluidTank) tile).fill(null, new FluidStack(PlanetFluids.LIQUID_BACTERIAL_SLUDGE.getFluid(), 16000), IFluidHandler.FluidAction.EXECUTE);
             }
             else if (tile instanceof TileEntityCargoLoader)
             {
@@ -563,20 +576,20 @@ public class BaseRoom extends SizedPiece
                 case 0:
                     break;
                 case 1:
-                    ((TileEntityCrafting)tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
                     break;
                 case 2:
                     //Creeper or Zombie head
                     int slot = semirand % 9;
-                    ((TileEntityCrafting)tile).setInventorySlotContents(slot,new ItemStack((semirand % 13 < 6) ? Items.CREEPER_HEAD : Items.ZOMBIE_HEAD));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(slot, new ItemStack((semirand % 13 < 6) ? Items.CREEPER_HEAD : Items.ZOMBIE_HEAD));
                     break;
                 case 3:
-                    ((TileEntityCrafting)tile).setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).setInventorySlotContents(4, new ItemStack(Items.STICK));
-                    ((TileEntityCrafting)tile).setInventorySlotContents(7, new ItemStack(Items.STICK));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(4, new ItemStack(Items.STICK));
+                    ((TileEntityCrafting) tile).setInventorySlotContents(7, new ItemStack(Items.STICK));
                     break;
                 }
             }
@@ -586,7 +599,7 @@ public class BaseRoom extends SizedPiece
                 stand.setInventorySlotContents(0, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.POISON));
                 stand.setInventorySlotContents(1, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WEAKNESS));
                 stand.setInventorySlotContents(2, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HARMING));
-                        }
+            }
             else if (tile instanceof TileEntityEnergyStorageModule)
             {
                 TileEntityEnergyStorageModule store = (TileEntityEnergyStorageModule) tile;
@@ -598,7 +611,7 @@ public class BaseRoom extends SizedPiece
                 }
             }
         }
-        
+
         if (this.type == EnumRoomType.ENGINEERING && y == (this.configuration.getRoomHeight() <= 4 ? 2 : 3) && z == maxZ && (x == 3 || x == 6))
         {
             Direction hangingDirection = this.direction;
@@ -613,8 +626,8 @@ public class BaseRoom extends SizedPiece
         }
     }
 
-    
-    public enum EnumRoomType 
+
+    public enum EnumRoomType
     {
         ENGINEERING(AsteroidBlocks.asteroidDeco.getDefaultState(), AsteroidBlocks.asteroidDeco.getDefaultState(), false),
         POWER(null, null, false),
@@ -628,7 +641,7 @@ public class BaseRoom extends SizedPiece
         public final BlockState blockFloor;
         public final BlockState blockEntrance;
         public final boolean doEntryWallsToo;
-        
+
         EnumRoomType(BlockState floorBlock, BlockState entrance, boolean doWalls)
         {
             this.blockFloor = floorBlock;

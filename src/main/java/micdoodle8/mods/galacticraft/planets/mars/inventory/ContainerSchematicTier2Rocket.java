@@ -143,7 +143,7 @@ public class ContainerSchematicTier2Rocket extends Container
             {
                 for (int i = 1; i < 19; i++)
                 {
-                    Slot testSlot = (Slot) this.inventorySlots.get(i);
+                    Slot testSlot = this.inventorySlots.get(i);
                     if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
                     {
                         if (!this.mergeOneItem(var4, i, i + 1, false))
@@ -168,21 +168,21 @@ public class ContainerSchematicTier2Rocket extends Container
 //                    } TODO Oredictionary
                     if (foundChest)
                     {
-                        if (!((Slot) this.inventorySlots.get(19)).getHasStack())
+                        if (!this.inventorySlots.get(19).getHasStack())
                         {
                             if (!this.mergeOneItem(var4, 19, 20, false))
                             {
                                 return ItemStack.EMPTY;
                             }
                         }
-                        else if (!((Slot) this.inventorySlots.get(20)).getHasStack())
+                        else if (!this.inventorySlots.get(20).getHasStack())
                         {
                             if (!this.mergeOneItem(var4, 20, 21, false))
                             {
                                 return ItemStack.EMPTY;
                             }
                         }
-                        else if (!((Slot) this.inventorySlots.get(21)).getHasStack())
+                        else if (!this.inventorySlots.get(21).getHasStack())
                         {
                             if (!this.mergeOneItem(var4, 21, 22, false))
                             {

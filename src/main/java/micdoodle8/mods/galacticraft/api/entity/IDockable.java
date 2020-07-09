@@ -30,6 +30,6 @@ public interface IDockable extends IFuelable, ICargoEntity
      * Returning false will not let setPad be called.
      */
     boolean isDockValid(IFuelDock dock);
-    
+
     boolean inFlight();
 }

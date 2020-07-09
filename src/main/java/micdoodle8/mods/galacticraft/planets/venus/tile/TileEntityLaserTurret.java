@@ -64,9 +64,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
 
     private final float RANGE = 15.0F;
     private final float METEOR_RANGE = 90.0F;
-    private List<Entity> tracked = Lists.newArrayList();
-    private List<String> players = Lists.newArrayList(); // Can be whitelist or blacklist
-    private List<ResourceLocation> entities = Lists.newArrayList(); // Can be whitelist or blacklist
+    private final List<Entity> tracked = Lists.newArrayList();
+    private final List<String> players = Lists.newArrayList(); // Can be whitelist or blacklist
+    private final List<ResourceLocation> entities = Lists.newArrayList(); // Can be whitelist or blacklist
     private boolean initialisedMulti = false;
     private AxisAlignedBB renderAABB;
 
@@ -219,7 +219,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     public void trackEntity(Entity entity)
     {
         if (!tracked.contains(entity))
+        {
             tracked.add(entity);
+        }
     }
 
     private Entity updateTarget()
@@ -255,9 +257,10 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                             }
                         }
                     }
-                    else if(e instanceof TameableEntity && ((TameableEntity) e).getOwnerId() != null)
+                    else if (e instanceof TameableEntity && ((TameableEntity) e).getOwnerId() != null)
                     {
-                        if ((((TameableEntity) e).getOwnerId().equals(this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((TameableEntity) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((TameableEntity) e).getOwner().getName()))) {
+                        if ((((TameableEntity) e).getOwnerId().equals(this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((TameableEntity) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((TameableEntity) e).getOwner().getName())))
+                        {
                             shouldTarget = false;
                         }
                     }
@@ -287,7 +290,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                         {
                             if (e instanceof LivingEntity)
                             {
-                                list.add(new EntityEntrySortable((LivingEntity)e, vec.getMagnitude()));
+                                list.add(new EntityEntrySortable((LivingEntity) e, vec.getMagnitude()));
                             }
                             else if (targetMeteors && e instanceof EntityMeteor)
                             {
@@ -621,7 +624,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
 //    @Override
@@ -756,7 +759,10 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     protected boolean initialiseMultiTiles(BlockPos pos, World world)
     {
         //Client can create its own fake blocks and tiles - no need for networking in 1.8+
-        if (world.isRemote) this.onCreate(world, pos);
+        if (world.isRemote)
+        {
+            this.onCreate(world, pos);
+        }
 
         List<BlockPos> positions = new ArrayList<>();
         this.getPositions(pos, positions);
@@ -782,13 +788,13 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     @Override
     public MachineSide[] listConfigurableSides()
     {
-        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT };
+        return new Face[]{Face.LEFT};
     }
 
     private MachineSidePack[] machineSides;

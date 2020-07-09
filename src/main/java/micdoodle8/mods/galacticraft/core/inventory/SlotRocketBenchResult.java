@@ -24,7 +24,6 @@ public class SlotRocketBenchResult extends Slot
     }
 
 
-
     @Override
     public ItemStack onTake(PlayerEntity par1EntityPlayer, ItemStack stack)
     {

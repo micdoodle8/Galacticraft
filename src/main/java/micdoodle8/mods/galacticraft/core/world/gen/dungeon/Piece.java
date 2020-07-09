@@ -23,7 +23,8 @@ public abstract class Piece extends StructurePiece
         this.configuration = configuration;
     }
 
-    public Piece(IStructurePieceType type, CompoundNBT tagCompound) {
+    public Piece(IStructurePieceType type, CompoundNBT tagCompound)
+    {
         super(type, tagCompound);
         this.readStructureFromNBT(tagCompound);
     }
@@ -80,7 +81,7 @@ public abstract class Piece extends StructurePiece
             blockZ = this.boundingBox.minZ + (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 - sizeZ / 2;
             break;
         }
-        return new MutableBoundingBox(blockX, this.configuration.getYPosition(), blockZ, blockX + sizeX, this.configuration.getYPosition() + this.configuration.getHallwayHeight(),blockZ + sizeZ);
+        return new MutableBoundingBox(blockX, this.configuration.getYPosition(), blockZ, blockX + sizeX, this.configuration.getYPosition() + this.configuration.getHallwayHeight(), blockZ + sizeZ);
     }
 
     public Piece getNextPiece(DungeonStart startPiece, Random rand)

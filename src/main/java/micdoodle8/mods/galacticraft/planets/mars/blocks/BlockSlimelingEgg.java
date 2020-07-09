@@ -45,7 +45,7 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription
         private final int meta;
         private final String name;
 
-        private EnumEggColor(int meta, String name)
+        EnumEggColor(int meta, String name)
         {
             this.meta = meta;
             this.name = name;

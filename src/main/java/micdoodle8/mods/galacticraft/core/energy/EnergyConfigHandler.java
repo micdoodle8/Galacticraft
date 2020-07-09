@@ -85,11 +85,11 @@ public class EnergyConfigHandler
     public static boolean displayEnergyUnitsMek = false;
     public static boolean displayEnergyUnitsRF = false;
 
-    private static boolean cachedBCLoaded = false;
-    private static boolean cachedBCLoadedValue = false;
-    private static int cachedBCVersion = -1;
-    private static boolean cachedBCRLoaded = false;
-    private static boolean cachedBCRLoadedValue = false;
+    private static final boolean cachedBCLoaded = false;
+    private static final boolean cachedBCLoadedValue = false;
+    private static final int cachedBCVersion = -1;
+    private static final boolean cachedBCRLoaded = false;
+    private static final boolean cachedBCRLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
     private static boolean cachedRF1LoadedValue = false;

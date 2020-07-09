@@ -177,28 +177,28 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     @Override
     public boolean isNetworkedTile()
     {
-            return true;
-        }
-    
+        return true;
+    }
+
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
+    {
+        if (this.mainBlockPosition == null)
         {
-    	if (this.mainBlockPosition == null)
-    	{
-    		if (this.world.isRemote || !this.resetMainBlockPosition())
-    		{
-    			return;
-    		}
-    	}
+            if (this.world.isRemote || !this.resetMainBlockPosition())
+            {
+                return;
+            }
+        }
         super.getNetworkedData(sendData);
     }
 
     private boolean resetMainBlockPosition()
+    {
+        for (int x = -1; x <= 1; x++)
         {
-            for (int x = -1; x <= 1; x++)
+            for (int z = -1; z <= 1; z++)
             {
-                for (int z = -1; z <= 1; z++)
-                {
                 for (int y = -2; y < 1; y += 2)
                 {
                     final BlockPos vecToCheck = this.getPos().add(x, y, z);

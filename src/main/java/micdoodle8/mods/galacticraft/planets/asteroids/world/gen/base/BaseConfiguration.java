@@ -26,7 +26,7 @@ public class BaseConfiguration implements IFeatureConfig
     private BlockState wallBlock;
     private int roomsNo;
     private int[] randomRoomTypes;
-    private EnumRoomType[] roomTypes = EnumRoomType.values();
+    private final EnumRoomType[] roomTypes = EnumRoomType.values();
 
     public BaseConfiguration(int yPosition, int baseType, int roomDepth, int roomsNo)
     {
@@ -56,7 +56,7 @@ public class BaseConfiguration implements IFeatureConfig
     private void createRandomRoomList(Random rand)
     {
         int range = this.roomTypes.length;
-        int size =  this.hangar ? 8 : this.roomsNo * 6;
+        int size = this.hangar ? 8 : this.roomsNo * 6;
         this.randomRoomTypes = new int[size];
         for (int i = 0; i < size; i++)
         {
@@ -66,12 +66,15 @@ public class BaseConfiguration implements IFeatureConfig
         for (int i = size - 1; i > 0; i--)
         {
             index = rand.nextInt(i + 1);
-            if (i == index) continue;
+            if (i == index)
+            {
+                continue;
+            }
             temp = this.randomRoomTypes[index];
             this.randomRoomTypes[index] = this.randomRoomTypes[i];
             this.randomRoomTypes[i] = temp;
         }
-        
+
         //Make sure there's a Cargo Loader on lower tier (50/50 chance this causes one other room to be missed completely, that's OK!)
         if (this.hangar)
         {
@@ -102,7 +105,8 @@ public class BaseConfiguration implements IFeatureConfig
         return new Dynamic<>(ops, ops.createMap(builder.build()));
     }
 
-    public static <T> BaseConfiguration deserialize(Dynamic<T> ops) {
+    public static <T> BaseConfiguration deserialize(Dynamic<T> ops)
+    {
         BaseConfiguration config = new BaseConfiguration(ops.get("yPos").asInt(0),
                 ops.get("dT").asInt(0),
                 ops.get("rmD").asInt(0),
@@ -190,10 +194,14 @@ public class BaseConfiguration implements IFeatureConfig
     public int getCorridorLength()
     {
         if (getRoomsNo() == 1)
+        {
             return BaseDeck.ROOMLARGE;
+        }
 
         if (getRoomsNo() == 2)
+        {
             return BaseDeck.ROOMLARGE + BaseDeck.ROOMLARGE;
+        }
 
         return getRoomsNo() * BaseDeck.ROOMSMALL + 2 * (BaseDeck.ROOMLARGE - BaseDeck.ROOMSMALL);
     }

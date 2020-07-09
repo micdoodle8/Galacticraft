@@ -29,7 +29,7 @@ public class ContainerCircuitFabricator extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.CIRCUIT_FABRICATOR)
     public static ContainerType<ContainerCircuitFabricator> TYPE;
 
-    private TileEntityCircuitFabricator fabricator;
+    private final TileEntityCircuitFabricator fabricator;
 
     public ContainerCircuitFabricator(int containerId, PlayerInventory playerInv, TileEntityCircuitFabricator fabricator)
     {
@@ -200,7 +200,7 @@ public class ContainerCircuitFabricator extends Container
         int acceptTotal = 0;
         for (int i = a; i < b; i++)
         {
-            Slot slot = (Slot)this.inventorySlots.get(i);
+            Slot slot = this.inventorySlots.get(i);
 
             if (slot != null)
             {
@@ -211,7 +211,10 @@ public class ContainerCircuitFabricator extends Container
                     int availSpace = stack.getMaxStackSize() - target.getCount();
                     acceptQuantity.add(availSpace);
                     acceptTotal += availSpace;
-                    if (availSpace < minQuantity) minQuantity = availSpace;
+                    if (availSpace < minQuantity)
+                    {
+                        minQuantity = availSpace;
+                    }
                 }
             }
         }
@@ -230,14 +233,16 @@ public class ContainerCircuitFabricator extends Container
                     return false;
                 }
             }
-        }        
+        }
 
         //The stack more than exceeds what the crafting inventory requires
         if (stack.getCount() >= acceptTotal)
         {
             if (acceptTotal == 0)
+            {
                 return false;
-            
+            }
+
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
@@ -247,20 +252,20 @@ public class ContainerCircuitFabricator extends Container
             }
             return true;
         }
-        
+
         int uneven = 0;
         for (int q : acceptQuantity)
         {
             uneven += q - minQuantity;
         }
-        
+
         //Use the whole stack to try to even up the neediest slots
         if (stack.getCount() <= uneven)
         {
             do
             {
                 Slot neediest = null;
-                int smallestStack = 64; 
+                int smallestStack = 64;
                 for (Slot slot : acceptSlots)
                 {
                     ItemStack target = slot.getStack();
@@ -294,7 +299,7 @@ public class ContainerCircuitFabricator extends Container
                 slot.onSlotChanged();
             }
         }
-        
+
         //Spread the remaining stack over all slots evenly
         int average = stack.getCount() / acceptSlots.size();
         int modulus = stack.getCount() - average * acceptSlots.size();
@@ -309,7 +314,10 @@ public class ContainerCircuitFabricator extends Container
                     transfer++;
                     modulus--;
                 }
-                if (transfer > stack.getCount()) transfer = stack.getCount();
+                if (transfer > stack.getCount())
+                {
+                    transfer = stack.getCount();
+                }
                 stack.shrink(transfer);
                 target.grow(transfer);
                 if (target.getCount() > target.getMaxStackSize())
@@ -320,10 +328,12 @@ public class ContainerCircuitFabricator extends Container
                 }
                 slot.onSlotChanged();
                 if (stack.isEmpty())
+                {
                     break;
+                }
             }
         }
-    
+
         return true;
     }
 
@@ -331,7 +341,10 @@ public class ContainerCircuitFabricator extends Container
     {
         for (ItemStack stack : CircuitFabricatorRecipes.slotValidItems.get(1))
         {
-            if (stack.isItemEqual(test)) return true;
+            if (stack.isItemEqual(test))
+            {
+                return true;
+            }
         }
         return false;
     }

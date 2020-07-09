@@ -54,7 +54,7 @@ public class NetworkRenderer
             Vector3 targetInputPoint = tileEntity.getTarget().getInputPoint();
 
             Vector3 direction = Vector3.subtract(outputPoint, targetInputPoint);
-            float directionLength = (float) direction.getMagnitude();
+            float directionLength = direction.getMagnitude();
 
             float posX = (float) (tileEntity.getPos().getX() - interpPosX);
             float posY = (float) (tileEntity.getPos().getY() - interpPosY);

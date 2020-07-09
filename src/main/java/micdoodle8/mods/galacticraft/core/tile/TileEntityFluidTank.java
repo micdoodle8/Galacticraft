@@ -52,7 +52,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
 
     public FluidTankGC fluidTank = new FluidTankGC(16000, this);
     public boolean updateClient = false;
-    private DelayTimer delayTimer = new DelayTimer(1);
+    private final DelayTimer delayTimer = new DelayTimer(1);
     private AxisAlignedBB renderAABB;
 
     public TileEntityFluidTank()
@@ -528,6 +528,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
 //        return super.getCapability(capability, facing);
 //    }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
@@ -537,7 +538,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         }
         return this.renderAABB;
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()

@@ -9,9 +9,9 @@ import net.minecraft.util.IStringSerializable;
 /**
  * Used to create the blockState property corresponding to the machine sides,
  * and to correspondingly constrain the allowable faces.
- *
+ * <p>
  * It's not compulsory to use this, a block could create its blockState model
- * from the machine sides in some different way. 
+ * from the machine sides in some different way.
  */
 public class IMachineSidesProperties
 {
@@ -22,16 +22,16 @@ public class IMachineSidesProperties
     public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedAll(), Face.AllAvailable);
 
     public EnumProperty<MachineSidesModel> asProperty;
-    private Predicate<MachineSidesModel> filter;
-    private Face[] toFaces;
-    
+    private final Predicate<MachineSidesModel> filter;
+    private final Face[] toFaces;
+
     public IMachineSidesProperties(Predicate<MachineSidesModel> theFilter, Face[] faces)
     {
         this.asProperty = EnumProperty.create("msm", MachineSidesModel.class, theFilter);
         this.filter = theFilter;
         this.toFaces = faces;
     }
-    
+
     /**
      * Default blockState model to use if the tile can't be read
      */
@@ -41,13 +41,13 @@ public class IMachineSidesProperties
     }
 
     /**
-     * Allowable faces for the configurable sides, consistent with the blockState variants 
+     * Allowable faces for the configurable sides, consistent with the blockState variants
      */
     public Face[] allowableFaces()
     {
         return this.toFaces;
     }
-    
+
     public boolean isValidFor(MachineSidesModel machineSidesModel)
     {
         return filter.apply(machineSidesModel);
@@ -58,7 +58,10 @@ public class IMachineSidesProperties
         String result = faceA.getName() + faceB.getName();
         for (MachineSidesModel test : MachineSidesModel.values())
         {
-            if (result.equals(test.name)) return test;
+            if (result.equals(test.name))
+            {
+                return test;
+            }
         }
         return MachineSidesModel.RIGHT1;
     }
@@ -87,7 +90,7 @@ public class IMachineSidesProperties
     /**
      * The strings match the blockState model implementation for rendering
      */
-    public static enum MachineSidesModel implements IStringSerializable
+    public enum MachineSidesModel implements IStringSerializable
     {
         //Don't change the order, the ordinal is important for the predicate definitions
         LEFT1("lr"),
@@ -147,7 +150,7 @@ public class IMachineSidesProperties
 
         private static Predicate<MachineSidesModel> twoFacedAll()
         {
-            return Predicates.<MachineSidesModel>alwaysTrue();
+            return Predicates.alwaysTrue();
         }
 
         private static Predicate<MachineSidesModel> oneFacedHoriz()
@@ -161,7 +164,7 @@ public class IMachineSidesProperties
                 }
             };
         }
-        
+
         private static Predicate<MachineSidesModel> twoFacedHoriz()
         {
             return new Predicate<MachineSidesModel>()

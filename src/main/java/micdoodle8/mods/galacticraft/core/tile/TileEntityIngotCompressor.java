@@ -47,7 +47,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private ItemStack producingStack = ItemStack.EMPTY;
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public TileEntityIngotCompressor()
     {
@@ -394,7 +394,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         if (par1 >= this.getInventory().size())
         {
-        	this.markDirty();
+            this.markDirty();
             return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.getInventory().size());
         }
 
@@ -407,7 +407,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
         else
         {
-        	return ItemStack.EMPTY;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -488,9 +488,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         if (side == Direction.DOWN)
         {
-            return new int[] { 1 };
+            return new int[]{1};
         }
-        int[] slots = new int[] { 0, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        int[] slots = new int[]{0, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         ArrayList<Integer> removeSlots = new ArrayList<>();
 
         for (int i = 2; i < 11; i++)

@@ -21,7 +21,8 @@ public class GCFluids
     public static final FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> OXYGEN = registerLiquid("oxygen", fluidAttributes -> fluidAttributes.color(0xFF6CE2FF).temperature(1).density(13).viscosity(295).gaseous());
     public static final FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> HYDROGEN = registerLiquid("hydrogen", fluidAttributes -> fluidAttributes.color(0xFFFFFFFF).temperature(1).density(1).viscosity(295).gaseous());
 
-    private static FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> registerLiquid(String name, UnaryOperator<FluidAttributes.Builder> fluidAttributes) {
+    private static FluidRegistrationEntry<Source, Flowing, FlowingFluidBlock, BucketItem> registerLiquid(String name, UnaryOperator<FluidAttributes.Builder> fluidAttributes)
+    {
         return FLUIDS.register(name, fluidAttributes.apply(FluidAttributes.builder(new ResourceLocation(Constants.MOD_ID_CORE, "block/liquid/liquid"),
                 new ResourceLocation(Constants.MOD_ID_CORE, "block/liquid/liquid_flow"))), Material.WATER);
     }

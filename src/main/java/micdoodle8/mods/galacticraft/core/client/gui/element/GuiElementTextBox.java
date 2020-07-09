@@ -14,7 +14,7 @@ public class GuiElementTextBox extends Widget
     public String text;
     public boolean numericOnly;
     public boolean centered;
-    private int maxLength;
+    private final int maxLength;
 
     public long backspacePressedMillis;
     public int cursorPulse;
@@ -23,9 +23,9 @@ public class GuiElementTextBox extends Widget
     public int incorrectUseTimer;
     public boolean resetOnClick = true;
 
-    private ITextBoxCallback parentGui;
+    private final ITextBoxCallback parentGui;
 
-    private Minecraft minecraft = Minecraft.getInstance();
+    private final Minecraft minecraft = Minecraft.getInstance();
 
     public GuiElementTextBox(ITextBoxCallback parentGui, int x, int y, int width, int height, String initialText, boolean numericOnly, int maxLength, boolean centered)
     {
@@ -36,12 +36,16 @@ public class GuiElementTextBox extends Widget
         this.centered = centered;
     }
 
-    public boolean charTyped(char character, int modifiers) {
-        if (SharedConstants.isAllowedCharacter(character)) {
-            if (this.active) {
+    @Override
+    public boolean charTyped(char character, int modifiers)
+    {
+        if (SharedConstants.isAllowedCharacter(character))
+        {
+            if (this.active)
+            {
                 if (this.parentGui.canPlayerEdit(this, this.minecraft.player))
                 {
-                    this.text = this.text + Character.toString(character);
+                    this.text = this.text + character;
                     this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
                 }
                 else
@@ -52,7 +56,9 @@ public class GuiElementTextBox extends Widget
             }
 
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -98,7 +104,7 @@ public class GuiElementTextBox extends Widget
                     if (this.parentGui.canPlayerEdit(this, this.minecraft.player))
                     {
                         this.text = this.text + pastestring;
-                        this.text = this.text.substring(0, Math.min(String.valueOf(this.text).length(), this.maxLength));
+                        this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
                     }
                     else
                     {

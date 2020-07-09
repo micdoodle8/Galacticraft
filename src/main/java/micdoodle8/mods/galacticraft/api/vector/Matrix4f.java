@@ -31,7 +31,8 @@ import java.nio.FloatBuffer;
  *
  * @author Heiko Brumme
  */
-public class Matrix4f {
+public class Matrix4f
+{
 
     public float m00, m01, m02, m03;
     public float m10, m11, m12, m13;
@@ -41,7 +42,8 @@ public class Matrix4f {
     /**
      * Creates a 4x4 identity matrix.
      */
-    public Matrix4f() {
+    public Matrix4f()
+    {
         setIdentity();
     }
 
@@ -99,7 +101,8 @@ public class Matrix4f {
     /**
      * Sets this matrix to the identity matrix.
      */
-    public final void setIdentity() {
+    public final void setIdentity()
+    {
         m00 = 1f;
         m11 = 1f;
         m22 = 1f;
@@ -123,10 +126,10 @@ public class Matrix4f {
      * Adds this matrix to another matrix.
      *
      * @param other The other matrix
-     *
      * @return Sum of this + other
      */
-    public Matrix4f add(Matrix4f other) {
+    public Matrix4f add(Matrix4f other)
+    {
         Matrix4f result = new Matrix4f();
 
         result.m00 = this.m00 + other.m00;
@@ -157,7 +160,8 @@ public class Matrix4f {
      *
      * @return Negated matrix
      */
-    public Matrix4f negate() {
+    public Matrix4f negate()
+    {
         return multiply(-1f);
     }
 
@@ -165,10 +169,10 @@ public class Matrix4f {
      * Subtracts this matrix from another matrix.
      *
      * @param other The other matrix
-     *
      * @return Difference of this - other
      */
-    public Matrix4f subtract(Matrix4f other) {
+    public Matrix4f subtract(Matrix4f other)
+    {
         return this.add(other.negate());
     }
 
@@ -176,10 +180,10 @@ public class Matrix4f {
      * Multiplies this matrix with a scalar.
      *
      * @param scalar The scalar
-     *
      * @return Scalar product of this * scalar
      */
-    public Matrix4f multiply(float scalar) {
+    public Matrix4f multiply(float scalar)
+    {
         Matrix4f result = new Matrix4f();
 
         result.m00 = this.m00 * scalar;
@@ -224,10 +228,10 @@ public class Matrix4f {
      * Multiplies this matrix to another matrix.
      *
      * @param other The other matrix
-     *
      * @return Matrix product of this * other
      */
-    public Matrix4f multiply(Matrix4f other) {
+    public Matrix4f multiply(Matrix4f other)
+    {
         Matrix4f result = new Matrix4f();
 
         result.m00 = this.m00 * other.m00 + this.m01 * other.m10 + this.m02 * other.m20 + this.m03 * other.m30;
@@ -253,9 +257,12 @@ public class Matrix4f {
         return result;
     }
 
-    public static Matrix4f mul(Matrix4f left, Matrix4f right, Matrix4f dest) {
+    public static Matrix4f mul(Matrix4f left, Matrix4f right, Matrix4f dest)
+    {
         if (dest == null)
+        {
             dest = new Matrix4f();
+        }
 
         float m00 = left.m00 * right.m00 + left.m10 * right.m01 + left.m20 * right.m02 + left.m30 * right.m03;
         float m01 = left.m01 * right.m00 + left.m11 * right.m01 + left.m21 * right.m02 + left.m31 * right.m03;
@@ -299,7 +306,8 @@ public class Matrix4f {
      *
      * @return Transposed matrix
      */
-    public Matrix4f transpose() {
+    public Matrix4f transpose()
+    {
         Matrix4f result = new Matrix4f();
 
         result.m00 = this.m00;
@@ -330,7 +338,8 @@ public class Matrix4f {
      *
      * @param buffer The buffer to store the matrix data
      */
-    public void toBuffer(FloatBuffer buffer) {
+    public void toBuffer(FloatBuffer buffer)
+    {
         buffer.put(m00).put(m10).put(m20).put(m30);
         buffer.put(m01).put(m11).put(m21).put(m31);
         buffer.put(m02).put(m12).put(m22).put(m32);
@@ -348,10 +357,10 @@ public class Matrix4f {
      * @param top    Coordinate for the bottom horizontal clipping pane
      * @param near   Coordinate for the near depth clipping pane
      * @param far    Coordinate for the far depth clipping pane
-     *
      * @return Orthographic matrix
      */
-    public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
+    public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far)
+    {
         Matrix4f ortho = new Matrix4f();
 
         float tx = -(right + left) / (right - left);
@@ -380,10 +389,10 @@ public class Matrix4f {
      *               positive
      * @param far    Coordinate for the far depth clipping pane, must be
      *               positive
-     *
      * @return Perspective matrix
      */
-    public static Matrix4f frustum(float left, float right, float bottom, float top, float near, float far) {
+    public static Matrix4f frustum(float left, float right, float bottom, float top, float near, float far)
+    {
         Matrix4f frustum = new Matrix4f();
 
         float a = (right + left) / (right - left);
@@ -413,10 +422,10 @@ public class Matrix4f {
      *               be positive
      * @param far    Distance from the viewer to the far clipping plane, must be
      *               positive
-     *
      * @return Perspective matrix
      */
-    public static Matrix4f perspective(float fovy, float aspect, float near, float far) {
+    public static Matrix4f perspective(float fovy, float aspect, float near, float far)
+    {
         Matrix4f perspective = new Matrix4f();
 
         float f = (float) (1f / Math.tan(Math.toRadians(fovy) / 2f));
@@ -438,10 +447,10 @@ public class Matrix4f {
      * @param x x coordinate of translation vector
      * @param y y coordinate of translation vector
      * @param z z coordinate of translation vector
-     *
      * @return Translation matrix
      */
-    public static Matrix4f translate(float x, float y, float z) {
+    public static Matrix4f translate(float x, float y, float z)
+    {
         Matrix4f translation = new Matrix4f();
 
         translation.m03 = x;
@@ -471,11 +480,11 @@ public class Matrix4f {
      * <code>glRotate(angle, x, y, z)</code>.
      *
      * @param angle Angle of rotation in degrees
-     * @param axis axis of rotation
-     *
+     * @param axis  axis of rotation
      * @return Rotation matrix
      */
-    public static Matrix4f rotate(float angle, Vector3 axis) {
+    public static Matrix4f rotate(float angle, Vector3 axis)
+    {
         return rotate(angle, axis, new Matrix4f(), new Matrix4f());
     }
 
@@ -489,24 +498,24 @@ public class Matrix4f {
         float c = (float) Math.cos(angle);
         float s = (float) Math.sin(angle);
         float oneminusc = 1.0f - c;
-        float xy = axis.x*axis.y;
-        float yz = axis.y*axis.z;
-        float xz = axis.x*axis.z;
-        float xs = axis.x*s;
-        float ys = axis.y*s;
-        float zs = axis.z*s;
+        float xy = axis.x * axis.y;
+        float yz = axis.y * axis.z;
+        float xz = axis.x * axis.z;
+        float xs = axis.x * s;
+        float ys = axis.y * s;
+        float zs = axis.z * s;
 
-        float f00 = axis.x*axis.x*oneminusc+c;
-        float f01 = xy*oneminusc+zs;
-        float f02 = xz*oneminusc-ys;
+        float f00 = axis.x * axis.x * oneminusc + c;
+        float f01 = xy * oneminusc + zs;
+        float f02 = xz * oneminusc - ys;
         // n[3] not used
-        float f10 = xy*oneminusc-zs;
-        float f11 = axis.y*axis.y*oneminusc+c;
-        float f12 = yz*oneminusc+xs;
+        float f10 = xy * oneminusc - zs;
+        float f11 = axis.y * axis.y * oneminusc + c;
+        float f12 = yz * oneminusc + xs;
         // n[7] not used
-        float f20 = xz*oneminusc+ys;
-        float f21 = yz*oneminusc-xs;
-        float f22 = axis.z*axis.z*oneminusc+c;
+        float f20 = xz * oneminusc + ys;
+        float f21 = yz * oneminusc - xs;
+        float f22 = axis.z * axis.z * oneminusc + c;
 
         float t00 = src.m00 * f00 + src.m10 * f01 + src.m20 * f02;
         float t01 = src.m01 * f00 + src.m11 * f01 + src.m21 * f02;
@@ -520,8 +529,14 @@ public class Matrix4f {
         dest.m21 = src.m01 * f20 + src.m11 * f21 + src.m21 * f22;
         dest.m22 = src.m02 * f20 + src.m12 * f21 + src.m22 * f22;
         dest.m23 = src.m03 * f20 + src.m13 * f21 + src.m23 * f22;
-        dest.m00 = t00; dest.m01 = t01; dest.m02 = t02; dest.m03 = t03;
-        dest.m10 = t10; dest.m11 = t11; dest.m12 = t12; dest.m13 = t13;
+        dest.m00 = t00;
+        dest.m01 = t01;
+        dest.m02 = t02;
+        dest.m03 = t03;
+        dest.m10 = t10;
+        dest.m11 = t11;
+        dest.m12 = t12;
+        dest.m13 = t13;
         return dest;
     }
 
@@ -531,10 +546,10 @@ public class Matrix4f {
      * @param x Scale factor along the x coordinate
      * @param y Scale factor along the y coordinate
      * @param z Scale factor along the z coordinate
-     *
      * @return Scaling matrix
      */
-    public static Matrix4f scale(float x, float y, float z) {
+    public static Matrix4f scale(float x, float y, float z)
+    {
         Matrix4f scaling = new Matrix4f();
 
         scaling.m00 = x;
@@ -544,7 +559,8 @@ public class Matrix4f {
         return scaling;
     }
 
-    public static Matrix4f scale(Vector3 vec, Matrix4f src, Matrix4f dest) {
+    public static Matrix4f scale(Vector3 vec, Matrix4f src, Matrix4f dest)
+    {
         if (dest == null)
         {
             dest = new Matrix4f();
@@ -564,7 +580,8 @@ public class Matrix4f {
         return dest;
     }
 
-    public Matrix4f store(FloatBuffer buf) {
+    public Matrix4f store(FloatBuffer buf)
+    {
         buf.put(m00);
         buf.put(m01);
         buf.put(m02);
@@ -584,9 +601,12 @@ public class Matrix4f {
         return this;
     }
 
-    public static Vector4 transform(Matrix4f left, Vector4 right, Vector4 dest) {
+    public static Vector4 transform(Matrix4f left, Vector4 right, Vector4 dest)
+    {
         if (dest == null)
+        {
             dest = new Vector4();
+        }
 
         float x = left.m00 * right.x + left.m10 * right.y + left.m20 * right.z + left.m30 * right.w;
         float y = left.m01 * right.x + left.m11 * right.y + left.m21 * right.z + left.m31 * right.w;

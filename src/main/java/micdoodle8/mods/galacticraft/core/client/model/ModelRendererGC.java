@@ -46,7 +46,7 @@ public class ModelRendererGC extends RendererModel
                         {
                             for (i = 0; i < this.childModels.size(); ++i)
                             {
-                                ((RendererModel) this.childModels.get(i)).render(par1);
+                                this.childModels.get(i).render(par1);
                             }
                         }
                     }
@@ -59,7 +59,7 @@ public class ModelRendererGC extends RendererModel
                         {
                             for (i = 0; i < this.childModels.size(); ++i)
                             {
-                                ((RendererModel) this.childModels.get(i)).render(par1);
+                                this.childModels.get(i).render(par1);
                             }
                         }
 
@@ -92,7 +92,7 @@ public class ModelRendererGC extends RendererModel
                     {
                         for (i = 0; i < this.childModels.size(); ++i)
                         {
-                            ((RendererModel) this.childModels.get(i)).render(par1);
+                            this.childModels.get(i).render(par1);
                         }
                     }
 

@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class EntityCryoFX extends SpriteTexturedParticle
 {
-    private IAnimatedSprite animatedSprite;
+    private final IAnimatedSprite animatedSprite;
     float scaleStart;
 
     public EntityCryoFX(World worldIn, double x, double y, double z, double mX, double mY, double mZ, IAnimatedSprite animatedSprite)
@@ -92,11 +92,14 @@ public class EntityCryoFX extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             return new EntityCryoFX(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, this.spriteSet);
         }
     }

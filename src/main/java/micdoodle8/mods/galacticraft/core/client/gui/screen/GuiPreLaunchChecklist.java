@@ -26,15 +26,15 @@ import java.util.Map;
 public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxPreLaunch.ICheckBoxCallback
 {
     private static final ResourceLocation bookGuiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/checklist_book.png");
-    private int bookImageWidth = 192;
-    private int bookImageHeight = 192;
-    private List<List<String>> checklistKeys;
+    private final int bookImageWidth = 192;
+    private final int bookImageHeight = 192;
+    private final List<List<String>> checklistKeys;
     private int currPage = 0;
     private int bookTotalPages;
     private NextPageButton buttonNextPage;
     private NextPageButton buttonPreviousPage;
-    private CompoundNBT tagCompound;
-    private Map<GuiElementCheckboxPreLaunch, String> checkboxToKeyMap = Maps.newHashMap();
+    private final CompoundNBT tagCompound;
+    private final Map<GuiElementCheckboxPreLaunch, String> checkboxToKeyMap = Maps.newHashMap();
 
     public GuiPreLaunchChecklist(List<List<String>> checklistKeys, CompoundNBT tagCompound)
     {
@@ -51,11 +51,13 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
 
         int i = (this.width - this.bookImageWidth) / 2;
         int j = 2;
-        this.buttons.add(this.buttonNextPage = new NextPageButton(i + 120, j + 154, true, (button) -> {
+        this.buttons.add(this.buttonNextPage = new NextPageButton(i + 120, j + 154, true, (button) ->
+        {
             this.currPage++;
             this.init();
         }));
-        this.buttons.add(this.buttonPreviousPage = new NextPageButton(i + 38, j + 154, false, (button) -> {
+        this.buttons.add(this.buttonPreviousPage = new NextPageButton(i + 38, j + 154, false, (button) ->
+        {
             this.currPage--;
             this.init();
         }));
@@ -72,7 +74,9 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
             }
             String title = e.get(0);
             List<String> checkboxes = e.subList(1, e.size());
-            GuiElementCheckboxPreLaunch element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0, (button) -> {});
+            GuiElementCheckboxPreLaunch element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0, (button) ->
+            {
+            });
             int size = element.willFit(152 - yPos);
             if (size >= 0)
             {
@@ -89,7 +93,9 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
                 page++;
                 yPos = 25;
                 size = element.willFit(152 - yPos);
-                element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0, (button) -> {});
+                element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0, (button) ->
+                {
+                });
 
                 if (page == this.currPage)
                 {
@@ -102,7 +108,9 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
 
             for (String checkbox : checkboxes)
             {
-                element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0, (button) -> {});
+                element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0, (button) ->
+                {
+                });
                 size = element.willFit(152 - yPos);
                 if (size >= 0)
                 {
@@ -119,7 +127,9 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
                     page++;
                     yPos = 25;
                     size = element.willFit(152 - yPos);
-                    element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0, (button) -> {});
+                    element = new GuiElementCheckboxPreLaunch(this, this.width / 2 - 73 + 16, yPos, GCCoreUtil.translate("checklist." + checkbox + ".key"), 0, (button) ->
+                    {
+                    });
 
                     if (page == this.currPage)
                     {
@@ -153,7 +163,7 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
         }
 
         // Send changed tag compound to server
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(minecraft.player.world), new Object[] { this.tagCompound }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(minecraft.player.world), new Object[]{this.tagCompound}));
 
         // Update client item
         ItemStack stack = minecraft.player.getHeldItem(Hand.MAIN_HAND /* TODO Support off-hand use */);

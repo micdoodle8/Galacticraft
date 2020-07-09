@@ -31,13 +31,13 @@ import java.util.Set;
 
 public class EnergyUtil
 {
-    private static boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-    private static boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
-    private static boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
-    private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
-    private static boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
+    private static final boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+    private static final boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
+    private static final boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
+    private static final boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
+    private static final boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
     private static boolean isIC2TileLoaded = false;
-    private static boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftLoaded();
+    private static final boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftLoaded();
 
     public static boolean voltageParameterIC2 = false;
     public static Method demandedEnergyIC2 = null;
@@ -53,10 +53,10 @@ public class EnergyUtil
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
-    private static Field fieldCableAcceptor = null;
+    private static final Field fieldCableAcceptor = null;
     public static Field fieldEnergyStorage = null;
     public static Field fieldCableOutput = null;
-//    private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
+    //    private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
 //    public static Capability<IStrictEnergyStorage> mekEnergyStorage = null;
 //    public static Capability<IStrictEnergyOutputter> mekCableOutput = null;
 //    public static Capability<ITubeConnection> mekTubeConnection = null;
@@ -70,11 +70,11 @@ public class EnergyUtil
         BlockVec3 thisVec = new BlockVec3(tile);
         for (Direction direction : Direction.values())
         {
-            if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
+            if (tile instanceof IConductor && !((IConductor) tile).canConnect(direction, NetworkType.POWER))
             {
                 continue;
             }
-            
+
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity == null)
@@ -239,7 +239,7 @@ public class EnergyUtil
 //                    } catch (Exception e) { e.printStackTrace(); }
 //                }
 //            } TODO IC2 Support
-            
+
 //            if (hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite()))
             {
                 //Do not connect GC wires directly to power conduits
@@ -262,30 +262,31 @@ public class EnergyUtil
 
         return adjacentConnections;
     }
+
     /**
      * Similar to getAdjacentPowerConnections but specific to energy receivers only
      * Adds the adjacent power connections found to the passed acceptors, directions parameter Lists
      * (Note: an acceptor can therefore sometimes be entered in the Lists more than once, with a different direction each time:
      * this would represent GC wires connected to the acceptor on more than one LogicalSide.)
-     * 
+     *
      * @param conductor
      * @param connectedAcceptors
      * @param directions
      * @throws Exception
      */
-    public static void setAdjacentPowerConnections(TileEntity conductor, List<Object> connectedAcceptors, List <Direction> directions) throws Exception
+    public static void setAdjacentPowerConnections(TileEntity conductor, List<Object> connectedAcceptors, List<Direction> directions) throws Exception
     {
         final BlockVec3 thisVec = new BlockVec3(conductor);
-        final World world = conductor.getWorld(); 
+        final World world = conductor.getWorld();
         for (Direction direction : Direction.values())
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
-            
+
             if (tileEntity == null || tileEntity instanceof IConductor)  //world.getTileEntity will not have returned an invalid tile, invalid tiles are null
             {
                 continue;
             }
-            
+
             Direction sideFrom = direction.getOpposite();
 
             if (tileEntity instanceof IElectrical)
@@ -297,7 +298,7 @@ public class EnergyUtil
                 }
                 continue;
             }
-            
+
 //            if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
 //            {
 //                if (clazzMekCable != null && clazzMekCable.isInstance(tileEntity))
@@ -311,7 +312,7 @@ public class EnergyUtil
 ////                }
 //                continue;
 //            }
-            
+
 //            if (isIC2Loaded && !world.isRemote)
 //            {
 //                IEnergyTile IC2tile = null;
@@ -365,7 +366,7 @@ public class EnergyUtil
 //                }
 //                continue;
 //            }
-            
+
             if (!EnergyConfigHandler.disableFEOutput)
             {
                 if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
@@ -383,7 +384,7 @@ public class EnergyUtil
         }
         return;
     }
-    
+
     public static float otherModsEnergyTransfer(TileEntity tileAdj, Direction inputAdj, float toSend, boolean simulate)
     {
         /*if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput)
@@ -472,7 +473,8 @@ public class EnergyUtil
 //          GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
             return sent;
         }
-        else */if (!EnergyConfigHandler.disableFEOutput)
+        else */
+        if (!EnergyConfigHandler.disableFEOutput)
         {
             LazyOptional<IEnergyStorage> forgeEnergy = getCapability(tileAdj, CapabilityEnergy.ENERGY, inputAdj);
             if (forgeEnergy.isPresent())
@@ -545,7 +547,8 @@ public class EnergyUtil
             float sent = ((IEnergyProvider) tileAdj).extractEnergy(inputAdj, (int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
             return sent;
         }
-        else */if (!EnergyConfigHandler.disableFEInput)
+        else */
+        if (!EnergyConfigHandler.disableFEInput)
         {
             LazyOptional<IEnergyStorage> forgeEnergy = getCapability(tileAdj, CapabilityEnergy.ENERGY, inputAdj);
             if (forgeEnergy.isPresent())
@@ -700,14 +703,19 @@ public class EnergyUtil
             try
             {
                 clazzIC2EnergyTile = Class.forName("ic2.core.energy.Tile");
-                if (clazzIC2EnergyTile != null) isIC2TileLoaded = true;
+                if (clazzIC2EnergyTile != null)
+                {
+                    isIC2TileLoaded = true;
+                }
             }
-            catch (Exception ignore) {}
-            
+            catch (Exception ignore)
+            {
+            }
+
             try
             {
-               clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
-               Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
+                clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
+                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
                 GCLog.debug("Found IC2 IEnergySink class OK");
 
@@ -761,17 +769,21 @@ public class EnergyUtil
         }
 //        if (clazzPipeTile == null)
 //            isBCReallyLoaded = false;
-        
+
         return true;
     }
-    
+
     public static boolean isElectricItem(Item item)
     {
         if (item instanceof IItemElectric)
+        {
             return true;
-        
+        }
+
         if (item == null)
+        {
             return false;
+        }
 
 //        if (EnergyConfigHandler.isRFAPILoaded())
 //        {
@@ -790,14 +802,16 @@ public class EnergyUtil
 //            if (item instanceof IEnergizedItem)
 //                return true;
 //        }
-                    
+
         return false;
     }
-    
+
     public static boolean isChargedElectricItem(ItemStack stack)
     {
         if (stack.isEmpty())
+        {
             return false;
+        }
 
         Item item = stack.getItem();
         if (item instanceof IItemElectric)
@@ -806,7 +820,9 @@ public class EnergyUtil
         }
 
         if (item == Items.AIR)
+        {
             return false;
+        }
 
 //        if (EnergyConfigHandler.isRFAPILoaded())
 //        {
@@ -834,14 +850,16 @@ public class EnergyUtil
 //            if (item instanceof IEnergizedItem)
 //                return ((IEnergizedItem)item).getEnergy(stack) > 0;
 //        }
-                    
+
         return false;
     }
 
     public static boolean isFillableElectricItem(ItemStack stack)
     {
         if (stack.isEmpty())
+        {
             return false;
+        }
 
         Item item = stack.getItem();
         if (item instanceof IItemElectric)
@@ -850,7 +868,9 @@ public class EnergyUtil
         }
 
         if (item == Items.AIR)
+        {
             return false;
+        }
 
 //        if (EnergyConfigHandler.isRFAPILoaded())
 //        {
@@ -877,10 +897,10 @@ public class EnergyUtil
 //            if (item instanceof IEnergizedItem)
 //                return ((IEnergizedItem)item).getEnergy(stack) < ((IEnergizedItem)item).getMaxEnergy(stack);
 //        }
-                    
+
         return false;
     }
-    
+
 //    public static boolean hasCapability(ICapabilityProvider dimension, Capability<?> capability, Direction side)
 //    {
 //        return (dimension == null || capability == null) ? false : dimension.hasCapability(capability, LogicalSide);
@@ -890,7 +910,7 @@ public class EnergyUtil
     {
         return (dimension == null || capability == null) ? null : dimension.getCapability(capability, side);
     }
-    
+
 //    public static void initialiseMekCapabilities()
 //    {
 //        try

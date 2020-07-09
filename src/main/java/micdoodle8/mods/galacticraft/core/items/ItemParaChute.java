@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemParaChute extends Item implements ISortableItem, IClickableItem
 {
-    public static final String[] names = { "plain", // 0
+    public static final String[] names = {"plain", // 0
             "black", // 1
             "blue", // 2
             "lime", // 3
@@ -33,7 +33,7 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
             "purple", // 12
             "red", // 13
             "teal", // 14
-            "yellow" }; // 15
+            "yellow"}; // 15
     private final DyeColor color;
 
 //    protected IIcon[] icons;
@@ -266,7 +266,7 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
         {
             if (itemStack.getItem() instanceof IClickableItem)
             {
-                itemStack = ((IClickableItem)itemStack.getItem()).onItemRightClick(itemStack, worldIn, player);
+                itemStack = ((IClickableItem) itemStack.getItem()).onItemRightClick(itemStack, worldIn, player);
             }
 
             if (itemStack.isEmpty())
@@ -276,7 +276,8 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
         }
         return new ActionResult<>(ActionResultType.PASS, itemStack);
     }
-    
+
+    @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World worldIn, PlayerEntity player)
     {
         GCPlayerStats stats = GCPlayerStats.get(player);
@@ -287,7 +288,7 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
             stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
             itemStack = ItemStack.EMPTY;
         }
-        
+
         return itemStack;
     }
 }

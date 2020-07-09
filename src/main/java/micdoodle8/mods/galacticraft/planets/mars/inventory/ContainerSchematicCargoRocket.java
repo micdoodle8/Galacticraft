@@ -163,21 +163,21 @@ public class ContainerSchematicCargoRocket extends Container
 
                 if (!done)
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(14)).getHasStack())
+                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !this.inventorySlots.get(14).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 14, 15, false))
                         {
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(15)).getHasStack())
+                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !this.inventorySlots.get(15).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 15, 16, false))
                         {
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(16)).getHasStack())
+                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !this.inventorySlots.get(16).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 16, 17, false))
                         {

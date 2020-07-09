@@ -38,7 +38,8 @@ public class GCFeatures
         Registry.register(Registry.STRUCTURE_PIECE, "MoonDungeonEntranceRoom", CMOON_DUNGEON_CORRIDOR);
     }
 
-    public static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+    public static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup)
+    {
         return FEATURES.register(name, sup);
     }
 }

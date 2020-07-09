@@ -33,8 +33,8 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public Direction facing = null;
     private int preLoadFacing = -1;
-    private float maxRate = 1500;
-    private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
+    private final float maxRate = 1500;
+    private final EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
@@ -70,7 +70,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                     {
                         EnergySourceAdjacent source = new EnergySourceAdjacent(Direction.byIndex(this.facing.getIndex() ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
-                        float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
+                        float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList(this)), toSend, false);
                         electricalTile.extractEnergyGC(source, transmitted, false);
                     }
                 }
@@ -81,13 +81,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                     float availableToSend = EnergyUtil.otherModsEnergyExtract(tile, this.facing, this.maxRate, true);
                     if (availableToSend > 0F)
                     {
-                        float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), availableToSend, false);
+                        float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList(this)), availableToSend, false);
                         EnergyUtil.otherModsEnergyExtract(tile, this.facing, transmitted, false);
                     }
                 }
             }
-            else
-            if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
+            else if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
             {
                 //One Beam Receiver might be powered by multiple transmitters - allow for 5 at maximum transfer rate
                 float maxTransfer = Math.min(this.storage.getEnergyStoredGC(), maxRate * 5);
@@ -389,7 +388,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     private AxisAlignedBB renderAABB;
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()

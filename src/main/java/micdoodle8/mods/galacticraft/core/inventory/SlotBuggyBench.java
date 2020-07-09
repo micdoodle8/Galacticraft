@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 public class SlotBuggyBench extends Slot
 {
     private final int index;
-//    @Nullable
+    //    @Nullable
 //    private final BlockPos pos; // Null client LogicalSide
     private final PlayerEntity player;
 
@@ -45,13 +45,17 @@ public class SlotBuggyBench extends Slot
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         if (par1ItemStack == null)
+        {
             return false;
+        }
 
         List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getBuggyBenchRecipes();
         for (INasaWorkbenchRecipe recipe : recipes)
         {
             if (ItemStack.areItemsEqual(par1ItemStack, recipe.getRecipeInput().get(this.index)))
+            {
                 return true;
+            }
         }
         return false;
     }

@@ -86,11 +86,12 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
         }
     }
 
+    @Override
     @Nullable
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 
     @Override

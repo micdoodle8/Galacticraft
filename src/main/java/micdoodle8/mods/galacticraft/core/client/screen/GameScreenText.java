@@ -51,7 +51,8 @@ public class GameScreenText implements IGameScreen
         if (GCCoreUtil.getEffectiveSide().isClient())
         {
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
-            try {
+            try
+            {
                 Class clazz = LivingRenderer.class;
                 int count = 0;
                 for (Method m : clazz.getDeclaredMethods())
@@ -61,18 +62,27 @@ public class GameScreenText implements IGameScreen
                     {
                         m.setAccessible(true);
                         this.renderModelMethod = m;
-                        if (count == 1) break;
+                        if (count == 1)
+                        {
+                            break;
+                        }
                         count = 1;
                     }
                     else if (s.equals(GCCoreUtil.isDeobfuscated() ? "renderLayers" : "func_177093_a"))
                     {
                         m.setAccessible(true);
                         this.renderLayersMethod = m;
-                        if (count == 1) break;
+                        if (count == 1)
+                        {
+                            break;
+                        }
                         count = 1;
                     }
                 }
-            } catch (Exception e) { }
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 
@@ -109,7 +119,7 @@ public class GameScreenText implements IGameScreen
         //Make the text to draw.  To look good it's important the width and height
         //of the whole text box are correctly set here.
         String strName = "";
-        String[] str = { GCCoreUtil.translate("gui.display.nolink"), "", "", "", "" };
+        String[] str = {GCCoreUtil.translate("gui.display.nolink"), "", "", "", ""};
         EntityRenderer renderEntity = null;
         Entity entity = null;
         float Xmargin = 0;
@@ -310,15 +320,15 @@ public class GameScreenText implements IGameScreen
             {
                 ((ITelemetry) entity).adjustDisplay(telemeter.clientData);
             }
-        	RenderPlayerGC.flagThermalOverride = true;
-        	if (entity instanceof LivingEntity && renderEntity instanceof LivingRenderer && renderModelMethod != null)
-        	{
-        	    this.renderLiving((LivingEntity) entity, (LivingRenderer) renderEntity, ticks % 1F);
-        	}
-        	else
-        	{
-        	    renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        	}
+            RenderPlayerGC.flagThermalOverride = true;
+            if (entity instanceof LivingEntity && renderEntity instanceof LivingRenderer && renderModelMethod != null)
+            {
+                this.renderLiving((LivingEntity) entity, (LivingRenderer) renderEntity, ticks % 1F);
+            }
+            else
+            {
+                renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+            }
             RenderPlayerGC.flagThermalOverride = false;
 //            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 //            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
@@ -392,7 +402,7 @@ public class GameScreenText implements IGameScreen
         GlStateManager.enableCull();
         GlStateManager.popMatrix();
     }
-    
+
     private String makeTimeString(int l)
     {
         int hrs = l / 360000;

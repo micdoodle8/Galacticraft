@@ -21,7 +21,7 @@ public class ContainerElectricFurnace extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ELECTRIC_FURNACE)
     public static ContainerType<ContainerElectricFurnace> TYPE;
 
-    private TileEntityElectricFurnace tile;
+    private final TileEntityElectricFurnace tile;
 
     public ContainerElectricFurnace(int containerId, PlayerInventory playerInv, TileEntityElectricFurnace tile)
     {
@@ -151,7 +151,8 @@ public class ContainerElectricFurnace extends Container
         return var2;
     }
 
-    protected boolean checkRoastable(World world, ItemStack stack) {
+    protected boolean checkRoastable(World world, ItemStack stack)
+    {
         return world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(stack), world).isPresent();
     }
 }

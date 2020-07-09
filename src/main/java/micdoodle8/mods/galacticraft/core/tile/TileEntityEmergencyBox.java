@@ -56,14 +56,14 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
     public float lastAngleB = 0F;
     public float lastAngleC = 0F;
     public float lastAngleD = 0F;
-    
+
     private boolean openN = false;
     private boolean openW = false;
     private boolean openS = false;
     private boolean openE = false;
     private int cooldown = 0;
 
-    private HashSet<BlockVec3> airToRestore = new HashSet<>();
+    private final HashSet<BlockVec3> airToRestore = new HashSet<>();
     private boolean activated = false;
     private Vec3d vec3Centre;
     private Vec3d thisVec3;
@@ -85,57 +85,81 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
             this.vec3Centre = new Vec3d(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D);
             this.mobsAABB = new AxisAlignedBB(this.pos.getX() - 14, this.pos.getY() - 7, this.pos.getZ() - 14, this.pos.getX() + 14, this.pos.getY() + 7, this.pos.getZ() + 14);
         }
-        
+
         if (this.world.isRemote)
         {
             if (this.openN && this.angleA < 90F)
             {
                 this.lastAngleA = this.angleA;
                 this.angleA += SPEED;
-                if (this.angleA > 90F) this.angleA = 90F;
+                if (this.angleA > 90F)
+                {
+                    this.angleA = 90F;
+                }
             }
             if (this.openW && this.angleB < 90F)
             {
                 this.lastAngleB = this.angleB;
                 this.angleB += SPEED;
-                if (this.angleB > 90F) this.angleB = 90F;
+                if (this.angleB > 90F)
+                {
+                    this.angleB = 90F;
+                }
             }
             if (this.openS && this.angleC < 90F)
             {
                 this.lastAngleC = this.angleC;
                 this.angleC += SPEED;
-                if (this.angleC > 90F) this.angleC = 90F;
+                if (this.angleC > 90F)
+                {
+                    this.angleC = 90F;
+                }
             }
             if (this.openE && this.angleD < 90F)
             {
                 this.lastAngleD = this.angleD;
                 this.angleD += SPEED;
-                if (this.angleD > 90F) this.angleD = 90F;
+                if (this.angleD > 90F)
+                {
+                    this.angleD = 90F;
+                }
             }
 
             if (!this.openN && this.angleA > 0F)
             {
                 this.lastAngleA = this.angleA;
                 this.angleA -= SPEED;
-                if (this.angleA < 0F) this.angleA = 0F;
+                if (this.angleA < 0F)
+                {
+                    this.angleA = 0F;
+                }
             }
             if (!this.openW && this.angleB > 0F)
             {
                 this.lastAngleB = this.angleB;
                 this.angleB -= SPEED;
-                if (this.angleB < 0F) this.angleB = 0F;
+                if (this.angleB < 0F)
+                {
+                    this.angleB = 0F;
+                }
             }
             if (!this.openS && this.angleC > 0F)
             {
                 this.lastAngleC = this.angleC;
                 this.angleC -= SPEED;
-                if (this.angleC < 0F) this.angleC = 0F;
+                if (this.angleC < 0F)
+                {
+                    this.angleC = 0F;
+                }
             }
             if (!this.openE && this.angleD > 0F)
             {
                 this.lastAngleD = this.angleD;
                 this.angleD -= SPEED;
-                if (this.angleD < 0F) this.angleD = 0F;
+                if (this.angleD < 0F)
+                {
+                    this.angleD = 0F;
+                }
             }
         }
         else
@@ -144,7 +168,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
             {
                 this.cooldown--;
             }
-            
+
             boolean updateRequired = false;
             if (this.openN)
             {
@@ -158,7 +182,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     {
                         clash = true;
                     }
-                    VoxelShape check = VoxelShapes.create(0.125D, 0.125D, 11/16D, 0.875D, 0.875D, 1D);
+                    VoxelShape check = VoxelShapes.create(0.125D, 0.125D, 11 / 16D, 0.875D, 0.875D, 1D);
                     if (neighbour != VoxelShapes.empty())
                     {
                         clash = check.getBoundingBox().intersects(neighbour.getBoundingBox());
@@ -182,7 +206,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     {
                         clash = true;
                     }
-                    VoxelShape check = VoxelShapes.create(0.125D, 0.125D, 0D, 0.875D, 0.875D, 5/16D);
+                    VoxelShape check = VoxelShapes.create(0.125D, 0.125D, 0D, 0.875D, 0.875D, 5 / 16D);
                     if (neighbour != VoxelShapes.empty())
                     {
                         clash = check.getBoundingBox().intersects(neighbour.getBoundingBox());
@@ -206,7 +230,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     {
                         clash = true;
                     }
-                    VoxelShape check = VoxelShapes.create(11/16D, 0.125D, 0.125D, 1D, 0.875D, 0.875D);
+                    VoxelShape check = VoxelShapes.create(11 / 16D, 0.125D, 0.125D, 1D, 0.875D, 0.875D);
                     if (neighbour != VoxelShapes.empty())
                     {
                         clash = check.getBoundingBox().intersects(neighbour.getBoundingBox());
@@ -230,7 +254,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     {
                         clash = true;
                     }
-                    VoxelShape check = VoxelShapes.create(0D, 0.125D, 0.125D, 5/16D, 0.875D, 0.875D);
+                    VoxelShape check = VoxelShapes.create(0D, 0.125D, 0.125D, 5 / 16D, 0.875D, 0.875D);
                     if (neighbour != VoxelShapes.empty())
                     {
                         clash = check.getBoundingBox().intersects(neighbour.getBoundingBox());
@@ -242,12 +266,12 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     updateRequired = true;
                 }
             }
-            
+
             if (updateRequired)
             {
                 this.updateClients();
             }
-            
+
             if (this.world.rand.nextInt(15) == 0)
             {
                 this.scareMobs();
@@ -272,12 +296,15 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                 {
                     continue;
                 }
-                
+
                 Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 12, 5, vec3Centre);
                 if (vecNewTarget == null)
                 {
                     vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 14, 7, vec3Centre);
-                    if (vecNewTarget == null) continue;
+                    if (vecNewTarget == null)
+                    {
+                        continue;
+                    }
                 }
                 double distanceNew = vecNewTarget.squareDistanceTo(thisVec3);
                 double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.posX, mob.posY, mob.posZ));
@@ -300,32 +327,56 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
     public float getAngleA(float f)
     {
         float result = this.angleA + (this.angleA - this.lastAngleA) * f;
-        if (result > 90F) result = 90F;
-        if (result < 0F) result = 0F;
+        if (result > 90F)
+        {
+            result = 90F;
+        }
+        if (result < 0F)
+        {
+            result = 0F;
+        }
         return result;
     }
 
     public float getAngleB(float f)
     {
         float result = this.angleB + (this.angleB - this.lastAngleB) * f;
-        if (result > 90F) result = 90F;
-        if (result < 0F) result = 0F;
+        if (result > 90F)
+        {
+            result = 90F;
+        }
+        if (result < 0F)
+        {
+            result = 0F;
+        }
         return result;
     }
 
     public float getAngleC(float f)
     {
         float result = this.angleC + (this.angleC - this.lastAngleC) * f;
-        if (result > 90F) result = 90F;
-        if (result < 0F) result = 0F;
+        if (result > 90F)
+        {
+            result = 90F;
+        }
+        if (result < 0F)
+        {
+            result = 0F;
+        }
         return result;
     }
 
     public float getAngleD(float f)
     {
         float result = this.angleD + (this.angleD - this.lastAngleD) * f;
-        if (result > 90F) result = 90F;
-        if (result < 0F) result = 0F;
+        if (result > 90F)
+        {
+            result = 90F;
+        }
+        if (result < 0F)
+        {
+            result = 0F;
+        }
         return result;
     }
 
@@ -495,7 +546,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
         }
 
         int data = (this.openN ? 1 : 0) + (this.openW ? 2 : 0) + (this.openS ? 4 : 0) + (this.openE ? 8 : 0);
-        sendData.add((byte)data);
+        sendData.add((byte) data);
         for (BlockVec3 vec : this.airToRestore)
         {
             sendData.add(vec);
@@ -528,7 +579,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
             }
         }
     }
-    
+
     @Override
     public void onLoad()
     {
@@ -538,7 +589,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
     }
-    
+
     private void updateClients()
     {
         GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), 128, GCCoreUtil.getDimensionID(this.world)));
@@ -549,7 +600,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
 //    {
 //        return oldState.getBlock() != newState.getBlock();
 //    }
-    
+
     private void brightenAir(BlockPos blockpos, BlockState newState)
     {
         Chunk chunk = this.world.getChunkAt(blockpos);
@@ -563,7 +614,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
 //        this.world.checkLightFor(LightType.BLOCK, blockpos); TODO Lighting
         this.markDirty();
     }
-    
+
     private void setDarkerAir(BlockVec3 vec)
     {
         BlockPos blockpos = vec.toBlockPos();
@@ -581,18 +632,23 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
         {
             return;
         }
-            
+
         Chunk chunk = this.world.getChunkAt(blockpos);
         BlockState oldState = chunk.setBlockState(blockpos, newState, false);
-        if (this.world.isRemote && oldState != null) this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
+        if (this.world.isRemote && oldState != null)
+        {
+            this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
+        }
 //        this.world.checkLightFor(LightType.BLOCK, blockpos);  TODO Lighting
     }
 
     private void revertAir()
     {
         if (this.airToRestore.isEmpty())
+        {
             return;
-        
+        }
+
         int index = 0;
         for (BlockVec3 vec : this.airToRestore)
         {
@@ -608,7 +664,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
         this.revertAir();
         super.remove();
     }
-    
+
     private void setLightBlocks()
     {
         this.setLightBlock(new BlockPos(this.pos.getX() - 6, this.pos.getY(), this.pos.getZ()));

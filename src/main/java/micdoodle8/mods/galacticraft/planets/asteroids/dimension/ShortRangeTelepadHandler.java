@@ -16,7 +16,7 @@ import java.util.Map;
 public class ShortRangeTelepadHandler extends WorldSavedData
 {
     public static final String saveDataID = "ShortRangeTelepads";
-    private static Map<Integer, TelepadEntry> tileMap = Maps.newHashMap();
+    private static final Map<Integer, TelepadEntry> tileMap = Maps.newHashMap();
 
     public ShortRangeTelepadHandler(String saveDataID)
     {

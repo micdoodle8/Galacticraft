@@ -169,7 +169,9 @@ public class BlockFallenMeteor extends Block implements IShiftDescription
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
             BlockPos blockpos1;
 
-            for (blockpos1 = pos.down(); this.canFallBelow(world, blockpos1) && blockpos1.getY() > 0; blockpos1 = blockpos1.down()) {}
+            for (blockpos1 = pos.down(); this.canFallBelow(world, blockpos1) && blockpos1.getY() > 0; blockpos1 = blockpos1.down())
+            {
+            }
 
             if (blockpos1.getY() >= 0)
             {
@@ -193,7 +195,7 @@ public class BlockFallenMeteor extends Block implements IShiftDescription
         }
         else
         {
-            return block.getMaterial(world.getBlockState(pos)) == Material.WATER ? true : block.getMaterial(world.getBlockState(pos)) == Material.LAVA;
+            return block.getMaterial(world.getBlockState(pos)) == Material.WATER || block.getMaterial(world.getBlockState(pos)) == Material.LAVA;
         }
     }
 
@@ -285,9 +287,12 @@ public class BlockFallenMeteor extends Block implements IShiftDescription
     @Override
     public int getExpDrop(BlockState state, IWorldReader world, BlockPos pos, int fortune, int silktouch)
     {
-        if (state.getBlock() != this) return 0;
+        if (state.getBlock() != this)
+        {
+            return 0;
+        }
 
-        Random rand = world instanceof World ? ((World)world).rand : new Random();
+        Random rand = world instanceof World ? ((World) world).rand : new Random();
         return MathHelper.nextInt(rand, 3, 7);
     }
 }

@@ -28,7 +28,7 @@ public class AsteroidsTickHandlerServer
     public static List<EntityAstroMiner> activeMiners = new ArrayList<>();
     public static AtomicBoolean loadingSavedChunks = new AtomicBoolean();
     private static Field droppedChunks = null;
-    
+
     public static void restart()
     {
         spaceRaceData = null;
@@ -48,7 +48,7 @@ public class AsteroidsTickHandlerServer
         if (event.phase == TickEvent.Phase.START)
         {
             TileEntityMinerBase.checkNewMinerBases();
-            
+
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
                 World world = server.getWorld(DimensionType.OVERWORLD);
@@ -60,17 +60,17 @@ public class AsteroidsTickHandlerServer
                     ((ServerWorld) world).getSavedData().set(AsteroidsTickHandlerServer.spaceRaceData);
                 }
             }
-            
+
             int index = -1;
-            for(EntityAstroMiner miner : activeMiners)
+            for (EntityAstroMiner miner : activeMiners)
             {
-                index ++;
+                index++;
                 if (!miner.isAlive())
                 {
 //                    minerIt.remove();  Don't remove it, we want the index number to be static for the others
                     continue;
                 }
-                
+
                 if (miner.playerMP != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(miner.playerMP);
@@ -109,13 +109,13 @@ public class AsteroidsTickHandlerServer
             }
         }
     }
-    
+
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START)
         {
-            for(EntityAstroMiner miner : activeMiners)
+            for (EntityAstroMiner miner : activeMiners)
             {
                 if (miner.playerMP != null && miner.world == event.world && miner.isAlive())
                 {
@@ -126,7 +126,7 @@ public class AsteroidsTickHandlerServer
         }
         else if (event.phase == TickEvent.Phase.END)
         {
-            for(EntityAstroMiner miner : activeMiners)
+            for (EntityAstroMiner miner : activeMiners)
             {
                 if (!miner.isAlive())
                 {
@@ -146,24 +146,25 @@ public class AsteroidsTickHandlerServer
                     {
                         if (droppedChunks == null)
                         {
-                            Class clazz = ((ServerWorld)miner.world).getChunkProvider().getClass();
+                            Class clazz = ((ServerWorld) miner.world).getChunkProvider().getClass();
                             droppedChunks = clazz.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "droppedChunksSet" : "field_73248_b");
                             droppedChunks.setAccessible(true);
                         }
-                        Set<Long> undrop = (Set<Long>) droppedChunks.get(((ServerWorld)miner.world).getChunkProvider());
+                        Set<Long> undrop = (Set<Long>) droppedChunks.get(((ServerWorld) miner.world).getChunkProvider());
                         undrop.remove(ChunkPos.asLong(miner.chunkCoordX, miner.chunkCoordZ));
-                    } catch (Exception ignore)
+                    }
+                    catch (Exception ignore)
                     {
                     }
                 }
-            }            
+            }
         }
     }
 
     public static void removeChunkData(GCPlayerStats stats, EntityAstroMiner entityToRemove)
     {
         int index = 0;
-        for(EntityAstroMiner miner : activeMiners)
+        for (EntityAstroMiner miner : activeMiners)
         {
             if (miner == entityToRemove)  //Found it in the list here
             {
@@ -204,7 +205,7 @@ public class AsteroidsTickHandlerServer
                 if (p != null && p.getWorld() != null)
                 {
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
-                    ServerWorld w = (ServerWorld)p.getWorld();
+                    ServerWorld w = (ServerWorld) p.getWorld();
                     boolean previous = CompatibilityManager.forceLoadChunks(w);
                     w.getChunkProvider().getChunk(data.x, data.z, true);
                     CompatibilityManager.forceLoadChunksEnd(w, previous);

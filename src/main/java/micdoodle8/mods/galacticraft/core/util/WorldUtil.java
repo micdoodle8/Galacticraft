@@ -78,9 +78,9 @@ import java.util.function.Supplier;
 public class WorldUtil
 {
     public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MOD_ID_CORE);
-//    public static HashMap<DimensionType, DimensionType> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
+    //    public static HashMap<DimensionType, DimensionType> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
     public static HashSet<DimensionType> registeredSpaceStations = new HashSet<>();
-//    public static Map<DimensionType, ResourceLocation> dimNames = new TreeMap<>();  //Dimension IDs and dimension names
+    //    public static Map<DimensionType, ResourceLocation> dimNames = new TreeMap<>();  //Dimension IDs and dimension names
     public static Map<ServerPlayerEntity, HashMap<String, DimensionType>> celestialMapCache = new MapMaker().weakKeys().makeMap();
     public static List<DimensionType> registeredPlanets;
 
@@ -88,38 +88,50 @@ public class WorldUtil
     public static final RegistryObject<ModDimension> MOON_MOD_DIMENSION = register("moon", WorldUtil::moonFactory);
     public static final RegistryObject<ModDimension> SPACE_STATION_MOD_DIMENSION = register("space_station_overworld", WorldUtil::spaceStationFactory);
 
-    private static ModDimension moonFactory() {
-        return new ModDimension() {
+    private static ModDimension moonFactory()
+    {
+        return new ModDimension()
+        {
             @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+            {
                 return DimensionMoon::new;
             }
         };
     }
 
-    private static ModDimension spaceStationFactory() {
-        return new ModDimension() {
+    private static ModDimension spaceStationFactory()
+    {
+        return new ModDimension()
+        {
             @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+            {
                 return DimensionOverworldOrbit::new;
             }
         };
     }
 
-    private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup) {
+    private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup)
+    {
         return DIMENSIONS.register(name, sup);
     }
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
-    public static class EventDimensionType {
+    public static class EventDimensionType
+    {
         @SubscribeEvent
-        public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
+        public static void onModDimensionRegister(final RegisterDimensionsEvent event)
+        {
             ResourceLocation id = new ResourceLocation(Constants.MOD_ID_CORE, "moon");
-            if (DimensionType.byName(id) == null) {
+            if (DimensionType.byName(id) == null)
+            {
                 MOON_DIMENSION = DimensionManager.registerDimension(id, MOON_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
                 MOON_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(MOON_DIMENSION, false);
-            } else {
+            }
+            else
+            {
                 MOON_DIMENSION = DimensionType.byName(id);
             }
         }
@@ -310,7 +322,7 @@ public class WorldUtil
                     if (playerBase.world.getDimension() instanceof IOrbitDimension)
                     {
                         //Player is currently on another space station around the same planet
-                        final SpaceStationWorldData dataCurrent = SpaceStationWorldData.getStationData((ServerWorld)playerBase.world, playerBase.dimension.getRegistryName(), null);
+                        final SpaceStationWorldData dataCurrent = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, playerBase.dimension.getRegistryName(), null);
                         if (dataCurrent.getHomePlanet() == data.getHomePlanet())
                         {
                             temp.add(element);
@@ -401,7 +413,7 @@ public class WorldUtil
         }
         return theServer.getWorld(id);
     }
-    
+
     /**
      * CAUTION: this loads the dimension if it is not already loaded.  This can cause
      * server load if used too frequently or with a list of multiple dimensions.
@@ -649,7 +661,7 @@ public class WorldUtil
      * <p>
      * IMPORTANT: GalacticraftRegistry.registerDimension() must always be called in parallel with this
      * meaning the CelestialBodies are iterated in the same order when registered there and here.
-     * 
+     * <p>
      * The defaultID should be 0, and the id should be both a dimension ID and a DimensionType id.
      */
 //    public static boolean registerPlanet(DimensionType id, boolean initialiseDimensionAtServerInit, int defaultID)
@@ -692,7 +704,6 @@ public class WorldUtil
 //        WorldUtil.registeredPlanets.add(id);
 //        return true;
 //    } TODO Registration
-
     public static void unregisterPlanets()
     {
         if (WorldUtil.registeredPlanets != null)
@@ -1112,34 +1123,45 @@ public class WorldUtil
             spawnLocation = type.getPlayerSpawnLocation((ServerWorld) entity.world, (ServerPlayerEntity) entity);
         }
 
-        if (entity instanceof ServerPlayerEntity) {
+        if (entity instanceof ServerPlayerEntity)
+        {
             ChunkPos chunkpos = new ChunkPos(spawnLocation.toBlockPos());
             worldNew.getChunkProvider().func_217228_a(TicketType.POST_TELEPORT, chunkpos, 1, entity.getEntityId());
             entity.stopRiding();
-            if (((ServerPlayerEntity)entity).isSleeping()) {
-                ((ServerPlayerEntity)entity).wakeUpPlayer(true, true, false);
+            if (((ServerPlayerEntity) entity).isSleeping())
+            {
+                ((ServerPlayerEntity) entity).wakeUpPlayer(true, true, false);
             }
 
-            if (worldNew == entity.world) {
-                ((ServerPlayerEntity)entity).connection.setPlayerLocation(spawnLocation.x, spawnLocation.y, spawnLocation.z, yaw, pitch, Collections.emptySet());
-            } else {
-                ((ServerPlayerEntity)entity).teleport(worldNew, spawnLocation.x, spawnLocation.y, spawnLocation.z, yaw, pitch);
+            if (worldNew == entity.world)
+            {
+                ((ServerPlayerEntity) entity).connection.setPlayerLocation(spawnLocation.x, spawnLocation.y, spawnLocation.z, yaw, pitch, Collections.emptySet());
+            }
+            else
+            {
+                ((ServerPlayerEntity) entity).teleport(worldNew, spawnLocation.x, spawnLocation.y, spawnLocation.z, yaw, pitch);
             }
 
             entity.setRotationYawHead(yaw);
-        } else {
+        }
+        else
+        {
             float f1 = MathHelper.wrapDegrees(yaw);
             float f = MathHelper.wrapDegrees(pitch);
             f = MathHelper.clamp(f, -90.0F, 90.0F);
-            if (worldNew == entity.world) {
+            if (worldNew == entity.world)
+            {
                 entity.setLocationAndAngles(spawnLocation.x, spawnLocation.y, spawnLocation.z, f1, f);
                 entity.setRotationYawHead(f1);
-            } else {
+            }
+            else
+            {
                 entity.detach();
                 entity.dimension = worldNew.dimension.getType();
                 Entity entityOld = entity;
                 entity = entity.getType().create(worldNew);
-                if (entity == null) {
+                if (entity == null)
+                {
                     return entity;
                 }
 
@@ -1154,14 +1176,15 @@ public class WorldUtil
 //            facing.updateLook(source, entity);
 //        }
 
-        if (!(entity instanceof LivingEntity) || !((LivingEntity)entity).isElytraFlying()) {
+        if (!(entity instanceof LivingEntity) || !((LivingEntity) entity).isElytraFlying())
+        {
             entity.setMotion(entity.getMotion().mul(1.0D, 0.0D, 1.0D));
             entity.onGround = true;
         }
 
         return entity;
     }
-    
+
 //    public static Entity teleportEntitySimple(World worldNew, DimensionType dimID, ServerPlayerEntity player, Vector3 spawnPos)
 //    {
 //        if (player.getRidingEntity() != null)
@@ -1226,12 +1249,11 @@ public class WorldUtil
 //
 //        return player;
 //    }
-    
-    
+
+
     /**
      * This correctly positions an entity at spawnPos in worldNew
      * loading and adding it to the chunk as required.
-     * 
      */
 //    public static void forceMoveEntityToPos(Entity entity, ServerWorld worldNew, Vector3 spawnPos, boolean spawnRequired)
 //    {
@@ -1255,7 +1277,6 @@ public class WorldUtil
 //        }
 //        CompatibilityManager.forceLoadChunksEnd(worldNew, previous);
 //    }
-
     public static ServerWorld getStartWorld(ServerWorld unchanged)
     {
         if (ConfigManagerCore.challengeSpawnHandling)
@@ -1279,7 +1300,7 @@ public class WorldUtil
     }
 
     /**
-     * This is similar to World.removeEntityDangerously() but without the risk of concurrent modification error 
+     * This is similar to World.removeEntityDangerously() but without the risk of concurrent modification error
      */
 //    private static void removeEntityFromWorld(World var0, Entity var1, boolean directlyRemove)
 //    {
@@ -1310,7 +1331,6 @@ public class WorldUtil
 //
 //        var1.isDead = false;
 //    }
-
     public static SpaceStationRecipe getSpaceStationRecipe(DimensionType planetID)
     {
         for (SpaceStationType type : GalacticraftRegistry.getSpaceStationData())
@@ -1353,12 +1373,12 @@ public class WorldUtil
      * What's important here is that Galacticraft and the server both register
      * the same reachable Galacticraft planets (and their dimension types) in the same order.
      * See WorldUtil.registerPlanet().
-     * 
+     * <p>
      * Even if there are dimension conflicts or other problems, the planets must be
      * registered in the same order on both client and server.  This should happen
      * automatically if Galacticraft versions match, and if planets modules
      * match  (including Galacticraft-Planets and any other sub-mods).
-     * 
+     * <p>
      * It is NOT a good idea for sub-mods to make the registration order of planets variable
      * or dependent on configs.
      */
@@ -1536,8 +1556,8 @@ public class WorldUtil
             count++;
         }
 
-		boolean canCreateStations = PermissionAPI.hasPermission(player, Constants.PERMISSION_CREATE_STATION);
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, GCCoreUtil.getDimensionID(player.world), new Object[] { PlayerUtil.getName(player), dimensionList, canCreateStations }), player);
+        boolean canCreateStations = PermissionAPI.hasPermission(player, Constants.PERMISSION_CREATE_STATION);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, GCCoreUtil.getDimensionID(player.world), new Object[]{PlayerUtil.getName(player), dimensionList, canCreateStations}), player);
         stats.setUsingPlanetSelectionGui(true);
         stats.setSavedPlanetList(dimensionList);
         Entity fakeEntity = new EntityCelestialFake(player.world, player.posX, player.posY, player.posZ);
@@ -1716,7 +1736,7 @@ public class WorldUtil
 
         return checklistValues;
     }
-    
+
     public static Dimension getDimensionTypeById(DimensionType id)
     {
 //        for (Dimension dimensiontype : Dimension.values())
@@ -1754,9 +1774,12 @@ public class WorldUtil
     {
         if (world.getDimension() instanceof DimensionSpace)
         {
-            long current = ((DimensionSpace)world.getDimension()).preTickTime;
-            long dayLength = ((DimensionSpace)world.getDimension()).getDayLength();
-            if (dayLength <= 0) return;
+            long current = ((DimensionSpace) world.getDimension()).preTickTime;
+            long dayLength = ((DimensionSpace) world.getDimension()).getDayLength();
+            if (dayLength <= 0)
+            {
+                return;
+            }
             world.setDayTime(current - current % dayLength + dayLength);
         }
         else
@@ -1764,10 +1787,13 @@ public class WorldUtil
             long newTime = world.getDayTime();
             for (ServerWorld worldServer : GCCoreUtil.getWorldServerList(world))
             {
-                if (worldServer == world) continue;
+                if (worldServer == world)
+                {
+                    continue;
+                }
                 if (worldServer.dimension instanceof DimensionSpace)
                 {
-                    ((DimensionSpace)worldServer.dimension).adjustTime(newTime);
+                    ((DimensionSpace) worldServer.dimension).adjustTime(newTime);
                 }
             }
         }

@@ -76,11 +76,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     // TODO Support other mods' fluids?
     public enum TankGases
     {
-        METHANE(0,  PlanetFluids.GAS_METHANE.getFluid(), GCFluids.FUEL.getFluid()),
-        OXYGEN(1, GCFluids.OXYGEN.getFluid(),  PlanetFluids.LIQUID_OXYGEN.getFluid()),
-        NITROGEN(2, PlanetFluids.GAS_NITROGEN.getFluid(),  PlanetFluids.LIQUID_NITROGEN.getFluid()),
-        ARGON(3,  PlanetFluids.GAS_ARGON.getFluid(),  PlanetFluids.LIQUID_ARGON.getFluid()),
-        AIR(4,  PlanetFluids.GAS_ATMOSPHERIC.getFluid(), null);
+        METHANE(0, PlanetFluids.GAS_METHANE.getFluid(), GCFluids.FUEL.getFluid()),
+        OXYGEN(1, GCFluids.OXYGEN.getFluid(), PlanetFluids.LIQUID_OXYGEN.getFluid()),
+        NITROGEN(2, PlanetFluids.GAS_NITROGEN.getFluid(), PlanetFluids.LIQUID_NITROGEN.getFluid()),
+        ARGON(3, PlanetFluids.GAS_ARGON.getFluid(), PlanetFluids.LIQUID_ARGON.getFluid()),
+        AIR(4, PlanetFluids.GAS_ATMOSPHERIC.getFluid(), null);
 
         int index;
         Fluid gas;
@@ -449,12 +449,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             return false;
         }
 
-        if ((this.gasTankType == this.fluidTankType && tank1HasSpace) || (this.gasTankType == this.fluidTank2Type && tank2HasSpace))
-        {
-            return true;
-        }
-
-        return false;
+        return (this.gasTankType == this.fluidTankType && tank1HasSpace) || (this.gasTankType == this.fluidTank2Type && tank2HasSpace);
     }
 
     public int getAirProducts()
@@ -619,15 +614,15 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         if (side == Direction.DOWN)
         {
-            return new int[] { 0, 1, 2, 3 };
+            return new int[]{0, 1, 2, 3};
         }
 
         if (side == Direction.UP)
         {
-            return new int[] { 0 };
+            return new int[]{0};
         }
 
-        return new int[] { 1, 2, 3 };
+        return new int[]{1, 2, 3};
     }
 
     @Override
@@ -658,7 +653,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         switch (slotID)
         {
         case 0:
-        	return ItemElectricBase.isElectricItemEmpty(itemstack);
+            return ItemElectricBase.isElectricItemEmpty(itemstack);
         case 1:
             return FluidUtil.isEmptyContainer(itemstack);
         case 2:

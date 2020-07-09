@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.tileentity.model.ChestModel;
 
 public class ModelParaChestTile extends ChestModel
 {
-    public RendererModel keyParts[] = new RendererModel[3];
+    public RendererModel[] keyParts = new RendererModel[3];
 
     public ModelParaChestTile()
     {

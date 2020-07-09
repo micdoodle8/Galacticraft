@@ -28,7 +28,7 @@ import java.util.Random;
 public class BlockCheese extends Block implements IShiftDescription
 {
     public static final IntegerProperty BITES = IntegerProperty.create("bites", 0, 6);
-    protected static final VoxelShape[] CHEESE_AABB = new VoxelShape[] {
+    protected static final VoxelShape[] CHEESE_AABB = new VoxelShape[]{
             Block.makeCuboidShape(0.0625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
             Block.makeCuboidShape(0.1875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
             Block.makeCuboidShape(0.3125, 0.0, 0.0625, 0.9375, 0.5, 0.9375),

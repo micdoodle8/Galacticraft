@@ -27,7 +27,8 @@ import org.apache.commons.io.IOUtils;
  * To enable your mod call instance.addDomain(modid).
  * If you need more control over accepted resources - extend the class, and register a new instance with ModelLoaderRegistry.
  */
-public class OBJLoaderGC implements ICustomModelLoader {
+public class OBJLoaderGC implements ICustomModelLoader
+{
     public static final OBJLoaderGC instance = new OBJLoaderGC();
     private IResourceManager manager;
     private final Set<String> enabledDomains = new HashSet<>();
@@ -37,7 +38,7 @@ public class OBJLoaderGC implements ICustomModelLoader {
     {
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(instance);
     }
-    
+
     public void addDomain(String domain)
     {
         enabledDomains.add(domain.toLowerCase());
@@ -76,10 +77,17 @@ public class OBJLoaderGC implements ICustomModelLoader {
                 catch (FileNotFoundException e)
                 {
                     if (file.getPath().startsWith("models/block/"))
+                    {
                         resource = manager.getResource(new ResourceLocation(file.getNamespace(), "models/item/" + file.getPath().substring("models/block/".length())));
+                    }
                     else if (file.getPath().startsWith("models/item/"))
+                    {
                         resource = manager.getResource(new ResourceLocation(file.getNamespace(), "models/block/" + file.getPath().substring("models/item/".length())));
-                    else throw e;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
                 }
                 OBJModel.Parser parser = new OBJModel.Parser(resource, manager);
                 try
@@ -96,7 +104,10 @@ public class OBJLoaderGC implements ICustomModelLoader {
                 IOUtils.closeQuietly(resource);
             }
         }
-        if (model == null) return ModelLoaderRegistry.getMissingModel();
+        if (model == null)
+        {
+            return ModelLoaderRegistry.getMissingModel();
+        }
         return model;
     }
 }

@@ -23,11 +23,13 @@ public class VenusEntities
     public static final RegistryObject<EntityType<EntitySpiderQueen>> SPIDER_QUEEN = register(VenusEntityNames.SPIDER_QUEEN, VenusEntities::spiderQueen);
     public static final RegistryObject<EntityType<EntityWebShot>> WEB_SHOT = register(VenusEntityNames.WEB_SHOT, VenusEntities::webShot);
 
-    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
+    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup)
+    {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
-    private static EntityType.Builder<EntityEntryPodVenus> entryPod() {
+    private static EntityType.Builder<EntityEntryPodVenus> entryPod()
+    {
         return EntityType.Builder.create(EntityEntryPodVenus::new, EntityClassification.MISC)
                 .size(1.5F, 3.0F)
                 .immuneToFire()
@@ -36,7 +38,8 @@ public class VenusEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityJuicer> juicer() {
+    private static EntityType.Builder<EntityJuicer> juicer()
+    {
         return EntityType.Builder.create(EntityJuicer::new, EntityClassification.MISC)
                 .size(0.95F, 0.6F)
                 .setUpdateInterval(10)
@@ -44,7 +47,8 @@ public class VenusEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntitySpiderQueen> spiderQueen() {
+    private static EntityType.Builder<EntitySpiderQueen> spiderQueen()
+    {
         return EntityType.Builder.create(EntitySpiderQueen::new, EntityClassification.MISC)
                 .size(1.4F, 0.9F)
                 .immuneToFire()
@@ -53,7 +57,8 @@ public class VenusEntities
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    private static EntityType.Builder<EntityWebShot> webShot() {
+    private static EntityType.Builder<EntityWebShot> webShot()
+    {
         return EntityType.Builder.create(EntityWebShot::new, EntityClassification.MISC)
                 .size(0.5F, 0.5F)
                 .immuneToFire()

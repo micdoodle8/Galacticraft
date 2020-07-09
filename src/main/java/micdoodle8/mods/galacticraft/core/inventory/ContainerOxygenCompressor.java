@@ -19,7 +19,7 @@ public class ContainerOxygenCompressor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.OXYGEN_COMPRESSOR)
     public static ContainerType<ContainerOxygenCompressor> TYPE;
 
-    private TileEntityOxygenCompressor compressor;
+    private final TileEntityOxygenCompressor compressor;
 
     public ContainerOxygenCompressor(int containerId, PlayerInventory playerInv, TileEntityOxygenCompressor compressor)
     {
@@ -131,7 +131,7 @@ public class ContainerOxygenCompressor extends Container
                 }
                 else
                 {
-                   slot.putStack(ItemStack.EMPTY);
+                    slot.putStack(ItemStack.EMPTY);
                 }
             }
             else

@@ -32,6 +32,7 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     {
         super(type, worldIn);
     }
+
     @Override
     protected void registerAttributes()
     {
@@ -118,15 +119,19 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     @Override
     public void setTumbling(float value)
     {
-        if (value !=0F)
+        if (value != 0F)
         {
             if (this.tumbling == 0F)
+            {
                 this.tumbling = (this.world.rand.nextFloat() + 0.5F) * value;
+            }
         }
         else
+        {
             this.tumbling = 0F;
+        }
     }
-    
+
     @Override
     public void tick()
     {
@@ -153,7 +158,9 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
                 {
                     this.tumbleAngle *= 0.8F;
                     if (Math.abs(this.tumbleAngle) < 1F)
+                    {
                         this.tumbleAngle = 0F;
+                    }
                 }
             }
         }
@@ -195,7 +202,7 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     {
         float angle = this.tumbleAngle - partial * this.tumbling;
         if (angle > 360F)
-        {   
+        {
             this.tumbleAngle -= 360F;
             angle -= 360F;
         }
@@ -211,7 +218,10 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     public float getTumbleAxisX()
     {
         double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
-        if (velocity2 == 0D) return 1F;
+        if (velocity2 == 0D)
+        {
+            return 1F;
+        }
         return (float) (this.getMotion().z / MathHelper.sqrt(velocity2));
     }
 
@@ -219,7 +229,10 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     public float getTumbleAxisZ()
     {
         double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
-        if (velocity2 == 0D) return 0F;
+        if (velocity2 == 0D)
+        {
+            return 0F;
+        }
         return (float) (this.getMotion().x / MathHelper.sqrt(velocity2));
     }
 }

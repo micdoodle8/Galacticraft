@@ -133,10 +133,10 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public void slowDischarge()
     {
-       	if (this.ticks % 10 == 0)
-       	{
-       	    this.storage.extractEnergyGC(5F, false);
-       	}
+        if (this.ticks % 10 == 0)
+        {
+            this.storage.extractEnergyGC(5F, false);
+        }
     }
 
     @Override
@@ -217,6 +217,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         return EnumSet.of(this.getElectricInputDirection());
     }
 
+    @Override
     public boolean isUsableByPlayer(PlayerEntity entityplayer)
     {
         return this.getWorld().getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
@@ -274,7 +275,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate(shorten ? "gui.status.missingpower.short.name" : "gui.status.missingpower.name");
         }
-        
+
         if (missingInput != null)
         {
             return missingInput;

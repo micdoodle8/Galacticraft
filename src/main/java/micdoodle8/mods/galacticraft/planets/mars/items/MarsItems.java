@@ -12,40 +12,72 @@ import static micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItem
 
 public class MarsItems
 {
-    @ObjectHolder(MarsItemNames.deshPickaxe) public static Item deshPickaxe;
-    @ObjectHolder(MarsItemNames.deshPickSlime) public static Item deshPickSlime;
-    @ObjectHolder(MarsItemNames.deshAxe) public static Item deshAxe;
-    @ObjectHolder(MarsItemNames.deshHoe) public static Item deshHoe;
-    @ObjectHolder(MarsItemNames.deshSpade) public static Item deshSpade;
-    @ObjectHolder(MarsItemNames.deshSword) public static Item deshSword;
-    @ObjectHolder(MarsItemNames.deshHelmet) public static Item deshHelmet;
-    @ObjectHolder(MarsItemNames.deshChestplate) public static Item deshChestplate;
-    @ObjectHolder(MarsItemNames.deshLeggings) public static Item deshLeggings;
-    @ObjectHolder(MarsItemNames.deshBoots) public static Item deshBoots;
-    @ObjectHolder(MarsItemNames.rocketTierTwo) public static Item rocketTierTwo;
-    @ObjectHolder(MarsItemNames.rocketTierTwoCargo1) public static Item rocketTierTwoCargo1;
-    @ObjectHolder(MarsItemNames.rocketTierTwoCargo2) public static Item rocketTierTwoCargo2;
-    @ObjectHolder(MarsItemNames.rocketTierTwoCargo3) public static Item rocketTierTwoCargo3;
-    @ObjectHolder(MarsItemNames.rocketTierTwoCreative) public static Item rocketTierTwoCreative;
-    @ObjectHolder(MarsItemNames.rocketCargo1) public static Item rocketCargo1;
-    @ObjectHolder(MarsItemNames.rocketCargo2) public static Item rocketCargo2;
-    @ObjectHolder(MarsItemNames.rocketCargo3) public static Item rocketCargo3;
-    @ObjectHolder(MarsItemNames.rocketCargoCreative) public static Item rocketCargoCreative;
-    @ObjectHolder(MarsItemNames.key) public static Item key;
-    @ObjectHolder(MarsItemNames.schematicRocketT3) public static Item schematicRocketT3;
-    @ObjectHolder(MarsItemNames.schematicCargoRocket) public static Item schematicCargoRocket;
-    @ObjectHolder(MarsItemNames.schematicAstroMiner) public static Item schematicAstroMiner;
-    @ObjectHolder(MarsItemNames.carbonFragments) public static Item carbonFragments;
-    @ObjectHolder(MarsItemNames.rawDesh) public static Item rawDesh;
-    @ObjectHolder(MarsItemNames.deshStick) public static Item deshStick;
-    @ObjectHolder(MarsItemNames.ingotDesh) public static Item ingotDesh;
-    @ObjectHolder(MarsItemNames.reinforcedPlateT2) public static Item reinforcedPlateT2;
-    @ObjectHolder(MarsItemNames.slimelingCargo) public static Item slimelingCargo;
-    @ObjectHolder(MarsItemNames.compressedDesh) public static Item compressedDesh;
-    @ObjectHolder(MarsItemNames.fluidManip) public static Item fluidManip;
+    @ObjectHolder(MarsItemNames.deshPickaxe)
+    public static Item deshPickaxe;
+    @ObjectHolder(MarsItemNames.deshPickSlime)
+    public static Item deshPickSlime;
+    @ObjectHolder(MarsItemNames.deshAxe)
+    public static Item deshAxe;
+    @ObjectHolder(MarsItemNames.deshHoe)
+    public static Item deshHoe;
+    @ObjectHolder(MarsItemNames.deshSpade)
+    public static Item deshSpade;
+    @ObjectHolder(MarsItemNames.deshSword)
+    public static Item deshSword;
+    @ObjectHolder(MarsItemNames.deshHelmet)
+    public static Item deshHelmet;
+    @ObjectHolder(MarsItemNames.deshChestplate)
+    public static Item deshChestplate;
+    @ObjectHolder(MarsItemNames.deshLeggings)
+    public static Item deshLeggings;
+    @ObjectHolder(MarsItemNames.deshBoots)
+    public static Item deshBoots;
+    @ObjectHolder(MarsItemNames.rocketTierTwo)
+    public static Item rocketTierTwo;
+    @ObjectHolder(MarsItemNames.rocketTierTwoCargo1)
+    public static Item rocketTierTwoCargo1;
+    @ObjectHolder(MarsItemNames.rocketTierTwoCargo2)
+    public static Item rocketTierTwoCargo2;
+    @ObjectHolder(MarsItemNames.rocketTierTwoCargo3)
+    public static Item rocketTierTwoCargo3;
+    @ObjectHolder(MarsItemNames.rocketTierTwoCreative)
+    public static Item rocketTierTwoCreative;
+    @ObjectHolder(MarsItemNames.rocketCargo1)
+    public static Item rocketCargo1;
+    @ObjectHolder(MarsItemNames.rocketCargo2)
+    public static Item rocketCargo2;
+    @ObjectHolder(MarsItemNames.rocketCargo3)
+    public static Item rocketCargo3;
+    @ObjectHolder(MarsItemNames.rocketCargoCreative)
+    public static Item rocketCargoCreative;
+    @ObjectHolder(MarsItemNames.key)
+    public static Item key;
+    @ObjectHolder(MarsItemNames.schematicRocketT3)
+    public static Item schematicRocketT3;
+    @ObjectHolder(MarsItemNames.schematicCargoRocket)
+    public static Item schematicCargoRocket;
+    @ObjectHolder(MarsItemNames.schematicAstroMiner)
+    public static Item schematicAstroMiner;
+    @ObjectHolder(MarsItemNames.carbonFragments)
+    public static Item carbonFragments;
+    @ObjectHolder(MarsItemNames.rawDesh)
+    public static Item rawDesh;
+    @ObjectHolder(MarsItemNames.deshStick)
+    public static Item deshStick;
+    @ObjectHolder(MarsItemNames.ingotDesh)
+    public static Item ingotDesh;
+    @ObjectHolder(MarsItemNames.reinforcedPlateT2)
+    public static Item reinforcedPlateT2;
+    @ObjectHolder(MarsItemNames.slimelingCargo)
+    public static Item slimelingCargo;
+    @ObjectHolder(MarsItemNames.compressedDesh)
+    public static Item compressedDesh;
+    @ObjectHolder(MarsItemNames.fluidManip)
+    public static Item fluidManip;
 //    public static Item bucketSludge;
 
-    public static Item.Properties defaultBuilder() {
+    public static Item.Properties defaultBuilder()
+    {
         return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
     }
 

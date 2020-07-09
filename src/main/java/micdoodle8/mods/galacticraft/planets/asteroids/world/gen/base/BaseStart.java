@@ -36,7 +36,7 @@ public class BaseStart extends BaseDeck
         listIn.clear();
         listIn.add(this);
         List<Piece> rooms = getRooms(0, this, rand);
-        for(Piece next : rooms)
+        for (Piece next : rooms)
         {
             listIn.add(next);
             attachedComponents.add(next);

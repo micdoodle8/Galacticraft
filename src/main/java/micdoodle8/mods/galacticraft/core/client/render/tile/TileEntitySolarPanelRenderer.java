@@ -42,7 +42,9 @@ public class TileEntitySolarPanelRenderer extends TileEntityRenderer<TileEntityS
             GL11.glPopMatrix();
         }
         else
+        {
             this.model.renderPole();
+        }
 
         GL11.glTranslatef(0.0F, 1.5F, 0.0F);
 
@@ -58,7 +60,7 @@ public class TileEntitySolarPanelRenderer extends TileEntityRenderer<TileEntityS
         }
 
         GL11.glRotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);
-        
+
         this.model.renderPanel();
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);

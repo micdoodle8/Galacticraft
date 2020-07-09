@@ -16,9 +16,9 @@ public class NetworkFinderSolar
 {
     public World worldObj;
     public BlockVec3 start;
-    private BlockVec3 toIgnore;
+    private final BlockVec3 toIgnore;
 
-    private Set<BlockVec3> iterated = new HashSet<>();
+    private final Set<BlockVec3> iterated = new HashSet<>();
     public List<ITransmitter> found = new LinkedList<>();
 
     public NetworkFinderSolar(World world, BlockVec3 location, BlockVec3 ignore)

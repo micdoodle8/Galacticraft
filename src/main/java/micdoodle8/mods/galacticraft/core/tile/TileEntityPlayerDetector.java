@@ -29,7 +29,7 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickableTil
     @Override
     public void tick()
     {
-        if (!this.world.isRemote && ++this.ticks >= 25) 
+        if (!this.world.isRemote && ++this.ticks >= 25)
         {
             this.ticks = 0;
             int facing = 0;
@@ -42,7 +42,7 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickableTil
             double y = this.getPos().getY();
             int z = this.getPos().getZ();
             double range = 14D;
-            double hysteresis = result ? 3D : 0D; 
+            double hysteresis = result ? 3D : 0D;
             switch (facing)
             {
             case 0:
@@ -65,7 +65,7 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickableTil
             }
         }
     }
-    
+
     public boolean detectingPlayer()
     {
         return result;

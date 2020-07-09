@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem, ISortableItem
 {
     private static int indexOffset = 0;
-    
+
     public ItemSchematicTier2(Item.Properties properties)
     {
         super(properties);
@@ -69,17 +69,17 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     {
         return EnumSortCategoryItem.SCHEMATIC;
     }
-    
-    /** 
-     *  Higher tiers should use this form and make sure they have set up the
-     *  indexOffset correctly in registerSchematicItems()
+
+    /**
+     * Higher tiers should use this form and make sure they have set up the
+     * indexOffset correctly in registerSchematicItems()
      */
     @Override
     protected int getIndex(int damage)
     {
         return damage + indexOffset;
     }
-    
+
     /**
      * Make sure the number of these will match the index values
      */

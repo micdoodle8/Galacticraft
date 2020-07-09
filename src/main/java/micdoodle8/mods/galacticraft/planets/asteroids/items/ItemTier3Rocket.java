@@ -228,7 +228,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
         {
             rocket.fuelTank.fill(new FluidStack(GCFluids.FUEL.getFluid(), stack.getTag().getInt("RocketFuel")), IFluidHandler.FluidAction.EXECUTE);
         }
-        
+
         return true;
     }
 }

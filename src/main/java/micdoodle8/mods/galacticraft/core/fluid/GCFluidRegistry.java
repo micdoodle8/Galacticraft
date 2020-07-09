@@ -23,13 +23,15 @@ public class GCFluidRegistry
     private final DeferredRegister<Block> blockRegister;
     private final DeferredRegister<Item> itemRegister;
 
-    public GCFluidRegistry() {
+    public GCFluidRegistry()
+    {
         blockRegister = new DeferredRegister<>(ForgeRegistries.BLOCKS, Constants.MOD_ID_CORE);
         fluidRegister = new DeferredRegister<>(ForgeRegistries.FLUIDS, Constants.MOD_ID_CORE);
         itemRegister = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MOD_ID_CORE);
     }
 
-    public FluidRegistrationEntry<ForgeFlowingFluid.Source, ForgeFlowingFluid.Flowing, FlowingFluidBlock, BucketItem> register(String name, FluidAttributes.Builder builder, Material blockMaterial) {
+    public FluidRegistrationEntry<ForgeFlowingFluid.Source, ForgeFlowingFluid.Flowing, FlowingFluidBlock, BucketItem> register(String name, FluidAttributes.Builder builder, Material blockMaterial)
+    {
         String flowingName = "flowing_" + name;
         String bucketName = name + "_bucket";
         //Create the registry object with dummy entries that we can use as part of the supplier but that works as use in suppliers
@@ -49,7 +51,8 @@ public class GCFluidRegistry
         return fluidRegistryObject;
     }
 
-    public void register(IEventBus bus) {
+    public void register(IEventBus bus)
+    {
         blockRegister.register(bus);
         fluidRegister.register(bus);
         itemRegister.register(bus);

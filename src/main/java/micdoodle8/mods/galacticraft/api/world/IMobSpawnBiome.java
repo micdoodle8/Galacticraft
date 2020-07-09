@@ -12,5 +12,5 @@ import net.minecraft.world.biome.Biome.SpawnListEntry;
  */
 public interface IMobSpawnBiome
 {
-    public void initialiseMobLists(Map<SpawnListEntry, EntityClassification> mobInfo);
+    void initialiseMobLists(Map<SpawnListEntry, EntityClassification> mobInfo);
 }

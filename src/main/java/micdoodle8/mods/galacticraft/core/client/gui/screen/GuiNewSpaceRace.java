@@ -52,7 +52,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     }
 
     private int ticksPassed;
-    private PlayerEntity thePlayer;
+    private final PlayerEntity thePlayer;
     private GuiElementCheckbox checkboxPaintbrush;
     private GuiElementCheckbox checkboxShowGrid;
     private GuiElementCheckbox checkboxEraser;
@@ -92,8 +92,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     private int selectionMinY;
     private int selectionMaxY;
 
-    private EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
-    private ModelFlag dummyModel = new ModelFlag();
+    private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
+    private final ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;
     public Map<String, Integer> recentlyInvited = new HashMap<String, Integer>();
@@ -158,7 +158,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
             this.buttonTeamColor_xPosition = this.buttonFlag_xPosition + this.buttonFlag_width + 10;
             this.buttonTeamColor_yPosition = this.buttonFlag_yPosition + this.buttonFlag_height / 2 - this.buttonTeamColor_height / 2;
 
-            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? GCCoreUtil.translate("gui.space_race.create.close.name") : GCCoreUtil.translate("gui.space_race.create.back.name"), (button) -> {
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, this.currentState == EnumSpaceRaceGui.MAIN ? GCCoreUtil.translate("gui.space_race.create.close.name") : GCCoreUtil.translate("gui.space_race.create.back.name"), (button) ->
+            {
                 if (this.currentState == EnumSpaceRaceGui.CHANGE_TEAM_COLOR)
                 {
                     this.markDirty();
@@ -174,14 +175,16 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 this.buttons.add(this.textBoxRename);
                 if (this.canEdit)
                 {
-                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.add_players.name"), (button) -> {
+                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.add_players.name"), (button) ->
+                    {
                         if (this.currentState == EnumSpaceRaceGui.MAIN && this.canEdit)
                         {
                             this.currentState = EnumSpaceRaceGui.ADD_PLAYER;
                             this.init();
                         }
                     }));
-                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.rem_players.name"), (button) -> {
+                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.rem_players.name"), (button) ->
+                    {
                         if (this.currentState == EnumSpaceRaceGui.MAIN && this.canEdit)
                         {
                             this.currentState = EnumSpaceRaceGui.REMOVE_PLAYER;
@@ -190,15 +193,20 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                     }));
                 }
 
-                GuiElementGradientButton localStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.server_stats.name"), (button) -> {});
-                GuiElementGradientButton serverStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.global_stats.name"), (button) -> {});
+                GuiElementGradientButton localStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.server_stats.name"), (button) ->
+                {
+                });
+                GuiElementGradientButton serverStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.global_stats.name"), (button) ->
+                {
+                });
                 localStats.active = false;
                 serverStats.active = false;
                 this.buttons.add(localStats);
                 this.buttons.add(serverStats);
                 break;
             case ADD_PLAYER:
-                this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.send_invite.name"), (button) -> {
+                this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.send_invite.name"), (button) ->
+                {
                     if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER)
                     {
                         ListElement playerToInvite = this.gradientListAddPlayers.getSelectedElement();
@@ -207,20 +215,21 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                             SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
                             if (race != null)
                             {
-                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { playerToInvite.value, race.getSpaceRaceID() }));
+                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{playerToInvite.value, race.getSpaceRaceID()}));
                                 this.recentlyInvited.put(playerToInvite.value, 20 * 60);
                             }
                         }
                     }
                 }));
-                int xPos0 = ((GuiElementGradientButton) this.buttons.get(0)).x + ((GuiElementGradientButton) this.buttons.get(0)).getWidth() + 10;
+                int xPos0 = ((GuiElementGradientButton) this.buttons.get(0)).x + this.buttons.get(0).getWidth() + 10;
                 int xPos1 = this.width / 2 + this.width / 3 - 10;
                 int yPos0 = this.height / 2 - this.height / 3 + 10;
                 int yPos1 = this.height / 2 + this.height / 3 - 10;
                 this.gradientListAddPlayers = new GuiElementGradientList(xPos0, yPos0, xPos1 - xPos0, yPos1 - yPos0);
                 break;
             case REMOVE_PLAYER:
-                this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.remove.name"), (button) -> {
+                this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.remove.name"), (button) ->
+                {
                     if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER)
                     {
                         ListElement playerToRemove = this.gradientListRemovePlayers.getSelectedElement();
@@ -229,12 +238,12 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                             SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
                             if (race != null)
                             {
-                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
+                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{playerToRemove.value, race.getSpaceRaceID()}));
                             }
                         }
                     }
                 }));
-                int xPos0b = ((GuiElementGradientButton) this.buttons.get(0)).x + ((GuiElementGradientButton) this.buttons.get(0)).getWidth() + 10;
+                int xPos0b = ((GuiElementGradientButton) this.buttons.get(0)).x + this.buttons.get(0).getWidth() + 10;
                 int xPos1b = this.width / 2 + this.width / 3 - 10;
                 int yPos0b = this.height / 2 - this.height / 3 + 10;
                 int yPos1b = this.height / 2 + this.height / 3 - 10;
@@ -246,10 +255,10 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 int guiRight = this.width / 2 + this.width / 3;
                 int guiLeft;
                 this.flagDesignerScale = new Vector2(this.width / 130.0F, this.height / 70.0F);
-                this.flagDesignerMinX = this.width / 2 - this.spaceRaceData.getFlagData().getWidth() * (float) this.flagDesignerScale.x / 2;
-                this.flagDesignerMinY = this.height / 2 - this.spaceRaceData.getFlagData().getHeight() * (float) this.flagDesignerScale.y / 2;
-                this.flagDesignerWidth = this.spaceRaceData.getFlagData().getWidth() * (float) this.flagDesignerScale.x;
-                this.flagDesignerHeight = this.spaceRaceData.getFlagData().getHeight() * (float) this.flagDesignerScale.y;
+                this.flagDesignerMinX = this.width / 2 - this.spaceRaceData.getFlagData().getWidth() * this.flagDesignerScale.x / 2;
+                this.flagDesignerMinY = this.height / 2 - this.spaceRaceData.getFlagData().getHeight() * this.flagDesignerScale.y / 2;
+                this.flagDesignerWidth = this.spaceRaceData.getFlagData().getWidth() * this.flagDesignerScale.x;
+                this.flagDesignerHeight = this.spaceRaceData.getFlagData().getHeight() * this.flagDesignerScale.y;
                 int flagDesignerRight = (int) (this.flagDesignerMinX + this.flagDesignerWidth);
                 int availWidth = (int) ((guiRight - 10 - (this.flagDesignerMinX + this.flagDesignerWidth + 10)) / 3);
                 float x1 = flagDesignerRight + 10;
@@ -411,7 +420,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
             List<ListElement> playerNames = new ArrayList<ListElement>();
             for (int i = 0; i < this.thePlayer.world.getPlayers().size(); i++)
             {
-                PlayerEntity player = (PlayerEntity) this.thePlayer.world.getPlayers().get(i);
+                PlayerEntity player = this.thePlayer.world.getPlayers().get(i);
 
                 if (player.getDistanceSq(this.thePlayer) <= 25 * 25)
                 {
@@ -468,8 +477,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
         {
 //            int x = Mouse.getEventX() * this.width / this.minecraft.displayWidth;
 //            int y = this.height - Mouse.getEventY() * this.height / this.minecraft.displayHeight - 1;
-            int x = (int)(minecraft.mouseHelper.getMouseX() * (double)minecraft.mainWindow.getScaledWidth() / (double)minecraft.mainWindow.getWidth());
-            int y = (int)(minecraft.mouseHelper.getMouseY() * (double)minecraft.mainWindow.getScaledHeight() / (double)minecraft.mainWindow.getHeight());
+            int x = (int) (minecraft.mouseHelper.getMouseX() * (double) minecraft.mainWindow.getScaledWidth() / (double) minecraft.mainWindow.getWidth());
+            int y = (int) (minecraft.mouseHelper.getMouseY() * (double) minecraft.mainWindow.getScaledHeight() / (double) minecraft.mainWindow.getHeight());
 
             if (this.canEdit && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
             {
@@ -554,17 +563,17 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
             if (this.sliderColorR != null && this.sliderColorR.visible)
             {
-                this.sliderColorR.setMessage(String.valueOf((int)Math.floor(this.sliderColorR.getColorValueF())));
+                this.sliderColorR.setMessage(String.valueOf((int) Math.floor(this.sliderColorR.getColorValueF())));
             }
 
             if (this.sliderColorG != null && this.sliderColorG.visible)
             {
-                this.sliderColorG.setMessage(String.valueOf((int)Math.floor(this.sliderColorG.getColorValueF())));
+                this.sliderColorG.setMessage(String.valueOf((int) Math.floor(this.sliderColorG.getColorValueF())));
             }
 
             if (this.sliderColorB != null && this.sliderColorB.visible)
             {
-                this.sliderColorB.setMessage(String.valueOf((int)Math.floor(this.sliderColorB.getColorValueF())));
+                this.sliderColorB.setMessage(String.valueOf((int) Math.floor(this.sliderColorB.getColorValueF())));
             }
         }
         else if (this.currentState == EnumSpaceRaceGui.MAIN)
@@ -707,7 +716,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
+                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder worldRenderer = tessellator.getBuffer();
@@ -790,7 +799,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
+                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 x1 = this.sliderColorG.x;
                 x2 = this.sliderColorG.x + this.sliderColorG.getWidth();

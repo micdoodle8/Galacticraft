@@ -21,7 +21,7 @@ import java.util.List;
 public class GuiCircuitFabricator extends GuiContainerGC<ContainerCircuitFabricator>
 {
     private static final ResourceLocation CIRCUIT_FABRICATOR_TEXTURE = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/circuit_fabricator.png");
-    private TileEntityCircuitFabricator fabricator;
+    private final TileEntityCircuitFabricator fabricator;
     private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private final GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 53, 12, null, 0, 0, this);
 

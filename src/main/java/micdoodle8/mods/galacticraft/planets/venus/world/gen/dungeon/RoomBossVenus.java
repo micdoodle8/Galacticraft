@@ -89,7 +89,7 @@ public class RoomBossVenus extends SizedPieceVenus
     @Override
     public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
     {
-        MutableBoundingBox box = new MutableBoundingBox(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE });
+        MutableBoundingBox box = new MutableBoundingBox(new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE});
 
         for (int i = 0; i <= this.sizeX; i++)
         {

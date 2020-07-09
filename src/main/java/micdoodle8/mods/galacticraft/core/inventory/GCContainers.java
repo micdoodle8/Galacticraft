@@ -23,7 +23,8 @@ import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 public class GCContainers
 {
     @SubscribeEvent
-    public static void initContainers(RegistryEvent.Register<ContainerType<?>> evt) {
+    public static void initContainers(RegistryEvent.Register<ContainerType<?>> evt)
+    {
         IForgeRegistry<ContainerType<?>> r = evt.getRegistry();
 
         ContainerType<ContainerBuggy> buggy = IForgeContainerType.create((windowId, inv, data) -> new ContainerBuggy(windowId, inv, EntityBuggy.BuggyType.byId(data.readInt())));
@@ -32,10 +33,11 @@ public class GCContainers
         ContainerType<ContainerCoalGenerator> coalGenerator = IForgeContainerType.create((windowId, inv, data) -> new ContainerCoalGenerator(windowId, inv));
         ContainerType<ContainerCrafting> crafting = IForgeContainerType.create((windowId, inv, data) -> new ContainerCrafting(windowId, inv, (TileEntityCrafting) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerDeconstructor> deconstructor = IForgeContainerType.create((windowId, inv, data) -> new ContainerDeconstructor(windowId, inv));
-        ContainerType<ContainerElectricFurnace> electricFurnace = IForgeContainerType.create((windowId, inv, data) -> new ContainerElectricFurnace(windowId, inv, (TileEntityElectricFurnace)inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+        ContainerType<ContainerElectricFurnace> electricFurnace = IForgeContainerType.create((windowId, inv, data) -> new ContainerElectricFurnace(windowId, inv, (TileEntityElectricFurnace) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerElectricIngotCompressor> electricIngotCompressor = IForgeContainerType.create((windowId, inv, data) -> new ContainerElectricIngotCompressor(windowId, inv, (TileEntityElectricIngotCompressor) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerEnergyStorageModule> energyStorageModule = IForgeContainerType.create((windowId, inv, data) -> new ContainerEnergyStorageModule(windowId, inv, (TileEntityEnergyStorageModule) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-        ContainerType<ContainerExtendedInventory> extendedInventory = IForgeContainerType.create((windowId, inv, data) -> {
+        ContainerType<ContainerExtendedInventory> extendedInventory = IForgeContainerType.create((windowId, inv, data) ->
+        {
             GCPlayerStats stats = GCPlayerStats.get(inv.player);
             return new ContainerExtendedInventory(windowId, inv, stats.getExtendedInventory());
         });
@@ -48,7 +50,7 @@ public class GCContainers
         ContainerType<ContainerOxygenSealer> oxygenSealer = IForgeContainerType.create((windowId, inv, data) -> new ContainerOxygenSealer(windowId, inv, (TileEntityOxygenSealer) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerOxygenStorageModule> oxygenStorageModule = IForgeContainerType.create((windowId, inv, data) -> new ContainerOxygenStorageModule(windowId, inv, (TileEntityOxygenStorageModule) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerPainter> painter = IForgeContainerType.create((windowId, inv, data) -> new ContainerPainter(windowId, inv, (TileEntityPainter) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-        ContainerType<ContainerParaChest> parachest = IForgeContainerType.create((windowId, inv, data) -> new ContainerParaChest(windowId, inv, (TileEntityParaChest)inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+        ContainerType<ContainerParaChest> parachest = IForgeContainerType.create((windowId, inv, data) -> new ContainerParaChest(windowId, inv, (TileEntityParaChest) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerRefinery> refinery = IForgeContainerType.create((windowId, inv, data) -> new ContainerRefinery(windowId, inv, (TileEntityRefinery) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerRocketInventory> rocketInventory = IForgeContainerType.create((windowId, inv, data) -> new ContainerRocketInventory(windowId, inv, (EntityTieredRocket) inv.player.getRidingEntity()));
         ContainerType<ContainerSchematic> schematic = IForgeContainerType.create((windowId, inv, data) -> new ContainerSchematic(windowId, inv));
@@ -85,7 +87,8 @@ public class GCContainers
         register(r, solar, GCContainerNames.SOLAR);
         register(r, treasureT1, GCContainerNames.TREASURE_CHEST_T1);
 
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
+        {
             ScreenManager.registerFactory(buggy, GuiBuggy::new);
             ScreenManager.registerFactory(cargoLoader, GuiCargoLoader::new);
             ScreenManager.registerFactory(circuitFabricator, GuiCircuitFabricator::new);

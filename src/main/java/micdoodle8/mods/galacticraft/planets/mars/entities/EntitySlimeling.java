@@ -707,7 +707,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
 
     public static class EntityAISitGC extends SitGoal
     {
-        private TameableEntity theEntity;
+        private final TameableEntity theEntity;
         private boolean isSitting;
 
         public EntityAISitGC(TameableEntity theEntity)
@@ -735,7 +735,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
                 if (e instanceof LivingEntity)
                 {
                     LivingEntity living = (LivingEntity) e;
-                    return living == null ? true : (this.theEntity.getDistanceSq(living) < 144.0D && living.getRevengeTarget() != null ? false : this.isSitting);
+                    return living == null || ((!(this.theEntity.getDistanceSq(living) < 144.0D) || living.getRevengeTarget() == null) && this.isSitting);
                 }
                 return false;
             }

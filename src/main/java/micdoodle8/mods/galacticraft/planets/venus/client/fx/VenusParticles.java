@@ -16,8 +16,10 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Constants.MOD_ID_PLANETS)
 public class VenusParticles
 {
-    @ObjectHolder(VenusParticleTypeNames.acidExhaust) public static BasicParticleType ACID_EXHAUST;
-    @ObjectHolder(VenusParticleTypeNames.acidVapor) public static BasicParticleType ACID_VAPOR;
+    @ObjectHolder(VenusParticleTypeNames.acidExhaust)
+    public static BasicParticleType ACID_EXHAUST;
+    @ObjectHolder(VenusParticleTypeNames.acidVapor)
+    public static BasicParticleType ACID_VAPOR;
 
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
     {

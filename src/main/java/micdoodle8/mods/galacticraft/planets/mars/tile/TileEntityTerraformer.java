@@ -61,9 +61,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public boolean active;
     public boolean lastActive;
     public static final int WATTS_PER_TICK = 1;
-    private ArrayList<BlockPos> terraformableBlocksList = new ArrayList<BlockPos>();
-    private ArrayList<BlockPos> grassBlockList = new ArrayList<BlockPos>();
-    private ArrayList<BlockPos> grownTreesList = new ArrayList<BlockPos>();
+    private final ArrayList<BlockPos> terraformableBlocksList = new ArrayList<BlockPos>();
+    private final ArrayList<BlockPos> grassBlockList = new ArrayList<BlockPos>();
+    private final ArrayList<BlockPos> grownTreesList = new ArrayList<BlockPos>();
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int terraformableBlocksListSize = 0; // used for server->client ease
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -256,8 +256,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 if (!flag && sapling != null)
                 {
                     Item item = sapling.getItem();
-                    if (item instanceof BlockItem) {
-                        if (((BlockItem)item).tryPlace(new DirectionalPlaceContext(world, vecSapling, Direction.DOWN, sapling, Direction.UP)) == ActionResultType.SUCCESS)
+                    if (item instanceof BlockItem)
+                    {
+                        if (((BlockItem) item).tryPlace(new DirectionalPlaceContext(world, vecSapling, Direction.DOWN, sapling, Direction.UP)) == ActionResultType.SUCCESS)
                         {
                             Block b = world.getBlockState(vecSapling).getBlock();
                             if (b instanceof SaplingBlock)
@@ -505,7 +506,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     }
 
     @Override
@@ -775,7 +776,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         if (direction == null)
         {
             return false;
-        } 
+        }
         if (type == NetworkType.POWER)
         {
             return direction == this.getElectricInputDirection();

@@ -92,7 +92,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 {
                     return ActionResultType.FAIL;
                 }
-                
+
                 if (worldIn.dimension instanceof DimensionSpaceStation)
                 {
                     playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner7.fail")));

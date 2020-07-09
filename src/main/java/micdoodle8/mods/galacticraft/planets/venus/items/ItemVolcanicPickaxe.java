@@ -102,7 +102,7 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
 
         boolean yAxis = facing.getAxis() == Direction.Axis.Y;
         boolean xAxis = facing.getAxis() == Direction.Axis.X;
-        
+
         for (int i = -1; i <= 1; ++i)
         {
             for (int j = -1; j <= 1 && !stack.isEmpty(); ++j)
@@ -135,7 +135,7 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
                     MinecraftForge.EVENT_BUS.post(event);
                     if (!event.isCanceled())
                     {
-                        Block block = state1.getBlock(); 
+                        Block block = state1.getBlock();
                         if ((block instanceof CommandBlockBlock || block instanceof StructureBlock) && !player.canUseCommandBlock())
                         {
                             worldIn.notifyBlockUpdate(pos1, state1, state1, 3);
@@ -147,10 +147,10 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
                             IPacket<?> pkt = tileentity.getUpdatePacket();
                             if (pkt != null)
                             {
-                                ((ServerPlayerEntity)player).connection.sendPacket(pkt);
+                                ((ServerPlayerEntity) player).connection.sendPacket(pkt);
                             }
                         }
-    
+
                         boolean canHarvest = block.canHarvestBlock(state1, worldIn, pos1, player);
                         boolean destroyed = block.removedByPlayer(state1, worldIn, pos1, player, canHarvest, worldIn.getFluidState(pos1));
                         if (destroyed)
@@ -160,7 +160,9 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
                         if (canHarvest && destroyed)
                         {
                             block.harvestBlock(worldIn, player, pos1, state1, tileentity, stack);
-                            stack.damageItem(1, player, (e) -> {});
+                            stack.damageItem(1, player, (e) ->
+                            {
+                            });
                         }
                     }
                 }

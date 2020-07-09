@@ -27,108 +27,206 @@ import java.util.Map;
 @ObjectHolder(Constants.MOD_ID_CORE)
 public class GCBlocks
 {
-    @ObjectHolder(BlockNames.breatheableAir) public static Block breatheableAir;
-    @ObjectHolder(BlockNames.brightAir) public static Block brightAir;
-    @ObjectHolder(BlockNames.brightBreatheableAir) public static Block brightBreatheableAir;
-    @ObjectHolder(BlockNames.arcLamp) public static Block arcLamp;
-    @ObjectHolder(BlockNames.treasureChestTier1) public static Block treasureChestTier1;
-    @ObjectHolder(BlockNames.landingPad) public static Block landingPad;
-    @ObjectHolder(BlockNames.landingPadFull) public static Block landingPadFull;
-    @ObjectHolder(BlockNames.buggyPad) public static Block buggyPad;
-    @ObjectHolder(BlockNames.buggyPadFull) public static Block buggyPadFull;
-    @ObjectHolder(BlockNames.unlitTorch) public static Block unlitTorch;
-    @ObjectHolder(BlockNames.unlitTorchLit) public static Block unlitTorchLit;
-    @ObjectHolder(BlockNames.oxygenDistributor) public static Block oxygenDistributor;
-    @ObjectHolder(BlockNames.fluidPipe) public static Block fluidPipe;
-    @ObjectHolder(BlockNames.fluidPipePull) public static Block fluidPipePull;
-    @ObjectHolder(BlockNames.oxygenCollector) public static Block oxygenCollector;
-    @ObjectHolder(BlockNames.oxygenCompressor) public static Block oxygenCompressor;
-    @ObjectHolder(BlockNames.oxygenDecompressor) public static Block oxygenDecompressor;
-    @ObjectHolder(BlockNames.oxygenSealer) public static Block oxygenSealer;
-    @ObjectHolder(BlockNames.oxygenDetector) public static Block oxygenDetector;
-    @ObjectHolder(BlockNames.nasaWorkbench) public static Block nasaWorkbench;
-    @ObjectHolder(BlockNames.fallenMeteor) public static Block fallenMeteor;
-//    @ObjectHolder(BlockNames.basicBlock) public static Block basicBlock;
-    @ObjectHolder(BlockNames.airLockFrame) public static Block airLockFrame;
-    @ObjectHolder(BlockNames.airLockController) public static Block airLockController;
-    @ObjectHolder(BlockNames.airLockSeal) public static Block airLockSeal;
-    @ObjectHolder(BlockNames.spaceGlassClear) public static Block spaceGlassClear;
-    @ObjectHolder(BlockNames.spaceGlassVanilla) public static Block spaceGlassVanilla;
-    @ObjectHolder(BlockNames.spaceGlassStrong) public static Block spaceGlassStrong;
-    @ObjectHolder(BlockNames.spaceGlassTinClear) public static Block spaceGlassTinClear;
-    @ObjectHolder(BlockNames.spaceGlassTinVanilla) public static Block spaceGlassTinVanilla;
-    @ObjectHolder(BlockNames.spaceGlassTinStrong) public static Block spaceGlassTinStrong;
-    @ObjectHolder(BlockNames.crafting) public static Block crafting;
-    @ObjectHolder(BlockNames.crudeOil) public static Block crudeOil;
-    @ObjectHolder(BlockNames.fuel) public static Block fuel;
-    @ObjectHolder(BlockNames.refinery) public static Block refinery;
-    @ObjectHolder(BlockNames.fuelLoader) public static Block fuelLoader;
-    @ObjectHolder(BlockNames.spaceStationBase) public static Block spaceStationBase;
-    @ObjectHolder(BlockNames.fakeBlock) public static Block fakeBlock;
-    @ObjectHolder(BlockNames.sealableBlock) public static Block sealableBlock;
-    @ObjectHolder(BlockNames.cargoLoader) public static Block cargoLoader;
-    @ObjectHolder(BlockNames.cargoUnloader) public static Block cargoUnloader;
-    @ObjectHolder(BlockNames.parachest) public static Block parachest;
-    @ObjectHolder(BlockNames.solarPanel) public static Block solarPanel;
-    @ObjectHolder(BlockNames.solarPanelAdvanced) public static Block solarPanelAdvanced;
-    @ObjectHolder(BlockNames.radioTelescope) public static Block radioTelescope;
-//    @ObjectHolder(BlockNames.machineBase) public static Block machineBase;
-    @ObjectHolder(BlockNames.ingotCompressor) public static Block ingotCompressor;
-    @ObjectHolder(BlockNames.ingotCompressorElectric) public static Block ingotCompressorElectric;
-    @ObjectHolder(BlockNames.ingotCompressorElectricAdvanced) public static Block ingotCompressorElectricAdvanced;
-    @ObjectHolder(BlockNames.coalGenerator) public static Block coalGenerator;
-    @ObjectHolder(BlockNames.circuitFabricator) public static Block circuitFabricator;
-    @ObjectHolder(BlockNames.oxygenStorageModule) public static Block oxygenStorageModule;
-    @ObjectHolder(BlockNames.deconstructor) public static Block deconstructor;
-    @ObjectHolder(BlockNames.painter) public static Block painter;
-    @ObjectHolder(BlockNames.storageModule) public static Block storageModule;
-    @ObjectHolder(BlockNames.storageCluster) public static Block storageCluster;
-    @ObjectHolder(BlockNames.furnaceElectric) public static Block furnaceElectric;
-    @ObjectHolder(BlockNames.furanceArc) public static Block furanceArc;
-    @ObjectHolder(BlockNames.aluminumWire) public static Block aluminumWire;
-    @ObjectHolder(BlockNames.aluminumWireHeavy) public static Block aluminumWireHeavy;
-    @ObjectHolder(BlockNames.aluminumWireSwitchable) public static Block aluminumWireSwitchable;
-    @ObjectHolder(BlockNames.aluminumWireSwitchableHeavy) public static Block aluminumWireSwitchableHeavy;
-//    @ObjectHolder(BlockNames.panelLighting) public static Block panelLighting;
-    @ObjectHolder(BlockNames.glowstoneTorch) public static Block glowstoneTorch;
-//    @ObjectHolder(BlockNames.blockMoon) public static Block blockMoon;
-    @ObjectHolder(BlockNames.cheeseBlock) public static Block cheeseBlock;
-    @ObjectHolder(BlockNames.spinThruster) public static Block spinThruster;
-    @ObjectHolder(BlockNames.screen) public static Block screen;
-    @ObjectHolder(BlockNames.telemetry) public static Block telemetry;
-    @ObjectHolder(BlockNames.fluidTank) public static Block fluidTank;
-    @ObjectHolder(BlockNames.bossSpawner) public static Block bossSpawner;
-    @ObjectHolder(BlockNames.slabGCHalf) public static Block slabGCHalf;
-    @ObjectHolder(BlockNames.slabGCDouble) public static Block slabGCDouble;
-    @ObjectHolder(BlockNames.tinStairs1) public static Block tinStairs1;
-    @ObjectHolder(BlockNames.tinStairs2) public static Block tinStairs2;
-    @ObjectHolder(BlockNames.moonStoneStairs) public static Block moonStoneStairs;
-    @ObjectHolder(BlockNames.moonBricksStairs) public static Block moonBricksStairs;
-    @ObjectHolder(BlockNames.wallGC) public static Block wallGC;
-    @ObjectHolder(BlockNames.concealedRedstone) public static Block concealedRedstone;
-    @ObjectHolder(BlockNames.concealedRepeater) public static Block concealedRepeater;
-    @ObjectHolder(BlockNames.concealedDetector) public static Block concealedDetector;
-    @ObjectHolder(BlockNames.platform) public static Block platform;
-    @ObjectHolder(BlockNames.emergencyBox) public static Block emergencyBox;
-    @ObjectHolder(BlockNames.grating) public static Block grating;
-    @ObjectHolder(BlockNames.gratingWater) public static Block gratingWater;
-    @ObjectHolder(BlockNames.gratingLava) public static Block gratingLava;
-    @ObjectHolder(BlockNames.decoBlock0) public static Block decoBlock0;
-    @ObjectHolder(BlockNames.decoBlock1) public static Block decoBlock1;
-    @ObjectHolder(BlockNames.oreCopper) public static Block oreCopper;
-    @ObjectHolder(BlockNames.oreTin) public static Block oreTin;
-    @ObjectHolder(BlockNames.oreAluminum) public static Block oreAluminum;
-    @ObjectHolder(BlockNames.oreSilicon) public static Block oreSilicon;
-    @ObjectHolder(BlockNames.oreMeteoricIron) public static Block oreMeteoricIron;
-    @ObjectHolder(BlockNames.decoBlockCopper) public static Block decoBlockCopper;
-    @ObjectHolder(BlockNames.decoBlockTin) public static Block decoBlockTin;
-    @ObjectHolder(BlockNames.decoBlockAluminum) public static Block decoBlockAluminum;
-    @ObjectHolder(BlockNames.decoBlockMeteorIron) public static Block decoBlockMeteorIron;
-    @ObjectHolder(BlockNames.decoBlockSilicon) public static Block decoBlockSilicon;
-    @ObjectHolder(BlockNames.moonDirt) public static Block moonDirt;
-    @ObjectHolder(BlockNames.moonStone) public static Block moonStone;
-    @ObjectHolder(BlockNames.moonTurf) public static Block moonTurf;
-    @ObjectHolder(BlockNames.moonDungeonBrick) public static Block moonDungeonBrick;
+    @ObjectHolder(BlockNames.breatheableAir)
+    public static Block breatheableAir;
+    @ObjectHolder(BlockNames.brightAir)
+    public static Block brightAir;
+    @ObjectHolder(BlockNames.brightBreatheableAir)
+    public static Block brightBreatheableAir;
+    @ObjectHolder(BlockNames.arcLamp)
+    public static Block arcLamp;
+    @ObjectHolder(BlockNames.treasureChestTier1)
+    public static Block treasureChestTier1;
+    @ObjectHolder(BlockNames.landingPad)
+    public static Block landingPad;
+    @ObjectHolder(BlockNames.landingPadFull)
+    public static Block landingPadFull;
+    @ObjectHolder(BlockNames.buggyPad)
+    public static Block buggyPad;
+    @ObjectHolder(BlockNames.buggyPadFull)
+    public static Block buggyPadFull;
+    @ObjectHolder(BlockNames.unlitTorch)
+    public static Block unlitTorch;
+    @ObjectHolder(BlockNames.unlitTorchLit)
+    public static Block unlitTorchLit;
+    @ObjectHolder(BlockNames.oxygenDistributor)
+    public static Block oxygenDistributor;
+    @ObjectHolder(BlockNames.fluidPipe)
+    public static Block fluidPipe;
+    @ObjectHolder(BlockNames.fluidPipePull)
+    public static Block fluidPipePull;
+    @ObjectHolder(BlockNames.oxygenCollector)
+    public static Block oxygenCollector;
+    @ObjectHolder(BlockNames.oxygenCompressor)
+    public static Block oxygenCompressor;
+    @ObjectHolder(BlockNames.oxygenDecompressor)
+    public static Block oxygenDecompressor;
+    @ObjectHolder(BlockNames.oxygenSealer)
+    public static Block oxygenSealer;
+    @ObjectHolder(BlockNames.oxygenDetector)
+    public static Block oxygenDetector;
+    @ObjectHolder(BlockNames.nasaWorkbench)
+    public static Block nasaWorkbench;
+    @ObjectHolder(BlockNames.fallenMeteor)
+    public static Block fallenMeteor;
+    //    @ObjectHolder(BlockNames.basicBlock) public static Block basicBlock;
+    @ObjectHolder(BlockNames.airLockFrame)
+    public static Block airLockFrame;
+    @ObjectHolder(BlockNames.airLockController)
+    public static Block airLockController;
+    @ObjectHolder(BlockNames.airLockSeal)
+    public static Block airLockSeal;
+    @ObjectHolder(BlockNames.spaceGlassClear)
+    public static Block spaceGlassClear;
+    @ObjectHolder(BlockNames.spaceGlassVanilla)
+    public static Block spaceGlassVanilla;
+    @ObjectHolder(BlockNames.spaceGlassStrong)
+    public static Block spaceGlassStrong;
+    @ObjectHolder(BlockNames.spaceGlassTinClear)
+    public static Block spaceGlassTinClear;
+    @ObjectHolder(BlockNames.spaceGlassTinVanilla)
+    public static Block spaceGlassTinVanilla;
+    @ObjectHolder(BlockNames.spaceGlassTinStrong)
+    public static Block spaceGlassTinStrong;
+    @ObjectHolder(BlockNames.crafting)
+    public static Block crafting;
+    @ObjectHolder(BlockNames.crudeOil)
+    public static Block crudeOil;
+    @ObjectHolder(BlockNames.fuel)
+    public static Block fuel;
+    @ObjectHolder(BlockNames.refinery)
+    public static Block refinery;
+    @ObjectHolder(BlockNames.fuelLoader)
+    public static Block fuelLoader;
+    @ObjectHolder(BlockNames.spaceStationBase)
+    public static Block spaceStationBase;
+    @ObjectHolder(BlockNames.fakeBlock)
+    public static Block fakeBlock;
+    @ObjectHolder(BlockNames.sealableBlock)
+    public static Block sealableBlock;
+    @ObjectHolder(BlockNames.cargoLoader)
+    public static Block cargoLoader;
+    @ObjectHolder(BlockNames.cargoUnloader)
+    public static Block cargoUnloader;
+    @ObjectHolder(BlockNames.parachest)
+    public static Block parachest;
+    @ObjectHolder(BlockNames.solarPanel)
+    public static Block solarPanel;
+    @ObjectHolder(BlockNames.solarPanelAdvanced)
+    public static Block solarPanelAdvanced;
+    @ObjectHolder(BlockNames.radioTelescope)
+    public static Block radioTelescope;
+    //    @ObjectHolder(BlockNames.machineBase) public static Block machineBase;
+    @ObjectHolder(BlockNames.ingotCompressor)
+    public static Block ingotCompressor;
+    @ObjectHolder(BlockNames.ingotCompressorElectric)
+    public static Block ingotCompressorElectric;
+    @ObjectHolder(BlockNames.ingotCompressorElectricAdvanced)
+    public static Block ingotCompressorElectricAdvanced;
+    @ObjectHolder(BlockNames.coalGenerator)
+    public static Block coalGenerator;
+    @ObjectHolder(BlockNames.circuitFabricator)
+    public static Block circuitFabricator;
+    @ObjectHolder(BlockNames.oxygenStorageModule)
+    public static Block oxygenStorageModule;
+    @ObjectHolder(BlockNames.deconstructor)
+    public static Block deconstructor;
+    @ObjectHolder(BlockNames.painter)
+    public static Block painter;
+    @ObjectHolder(BlockNames.storageModule)
+    public static Block storageModule;
+    @ObjectHolder(BlockNames.storageCluster)
+    public static Block storageCluster;
+    @ObjectHolder(BlockNames.furnaceElectric)
+    public static Block furnaceElectric;
+    @ObjectHolder(BlockNames.furanceArc)
+    public static Block furanceArc;
+    @ObjectHolder(BlockNames.aluminumWire)
+    public static Block aluminumWire;
+    @ObjectHolder(BlockNames.aluminumWireHeavy)
+    public static Block aluminumWireHeavy;
+    @ObjectHolder(BlockNames.aluminumWireSwitchable)
+    public static Block aluminumWireSwitchable;
+    @ObjectHolder(BlockNames.aluminumWireSwitchableHeavy)
+    public static Block aluminumWireSwitchableHeavy;
+    //    @ObjectHolder(BlockNames.panelLighting) public static Block panelLighting;
+    @ObjectHolder(BlockNames.glowstoneTorch)
+    public static Block glowstoneTorch;
+    //    @ObjectHolder(BlockNames.blockMoon) public static Block blockMoon;
+    @ObjectHolder(BlockNames.cheeseBlock)
+    public static Block cheeseBlock;
+    @ObjectHolder(BlockNames.spinThruster)
+    public static Block spinThruster;
+    @ObjectHolder(BlockNames.screen)
+    public static Block screen;
+    @ObjectHolder(BlockNames.telemetry)
+    public static Block telemetry;
+    @ObjectHolder(BlockNames.fluidTank)
+    public static Block fluidTank;
+    @ObjectHolder(BlockNames.bossSpawner)
+    public static Block bossSpawner;
+    @ObjectHolder(BlockNames.slabGCHalf)
+    public static Block slabGCHalf;
+    @ObjectHolder(BlockNames.slabGCDouble)
+    public static Block slabGCDouble;
+    @ObjectHolder(BlockNames.tinStairs1)
+    public static Block tinStairs1;
+    @ObjectHolder(BlockNames.tinStairs2)
+    public static Block tinStairs2;
+    @ObjectHolder(BlockNames.moonStoneStairs)
+    public static Block moonStoneStairs;
+    @ObjectHolder(BlockNames.moonBricksStairs)
+    public static Block moonBricksStairs;
+    @ObjectHolder(BlockNames.wallGC)
+    public static Block wallGC;
+    @ObjectHolder(BlockNames.concealedRedstone)
+    public static Block concealedRedstone;
+    @ObjectHolder(BlockNames.concealedRepeater)
+    public static Block concealedRepeater;
+    @ObjectHolder(BlockNames.concealedDetector)
+    public static Block concealedDetector;
+    @ObjectHolder(BlockNames.platform)
+    public static Block platform;
+    @ObjectHolder(BlockNames.emergencyBox)
+    public static Block emergencyBox;
+    @ObjectHolder(BlockNames.grating)
+    public static Block grating;
+    @ObjectHolder(BlockNames.gratingWater)
+    public static Block gratingWater;
+    @ObjectHolder(BlockNames.gratingLava)
+    public static Block gratingLava;
+    @ObjectHolder(BlockNames.decoBlock0)
+    public static Block decoBlock0;
+    @ObjectHolder(BlockNames.decoBlock1)
+    public static Block decoBlock1;
+    @ObjectHolder(BlockNames.oreCopper)
+    public static Block oreCopper;
+    @ObjectHolder(BlockNames.oreTin)
+    public static Block oreTin;
+    @ObjectHolder(BlockNames.oreAluminum)
+    public static Block oreAluminum;
+    @ObjectHolder(BlockNames.oreSilicon)
+    public static Block oreSilicon;
+    @ObjectHolder(BlockNames.oreMeteoricIron)
+    public static Block oreMeteoricIron;
+    @ObjectHolder(BlockNames.decoBlockCopper)
+    public static Block decoBlockCopper;
+    @ObjectHolder(BlockNames.decoBlockTin)
+    public static Block decoBlockTin;
+    @ObjectHolder(BlockNames.decoBlockAluminum)
+    public static Block decoBlockAluminum;
+    @ObjectHolder(BlockNames.decoBlockMeteorIron)
+    public static Block decoBlockMeteorIron;
+    @ObjectHolder(BlockNames.decoBlockSilicon)
+    public static Block decoBlockSilicon;
+    @ObjectHolder(BlockNames.moonDirt)
+    public static Block moonDirt;
+    @ObjectHolder(BlockNames.moonStone)
+    public static Block moonStone;
+    @ObjectHolder(BlockNames.moonTurf)
+    public static Block moonTurf;
+    @ObjectHolder(BlockNames.moonDungeonBrick)
+    public static Block moonDungeonBrick;
 
 //    public static Block breatheableAir;
 //    public static Block brightAir;
@@ -469,7 +567,7 @@ public class GCBlocks
 //        GCBlocks.registerBlocks();
 //        GCBlocks.setHarvestLevels();
     }
-    
+
     public static void oreDictRegistrations()
     {
         // TODO
@@ -657,7 +755,7 @@ public class GCBlocks
 //            }
 //        }
 //    }
-    
+
 //    public static void registerBlocks(IForgeRegistry<Block> registry)
 //    {
 //        for (Block block : GalacticraftCore.blocksList)

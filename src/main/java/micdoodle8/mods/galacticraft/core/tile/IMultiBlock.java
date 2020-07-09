@@ -29,8 +29,8 @@ public interface IMultiBlock extends ITickableTileEntity
      * @param callingBlock - The tile entity who called the onDestroy function
      */
     void onDestroy(TileEntity callingBlock);
-    
+
     void getPositions(BlockPos placedPosition, List<BlockPos> positions);
-    
+
     BlockMulti.EnumBlockMultiType getMultiType();
 }

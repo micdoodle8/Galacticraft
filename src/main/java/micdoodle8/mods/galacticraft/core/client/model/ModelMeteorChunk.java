@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 
 public class ModelMeteorChunk extends EntityModel<EntityMeteorChunk>
 {
-    private RendererModel[] boxes = new RendererModel[6];
+    private final RendererModel[] boxes = new RendererModel[6];
 
     public ModelMeteorChunk()
     {

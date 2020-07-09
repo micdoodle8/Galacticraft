@@ -67,19 +67,19 @@ import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.submergedT
 
 /**
  * These methods are called from vanilla minecraft through bytecode injection done in MicdoodleCore
- *
+ * <p>
  * See https://github.com/micdoodle8/MicdoodleCore
  */
 public class TransformerHooks
 {
-    private static List<IWorldGenerator> otherModGeneratorsWhitelist = new LinkedList<>();
-    private static IWorldGenerator generatorTCAuraNodes = null;
-    private static Method generateTCAuraNodes = null;
-    private static boolean generatorsInitialised = false;
+    private static final List<IWorldGenerator> otherModGeneratorsWhitelist = new LinkedList<>();
+    private static final IWorldGenerator generatorTCAuraNodes = null;
+    private static final Method generateTCAuraNodes = null;
+    private static final boolean generatorsInitialised = false;
     public static List<Block> spawnListAE2_GC = new LinkedList<>();
     public static ThreadLocal<BufferBuilder> renderBuilder = new ThreadLocal<>();
     private static int rainSoundCounter = 0;
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static double getGravityForEntity(Entity entity)
     {
@@ -158,7 +158,7 @@ public class TransformerHooks
     {
         if (e.world.getDimension() instanceof IGalacticraftDimension)
         {
-            return ((IGalacticraftDimension)e.world.getDimension()).getArrowGravity();
+            return ((IGalacticraftDimension) e.world.getDimension()).getArrowGravity();
         }
         else
         {
@@ -302,7 +302,7 @@ public class TransformerHooks
         if (o instanceof Collection<?>)
         {
             ((Collection<Block>) o).add(b);
-            ((Collection<Block>) o).addAll(spawnListAE2_GC );
+            ((Collection<Block>) o).addAll(spawnListAE2_GC);
             return true;
         }
         return false;
@@ -336,19 +336,19 @@ public class TransformerHooks
     @OnlyIn(Dist.CLIENT)
     public static float getColorRed(World world)
     {
-        return (float) WorldUtil.getWorldColor(world).x;
+        return WorldUtil.getWorldColor(world).x;
     }
 
     @OnlyIn(Dist.CLIENT)
     public static float getColorGreen(World world)
     {
-        return (float) WorldUtil.getWorldColor(world).y;
+        return WorldUtil.getWorldColor(world).y;
     }
 
     @OnlyIn(Dist.CLIENT)
     public static float getColorBlue(World world)
     {
-        return (float) WorldUtil.getWorldColor(world).z;
+        return WorldUtil.getWorldColor(world).z;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -472,7 +472,7 @@ public class TransformerHooks
         if (player.getRidingEntity() instanceof ICameraZoomEntity && ClientProxyCore.mc.gameSettings.thirdPersonView == 0)
         {
             Entity entity = player.getRidingEntity();
-            float offset = ((ICameraZoomEntity)entity).getRotateOffset();
+            float offset = ((ICameraZoomEntity) entity).getRotateOffset();
             if (offset > -10F)
             {
                 offset += PLAYER_Y_OFFSET;
@@ -486,7 +486,7 @@ public class TransformerHooks
             }
         }
 
-        if (viewEntity instanceof LivingEntity && viewEntity.world.getDimension() instanceof IZeroGDimension && !((LivingEntity)viewEntity).isSleeping())
+        if (viewEntity instanceof LivingEntity && viewEntity.world.getDimension() instanceof IZeroGDimension && !((LivingEntity) viewEntity).isSleeping())
         {
             float pitch = viewEntity.prevRotationPitch + (viewEntity.rotationPitch - viewEntity.prevRotationPitch) * partialTicks;
             float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
@@ -592,7 +592,7 @@ public class TransformerHooks
 
         return previous;
     }
-    
+
     public static double armorDamageHook(LivingEntity entity)
     {
         if (entity instanceof PlayerEntity && GalacticraftCore.isPlanetsLoaded)
@@ -609,12 +609,12 @@ public class TransformerHooks
         }
         return 1D;
     }
-    
+
     public static void setCurrentBuffer(BufferBuilder buffer)
     {
         renderBuilder.set(buffer);
     }
-    
+
     public static boolean isGrating(boolean orig, Block b)
     {
         return false; // TODO Grating
@@ -638,12 +638,14 @@ public class TransformerHooks
         }
         IWeatherProvider moddedProvider = ((IWeatherProvider) world.getDimension());
         float f = mc.world.getRainStrength(1.0F);
-        if (!mc.gameSettings.fancyGraphics) {
+        if (!mc.gameSettings.fancyGraphics)
+        {
             f /= 2.0F;
         }
 
-        if (f != 0.0F) {
-            random.setSeed((long)rendererUpdateCount * 312987231L);
+        if (f != 0.0F)
+        {
+            random.setSeed((long) rendererUpdateCount * 312987231L);
             IWorldReader iworldreader = mc.world;
             BlockPos blockpos = new BlockPos(mc.gameRenderer.getActiveRenderInfo().getProjectedView());
             int i = 10;
@@ -654,50 +656,63 @@ public class TransformerHooks
             double y = 0.0D;
             double z = 0.0D;
             int j = 0;
-            int k = (int)(100.0F * f * f);
-            if (mc.gameSettings.particles == ParticleStatus.DECREASED) {
+            int k = (int) (100.0F * f * f);
+            if (mc.gameSettings.particles == ParticleStatus.DECREASED)
+            {
                 k >>= 1;
-            } else if (mc.gameSettings.particles == ParticleStatus.MINIMAL) {
+            }
+            else if (mc.gameSettings.particles == ParticleStatus.MINIMAL)
+            {
                 k = 0;
             }
 
-            for(int l = 0; l < k; ++l) {
+            for (int l = 0; l < k; ++l)
+            {
                 BlockPos blockpos1 = iworldreader.getHeight(Heightmap.Type.MOTION_BLOCKING, blockpos.add(random.nextInt(10) - random.nextInt(10), 0, random.nextInt(10) - random.nextInt(10)));
                 Biome biome = iworldreader.getBiome(blockpos1);
                 BlockPos blockpos2 = blockpos1.down();
-                if (blockpos1.getY() <= blockpos.getY() + 10 && blockpos1.getY() >= blockpos.getY() - 10 && biome.getPrecipitation() == Biome.RainType.RAIN && biome.func_225486_c(blockpos1) >= 0.15F) {
+                if (blockpos1.getY() <= blockpos.getY() + 10 && blockpos1.getY() >= blockpos.getY() - 10 && biome.getPrecipitation() == Biome.RainType.RAIN && biome.func_225486_c(blockpos1) >= 0.15F)
+                {
                     double d3 = random.nextDouble();
                     double d4 = random.nextDouble();
                     BlockState blockstate = iworldreader.getBlockState(blockpos2);
                     IFluidState ifluidstate = iworldreader.getFluidState(blockpos1);
                     VoxelShape voxelshape = blockstate.getCollisionShape(iworldreader, blockpos2);
                     double d7 = voxelshape.max(Direction.Axis.Y, d3, d4);
-                    double d8 = (double)ifluidstate.func_215679_a(iworldreader, blockpos1);
+                    double d8 = ifluidstate.func_215679_a(iworldreader, blockpos1);
                     double d5;
                     double d6;
-                    if (d7 >= d8) {
+                    if (d7 >= d8)
+                    {
                         d5 = d7;
                         d6 = voxelshape.min(Direction.Axis.Y, d3, d4);
-                    } else {
+                    }
+                    else
+                    {
                         d5 = 0.0D;
                         d6 = 0.0D;
                     }
 
-                    if (d5 > -Double.MAX_VALUE) {
-                        if (!ifluidstate.isTagged(FluidTags.LAVA) && blockstate.getBlock() != Blocks.MAGMA_BLOCK && (blockstate.getBlock() != Blocks.CAMPFIRE || !blockstate.get(CampfireBlock.LIT))) {
+                    if (d5 > -Double.MAX_VALUE)
+                    {
+                        if (!ifluidstate.isTagged(FluidTags.LAVA) && blockstate.getBlock() != Blocks.MAGMA_BLOCK && (blockstate.getBlock() != Blocks.CAMPFIRE || !blockstate.get(CampfireBlock.LIT)))
+                        {
                             ++j;
-                            x = (double)blockpos2.getX() + d3;
-                            y = (double)((float)blockpos2.getY() + 0.1F) + d5;
-                            z = (double)blockpos2.getZ() + d4;
-                            if (random.nextInt(j) == 0) {
+                            x = (double) blockpos2.getX() + d3;
+                            y = (double) ((float) blockpos2.getY() + 0.1F) + d5;
+                            z = (double) blockpos2.getZ() + d4;
+                            if (random.nextInt(j) == 0)
+                            {
                                 xx = x + d3;
                                 yy = y - 1.0D;
                                 zz = z + d4;
                             }
 
                             mc.world.addParticle(moddedProvider.getParticle(mc.world, x, y, z), x, y, z, 0.0D, 0.0D, 0.0D);
-                        } else {
-                            mc.world.addParticle(ParticleTypes.SMOKE, (double)blockpos1.getX() + d3, (double)((float)blockpos1.getY() + 0.1F) - d6, (double)blockpos1.getZ() + d4, 0.0D, 0.0D, 0.0D);
+                        }
+                        else
+                        {
+                            mc.world.addParticle(ParticleTypes.SMOKE, (double) blockpos1.getX() + d3, (double) ((float) blockpos1.getY() + 0.1F) - d6, (double) blockpos1.getZ() + d4, 0.0D, 0.0D, 0.0D);
                         }
                     }
                 }

@@ -21,7 +21,7 @@ public class ParticleOxygen extends SpriteTexturedParticle
     private final double portalPosY;
     private final double portalPosZ;
     private static long tick = -1L;
-    private static Map<BlockPos, Integer> cacheLighting = new HashMap<>();
+    private static final Map<BlockPos, Integer> cacheLighting = new HashMap<>();
 
     public ParticleOxygen(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, float colR, float colG, float colB)
     {
@@ -126,11 +126,14 @@ public class ParticleOxygen extends SpriteTexturedParticle
     {
         private final IAnimatedSprite spriteSet;
 
-        public Factory(IAnimatedSprite spriteSet) {
+        public Factory(IAnimatedSprite spriteSet)
+        {
             this.spriteSet = spriteSet;
         }
 
-        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        @Override
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+        {
             return new ParticleOxygen(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 0.7F, 0.7F, 1.0F);
         }
     }

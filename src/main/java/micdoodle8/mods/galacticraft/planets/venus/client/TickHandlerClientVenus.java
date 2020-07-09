@@ -24,7 +24,7 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class TickHandlerClientVenus
 {
-    private Map<BlockPos, Integer> lightning = Maps.newHashMap();
+    private final Map<BlockPos, Integer> lightning = Maps.newHashMap();
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event)

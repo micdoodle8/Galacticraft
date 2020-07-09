@@ -22,9 +22,9 @@ import java.nio.FloatBuffer;
 
 public class DrawGameScreen implements IScreenManager
 {
-    private TextureManager textureManager = Minecraft.getInstance().textureManager;
-    private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
-    private static int texCount = 1;
+    private final TextureManager textureManager = Minecraft.getInstance().textureManager;
+    private static final FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
+    private static final int texCount = 1;
 
     private float tickDrawn = -1F;
     public boolean initialise = true;
@@ -34,8 +34,8 @@ public class DrawGameScreen implements IScreenManager
     private int callCount = 0;
     private int tickMapDone = -1;
 
-    private float scaleX;
-    private float scaleZ;
+    private final float scaleX;
+    private final float scaleZ;
 
     public TileEntity driver;
     public EntityType<?> telemetryLastType;
@@ -43,7 +43,7 @@ public class DrawGameScreen implements IScreenManager
     public Entity telemetryLastEntity;
     public EntityRenderer telemetryLastRender;
     public static DynamicTexture reusableMap;  //This will be set up in MapUtil.resetClientBody()
-//    public int[] localMap = null;
+    //    public int[] localMap = null;
     private NativeImage localMap;
     public boolean mapDone = false;
     public boolean mapFirstTick = false;

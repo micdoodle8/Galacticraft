@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @OnlyIn(Dist.CLIENT)
 public class RenderParaChest extends EntityRenderer<EntityParachest>
 {
-    private static final ResourceLocation[] textures = { new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/plain.png"),
+    private static final ResourceLocation[] textures = {new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/plain.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/orange.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/magenta.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/blue.png"),
@@ -30,7 +30,7 @@ public class RenderParaChest extends EntityRenderer<EntityParachest>
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/brown.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkgreen.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/red.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/black.png") };
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/black.png")};
     public static final ResourceLocation PARACHEST_TEXTURE = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachest.png");
 
     private final ModelParaChest chestModel;

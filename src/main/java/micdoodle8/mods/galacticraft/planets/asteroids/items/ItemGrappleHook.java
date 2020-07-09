@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemGrappleHook extends BowItem implements ISortableItem
 {
-    private static NonNullList<ItemStack> stringEntries = null;
+    private static final NonNullList<ItemStack> stringEntries = null;
 
     public ItemGrappleHook(Item.Properties properties)
     {
@@ -85,7 +85,9 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
                 worldIn.addEntity(grapple);
             }
 
-            stack.damageItem(1, player, (e) -> {});
+            stack.damageItem(1, player, (e) ->
+            {
+            });
             grapple.canBePickedUp = player.abilities.isCreativeMode ? 2 : 1;
 
             if (!player.abilities.isCreativeMode)

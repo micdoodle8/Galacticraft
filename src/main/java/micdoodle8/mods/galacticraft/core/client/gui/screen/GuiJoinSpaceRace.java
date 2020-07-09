@@ -36,17 +36,17 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
     protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
 
     private int ticksPassed;
-    private PlayerEntity thePlayer;
+    private final PlayerEntity thePlayer;
     private boolean initialized;
 
     private int buttonFlag_height;
     private int buttonFlag_xPosition;
     private int buttonFlag_yPosition;
 
-    private EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
-    private ModelFlag dummyModel = new ModelFlag();
+    private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
+    private final ModelFlag dummyModel = new ModelFlag();
 
-    private SpaceRace spaceRaceData;
+    private final SpaceRace spaceRaceData;
 
     public GuiJoinSpaceRace(ClientPlayerEntity player)
     {
@@ -84,12 +84,14 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
             this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2;
             this.buttonFlag_yPosition = this.height / 2 - this.height / 3 + 10;
 
-            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close.name"), (button) -> {
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close.name"), (button) ->
+            {
                 this.thePlayer.closeScreen();
             }));
             int width = (int) (var5 / 1.0F);
-            this.buttons.add(new GuiElementGradientButton(this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName()), (button) -> {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID() }));
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName()), (button) ->
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID()}));
                 this.thePlayer.closeScreen();
             }));
         }

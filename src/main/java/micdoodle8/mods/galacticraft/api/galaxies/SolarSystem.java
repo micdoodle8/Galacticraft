@@ -48,7 +48,7 @@ public class SolarSystem
 
     public SolarSystem setMapPosition(Vector3 mapPosition)
     {
-    	mapPosition.scale(500F);
+        mapPosition.scale(500F);
         this.mapPosition = mapPosition;
         return this;
     }

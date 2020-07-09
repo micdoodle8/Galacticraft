@@ -10,7 +10,7 @@ import java.util.HashSet;
 class AirLockProtocol
 {
     private ArrayList<BlockPos> adjacentAirLocks;
-    private HashSet<BlockPos> checked;
+    private final HashSet<BlockPos> checked;
     private final World world;
     private final TileEntity head;
     private final int maxLoops;

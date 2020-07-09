@@ -182,7 +182,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public Direction getFront()
     {
-        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos()));
     }
 
     @Override
@@ -195,7 +195,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override
@@ -334,13 +334,13 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     public MachineSide[] listConfigurableSides()
     {
         //Have to use Electric_In for compatibility with other BlockMachine2, as all use same blockstate
-        return new MachineSide[] { MachineSide.ELECTRIC_IN, MachineSide.PIPE_OUT };
+        return new MachineSide[]{MachineSide.ELECTRIC_IN, MachineSide.PIPE_OUT};
     }
 
     @Override
     public Face[] listDefaultFaces()
     {
-        return new Face[] { Face.LEFT, Face.RIGHT };
+        return new Face[]{Face.LEFT, Face.RIGHT};
     }
 
     private MachineSidePack[] machineSides;
@@ -361,13 +361,13 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     {
         this.machineSides = new MachineSidePack[length];
     }
-    
+
     @Override
     public void onLoad()
     {
         this.clientOnLoad();
     }
-    
+
     @Override
     public IMachineSidesProperties getConfigurationType()
     {

@@ -57,7 +57,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
         PlayerEntity player = (PlayerEntity) entity;
 
-        final RayTraceResult var12 = this.rayTrace(worldIn, player, RayTraceContext.FluidMode.ANY);
+        final RayTraceResult var12 = rayTrace(worldIn, player, RayTraceContext.FluidMode.ANY);
 
         float var7 = useTime / 20.0F;
         var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;

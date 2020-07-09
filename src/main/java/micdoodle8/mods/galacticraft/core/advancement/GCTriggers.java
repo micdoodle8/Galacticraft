@@ -73,7 +73,8 @@ public class GCTriggers
     public static void registerTriggers()
     {
         Method register = null;
-        try {
+        try
+        {
             Class clazz = CriteriaTriggers.class;
             Method[] mm = clazz.getDeclaredMethods();
             for (Method m : mm)
@@ -85,15 +86,23 @@ public class GCTriggers
                     break;
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
-        
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         if (register != null)
         {
-            try {
+            try
+            {
                 register.invoke(null, GCTriggers.LAUNCH_ROCKET);
                 register.invoke(null, GCTriggers.FIND_MOON_BOSS);
                 register.invoke(null, GCTriggers.CREATE_SPACE_STATION);
-            } catch (Exception ignore) {}
+            }
+            catch (Exception ignore)
+            {
+            }
         }
     }
 }

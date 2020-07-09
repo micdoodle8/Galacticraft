@@ -202,7 +202,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
     @Override
     public int[] getSlotsForFace(Direction side)
     {
-        return new int[] { 0 };
+        return new int[]{0};
     }
 
     @Override

@@ -49,9 +49,9 @@ public interface ITeleportType
      * Gets the parachest spawn location when entering this dimension. Return
      * null for no parachest spawn
      *
-     * @param world The world to be spawned into
+     * @param world  The world to be spawned into
      * @param player The player being teleported
-     * @param rand The random instance
+     * @param rand   The random instance
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with. Return null for no spawn
      */
@@ -66,11 +66,11 @@ public interface ITeleportType
      *                         landers if so.
      */
     void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket);
-    
-    
+
+
     /**
      * Used by Asteroids Survival game mode to set up the initial lander inventory
-     * 
+     *
      * @param player
      */
     void setupAdventureSpawn(ServerPlayerEntity player);

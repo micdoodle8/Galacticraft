@@ -12,7 +12,7 @@ public class FlagData
     public static FlagData DEFAULT = new FlagData(48, 32);
     private int height;
     private int width;
-    private byte[][][] color;
+    private final byte[][][] color;
 
     public FlagData(int width, int height)
     {

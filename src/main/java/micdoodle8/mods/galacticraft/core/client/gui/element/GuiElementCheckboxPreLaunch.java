@@ -18,10 +18,10 @@ public class GuiElementCheckboxPreLaunch extends Button
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/checklist_book.png");
     public Boolean isSelected;
-    private ICheckBoxCallback parentGui;
-    private int textColor;
-    private int texX;
-    private int texY;
+    private final ICheckBoxCallback parentGui;
+    private final int textColor;
+    private final int texX;
+    private final int texY;
 
     public GuiElementCheckboxPreLaunch(ICheckBoxCallback parentGui, int x, int y, String text, Button.IPressable onPress)
     {
@@ -80,6 +80,7 @@ public class GuiElementCheckboxPreLaunch extends Button
         tessellator.draw();
     }
 
+    @Override
     protected boolean clicked(double p_clicked_1_, double p_clicked_3_)
     {
         if (super.clicked(p_clicked_1_, p_clicked_3_))
