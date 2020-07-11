@@ -71,9 +71,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 //        this.yOffset = this.height / 2.0F;
     }
 
-//    public EntityTieredRocket(World world, double posX, double posY, double posZ)
+//    public EntityTieredRocket(World world, double getPosX(), double getPosY(), double getPosZ())
 //    {
-//        super(world, posX, posY, posZ);
+//        super(world, getPosX(), getPosY(), getPosZ());
 //    }
 
     public void igniteCheckingCooldown()
@@ -236,8 +236,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         final double rumbleAmount = this.rumble / (double) (37 - 5 * Math.max(this.getRocketTier(), 5));
         for (Entity passenger : this.getPassengers())
         {
-            passenger.posX += rumbleAmount;
-            passenger.posZ += rumbleAmount;
+            passenger.setPosition(passenger.getPosX() + rumbleAmount, passenger.getPosY(), passenger.getPosZ() + rumbleAmount);
         }
 
         if (this.launchPhase >= EnumLaunchPhase.IGNITED.ordinal())
@@ -262,9 +261,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (buffer.readBoolean())
         {
-            this.posX = buffer.readDouble() / 8000.0D;
-            this.posY = buffer.readDouble() / 8000.0D;
-            this.posZ = buffer.readDouble() / 8000.0D;
+            this.setRawPosition(buffer.readDouble() / 8000.0D, buffer.readDouble() / 8000.0D, buffer.readDouble() / 8000.0D);
         }
     }
 
@@ -283,9 +280,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
         if (sendPosUpdates)
         {
-            list.add(this.posX * 8000.0D);
-            list.add(this.posY * 8000.0D);
-            list.add(this.posZ * 8000.0D);
+            list.add(this.getPosX() * 8000.0D);
+            list.add(this.getPosY() * 8000.0D);
+            list.add(this.getPosZ() * 8000.0D);
         }
     }
 
@@ -393,7 +390,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
                 GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
                 this.fuelTank.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-                this.posY = Math.max(255, (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) - 200);
+                this.setRawPosition(this.getPosX(), Math.max(255, (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) - 200), this.getPosZ());
                 return;
             }
         }

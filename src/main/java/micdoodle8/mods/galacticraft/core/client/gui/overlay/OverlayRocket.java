@@ -32,7 +32,7 @@ public class OverlayRocket extends Overlay
             {
                 return;
             }
-            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
 //            mc.entityRenderer.setupOverlayRendering();
             GlStateManager.depthMask(true);
             GlStateManager.enableTexture();

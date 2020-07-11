@@ -53,7 +53,7 @@ public class AsteroidsPlayerHandler
             {
                 final int f = 50;
 
-                if (player.world.rand.nextInt(f) == 0 && player.posY < 260D)
+                if (player.world.rand.nextInt(f) == 0 && player.getPosY() < 260D)
                 {
                     final PlayerEntity closestPlayer = player.world.getClosestPlayer(player, 100);
 
@@ -63,12 +63,12 @@ public class AsteroidsPlayerHandler
                         double motX, motY, motZ;
                         double r = player.world.rand.nextInt(60) + 30D;
                         double theta = Math.PI * 2.0 * player.world.rand.nextDouble();
-                        x = player.posX + Math.cos(theta) * r;
-                        y = player.posY + player.world.rand.nextInt(5);
-                        z = player.posZ + Math.sin(theta) * r;
-                        motX = (player.posX - x + (player.world.rand.nextDouble() - 0.5) * 40) / 400.0F;
+                        x = player.getPosX() + Math.cos(theta) * r;
+                        y = player.getPosY() + player.world.rand.nextInt(5);
+                        z = player.getPosZ() + Math.sin(theta) * r;
+                        motX = (player.getPosX() - x + (player.world.rand.nextDouble() - 0.5) * 40) / 400.0F;
                         motY = (player.world.rand.nextDouble() - 0.5) * 0.4;
-                        motZ = (player.posZ - z + (player.world.rand.nextDouble() - 0.5) * 40) / 400.0F;
+                        motZ = (player.getPosZ() - z + (player.world.rand.nextDouble() - 0.5) * 40) / 400.0F;
 
                         final EntitySmallAsteroid smallAsteroid = new EntitySmallAsteroid(AsteroidEntities.SMALL_ASTEROID.get(), player.world);
                         smallAsteroid.setPosition(x, y, z);

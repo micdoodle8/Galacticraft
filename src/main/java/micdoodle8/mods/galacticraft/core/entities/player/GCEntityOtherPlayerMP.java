@@ -52,18 +52,18 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
         return vanillaCape;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getBrightnessForRender()
-    {
-        double height = this.posY + (double) this.getEyeHeight();
-        if (height > 255D)
-        {
-            height = 255D;
-        }
-        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
-        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getBrightnessForRender()
+//    {
+//        double height = this.posY + (double) this.getEyeHeight();
+//        if (height > 255D)
+//        {
+//            height = 255D;
+//        }
+//        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
+//        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
+//    }
 
     @Override
     public boolean isSneaking()

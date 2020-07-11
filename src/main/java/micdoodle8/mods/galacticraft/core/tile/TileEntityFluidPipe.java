@@ -123,7 +123,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         {
 //            this.world.notifyLightSet(getPos());
             world.getChunkProvider().getLightManager().checkBlock(getPos());
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[]{GCCoreUtil.getDimensionID(this.world), this.getPos()}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionType(this.world), new Object[]{GCCoreUtil.getDimensionType(this.world), this.getPos()}));
         }
     }
 

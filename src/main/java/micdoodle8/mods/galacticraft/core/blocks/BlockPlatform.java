@@ -11,15 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockPlatform extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription
 {
@@ -141,12 +138,12 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 //        return false;
 //    }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)

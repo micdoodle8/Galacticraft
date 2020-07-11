@@ -420,7 +420,7 @@
 //
 //        if (recipe.getRewardsExp())
 //        {
-//            this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
+//            this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY() + 0.5D, this.getPosZ(), i));
 //        }
 //    }
 //
@@ -515,7 +515,7 @@
 //            double d0 = this.rand.nextGaussian() * 0.02D;
 //            double d1 = this.rand.nextGaussian() * 0.02D;
 //            double d2 = this.rand.nextGaussian() * 0.02D;
-//            this.world.addParticle(particleType, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
+//            this.world.addParticle(particleType, this.getPosX() + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.getPosY() + 1.0D + (double) (this.rand.nextFloat() * this.height), this.getPosZ() + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
 //        }
 //    }
 //
@@ -558,7 +558,7 @@
 //        if (!this.world.isRemote && this.isAlive())
 //        {
 //            WitchEntity entitywitch = new EntityEvolvedWitch(this.world);
-//            entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+//            entitywitch.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
 //            entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), (ILivingEntityData) null);
 //            entitywitch.setNoAI(this.isAIDisabled());
 //

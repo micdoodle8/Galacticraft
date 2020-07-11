@@ -35,9 +35,9 @@ public class NetworkRenderer
 
         Tessellator tess = Tessellator.getInstance();
         ClientPlayerEntity player = Minecraft.getInstance().player;
-        double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-        double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-        double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+        double interpPosX = player.lastTickPosX + (player.getPosX() - player.lastTickPosX) * partialTicks;
+        double interpPosY = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * partialTicks;
+        double interpPosZ = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * partialTicks;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 

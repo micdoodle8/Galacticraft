@@ -62,7 +62,7 @@ public class TeleportTypeVenus implements ITeleportType
     @Override
     public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.posX, 900.0, entity.posZ);
+        return new Vector3D(entity.getPosX(), 900.0, entity.getPosZ());
     }
 
     @Override

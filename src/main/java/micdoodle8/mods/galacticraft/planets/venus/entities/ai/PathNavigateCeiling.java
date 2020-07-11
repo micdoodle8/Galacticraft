@@ -41,7 +41,7 @@ public class PathNavigateCeiling extends PathNavigator
     @Override
     protected Vec3d getEntityPosition()
     {
-        return new Vec3d(this.entity.posX, this.getPathablePosY(), this.entity.posZ);
+        return new Vec3d(this.entity.getPosX(), this.getPathablePosY(), this.entity.getPosZ());
     }
 
     private int getPathablePosY()

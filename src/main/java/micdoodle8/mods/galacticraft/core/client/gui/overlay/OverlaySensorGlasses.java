@@ -48,8 +48,8 @@ public class OverlaySensorGlasses extends Overlay
 //        final int k = scaledresolution.getScaledHeight();
 //        OverlaySensorGlasses.minecraft.entityRenderer.setupOverlayRendering();
         Minecraft mc = Minecraft.getInstance();
-        int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
-        int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
+        int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.getMainWindow().getScaledWidth() / (double) mc.getMainWindow().getWidth());
+        int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
@@ -94,8 +94,8 @@ public class OverlaySensorGlasses extends Overlay
             var21 = Math.sqrt(var52 * var52 + var59 * var59) * 0.5D;
 
             Minecraft mc = Minecraft.getInstance();
-            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
-            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
+            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.getMainWindow().getScaledWidth() / (double) mc.getMainWindow().getWidth());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
 //            final ScaledResolution var5 = ClientUtil.getScaledRes(OverlaySensorGlasses.minecraft, OverlaySensorGlasses.minecraft.displayWidth, OverlaySensorGlasses.minecraft.displayHeight);
 //            final int var6 = var5.getScaledWidth();
 //            final int var7 = var5.getScaledHeight();

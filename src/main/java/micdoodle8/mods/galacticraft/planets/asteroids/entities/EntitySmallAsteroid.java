@@ -41,13 +41,13 @@ public class EntitySmallAsteroid extends Entity
         if (!this.firstUpdate)
         {
             // Kill non-moving entities
-            if (Math.abs(this.posX - this.prevPosX) + Math.abs(this.posZ - this.prevPosZ) <= 0)
+            if (Math.abs(this.getPosX() - this.prevPosX) + Math.abs(this.getPosZ() - this.prevPosZ) <= 0)
             {
                 this.remove();
             }
 
             // Remove entities far outside the build range, or too old (to stop accumulations)
-            else if (this.posY > 288D || this.posY < -32D || this.ticksExisted > 3000)
+            else if (this.getPosY() > 288D || this.getPosY() < -32D || this.ticksExisted > 3000)
             {
                 this.remove();
             }

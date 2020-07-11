@@ -12,6 +12,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -32,9 +33,9 @@ public class RoomChestVenus extends RoomEmptyVenus
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
-        if (super.addComponentParts(worldIn, random, chunkBox, pos))
+        if (super.create(worldIn, chunkGeneratorIn, randomIn, mutableBoundingBoxIn, chunkPosIn))
         {
             int chestX = this.sizeX / 2;
             int chestY = 1;
@@ -51,7 +52,7 @@ public class RoomChestVenus extends RoomEmptyVenus
                 {
                     chesttype = ((IGalacticraftDimension) worldIn.getDimension()).getDungeonChestType();
                 }
-                chest.setLootTable(chesttype, random.nextLong());
+                chest.setLootTable(chesttype, randomIn.nextLong());
             }
 
             return true;

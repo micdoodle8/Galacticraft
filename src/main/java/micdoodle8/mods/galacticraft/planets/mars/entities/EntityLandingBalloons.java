@@ -60,7 +60,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
             }
         }
 
-        balloons.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+        balloons.setPositionAndRotation(player.getPosX(), player.getPosY(), player.getPosZ(), 0, 0);
 
         player.startRiding(balloons, true);
 //        this.setSize(2.0F, 2.0F);
@@ -249,7 +249,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
         {
             if (this.groundHitCount == 0)
             {
-                this.setMotion(this.getMotion().x, -this.posY / 50.0D, this.getMotion().z);
+                this.setMotion(this.getMotion().x, -this.getPosY() / 50.0D, this.getMotion().z);
             }
             else if (this.groundHitCount < 14 || this.shouldMove())
             {

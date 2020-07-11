@@ -5,7 +5,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -320,16 +319,17 @@ public class GameScreenText implements IGameScreen
             {
                 ((ITelemetry) entity).adjustDisplay(telemeter.clientData);
             }
-            RenderPlayerGC.flagThermalOverride = true;
-            if (entity instanceof LivingEntity && renderEntity instanceof LivingRenderer && renderModelMethod != null)
-            {
-                this.renderLiving((LivingEntity) entity, (LivingRenderer) renderEntity, ticks % 1F);
-            }
-            else
-            {
-                renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-            }
-            RenderPlayerGC.flagThermalOverride = false;
+//            RenderPlayerGC.flagThermalOverride = true;
+//            if (entity instanceof LivingEntity && renderEntity instanceof LivingRenderer && renderModelMethod != null)
+//            {
+//                this.renderLiving((LivingEntity) entity, (LivingRenderer) renderEntity, ticks % 1F);
+//            }
+//            else
+//            {
+//                renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+//            }
+//            RenderPlayerGC.flagThermalOverride = false;
+            // TODO Player Rendering ^
 //            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 //            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 //            GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -353,54 +353,54 @@ public class GameScreenText implements IGameScreen
     // No lighting adjustment, no sitting, no name text, no sneaking and no Forge events
     private void renderLiving(LivingEntity entity, LivingRenderer render, float partialTicks)
     {
-        GlStateManager.pushMatrix();
-        GlStateManager.disableCull();
-        render.getEntityModel().isChild = entity.isChild();
-
-        try
-        {
-            float f = 0F;
-            float f1 = 0F;
-            float f2 = f1 - f;
-            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-            float f8 = 0F;
-            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.enableRescaleNormal();
-            GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-            float f4 = 0.0625F;
-            GlStateManager.translatef(0.0F, -1.5078125F, 0.0F);
-            float f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
-            float f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
-
-            if (entity.isChild())
-            {
-                f6 *= 3.0F;
-            }
-
-            if (f5 > 1.0F)
-            {
-                f5 = 1.0F;
-            }
-
-            GlStateManager.enableAlphaTest();
-            render.getEntityModel().setLivingAnimations(entity, f6, f5, partialTicks);
-            render.getEntityModel().setRotationAngles(entity, f6, f5, f8, f2, f7, 0.0625F);
-
-            renderModelMethod.invoke(render, entity, f6, f5, f8, f2, f7, 0.0625F);
-            GlStateManager.depthMask(true);
-            renderLayersMethod.invoke(render, entity, f6, f5, partialTicks, f8, f2, f7, 0.0625F);
-
-            GlStateManager.disableRescaleNormal();
-        }
-        catch (Exception exception)
-        {
-        }
-
-        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
-        GlStateManager.enableTexture();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
-        GlStateManager.enableCull();
-        GlStateManager.popMatrix();
+//        GlStateManager.pushMatrix();
+//        GlStateManager.disableCull();
+//        render.getEntityModel().isChild = entity.isChild();
+//
+//        try
+//        {
+//            float f = 0F;
+//            float f1 = 0F;
+//            float f2 = f1 - f;
+//            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+//            float f8 = 0F;
+//            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+//            GlStateManager.enableRescaleNormal();
+//            GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+//            float f4 = 0.0625F;
+//            GlStateManager.translatef(0.0F, -1.5078125F, 0.0F);
+//            float f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
+//            float f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
+//
+//            if (entity.isChild())
+//            {
+//                f6 *= 3.0F;
+//            }
+//
+//            if (f5 > 1.0F)
+//            {
+//                f5 = 1.0F;
+//            }
+//
+//            GlStateManager.enableAlphaTest();
+//            render.getEntityModel().setLivingAnimations(entity, f6, f5, partialTicks);
+//            render.getEntityModel().setRotationAngles(entity, f6, f5, f8, f2, f7, 0.0625F);
+//
+//            renderModelMethod.invoke(render, entity, f6, f5, f8, f2, f7, 0.0625F);
+//            GlStateManager.depthMask(true);
+//            renderLayersMethod.invoke(render, entity, f6, f5, partialTicks, f8, f2, f7, 0.0625F);
+//
+//            GlStateManager.disableRescaleNormal();
+//        }
+//        catch (Exception exception)
+//        {
+//        }
+//
+//        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
+//        GlStateManager.enableTexture();
+//        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
+//        GlStateManager.enableCull();
+//        GlStateManager.popMatrix(); TODO Render entity
     }
 
     private String makeTimeString(int l)

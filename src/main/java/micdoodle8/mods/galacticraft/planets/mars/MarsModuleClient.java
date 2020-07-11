@@ -1,25 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import com.google.common.collect.ImmutableList;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
-import micdoodle8.mods.galacticraft.planets.mars.client.SkyProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingFeed;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.entity.*;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
-import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
-import micdoodle8.mods.galacticraft.planets.mars.entities.*;
+import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
@@ -28,15 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-
-import java.util.List;
 
 public class MarsModuleClient implements IPlanetsModuleClient
 {
@@ -100,13 +84,13 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         MinecraftForge.EVENT_BUS.register(this);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, (EntityRendererManager manager) -> new RenderSludgeling(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, (EntityRendererManager manager) -> new RenderSlimeling(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, (EntityRendererManager manager) -> new RenderCreeperBoss(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, (EntityRendererManager manager) -> new RenderProjectileTNT(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (EntityRendererManager manager) -> new RenderCargoRocket(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (EntityRendererManager manager) -> new RenderLandingBalloons(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, (EntityRendererManager manager) -> new RenderTier2Rocket(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, (EntityRendererManager manager) -> new RenderSludgeling(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, (EntityRendererManager manager) -> new RenderSlimeling(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, (EntityRendererManager manager) -> new RenderCreeperBoss(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, (EntityRendererManager manager) -> new RenderProjectileTNT(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (EntityRendererManager manager) -> new RenderCargoRocket(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (EntityRendererManager manager) -> new RenderLandingBalloons(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, (EntityRendererManager manager) -> new RenderTier2Rocket(manager));
 
         // ==============================
 
@@ -119,7 +103,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //            IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/cargoRocket.obj"));
 //
 //        // Tile Entity Renderers
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer<>(0.25F, 1.0F, 0.25F));
 //
@@ -149,16 +133,16 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @OnlyIn(Dist.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_t2", "rocket_t2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
-        replaceModelDefault(event, "rocket_cargo", "cargo_rocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
+//        replaceModelDefault(event, "rocket_t2", "rocket_t2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
+//        replaceModelDefault(event, "rocket_cargo", "cargo_rocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
 
-        RenderLandingBalloons.updateModels(event.getModelLoader());
+//        RenderLandingBalloons.updateModels(event.getModelLoader());
     }
 
-    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
-    {
-        ClientUtil.replaceModel(GalacticraftPlanets.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
-    }
+//    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
+//    {
+//        ClientUtil.replaceModel(GalacticraftPlanets.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
+//    }
 
 //    public static void registerBlockRenderers()
 //    {
@@ -299,10 +283,10 @@ public class MarsModuleClient implements IPlanetsModuleClient
             {
                 if (world.getDimension() instanceof DimensionMars)
                 {
-                    if (world.getDimension().getSkyRenderer() == null)
-                    {
-                        world.getDimension().setSkyRenderer(new SkyProviderMars((IGalacticraftDimension) world.getDimension()));
-                    }
+//                    if (world.getDimension().getSkyRenderer() == null)
+//                    {
+//                        world.getDimension().setSkyRenderer(new SkyProviderMars((IGalacticraftDimension) world.getDimension()));
+//                    } TODO Sky providers
 
                     if (world.getDimension().getCloudRenderer() == null)
                     {

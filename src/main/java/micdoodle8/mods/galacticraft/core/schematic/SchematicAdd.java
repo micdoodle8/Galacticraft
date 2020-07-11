@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicPage;
-import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicInput;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -22,11 +21,11 @@ public class SchematicAdd extends SchematicPage
         return ConfigManagerCore.idSchematicAddSchematic;
     }
 
-    @Override
-    public int getGuiID()
-    {
-        return GuiIdsCore.NASA_WORKBENCH_NEW_SCHEMATIC;
-    }
+//    @Override
+//    public int getGuiID()
+//    {
+//        return GuiIdsCore.NASA_WORKBENCH_NEW_SCHEMATIC;
+//    }
 
     @Override
     public ItemStack getRequiredItem()

@@ -165,7 +165,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             this.rotationYaw += 0.5F * turnFactor;
             return true;
         case 4:
-            this.setMotion(getMotion().x, Math.min(this.getMotion().y + 0.03F, this.posY < 90 ? -0.15 : -1.0), getMotion().z);
+            this.setMotion(getMotion().x, Math.min(this.getMotion().y + 0.03F, this.getPosY() < 90 ? -0.15 : -1.0), getMotion().z);
             return true;
         case 5:
             this.setMotion(getMotion().x, Math.min(this.getMotion().y - 0.022F, -1.0), getMotion().z);
@@ -189,7 +189,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             particleMap.put(new Vector3(), new Vector3((float) x1, (float) (y1 + this.getMotion().y / 2), (float) z1));
             LivingEntity passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
             this.world.addParticle(new EntityParticleData(GCParticles.LANDER_FLAME, passenger != null ? passenger.getUniqueID() : getUniqueID()),
-                    this.posX, this.posY + 1D + this.getMotion().y / 2, this.posZ,
+                    this.getPosX(), this.getPosY() + 1D + this.getMotion().y / 2, this.getPosZ(),
                     x1, y1 + this.getMotion().y / 2, z1);
         }
     }
@@ -232,16 +232,16 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
                     entity.stopRiding();
                     if (entity instanceof ServerPlayerEntity)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[]{}), (ServerPlayerEntity) entity);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionType(this.world), new Object[]{}), (ServerPlayerEntity) entity);
                     }
                     entity.setMotion(0.0, 0.0, 0.0);
-                    entity.setPosition(entity.posX, this.posY + this.getMountedYOffset(), entity.posZ);
+                    entity.setPosition(entity.getPosX(), this.getPosY() + this.getMountedYOffset(), entity.getPosZ());
                     if (this.world instanceof ServerWorld)
                     {
                         ((ServerWorld) this.world).chunkCheck(entity);
                     }
                 }
-                this.world.createExplosion(this, this.posX, this.posY, this.posZ, 12, Explosion.Mode.BREAK);
+                this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 12, Explosion.Mode.BREAK);
 
                 this.remove();
             }

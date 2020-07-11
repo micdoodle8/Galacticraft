@@ -11,10 +11,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.structure.*;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -63,9 +65,9 @@ public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
     }
 
     @Override
-    public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkX, int chunkZ)
+    public boolean canBeGenerated(BiomeManager biomeManagerIn, ChunkGenerator<?> generatorIn, Random randIn, int chunkX, int chunkZ, Biome biomeIn)
     {
-        long dungeonPos = getDungeonPosForCoords(chunkGen, chunkX, chunkZ, ((IGalacticraftDimension) chunkGen.world.getDimension()).getDungeonSpacing());
+        long dungeonPos = getDungeonPosForCoords(generatorIn, chunkX, chunkZ, ((IGalacticraftDimension) generatorIn.world.getDimension()).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
         int j = (int) dungeonPos;  //Java automatically gives the 32 least significant bits
         return i == chunkX && j == chunkZ;
@@ -98,7 +100,7 @@ public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
      * This returns an angle between 0 and 360 degrees.  0 degrees means due North from the current (x, z) position
      * Only provides meaningful results in worlds with dungeon generation using this class!
      */
-    public static float directionToNearestDungeon(World world, double xpos, double zpos)
+    public static float directionToNearestDungeon(ServerWorld world, double xpos, double zpos)
     {
         int spacing = ((IGalacticraftDimension) world.getDimension()).getDungeonSpacing();
         if (spacing == 0)
@@ -154,9 +156,9 @@ public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
         //        private DungeonConfigurationVenus configuration;
         DungeonStartVenus startPiece;
 
-        public Start(Structure<?> structure, int chunkX, int chunkZ, Biome biomeIn, MutableBoundingBox boundsIn, int referenceIn, long seed)
+        public Start(Structure<?> structure, int chunkX, int chunkZ, MutableBoundingBox boundsIn, int referenceIn, long seed)
         {
-            super(structure, chunkX, chunkZ, biomeIn, boundsIn, referenceIn, seed);
+            super(structure, chunkX, chunkZ, boundsIn, referenceIn, seed);
 //            this.configuration = configuration;
         }
 

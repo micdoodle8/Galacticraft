@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.fx;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
@@ -47,15 +48,14 @@ public class ParticleTelepad extends SpriteTexturedParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         float f6 = (this.age + partialTicks) / this.maxAge;
         f6 = 1.0F - f6;
         f6 *= f6;
         f6 = 1.0F - f6;
         this.particleScale = this.portalParticleScale * f6;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
     }
 
     @Override

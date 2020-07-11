@@ -97,7 +97,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     @Override
     public void onNetworkChanged()
     {
-        world.func_225319_b(this.getPos(), this.getBlockState().getBlock().getDefaultState(), this.getBlockState()); // Forces block render update. Better way to do this?
+        world.markBlockRangeForRenderUpdate(this.getPos(), this.getBlockState().getBlock().getDefaultState(), this.getBlockState()); // Forces block render update. Better way to do this?
     }
 
     @Override

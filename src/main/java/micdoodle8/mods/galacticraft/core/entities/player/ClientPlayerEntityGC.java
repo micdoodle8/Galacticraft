@@ -9,18 +9,25 @@ import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.LocatableSound;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.client.util.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.Pose;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.passive.ParrotEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ElytraItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.client.CEntityActionPacket;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.stats.StatisticsManager;
@@ -38,7 +45,6 @@ import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.logging.Level;
 
 public class ClientPlayerEntityGC extends ClientPlayerEntity
 {
@@ -53,13 +59,19 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
         super(mcIn, worldIn, netHandler, statFileWriter, book);
     }
 
+//    @Override
+//    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+//    {
+////        if (!ClientProxyCore.playerClientHandler.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
+////        {
+////            super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
+////        } TODO Cryo chamber
+//    }
+
     @Override
-    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+    public void wakeUp()
     {
-//        if (!ClientProxyCore.playerClientHandler.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
-//        {
-//            super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
-//        } TODO Cryo chamber
+        super.wakeUp();
     }
 
     @Override
@@ -83,80 +95,57 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
         {
             if (this.world.getDimension() instanceof IZeroGDimension)
             {
-                //  from: EntityPlayerSP
-                if (this.sprintingTicksLeft > 0)
-                {
-                    --this.sprintingTicksLeft;
 
-                    if (this.sprintingTicksLeft == 0)
-                    {
-                        this.setSprinting(false);
-                    }
-                }
-
-                if (this.sprintToggleTimer > 0)
-                {
+                //  from: ClientPlayerEntity
+                ++this.sprintingTicksLeft;
+                if (this.sprintToggleTimer > 0) {
                     --this.sprintToggleTimer;
                 }
 
                 this.prevTimeInPortal = this.timeInPortal;
+                if (this.inPortal) {
+                    if (this.mc.currentScreen != null && !this.mc.currentScreen.isPauseScreen()) {
+                        if (this.mc.currentScreen instanceof ContainerScreen) {
+                            this.closeScreen();
+                        }
 
-                if (this.inPortal)
-                {
-                    if (this.mc.currentScreen != null && !this.mc.currentScreen.isPauseScreen())
-                    {
-                        this.mc.displayGuiScreen(null);
+                        this.mc.displayGuiScreen((Screen)null);
                     }
 
-                    if (this.timeInPortal == 0.0F)
-                    {
+                    if (this.timeInPortal == 0.0F) {
                         this.mc.getSoundHandler().play(SimpleSound.master(SoundEvents.BLOCK_PORTAL_TRIGGER, this.rand.nextFloat() * 0.4F + 0.8F));
                     }
 
                     this.timeInPortal += 0.0125F;
-
-                    if (this.timeInPortal >= 1.0F)
-                    {
+                    if (this.timeInPortal >= 1.0F) {
                         this.timeInPortal = 1.0F;
                     }
 
                     this.inPortal = false;
-                }
-                else if (this.isPotionActive(Effects.NAUSEA) && this.getActivePotionEffect(Effects.NAUSEA).getDuration() > 60)
-                {
+                } else if (this.isPotionActive(Effects.NAUSEA) && this.getActivePotionEffect(Effects.NAUSEA).getDuration() > 60) {
                     this.timeInPortal += 0.006666667F;
-
-                    if (this.timeInPortal > 1.0F)
-                    {
+                    if (this.timeInPortal > 1.0F) {
                         this.timeInPortal = 1.0F;
                     }
-                }
-                else
-                {
-                    if (this.timeInPortal > 0.0F)
-                    {
+                } else {
+                    if (this.timeInPortal > 0.0F) {
                         this.timeInPortal -= 0.05F;
                     }
 
-                    if (this.timeInPortal < 0.0F)
-                    {
+                    if (this.timeInPortal < 0.0F) {
                         this.timeInPortal = 0.0F;
                     }
                 }
 
-                if (this.timeUntilPortal > 0)
-                {
-                    --this.timeUntilPortal;
-                }
+                this.decrementTimeUntilPortal();
 
-                boolean flag1 = this.movementInput.sneak;
-                float sprintlevel = 0.8F;
-                boolean flag2 = this.movementInput.moveForward >= sprintlevel;
-                boolean flag3 = this.shouldRenderSneaking() || this.func_213300_bk();
-                this.movementInput.tick(flag3, this.isSpectator());
-
-                if (this.isHandActive() && this.getRidingEntity() == null)
-                {
+                boolean flag = this.movementInput.jump;
+                boolean flag1 = this.movementInput.sneaking;
+                boolean flag2 = this.movingForward();
+                this.movementInput.func_225607_a_(this.func_228354_I_());
+                net.minecraftforge.client.ForgeHooksClient.onInputUpdate(this, this.movementInput);
+                this.mc.getTutorial().handleMovement(this.movementInput);
+                if (this.isHandActive() && !this.isPassenger()) {
                     this.movementInput.moveStrafe *= 0.2F;
                     this.movementInput.moveForward *= 0.2F;
                     this.sprintToggleTimer = 0;
@@ -171,64 +160,109 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 }
                 //-----------END CUSTOM
 
-                this.pushOutOfBlocks(this.posX - (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ + (double) this.getWidth() * 0.35D);
-                this.pushOutOfBlocks(this.posX - (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ - (double) this.getWidth() * 0.35D);
-                this.pushOutOfBlocks(this.posX + (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ - (double) this.getWidth() * 0.35D);
-                this.pushOutOfBlocks(this.posX + (double) this.getWidth() * 0.35D, this.getBoundingBox().minY + 0.5D, this.posZ + (double) this.getWidth() * 0.35D);
-                boolean flag4 = (float) this.getFoodStats().getFoodLevel() > 6.0F || this.abilities.allowFlying;
+                // Omit auto-jump in zero-g
+                boolean flag3 = false;
 
-                if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= 0.8F && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS))
-                {
-                    if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
-                    {
+                net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent event = new net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent(this);
+                if (!this.noClip && !net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) {
+                    this.pushOutOfBlocks(this.getPosX() - (double)this.getWidth() * 0.35D, event.getMinY(), this.getPosZ() + (double)this.getWidth() * 0.35D);
+                    this.pushOutOfBlocks(this.getPosX() - (double)this.getWidth() * 0.35D, event.getMinY(), this.getPosZ() - (double)this.getWidth() * 0.35D);
+                    this.pushOutOfBlocks(this.getPosX() + (double)this.getWidth() * 0.35D, event.getMinY(), this.getPosZ() - (double)this.getWidth() * 0.35D);
+                    this.pushOutOfBlocks(this.getPosX() + (double)this.getWidth() * 0.35D, event.getMinY(), this.getPosZ() + (double)this.getWidth() * 0.35D);
+                }
+
+                boolean flag4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.abilities.allowFlying;
+                if ((this.onGround || this.canSwim()) && !flag1 && !flag2 && this.movingForward() && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS)) {
+                    if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown()) {
                         this.sprintToggleTimer = 7;
-                    }
-                    else
-                    {
+                    } else {
                         this.setSprinting(true);
                     }
                 }
 
-                if (!this.isSprinting() && this.movementInput.moveForward >= sprintlevel && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS) && this.mc.gameSettings.keyBindSprint.isKeyDown())
-                {
+                if (!this.isSprinting() && (!this.isInWater() || this.canSwim()) && this.movingForward() && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
                     this.setSprinting(true);
                 }
 
-                if (this.isSprinting() && (this.movementInput.moveForward < sprintlevel || this.collidedHorizontally || !flag4))
-                {
-                    this.setSprinting(false);
+                if (this.isSprinting()) {
+                    boolean flag5 = !this.movementInput.func_223135_b() || !flag4;
+                    boolean flag6 = flag5 || this.collidedHorizontally || this.isInWater() && !this.canSwim();
+                    if (this.isSwimming()) {
+                        if (!this.onGround && !this.movementInput.sneaking && flag5 || !this.isInWater()) {
+                            this.setSprinting(false);
+                        }
+                    } else if (flag6) {
+                        this.setSprinting(false);
+                    }
                 }
 
-                //Omit flying toggles - flying will be controlled by freefall status
+                boolean flag7 = false;
+                if (this.abilities.allowFlying) {
+                    if (this.mc.playerController.isSpectatorMode()) {
+                        if (!this.abilities.isFlying) {
+                            this.abilities.isFlying = true;
+                            flag7 = true;
+                            this.sendPlayerAbilities();
+                        }
+                    } else if (!flag && this.movementInput.jump && !flag3) {
+                        if (this.flyToggleTimer == 0) {
+                            this.flyToggleTimer = 7;
+                        } else if (!this.isSwimming()) {
+                            this.abilities.isFlying = !this.abilities.isFlying;
+                            flag7 = true;
+                            this.sendPlayerAbilities();
+                            this.flyToggleTimer = 0;
+                        }
+                    }
+                }
 
-                if (this.abilities.isFlying && this.isCurrentViewEntity())
-                {
-                    if (this.movementInput.sneak)
-                    {
-                        this.setMotion(this.getMotion().add(0.0, -this.abilities.getFlySpeed() * 3.0F, 0.0));
+                if (this.movementInput.jump && !flag7 && !flag && !this.abilities.isFlying && !this.isPassenger() && !this.isOnLadder()) {
+                    ItemStack itemstack = this.getItemStackFromSlot(EquipmentSlotType.CHEST);
+                    if (itemstack.getItem() == Items.ELYTRA && ElytraItem.isUsable(itemstack) && this.tryToStartFallFlying()) {
+                        this.connection.sendPacket(new CEntityActionPacket(this, CEntityActionPacket.Action.START_FALL_FLYING));
+                    }
+                }
+
+                // Omit elytra update in zero-g
+                if (this.isInWater() && this.movementInput.sneaking) {
+                    this.handleFluidSneak();
+                }
+
+                if (this.areEyesInFluid(FluidTags.WATER)) {
+                    int i = this.isSpectator() ? 10 : 1;
+                    this.counterInWater = MathHelper.clamp(this.counterInWater + i, 0, 600);
+                } else if (this.counterInWater > 0) {
+                    this.areEyesInFluid(FluidTags.WATER);
+                    this.counterInWater = MathHelper.clamp(this.counterInWater - 10, 0, 600);
+                }
+
+                if (this.abilities.isFlying && this.isCurrentViewEntity()) {
+                    int j = 0;
+                    if (this.movementInput.sneaking) {
+                        --j;
                     }
 
-                    if (this.movementInput.jump)
-                    {
-                        this.setMotion(this.getMotion().add(0.0, this.abilities.getFlySpeed() * 3.0F, 0.0));
+                    if (this.movementInput.jump) {
+                        ++j;
+                    }
+
+                    if (j != 0) {
+                        this.setMotion(this.getMotion().add(0.0D, (double)((float)j * this.abilities.getFlySpeed() * 3.0F), 0.0D));
                     }
                 }
 
                 //Omit horse jumping - no horse jumping in space!
 
-                // -from: EntityPlayer
+                // -from: PlayerEntity
 
                 //Omit fly toggle timer
 
-                if (this.world.getDifficulty() == Difficulty.PEACEFUL && this.world.getGameRules().getBoolean(GameRules.NATURAL_REGENERATION))
-                {
-                    if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0)
-                    {
+                if (this.world.getDifficulty() == Difficulty.PEACEFUL && this.world.getGameRules().getBoolean(GameRules.NATURAL_REGENERATION)) {
+                    if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0) {
                         this.heal(1.0F);
                     }
 
-                    if (this.foodStats.needFood() && this.ticksExisted % 10 == 0)
-                    {
+                    if (this.foodStats.needFood() && this.ticksExisted % 10 == 0) {
                         this.foodStats.setFoodLevel(this.foodStats.getFoodLevel() + 1);
                     }
                 }
@@ -236,58 +270,84 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 this.inventory.tick();
                 this.prevCameraYaw = this.cameraYaw;
 
-                //  from: EntityLivingBase
-                if (this.newPosRotationIncrements > 0)
-                {
-                    double d0 = this.posX + (this.interpTargetX - this.posX) / (double) this.newPosRotationIncrements;
-                    double d1 = this.posY + (this.interpTargetY - this.posY) / (double) this.newPosRotationIncrements;
-                    double d2 = this.posZ + (this.interpTargetZ - this.posZ) / (double) this.newPosRotationIncrements;
-                    double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
-                    this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.newPosRotationIncrements);
-                    this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
+                //  from: LivingEntity
+                if (this.jumpTicks > 0) {
+                    --this.jumpTicks;
+                }
+
+                if (this.canPassengerSteer()) {
+                    this.newPosRotationIncrements = 0;
+                    this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
+                }
+
+                if (this.newPosRotationIncrements > 0) {
+                    double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / (double)this.newPosRotationIncrements;
+                    double d2 = this.getPosY() + (this.interpTargetY - this.getPosY()) / (double)this.newPosRotationIncrements;
+                    double d4 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / (double)this.newPosRotationIncrements;
+                    double d6 = MathHelper.wrapDegrees(this.interpTargetYaw - (double)this.rotationYaw);
+                    this.rotationYaw = (float)((double)this.rotationYaw + d6 / (double)this.newPosRotationIncrements);
+                    this.rotationPitch = (float)((double)this.rotationPitch + (this.interpTargetPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
                     --this.newPosRotationIncrements;
-                    this.setPosition(d0, d1, d2);
+                    this.setPosition(d0, d2, d4);
                     this.setRotation(this.rotationYaw, this.rotationPitch);
-                }
-                else if (!this.isServerWorld())
-                {
-                    this.setMotion(this.getMotion().mul(0.98, 0.98, 0.98));
+                } else if (!this.isServerWorld()) {
+                    this.setMotion(this.getMotion().scale(0.98D));
                 }
 
-                if (Math.abs(this.getMotion().x) < 0.005D)
-                {
-                    this.setMotion(0.0, this.getMotion().y, this.getMotion().z);
+                if (this.interpTicksHead > 0) {
+                    this.rotationYawHead = (float)((double)this.rotationYawHead + MathHelper.wrapDegrees(this.interpTargetHeadYaw - (double)this.rotationYawHead) / (double)this.interpTicksHead);
+                    --this.interpTicksHead;
                 }
 
-                if (Math.abs(this.getMotion().y) < 0.005D)
-                {
-                    this.setMotion(this.getMotion().x, 0.0, this.getMotion().z);
+                Vec3d vec3d = this.getMotion();
+                double d1 = vec3d.x;
+                double d3 = vec3d.y;
+                double d5 = vec3d.z;
+                if (Math.abs(vec3d.x) < 0.003D) {
+                    d1 = 0.0D;
                 }
 
-                if (Math.abs(this.getMotion().z) < 0.005D)
-                {
-                    this.setMotion(this.getMotion().x, this.getMotion().y, 0.0);
+                if (Math.abs(vec3d.y) < 0.003D) {
+                    d3 = 0.0D;
                 }
 
+                if (Math.abs(vec3d.z) < 0.003D) {
+                    d5 = 0.0D;
+                }
+
+                this.setMotion(d1, d3, d5);
                 this.world.getProfiler().startSection("ai");
-
-                if (this.isMovementBlocked())
-                {
+                if (this.isMovementBlocked()) {
                     this.isJumping = false;
                     this.moveStrafing = 0.0F;
                     this.moveForward = 0.0F;
-                    this.randomYawVelocity = 0.0F;
-                }
-                else
-                {
+                } else if (this.isServerWorld()) {
+                    this.world.getProfiler().startSection("newAi");
                     this.updateEntityActionState();
+                    this.world.getProfiler().endSection();
+                }
+
+                this.world.getProfiler().endSection();
+                this.world.getProfiler().startSection("jump");
+                if (this.isJumping) {
+                    if (!(this.submergedHeight > 0.0D) || this.onGround && !(this.submergedHeight > 0.4D)) {
+                        if (this.isInLava()) {
+                            this.handleFluidJump(FluidTags.LAVA);
+                        } else if ((this.onGround || this.submergedHeight > 0.0D && this.submergedHeight <= 0.4D) && this.jumpTicks == 0) {
+                            this.jump();
+                            this.jumpTicks = 10;
+                        }
+                    } else {
+                        this.handleFluidJump(FluidTags.WATER);
+                    }
+                } else {
+                    this.jumpTicks = 0;
                 }
 
                 this.world.getProfiler().endSection();
                 this.world.getProfiler().startSection("travel");
                 this.moveStrafing *= 0.98F;
                 this.moveForward *= 0.98F;
-                this.randomYawVelocity *= 0.9F;
 
                 // CUSTOM--------------
                 AxisAlignedBB aABB = this.getBoundingBox();
@@ -297,73 +357,64 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
                 }
                 //-----------END CUSTOM
 
-                //NOTE: No Elytra movement from this.updateElytra() in a zero G dimension
-                this.travel(new Vec3d(this.moveStrafing, this.moveVertical, this.moveForward));
+                // Omit elytra in zero-g
+
+                AxisAlignedBB axisalignedbb = this.getBoundingBox();
+                this.travel(new Vec3d((double)this.moveStrafing, (double)this.moveVertical, (double)this.moveForward));
                 this.world.getProfiler().endSection();
                 this.world.getProfiler().startSection("push");
-
-                if (!this.world.isRemote)
-                {
-                    this.collideWithNearbyEntities();
+                if (this.spinAttackDuration > 0) {
+                    --this.spinAttackDuration;
+                    this.updateSpinAttack(axisalignedbb, this.getBoundingBox());
                 }
 
+                this.collideWithNearbyEntities();
                 this.world.getProfiler().endSection();
 
-                // -from: EntityPlayer
-
-                //Omit IAttributeInstance - seems relevant only on server
-
-                //Omit        this.jumpMovementFactor = this.speedInAir;
-                //(no bounding in space)
-
-                float f = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
-                float f1 = (float) (Math.atan(-this.getMotion().y * 0.20000000298023224D) * 15.0D);
-
-                if (f > 0.1F)
-                {
-                    f = 0.1F;
+                IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+                if (!this.world.isRemote) {
+                    iattributeinstance.setBaseValue((double)this.abilities.getWalkSpeed());
                 }
 
-                if (!this.onGround || this.getHealth() <= 0.0F)
-                {
+//                this.jumpMovementFactor = 0.02F;
+//                if (this.isSprinting()) {
+//                    this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + 0.005999999865889549D);
+//                }
+
+                this.setAIMoveSpeed((float)iattributeinstance.getValue());
+                float f;
+                if (this.onGround && !(this.getHealth() <= 0.0F) && !this.isSwimming()) {
+                    f = Math.min(0.1F, MathHelper.sqrt(horizontalMag(this.getMotion())));
+                } else {
                     f = 0.0F;
                 }
 
-                if (this.onGround || this.getHealth() <= 0.0F)
-                {
-                    f1 = 0.0F;
-                }
-
                 this.cameraYaw += (f - this.cameraYaw) * 0.4F;
-//                this.cameraPitch += (f1 - this.cameraPitch) * 0.8F;
-
-                if (this.getHealth() > 0.0F && !this.isSpectator())
-                {
-                    AxisAlignedBB axisalignedbb = null;
-
-                    if (this.getRidingEntity() != null && this.getRidingEntity().isAlive())
-                    {
-                        axisalignedbb = this.getBoundingBox().union(this.getRidingEntity().getBoundingBox()).grow(1.0D, 0.0D, 1.0D);
-                    }
-                    else
-                    {
-                        axisalignedbb = this.getBoundingBox().grow(1.0D, 0.5D, 1.0D);
+                if (this.getHealth() > 0.0F && !this.isSpectator()) {
+                    AxisAlignedBB axisalignedbb1;
+                    if (this.isPassenger() && !this.getRidingEntity().removed) {
+                        axisalignedbb1 = this.getBoundingBox().union(this.getRidingEntity().getBoundingBox()).grow(1.0D, 0.0D, 1.0D);
+                    } else {
+                        axisalignedbb1 = this.getBoundingBox().grow(1.0D, 0.5D, 1.0D);
                     }
 
-                    List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
+                    List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb1);
 
-                    for (int i = 0; i < list.size(); ++i)
-                    {
+                    for(int i = 0; i < list.size(); ++i) {
                         Entity entity = list.get(i);
-
-                        if (entity.isAlive())
-                        {
+                        if (!entity.removed) {
                             entity.onCollideWithPlayer(this);
                         }
                     }
                 }
 
-                //  from: EntityPlayerSP
+                this.playShoulderEntityAmbientSound(this.getLeftShoulderEntity());
+                this.playShoulderEntityAmbientSound(this.getRightShoulderEntity());
+                if (!this.world.isRemote && (this.fallDistance > 0.5F || this.isInWater()) || this.abilities.isFlying || this.isSleeping()) {
+                    this.spawnShoulderEntities();
+                }
+
+                //  from: ClientPlayerEntity
                 //(modified CUSTOM)
                 if (this.lastIsFlying != this.abilities.isFlying)
                 {
@@ -382,6 +433,28 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
             throw (e);
         }
         ClientProxyCore.playerClientHandler.onTickPost(this);
+    }
+
+    @Override
+    public boolean isElytraFlying() {
+        return !(this.world.getDimension() instanceof IZeroGDimension) && super.isElytraFlying();
+    }
+
+    private boolean movingForward() {
+        double d0 = 0.8D;
+        return this.canSwim() ? this.movementInput.func_223135_b() : (double)this.movementInput.moveForward >= 0.8D;
+    }
+
+    private void playShoulderEntityAmbientSound(@Nullable CompoundNBT p_192028_1_) {
+        if (p_192028_1_ != null && !p_192028_1_.contains("Silent") || !p_192028_1_.getBoolean("Silent")) {
+            String s = p_192028_1_.getString("id");
+            EntityType.byKey(s).filter((p_213830_0_) -> {
+                return p_213830_0_ == EntityType.PARROT;
+            }).ifPresent((p_213834_1_) -> {
+                ParrotEntity.playAmbientSound(this.world, this);
+            });
+        }
+
     }
 
     @Override
@@ -432,7 +505,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
 //            } TODO Freefall
             if (EventHandlerClient.sneakRenderOverride)
             {
-                if (this.movementInput != null && this.movementInput.sneak != this.sneakLast)
+                if (this.movementInput != null && this.movementInput.sneaking != this.sneakLast)
                 {
                     return false;
                 }
@@ -443,7 +516,7 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
 //                    return false;
 //                } TODO Freefall
             }
-            this.sneakLast = this.movementInput != null && this.movementInput.sneak;
+            this.sneakLast = this.movementInput != null && this.movementInput.sneaking;
         }
         else
         {
@@ -554,16 +627,16 @@ public class ClientPlayerEntityGC extends ClientPlayerEntity
         return vanillaCape;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getBrightnessForRender()
-    {
-        double height = this.posY + (double) this.getEyeHeight();
-        if (height > 255D)
-        {
-            height = 255D;
-        }
-        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
-        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getBrightnessForRender()
+//    {
+//        double height = this.posY + (double) this.getEyeHeight();
+//        if (height > 255D)
+//        {
+//            height = 255D;
+//        }
+//        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
+//        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
+//    }
 }

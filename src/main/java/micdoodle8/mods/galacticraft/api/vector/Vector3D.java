@@ -53,7 +53,7 @@ public class Vector3D implements Cloneable
 
     public Vector3D(Entity par1)
     {
-        this(par1.posX, par1.posY, par1.posZ);
+        this(par1.getPosX(), par1.getPosY(), par1.getPosZ());
     }
 
     public Vector3D(BlockPos pos)

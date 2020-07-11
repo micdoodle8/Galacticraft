@@ -64,9 +64,9 @@ public class BlockVec3 implements Cloneable
 
     public BlockVec3(Entity par1)
     {
-        this.x = (int) Math.floor(par1.posX);
-        this.y = (int) Math.floor(par1.posY);
-        this.z = (int) Math.floor(par1.posZ);
+        this.x = (int) Math.floor(par1.getPosX());
+        this.y = (int) Math.floor(par1.getPosY());
+        this.z = (int) Math.floor(par1.getPosZ());
     }
 
     public BlockVec3(TileEntity par1)

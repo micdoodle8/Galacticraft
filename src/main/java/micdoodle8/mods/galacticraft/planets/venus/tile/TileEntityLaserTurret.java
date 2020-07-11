@@ -39,10 +39,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -330,7 +327,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         {
             Entity entity = entry.entity;
             Vec3d start = new Vec3d(pos.getX() + 0.5F, pos.getY() + 1.78F, pos.getZ() + 0.5F);
-            Vec3d end = new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+            Vec3d end = new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ());
             start = start.add(end.add(start.scale(-1)).normalize()); // Start at block in front of laser facing direction
 
             RayTraceResult res = this.world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
@@ -695,10 +692,10 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
 //        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ()); TODO Guis
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

@@ -40,6 +40,6 @@ public class TileEntityDungeonSpawnerVenus extends TileEntityDungeonSpawner<Enti
     @Override
     public void playSpawnSound(Entity entity)
     {
-        this.world.playSound(null, entity.posX, entity.posY, entity.posZ, GCSounds.scaryScape, SoundCategory.AMBIENT, 9.0F, 1.4F);
+        this.world.playSound(null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), GCSounds.scaryScape, SoundCategory.AMBIENT, 9.0F, 1.4F);
     }
 }

@@ -31,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -307,7 +306,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     }
                 }
                 double distanceNew = vecNewTarget.squareDistanceTo(thisVec3);
-                double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.posX, mob.posY, mob.posZ));
+                double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.getPosX(), mob.getPosY(), mob.getPosZ()));
                 if (distanceNew > distanceCurrent)
                 {
                     Vec3d vecOldTarget = null;
@@ -592,7 +591,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
 
     private void updateClients()
     {
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), 128, GCCoreUtil.getDimensionID(this.world)));
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), 128, GCCoreUtil.getDimensionType(this.world)));
     }
 
 //    @Override

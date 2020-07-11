@@ -58,7 +58,7 @@ public interface ITileClientUpdates
     {
         int[] data = new int[4];
         this.buildDataPacket(data);
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_MACHINE_DATA, GCCoreUtil.getDimensionID(player.world), new Object[]{((TileEntity) this).getPos(), data[0], data[1], data[2], data[3]}), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_MACHINE_DATA, GCCoreUtil.getDimensionType(player.world), new Object[]{((TileEntity) this).getPos(), data[0], data[1], data[2], data[3]}), player);
     }
 
     /**
@@ -68,7 +68,7 @@ public interface ITileClientUpdates
     {
         int[] data = new int[4];
         this.buildDataPacket(data);
-        DimensionType dimID = GCCoreUtil.getDimensionID(((TileEntity) this).getWorld());
+        DimensionType dimID = GCCoreUtil.getDimensionType(((TileEntity) this).getWorld());
         GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_MACHINE_DATA, dimID, new Object[]{((TileEntity) this).getPos(), data[0], data[1], data[2], data[3]}), dimID);
     }
 }

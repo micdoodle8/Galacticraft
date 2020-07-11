@@ -37,11 +37,11 @@ public class GCEntityPlayerMP extends ServerPlayerEntity
     }
 
     @Override
-    public void dismountEntity(Entity entityIn)
+    public void stopRiding()
     {
         if (!GalacticraftCore.proxy.player.dismountEntity(this, this.getRidingEntity()))
         {
-            super.dismountEntity(entityIn);
+            super.stopRiding();
         }
     }
 
@@ -53,13 +53,16 @@ public class GCEntityPlayerMP extends ServerPlayerEntity
     }
 
     @Override
-    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+    public void wakeUp()
     {
+//    @Override
+//    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+//    {
 //        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
 //        {
 //            return;
 //        } TODO Cryo chamber
-        super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
+        super.wakeUp();
     }
 
     @Override

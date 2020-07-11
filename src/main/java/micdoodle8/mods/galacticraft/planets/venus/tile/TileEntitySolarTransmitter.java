@@ -80,7 +80,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     {
 //        this.world.markBlockRangeForRenderUpdate(this.getPos(), this.getPos());
         BlockState state = this.getBlockState();
-        world.func_225319_b(pos, state.getBlock().getDefaultState(), state); // Forces block render update. Better way to do this?
+        world.markBlockRangeForRenderUpdate(pos, state.getBlock().getDefaultState(), state); // Forces block render update. Better way to do this?
     }
 
     @Override

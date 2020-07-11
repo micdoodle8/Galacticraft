@@ -17,6 +17,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -100,7 +101,7 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription
 //        return block.isSideSolid(par1World, par2, par3, par4, ForgeDirection.UP);
 //    }
 
-    private boolean beginHatch(World world, BlockPos pos, PlayerEntity player, int time)
+    private ActionResultType beginHatch(World world, BlockPos pos, PlayerEntity player, int time)
     {
         BlockState state = world.getBlockState(pos);
 
@@ -116,14 +117,14 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerUUID = player.getUniqueID().toString();
             }
 
-            world.func_225319_b(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
+            world.markBlockRangeForRenderUpdate(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
         else
         {
-            world.func_225319_b(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
-            return false;
+            world.markBlockRangeForRenderUpdate(pos, this.getDefaultState(), state); // Forces block render update. Better way to do this?
+            return ActionResultType.PASS;
         }
     }
 
@@ -147,7 +148,7 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         return beginHatch(worldIn, pos, playerIn, 20);
     }

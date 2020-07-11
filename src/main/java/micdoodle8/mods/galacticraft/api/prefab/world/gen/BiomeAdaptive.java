@@ -395,14 +395,11 @@ public class BiomeAdaptive extends BiomeGC
         return biomeTrue.isMutation();
     }
 
-    /**
-     * takes temperature, returns color
-     */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public int getSkyColorByTemp(float currentTemperature)
+    public int getSkyColor()
     {
-        return biomeTrue.getSkyColorByTemp(currentTemperature);
+        return biomeTrue.getSkyColor();
     }
 
     /**
@@ -443,9 +440,9 @@ public class BiomeAdaptive extends BiomeGC
      * position, and {@linkplain #TEMPERATURE_NOISE} some random perlin noise.
      */
     @Override
-    public float getTemperature(BlockPos pos)
+    public float getTemperatureRaw(BlockPos pos)
     {
-        return biomeTrue.getTemperature(pos);
+        return biomeTrue.getTemperatureRaw(pos);
     }
 
     @Override
@@ -467,9 +464,15 @@ public class BiomeAdaptive extends BiomeGC
     }
 
     @Override
-    public void addFeature(GenerationStage.Decoration decorationStage, ConfiguredFeature<?> featureIn)
+    public void addFeature(GenerationStage.Decoration decorationStage, ConfiguredFeature<?, ?> featureIn)
     {
         biomeTrue.addFeature(decorationStage, featureIn);
+    }
+
+    @Override
+    public <C extends IFeatureConfig> void addStructure(ConfiguredFeature<C, ? extends Structure<C>> structureIn)
+    {
+        biomeTrue.addStructure(structureIn);
     }
 
     @Override
@@ -482,12 +485,6 @@ public class BiomeAdaptive extends BiomeGC
     public List<ConfiguredCarver<?>> getCarvers(GenerationStage.Carving stage)
     {
         return biomeTrue.getCarvers(stage);
-    }
-
-    @Override
-    public <C extends IFeatureConfig> void addStructure(Structure<C> structureIn, C config)
-    {
-        biomeTrue.addStructure(structureIn, config);
     }
 
     @Override
@@ -504,13 +501,13 @@ public class BiomeAdaptive extends BiomeGC
     }
 
     @Override
-    public List<ConfiguredFeature<?>> getFlowers()
+    public List<ConfiguredFeature<?, ?>> getFlowers()
     {
         return biomeTrue.getFlowers();
     }
 
     @Override
-    public List<ConfiguredFeature<?>> getFeatures(GenerationStage.Decoration decorationStage)
+    public List<ConfiguredFeature<?, ?>> getFeatures(GenerationStage.Decoration decorationStage)
     {
         return biomeTrue.getFeatures(decorationStage);
     }
@@ -523,16 +520,16 @@ public class BiomeAdaptive extends BiomeGC
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public int getGrassColor(BlockPos pos)
+    public int getGrassColor(double posX, double posZ)
     {
-        return biomeTrue.getGrassColor(pos);
+        return biomeTrue.getGrassColor(posX, posZ);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public int getFoliageColor(BlockPos pos)
+    public int getFoliageColor()
     {
-        return biomeTrue.getFoliageColor(pos);
+        return biomeTrue.getFoliageColor();
     }
 
     @Override

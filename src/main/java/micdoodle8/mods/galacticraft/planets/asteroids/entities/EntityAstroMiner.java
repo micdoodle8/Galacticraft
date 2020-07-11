@@ -422,7 +422,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     public void tick()
     {
         this.serverTick = false;
-        if (this.posY < -64.0D)
+        if (this.getPosY() < -64.0D)
         {
             this.remove();
             return;
@@ -446,20 +446,16 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                 if (this.AIstate < AISTATE_TRAVELLING)
                 {
                     //It should be stationary, so this deals with the spooky movement (due to minor differences between server and client position)
-                    this.posX = this.minecartX;
-                    this.posY = this.minecartY;
-                    this.posZ = this.minecartZ;
+                    this.setRawPosition(this.minecartX, this.minecartY, this.minecartZ);
                 }
                 else
                 {
-                    double diffX = this.minecartX - this.posX;
-                    double diffY = this.minecartY - this.posY;
-                    double diffZ = this.minecartZ - this.posZ;
+                    double diffX = this.minecartX - this.getPosX();
+                    double diffY = this.minecartY - this.getPosY();
+                    double diffZ = this.minecartZ - this.getPosZ();
                     if (Math.abs(diffX) > 1.0D || Math.abs(diffY) > 1.0D || Math.abs(diffZ) > 1.0D)
                     {
-                        this.posX = this.minecartX;
-                        this.posY = this.minecartY;
-                        this.posZ = this.minecartZ;
+                        this.setRawPosition(this.minecartX, this.minecartY, this.minecartZ);
                     }
                     else
                     {
@@ -478,9 +474,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
                     }
                 }
             }
-            this.posX += this.getMotion().x;
-            this.posY += this.getMotion().y;
-            this.posZ += this.getMotion().z;
+            this.setRawPosition(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
             setBoundingBox(getBoundingBox().offset(this.getMotion()));
             this.setRotation(this.rotationYaw, this.rotationPitch);
             if (this.AIstate == AISTATE_MINING && this.ticksExisted % 2 == 0)
@@ -554,7 +548,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             if (this.getMotion().x != 0 || this.getMotion().y != 0 || this.getMotion().z != 0)
             {
                 this.setMotion(0.0, 0.0, 0.0);
-                GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.world));
+                GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionType(this.world));
             }
             return;
         }
@@ -567,12 +561,12 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.prepareMove(12, 2);
         }
 
-        this.lastTickPosX = this.posX;
-        this.lastTickPosY = this.posY;
-        this.lastTickPosZ = this.posZ;
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.lastTickPosX = this.getPosX();
+        this.lastTickPosY = this.getPosY();
+        this.lastTickPosZ = this.getPosZ();
+        this.prevPosX = this.getPosX();
+        this.prevPosY = this.getPosY();
+        this.prevPosZ = this.getPosZ();
         this.prevRotationPitch = this.rotationPitch;
         this.prevRotationYaw = this.rotationYaw;
 
@@ -653,11 +647,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             break;
         }
 
-        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionID(this.world));
+        GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionType(this.world));
 
-        this.posX += this.getMotion().x;
-        this.posY += this.getMotion().y;
-        this.posZ += this.getMotion().z;
+        this.setRawPosition(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
         setBoundingBox(getBoundingBox().offset(this.getMotion()));
 
 /*        if (this.dataManager.get(this.timeSinceHit) > 0)
@@ -924,7 +916,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return;
         }
 
-        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
+        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.getPosX() + 0.5D), MathHelper.floor(this.getPosY() + 1.5D), MathHelper.floor(this.getPosZ() + 0.5D));
         int otherEnd = (this.world.getDimension() instanceof DimensionAsteroids) ? MINE_LENGTH_AST : MINE_LENGTH;
         if (this.baseFacing == Direction.NORTH || this.baseFacing == Direction.WEST)
         {
@@ -1037,7 +1029,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.mineCountDown--;
             return false;
         }
-        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
+        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.getPosX() + 0.5D), MathHelper.floor(this.getPosY() + 1.5D), MathHelper.floor(this.getPosZ() + 0.5D));
         if (dist == 2)
         {
             inFront.translate(headings2[this.facingAI.getIndex()]);
@@ -1279,7 +1271,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private boolean prepareMoveClient(int limit, int dist)
     {
-        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.posX + 0.5D), MathHelper.floor(this.posY + 1.5D), MathHelper.floor(this.posZ + 0.5D));
+        BlockVec3 inFront = new BlockVec3(MathHelper.floor(this.getPosX() + 0.5D), MathHelper.floor(this.getPosY() + 1.5D), MathHelper.floor(this.getPosZ() + 0.5D));
         if (dist == 2)
         {
             inFront.translate(headings2[this.facing.getIndex()]);
@@ -1758,28 +1750,28 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         if (reverse != (this.baseFacing.getIndex() < 4))
         {
-            if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
+            if (this.getPosZ() > pos.z + 0.0001D || this.getPosZ() < pos.z - 0.0001D)
             {
                 this.moveToPosZ(pos.z, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.debug("At " + getPosX() + "," + getPosY() + "," + getPosZ() + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
-            else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
+            else if (this.getPosY() > pos.y - 0.9999D || this.getPosY() < pos.y - 1.0001D)
             {
                 this.moveToPosY(pos.y - 1, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.debug("At " + getPosX() + "," + getPosY() + "," + getPosZ() + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
-            else if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
+            else if (this.getPosX() > pos.x + 0.0001D || this.getPosX() < pos.x - 0.0001D)
             {
                 this.moveToPosX(pos.x, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.debug("At " + getPosX() + "," + getPosY() + "," + getPosZ() + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else
@@ -1790,28 +1782,28 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         else
         {
-            if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
+            if (this.getPosX() > pos.x + 0.0001D || this.getPosX() < pos.x - 0.0001D)
             {
                 this.moveToPosX(pos.x, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.debug("At " + getPosX() + "," + getPosY() + "," + getPosZ() + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
-            else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
+            else if (this.getPosY() > pos.y - 0.9999D || this.getPosY() < pos.y - 1.0001D)
             {
                 this.moveToPosY(pos.y - 1, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.debug("At " + getPosX() + "," + getPosY() + "," + getPosZ() + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
-            else if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
+            else if (this.getPosZ() > pos.z + 0.0001D || this.getPosZ() < pos.z - 0.0001D)
             {
                 this.moveToPosZ(pos.z, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.debug("At " + getPosX() + "," + getPosY() + "," + getPosZ() + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else
@@ -1828,7 +1820,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         this.targetPitch = 0;
 
-        if (this.posX > x)
+        if (this.getPosX() > x)
         {
             if (this.AIstate != AISTATE_DOCKING)
             {
@@ -1837,10 +1829,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 //            this.motionX = -this.speed;
             this.setMotion(-this.speed, this.getMotion().y, this.getMotion().z);
             //TODO some acceleration and deceleration
-            if (this.getMotion().x * speedup <= x - this.posX)
+            if (this.getMotion().x * speedup <= x - this.getPosX())
             {
-//                this.motionX = x - this.posX;
-                this.setMotion(x - this.posX, this.getMotion().y, this.getMotion().z);
+//                this.motionX = x - this.getPosX();
+                this.setMotion(x - this.getPosX(), this.getMotion().y, this.getMotion().z);
                 this.noSpeedup = true;
             }
             this.facingAI = Direction.WEST;
@@ -1853,10 +1845,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
 //            this.motionX = this.speed;
             this.setMotion(this.speed, this.getMotion().y, this.getMotion().z);
-            if (this.getMotion().x * speedup >= x - this.posX)
+            if (this.getMotion().x * speedup >= x - this.getPosX())
             {
-//                this.motionX = x - this.posX;
-                this.setMotion(x - this.posX, this.getMotion().y, this.getMotion().z);
+//                this.motionX = x - this.getPosX();
+                this.setMotion(x - this.getPosX(), this.getMotion().y, this.getMotion().z);
                 this.noSpeedup = true;
             }
             this.facingAI = Direction.EAST;
@@ -1875,15 +1867,15 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     private void moveToPosY(int y, boolean stopForTurn)
     {
-        if (this.posY > y)
+        if (this.getPosY() > y)
         {
             this.targetPitch = -90;
 //            this.motionY = -this.speed;
             this.setMotion(this.getMotion().x, -this.speed, this.getMotion().z);
-            if (this.getMotion().y * speedup <= y - this.posY)
+            if (this.getMotion().y * speedup <= y - this.getPosY())
             {
-//                this.motionY = y - this.posY;
-                this.setMotion(this.getMotion().x, y - this.posY, this.getMotion().z);
+//                this.motionY = y - this.getPosY();
+                this.setMotion(this.getMotion().x, y - this.getPosY(), this.getMotion().z);
                 this.noSpeedup = true;
             }
             this.facingAI = Direction.DOWN;
@@ -1893,10 +1885,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.targetPitch = 90;
 //            this.motionY = this.speed;
             this.setMotion(this.getMotion().x, this.speed, this.getMotion().z);
-            if (this.getMotion().y * speedup >= y - this.posY)
+            if (this.getMotion().y * speedup >= y - this.getPosY())
             {
-//                this.motionY = y - this.posY;
-                this.setMotion(this.getMotion().x, y - this.posY, this.getMotion().z);
+//                this.motionY = y - this.getPosY();
+                this.setMotion(this.getMotion().x, y - this.getPosY(), this.getMotion().z);
                 this.noSpeedup = true;
             }
             this.facingAI = Direction.UP;
@@ -1917,7 +1909,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     {
         this.targetPitch = 0;
 
-        if (this.posZ > z)
+        if (this.getPosZ() > z)
         {
             if (this.AIstate != AISTATE_DOCKING)
             {
@@ -1926,10 +1918,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 //            this.motionZ = -this.speed;
             this.setMotion(this.getMotion().x, this.getMotion().y, -this.speed);
             //TODO some acceleration and deceleration
-            if (this.getMotion().z * speedup <= z - this.posZ)
+            if (this.getMotion().z * speedup <= z - this.getPosZ())
             {
-//                this.motionZ = z - this.posZ;
-                this.setMotion(this.getMotion().x, this.getMotion().y, z - this.posZ);
+//                this.motionZ = z - this.getPosZ();
+                this.setMotion(this.getMotion().x, this.getMotion().y, z - this.getPosZ());
                 this.noSpeedup = true;
             }
             this.facingAI = Direction.NORTH;
@@ -1942,10 +1934,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             }
 //            this.motionZ = this.speed;
             this.setMotion(this.getMotion().x, this.getMotion().y, this.speed);
-            if (this.getMotion().z * speedup >= z - this.posZ)
+            if (this.getMotion().z * speedup >= z - this.getPosZ())
             {
-//                this.motionZ = z - this.posZ;
-                this.setMotion(this.getMotion().x, this.getMotion().y, z - this.posZ);
+//                this.motionZ = z - this.getPosZ();
+                this.setMotion(this.getMotion().x, this.getMotion().y, z - this.getPosZ());
                 this.noSpeedup = true;
             }
             this.facingAI = Direction.SOUTH;
@@ -2147,8 +2139,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         minerSize = EntitySize.flexible(Math.max(xsize, zsize), ysize);
 //        this.width = Math.max(xsize, zsize);
 //        this.height = ysize;
-        this.setBoundingBox(new AxisAlignedBB(this.posX - xsize / 2D, this.posY + 1D - ysize / 2D, this.posZ - zsize / 2D,
-                this.posX + xsize / 2D, this.posY + 1D + ysize / 2D, this.posZ + zsize / 2D));
+        this.setBoundingBox(new AxisAlignedBB(this.getPosX() - xsize / 2D, this.getPosY() + 1D - ysize / 2D, this.getPosZ() - zsize / 2D,
+                this.getPosX() + xsize / 2D, this.getPosY() + 1D + ysize / 2D, this.getPosZ() + zsize / 2D));
     }
 
     @Override
@@ -2298,12 +2290,10 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 //    }
 
     @Override
-    public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
+    public void setPosition(double x, double y, double z)
     {
-        this.setBoundingBox(this.getBoundingBox().offset(p_70107_1_ - this.posX, p_70107_3_ - this.posY, p_70107_5_ - this.posZ));
-        this.posX = p_70107_1_;
-        this.posY = p_70107_3_;
-        this.posZ = p_70107_5_;
+        this.setBoundingBox(this.getBoundingBox().offset(x - this.getPosX(), y - this.getPosY(), z - this.getPosZ()));
+        super.setRawPosition(x, y, z);
     }
 
     @Override
@@ -2405,9 +2395,9 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void transmitData(int[] data)
     {
-        data[0] = (int) (this.posX);
-        data[1] = (int) (this.posY);
-        data[2] = (int) (this.posZ);
+        data[0] = (int) (this.getPosX());
+        data[1] = (int) (this.getPosY());
+        data[2] = (int) (this.getPosZ());
         data[3] = this.energyLevel;
         data[4] = this.AIstate;
     }

@@ -225,9 +225,9 @@ public class TickHandlerClient
                 AbstractGui.fill(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, ColorUtil.to32BitColor(255, 0, 0, 0));
             }
 
-            ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * event.renderTickTime;
-            ClientProxyCore.playerPosY = player.prevPosY + (player.posY - player.prevPosY) * event.renderTickTime;
-            ClientProxyCore.playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ) * event.renderTickTime;
+            ClientProxyCore.playerPosX = player.prevPosX + (player.getPosX() - player.prevPosX) * event.renderTickTime;
+            ClientProxyCore.playerPosY = player.prevPosY + (player.getPosY() - player.prevPosY) * event.renderTickTime;
+            ClientProxyCore.playerPosZ = player.prevPosZ + (player.getPosZ() - player.prevPosZ) * event.renderTickTime;
             ClientProxyCore.playerRotationYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * event.renderTickTime;
             ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.renderTickTime;
 
@@ -260,7 +260,8 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.getThermalLevel() + 22;
-                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
+//                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
+                // TODO Overlays
             }
 
             if (playerBaseClient != null && player.world.getDimension() instanceof IGalacticraftDimension && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()))
@@ -350,15 +351,15 @@ public class TickHandlerClient
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {
-                BubbleRenderer.clearBubbles();
-
-                for (TileEntity tile : player.world.tickableTileEntities)
-                {
-                    if (tile instanceof IBubbleProviderColored)
-                    {
-                        BubbleRenderer.addBubble((IBubbleProviderColored) tile);
-                    }
-                }
+//                BubbleRenderer.clearBubbles();
+//
+//                for (TileEntity tile : player.world.tickableTileEntities)
+//                {
+//                    if (tile instanceof IBubbleProviderColored)
+//                    {
+//                        BubbleRenderer.addBubble((IBubbleProviderColored) tile);
+//                    }
+//                } TODO Bubble Rendering
 
                 if (updateJEIhiding)
                 {
@@ -375,7 +376,7 @@ public class TickHandlerClient
                     {
                         Footprint fp = fpIt.next();
                         fp.age += 20;
-                        fp.lightmapVal = player.world.getCombinedLight(new BlockPos(fp.position.x, fp.position.y, fp.position.z), 0);
+                        fp.lightmapVal = player.world.getLight(new BlockPos(fp.position.x, fp.position.y, fp.position.z));
 
                         if (fp.age >= Footprint.MAX_AGE)
                         {
@@ -390,13 +391,13 @@ public class TickHandlerClient
 
                     for (int i = -4; i < 5; i++)
                     {
-                        int x = MathHelper.floor(player.posX + i);
+                        int x = MathHelper.floor(player.getPosX() + i);
                         for (int j = -4; j < 5; j++)
                         {
-                            int y = MathHelper.floor(player.posY + j);
+                            int y = MathHelper.floor(player.getPosY() + j);
                             for (int k = -4; k < 5; k++)
                             {
-                                int z = MathHelper.floor(player.posZ + k);
+                                int z = MathHelper.floor(player.getPosZ() + k);
                                 BlockPos pos = new BlockPos(x, y, z);
 
                                 BlockState state = player.world.getBlockState(pos);
@@ -426,7 +427,7 @@ public class TickHandlerClient
                         }
                     }
 
-                    TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor(player.posX), MathHelper.floor(player.posY), MathHelper.floor(player.posZ));
+                    TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor(player.getPosX()), MathHelper.floor(player.getPosY()), MathHelper.floor(player.getPosZ()));
                     if (nearestSealer != null && !nearestSealer.sealed)
                     {
                         ClientProxyCore.leakTrace = nearestSealer.getLeakTraceClient();
@@ -483,15 +484,15 @@ public class TickHandlerClient
             {
                 if (world.getDimension() instanceof OverworldDimension)
                 {
-                    if (world.getDimension().getSkyRenderer() == null && inSpaceShip &&
-                            player.getRidingEntity().posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
-                    {
-                        world.getDimension().setSkyRenderer(new SkyProviderOverworld());
-                    }
-                    else if (world.getDimension().getSkyRenderer() instanceof SkyProviderOverworld && player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
-                    {
-                        world.getDimension().setSkyRenderer(null);
-                    }
+//                    if (world.getDimension().getSkyRenderer() == null && inSpaceShip &&
+//                            player.getRidingEntity().posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+//                    {
+//                        world.getDimension().setSkyRenderer(new SkyProviderOverworld());
+//                    }
+//                    else if (world.getDimension().getSkyRenderer() instanceof SkyProviderOverworld && player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+//                    {
+//                        world.getDimension().setSkyRenderer(null);
+//                    }  TODO Sky rendering
                 }
 //                else if (world.getDimension() instanceof DimensionSpaceStation)
 //                {
@@ -502,10 +503,10 @@ public class TickHandlerClient
 //                } TODO Space stations
                 else if (world.getDimension() instanceof DimensionMoon)
                 {
-                    if (world.getDimension().getSkyRenderer() == null)
-                    {
-                        world.getDimension().setSkyRenderer(new SkyProviderMoon());
-                    }
+//                    if (world.getDimension().getSkyRenderer() == null)
+//                    {
+//                        world.getDimension().setSkyRenderer(new SkyProviderMoon());
+//                    }  TODO Sky rendering
 
                     if (world.getDimension().getCloudRenderer() == null)
                     {
@@ -595,7 +596,7 @@ public class TickHandlerClient
 
             if (player.getRidingEntity() != null && isPressed && !ClientProxyCore.lastSpacebarDown)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionID(player.world), new Object[]{}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_IGNITE_ROCKET, GCCoreUtil.getDimensionType(player.world), new Object[]{}));
                 ClientProxyCore.lastSpacebarDown = true;
             }
 
@@ -670,32 +671,32 @@ public class TickHandlerClient
 //        Minecraft.getInstance().entityRenderer.thirdPersonDistancePrev = value;
     }
 
-    private void fillGradient(int par1, int par2, int par3, int par4, int par5, int par6)
-    {
-        float f = (par5 >> 24 & 255) / 255.0F;
-        float f1 = (par5 >> 16 & 255) / 255.0F;
-        float f2 = (par5 >> 8 & 255) / 255.0F;
-        float f3 = (par5 & 255) / 255.0F;
-        float f4 = (par6 >> 24 & 255) / 255.0F;
-        float f5 = (par6 >> 16 & 255) / 255.0F;
-        float f6 = (par6 >> 8 & 255) / 255.0F;
-        float f7 = (par6 & 255) / 255.0F;
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder worldRenderer = tessellator.getBuffer();
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        worldRenderer.pos(par3, par2, 0.0D).color(f1, f2, f3, f).endVertex();
-        worldRenderer.pos(par1, par2, 0.0D).color(f1, f2, f3, f).endVertex();
-        worldRenderer.pos(par1, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
-        worldRenderer.pos(par3, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
-        tessellator.draw();
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
+//    private void fillGradient(int par1, int par2, int par3, int par4, int par5, int par6)
+//    {
+//        float f = (par5 >> 24 & 255) / 255.0F;
+//        float f1 = (par5 >> 16 & 255) / 255.0F;
+//        float f2 = (par5 >> 8 & 255) / 255.0F;
+//        float f3 = (par5 & 255) / 255.0F;
+//        float f4 = (par6 >> 24 & 255) / 255.0F;
+//        float f5 = (par6 >> 16 & 255) / 255.0F;
+//        float f6 = (par6 >> 8 & 255) / 255.0F;
+//        float f7 = (par6 & 255) / 255.0F;
+//        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//        GL11.glEnable(GL11.GL_BLEND);
+//        GL11.glDisable(GL11.GL_ALPHA_TEST);
+//        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+//        GL11.glShadeModel(GL11.GL_SMOOTH);
+//        Tessellator tessellator = Tessellator.getInstance();
+//        BufferBuilder worldRenderer = tessellator.getBuffer();
+//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+//        worldRenderer.pos(par3, par2, 0.0D).color(f1, f2, f3, f).endVertex();
+//        worldRenderer.pos(par1, par2, 0.0D).color(f1, f2, f3, f).endVertex();
+//        worldRenderer.pos(par1, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
+//        worldRenderer.pos(par3, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
+//        tessellator.draw();
+//        GL11.glShadeModel(GL11.GL_FLAT);
+//        GL11.glDisable(GL11.GL_BLEND);
+//        GL11.glEnable(GL11.GL_ALPHA_TEST);
+//        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//    }
 }

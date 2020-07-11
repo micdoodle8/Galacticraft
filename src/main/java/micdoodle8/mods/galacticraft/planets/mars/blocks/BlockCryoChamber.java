@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -75,10 +76,10 @@ public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         ((IMultiBlock) worldIn.getTileEntity(pos)).onActivated(playerIn);
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
 //    @Override

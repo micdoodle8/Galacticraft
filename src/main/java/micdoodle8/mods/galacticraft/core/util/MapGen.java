@@ -43,7 +43,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
 
     //    private BiomeCache biomeCache;
     private Layer genBiomes;
-    private Layer biomeIndexLayer;
+//    private Layer biomeIndexLayer;
     public File biomeMapFile;
     private byte[] biomeAndHeightArray = null;
     private int biomeMapSizeX;
@@ -76,7 +76,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
 
     public MapGen(World worldIn, int sx, int sz, int cx, int cz, int scale, File file)
     {
-        this.dimID = GCCoreUtil.getDimensionID(worldIn);
+        this.dimID = GCCoreUtil.getDimensionType(worldIn);
         this.biomeMapFactor = scale;
         this.tickLimit = Math.min(scale, 16);
         if (MapGen.disabled)
@@ -120,7 +120,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
         long seed = worldInfo.getSeed();
 //        this.biomeCache = new BiomeCache(this);
 //        String options = worldInfo.getGeneratorOptions();
-        Layer[] agenlayer;
+        Layer agenlayer;
         try
         {
 //            if (options != null)
@@ -136,7 +136,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
 //            }
 //            else TODO Bop support
             {
-                agenlayer = LayerUtil.buildOverworldProcedure(seed, worldType, this.settings);
+                agenlayer = LayerUtil.func_227474_a_(seed, worldType, this.settings);
             }
 //            agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayer);
         }
@@ -149,8 +149,8 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
             MapGen.disabled = true;
             return;
         }
-        this.genBiomes = agenlayer[0];
-        this.biomeIndexLayer = agenlayer[1];
+        this.genBiomes = agenlayer;
+//        this.biomeIndexLayer = agenlayer[1];
 
         GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
         if (progress > 0)

@@ -27,9 +27,9 @@ public abstract class DimensionSpaceStation extends DimensionSpace
 {
 //    private SpinManager spinManager = new SpinManager(this);
 
-    public DimensionSpaceStation(World worldIn, DimensionType typeIn)
+    public DimensionSpaceStation(World worldIn, DimensionType typeIn, float lightMod)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, lightMod);
 //        this.getSpinManager().registerServerSide();
     }
 
@@ -42,7 +42,7 @@ public abstract class DimensionSpaceStation extends DimensionSpace
     public ChunkGenerator<?> createChunkGenerator()
     {
         OrbitGenSettings settings = new OrbitGenSettings();
-        return new ChunkGeneratorOrbit(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings().setBiome(BiomeOrbit.space)), settings);
+        return new ChunkGeneratorOrbit(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings(world.getWorldInfo()).setBiome(BiomeOrbit.space)), settings);
     }
 
     @Override

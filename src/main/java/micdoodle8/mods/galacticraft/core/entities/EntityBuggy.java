@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
-import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -14,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -250,7 +248,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             final double offsetX = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
             final double offsetZ = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            passenger.setPosition(this.posX + offsetX, this.posY + 0.4F + passenger.getYOffset(), this.posZ + offsetZ);
+            passenger.setPosition(this.getPosX() + offsetX, this.getPosY() + 0.4F + passenger.getYOffset(), this.getPosZ() + offsetZ);
         }
     }
 
@@ -419,9 +417,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             double z;
             if (this.boatPosRotationIncrements > 0)
             {
-                x = this.posX + (this.boatX - this.posX) / this.boatPosRotationIncrements;
-                y = this.posY + (this.boatY - this.posY) / this.boatPosRotationIncrements;
-                z = this.posZ + (this.boatZ - this.posZ) / this.boatPosRotationIncrements;
+                x = this.getPosX() + (this.boatX - this.getPosX()) / this.boatPosRotationIncrements;
+                y = this.getPosY() + (this.boatY - this.getPosY()) / this.boatPosRotationIncrements;
+                z = this.getPosZ() + (this.boatZ - this.getPosZ()) / this.boatPosRotationIncrements;
                 var12 = MathHelper.wrapDegrees(this.boatYaw - this.rotationYaw);
                 this.rotationYaw = (float) (this.rotationYaw + var12 / this.boatPosRotationIncrements);
                 this.rotationPitch = (float) (this.rotationPitch + (this.boatPitch - this.rotationPitch) / this.boatPosRotationIncrements);
@@ -431,9 +429,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             }
             else
             {
-                x = this.posX + this.getMotion().x;
-                y = this.posY + this.getMotion().y;
-                z = this.posZ + this.getMotion().z;
+                x = this.getPosX() + this.getMotion().x;
+                y = this.getPosY() + this.getMotion().y;
+                z = this.getPosZ() + this.getMotion().z;
                 if (!this.getPassengers().isEmpty())
                 {
                     this.setPosition(x, y, z);
@@ -466,7 +464,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         if (this.inWater && this.speed > 0.2D)
         {
-            this.world.playSound(null, (float) this.posX, (float) this.posY, (float) this.posZ, SoundEvents.ENTITY_GENERIC_BURN, SoundCategory.NEUTRAL, 0.5F, 2.6F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.8F);
+            this.world.playSound(null, (float) this.getPosX(), (float) this.getPosY(), (float) this.getPosZ(), SoundEvents.ENTITY_GENERIC_BURN, SoundCategory.NEUTRAL, 0.5F, 2.6F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.8F);
         }
 
         this.speed *= 0.98D;
@@ -514,9 +512,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             }
         }
 
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.prevPosX = this.getPosX();
+        this.prevPosY = this.getPosY();
+        this.prevPosZ = this.getPosZ();
 
         if (this.world.isRemote)
         {
@@ -524,8 +522,8 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         }
         else if (this.ticks % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 50.0D, GCCoreUtil.getDimensionID(this.world)));
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 50.0D, GCCoreUtil.getDimensionID(this.world)));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 50.0D, GCCoreUtil.getDimensionType(this.world)));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 50.0D, GCCoreUtil.getDimensionType(this.world)));
         }
     }
 
@@ -700,7 +698,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         if (this.world.isRemote && (key == 6 || key == 8 || key == 9))
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, GCCoreUtil.getDimensionID(this.world), new Object[]{key}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_CONTROL_ENTITY, GCCoreUtil.getDimensionType(this.world), new Object[]{key}));
             return true;
         }
 

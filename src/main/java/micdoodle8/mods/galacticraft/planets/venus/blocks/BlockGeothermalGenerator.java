@@ -15,6 +15,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -45,10 +46,10 @@ public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescr
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
 //        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ()); TODO gui
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -60,12 +61,12 @@ public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescr
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         BlockState state = world.getBlockState(pos);
         Direction change = state.get(FACING).rotateY();
         world.setBlockState(pos, state.with(FACING, change), 3);
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

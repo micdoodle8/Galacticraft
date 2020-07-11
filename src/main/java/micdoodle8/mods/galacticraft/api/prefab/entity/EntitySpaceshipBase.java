@@ -141,7 +141,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
             Entity e = par1DamageSource.getTrueSource();
             boolean flag = e instanceof PlayerEntity && ((PlayerEntity) e).abilities.isCreativeMode;
-            if (this.isInvulnerableTo(par1DamageSource) || this.posY > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
+            if (this.isInvulnerableTo(par1DamageSource) || this.getPosY() > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
             {
                 return false;
             }
@@ -248,11 +248,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             e.fallDistance = 0.0F;
         }
 
-        if (this.posY > (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) && this.launchPhase != EnumLaunchPhase.LANDING.ordinal())
+        if (this.getPosY() > (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) && this.launchPhase != EnumLaunchPhase.LANDING.ordinal())
         {
             this.onReachAtmosphere();
 //            if (this.world.isRemote)
-//            	this.posY = 1 + (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200);
+//            	this.getPosY() = 1 + (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200);
         }
 
         if (this.rollAmplitude > 0)
@@ -267,11 +267,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!this.world.isRemote)
         {
-            if (this.posY < 0.0D)
+            if (this.getPosY() < 0.0D)
             {
                 this.remove();
             }
-            else if (this.posY > (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) + (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() ? 355 : 100))
+            else if (this.getPosY() > (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) + (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() ? 355 : 100))
             {
                 for (Entity e : this.getPassengers())
                 {
@@ -361,7 +361,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (this.world.isRemote)
         {
-            this.setPosition(this.posX, this.posY, this.posZ);
+            this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 
             if (this.shouldMoveClientSide())
             {
@@ -377,12 +377,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (this.world.isRemote)
         {
-            this.setPosition(this.posX, this.posY, this.posZ);
+            this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
         }
 
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.prevPosX = this.getPosX();
+        this.prevPosY = this.getPosY();
+        this.prevPosZ = this.getPosZ();
 
         if (!this.world.isRemote && this.ticks % 3 == 0)
         {
@@ -432,17 +432,17 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             double motionX = this.getMotion().x;
             double motionY = this.getMotion().y;
             double motionZ = this.getMotion().z;
-            if (Math.abs(this.syncAdjustX - this.posX) > 0.2D)
+            if (Math.abs(this.syncAdjustX - this.getPosX()) > 0.2D)
             {
-                motionX += (this.syncAdjustX - this.posX) / 40D;
+                motionX += (this.syncAdjustX - this.getPosX()) / 40D;
             }
-            if (Math.abs(this.syncAdjustY - this.posY) > 0.2D)
+            if (Math.abs(this.syncAdjustY - this.getPosY()) > 0.2D)
             {
-                motionY += (this.syncAdjustY - this.posY) / 40D;
+                motionY += (this.syncAdjustY - this.getPosY()) / 40D;
             }
-            if (Math.abs(this.syncAdjustZ - this.posZ) > 0.2D)
+            if (Math.abs(this.syncAdjustZ - this.getPosZ()) > 0.2D)
             {
-                motionZ += (this.syncAdjustZ - this.posZ) / 40D;
+                motionZ += (this.syncAdjustZ - this.getPosZ()) / 40D;
             }
             setMotion(motionX, motionY, motionZ);
         }
@@ -481,7 +481,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!ConfigManagerCore.disableSpaceshipGrief)
         {
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, 5, Explosion.Mode.NONE);
+            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5, Explosion.Mode.NONE);
         }
 
         this.remove();
@@ -495,8 +495,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (this.syncAdjustFlag && this.world.isBlockLoaded(new BlockPos(x, 255D, z)) && this.hasValidFuel())
         {
             PlayerEntity p = Minecraft.getInstance().player;
-            double dx = x - p.posX;
-            double dz = z - p.posZ;
+            double dx = x - p.getPosX();
+            double dz = z - p.getPosZ();
             if (dx * dx + dz * dz < 1024)
             {
                 if (this.world.getEntityByID(this.getEntityId()) == null)
@@ -511,9 +511,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                     }
                 }
 
-                this.posX = x;
-                this.posY = y;
-                this.posZ = z;
+                this.setRawPosition(x, y, z);
 
                 int cx = MathHelper.floor(x / 16.0D);
                 int cz = MathHelper.floor(z / 16.0D);
@@ -722,7 +720,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public void transmitData(int[] data)
     {
         data[0] = this.timeUntilLaunch;
-        data[1] = (int) this.posY;
+        data[1] = (int) this.getPosY();
         //data[2] is entity speed already set as default by TileEntityTelemetry
         data[3] = this.getScaledFuelLevel(100);
         data[4] = (int) this.rotationPitch;
@@ -762,16 +760,16 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return 1.34F;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getBrightnessForRender()
-    {
-        double height = this.posY + (double) this.getEyeHeight();
-        if (height > 255D)
-        {
-            height = 255D;
-        }
-        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
-        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getBrightnessForRender()
+//    {
+//        double height = this.getPosY() + (double) this.getEyeHeight();
+//        if (height > 255D)
+//        {
+//            height = 255D;
+//        }
+//        BlockPos blockpos = new BlockPos(this.getPosX(), height, this.getPosZ());
+//        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
+//    }
 }

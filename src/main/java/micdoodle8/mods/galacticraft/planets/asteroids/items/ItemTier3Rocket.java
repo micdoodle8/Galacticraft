@@ -217,7 +217,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
         EntityTier3Rocket rocket = EntityTier3Rocket.createEntityTier3Rocket(worldIn, centerX, centerY, centerZ, EntityTier3Rocket.getTypeFromItem(stack.getItem()));
 
         rocket.rotationYaw += 45;
-        rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
+        rocket.setPosition(rocket.getPosX(), rocket.getPosY() + rocket.getOnPadYOffset(), rocket.getPosZ());
         worldIn.addEntity(rocket);
 
         if (rocket.getRocketType().getPreFueled())

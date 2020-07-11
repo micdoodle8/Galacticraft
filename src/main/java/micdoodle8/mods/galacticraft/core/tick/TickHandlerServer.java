@@ -262,7 +262,7 @@ public class TickHandlerServer
                     final Dimension dimension = WorldUtil.getProviderForDimensionServer(change.getDimensionId());
                     if (dimension != null)
                     {
-                        final DimensionType dim = GCCoreUtil.getDimensionID(dimension);
+                        final DimensionType dim = GCCoreUtil.getDimensionType(dimension);
                         GCLog.info("Found matching world (" + dim + ") for name: " + change.getDimensionId());
 
                         if (change.getPlayer().world instanceof ServerWorld)
@@ -278,7 +278,7 @@ public class TickHandlerServer
                     }
 
                     stats.setTeleportCooldown(10);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().world), new Object[]{}), change.getPlayer());
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionType(change.getPlayer().world), new Object[]{}), change.getPlayer());
                 }
                 catch (Exception e)
                 {
@@ -332,7 +332,7 @@ public class TickHandlerServer
                 {
                     ServerChunkProvider chunkProviderServer = world.getChunkProvider();
 
-                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionID(world));
+                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionType(world));
 
                     if (footprintMap != null)
                     {
@@ -392,10 +392,10 @@ public class TickHandlerServer
 
                     for (ServerWorld world : worlds)
                     {
-                        if (GCCoreUtil.getDimensionID(world) == targetPoint.dim)
+                        if (GCCoreUtil.getDimensionType(world) == targetPoint.dim)
                         {
                             long chunkKey = ChunkPos.asLong(targetPoint.x >> 4, targetPoint.z >> 4);
-                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[]{chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z)}), new PacketDistributor.TargetPoint(targetPoint.x, targetPoint.y, targetPoint.z, 50, targetPoint.dim));
+                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionType(world), new Object[]{chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z)}), new PacketDistributor.TargetPoint(targetPoint.x, targetPoint.y, targetPoint.z, 50, targetPoint.dim));
 
 
 //                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.getDimension().dimensionId);
@@ -530,7 +530,7 @@ public class TickHandlerServer
         {
             final ServerWorld world = (ServerWorld) event.world;
 
-            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(GCCoreUtil.getDimensionID(world));
+            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(GCCoreUtil.getDimensionType(world));
 
             if (changeList != null && !changeList.isEmpty())
             {
@@ -560,14 +560,14 @@ public class TickHandlerServer
                 }
 
                 changeList.clear();
-                TickHandlerServer.scheduledBlockChanges.remove(GCCoreUtil.getDimensionID(world));
+                TickHandlerServer.scheduledBlockChanges.remove(GCCoreUtil.getDimensionType(world));
                 if (newList.size() > 0)
                 {
-                    TickHandlerServer.scheduledBlockChanges.put(GCCoreUtil.getDimensionID(world), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
+                    TickHandlerServer.scheduledBlockChanges.put(GCCoreUtil.getDimensionType(world), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
                 }
             }
 
-            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(GCCoreUtil.getDimensionID(world));
+            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(GCCoreUtil.getDimensionType(world));
 
             if (torchList != null && !torchList.isEmpty())
             {
@@ -586,17 +586,17 @@ public class TickHandlerServer
                 }
 
                 torchList.clear();
-                TickHandlerServer.scheduledTorchUpdates.remove(GCCoreUtil.getDimensionID(world));
+                TickHandlerServer.scheduledTorchUpdates.remove(GCCoreUtil.getDimensionType(world));
             }
 
             if (world.getDimension() instanceof IOrbitDimension)
             {
                 DimensionType dim = ((IOrbitDimension) world.getDimension()).getPlanetIdToOrbit();
                 int minY = ((IOrbitDimension) world.getDimension()).getYCoordToTeleportToPlanet();
-                world.getEntities().filter(e -> e.posY <= minY && e.world == world).forEach(e -> WorldUtil.transferEntityToDimension(e, dim, world, false, null));
+                world.getEntities().filter(e -> e.getPosY() <= minY && e.world == world).forEach(e -> WorldUtil.transferEntityToDimension(e, dim, world, false, null));
             }
 
-            DimensionType dimensionID = GCCoreUtil.getDimensionID(world);
+            DimensionType dimensionID = GCCoreUtil.getDimensionType(world);
             if (worldsNeedingUpdate.contains(dimensionID))
             {
                 worldsNeedingUpdate.remove(dimensionID);
@@ -619,7 +619,7 @@ public class TickHandlerServer
 //                handler.tick(world);
 //            }
 
-            DimensionType dimID = GCCoreUtil.getDimensionID(world);
+            DimensionType dimID = GCCoreUtil.getDimensionType(world);
             Set<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID);
             final HashSet<BlockPos> checkedThisTick = new HashSet<>();
 
@@ -641,7 +641,7 @@ public class TickHandlerServer
                     }
                 }
 
-                TickHandlerServer.edgeChecks.remove(GCCoreUtil.getDimensionID(world));
+                TickHandlerServer.edgeChecks.remove(GCCoreUtil.getDimensionType(world));
             }
         }
     }

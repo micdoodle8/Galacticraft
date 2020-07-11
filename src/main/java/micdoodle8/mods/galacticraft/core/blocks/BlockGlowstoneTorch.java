@@ -6,10 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -95,7 +95,7 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
 //    }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         super.tick(state, worldIn, pos, random);
 
@@ -136,12 +136,12 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
 //        return super.collisionRayTrace(worldIn, pos, start, end);
 //    }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)

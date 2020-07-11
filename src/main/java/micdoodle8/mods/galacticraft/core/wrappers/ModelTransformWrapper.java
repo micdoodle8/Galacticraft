@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -7,11 +8,8 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.model.TRSRTransformation;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
 import java.util.List;
 import java.util.Random;
 
@@ -68,17 +66,21 @@ abstract public class ModelTransformWrapper implements IBakedModel
     }
 
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType)
+    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat)
     {
-        Matrix4f matrix4f = getTransformForPerspective(cameraTransformType);
-
-        if (matrix4f == null)
+        if (!getTransformForPerspective(cameraTransformType, mat))
         {
-            return net.minecraftforge.client.ForgeHooksClient.handlePerspective(getBakedModel(), cameraTransformType);
+            return net.minecraftforge.client.ForgeHooksClient.handlePerspective(getBakedModel(), cameraTransformType, mat);
         }
 
-        return Pair.of(this, matrix4f);
+        return this;
     }
 
-    abstract protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType);
+    @Override
+    public boolean func_230044_c_()
+    {
+        return true;
+    }
+
+    abstract protected boolean getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat);
 }

@@ -27,6 +27,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.NonNullList;
@@ -255,9 +256,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
 
         this.linkedMinerDataAIState = miner.AIstate;
-        this.linkedMinerDataDX = (MathHelper.floor(this.linkedMiner.posX) - this.getPos().getX() - 1);
-        this.linkedMinerDataDY = (MathHelper.floor(this.linkedMiner.posY) - this.getPos().getY() - 1);
-        this.linkedMinerDataDZ = (MathHelper.floor(this.linkedMiner.posZ) - this.getPos().getZ() - 1);
+        this.linkedMinerDataDX = (MathHelper.floor(this.linkedMiner.getPosX()) - this.getPos().getX() - 1);
+        this.linkedMinerDataDY = (MathHelper.floor(this.linkedMiner.getPosY()) - this.getPos().getY() - 1);
+        this.linkedMinerDataDZ = (MathHelper.floor(this.linkedMiner.getPosZ()) - this.getPos().getZ() - 1);
         this.linkedMinerDataCount = miner.mineCount;
     }
 
@@ -584,19 +585,23 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
         if (this.isMaster)
         {
             ItemStack holding = entityPlayer.getActiveItemStack();
-            return holding == null || holding.getItem() != AsteroidsItems.astroMiner;
+            return holding == ItemStack.EMPTY || holding.getItem() != AsteroidsItems.astroMiner ? ActionResultType.SUCCESS : ActionResultType.PASS;
 
 //            entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()); TODO guis
         }
         else
         {
             TileEntityMinerBase master = this.getMaster();
-            return master != null && master.onActivated(entityPlayer);
+            if (master == null)
+            {
+                return ActionResultType.FAIL;
+            }
+            return master.onActivated(entityPlayer);
         }
     }
 
@@ -725,7 +730,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
                 BlockState state = this.world.getBlockState(offset);
                 state.getBlock().neighborChanged(state, this.world, offset, this.world.getBlockState(this.getPos()).getBlock(), this.getPos(), false);
-                world.func_225319_b(offset, state.getBlock().getDefaultState(), state); // Forces block render update. Better way to do this?
+                world.markBlockRangeForRenderUpdate(offset, state.getBlock().getDefaultState(), state); // Forces block render update. Better way to do this?
             }
         }
 

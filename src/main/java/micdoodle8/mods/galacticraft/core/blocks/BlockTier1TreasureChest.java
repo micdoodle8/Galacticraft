@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -236,19 +237,16 @@ public class BlockTier1TreasureChest extends Block implements IShiftDescription
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
-        if (worldIn.isRemote)
-        {
-            return true;
-        }
-        else
+        if (!worldIn.isRemote)
         {
 //            TileEntity tile = worldIn.getTileEntity(pos);
             NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
 //            playerIn.displayGUIChest((IInventory) tile);
-            return true;
+            return ActionResultType.SUCCESS;
         }
+        return ActionResultType.SUCCESS;
     }
 
     @Override

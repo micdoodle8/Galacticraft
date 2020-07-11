@@ -49,9 +49,9 @@ public class EntityHangingSchematic extends HangingEntity
     @Override
     public void tick()
     {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.prevPosX = this.getPosX();
+        this.prevPosY = this.getPosY();
+        this.prevPosZ = this.getPosZ();
 
         if (this.sendToClient)
         {
@@ -126,7 +126,7 @@ public class EntityHangingSchematic extends HangingEntity
     @Override
     public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch)
     {
-        BlockPos blockpos = this.hangingPosition.add(x - this.posX, y - this.posY, z - this.posZ);
+        BlockPos blockpos = this.hangingPosition.add(x - this.getPosX(), y - this.getPosY(), z - this.getPosZ());
         this.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
     }
 
@@ -138,7 +138,7 @@ public class EntityHangingSchematic extends HangingEntity
 
     public void sendToClient(World worldIn, BlockPos blockpos)
     {
-        DimensionType dimID = GCCoreUtil.getDimensionID(worldIn);
+        DimensionType dimID = GCCoreUtil.getDimensionType(worldIn);
         GCCoreUtil.sendToAllAround(new PacketSimple(EnumSimplePacket.C_SPAWN_HANGING_SCHEMATIC, dimID, new Object[]{blockpos, this.getEntityId(), this.facingDirection.ordinal(), this.schematic}), worldIn, dimID, blockpos, 150D);
     }
 

@@ -48,10 +48,10 @@ public class EntityWebShot extends Entity implements IProjectile
             webShot.canBePickedUp = 1;
         }
 
-        webShot.posY = shooter.posY + (double) shooter.getEyeHeight() - 0.10000000149011612D;
-        double d0 = target.posX - shooter.posX;
-        double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - webShot.posY;
-        double d2 = target.posZ - shooter.posZ;
+        webShot.setRawPosition(webShot.getPosX(), shooter.getPosY() + (double) shooter.getEyeHeight() - 0.10000000149011612D, webShot.getPosZ());
+        double d0 = target.getPosX() - shooter.getPosX();
+        double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - webShot.getPosY();
+        double d2 = target.getPosZ() - shooter.getPosZ();
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
         if (d3 >= 1.0E-7D)
@@ -60,7 +60,7 @@ public class EntityWebShot extends Entity implements IProjectile
             float f1 = (float) MathHelper.atan2(d1, d3) * -Constants.RADIANS_TO_DEGREES;
             double d4 = d0 / d3;
             double d5 = d2 / d3;
-            webShot.setLocationAndAngles(shooter.posX + d4, webShot.posY, shooter.posZ + d5, f, f1);
+            webShot.setLocationAndAngles(shooter.getPosX() + d4, webShot.getPosY(), shooter.getPosZ() + d5, f, f1);
             float f2 = (float) (d3 * 0.20000000298023224D);
             webShot.shoot(d0, d1 + (double) f2, d2, p_i1755_4_, p_i1755_5_);
         }
@@ -79,11 +79,11 @@ public class EntityWebShot extends Entity implements IProjectile
         }
 
 //        webShot.setSize(0.5F, 0.5F);
-        webShot.setLocationAndAngles(shooter.posX, shooter.posY + (double) shooter.getEyeHeight(), shooter.posZ, shooter.rotationYaw, shooter.rotationPitch);
-        webShot.posX -= MathHelper.cos(webShot.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F;
-        webShot.posY -= 0.10000000149011612D;
-        webShot.posZ -= MathHelper.sin(webShot.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F;
-        webShot.setPosition(webShot.posX, webShot.posY, webShot.posZ);
+        webShot.setLocationAndAngles(shooter.getPosX(), shooter.getPosY() + (double) shooter.getEyeHeight(), shooter.getPosZ(), shooter.rotationYaw, shooter.rotationPitch);
+        webShot.setRawPosition(webShot.getPosX() - MathHelper.cos(webShot.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F,
+                webShot.getPosY() - 0.10000000149011612D,
+                webShot.getPosZ() - MathHelper.sin(webShot.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F);
+        webShot.setPosition(webShot.getPosX(), webShot.getPosY(), webShot.getPosZ());
         double motionX = -MathHelper.sin(webShot.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(webShot.rotationPitch / Constants.RADIANS_TO_DEGREES);
         double motionZ = MathHelper.cos(webShot.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(webShot.rotationPitch / Constants.RADIANS_TO_DEGREES);
         double motionY = -MathHelper.sin(webShot.rotationPitch / Constants.RADIANS_TO_DEGREES);
@@ -156,7 +156,7 @@ public class EntityWebShot extends Entity implements IProjectile
             this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(y, f) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
         }
     }
 
@@ -183,11 +183,11 @@ public class EntityWebShot extends Entity implements IProjectile
         }
 
         ++this.ticksInAir;
-        Vec3d vec31 = new Vec3d(this.posX, this.posY, this.posZ);
-        Vec3d vec3 = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+        Vec3d vec31 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+        Vec3d vec3 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
         RayTraceResult castResult = this.world.rayTraceBlocks(new RayTraceContext(vec3, vec31, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-        vec31 = new Vec3d(this.posX, this.posY, this.posZ);
-        vec3 = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+        vec31 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+        vec3 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
 
         if (castResult.getType() != RayTraceResult.Type.MISS)
         {
@@ -266,19 +266,15 @@ public class EntityWebShot extends Entity implements IProjectile
             }
             else
             {
-                this.setMotion((float) (castResult.getHitVec().x - this.posX), (float) (castResult.getHitVec().y - this.posY), (float) (castResult.getHitVec().z - this.posZ));
+                this.setMotion((float) (castResult.getHitVec().x - this.getPosX()), (float) (castResult.getHitVec().y - this.getPosY()), (float) (castResult.getHitVec().z - this.getPosZ()));
                 float f5 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z);
-                this.posX -= this.getMotion().x / (double) f5 * 0.05000000074505806D;
-                this.posY -= this.getMotion().y / (double) f5 * 0.05000000074505806D;
-                this.posZ -= this.getMotion().z / (double) f5 * 0.05000000074505806D;
+                this.setRawPosition(this.getPosX() - this.getMotion().x / (double) f5 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / (double) f5 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / (double) f5 * 0.05000000074505806D);
                 this.arrowShake = 7;
                 this.remove();
             }
         }
 
-        this.posX += this.getMotion().x;
-        this.posY += this.getMotion().y;
-        this.posZ += this.getMotion().z;
+        this.setRawPosition(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
         float f3 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
         this.rotationYaw = (float) MathHelper.atan2(this.getMotion().x, this.getMotion().z) * Constants.RADIANS_TO_DEGREES;
 
@@ -309,7 +305,7 @@ public class EntityWebShot extends Entity implements IProjectile
             for (int i1 = 0; i1 < 4; ++i1)
             {
                 float f8 = 0.25F;
-                this.world.addParticle(ParticleTypes.BUBBLE, this.posX - this.getMotion().x * (double) f8, this.posY - this.getMotion().y * (double) f8, this.posZ - this.getMotion().z * (double) f8, this.getMotion().x, this.getMotion().y, this.getMotion().z);
+                this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() - this.getMotion().x * (double) f8, this.getPosY() - this.getMotion().y * (double) f8, this.getPosZ() - this.getMotion().z * (double) f8, this.getMotion().x, this.getMotion().y, this.getMotion().z);
             }
         }
 
@@ -318,7 +314,7 @@ public class EntityWebShot extends Entity implements IProjectile
             this.extinguish();
         }
 
-        this.setPosition(this.posX, this.posY, this.posZ);
+        this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
         this.doBlockCollisions();
     }
 

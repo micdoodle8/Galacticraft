@@ -150,7 +150,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
             rocket = EntityCargoRocket.createEntityCargoRocket(world, centerX, centerY, centerZ, EntityCargoRocket.getTypeFromItem(this));
         }
 
-        rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
+        rocket.setPosition(rocket.getPosX(), rocket.getPosY() + rocket.getOnPadYOffset(), rocket.getPosZ());
         world.addEntity(rocket);
 
         if (((IRocketType) rocket).getRocketType().getPreFueled())

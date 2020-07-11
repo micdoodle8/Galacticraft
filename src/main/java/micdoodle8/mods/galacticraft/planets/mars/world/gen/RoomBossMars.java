@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -36,7 +37,7 @@ public class RoomBossMars extends RoomBoss
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos chunkPos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -81,31 +82,31 @@ public class RoomBossMars extends RoomBoss
                         }
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, mutableBoundingBoxIn);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                         }
                     }
                     else if (j == this.sizeY)
                     {
-                        if ((i <= 2 || k <= 2 || i >= this.sizeX - 2 || k >= this.sizeZ - 2) && random.nextInt(4) == 0)
+                        if ((i <= 2 || k <= 2 || i >= this.sizeX - 2 || k >= this.sizeZ - 2) && randomIn.nextInt(4) == 0)
                         {
-                            this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, mutableBoundingBoxIn);
                         }
                     }
-                    else if (j == 1 && (i <= 2 || k <= 2 || i >= this.sizeX - 2 || k >= this.sizeZ - 2) && random.nextInt(6) == 0)
+                    else if (j == 1 && (i <= 2 || k <= 2 || i >= this.sizeX - 2 || k >= this.sizeZ - 2) && randomIn.nextInt(6) == 0)
                     {
-                        this.setBlockState(worldIn, MarsBlocks.creeperEgg.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, MarsBlocks.creeperEgg.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                     }
                 }
             }
@@ -116,7 +117,7 @@ public class RoomBossMars extends RoomBoss
         int spawnerZ = this.sizeZ / 2;
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
         //Is this position inside the chunk currently being generated?
-        if (chunkBox.isVecInside(blockpos))
+        if (mutableBoundingBoxIn.isVecInside(blockpos))
         {
             worldIn.setBlockState(blockpos, MarsBlocks.bossSpawner.getDefaultState(), 2);
             TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);

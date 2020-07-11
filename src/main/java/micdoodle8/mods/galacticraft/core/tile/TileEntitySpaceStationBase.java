@@ -12,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
@@ -38,9 +39,9 @@ public class TileEntitySpaceStationBase extends TileEntityFake implements IMulti
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
-        return false;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

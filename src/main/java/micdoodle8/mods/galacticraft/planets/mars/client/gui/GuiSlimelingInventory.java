@@ -100,7 +100,7 @@ public class GuiSlimelingInventory extends GuiContainerGC<ContainerSlimeling>
         this.drawString(this.font, str, var5 + this.xSize - 15 - this.font.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.minecraft.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.blit(this.invX, this.invY, 176, 27, this.invWidth, this.invHeight);
         this.blit(var5 + 8, var6 + 8, 176, 9, 18, 18);
         this.blit(var5 + 8, var6 + 29, 176, 9, 18, 18);

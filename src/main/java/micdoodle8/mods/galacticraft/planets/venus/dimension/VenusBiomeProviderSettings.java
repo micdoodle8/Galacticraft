@@ -8,10 +8,9 @@ public class VenusBiomeProviderSettings implements IBiomeProviderSettings
     private WorldInfo worldInfo;
     private VenusGenSettings generatorSettings;
 
-    public VenusBiomeProviderSettings setWorldInfo(WorldInfo worldInfo)
+    public VenusBiomeProviderSettings(WorldInfo worldInfo)
     {
         this.worldInfo = worldInfo;
-        return this;
     }
 
     public VenusBiomeProviderSettings setGeneratorSettings(VenusGenSettings settings)

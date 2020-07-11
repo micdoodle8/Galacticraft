@@ -9,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -51,7 +50,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     }
 
 //    @Override
-//    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+//    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
 //    {
 //        if (state.getBlock().getMetaFromState(state) == 0)
 //        {
@@ -185,10 +184,10 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         builder.add(FACING);
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 }

@@ -90,7 +90,7 @@ public class KeyHandlerClient extends KeyHandler
             {
                 if (playerBase.getRidingEntity() instanceof EntitySpaceshipBase || playerBase.getRidingEntity() instanceof EntityBuggy)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[]{PlayerUtil.getName(playerBase)}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionType(mc.world), new Object[]{PlayerUtil.getName(playerBase)}));
                 }
             }
             else if (kb == KeyHandlerClient.toggleAdvGoggles)
@@ -152,13 +152,13 @@ public class KeyHandlerClient extends KeyHandler
                     if (kb == KeyHandlerClient.leftShiftKey)
                     {
                         autoRocket.setMotion(autoRocket.getMotion().x, autoRocket.getMotion().y - 0.02, autoRocket.getMotion().z);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[]{autoRocket.getEntityId(), false}));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionType(mc.world), new Object[]{autoRocket.getEntityId(), false}));
                     }
 
                     if (kb == KeyHandlerClient.spaceKey)
                     {
                         autoRocket.setMotion(autoRocket.getMotion().x, autoRocket.getMotion().y + 0.02, autoRocket.getMotion().z);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[]{autoRocket.getEntityId(), true}));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionType(mc.world), new Object[]{autoRocket.getEntityId(), true}));
                     }
                 }
             }

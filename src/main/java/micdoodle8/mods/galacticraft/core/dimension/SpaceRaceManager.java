@@ -142,14 +142,14 @@ public class SpaceRaceManager
 
             if (toPlayer != null)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.world), objList), toPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionType(toPlayer.world), objList), toPlayer);
                 spaceRace.updatePlayerSchematics(toPlayer);
             }
             else
             {
                 for (ServerWorld server : theServer.getWorlds())
                 {
-                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(server), objList), GCCoreUtil.getDimensionID(server));
+                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionType(server), objList), GCCoreUtil.getDimensionType(server));
                 }
             }
         }

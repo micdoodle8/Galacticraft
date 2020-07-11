@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -15,13 +17,15 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.StringTextComponent;
-
-import java.io.IOException;
 
 public class GuiSlimeling extends Screen
 {
@@ -58,7 +62,7 @@ public class GuiSlimeling extends Screen
         int j = (this.height - this.ySize) / 2;
         this.stayButton = new Button(i + 120, j + 122, 50, 20, "", (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.world), new Object[]{this.slimeling.getEntityId(), 0, ""}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionType(this.slimeling.world), new Object[]{this.slimeling.getEntityId(), 0, ""}));
         });
         this.stayButton.active = this.slimeling.isOwner(this.minecraft.player);
         this.stayButton.setMessage(this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.button.follow") : GCCoreUtil.translate("gui.slimeling.button.sit"));
@@ -122,7 +126,7 @@ public class GuiSlimeling extends Screen
         if (mouseX >= this.invX && mouseX < this.invX + this.invWidth && mouseY >= this.invY && mouseY < this.invY + this.invHeight)
         {
             Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.world), new Object[]{this.slimeling.getEntityId(), 6, ""}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionType(this.slimeling.world), new Object[]{this.slimeling.getEntityId(), 6, ""}));
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -158,7 +162,7 @@ public class GuiSlimeling extends Screen
         this.drawString(this.font, str, i + this.xSize - 15 - this.font.getStringWidth(str), j + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.minecraft.textureManager.bindTexture(GuiSlimeling.slimelingPanelGui);
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.blit(this.invX, this.invY, 176, 9, this.invWidth, this.invHeight);
 
         super.render(mouseX, mouseY, partialTicks);
@@ -183,7 +187,7 @@ public class GuiSlimeling extends Screen
         str = GCCoreUtil.translate("gui.slimeling.food") + ": ";
         this.font.drawString(str, dX + i + 55, dY + j + 46 + 13, 0x404040);
 
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderHelper.enableStandardItemLighting();
         GlStateManager.enableBlend();
         GlStateManager.enableLighting();
         GlStateManager.enableRescaleNormal();
@@ -203,37 +207,42 @@ public class GuiSlimeling extends Screen
     public static void drawSlimelingOnGui(EntitySlimeling slimeling, int x, int y, int scale, float mouseX, float mouseY)
     {
         GuiSlimeling.renderingOnGui = true;
-        GlStateManager.enableColorMaterial();
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(x, y, 50.0F);
-        GlStateManager.scalef(-scale / 2.0F, scale / 2.0F, scale / 2.0F);
-        GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+        float f = (float)Math.atan((double)(mouseX / 40.0F));
+        float f1 = (float)Math.atan((double)(mouseY / 40.0F));
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef((float)x, (float)y, 1050.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+        MatrixStack matrixstack = new MatrixStack();
+        matrixstack.translate(0.0D, 0.0D, 1000.0D);
+        matrixstack.scale((float)scale, (float)scale, (float)scale);
+        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
+        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        quaternion.multiply(quaternion1);
+        matrixstack.rotate(quaternion);
         float f2 = slimeling.renderYawOffset;
         float f3 = slimeling.rotationYaw;
         float f4 = slimeling.rotationPitch;
-        mouseX += 40;
-        mouseY -= 20;
-        GlStateManager.rotatef(135.0F, 0.0F, 1.0F, 0.0F);
-        RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotatef(-((float) Math.atan(mouseY / 40.0F)) * 20.0F, 1.0F, 0.0F, 0.0F);
-        slimeling.renderYawOffset = (float) Math.atan(mouseX / 40.0F) * 20.0F;
-        slimeling.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
-        slimeling.rotationPitch = -((float) Math.atan(mouseY / 40.0F)) * 20.0F;
+        float f5 = slimeling.prevRotationYawHead;
+        float f6 = slimeling.rotationYawHead;
+        slimeling.renderYawOffset = 180.0F + f * 20.0F;
+        slimeling.rotationYaw = 180.0F + f * 40.0F;
+        slimeling.rotationPitch = -f1 * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
-        GlStateManager.translatef(0.0F, (float) slimeling.getYOffset(), 0.0F);
-        Minecraft.getInstance().getRenderManager().playerViewY = 180.0F;
-        Minecraft.getInstance().getRenderManager().renderEntity(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        slimeling.prevRotationYawHead = slimeling.rotationYaw;
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        quaternion1.conjugate();
+        entityrenderermanager.setCameraOrientation(quaternion1);
+        entityrenderermanager.setRenderShadow(false);
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        entityrenderermanager.renderEntityStatic(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, irendertypebuffer$impl, 15728880);
+        irendertypebuffer$impl.finish();
+        entityrenderermanager.setRenderShadow(true);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;
-        GlStateManager.popMatrix();
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
-        GlStateManager.disableTexture();
-        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        slimeling.prevRotationYawHead = f5;
+        slimeling.rotationYawHead = f6;
+        RenderSystem.popMatrix();
         GuiSlimeling.renderingOnGui = false;
     }
 }

@@ -115,7 +115,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC<ContainerMethaneSynthe
 
         this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 28, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.synthesizer.getWorld()), new Object[]{this.synthesizer.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.synthesizer.getWorld()), new Object[]{this.synthesizer.getPos(), 0}));
         }));
     }
 

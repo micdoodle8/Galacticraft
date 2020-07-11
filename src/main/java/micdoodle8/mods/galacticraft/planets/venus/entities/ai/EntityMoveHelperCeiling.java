@@ -22,8 +22,8 @@ public class EntityMoveHelperCeiling extends MovementController
         {
             this.action = MovementController.Action.WAIT;
             int i = MathHelper.floor(this.mob.getBoundingBox().minY + 0.5D);
-            double d0 = this.posX - this.mob.posX;
-            double d1 = this.posZ - this.mob.posZ;
+            double d0 = this.posX - this.mob.getPosX();
+            double d1 = this.posZ - this.mob.getPosZ();
             double d2 = this.posY - (double) i;
             double d3 = d0 * d0 + d1 * d1;
 

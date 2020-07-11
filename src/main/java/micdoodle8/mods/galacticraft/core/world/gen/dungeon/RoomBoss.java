@@ -10,6 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
@@ -54,7 +55,7 @@ public class RoomBoss extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos chunkPos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -99,21 +100,21 @@ public class RoomBoss extends SizedPiece
                         }
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, mutableBoundingBoxIn);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                         }
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.LAVA.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.LAVA.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                     }
                     else if (j % 3 == 0 && j >= 2 && ((i == 1 || i == this.sizeX - 1 || k == 1 || k == this.sizeZ - 1) || (i == 2 && k == 2) || (i == 2 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == 2) || (i == this.sizeX - 2 && k == this.sizeZ - 2)))
                     {
                         // Horizontal bars
-                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                     }
                     else if ((i == 1 && k == 2) || (i == 2 && k == 1) ||
                             (i == 1 && k == this.sizeZ - 2) || (i == 2 && k == this.sizeZ - 1) ||
@@ -121,11 +122,11 @@ public class RoomBoss extends SizedPiece
                             (i == this.sizeX - 1 && k == this.sizeZ - 2) || (i == this.sizeX - 2 && k == this.sizeZ - 1))
                     {
                         // Vertical bars
-                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                     }
                 }
             }
@@ -136,7 +137,7 @@ public class RoomBoss extends SizedPiece
         int spawnerZ = this.sizeZ / 2;
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
         //Is this position inside the chunk currently being generated?
-        if (chunkBox.isVecInside(blockpos))
+        if (mutableBoundingBoxIn.isVecInside(blockpos))
         {
             worldIn.setBlockState(blockpos, GCBlocks.bossSpawner.getDefaultState(), 2);
             TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);

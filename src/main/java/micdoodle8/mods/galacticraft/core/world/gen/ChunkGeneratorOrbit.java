@@ -10,6 +10,7 @@ import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.WorldGenRegion;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
     }
 
     @Override
-    public void generateSurface(IChunk chunkIn)
+    public void generateSurface(WorldGenRegion region, IChunk chunk)
     {
 
     }

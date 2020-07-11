@@ -465,7 +465,7 @@ public class EnergyNetwork implements IElectricityNetwork
                 GCLog.severe("DEBUG Energy network loop issue, please report this");
                 if (debugTE instanceof TileEntity)
                 {
-                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(((TileEntity) debugTE).getWorld()) + " at " + ((TileEntity) debugTE).getPos() + " Type:" + debugTE.getClass().getSimpleName());
+                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionType(((TileEntity) debugTE).getWorld()) + " at " + ((TileEntity) debugTE).getPos() + " Type:" + debugTE.getClass().getSimpleName());
                 }
             }
         }

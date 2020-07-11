@@ -285,10 +285,10 @@
 //        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 //        final int var8 = this.width;
 //        final int var9 = this.height;
-//        worldRenderer.pos(0.0D, var9, this.blitOffset).tex(0.5F - var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-//        worldRenderer.pos(var8, var9, this.blitOffset).tex(0.5F - var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-//        worldRenderer.pos(var8, 0.0D, this.blitOffset).tex(0.5F + var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
-//        worldRenderer.pos(0.0D, 0.0D, this.blitOffset).tex(0.5F + var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+//        worldRenderer.pos(0.0D, var9, this.getBlitOffset()).tex(0.5F - var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+//        worldRenderer.pos(var8, var9, this.getBlitOffset()).tex(0.5F - var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+//        worldRenderer.pos(var8, 0.0D, this.getBlitOffset()).tex(0.5F + var6, 0.5F - var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+//        worldRenderer.pos(0.0D, 0.0D, this.getBlitOffset()).tex(0.5F + var6, 0.5F + var7).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
 //        tess.draw();
 //        GL11.glPopMatrix();
 //    }

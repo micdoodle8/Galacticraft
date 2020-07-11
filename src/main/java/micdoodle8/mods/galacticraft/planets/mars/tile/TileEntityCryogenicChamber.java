@@ -20,6 +20,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -55,19 +56,19 @@ public class TileEntityCryogenicChamber extends TileEntityFake implements IMulti
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
         if (this.world.isRemote)
         {
-            return false;
+            return ActionResultType.PASS;
         }
 
         Either<PlayerEntity.SleepResult, Unit> enumstatus = this.sleepInBedAt(entityPlayer, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 
         enumstatus.ifLeft((result) ->
         {
-            ((ServerPlayerEntity) entityPlayer).connection.setPlayerLocation(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, entityPlayer.rotationYaw, entityPlayer.rotationPitch);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionID(entityPlayer.world), new Object[]{this.getPos()}), (ServerPlayerEntity) entityPlayer);
+            ((ServerPlayerEntity) entityPlayer).connection.setPlayerLocation(entityPlayer.getPosX(), entityPlayer.getPosY(), entityPlayer.getPosZ(), entityPlayer.rotationYaw, entityPlayer.rotationPitch);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_BEGIN_CRYOGENIC_SLEEP, GCCoreUtil.getDimensionType(entityPlayer.world), new Object[]{this.getPos()}), (ServerPlayerEntity) entityPlayer);
         });
 
         enumstatus.ifRight((result) ->
@@ -76,7 +77,7 @@ public class TileEntityCryogenicChamber extends TileEntityFake implements IMulti
             entityPlayer.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("gui.cryogenic.chat.cant_use", stats.getCryogenicChamberCooldown() / 20)));
         });
 
-        return enumstatus.left().isPresent();
+        return enumstatus.left().isPresent() ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     public Either<PlayerEntity.SleepResult, Unit> sleepInBedAt(PlayerEntity entityPlayer, int par1, int par2, int par3)

@@ -76,7 +76,7 @@ public class EntityFlag extends Entity
             {
                 this.markVelocityChanged();
                 this.setDamage(this.getDamage() + par2 * 10);
-                this.world.playSound(null, this.posX, this.posY, this.posZ, SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 1.0F);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 1.0F);
 
                 if (e instanceof PlayerEntity && ((PlayerEntity) e).abilities.isCreativeMode)
                 {
@@ -196,7 +196,7 @@ public class EntityFlag extends Entity
             this.flagData = ClientUtil.updateFlagData(this.getOwner(), Minecraft.getInstance().player.getDistance(this) < 50.0D);
         }
 
-        Vector3 vec = new Vector3((float) this.posX, (float) this.posY, (float) this.posZ);
+        Vector3 vec = new Vector3((float) this.getPosX(), (float) this.getPosY(), (float) this.getPosZ());
         vec = vec.translate(new Vector3(0, -1, 0));
         final Block blockAt = vec.getBlock(this.world);
 

@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -40,10 +40,10 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
 //    }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
 //        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ()); TODO Sealer gui
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
         Block testBlock = worldIn.getBlockState(ventSide).getBlock();
         if (testBlock == GCBlocks.breatheableAir || testBlock == GCBlocks.brightBreatheableAir)
         {
-            TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionID(worldIn), pos);
+            TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionType(worldIn), pos);
         }
 
         super.onReplaced(state, worldIn, pos, newState, isMoving);

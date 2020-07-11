@@ -110,8 +110,8 @@ public class GuiElementInfoRegion extends AbstractGui
                 j1 -= k1 + 9;
             }
 
-            this.blitOffset = 300;
-//            GuiElementInfoRegion.itemRenderer.blitOffset = 300.0F;
+            this.setBlitOffset(300);
+//            GuiElementInfoRegion.itemRenderer.getBlitOffset() = 300.0F;
             int l1 = -267386864;
             this.fillGradient(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
             this.fillGradient(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
@@ -133,8 +133,8 @@ public class GuiElementInfoRegion extends AbstractGui
                 j1 += 10;
             }
 
-            this.blitOffset = 0;
-//            GuiElementInfoRegion.itemRenderer.blitOffset = 0.0F;
+            this.setBlitOffset(0);
+//            GuiElementInfoRegion.itemRenderer.getBlitOffset() = 0.0F;
         }
 
         GL11.glEnable(GL11.GL_LIGHTING);

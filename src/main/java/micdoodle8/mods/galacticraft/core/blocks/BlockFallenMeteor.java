@@ -31,6 +31,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -115,10 +116,10 @@ public class BlockFallenMeteor extends Block implements IShiftDescription
                     livingEntity.setFire(2);
                 }
 
-                double var9 = pos.getX() + 0.5F - livingEntity.posX;
+                double var9 = pos.getX() + 0.5F - livingEntity.getPosX();
                 double var7;
 
-                for (var7 = livingEntity.posZ - pos.getZ(); var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
+                for (var7 = livingEntity.getPosZ() - pos.getZ(); var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D)
                 {
                     var9 = (Math.random() - Math.random()) * 0.01D;
                 }
@@ -153,7 +154,7 @@ public class BlockFallenMeteor extends Block implements IShiftDescription
     }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         if (!worldIn.isRemote)
         {

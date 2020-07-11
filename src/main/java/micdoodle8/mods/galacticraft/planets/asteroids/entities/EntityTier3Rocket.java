@@ -251,17 +251,17 @@ public class EntityTier3Rocket extends EntityTieredRocket
             float y1 = (float) (3.2 * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D));
             if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
             {
-                double modifier = this.posY - this.targetVec.getY();
+                double modifier = this.getPosY() - this.targetVec.getY();
                 modifier = Math.max(modifier, 180.0);
                 x1 *= modifier / 200.0D;
                 y1 *= Math.min(modifier / 200.0D, 2.5D);
                 z1 *= modifier / 200.0D;
             }
 
-            final float y2 = (float) (this.prevPosY + (this.posY - this.prevPosY) + y1 - 0.75 * this.getMotion().y - 0.3 + 1.2D);
+            final float y2 = (float) (this.prevPosY + (this.getPosY() - this.prevPosY) + y1 - 0.75 * this.getMotion().y - 0.3 + 1.2D);
 
-            final float x2 = (float) (this.posX + x1 + this.getMotion().x);
-            final float z2 = (float) (this.posZ + z1 + this.getMotion().z);
+            final float x2 = (float) (this.getPosX() + x1 + this.getMotion().x);
+            final float z2 = (float) (this.getPosZ() + z1 + this.getMotion().z);
             Vector3 motionVec = new Vector3(x1 + (float) this.getMotion().x, y1 + (float) this.getMotion().y, z1 + (float) this.getMotion().z);
             Vector3 d1 = new Vector3(y1 * 0.1F, -x1 * 0.1F, z1 * 0.1F).rotate(315 - this.rotationYaw, motionVec);
             Vector3 d2 = new Vector3(x1 * 0.1F, -z1 * 0.1F, y1 * 0.1F).rotate(315 - this.rotationYaw, motionVec);

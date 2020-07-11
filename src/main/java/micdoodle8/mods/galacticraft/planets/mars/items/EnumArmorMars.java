@@ -4,7 +4,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,7 +46,7 @@ public enum EnumArmorMars implements IArmorMaterial
     private final int enchantability;
     private final SoundEvent soundEvent;
     private final float toughness;
-    private final LazyLoadBase<Ingredient> repairMaterial;
+    private final LazyValue<Ingredient> repairMaterial;
 
     EnumArmorMars(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float p_i48533_8_, Supplier<Ingredient> repairMaterialSupplier)
     {
@@ -56,7 +56,7 @@ public enum EnumArmorMars implements IArmorMaterial
         this.enchantability = enchantabilityIn;
         this.soundEvent = equipSoundIn;
         this.toughness = p_i48533_8_;
-        this.repairMaterial = new LazyLoadBase<>(repairMaterialSupplier);
+        this.repairMaterial = new LazyValue<>(repairMaterialSupplier);
     }
 
     @Override

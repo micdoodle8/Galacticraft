@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerPainter;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -16,9 +15,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.LogicalSide;
 import org.lwjgl.opengl.GL11;
 
 public class GuiPainter extends GuiContainerGC<ContainerPainter>
@@ -41,17 +37,17 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
         super.init();
         this.buttons.add(new Button(this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.painter.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.painter.getPos(), 0}));
             painter.buttonPressed(0, this.minecraft.player);
         }));
         this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.painter.getPos(), 1}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.painter.getPos(), 1}));
             painter.buttonPressed(1, this.minecraft.player);
         }));
         this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.painter.getPos(), 2}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.painter.getPos(), 2}));
             painter.buttonPressed(2, this.minecraft.player);
         }));
     }
@@ -93,10 +89,10 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
         int height = 18;
         int width = 18;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(x + 0F, y + height, this.blitOffset).endVertex();
-        worldrenderer.pos(x + width, y + height, this.blitOffset).endVertex();
-        worldrenderer.pos(x + width, y + 0, this.blitOffset).endVertex();
-        worldrenderer.pos(x + 0F, y + 0, this.blitOffset).endVertex();
+        worldrenderer.pos(x + 0F, y + height, this.getBlitOffset()).endVertex();
+        worldrenderer.pos(x + width, y + height, this.getBlitOffset()).endVertex();
+        worldrenderer.pos(x + width, y + 0, this.getBlitOffset()).endVertex();
+        worldrenderer.pos(x + 0F, y + 0, this.getBlitOffset()).endVertex();
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }

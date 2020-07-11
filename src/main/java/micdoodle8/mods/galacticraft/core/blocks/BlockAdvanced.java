@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -28,47 +29,47 @@ public abstract class BlockAdvanced extends Block
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         if (hand != Hand.MAIN_HAND)
         {
-            return false;
+            return ActionResultType.PASS;
         }
 
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
-        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, hit))
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.CONSUME)
         {
-            return true;
+            return ActionResultType.CONSUME;
         }
 
         if (playerIn.isSneaking())
         {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, hit))
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.CONSUME)
             {
-                return true;
+                return ActionResultType.CONSUME;
             }
         }
 
         return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, hit);
     }
 
-    protected boolean useWrench(World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    protected ActionResultType useWrench(World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         if (heldItem.getItem() == GCItems.wrench)
         {
             if (playerIn.isSneaking())
             {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, hit))
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.SUCCESS)
                 {
                     playerIn.swingArm(hand);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
-                return false;
+                return ActionResultType.PASS;
             }
 
             playerIn.swingArm(hand);
-            return true;
+            return ActionResultType.PASS;
         }
         /*
          * Check if the player is holding a wrench or an electric item. If so,
@@ -80,21 +81,21 @@ public abstract class BlockAdvanced extends Block
 
             if (playerIn.isSneaking())
             {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, hit))
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.SUCCESS)
                 {
                     playerIn.swingArm(hand);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
 
-            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, hit))
+            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.SUCCESS)
             {
                 playerIn.swingArm(hand);
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
     /**
@@ -196,9 +197,9 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        return false;
+        return ActionResultType.PASS;
     }
 
     /**
@@ -206,9 +207,9 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        return false;
+        return ActionResultType.PASS;
     }
 
     /**
@@ -216,9 +217,9 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        return false;
+        return ActionResultType.PASS;
     }
 
     /**
@@ -227,7 +228,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         return this.onUseWrench(world, pos, entityPlayer, hand, heldItem, hit);
     }

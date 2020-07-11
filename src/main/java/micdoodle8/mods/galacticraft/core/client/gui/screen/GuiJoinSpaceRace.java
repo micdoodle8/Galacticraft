@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.I
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientButton;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
-import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
@@ -44,7 +43,7 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
     private int buttonFlag_yPosition;
 
     private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
-    private final ModelFlag dummyModel = new ModelFlag();
+//    private final ModelFlag dummyModel = new ModelFlag();
 
     private final SpaceRace spaceRaceData;
 
@@ -91,7 +90,7 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
             int width = (int) (var5 / 1.0F);
             this.buttons.add(new GuiElementGradientButton(this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName()), (button) ->
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID()}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID()}));
                 this.thePlayer.closeScreen();
             }));
         }
@@ -138,7 +137,7 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
         GL11.glTranslatef(0.0F, 0.36F, 1.0F);
         GL11.glScalef(1.0F, 1.0F, -1F);
         this.dummyFlag.flagData = this.spaceRaceData.getFlagData();
-        this.dummyModel.renderFlag(this.dummyFlag, this.ticksPassed);
+//        this.dummyModel.renderFlag(this.dummyFlag, this.ticksPassed); TODO Space race flag render
         GL11.glColor3f(1, 1, 1);
         GL11.glPopMatrix();
     }

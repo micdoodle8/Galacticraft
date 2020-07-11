@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -93,7 +92,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
         {
             final double offsetx = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
             final double offsetz = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            passenger.setPosition(this.posX + offsetx, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + offsetz);
+            passenger.setPosition(this.getPosX() + offsetx, this.getPosY() + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ() + offsetz);
         }
     }
 
@@ -145,7 +144,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
         else
         {
             Entity e = var1.getTrueSource();
-            if (this.isInvulnerableTo(var1) || this.posY > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
+            if (this.isInvulnerableTo(var1) || this.getPosY() > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
             {
                 return false;
             }
@@ -284,9 +283,9 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
             double z;
             if (this.posRotIncrements > 0)
             {
-                x = this.posX + (this.advancedPositionX - this.posX) / this.posRotIncrements;
-                y = this.posY + (this.advancedPositionY - this.posY) / this.posRotIncrements;
-                z = this.posZ + (this.advancedPositionZ - this.posZ) / this.posRotIncrements;
+                x = this.getPosX() + (this.advancedPositionX - this.getPosX()) / this.posRotIncrements;
+                y = this.getPosY() + (this.advancedPositionY - this.getPosY()) / this.posRotIncrements;
+                z = this.getPosZ() + (this.advancedPositionZ - this.getPosZ()) / this.posRotIncrements;
                 var12 = MathHelper.wrapDegrees(this.advancedYaw - this.rotationYaw);
                 this.rotationYaw = (float) (this.rotationYaw + var12 / this.posRotIncrements);
                 this.rotationPitch = (float) (this.rotationPitch + (this.advancedPitch - this.rotationPitch) / this.posRotIncrements);
@@ -296,9 +295,9 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
             }
             else
             {
-//                x = this.posX + this.motionX;
-//                y = this.posY + this.motionY;
-//                z = this.posZ + this.motionZ;
+//                x = this.getPosX() + this.motionX;
+//                y = this.getPosY() + this.motionY;
+//                z = this.getPosZ() + this.motionZ;
 //                this.setPosition(x, y, z);
             }
         }
@@ -349,13 +348,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
             if (!this.world.isRemote && this.ticks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 50.0, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 50.0, GCCoreUtil.getDimensionType(this.world)));
             }
         }
 
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.prevPosX = this.getPosX();
+        this.prevPosY = this.getPosY();
+        this.prevPosZ = this.getPosZ();
         this.lastOnGround = this.onGround;
     }
 

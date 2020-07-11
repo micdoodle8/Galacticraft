@@ -63,9 +63,9 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
     public void tick()
     {
         this.setRotation(this.rotationYaw + 2F, this.rotationPitch + 2F);
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        this.prevPosX = this.getPosX();
+        this.prevPosY = this.getPosY();
+        this.prevPosZ = this.getPosZ();
 //        this.motionY -= 0.03999999910593033D;
         this.setMotion(this.getMotion().add(0.0, 0.03999999910593033, 0.0));
         this.move(MoverType.SELF, this.getMotion());
@@ -75,12 +75,12 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
             this.spawnParticles();
         }
 
-        Vec3d currentPosition = new Vec3d(this.posX, this.posY, this.posZ);
-        Vec3d nextPosition = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+        Vec3d currentPosition = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+        Vec3d nextPosition = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
         // currentPosition, nextPosition, true, true, false
         RayTraceResult collisionIntercept = this.world.rayTraceBlocks(new RayTraceContext(currentPosition, nextPosition, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-        currentPosition = new Vec3d(this.posX, this.posY, this.posZ);
-        nextPosition = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+        currentPosition = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+        nextPosition = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
 
         if (collisionIntercept.getType() != RayTraceResult.Type.MISS)
         {
@@ -125,7 +125,7 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
             this.onImpact(collisionIntercept);
         }
 
-        if (this.posY <= -20 || this.posY >= 400)
+        if (this.getPosY() <= -20 || this.getPosY() >= 400)
         {
             this.remove();
         }
@@ -133,18 +133,18 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
 
     protected void spawnParticles()
     {
-        this.world.addParticle(ParticleTypes.SMOKE, this.posX, this.posY + 1D + Math.random(), this.posZ, 0.0D, 0.0D, 0.0D);
-        this.world.addParticle(ParticleTypes.SMOKE, this.posX + Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D);
-        this.world.addParticle(ParticleTypes.SMOKE, this.posX, this.posY + 1D + Math.random(), this.posZ + Math.random(), 0.0D, 0.0D, 0.0D);
-        this.world.addParticle(ParticleTypes.SMOKE, this.posX - Math.random() / 2, this.posY + 1D + Math.random() / 2, this.posZ, 0.0D, 0.0D, 0.0D);
-        this.world.addParticle(ParticleTypes.SMOKE, this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random(), 0.0D, 0.0D, 0.0D);
+        this.world.addParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + 1D + Math.random(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+        this.world.addParticle(ParticleTypes.SMOKE, this.getPosX() + Math.random() / 2, this.getPosY() + 1D + Math.random() / 2, this.getPosZ(), 0.0D, 0.0D, 0.0D);
+        this.world.addParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + 1D + Math.random(), this.getPosZ() + Math.random(), 0.0D, 0.0D, 0.0D);
+        this.world.addParticle(ParticleTypes.SMOKE, this.getPosX() - Math.random() / 2, this.getPosY() + 1D + Math.random() / 2, this.getPosZ(), 0.0D, 0.0D, 0.0D);
+        this.world.addParticle(ParticleTypes.SMOKE, this.getPosX(), this.getPosY() + 1D + Math.random(), this.getPosZ() - Math.random(), 0.0D, 0.0D, 0.0D);
     }
 
     protected void onImpact(RayTraceResult movingObjPos)
     {
         if (!this.world.isRemote)
         {
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, Explosion.Mode.BREAK);
+            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), this.size / 3 + 2, false, Explosion.Mode.BREAK);
 
             if (movingObjPos != null)
             {

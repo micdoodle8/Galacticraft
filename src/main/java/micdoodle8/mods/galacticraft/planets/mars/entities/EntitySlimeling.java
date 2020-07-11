@@ -75,7 +75,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
         this.goalSelector.addGoal(2, this.sitGoal);
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(6, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));

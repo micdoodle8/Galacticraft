@@ -9,14 +9,11 @@ import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
 
 public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpinner.ISpinnerCallback
 {
@@ -57,7 +54,7 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
     {
         if (key == GLFW.GLFW_KEY_ESCAPE)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_OPEN_LASER_TURRET_GUI, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[]{laserTurret.getPos()}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_OPEN_LASER_TURRET_GUI, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{laserTurret.getPos()}));
             return true;
         }
         else
@@ -121,9 +118,9 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
         this.laserTurret.priorityClosest = spinner == priorityClosest ? newVal : priorityClosest.value;
         this.laserTurret.priorityLowestHealth = spinner == priorityLowestHealth ? newVal : priorityLowestHealth.value;
         this.laserTurret.priorityHighestHealth = spinner == priorityHighestHealth ? newVal : priorityHighestHealth.value;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{3, this.laserTurret.getPos(), this.laserTurret.priorityClosest}));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{4, this.laserTurret.getPos(), this.laserTurret.priorityLowestHealth}));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{5, this.laserTurret.getPos(), this.laserTurret.priorityHighestHealth}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{3, this.laserTurret.getPos(), this.laserTurret.priorityClosest}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{4, this.laserTurret.getPos(), this.laserTurret.priorityLowestHealth}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{5, this.laserTurret.getPos(), this.laserTurret.priorityHighestHealth}));
     }
 
     @Override

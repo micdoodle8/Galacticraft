@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -62,7 +62,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             final float x = (this.rand.nextFloat() - 0.5F) * this.getWidth();
             final float y = (this.rand.nextFloat() - 0.5F) * (this.getHeight() / 2.0F);
             final float z = (this.rand.nextFloat() - 0.5F) * this.getWidth();
-//            this.world.addParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D); TODO Particles
+//            this.world.addParticle(EnumParticleTypes.EXPLOSION_HUGE, this.getPosX() + x, this.getPosY() + 2.0D + y, this.getPosZ() + z, 0.0D, 0.0D, 0.0D); TODO Particles
         }
 
         int i;
@@ -72,7 +72,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionType(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 40.0D, GCCoreUtil.getDimensionType(this.world)));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -83,7 +83,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
                 {
                     j = ExperienceOrbEntity.getXPSplit(i);
                     i -= j;
-                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), j));
                 }
             }
         }
@@ -96,7 +96,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             {
                 j = ExperienceOrbEntity.getXPSplit(i);
                 i -= j;
-                this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
+                this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), j));
             }
 
             TileEntityTreasureChest chest = null;

@@ -29,8 +29,8 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
         EntityProjectileTNT projectileTNT = new EntityProjectileTNT(MarsEntities.PROJECTILE_TNT.get(), world);
 //        this.setSize(1.0F, 1.0F);
         projectileTNT.shootingEntity = entityShooting;
-        projectileTNT.setLocationAndAngles(entityShooting.posX, entityShooting.posY, entityShooting.posZ, entityShooting.rotationYaw, entityShooting.rotationPitch);
-        projectileTNT.setPosition(projectileTNT.posX, projectileTNT.posY, projectileTNT.posZ);
+        projectileTNT.setLocationAndAngles(entityShooting.getPosX(), entityShooting.getPosY(), entityShooting.getPosZ(), entityShooting.rotationYaw, entityShooting.rotationPitch);
+        projectileTNT.setPosition(projectileTNT.getPosX(), projectileTNT.getPosY(), projectileTNT.getPosZ());
         projectileTNT.setMotion(Vec3d.ZERO);
         motX = motX + projectileTNT.rand.nextGaussian() * 0.4D;
         motY = motY + projectileTNT.rand.nextGaussian() * 0.4D;
@@ -85,7 +85,7 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
                 }
             }
 
-            this.world.createExplosion(null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+            this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0F, false, this.world.getGameRules().getBoolean(GameRules.MOB_GRIEFING) ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
             this.remove();
         }
     }

@@ -47,7 +47,7 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickableTil
                     {
                         BlockPos offset = this.pos.offset(side, 1);
                         BlockState bs = this.world.getBlockState(offset);
-                        if (!Block.func_220055_a(world, offset, side.getOpposite())) // TODO Test... Not solid?
+                        if (!bs.isSolidSide(world, offset, side.getOpposite())) // TODO Test... Not solid?
 //                        if (!bs.getBlock().isSideSolid(bs, world, offset, side.getOpposite()))
                         {
                             oxygenFound = true;

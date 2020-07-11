@@ -233,17 +233,17 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
             if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
             {
-                double modifier = this.posY - this.targetVec.getY();
+                double modifier = this.getPosY() - this.targetVec.getY();
                 modifier = Math.min(Math.max(modifier, 120.0), 300.0);
                 x1 *= modifier / 100.0D;
                 y1 *= modifier / 100.0D;
                 z1 *= modifier / 100.0D;
             }
 
-            double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.getMotion().y + 1.2D;
+            double y = this.prevPosY + (this.getPosY() - this.prevPosY) + y1 - this.getMotion().y + 1.2D;
 
-            final double x2 = this.posX + x1 - this.getMotion().x;
-            final double z2 = this.posZ + z1 - this.getMotion().z;
+            final double x2 = this.getPosX() + x1 - this.getMotion().x;
+            final double z2 = this.getPosZ() + z1 - this.getMotion().z;
 
             LivingEntity riddenByEntity = !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof LivingEntity ? (LivingEntity) this.getPassengers().get(0) : null;
 

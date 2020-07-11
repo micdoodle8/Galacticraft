@@ -413,7 +413,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             }
             data[index++] = composite;
         }
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_LEAK_DATA, GCCoreUtil.getDimensionID(player.world), new Object[]{this.getPos(), data}), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_LEAK_DATA, GCCoreUtil.getDimensionType(player.world), new Object[]{this.getPos(), data}), player);
     }
 
     @Override

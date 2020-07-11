@@ -126,7 +126,7 @@ public class MapUtil
                 }
             }
         }
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionType(Minecraft.getInstance().world), new Object[]{}));
         ClientProxyCore.overworldTextureRequestSent = true;
         DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2, false);
         MapUtil.biomeColours.clear();
@@ -315,12 +315,12 @@ public class MapUtil
             int halfSize = map.length / 2;
             byte[] largeMapPartA = Arrays.copyOf(map, halfSize);
             byte[] largeMapPartB = Arrays.copyOfRange(map, halfSize, map.length);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.world), new Object[]{cx, map.length, largeMapPartA}), client);
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.world), new Object[]{cx + 1, map.length, largeMapPartB}), client);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionType(client.world), new Object[]{cx, map.length, largeMapPartA}), client);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionType(client.world), new Object[]{cx + 1, map.length, largeMapPartB}), client);
         }
         else if (map.length < 1040000)  //That's about the limit on a Forge packet length
         {
-            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.world), new Object[]{cx, cz, map}), client);
+            GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionType(client.world), new Object[]{cx, cz, map}), client);
         }
     }
 
@@ -965,7 +965,7 @@ public class MapUtil
             return false;
         }
 
-        DimensionType dim = GCCoreUtil.getDimensionID(world);
+        DimensionType dim = GCCoreUtil.getDimensionType(world);
         boolean result = true;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, result))
         {
@@ -1020,7 +1020,7 @@ public class MapUtil
             {
                 clientRequests.add(filename.getName());
                 //GCLog.debug("Info: Client requested map file" + filename.getName());
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{dim, cx, cz}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionType(Minecraft.getInstance().world), new Object[]{dim, cx, cz}));
             }
             return true;
         }

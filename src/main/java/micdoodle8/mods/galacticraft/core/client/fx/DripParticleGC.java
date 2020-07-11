@@ -50,7 +50,7 @@ public class DripParticleGC extends SpriteTexturedParticle
                 this.motionZ *= 0.98F;
                 BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
                 IFluidState ifluidstate = this.world.getFluidState(blockpos);
-                if (ifluidstate.getFluid() == this.fluid && this.posY < (double) ((float) blockpos.getY() + ifluidstate.func_215679_a(this.world, blockpos)))
+                if (ifluidstate.getFluid() == this.fluid && this.posY < (double) ((float) blockpos.getY() + ifluidstate.getActualHeight(this.world, blockpos)))
                 {
                     this.setExpired();
                 }

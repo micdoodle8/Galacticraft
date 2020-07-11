@@ -163,7 +163,7 @@ public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxP
         }
 
         // Send changed tag compound to server
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(minecraft.player.world), new Object[]{this.tagCompound}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionType(minecraft.player.world), new Object[]{this.tagCompound}));
 
         // Update client item
         ItemStack stack = minecraft.player.getHeldItem(Hand.MAIN_HAND /* TODO Support off-hand use */);

@@ -8,15 +8,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -100,7 +98,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMinerBase)
@@ -109,7 +107,7 @@ public class BlockMinerBaseFull extends BlockTileGC
         }
         else
         {
-            return false;
+            return ActionResultType.PASS;
         }
     }
 
@@ -134,20 +132,21 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileEntityMinerBase)
         {
             ((TileEntityMinerBase) te).updateFacing();
+            return ActionResultType.SUCCESS;
         }
-        return true;
+        return ActionResultType.CONSUME;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 }

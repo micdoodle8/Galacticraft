@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
@@ -30,9 +31,9 @@ public class RoomSpawner extends RoomEmpty
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
-        if (super.addComponentParts(worldIn, random, boundingBox, chunkPos))
+        if (super.create(worldIn, chunkGeneratorIn, randomIn, mutableBoundingBoxIn, chunkPosIn))
         {
             for (int i = 1; i <= this.sizeX - 1; ++i)
             {
@@ -40,7 +41,7 @@ public class RoomSpawner extends RoomEmpty
                 {
                     for (int k = 1; k <= this.sizeZ - 1; ++k)
                     {
-                        if (random.nextFloat() < 0.05F)
+                        if (randomIn.nextFloat() < 0.05F)
                         {
                             this.setBlockState(worldIn, Blocks.COBWEB.getDefaultState(), i, j, k, boundingBox);
                         }
@@ -56,7 +57,7 @@ public class RoomSpawner extends RoomEmpty
 
             if (spawner != null)
             {
-                spawner.getSpawnerBaseLogic().setEntityType(getMob(random));
+                spawner.getSpawnerBaseLogic().setEntityType(getMob(randomIn));
             }
 
             blockpos = new BlockPos(this.getXWithOffset(this.sizeX - 1, this.sizeZ - 1), this.getYWithOffset(0), this.getZWithOffset(this.sizeX - 1, this.sizeZ - 1));
@@ -64,7 +65,7 @@ public class RoomSpawner extends RoomEmpty
 
             if (spawner != null)
             {
-                spawner.getSpawnerBaseLogic().setEntityType(getMob(random));
+                spawner.getSpawnerBaseLogic().setEntityType(getMob(randomIn));
             }
 
             return true;

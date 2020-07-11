@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
@@ -74,10 +75,14 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
         }
     }
 
-    public boolean onActivated(PlayerEntity par5EntityPlayer)
+    public ActionResultType onActivated(PlayerEntity par5EntityPlayer)
     {
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
-        return telepad != null && telepad.onActivated(par5EntityPlayer);
+        if (telepad == null)
+        {
+            return ActionResultType.FAIL;
+        }
+        return telepad.onActivated(par5EntityPlayer);
     }
 
     @Override

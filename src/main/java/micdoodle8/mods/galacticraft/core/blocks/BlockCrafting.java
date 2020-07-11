@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -45,20 +46,20 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
 //    }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
-        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, hit))
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.SUCCESS)
         {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (playerIn.isSneaking())
         {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, hit))
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, hit) == ActionResultType.SUCCESS)
             {
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
@@ -67,14 +68,15 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
             INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerCrafting(w, p, (TileEntityCrafting) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.magneticcrafting.name"));
             NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
         }
-        return true;
+
+        return ActionResultType.PASS;
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         this.rotate6Ways(world, pos);
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     private void rotate6Ways(World world, BlockPos pos)
@@ -131,9 +133,9 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
 
     public static Direction getFacingFromEntity(World worldIn, BlockPos clickedBlock, LivingEntity entityIn)
     {
-        if (MathHelper.abs((float) entityIn.posX - (float) clickedBlock.getX()) < 3.0F && MathHelper.abs((float) entityIn.posZ - (float) clickedBlock.getZ()) < 3.0F)
+        if (MathHelper.abs((float) entityIn.getPosX() - (float) clickedBlock.getX()) < 3.0F && MathHelper.abs((float) entityIn.getPosZ() - (float) clickedBlock.getZ()) < 3.0F)
         {
-            double d0 = entityIn.posY + (double) entityIn.getEyeHeight();
+            double d0 = entityIn.getPosY() + (double) entityIn.getEyeHeight();
 
             if (d0 - (double) clickedBlock.getY() > 2.0D)
             {

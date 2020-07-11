@@ -87,7 +87,7 @@ public class ParticleDrip extends SpriteTexturedParticle
 
             if (state.getBlock() instanceof FlowingFluidBlock)
             {
-                d0 = ((FlowingFluidBlock) state.getBlock()).getFluid().func_223407_a(((FlowingFluidBlock) state.getBlock()).getFluidState(state));
+                d0 = ((FlowingFluidBlock) state.getBlock()).getFluid().getHeight(((FlowingFluidBlock) state.getBlock()).getFluidState(state));
             }
 
             double d1 = MathHelper.floor(this.posY) + 1 - d0;

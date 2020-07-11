@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -49,7 +50,7 @@ public class RoomTreasure extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox boundingBox, ChunkPos chunkPos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -119,7 +120,7 @@ public class RoomTreasure extends SizedPiece
 //                                {
 //                                    chesttype = ((IGalacticraftWorldProvider)worldIn.getDimension()).getDungeonChestType();
 //                                }
-                                treasureChest.setLootTable(MOONCHEST, random.nextLong());
+                                treasureChest.setLootTable(MOONCHEST, randomIn.nextLong());
                             }
                         }
                     }

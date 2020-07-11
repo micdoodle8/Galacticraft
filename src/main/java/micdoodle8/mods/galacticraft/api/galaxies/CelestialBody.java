@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.world.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.dimension.Dimension;

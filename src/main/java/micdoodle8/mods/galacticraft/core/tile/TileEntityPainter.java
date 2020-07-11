@@ -28,7 +28,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.*;
@@ -191,7 +190,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
 
     private static Set<BlockVec3> getLoadedTiles(World world)
     {
-        DimensionType dimID = GCCoreUtil.getDimensionID(world);
+        DimensionType dimID = GCCoreUtil.getDimensionType(world);
         Set<BlockVec3> loaded = loadedTilesForDim.get(dimID);
 
         if (loaded == null)
@@ -237,7 +236,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     public static void onServerTick(World world)
     {
         Set<BlockVec3> loaded = getLoadedTiles(world);
-        DimensionType dimID = GCCoreUtil.getDimensionID(world);
+        DimensionType dimID = GCCoreUtil.getDimensionType(world);
         List<ServerPlayerEntity> allPlayers = PlayerUtil.getPlayersOnline();
         for (final ServerPlayerEntity player : allPlayers)
         {

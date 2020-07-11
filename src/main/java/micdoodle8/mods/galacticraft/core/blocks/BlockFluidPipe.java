@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
@@ -28,8 +27,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.Random;
@@ -206,7 +203,7 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
 //    }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         if (!world.isRemote)
         {
@@ -214,17 +211,17 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
             tile.switchType();
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         final TileEntityFluidPipe tileEntity = (TileEntityFluidPipe) worldIn.getTileEntity(pos);
 
-        if (super.onBlockActivated(state, worldIn, pos, playerIn, hand, hit))
+        if (super.onBlockActivated(state, worldIn, pos, playerIn, hand, hit) == ActionResultType.SUCCESS)
         {
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
         if (!worldIn.isRemote)
@@ -235,7 +232,6 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
             {
                 if (stack.getItem() instanceof DyeItem)
                 {
-
                     final DyeColor dyeColor = ((DyeItem) stack.getItem()).getDyeColor();
 
                     final DyeColor colorBefore = DyeColor.byId(tileEntity.getColor(state));
@@ -244,7 +240,7 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
 
                     worldIn.setBlockState(pos, state.with(COLOR, dyeColor));
 
-                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionID(worldIn), new Object[]{pos}), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 40.0, GCCoreUtil.getDimensionID(worldIn)));
+                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionType(worldIn), new Object[]{pos}), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 40.0, GCCoreUtil.getDimensionType(worldIn)));
 
                     if (colorBefore != dyeColor && !playerIn.abilities.isCreativeMode)
                     {
@@ -269,13 +265,13 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
                         }
                     }
 
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
 
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
     private void spawnItem(World worldIn, BlockPos pos, DyeColor colorBefore)
@@ -351,12 +347,12 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
         return true;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
 //    @Override
 //    public BlockState getStateFromMeta(int meta)

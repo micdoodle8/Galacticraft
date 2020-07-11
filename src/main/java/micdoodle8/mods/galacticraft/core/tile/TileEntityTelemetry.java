@@ -338,7 +338,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
 
         int distSq = 1025;
         BlockVec3Dim nearest = null;
-        DimensionType dim = GCCoreUtil.getDimensionID(te.getWorld());
+        DimensionType dim = GCCoreUtil.getDimensionType(te.getWorld());
         for (BlockVec3Dim telemeter : loadedList)
         {
             if (telemeter.dim != dim)

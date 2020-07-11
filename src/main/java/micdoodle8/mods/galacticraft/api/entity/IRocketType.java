@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.api.entity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.translation.LanguageMap;
 
 public interface IRocketType
 {

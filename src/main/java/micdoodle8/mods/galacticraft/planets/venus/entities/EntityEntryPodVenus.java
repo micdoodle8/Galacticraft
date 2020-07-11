@@ -53,7 +53,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
             }
         }
 
-        pod.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+        pod.setPositionAndRotation(player.getPosX(), player.getPosY(), player.getPosZ(), 0, 0);
 
         player.startRiding(pod, true);
         return pod;
@@ -132,14 +132,14 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
                     this.setMotion(getMotion().x, this.getMotion().y * 0.994F, this.getMotion().z);
                 }
 
-                if (this.posY <= 242.0F)
+                if (this.getPosY() <= 242.0F)
                 {
                     if (groundPosY == null)
                     {
-                        this.groundPosY = this.world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(this.posX, this.posY, this.posZ)).getY();
+                        this.groundPosY = this.world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ())).getY();
                     }
 
-                    if (this.posY - this.groundPosY > 5.0F)
+                    if (this.getPosY() - this.groundPosY > 5.0F)
                     {
                         this.setMotion(getMotion().x, this.getMotion().y * 0.995F, this.getMotion().z);
                     }

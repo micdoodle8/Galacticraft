@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProviderType;
@@ -38,7 +39,7 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
 {
     public DimensionMoon(World worldIn, DimensionType typeIn)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, 0.0F);
     }
 
 //    @Override
@@ -48,16 +49,23 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
 //    }
 
     @Override
-    public Vector3 getFogColor()
+    public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
-        return new Vector3(0, 0, 0);
+        return new Vec3d(0, 0, 0);
     }
 
-    @Override
-    public Vector3 getSkyColor()
-    {
-        return new Vector3(0, 0, 0);
-    }
+
+//    @Override
+//    public Vector3 getFogColor()
+//    {
+//        return new Vector3(0, 0, 0);
+//    }
+//
+//    @Override
+//    public Vector3 getSkyColor()
+//    {
+//        return new Vector3(0, 0, 0);
+//    }
 
     @Override
     public boolean hasSunset()
@@ -75,28 +83,30 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
     public ChunkGenerator createChunkGenerator()
     {
         MoonGenSettings settings = new MoonGenSettings();
-        return new MoonChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings().setBiome(BiomeMoon.moonBiome)), settings);
+        return new MoonChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings(this.world.getWorldInfo()).setBiome(BiomeMoon.moonBiome)), settings);
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public float getStarBrightness(float par1)
-    {
-        final float var2 = this.world.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
-        if (var3 < 0.0F)
-        {
-            var3 = 0.0F;
-        }
 
-        if (var3 > 1.0F)
-        {
-            var3 = 1.0F;
-        }
-
-        return var3 * var3 * 0.5F + 0.3F;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public float getStarBrightness(float par1)
+//    {
+//        final float var2 = this.world.getCelestialAngle(par1);
+//        float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
+//
+//        if (var3 < 0.0F)
+//        {
+//            var3 = 0.0F;
+//        }
+//
+//        if (var3 > 1.0F)
+//        {
+//            var3 = 1.0F;
+//        }
+//
+//        return var3 * var3 * 0.5F + 0.3F;
+//    }
 
     @Override
     public boolean isSkyColored()
@@ -104,11 +114,11 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
         return false;
     }
 
-    @Override
-    public double getHorizon()
-    {
-        return 44.0D;
-    }
+//    @Override
+//    public double getHorizon()
+//    {
+//        return 44.0D;
+//    }
 
     @Override
     public int getSeaLevel()
@@ -139,7 +149,7 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid)
     {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(posX, 0, posZ);
         Biome biome = this.world.getBiome(blockpos$mutableblockpos);
         BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
         if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN))

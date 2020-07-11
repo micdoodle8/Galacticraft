@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -47,14 +48,14 @@ public class ParticleOxygen extends SpriteTexturedParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
         float var8 = (this.age + partialTicks) / this.maxAge;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
         this.particleScale = this.portalParticleScale * var8;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ParticleOxygen extends SpriteTexturedParticle
         }
         else
         {
-            var2 = this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
+            var2 = this.world.isBlockLoaded(blockpos) ? this.world.getLight(blockpos) : 0;
             cacheLighting.put(blockpos, var2);
         }
         float var3 = (float) this.age / (float) this.maxAge;

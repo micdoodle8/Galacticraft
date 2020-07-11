@@ -50,7 +50,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
             }
         }
 
-        pod.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+        pod.setPositionAndRotation(player.getPosX(), player.getPosY(), player.getPosZ(), 0, 0);
 
         player.startRiding(pod, true);
         return pod;

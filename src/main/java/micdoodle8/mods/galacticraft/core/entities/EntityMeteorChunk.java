@@ -71,11 +71,11 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             this.canBePickedUp = 1;
         }
 
-        this.setLocationAndAngles(par2EntityLivingBase.posX, par2EntityLivingBase.posY + par2EntityLivingBase.getEyeHeight(), par2EntityLivingBase.posZ, par2EntityLivingBase.rotationYaw, par2EntityLivingBase.rotationPitch);
-        this.posX -= MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F;
-        this.posY -= 0.10000000149011612D;
-        this.posZ -= MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F;
-        this.setPosition(this.posX, this.posY, this.posZ);
+        this.setLocationAndAngles(par2EntityLivingBase.getPosX(), par2EntityLivingBase.getPosY() + par2EntityLivingBase.getEyeHeight(), par2EntityLivingBase.getPosZ(), par2EntityLivingBase.rotationYaw, par2EntityLivingBase.rotationPitch);
+        this.setRawPosition(this.getPosX() - MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F,
+                this.getPosY() - 0.10000000149011612D,
+                this.getPosZ() - MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F);
+        this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
         float motionX = -MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES);
         float motionZ = MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES);
         float motionY = -MathHelper.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES);
@@ -122,7 +122,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             this.prevRotationPitch = this.rotationPitch = (float) Math.atan2(y, f) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
             this.ticksInGround = 0;
         }
     }
@@ -162,7 +162,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             {
                 for (AxisAlignedBB axisalignedbb : voxelshape.toBoundingBoxList())
                 {
-                    if (axisalignedbb.offset(pos).contains(new Vec3d(this.posX, this.posY, this.posZ)))
+                    if (axisalignedbb.offset(pos).contains(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ())))
                     {
                         this.inGround = true;
                         break;
@@ -195,11 +195,11 @@ public class EntityMeteorChunk extends Entity implements IProjectile
         else
         {
             ++this.ticksInAir;
-            Vec3d vec3 = new Vec3d(this.posX, this.posY, this.posZ);
-            Vec3d vec31 = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+            Vec3d vec3 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+            Vec3d vec31 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
             RayTraceResult castResult = this.world.rayTraceBlocks(new RayTraceContext(vec3, vec31, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-            vec3 = new Vec3d(this.posX, this.posY, this.posZ);
-            vec31 = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+            vec3 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+            vec31 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
 
             if (castResult.getType() != RayTraceResult.Type.MISS)
             {
@@ -334,14 +334,12 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                     this.zTile = blockResult.getPos().getZ();
                     BlockState state = this.world.getBlockState(blockResult.getPos());
                     this.inBlockState = state;
-                    float motionX = (float) (castResult.getHitVec().x - this.posX);
-                    float motionY = (float) (castResult.getHitVec().y - this.posY);
-                    float motionZ = (float) (castResult.getHitVec().z - this.posZ);
+                    float motionX = (float) (castResult.getHitVec().x - this.getPosX());
+                    float motionY = (float) (castResult.getHitVec().y - this.getPosY());
+                    float motionZ = (float) (castResult.getHitVec().z - this.getPosZ());
                     this.setMotion(motionX, motionY, motionZ);
                     f2 = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-                    this.posX -= motionX / f2 * 0.05000000074505806D;
-                    this.posY -= motionY / f2 * 0.05000000074505806D;
-                    this.posZ -= motionZ / f2 * 0.05000000074505806D;
+                    this.setRawPosition(this.getPosX() - this.getMotion().x / (double) f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / (double) f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / (double) f2 * 0.05000000074505806D);
                     this.inGround = true;
 
                     if (!this.inBlockState.isAir(this.world, blockResult.getPos()))
@@ -368,7 +366,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                 for (int j1 = 0; j1 < 4; ++j1)
                 {
                     f3 = 0.25F;
-                    this.world.addParticle(ParticleTypes.BUBBLE, this.posX - this.getMotion().x * f3, this.posY - this.getMotion().y * f3, this.posZ - this.getMotion().z * f3, this.getMotion().x, this.getMotion().y, this.getMotion().z);
+                    this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() - this.getMotion().x * f3, this.getPosY() - this.getMotion().y * f3, this.getPosZ() - this.getMotion().z * f3, this.getMotion().x, this.getMotion().y, this.getMotion().z);
                 }
                 this.isHot = false;
                 f4 = 0.8F;
@@ -379,7 +377,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 //            this.motionY *= f4;
 //            this.motionZ *= f4;
             this.setMotion(this.getMotion().add(0.0, -TransformerHooks.getGravityForEntity(this), 0.0));
-            this.setPosition(this.posX, this.posY, this.posZ);
+            this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
             this.doBlockCollisions();
         }
     }

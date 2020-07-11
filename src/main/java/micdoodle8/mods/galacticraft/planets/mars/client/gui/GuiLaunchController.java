@@ -30,7 +30,6 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -212,7 +211,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.launchController.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.launchController.getPos(), 0}));
         });
         this.buttons.add(this.enableControllerButton);
         this.buttons.add(this.frequency);
@@ -330,12 +329,12 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
             if (textBox.equals(this.frequency))
             {
                 this.launchController.frequency = textBox.getIntegerValue();
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{0, this.launchController.getPos(), this.launchController.frequency}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{0, this.launchController.getPos(), this.launchController.frequency}));
             }
             else if (textBox.equals(this.destinationFrequency))
             {
                 this.launchController.destFrequency = textBox.getIntegerValue();
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{2, this.launchController.getPos(), this.launchController.destFrequency}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{2, this.launchController.getPos(), this.launchController.destFrequency}));
             }
         }
     }

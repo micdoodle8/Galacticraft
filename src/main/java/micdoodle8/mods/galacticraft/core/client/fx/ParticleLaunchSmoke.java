@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
@@ -55,7 +56,7 @@ public class ParticleLaunchSmoke extends LaunchParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
         GL11.glPushMatrix();
         GL11.glDepthMask(false);
@@ -73,7 +74,7 @@ public class ParticleLaunchSmoke extends LaunchParticle
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);

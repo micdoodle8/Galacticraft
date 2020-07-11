@@ -16,8 +16,8 @@ public class OverlayOxygenWarning extends Overlay
     public static void renderOxygenWarningOverlay(long ticks)
     {
         Minecraft mc = Minecraft.getInstance();
-        int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
-        int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
+        int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.getMainWindow().getScaledWidth() / (double) mc.getMainWindow().getWidth());
+        int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
 //        mc.entityRenderer.setupOverlayRendering();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();

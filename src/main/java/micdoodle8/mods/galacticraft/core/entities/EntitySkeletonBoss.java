@@ -81,7 +81,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         {
             if (this.deathTicks == 100)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.world), new Object[]{1.5F}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionType(this.world), new Object[]{1.5F}), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 40.0D, GCCoreUtil.getDimensionType(this.world)));
             }
         }
     }
@@ -107,7 +107,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             final double offsetZ = Math.cos(this.rotationYawHead / Constants.RADIANS_TO_DEGREES_D);
             final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
 
-            passenger.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + passenger.getYOffset() + offsetY, this.posZ + offsetZ);
+            passenger.setPosition(this.getPosX() + offsetX, this.getPosY() + this.getMountedYOffset() + passenger.getYOffset() + offsetY, this.getPosZ() + offsetZ);
         }
     }
 
@@ -123,7 +123,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_LAUGH, GCCoreUtil.getDimensionID(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_LAUGH, GCCoreUtil.getDimensionType(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 40.0D, GCCoreUtil.getDimensionType(this.world)));
                 par1EntityPlayer.startRiding(this);
             }
 
@@ -177,7 +177,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
             if (EntityPredicates.NOT_SPECTATING.test(entityplayer) && entityplayer instanceof ServerPlayerEntity)
             {
-                double d0 = entityplayer.getDistanceSq(this.posX, this.posY, this.posZ);
+                double d0 = entityplayer.getDistanceSq(this.getPosX(), this.getPosY(), this.getPosZ());
 
                 if (d0 < 20 * 20)
                 {
@@ -192,13 +192,13 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
         }
 
-        final PlayerEntity player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
+        final PlayerEntity player = this.world.getClosestPlayer(this.getPosX(), this.getPosY(), this.getPosZ(), 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
             if (this.getDistanceSq(player) < 400.0D)
             {
-                this.getNavigator().getPathToEntityLiving(player, 0);
+                this.getNavigator().getPathToEntity(player, 0);
                 this.targetEntity = player;
             }
         }
@@ -231,10 +231,10 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
         if (this.thrownEntity != null && this.postThrowDelay == 18)
         {
-            double d0 = this.posX - this.thrownEntity.posX;
+            double d0 = this.getPosX() - this.thrownEntity.getPosX();
             double d1;
 
-            for (d1 = this.posZ - this.thrownEntity.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
+            for (d1 = this.getPosZ() - this.thrownEntity.getPosZ(); d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
             {
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
@@ -242,7 +242,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionID(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionType(this.world), new Object[]{}), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 40.0, GCCoreUtil.getDimensionType(this.world)));
             }
             ((PlayerEntity) this.thrownEntity).attackedAtYaw = (float) Math.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - this.rotationYaw;
 
@@ -264,7 +264,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     @Override
     public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY() + par2, this.getPosZ(), par1ItemStack);
         entityitem.setMotion(entityitem.getMotion().x, -2.0, entityitem.getMotion().z);
         entityitem.setDefaultPickupDelay();
         if (captureDrops() != null)
@@ -313,9 +313,9 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         }
 
         ArrowEntity arrow = new ArrowEntity(this.world, this);
-        double d0 = target.posX - this.posX;
-        double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - arrow.posY;
-        double d2 = target.posZ - this.posZ;
+        double d0 = target.getPosX() - this.getPosX();
+        double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - arrow.getPosY();
+        double d2 = target.getPosZ() - this.getPosZ();
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
         arrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 

@@ -56,7 +56,7 @@ public class GuiElementDropdown extends Button
 //            GL11.glDisable(GL11.GL_DEPTH_TEST);
             GL11.glPushMatrix();
 
-            this.blitOffset = 300;
+            this.setBlitOffset(300);
             GL11.glTranslatef(0, 0, 500);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
@@ -88,7 +88,7 @@ public class GuiElementDropdown extends Button
             this.blit(this.x + this.width - 12, this.y + 5, 185, 0, 7, 4);
 
             GL11.glPopMatrix();
-            this.blitOffset = 0;
+            this.setBlitOffset(0);
 //            GL11.glEnable(GL11.GL_LIGHTING);
 //            GL11.glEnable(GL11.GL_DEPTH_TEST);
 //            RenderHelper.enableStandardItemLighting();

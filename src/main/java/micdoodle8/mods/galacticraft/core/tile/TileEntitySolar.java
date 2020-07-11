@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -322,9 +323,9 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
-        return false; // TODO
+        return ActionResultType.PASS; // TODO
 //        return this.getBlockType().onBlockActivated(this.world, this.getPos(), this.world.getBlockState(getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 

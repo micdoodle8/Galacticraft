@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
@@ -42,7 +43,7 @@ public class ParticleSparks extends SpriteTexturedParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
         float var8 = (this.age + partialTicks) / this.maxAge * 32.0F;
 
@@ -57,7 +58,7 @@ public class ParticleSparks extends SpriteTexturedParticle
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
     }
 
     @Override

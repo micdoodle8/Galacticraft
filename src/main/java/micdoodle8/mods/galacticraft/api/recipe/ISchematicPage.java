@@ -23,13 +23,6 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
     int getPageID();
 
     /**
-     * The GUI ID of this page. Used like any other GUI IDs to determine which
-     * container and GUI to open. Again, must be unique between mods so make it
-     * configurable.
-     */
-    int getGuiID();
-
-    /**
      * The item required to unlock this schematic. The item class must implement
      * ISchematicItem, since it goes in the NASA Workbench unlock slot.
      */

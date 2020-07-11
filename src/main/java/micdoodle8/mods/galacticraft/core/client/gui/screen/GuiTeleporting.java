@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
+import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.screen.Screen;
@@ -43,7 +44,7 @@ public class GuiTeleporting extends Screen
             // Screen will exit when the player is in the target dimension and has started moving down
             if (minecraft.player.world.getDimension().getType() == this.targetDimensionID)
             {
-                if ((/*minecraft.player.world.getDimension() instanceof DimensionSpaceStation || TODO Space station  */(minecraft.player.posY - minecraft.player.lastTickPosY) < 0.0))
+                if ((minecraft.player.world.getDimension() instanceof DimensionSpaceStation || (minecraft.player.getPosY() - minecraft.player.lastTickPosY) < 0.0))
                 {
                     minecraft.displayGuiScreen(null);
                     TickHandlerClient.teleportingGui = null;

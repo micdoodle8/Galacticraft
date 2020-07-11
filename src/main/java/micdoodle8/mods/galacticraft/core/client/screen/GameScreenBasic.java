@@ -73,77 +73,77 @@ public class GameScreenBasic implements IGameScreen
             textureBy = 1.0D - textureAy;
         }
 
-        switch (type)
-        {
-        case 0:
-            drawBlackBackground(0.09F);
-            break;
-        case 1:
-            if (scr instanceof DrawGameScreen && ((DrawGameScreen) scr).mapDone)
-            {
-                GlStateManager.bindTexture(DrawGameScreen.reusableMap.getGlTextureId());
-                draw2DTexture();
-            }
-            else if (ClientProxyCore.overworldTexturesValid)
-            {
-                GlStateManager.pushMatrix();
-                float centreX = scaleX / 2;
-                float centreY = scaleY / 2;
-                GlStateManager.translatef(centreX, centreY, 0F);
-                RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
-                GlStateManager.popMatrix();
-            }
-            else
-            {
-                this.textureManager.bindTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"));
-                if (!ClientProxyCore.overworldTextureRequestSent)
-                {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{}));
-                    ClientProxyCore.overworldTextureRequestSent = true;
-                }
-////                 Overworld texture is 48x48 in a 64x64 .png file
-//                this.textureBx -= 0.25D;
-//                this.textureBy -= 0.25D;
-                draw2DTexture();
-//                this.textureBx += 0.25D;
-//                this.textureBy += 0.25D;
-            }
-            break;
-        }
+//        switch (type)
+//        {
+//        case 0:
+//            drawBlackBackground(0.09F);
+//            break;
+//        case 1:
+//            if (scr instanceof DrawGameScreen && ((DrawGameScreen) scr).mapDone)
+//            {
+//                GlStateManager.bindTexture(DrawGameScreen.reusableMap.getGlTextureId());
+//                draw2DTexture();
+//            }
+//            else if (ClientProxyCore.overworldTexturesValid)
+//            {
+//                GlStateManager.pushMatrix();
+//                float centreX = scaleX / 2;
+//                float centreY = scaleY / 2;
+//                GlStateManager.translatef(centreX, centreY, 0F);
+//                RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
+//                GlStateManager.popMatrix();
+//            }
+//            else
+//            {
+//                this.textureManager.bindTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"));
+//                if (!ClientProxyCore.overworldTextureRequestSent)
+//                {
+//                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionType(Minecraft.getInstance().world), new Object[]{}));
+//                    ClientProxyCore.overworldTextureRequestSent = true;
+//                }
+//////                 Overworld texture is 48x48 in a 64x64 .png file
+////                this.textureBx -= 0.25D;
+////                this.textureBy -= 0.25D;
+//                draw2DTexture();
+////                this.textureBx += 0.25D;
+////                this.textureBy += 0.25D;
+//            }
+//            break;
+//        } TODO Game screen
     }
 
-    private void draw2DTexture()
-    {
-        final Tessellator tess = Tessellator.getInstance();
-        BufferBuilder worldRenderer = tess.getBuffer();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-        worldRenderer.pos(frameA, frameBy, 0F).tex(textureAx, textureBy).endVertex();
-        worldRenderer.pos(frameBx, frameBy, 0F).tex(textureBx, textureBy).endVertex();
-        worldRenderer.pos(frameBx, frameA, 0F).tex(textureBx, textureAy).endVertex();
-        worldRenderer.pos(frameA, frameA, 0F).tex(textureAx, textureAy).endVertex();
-        tess.draw();
-    }
-
-    private void drawBlackBackground(float greyLevel)
-    {
-        GlStateManager.disableLighting();
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.disableTexture();
-        final Tessellator tess = Tessellator.getInstance();
-        BufferBuilder worldRenderer = tess.getBuffer();
-        GlStateManager.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-
-        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
-        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
-        worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
-        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
-        tess.draw();
-
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableTexture();
-        GlStateManager.enableLighting();
-    }
+//    private void draw2DTexture()
+//    {
+//        final Tessellator tess = Tessellator.getInstance();
+//        BufferBuilder worldRenderer = tess.getBuffer();
+//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//
+//        worldRenderer.pos(frameA, frameBy, 0F).tex(textureAx, textureBy).endVertex();
+//        worldRenderer.pos(frameBx, frameBy, 0F).tex(textureBx, textureBy).endVertex();
+//        worldRenderer.pos(frameBx, frameA, 0F).tex(textureBx, textureAy).endVertex();
+//        worldRenderer.pos(frameA, frameA, 0F).tex(textureAx, textureAy).endVertex();
+//        tess.draw();
+//    }
+//
+//    private void drawBlackBackground(float greyLevel)
+//    {
+//        GlStateManager.disableLighting();
+//        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+//        GlStateManager.disableTexture();
+//        final Tessellator tess = Tessellator.getInstance();
+//        BufferBuilder worldRenderer = tess.getBuffer();
+//        GlStateManager.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
+//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//
+//        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
+//        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
+//        worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
+//        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
+//        tess.draw();
+//
+//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GlStateManager.enableTexture();
+//        GlStateManager.enableLighting();
+//    }
 }

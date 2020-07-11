@@ -112,12 +112,12 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
 
                 if (attackTarget != null)
                 {
-                    double dX = attackTarget.posX - this.posX;
-                    double dY = attackTarget.getBoundingBox().minY + (double) (attackTarget.getHeight() / 3.0F) - this.posY;
-                    double dZ = attackTarget.posZ - this.posZ;
+                    double dX = attackTarget.getPosX() - this.getPosX();
+                    double dY = attackTarget.getBoundingBox().minY + (double) (attackTarget.getHeight() / 3.0F) - this.getPosY();
+                    double dZ = attackTarget.getPosZ() - this.getPosZ();
 
                     float distance = 5.0F;
-                    double d0 = this.getDistanceSq(attackTarget.posX, attackTarget.getBoundingBox().minY, attackTarget.posZ);
+                    double d0 = this.getDistanceSq(attackTarget.getPosX(), attackTarget.getBoundingBox().minY, attackTarget.getPosZ());
 
                     this.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
@@ -168,19 +168,19 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                 AxisAlignedBB roomBounds = this.spawner.getRangeBounds();
                 double tarX = (roomBounds.minX + roomBounds.maxX) / 2.0;
                 double tarZ = (roomBounds.minZ + roomBounds.maxZ) / 2.0;
-                double dX = tarX - this.posX;
-                double dY = roomBounds.maxY - this.posY;
-                double dZ = tarZ - this.posZ;
+                double dX = tarX - this.getPosX();
+                double dY = roomBounds.maxY - this.getPosY();
+                double dZ = tarZ - this.getPosZ();
 
                 double movespeed = 1.0 * this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
                 this.setMotion(Math.min(Math.max(dX / 2.0F, -movespeed), movespeed), this.getMotion().y, Math.min(Math.max(dZ / 2.0F, -movespeed), movespeed));
-                this.navigator.tryMoveToXYZ(tarX, this.posY, tarZ, movespeed);
+                this.navigator.tryMoveToXYZ(tarX, this.getPosY(), tarZ, movespeed);
 
                 if (Math.abs(dX) < 0.1 && Math.abs(dZ) < 0.1)
                 {
                     this.setMotion(this.getMotion().x, Math.min(dY, 0.2), this.getMotion().z);
 
-                    if (Math.abs(dY) - this.getHeight() < 1.1 && Math.abs(this.posY - this.lastTickPosY) < 0.05)
+                    if (Math.abs(dY) - this.getHeight() < 1.1 && Math.abs(this.getPosY() - this.lastTickPosY) < 0.05)
                     {
                         if (this.getBurrowedCount() >= 0)
                         {
@@ -191,7 +191,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                                     EntityJuicer juicer = new EntityJuicer(VenusEntities.JUICER.get(), this.world);
                                     double angle = Math.random() * 2 * Math.PI;
                                     double dist = 3.0F;
-                                    juicer.setPosition(this.posX + dist * Math.sin(angle), this.posY + 0.2F, this.posZ + dist * Math.cos(angle));
+                                    juicer.setPosition(this.getPosX() + dist * Math.sin(angle), this.getPosY() + 0.2F, this.getPosZ() + dist * Math.cos(angle));
                                     juicer.setHanging(true);
                                     this.world.addEntity(juicer);
                                     this.juicersSpawned.add(juicer);
@@ -376,8 +376,8 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         ListNBT list = new ListNBT();
         for (EntityJuicer juicer : this.juicersSpawned)
         {
-            list.add(new LongNBT(juicer.getUniqueID().getMostSignificantBits()));
-            list.add(new LongNBT(juicer.getUniqueID().getLeastSignificantBits()));
+            list.add(LongNBT.valueOf(juicer.getUniqueID().getMostSignificantBits()));
+            list.add(LongNBT.valueOf(juicer.getUniqueID().getLeastSignificantBits()));
         }
         nbt.put("spawned_children", list);
     }
@@ -411,7 +411,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY() + par2, this.getPosZ(), par1ItemStack);
         entityitem.setMotion(entityitem.getMotion().x, -2.0, entityitem.getMotion().z);
         entityitem.setDefaultPickupDelay();
         if (this.captureDrops() != null)

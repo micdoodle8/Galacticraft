@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.planets;
 
 import com.google.common.collect.Lists;
 
-import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModuleClient;
@@ -34,7 +32,7 @@ public class PlanetsProxyClient extends PlanetsProxy
     @Override
     public void init(FMLCommonSetupEvent event)
     {
-        OBJLoaderGC.instance.addDomain(GalacticraftPlanets.ASSET_PREFIX);
+//        OBJLoaderGC.instance.addDomain(GalacticraftPlanets.ASSET_PREFIX); TODO Needed?
         GalacticraftPlanets.clientModules.add(new MarsModuleClient());
         GalacticraftPlanets.clientModules.add(new AsteroidsModuleClient());
         GalacticraftPlanets.clientModules.add(new VenusModuleClient());

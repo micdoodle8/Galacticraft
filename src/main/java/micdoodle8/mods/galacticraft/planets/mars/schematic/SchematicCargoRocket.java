@@ -26,11 +26,11 @@ public class SchematicCargoRocket implements ISchematicPage
         return ConfigManagerPlanets.idSchematicCargoRocket;
     }
 
-    @Override
-    public int getGuiID()
-    {
-        return GuiIdsPlanets.NASA_WORKBENCH_CARGO_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
-    }
+//    @Override
+//    public int getGuiID()
+//    {
+//        return GuiIdsPlanets.NASA_WORKBENCH_CARGO_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
+//    }
 
     @Override
     public ItemStack getRequiredItem()

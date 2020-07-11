@@ -75,7 +75,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
                 this.cannotEditTimer = 50;
                 return;
             }
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.laserTurret.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.laserTurret.getPos(), 0}));
             laserTurret.setDisabled(0, !laserTurret.getDisabled(0));
             init();
         }));
@@ -188,12 +188,12 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         if (checkbox.equals(this.blacklistMode))
         {
             this.laserTurret.blacklistMode = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{0, this.laserTurret.getPos(), this.laserTurret.blacklistMode ? 1 : 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{0, this.laserTurret.getPos(), this.laserTurret.blacklistMode ? 1 : 0}));
         }
         else if (checkbox.equals(this.targetMeteors))
         {
             this.laserTurret.targetMeteors = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{1, this.laserTurret.getPos(), this.laserTurret.targetMeteors ? 1 : 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{1, this.laserTurret.getPos(), this.laserTurret.targetMeteors ? 1 : 0}));
         }
     }
 

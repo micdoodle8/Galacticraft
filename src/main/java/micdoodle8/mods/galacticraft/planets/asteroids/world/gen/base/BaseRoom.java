@@ -36,6 +36,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -109,7 +110,7 @@ public class BaseRoom extends SizedPiece
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBoundary, ChunkPos chunkPos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         BlockState blockAir = Blocks.AIR.getDefaultState();
         Block blockStair = GCBlocks.moonStoneStairs;
@@ -117,7 +118,7 @@ public class BaseRoom extends SizedPiece
         boolean axisEW = getDirection().getAxis() == Direction.Axis.X;
         int maxX = axisEW ? this.sizeZ : this.sizeX;
         int maxZ = axisEW ? this.sizeX : this.sizeZ;
-        int randomInt = random.nextInt(99);
+        int randomInt = randomIn.nextInt(99);
         for (int xx = 0; xx <= maxX; xx++)
         {
             boolean near = this.nearEnd && xx == maxX;
@@ -132,20 +133,20 @@ public class BaseRoom extends SizedPiece
                         boolean xEntrance = maxX > 6 ? (xx > 2 && xx < maxX - 2) : (xx > 1 && xx < maxX - 1);
                         if (this.type.blockEntrance != null && yy == 0 && zz == 0 && xEntrance && this.configuration.getDeckType() != EnumBaseType.TUNNELER)
                         {
-                            this.setBlockState(worldIn, this.type.blockEntrance, xx, yy, zz, chunkBoundary);
-                            this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy - 1, zz, chunkBoundary);
+                            this.setBlockState(worldIn, this.type.blockEntrance, xx, yy, zz, mutableBoundingBoxIn);
+                            this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy - 1, zz, mutableBoundingBoxIn);
                         }
                         //Shave the top and bottom corners
                         else if (!((zz == maxZ || near || far) && (yy == 0 && (this.deckTier & 1) == 1 || yy == this.sizeY && (this.deckTier & 2) == 2 || (zz == maxZ && (near || far)))) || zz == 0 && yy == 0)
                         {
-                            this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy, zz, chunkBoundary);
+                            this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy, zz, mutableBoundingBoxIn);
                         }
                         //Special case, fill in some corners on hangardeck top deck
                         else if (yy == this.sizeY && (this.deckTier & 2) == 2 && this.configuration.isHangarDeck() && zz < 3)
                         {
                             if (xx == 0 || xx == maxX)
                             {
-                                this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy, zz, chunkBoundary);
+                                this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy, zz, mutableBoundingBoxIn);
                             }
                         }
                     }
@@ -155,7 +156,7 @@ public class BaseRoom extends SizedPiece
                         if ((xx > 1 && xx < maxX - 1) && (zz > 0 && zz < maxZ - 1) || (yy > 1 && yy < this.sizeY - 1) || this.type.doEntryWallsToo)
                         {
                             BlockPos blockpos = new BlockPos(this.getXWithOffset(xx, zz), this.getYWithOffset(yy), this.getZWithOffset(xx, zz));
-                            if (chunkBoundary.isVecInside(blockpos))
+                            if (mutableBoundingBoxIn.isVecInside(blockpos))
                             {
                                 this.buildRoomContents(worldIn, xx, yy, zz, maxX - 1, maxZ - 1, blockpos, randomInt);
                             }
@@ -188,23 +189,23 @@ public class BaseRoom extends SizedPiece
                                 meta ^= 1;
                             }
                             meta += (yy == 1) ? 0 : 4;
-//                            this.setBlockState(worldIn, blockStair.getStateFromMeta(meta), xx, yy, zz, chunkBoundary); TODO Stairs
+//                            this.setBlockState(worldIn, blockStair.getStateFromMeta(meta), xx, yy, zz, mutableBoundingBoxIn); TODO Stairs
                         }
                         else if (yy == 1 && this.type.blockFloor != null)
                         {
                             boolean xEntrance = maxX > 6 ? (xx > 2 && xx < maxX - 2) : (xx > 1 && xx < maxX - 1);
                             if (zz == 0 && (this.type.blockEntrance != null && xEntrance))
                             {
-                                this.setBlockState(worldIn, blockAir, xx, yy, zz, chunkBoundary);
+                                this.setBlockState(worldIn, blockAir, xx, yy, zz, mutableBoundingBoxIn);
                             }
                             else
                             {
-                                this.setBlockState(worldIn, this.type.blockFloor, xx, yy, zz, chunkBoundary);
+                                this.setBlockState(worldIn, this.type.blockFloor, xx, yy, zz, mutableBoundingBoxIn);
                             }
                         }
                         else
                         {
-                            this.setBlockState(worldIn, blockAir, xx, yy, zz, chunkBoundary);
+                            this.setBlockState(worldIn, blockAir, xx, yy, zz, mutableBoundingBoxIn);
                         }
                     }
                 }

@@ -82,7 +82,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         final int var6 = (this.height - this.ySize) / 2;
         this.enableControllerButton = new Button(var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.telepad.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.telepad.getPos(), 0}));
         });
         this.address = new GuiElementTextBox(this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.targetAddress = new GuiElementTextBox(this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
@@ -167,12 +167,12 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         if (textBox.equals(this.address))
         {
             this.telepad.address = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{0, this.telepad.getPos(), this.telepad.address}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{0, this.telepad.getPos(), this.telepad.address}));
         }
         else if (textBox.equals(this.targetAddress))
         {
             this.telepad.targetAddress = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{1, this.telepad.getPos(), this.telepad.targetAddress}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{1, this.telepad.getPos(), this.telepad.targetAddress}));
         }
     }
 

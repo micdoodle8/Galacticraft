@@ -59,9 +59,9 @@ public class BlockVec3Dim implements Cloneable
 
     public BlockVec3Dim(Entity par1)
     {
-        this.x = (int) Math.floor(par1.posX);
-        this.y = (int) Math.floor(par1.posY);
-        this.z = (int) Math.floor(par1.posZ);
+        this.x = (int) Math.floor(par1.getPosX());
+        this.y = (int) Math.floor(par1.getPosY());
+        this.z = (int) Math.floor(par1.getPosZ());
         this.dim = par1.dimension;
     }
 

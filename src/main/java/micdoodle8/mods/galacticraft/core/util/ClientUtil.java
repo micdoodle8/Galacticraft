@@ -1,40 +1,16 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
-import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.BasicState;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientUtil
@@ -103,7 +79,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{playerName}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionType(Minecraft.getInstance().world), new Object[]{playerName}));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -120,15 +96,15 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[]{playerName}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionType(Minecraft.getInstance().world), new Object[]{playerName}));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
         return new Vector3(1, 1, 1);
     }
 
-    public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
-    {
+//    public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
+//    {
 //        OBJModel model;
 //        try
 //        {
@@ -173,75 +149,73 @@ public class ClientUtil
 //                event.getModelRegistry().putObject(modelResourceLocation, newModel);
 //            }
 //        } TODO models
-    }
+//    }
 
-    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc) throws IOException
-    {
-        return modelFromOBJ(loader, loc, ImmutableList.of("main"));
-    }
+//    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc) throws IOException
+//    {
+//        return modelFromOBJ(loader, loc, ImmutableList.of("main"));
+//    }
+//
+//    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups) throws IOException
+//    {
+//        return modelFromOBJ(loader, loc, visibleGroups, TRSRTransformation.identity(), ImmutableMap.of());
+//    }
+//
+//    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups, IModelState parentState, ImmutableMap<String, String> customData) throws IOException
+//    {
+//        OBJModel.ModelSettings settings = new OBJModel.ModelSettings(loc, true, false, false, true, null);
+//        OBJModel model = OBJLoader.INSTANCE.loadModel(settings);
+//        java.util.function.Function<ResourceLocation, TextureAtlasSprite> textureGetter;
+//        textureGetter = location -> Minecraft.getInstance().getAtlasSpriteGetter(location).apply(location);
+//
+//        IBakedModel bakedModel = model.bake(model.owner, bakery, ModelLoader.defaultTextureGetter(), model.originalTransform, model.getOverrides(), new ResourceLocation("forge:bucket_override"));
+//        return (OBJModel) model.bake(loader, textureGetter, new BasicState(new OBJModel.OBJState(visibleGroups, false, parentState), false), DefaultVertexFormats.ITEM);
+//    }
 
-    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups) throws IOException
-    {
-        return modelFromOBJ(loader, loc, visibleGroups, TRSRTransformation.identity(), ImmutableMap.of());
-    }
-
-    public static OBJModel.OBJBakedModel modelFromOBJ(ModelLoader loader, ResourceLocation loc, List<String> visibleGroups, IModelState parentState, ImmutableMap<String, String> customData) throws IOException
-    {
-        IModel<?> model = OBJLoaderGC.instance.loadModel(loc);
-        java.util.function.Function<ResourceLocation, TextureAtlasSprite> textureGetter;
-        textureGetter = location -> Minecraft.getInstance().getTextureMap().getAtlasSprite(location.toString());
-        if (!customData.isEmpty())
-        {
-            model.process(customData);
-        }
-
-        return (OBJModel.OBJBakedModel) model.bake(loader, textureGetter, new BasicState(new OBJModel.OBJState(visibleGroups, false, parentState), false), DefaultVertexFormats.ITEM);
-    }
-
-    public static void drawBakedModel(IBakedModel model)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder worldrenderer = tessellator.getBuffer();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        Random random = new Random();
-        random.setSeed(42);
-
-        for (BakedQuad bakedquad : model.getQuads(null, null, random))
-        {
-            worldrenderer.addVertexData(bakedquad.getVertexData());
-        }
-
-        tessellator.draw();
-    }
-
-    public static void drawBakedModelColored(IBakedModel model, int color)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder worldrenderer = tessellator.getBuffer();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        Random random = new Random();
-        random.setSeed(42);
-
-        for (BakedQuad bakedquad : model.getQuads(null, null, random))
-        {
-            int[] data = bakedquad.getVertexData();
-            data[3] = color;
-            data[10] = color;
-            data[17] = color;
-            data[24] = color;
-            worldrenderer.addVertexData(data);
-        }
-
-        tessellator.draw();
-    }
-
-    public static void copyModelAngles(RendererModel source, RendererModel dest)
-    {
-        dest.rotateAngleX = source.rotateAngleX;
-        dest.rotateAngleY = source.rotateAngleY;
-        dest.rotateAngleZ = source.rotateAngleZ;
-        dest.rotationPointX = source.rotationPointX;
-        dest.rotationPointY = source.rotationPointY;
-        dest.rotationPointZ = source.rotationPointZ;
-    }
+//    public static void drawBakedModel(IBakedModel model)
+//    {
+//        Tessellator tessellator = Tessellator.getInstance();
+//        BufferBuilder worldrenderer = tessellator.getBuffer();
+//        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+//        Random random = new Random();
+//        random.setSeed(42);
+//
+//        for (BakedQuad bakedquad : model.getQuads(null, null, random))
+//        {
+//            worldrenderer.addVertexData(bakedquad.getVertexData());
+//        }
+//
+//        tessellator.draw();
+//    }
+//
+//    public static void drawBakedModelColored(IBakedModel model, int color)
+//    {
+//        Tessellator tessellator = Tessellator.getInstance();
+//        BufferBuilder worldrenderer = tessellator.getBuffer();
+//        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+//        Random random = new Random();
+//        random.setSeed(42);
+//
+//        for (BakedQuad bakedquad : model.getQuads(null, null, random))
+//        {
+//            int[] data = bakedquad.getVertexData();
+//            data[3] = color;
+//            data[10] = color;
+//            data[17] = color;
+//            data[24] = color;
+//            worldrenderer.addVertexData(data);
+//        }
+//
+//        tessellator.draw();
+//    }
+//
+//    public static void copyModelAngles(ModelRenderer source, ModelRenderer dest)
+//    {
+//        dest.rotateAngleX = source.rotateAngleX;
+//        dest.rotateAngleY = source.rotateAngleY;
+//        dest.rotateAngleZ = source.rotateAngleZ;
+//        dest.rotationPointX = source.rotationPointX;
+//        dest.rotationPointY = source.rotationPointY;
+//        dest.rotationPointZ = source.rotationPointZ;
+//    }
 }

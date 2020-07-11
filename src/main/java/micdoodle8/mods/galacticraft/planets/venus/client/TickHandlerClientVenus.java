@@ -67,20 +67,20 @@ public class TickHandlerClientVenus
         {
             if (world.getDimension() instanceof DimensionVenus)
             {
-                if (world.getDimension().getSkyRenderer() == null)
-                {
-                    world.getDimension().setSkyRenderer(new SkyProviderVenus((IGalacticraftDimension) world.getDimension()));
-                }
+//                if (world.getDimension().getSkyRenderer() == null)
+//                {
+//                    world.getDimension().setSkyRenderer(new SkyProviderVenus((IGalacticraftDimension) world.getDimension()));
+//                } TODO Sky renderers
 
                 if (world.getDimension().getCloudRenderer() == null)
                 {
                     world.getDimension().setCloudRenderer(new CloudRenderer());
                 }
 
-                if (world.getDimension().getWeatherRenderer() == null)
-                {
-                    world.getDimension().setWeatherRenderer(new WeatherRendererVenus());
-                }
+//                if (world.getDimension().getWeatherRenderer() == null)
+//                {
+//                    world.getDimension().setWeatherRenderer(new WeatherRendererVenus());
+//                } TODO Weather renderers
             }
         }
     }
@@ -117,9 +117,9 @@ public class TickHandlerClientVenus
                     double dist = 180.0F;
                     double dX = dist * Math.cos(freq);
                     double dZ = dist * Math.sin(freq);
-                    double posX = player.posX + dX;
+                    double posX = player.getPosX() + dX;
                     double posY = 70;
-                    double posZ = player.posZ + dZ;
+                    double posZ = player.getPosZ() + dZ;
                     minecraft.world.playSound(player, posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER, 500.0F + player.getRNG().nextFloat() * 500F, 1.0F + player.getRNG().nextFloat() * 0.2F);
                     lightning.put(new BlockPos(posX, posY, posZ), 20);
                 }

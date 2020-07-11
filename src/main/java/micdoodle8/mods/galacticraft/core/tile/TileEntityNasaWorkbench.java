@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -33,10 +34,10 @@ public class TileEntityNasaWorkbench extends TileEntityFake implements IMultiBlo
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
 //        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()); TODO guis
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

@@ -643,7 +643,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
         this.platformVelocityCurrent = 0D;
         this.platformVelocityTarget = 0D;
         this.platformPacketSent = false;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(noCollide), new Object[]{true}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionType(noCollide), new Object[]{true}));
     }
 
     @Override
@@ -665,7 +665,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
             this.platformMoving.stopMoving();
             if (!this.platformPacketSent)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[]{false}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionType(this.platformTarget), new Object[]{false}));
             }
             return 0D;
         }
@@ -676,7 +676,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
                 this.platformVelocityTarget = (delta < 1.0D + 8 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? 0.08D : 0.45D;
                 if (delta < 0.6D && !this.platformPacketSent)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[]{false}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionType(this.platformTarget), new Object[]{false}));
                     this.platformPacketSent = true;
                 }
             }
@@ -685,7 +685,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
                 this.platformVelocityTarget = (delta > -1.0D - 8 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? -0.08D : -0.45D;
                 if (delta > -1.0D && !this.platformPacketSent)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[]{false}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionType(this.platformTarget), new Object[]{false}));
                     this.platformPacketSent = true;
                 }
             }

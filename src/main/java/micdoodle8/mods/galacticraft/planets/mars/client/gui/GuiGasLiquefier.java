@@ -97,7 +97,7 @@ public class GuiGasLiquefier extends GuiContainerGC<ContainerGasLiquefier>
 
         this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.gasLiquefier.getWorld()), new Object[]{this.gasLiquefier.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.gasLiquefier.getWorld()), new Object[]{this.gasLiquefier.getPos(), 0}));
         }));
     }
 

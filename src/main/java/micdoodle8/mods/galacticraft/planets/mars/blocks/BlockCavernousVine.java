@@ -13,15 +13,16 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nonnull;
@@ -126,7 +127,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
     {
         return this.getVineLight(world, pos);
     }
@@ -216,7 +217,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         if (!worldIn.isRemote)
         {
@@ -292,12 +293,12 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         return true;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
 //    @Override
 //    public BlockState getStateFromMeta(int meta)

@@ -16,6 +16,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -52,10 +53,10 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
 //        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ()); TODO open guis
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -116,14 +117,14 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
 //    }
 
     @Override
-    public boolean onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IMachineSides)
         {
             ((IMachineSides) tile).nextSideConfiguration(tile);
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.PASS;
     }
 }

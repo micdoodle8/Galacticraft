@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
@@ -80,7 +81,7 @@ public class BlockAirLockController extends BlockAdvancedTile implements IShiftD
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
 
@@ -88,10 +89,10 @@ public class BlockAirLockController extends BlockAdvancedTile implements IShiftD
         {
             NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, world, pos), buf -> buf.writeBlockPos(pos));
 //            playerIn.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
 

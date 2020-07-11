@@ -37,7 +37,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(Entity entity)
     {
-        super(GCCoreUtil.getDimensionID(entity.world));
+        super(GCCoreUtil.getDimensionType(entity.world));
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
         this.identifier = entity.getEntityId();
@@ -47,7 +47,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(TileEntity tile)
     {
-        super(GCCoreUtil.getDimensionID(tile.getWorld()));
+        super(GCCoreUtil.getDimensionType(tile.getWorld()));
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
         this.identifier = tile.getPos();

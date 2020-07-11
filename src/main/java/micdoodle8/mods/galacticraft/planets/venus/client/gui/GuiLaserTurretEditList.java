@@ -16,7 +16,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -79,7 +79,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                 {
                     boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player.name") + ": ");
                     String toSend = isPlayer ? selected.value.substring(8) : selected.value;
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[]{isPlayer ? 2 : 3, laserTurret.getPos(), toSend}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{isPlayer ? 2 : 3, laserTurret.getPos(), toSend}));
                     if (isPlayer)
                     {
                         laserTurret.removePlayer(toSend);
@@ -130,7 +130,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                     EntityType<?> entry = getEntityEntry();
                     if (entry != null)
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[]{1, laserTurret.getPos(), entry.getRegistryName().toString()}));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{1, laserTurret.getPos(), entry.getRegistryName().toString()}));
                         laserTurret.addEntity(entry.getRegistryName());
                     }
                 }
@@ -138,7 +138,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                 {
                     if (name.text != null && !name.text.isEmpty())
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[]{0, laserTurret.getPos(), name.text}));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{0, laserTurret.getPos(), name.text}));
                         laserTurret.addPlayer(name.text);
                     }
                 }
@@ -165,7 +165,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             switch (mode)
             {
             case MAIN:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_OPEN_LASER_TURRET_GUI, GCCoreUtil.getDimensionID(laserTurret.getWorld()), new Object[]{laserTurret.getPos()}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_OPEN_LASER_TURRET_GUI, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{laserTurret.getPos()}));
                 break;
             default:
                 mode = EnumMode.MAIN;
@@ -314,7 +314,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.laserTurret.alwaysIgnoreSpaceRace = newSelected;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{2, this.laserTurret.getPos(), this.laserTurret.alwaysIgnoreSpaceRace ? 1 : 0}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{2, this.laserTurret.getPos(), this.laserTurret.alwaysIgnoreSpaceRace ? 1 : 0}));
     }
 
     @Override

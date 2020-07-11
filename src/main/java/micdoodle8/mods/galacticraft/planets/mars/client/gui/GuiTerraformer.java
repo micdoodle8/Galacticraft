@@ -90,11 +90,11 @@ public class GuiTerraformer extends GuiContainerGC<ContainerTerraformer> impleme
         final int var6 = (this.height - this.ySize) / 2;
         this.enableTreesButton = new Button(var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.terraformer.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.terraformer.getPos(), 0}));
         });
         this.enableGrassButton = new Button(var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.terraformer.getPos(), 1}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.terraformer.getPos(), 1}));
         });
         this.buttons.add(this.enableTreesButton);
         this.buttons.add(this.enableGrassButton);
@@ -201,7 +201,7 @@ public class GuiTerraformer extends GuiContainerGC<ContainerTerraformer> impleme
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.terraformer.shouldRenderBubble = newSelected;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{6, this.terraformer.getPos(), newSelected ? 1 : 0}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{6, this.terraformer.getPos(), newSelected ? 1 : 0}));
     }
 
     @Override

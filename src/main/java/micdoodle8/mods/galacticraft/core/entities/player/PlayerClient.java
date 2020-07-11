@@ -291,9 +291,9 @@ public class PlayerClient implements IPlayerClient
         // If the player is on the moon, not airbourne and not riding anything
         if (motionSqrd > 0.001 && player.world != null && player.world.getDimension() instanceof DimensionMoon && player.getRidingEntity() == null && !player.abilities.isFlying)
         {
-            int iPosX = MathHelper.floor(player.posX);
-            int iPosY = MathHelper.floor(player.posY - 0.05);
-            int iPosZ = MathHelper.floor(player.posZ);
+            int iPosX = MathHelper.floor(player.getPosX());
+            int iPosY = MathHelper.floor(player.getPosY() - 0.05);
+            int iPosZ = MathHelper.floor(player.getPosZ());
             BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
             BlockState state = player.world.getBlockState(pos1);
 
@@ -383,7 +383,7 @@ public class PlayerClient implements IPlayerClient
         }
         flag |= 1 << i;
         stats.setBuildFlags((flag & 511) + (repeatCount << 9));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionID(player.world), new Object[]{stats.getBuildFlags()}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionType(player.world), new Object[]{stats.getBuildFlags()}));
         switch (i)
         {
         case 0:

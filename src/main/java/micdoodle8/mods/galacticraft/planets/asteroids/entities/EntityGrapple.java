@@ -76,18 +76,16 @@ public class EntityGrapple extends Entity implements IProjectile
         if (shootingEntity != null)
         {
             grapple.canBePickedUp = 1;
-            grapple.setLocationAndAngles(shootingEntity.posX, shootingEntity.posY + shootingEntity.getEyeHeight(), shootingEntity.posZ, shootingEntity.rotationYaw, shootingEntity.rotationPitch);
+            grapple.setLocationAndAngles(shootingEntity.getPosX(), shootingEntity.getPosY() + shootingEntity.getEyeHeight(), shootingEntity.getPosZ(), shootingEntity.rotationYaw, shootingEntity.rotationPitch);
         }
 
         float motX = -MathHelper.sin(grapple.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(grapple.rotationPitch / Constants.RADIANS_TO_DEGREES);
         float motY = -MathHelper.sin(grapple.rotationPitch / Constants.RADIANS_TO_DEGREES);
         float motZ = MathHelper.cos(grapple.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(grapple.rotationPitch / Constants.RADIANS_TO_DEGREES);
         grapple.setMotion(motX, motY, motZ);
-        grapple.posX += grapple.getMotion().x;
-        grapple.posY += grapple.getMotion().y;
-        grapple.posZ += grapple.getMotion().z;
+        grapple.setRawPosition(grapple.getPosX() + grapple.getMotion().x, grapple.getPosY() + grapple.getMotion().y, grapple.getPosZ() + grapple.getMotion().z);
 //        grapple.yOffset = -1.5F;
-        grapple.setPosition(grapple.posX, grapple.posY, grapple.posZ);
+        grapple.setPosition(grapple.getPosX(), grapple.getPosY(), grapple.getPosZ());
         grapple.shoot(grapple.getMotion().x, grapple.getMotion().y, grapple.getMotion().z, par3 * 1.5F, 1.0F);
         grapple.updateStringStack(stringStack);
         return grapple;
@@ -176,7 +174,7 @@ public class EntityGrapple extends Entity implements IProjectile
             float f = MathHelper.sqrt(x * x + z * z);
             this.prevRotationYaw = this.rotationYaw = (float) Math.atan2(x, z) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch = (float) Math.atan2(y, f) * Constants.RADIANS_TO_DEGREES;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
             this.ticksInGround = 0;
         }
     }
@@ -222,7 +220,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 PlayerEntity shootingEntity = this.getShootingEntity();
                 if (shootingEntity != null)
                 {
-                    shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
+                    shootingEntity.setVelocity((this.getPosX() - shootingEntity.getPosX()) / 12.0F, (this.getPosY() - shootingEntity.getPosY()) / 12.0F, (this.getPosZ() - shootingEntity.getPosZ()) / 12.0F);
                     if (shootingEntity.world.isRemote && shootingEntity.world.getDimension() instanceof IZeroGDimension)
                     {
                         GCPlayerStatsClient stats = GCPlayerStatsClient.get(shootingEntity);
@@ -250,7 +248,7 @@ public class EntityGrapple extends Entity implements IProjectile
             {
                 VoxelShape neighbour = state.getShape(this.world, this.hitVec);
 
-                if (neighbour != VoxelShapes.empty() && neighbour.getBoundingBox().contains(new Vec3d(this.posX, this.posY, this.posZ)))
+                if (neighbour != VoxelShapes.empty() && neighbour.getBoundingBox().contains(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ())))
                 {
                     this.inGround = true;
                 }
@@ -272,7 +270,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 {
                     if (this.shootingEntity != null)
                     {
-                        this.shootingEntity.setMotion((this.posX - this.shootingEntity.posX) / 16.0F, (this.posY - this.shootingEntity.posY) / 16.0F, (this.posZ - this.shootingEntity.posZ) / 16.0F);
+                        this.shootingEntity.setMotion((this.getPosX() - this.shootingEntity.getPosX()) / 16.0F, (this.getPosY() - this.shootingEntity.getPosY()) / 16.0F, (this.getPosZ() - this.shootingEntity.getPosZ()) / 16.0F);
                         if (this.shootingEntity instanceof ServerPlayerEntity)
                         {
                             GalacticraftCore.handler.preventFlyingKicks((ServerPlayerEntity) this.shootingEntity);
@@ -315,11 +313,11 @@ public class EntityGrapple extends Entity implements IProjectile
                 this.remove();
             }
 
-            Vec3d vec31 = new Vec3d(this.posX, this.posY, this.posZ);
-            Vec3d vec3 = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+            Vec3d vec31 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+            Vec3d vec3 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
             RayTraceResult castResult = this.world.rayTraceBlocks(new RayTraceContext(vec3, vec31, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-            vec31 = new Vec3d(this.posX, this.posY, this.posZ);
-            vec3 = new Vec3d(this.posX + this.getMotion().x, this.posY + this.getMotion().y, this.posZ + this.getMotion().z);
+            vec31 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+            vec3 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
 
             if (castResult.getType() != RayTraceResult.Type.MISS)
             {
@@ -379,14 +377,14 @@ public class EntityGrapple extends Entity implements IProjectile
                     this.hitVec = blockResult.getPos();
                     BlockState state = this.world.getBlockState(blockResult.getPos());
                     this.inBlockState = state;
-                    float motionX = (float) (castResult.getHitVec().x - this.posX);
-                    float motionY = (float) (castResult.getHitVec().y - this.posY);
-                    float motionZ = (float) (castResult.getHitVec().z - this.posZ);
+                    float motionX = (float) (castResult.getHitVec().x - this.getPosX());
+                    float motionY = (float) (castResult.getHitVec().y - this.getPosY());
+                    float motionZ = (float) (castResult.getHitVec().z - this.getPosZ());
                     this.setMotion(motionX, motionY, motionZ);
                     motion = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-                    this.posX -= motionX / motion * 0.05000000074505806D;
-                    this.posY -= motionY / motion * 0.05000000074505806D;
-                    this.posZ -= motionZ / motion * 0.05000000074505806D;
+                    this.setRawPosition(this.getPosX() - motionX / motion * 0.05000000074505806D,
+                            this.getPosY() - motionY / motion * 0.05000000074505806D,
+                            this.getPosZ() - motionZ / motion * 0.05000000074505806D);
                     this.inGround = true;
 
                     if (!this.inBlockState.isAir(this.world, blockResult.getPos()))
@@ -396,9 +394,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 }
             }
 
-            this.posX += this.getMotion().x;
-            this.posY += this.getMotion().y;
-            this.posZ += this.getMotion().z;
+            this.setRawPosition(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
             motion = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
             this.rotationYaw = (float) Math.atan2(this.getMotion().x, this.getMotion().z) * Constants.RADIANS_TO_DEGREES;
             this.rotationPitch = (float) Math.atan2(this.getMotion().y, motion) * Constants.RADIANS_TO_DEGREES;
@@ -431,7 +427,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 float f4 = 0.25F;
                 for (int l = 0; l < 4; ++l)
                 {
-                    this.world.addParticle(ParticleTypes.BUBBLE, this.posX - this.getMotion().x * f4, this.posY - this.getMotion().y * f4, this.posZ - this.getMotion().z * f4, this.getMotion().x, this.getMotion().y, this.getMotion().z);
+                    this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() - this.getMotion().x * f4, this.getPosY() - this.getMotion().y * f4, this.getPosZ() - this.getMotion().z * f4, this.getMotion().x, this.getMotion().y, this.getMotion().z);
                 }
 
             }
@@ -441,13 +437,13 @@ public class EntityGrapple extends Entity implements IProjectile
                 this.extinguish();
             }
 
-            this.setPosition(this.posX, this.posY, this.posZ);
+            this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
             this.doBlockCollisions();
         }
 
         if (!this.world.isRemote && (this.ticksInGround - 1) % 10 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, GCCoreUtil.getDimensionID(this.world), new Object[]{this.getEntityId(), new Vector3(this)}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 150, GCCoreUtil.getDimensionID(this.world)));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_UPDATE_GRAPPLE_POS, GCCoreUtil.getDimensionType(this.world), new Object[]{this.getEntityId(), new Vector3(this)}), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 150, GCCoreUtil.getDimensionType(this.world)));
         }
     }
 

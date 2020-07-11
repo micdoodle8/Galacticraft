@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -276,7 +277,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
 //    }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -285,7 +286,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
             return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, hit);
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override

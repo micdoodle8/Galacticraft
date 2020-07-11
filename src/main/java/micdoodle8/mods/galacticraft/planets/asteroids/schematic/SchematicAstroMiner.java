@@ -26,11 +26,11 @@ public class SchematicAstroMiner implements ISchematicPage
         return ConfigManagerPlanets.idSchematicRocketT3 + 1;
     }
 
-    @Override
-    public int getGuiID()
-    {
-        return GuiIdsPlanets.NASA_WORKBENCH_ASTRO_MINER + Constants.MOD_ID_PLANETS.hashCode();
-    }
+//    @Override
+//    public int getGuiID()
+//    {
+//        return GuiIdsPlanets.NASA_WORKBENCH_ASTRO_MINER + Constants.MOD_ID_PLANETS.hashCode();
+//    }
 
     @Override
     public ItemStack getRequiredItem()

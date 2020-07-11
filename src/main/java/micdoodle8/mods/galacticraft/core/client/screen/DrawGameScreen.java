@@ -68,7 +68,7 @@ public class DrawGameScreen implements IScreenManager
 
     private void makeMap()
     {
-        if (this.mapDone || reusableMap == null || GCCoreUtil.getDimensionID(this.driver.getWorld()) != DimensionType.OVERWORLD)
+        if (this.mapDone || reusableMap == null || GCCoreUtil.getDimensionType(this.driver.getWorld()) != DimensionType.OVERWORLD)
         {
             return;
         }
@@ -184,24 +184,24 @@ public class DrawGameScreen implements IScreenManager
 
     private void doDraw(int type, float ticks)
     {
-//        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-//        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+////        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+////        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+////        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 //        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-
-        if (type > 0)
-        {
-            GL11.glDisable(GL11.GL_LIGHTING);
-        }
-
-        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, this);
-
-        if (type > 0)
-        {
-            GL11.glEnable(GL11.GL_LIGHTING);
-        }
-
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+//
+//        if (type > 0) TODO Drawing
+//        {
+//            GL11.glDisable(GL11.GL_LIGHTING);
+//        }
+//
+//        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, this);
+//
+//        if (type > 0)
+//        {
+//            GL11.glEnable(GL11.GL_LIGHTING);
+//        }
+//
+////        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
     }
 
     @Override

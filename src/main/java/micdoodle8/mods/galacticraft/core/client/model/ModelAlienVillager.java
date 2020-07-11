@@ -1,13 +1,13 @@
 //package micdoodle8.mods.galacticraft.core.client.model;
 //
-//import net.minecraft.client.renderer.entity.model.RendererModel;
+//import net.minecraft.client.renderer.model.ModelRenderer;
 //import net.minecraft.client.model.ModelVillager;
 //import net.minecraft.client.renderer.entity.model.VillagerModel;
 //import net.minecraft.entity.Entity;
 //
 //public class ModelAlienVillager extends VillagerModel
 //{
-//    public RendererModel brain;
+//    public ModelRenderer brain;
 //
 //    public ModelAlienVillager(float par1)
 //    {
@@ -17,30 +17,30 @@
 //    public ModelAlienVillager(float par1, float par2, int par3, int par4)
 //    {
 //        super(par1, par2, 0, 0);
-//        this.villagerHead = new RendererModel(this).setTextureSize(par3, par4);
+//        this.villagerHead = new ModelRenderer(this).setTextureSize(par3, par4);
 //        this.villagerHead.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 //        this.villagerHead.setTextureOffset(0, 0).addBox(-4.0F, -10.0F, -4.0F, 8, 10, 8, par1 + 0.001F);
-//        this.villagerNose = new RendererModel(this).setTextureSize(par3, par4);
+//        this.villagerNose = new ModelRenderer(this).setTextureSize(par3, par4);
 //        this.villagerNose.setRotationPoint(0.0F, par2 - 2.0F, 0.0F);
 //        this.villagerNose.setTextureOffset(24, 0).addBox(-1.0F, -1.0F, -6.0F, 2, 4, 2, par1 + 0.002F);
 //        this.villagerHead.addChild(this.villagerNose);
-//        this.villagerBody = new RendererModel(this).setTextureSize(par3, par4);
+//        this.villagerBody = new ModelRenderer(this).setTextureSize(par3, par4);
 //        this.villagerBody.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 //        this.villagerBody.setTextureOffset(16, 20).addBox(-4.0F, 0.0F, -3.0F, 8, 12, 6, par1 + 0.003F);
 //        this.villagerBody.setTextureOffset(0, 38).addBox(-4.0F, 0.0F, -3.0F, 8, 18, 6, par1 + 0.5F + 0.004F);
-//        this.villagerArms = new RendererModel(this).setTextureSize(par3, par4);
+//        this.villagerArms = new ModelRenderer(this).setTextureSize(par3, par4);
 //        this.villagerArms.setRotationPoint(0.0F, 0.0F + par2 + 2.0F, 0.0F);
 //        this.villagerArms.setTextureOffset(44, 22).addBox(-8.0F, -2.0F, -2.0F, 4, 8, 4, par1 + 0.005F);
 //        this.villagerArms.setTextureOffset(44, 22).addBox(4.0F, -2.0F, -2.0F, 4, 8, 4, par1 + 0.0001F);
 //        this.villagerArms.setTextureOffset(40, 38).addBox(-4.0F, 2.0F, -2.0F, 8, 4, 4, par1 + 0.0004F);
-//        this.rightVillagerLeg = new RendererModel(this, 0, 22).setTextureSize(par3, par4);
+//        this.rightVillagerLeg = new ModelRenderer(this, 0, 22).setTextureSize(par3, par4);
 //        this.rightVillagerLeg.setRotationPoint(-2.0F, 12.0F + par2, 0.0F);
 //        this.rightVillagerLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, par1 + 0.0006F);
-//        this.leftVillagerLeg = new RendererModel(this, 0, 22).setTextureSize(par3, par4);
+//        this.leftVillagerLeg = new ModelRenderer(this, 0, 22).setTextureSize(par3, par4);
 //        this.leftVillagerLeg.mirror = true;
 //        this.leftVillagerLeg.setRotationPoint(2.0F, 12.0F + par2, 0.0F);
 //        this.leftVillagerLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, par1 + 0.0002F);
-//        this.brain = new RendererModel(this).setTextureSize(par3, par4);
+//        this.brain = new ModelRenderer(this).setTextureSize(par3, par4);
 //        this.brain.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 //        this.brain.setTextureOffset(32, 0).addBox(-4.0F, -16.0F, -4.0F, 8, 8, 8, par1 + 0.5F);
 //    }

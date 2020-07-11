@@ -8,7 +8,6 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RedstoneSide;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -94,10 +93,10 @@ public class BlockConcealedRedstone extends Block
         BlockState blockstate1 = worldIn.getBlockState(blockpos1);
         if (!blockstate1.isNormalCube(worldIn, blockpos1))
         {
-            boolean flag = blockstate.func_224755_d(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
+            boolean flag = blockstate.isSolidSide(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
             if (flag && canConnectTo(worldIn.getBlockState(blockpos.up()), worldIn, blockpos.up(), null))
             {
-                if (blockstate.func_224756_o(worldIn, blockpos))
+                if (blockstate.isCollisionShapeOpaque(worldIn, blockpos))
                 {
                     return RedstoneSide.UP;
                 }
@@ -114,7 +113,7 @@ public class BlockConcealedRedstone extends Block
     {
         BlockPos blockpos = pos.down();
         BlockState blockstate = worldIn.getBlockState(blockpos);
-        return blockstate.func_224755_d(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
+        return blockstate.isSolidSide(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
     }
 
     private BlockState updateSurroundingRedstone(World worldIn, BlockPos pos, BlockState state)
@@ -399,11 +398,11 @@ public class BlockConcealedRedstone extends Block
         }
     }
 
-    @Override
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)

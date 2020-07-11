@@ -17,7 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
@@ -288,17 +288,17 @@ public class GCCoreUtil
 //        }
 //    } TODO ?
 
-    public static DimensionType getDimensionID(IWorldReader world)
+    public static DimensionType getDimensionType(IWorldReader world)
     {
         return world.getDimension().getType();
     }
 
-    public static DimensionType getDimensionID(Dimension dimension)
+    public static DimensionType getDimensionType(Dimension dimension)
     {
         return dimension.getType();
     }
 
-    public static DimensionType getDimensionID(TileEntity tileEntity)
+    public static DimensionType getDimensionType(TileEntity tileEntity)
     {
         return tileEntity.getWorld().dimension.getType();
     }
@@ -326,7 +326,7 @@ public class GCCoreUtil
     {
         for (ServerWorld world : GCCoreUtil.getWorldServerList())
         {
-            DimensionType id = getDimensionID(world);
+            DimensionType id = getDimensionType(world);
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
         }
     }
@@ -341,9 +341,9 @@ public class GCCoreUtil
         {
             if (playerMP.dimension == dimID)
             {
-                final double dx = x - playerMP.posX;
-                final double dy = y - playerMP.posY;
-                final double dz = z - playerMP.posZ;
+                final double dx = x - playerMP.getPosX();
+                final double dy = y - playerMP.getPosY();
+                final double dz = z - playerMP.getPosZ();
 
                 if (dx * dx + dy * dy + dz * dz < r2)
                 {

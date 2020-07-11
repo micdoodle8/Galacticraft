@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.*;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox.ICheckBoxCallback;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientList.ListElement;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementTextBox.ITextBoxCallback;
-import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
@@ -93,7 +92,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     private int selectionMaxY;
 
     private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
-    private final ModelFlag dummyModel = new ModelFlag();
+//    private final ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;
     public Map<String, Integer> recentlyInvited = new HashMap<String, Integer>();
@@ -215,7 +214,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                             SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
                             if (race != null)
                             {
-                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{playerToInvite.value, race.getSpaceRaceID()}));
+                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{playerToInvite.value, race.getSpaceRaceID()}));
                                 this.recentlyInvited.put(playerToInvite.value, 20 * 60);
                             }
                         }
@@ -238,7 +237,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                             SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
                             if (race != null)
                             {
-                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{playerToRemove.value, race.getSpaceRaceID()}));
+                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{playerToRemove.value, race.getSpaceRaceID()}));
                             }
                         }
                     }
@@ -477,8 +476,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
         {
 //            int x = Mouse.getEventX() * this.width / this.minecraft.displayWidth;
 //            int y = this.height - Mouse.getEventY() * this.height / this.minecraft.displayHeight - 1;
-            int x = (int) (minecraft.mouseHelper.getMouseX() * (double) minecraft.mainWindow.getScaledWidth() / (double) minecraft.mainWindow.getWidth());
-            int y = (int) (minecraft.mouseHelper.getMouseY() * (double) minecraft.mainWindow.getScaledHeight() / (double) minecraft.mainWindow.getHeight());
+            int x = (int) (minecraft.mouseHelper.getMouseX() * (double) minecraft.getMainWindow().getScaledWidth() / (double) minecraft.getMainWindow().getWidth());
+            int y = (int) (minecraft.mouseHelper.getMouseY() * (double) minecraft.getMainWindow().getScaledHeight() / (double) minecraft.getMainWindow().getHeight());
 
             if (this.canEdit && x >= this.flagDesignerMinX && y >= this.flagDesignerMinY && x <= this.flagDesignerMinX + this.flagDesignerWidth && y <= this.flagDesignerMinY + this.flagDesignerHeight)
             {
@@ -661,7 +660,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
             objList.add(this.spaceRaceData.getFlagData());
             objList.add(this.spaceRaceData.getTeamColor());
             objList.add(this.spaceRaceData.getPlayerNames().toArray(new String[this.spaceRaceData.getPlayerNames().size()]));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, GCCoreUtil.getDimensionID(minecraft.world), objList));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, GCCoreUtil.getDimensionType(minecraft.world), objList));
         }
     }
 
@@ -716,7 +715,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+                        GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder worldRenderer = tessellator.getBuffer();
@@ -741,16 +741,16 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                     for (int x = 0; x <= this.spaceRaceData.getFlagData().getWidth(); x++)
                     {
                         worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.blitOffset).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.blitOffset).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
                         tessellator.draw();
                     }
 
                     for (int y = 0; y <= this.spaceRaceData.getFlagData().getHeight(); y++)
                     {
                         worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-                        worldRenderer.pos(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.blitOffset).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.blitOffset).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
                         tessellator.draw();
                     }
                 }
@@ -759,11 +759,11 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 {
                     worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
                     float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.blitOffset).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.blitOffset).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.blitOffset).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.blitOffset).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.blitOffset).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
                     tessellator.draw();
                 }
 
@@ -775,17 +775,17 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 float y2 = guiBottom - 10;
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos(x2, y1, this.blitOffset).color(0, 0, 0, 1.0F).endVertex();
-                worldRenderer.pos(x1, y1, this.blitOffset).color(0, 0, 0, 1.0F).endVertex();
-                worldRenderer.pos(x1, y2, this.blitOffset).color(0, 0, 0, 1.0F).endVertex();
-                worldRenderer.pos(x2, y2, this.blitOffset).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x2, y1, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x1, y1, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x1, y2, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
+                worldRenderer.pos(x2, y2, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 tessellator.draw();
 
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
                 tessellator.draw();
 
                 GL11.glShadeModel(GL11.GL_FLAT);
@@ -799,7 +799,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+                        GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 x1 = this.sliderColorG.x;
                 x2 = this.sliderColorG.x + this.sliderColorG.getWidth();
@@ -821,10 +822,10 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
                 tessellator = Tessellator.getInstance();
                 worldRenderer = tessellator.getBuffer();
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.blitOffset).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
                 tessellator.draw();
 
                 this.spaceRaceData.setTeamColor(new Vector3(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue()));
@@ -871,7 +872,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
         GL11.glTranslatef(0.0F, 0.36F, 1.0F);
         GL11.glScalef(1.0F, 1.0F, -1F);
         this.dummyFlag.flagData = this.spaceRaceData.getFlagData();
-        this.dummyModel.renderFlag(this.dummyFlag, this.ticksPassed);
+//        this.dummyModel.renderFlag(this.dummyFlag, this.ticksPassed); TODO Render flag
         GL11.glColor3f(1, 1, 1);
         GL11.glPopMatrix();
 

@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -287,7 +288,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         return 0;
     }
 
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         if (this.nodeList.size() > 1)
         {
@@ -315,11 +316,11 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
                 index++;
                 index %= this.nodeList.size();
                 this.setTarget(this.nodeList.get(index));
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override

@@ -44,9 +44,9 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
     public EntityCelestialFake(ServerPlayerEntity player)
     {
-        this(player.world, player.posX, player.posY, player.posZ);
+        this(player.world, player.getPosX(), player.getPosY(), player.getPosZ());
 
-        this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+        this.setPositionAndRotation(player.getPosX(), player.getPosY(), player.getPosZ(), 0, 0);
 
         player.startRiding(this, true);
     }
@@ -79,7 +79,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         }
         super.tick();
 
-        if (this.ticks < 40 && this.posY > 150)
+        if (this.ticks < 40 && this.getPosY() > 150)
         {
             if (this.getPassengers().isEmpty())
             {
@@ -112,8 +112,8 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     {
         if (!this.getPassengers().contains(entityToPush) && this.getRidingEntity() != entityToPush)
         {
-            double d0 = this.posX - entityToPush.posX;
-            double d1 = this.posZ - entityToPush.posZ;
+            double d0 = this.getPosX() - entityToPush.getPosX();
+            double d1 = this.getPosZ() - entityToPush.getPosZ();
             double d2 = MathHelper.absMax(d0, d1);
 
             if (d2 >= 0.009999999776482582D)

@@ -94,9 +94,9 @@ public class OxygenUtil
 
     public static boolean isAABBInBreathableAirBlock(LivingEntity entity, boolean testThermal)
     {
-        double y = entity.posY + entity.getEyeHeight();
-        double x = entity.posX;
-        double z = entity.posZ;
+        double y = entity.getPosY() + entity.getEyeHeight();
+        double x = entity.getPosX();
+        double z = entity.getPosZ();
 
         double sx = entity.getBoundingBox().maxX - entity.getBoundingBox().minX;
         double sy = entity.getBoundingBox().maxY - entity.getBoundingBox().minY;
@@ -528,7 +528,7 @@ public class OxygenUtil
 
     public static boolean inOxygenBubble(World worldObj, double avgX, double avgY, double avgZ)
     {
-        DimensionType dimID = GCCoreUtil.getDimensionID(worldObj);
+        DimensionType dimID = GCCoreUtil.getDimensionType(worldObj);
         for (final BlockVec3Dim blockVec : TileEntityOxygenDistributor.loadedTiles)
         {
             if (blockVec != null && blockVec.dim == dimID)

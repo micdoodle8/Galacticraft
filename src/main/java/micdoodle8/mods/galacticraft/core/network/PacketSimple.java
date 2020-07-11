@@ -83,6 +83,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
@@ -217,7 +218,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
 
     public PacketSimple(EnumSimplePacket packetType, World world, Object[] data)
     {
-        this(packetType, GCCoreUtil.getDimensionID(world), Arrays.asList(data));
+        this(packetType, GCCoreUtil.getDimensionType(world), Arrays.asList(data));
     }
 
     public PacketSimple(EnumSimplePacket packetType, DimensionType dimID, List<Object> data)
@@ -800,7 +801,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         switch (this.type)
         {
         case S_RESPAWN_PLAYER:
-            playerBase.connection.sendPacket(new SRespawnPacket(player.dimension, player.world.getWorldInfo().getGenerator(), playerBase.interactionManager.getGameType()));
+            playerBase.connection.sendPacket(new SRespawnPacket(player.dimension, WorldInfo.byHashing(player.world.getWorldInfo().getSeed()), player.world.getWorldInfo().getGenerator(), playerBase.interactionManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
             TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, DimensionType.getById((Integer) PacketSimple.this.data.get(0))));

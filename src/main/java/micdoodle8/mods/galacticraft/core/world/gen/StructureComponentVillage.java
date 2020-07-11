@@ -89,7 +89,7 @@
 //    {
 //        int i = 0;
 //        int j = 0;
-//        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+//        BlockPos.Mutable mutableBlockPos = new BlockPos.Mutable();
 //
 //        for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k)
 //        {

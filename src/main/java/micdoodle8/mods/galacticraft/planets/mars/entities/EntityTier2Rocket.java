@@ -256,17 +256,17 @@ public class EntityTier2Rocket extends EntityTieredRocket
             double y1 = 2.9 * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
             if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
             {
-                double modifier = this.posY - this.targetVec.getY();
+                double modifier = this.getPosY() - this.targetVec.getY();
                 modifier = Math.min(Math.max(modifier, 80.0), 200.0);
                 x1 *= modifier / 100.0D;
                 y1 *= modifier / 100.0D;
                 z1 *= modifier / 100.0D;
             }
 
-            final double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.getMotion().y + (!this.getLaunched() ? 2.5D : 1D);
+            final double y = this.prevPosY + (this.getPosY() - this.prevPosY) + y1 - this.getMotion().y + (!this.getLaunched() ? 2.5D : 1D);
 
-            final double x2 = this.posX + x1 - this.getMotion().x;
-            final double z2 = this.posZ + z1 - this.getMotion().z;
+            final double x2 = this.getPosX() + x1 - this.getMotion().x;
+            final double z2 = this.getPosZ() + z1 - this.getMotion().z;
             final double x3 = x2 + x1 / 2D;
             final double y3 = y + y1 / 2D;
             final double z3 = z2 + z1 / 2D;

@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -60,7 +59,7 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
         final int var7 = (this.width - this.xSize) / 2;
         this.launchButton = new Button(var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{this.rocket.getEntityId(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.rocket.getEntityId(), 0}));
         });
         this.buttons.add(this.launchButton);
         List<String> fuelTankDesc = new ArrayList<String>();

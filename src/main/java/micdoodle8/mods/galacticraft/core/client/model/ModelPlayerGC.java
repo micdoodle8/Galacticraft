@@ -4,7 +4,7 @@
 //import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 //import net.minecraft.client.entity.player.ClientPlayerEntity;
 //import net.minecraft.client.renderer.entity.model.PlayerModel;
-//import net.minecraft.client.renderer.entity.model.RendererModel;
+//import net.minecraft.client.renderer.model.ModelRenderer;
 //import com.mojang.blaze3d.platform.GlStateManager;
 //import net.minecraft.util.ResourceLocation;
 //
@@ -17,19 +17,19 @@
 //
 //        if (smallArms)
 //        {
-//            this.bipedLeftArm = new RendererModel(this, 32, 48);
+//            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
 //            this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, var1);
 //            this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
-//            this.bipedRightArm = new RendererModel(this, 40, 16);
+//            this.bipedRightArm = new ModelRenderer(this, 40, 16);
 //            this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, var1);
 //            this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
 //        }
 //        else
 //        {
-//            this.bipedLeftArm = new RendererModel(this, 32, 48);
+//            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
 //            this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
 //            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-//            this.bipedRightArm = new RendererModel(this, 40, 16);
+//            this.bipedRightArm = new ModelRenderer(this, 40, 16);
 //            this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, var1);
 //            this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
 //        }

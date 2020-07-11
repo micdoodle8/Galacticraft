@@ -41,10 +41,10 @@ public class EntityAIThrowPlayer extends Goal
 
         // if (this.skeletonBoss.getDistanceToEntity(this.targetPlayer) <= 5.0F)
         {
-            double d0 = this.skeletonBoss.posX - this.targetPlayer.posX;
+            double d0 = this.skeletonBoss.getPosX() - this.targetPlayer.getPosX();
             double d1;
 
-            for (d1 = this.skeletonBoss.posZ - this.targetPlayer.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
+            for (d1 = this.skeletonBoss.getPosZ() - this.targetPlayer.getPosZ(); d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D)
             {
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }

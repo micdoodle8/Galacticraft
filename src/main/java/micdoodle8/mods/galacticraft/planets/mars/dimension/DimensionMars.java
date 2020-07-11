@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.dimension.DimensionType;
@@ -34,22 +35,31 @@ public class DimensionMars extends DimensionSpace implements IGalacticraftDimens
 
     public DimensionMars(World worldIn, DimensionType typeIn)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, 0.0F);
     }
 
-    @Override
-    public Vector3 getFogColor()
-    {
-        float f = 1.0F - this.getStarBrightness(1.0F);
-        return new Vector3(210F / 255F * f, 120F / 255F * f, 59F / 255F * f);
-    }
+//    @Override
+//    public Vector3 getFogColor()
+//    {
+//        float f = 1.0F - this.getStarBrightness(1.0F);
+//        return new Vector3(210F / 255F * f, 120F / 255F * f, 59F / 255F * f);
+//    }
 
     @Override
-    public Vector3 getSkyColor()
+    public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
         float f = 1.0F - this.getStarBrightness(1.0F);
-        return new Vector3(154 / 255.0F * f, 114 / 255.0F * f, 66 / 255.0F * f);
+        return new Vec3d(210F / 255F * f, 120F / 255F * f, 59F / 255F * f);
     }
+
+
+//
+//    @Override
+//    public Vector3 getSkyColor()
+//    {
+//        float f = 1.0F - this.getStarBrightness(1.0F);
+//        return new Vector3(154 / 255.0F * f, 114 / 255.0F * f, 66 / 255.0F * f);
+//    }
 
     @Override
     public boolean hasSunset()
@@ -69,7 +79,6 @@ public class DimensionMars extends DimensionSpace implements IGalacticraftDimens
 //        return ChunkProviderMars.class;
 //    }
 
-    @Override
     @OnlyIn(Dist.CLIENT)
     public float getStarBrightness(float par1)
     {
@@ -89,11 +98,11 @@ public class DimensionMars extends DimensionSpace implements IGalacticraftDimens
         return f2 * f2 * 0.75F;
     }
 
-    @Override
-    public double getHorizon()
-    {
-        return 44.0D;
-    }
+//    @Override
+//    public double getHorizon()
+//    {
+//        return 44.0D;
+//    }
 
     @Override
     public int getSeaLevel()
@@ -177,7 +186,7 @@ public class DimensionMars extends DimensionSpace implements IGalacticraftDimens
     public ChunkGenerator<?> createChunkGenerator()
     {
         MarsGenSettings settings = new MarsGenSettings();
-        return new MarsChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings().setBiome(BiomeMars.marsFlat)), settings);
+        return new MarsChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings(this.world.getWorldInfo()).setBiome(BiomeMars.marsFlat)), settings);
     }
 
     @Nullable

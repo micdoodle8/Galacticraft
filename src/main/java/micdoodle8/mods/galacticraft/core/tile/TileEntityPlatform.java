@@ -159,7 +159,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
                 GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
                 if (list.contains(p) && !stats.getPlatformControlled() && p.getRidingEntity() == null)
                 {
-                    if (p.movementInput.sneak)
+                    if (p.movementInput.sneaking)
                     {
                         int canDescend = this.checkNextPlatform(-1);
                         if (canDescend == -1)
@@ -489,7 +489,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         if (this.moving)
         {
             ClientPlayerEntity p = Minecraft.getInstance().player;
-            float playerY = (float) (p.lastTickPosY + (p.posY - p.lastTickPosY) * (double) partialTicks);
+            float playerY = (float) (p.lastTickPosY + (p.getPosY() - p.lastTickPosY) * (double) partialTicks);
             return (playerY - this.pos.getY() - BlockPlatform.HEIGHT);
         }
         else
@@ -512,20 +512,21 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
     @OnlyIn(Dist.CLIENT)
     public int getBlendedLight()
     {
-        int j = 0, k = 0;
-        int light = this.world.getCombinedLight(this.getPos().up(), 0);
-        j += light % 65536;
-        k += light / 65536;
-        light = this.world.getCombinedLight(this.getPos().add(1, 1, 0), 0);
-        j += light % 65536;
-        k += light / 65536;
-        light = this.world.getCombinedLight(this.getPos().add(0, 1, 1), 0);
-        j += light % 65536;
-        k += light / 65536;
-        light = this.world.getCombinedLight(this.getPos().add(1, 1, 1), 0);
-        j += light % 65536;
-        k += light / 65536;
-        return j / 4 + k * 16384;
+//        int j = 0, k = 0;
+//        int light = this.world.getCombinedLight(this.getPos().up(), 0);
+//        j += light % 65536;
+//        k += light / 65536;
+//        light = this.world.getCombinedLight(this.getPos().add(1, 1, 0), 0);
+//        j += light % 65536;
+//        k += light / 65536;
+//        light = this.world.getCombinedLight(this.getPos().add(0, 1, 1), 0);
+//        j += light % 65536;
+//        k += light / 65536;
+//        light = this.world.getCombinedLight(this.getPos().add(1, 1, 1), 0);
+//        j += light % 65536;
+//        k += light / 65536;
+//        return j / 4 + k * 16384;
+        return 0; // TODO Lighting
     }
 
     @OnlyIn(Dist.CLIENT)

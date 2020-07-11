@@ -10,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DragonEggBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -63,9 +64,9 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 //    }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override

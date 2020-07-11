@@ -21,6 +21,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.block.BlockRenderType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -51,10 +52,10 @@ public class BlockLaserTurret extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
 //        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ()); TODO guis
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -86,12 +87,12 @@ public class BlockLaserTurret extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         BlockState state = world.getBlockState(pos);
         Direction change = state.get(FACING).rotateY();
         world.setBlockState(pos, state.with(FACING, change), 3);
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override

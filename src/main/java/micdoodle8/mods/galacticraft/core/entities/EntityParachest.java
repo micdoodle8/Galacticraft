@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -110,9 +109,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    final int x = MathHelper.floor(this.posX);
-                    final int y = MathHelper.floor(this.posY);
-                    final int z = MathHelper.floor(this.posZ);
+                    final int x = MathHelper.floor(this.getPosX());
+                    final int y = MathHelper.floor(this.getPosY());
+                    final int z = MathHelper.floor(this.getPosZ());
 
                     if (tryPlaceAtPos(new BlockPos(x, y + i, z)))
                     {
@@ -128,9 +127,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
                         {
                             for (int zOff = -size; zOff <= size; zOff++)
                             {
-                                final int x = MathHelper.floor(this.posX) + xOff;
-                                final int y = MathHelper.floor(this.posY) + yOff;
-                                final int z = MathHelper.floor(this.posZ) + zOff;
+                                final int x = MathHelper.floor(this.getPosX()) + xOff;
+                                final int y = MathHelper.floor(this.getPosY()) + yOff;
+                                final int z = MathHelper.floor(this.getPosZ()) + zOff;
 
                                 if (tryPlaceAtPos(new BlockPos(x, y, z)))
                                 {
@@ -145,7 +144,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
                 {
                     for (final ItemStack stack : this.cargo)
                     {
-                        final ItemEntity e = new ItemEntity(this.world, this.posX, this.posY, this.posZ, stack);
+                        final ItemEntity e = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), stack);
                         this.world.addEntity(e);
                     }
                 }
@@ -164,7 +163,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
 
         if (!this.world.isRemote && this.ticksExisted % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 64.0, GCCoreUtil.getDimensionID(this.world)));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 64.0, GCCoreUtil.getDimensionType(this.world)));
         }
     }
 
@@ -208,7 +207,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
                 {
                     for (ItemStack stack : this.cargo)
                     {
-                        final ItemEntity e = new ItemEntity(this.world, this.posX, this.posY, this.posZ, stack);
+                        final ItemEntity e = new ItemEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), stack);
                         this.world.addEntity(e);
                     }
                 }

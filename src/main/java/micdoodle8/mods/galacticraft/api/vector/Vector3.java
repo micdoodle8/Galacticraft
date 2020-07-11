@@ -54,7 +54,7 @@ public class Vector3 implements Cloneable
 
     public Vector3(Entity par1)
     {
-        this((float) par1.posX, (float) par1.posY, (float) par1.posZ);
+        this((float) par1.getPosX(), (float) par1.getPosY(), (float) par1.getPosZ());
     }
 
     public Vector3(BlockPos pos)

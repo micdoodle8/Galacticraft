@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
@@ -70,7 +71,7 @@ public class TileEntityFake extends TileEntity
         }
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, PlayerEntity player)
+    public ActionResultType onBlockActivated(World worldIn, BlockPos pos, PlayerEntity player)
     {
         if (this.mainBlockPosition != null)
         {
@@ -82,10 +83,10 @@ public class TileEntityFake extends TileEntity
             }
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
-    public boolean onBlockWrenched(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, BlockRayTraceResult hit)
+    public ActionResultType onBlockWrenched(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, BlockRayTraceResult hit)
     {
         if (this.mainBlockPosition != null)
         {
@@ -97,7 +98,7 @@ public class TileEntityFake extends TileEntity
             }
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
     public TileEntity getMainBlockTile()

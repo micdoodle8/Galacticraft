@@ -6,9 +6,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockPadFull;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
@@ -20,7 +18,6 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -152,7 +149,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.world), new Object[]{5, this.getPos(), 0}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionType(this.world), new Object[]{5, this.getPos(), 0}));
             }
         }
 
@@ -310,7 +307,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         ListNBT list = new ListNBT();
         for (ChunkPos pos : chunkSet)
         {
-            list.add(new LongNBT(pos.asLong()));
+            list.add(LongNBT.valueOf(pos.asLong()));
         }
         nbt.put("LoaderChunkSet", list);
         return nbt;
@@ -426,7 +423,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
                             if (launchController2.frequency == this.frequency)
                             {
-                                GCLog.debug("Launch Controller frequency conflict at " + tile2.getPos() + " on dim: " + GCCoreUtil.getDimensionID(tile2));
+                                GCLog.debug("Launch Controller frequency conflict at " + tile2.getPos() + " on dim: " + GCCoreUtil.getDimensionType(tile2));
                                 this.frequencyValid = false;
                                 break worldLoop;
                             }
@@ -578,7 +575,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 //            if (pos != null) {
 //                manager.deregisterChunk(chunkPos, pos);
 //            }
-            chunkProvider.func_217222_b(TICKET_TYPE, chunkPos, TICKET_DISTANCE, this);
+            chunkProvider.releaseTicket(TICKET_TYPE, chunkPos, TICKET_DISTANCE, this);
             chunkIt.remove();
         }
         this.hasRegistered = false;
@@ -595,7 +592,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
         for (ChunkPos chunkPos : this.getChunkSet())
         {
-            chunkProvider.func_217228_a(TICKET_TYPE, chunkPos, TICKET_DISTANCE, this);
+            chunkProvider.registerTicket(TICKET_TYPE, chunkPos, TICKET_DISTANCE, this);
 //            manager.registerChunk(chunkPos, prevPos);
             chunkSet.add(chunkPos);
         }

@@ -34,20 +34,20 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
 //        }
     }
 
-    public DimensionSpace(World worldIn, DimensionType typeIn)
+    public DimensionSpace(World worldIn, DimensionType typeIn, float lightMod)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, lightMod);
     }
 
     /**
      * The fog color in this dimension
      */
-    public abstract Vector3 getFogColor();
+//    public abstract Vector3 getFogColor();
 
     /**
      * The sky color in this dimension
      */
-    public abstract Vector3 getSkyColor();
+//    public abstract Vector3 getSkyColor();
 
     /**
      * Whether or not there will be rain or snow in this dimension
@@ -253,20 +253,20 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
         return f2 + (f1 - f2) / 3.0F;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public Vec3d getFogColor(float var1, float var2)
-    {
-        Vector3 fogColor = this.getFogColor();
-        return new Vec3d(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
-    }
+//    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public Vec3d getFogColor(float var1, float var2)
+//    {
+//        Vector3 fogColor = this.getFogColor();
+//        return new Vec3d(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
+//    }
 
-    @Override
-    public Vec3d getSkyColor(BlockPos cameraPos, float partialTicks)
-    {
-        Vector3 skyColor = this.getSkyColor();
-        return new Vec3d(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
-    }
+//    @Override
+//    public Vec3d getSkyColor(BlockPos cameraPos, float partialTicks)
+//    {
+//        Vector3 skyColor = this.getSkyColor();
+//        return new Vec3d(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
+//    }
 
     @Override
     public boolean isSkyColored()

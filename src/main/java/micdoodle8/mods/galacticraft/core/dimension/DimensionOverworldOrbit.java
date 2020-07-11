@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import net.minecraft.block.Block;
@@ -20,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -40,7 +40,7 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
 
     public DimensionOverworldOrbit(World worldIn, DimensionType typeIn)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, 0.0F);
     }
 
 //    @Override
@@ -49,17 +49,19 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
 //        return GCDimensions.ORBIT;
 //    }
 
-    @Override
-    public Vector3 getFogColor()
-    {
-        return new Vector3(0, 0, 0);
-    }
+//    @Override
+//    public Vector3 getFogColor()
+//    {
+//        return new Vector3(0, 0, 0);
+//    }
+//
+//    @Override
+//    public Vector3 getSkyColor()
+//    {
+//        return new Vector3(0, 0, 0);
+//    }
 
-    @Override
-    public Vector3 getSkyColor()
-    {
-        return new Vector3(0, 0, 0);
-    }
+
 
     @Override
     public boolean hasSunset()
@@ -81,25 +83,25 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
         return a < 0.42F || a > 0.58F;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public float getStarBrightness(float par1)
-    {
-        final float var2 = this.world.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
-
-        if (var3 < 0.0F)
-        {
-            var3 = 0.0F;
-        }
-
-        if (var3 > 1.0F)
-        {
-            var3 = 1.0F;
-        }
-
-        return var3 * var3 * 0.5F + 0.3F;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public float getStarBrightness(float par1)
+//    {
+//        final float var2 = this.world.getCelestialAngle(par1);
+//        float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
+//
+//        if (var3 < 0.0F)
+//        {
+//            var3 = 0.0F;
+//        }
+//
+//        if (var3 > 1.0F)
+//        {
+//            var3 = 1.0F;
+//        }
+//
+//        return var3 * var3 * 0.5F + 0.3F;
+//    }
 
     @Override
     public boolean isSkyColored()
@@ -107,11 +109,11 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
         return false;
     }
 
-    @Override
-    public double getHorizon()
-    {
-        return 44.0D;
-    }
+//    @Override
+//    public double getHorizon()
+//    {
+//        return 44.0D;
+//    }
 
     @Override
     public int getSeaLevel()
@@ -142,7 +144,7 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid)
     {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(posX, 0, posZ);
         Biome biome = this.world.getBiome(blockpos$mutableblockpos);
         BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
         if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN))
@@ -287,36 +289,61 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
         super.updateWeather(defaultLogic);
     }
 
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public void setSpinDeltaPerTick(float angle)
+//    {
+//        SkyProviderOrbit skyProvider = ((SkyProviderOrbit) this.getSkyRenderer());
+//        if (skyProvider != null)
+//        {
+//            skyProvider.spinDeltaPerTick = angle;
+//        }
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public float getSkyRotation()
+//    {
+//        SkyProviderOrbit skyProvider = ((SkyProviderOrbit) this.getSkyRenderer());
+//        return skyProvider.spinAngle;
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public void createSkyProvider()
+//    {
+//        this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"), true, true));
+////        this.setSpinDeltaPerTick(this.getSpinManager().getSpinRate()); TODO Spin
+//
+//        if (this.getCloudRenderer() == null)
+//        {
+//            this.setCloudRenderer(new CloudRenderer());
+//        }
+//    } TODO Sky providers
+
+
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void setSpinDeltaPerTick(float angle)
     {
-        SkyProviderOrbit skyProvider = ((SkyProviderOrbit) this.getSkyRenderer());
-        if (skyProvider != null)
-        {
-            skyProvider.spinDeltaPerTick = angle;
-        }
+
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public float getSkyRotation()
     {
-        SkyProviderOrbit skyProvider = ((SkyProviderOrbit) this.getSkyRenderer());
-        return skyProvider.spinAngle;
+        return 0;
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void createSkyProvider()
     {
-        this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"), true, true));
-//        this.setSpinDeltaPerTick(this.getSpinManager().getSpinRate()); TODO Spin
 
-        if (this.getCloudRenderer() == null)
-        {
-            this.setCloudRenderer(new CloudRenderer());
-        }
+    }
+
+    @Override
+    public Vec3d getFogColor(float celestialAngle, float partialTicks)
+    {
+        return null;
     }
 
     @Override

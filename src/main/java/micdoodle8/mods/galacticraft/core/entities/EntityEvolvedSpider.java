@@ -82,7 +82,7 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
         if (this.world.rand.nextInt(100) == 0)
         {
             EntityEvolvedSkeleton entityskeleton = new EntityEvolvedSkeleton(GCEntities.EVOLVED_SKELETON.get(), world);
-            entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+            entityskeleton.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
             entityskeleton.onInitialSpawn(worldIn, difficultyIn, reason, null, null);
             this.world.addEntity(entityskeleton);
             entityskeleton.startRiding(this);

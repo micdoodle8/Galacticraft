@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -43,9 +44,9 @@ public class MapGenAbandonedBase extends Structure<BaseConfiguration>
     }
 
     @Override
-    public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkX, int chunkZ)
+    public boolean canBeGenerated(BiomeManager biomeManagerIn, ChunkGenerator<?> generatorIn, Random randIn, int chunkX, int chunkZ, Biome biomeIn)
     {
-        long dungeonPos = MapGenDungeonMars.getDungeonPosForCoords(chunkGen, chunkX, chunkZ, ((IGalacticraftDimension) chunkGen.world.getDimension()).getDungeonSpacing());
+        long dungeonPos = MapGenDungeonMars.getDungeonPosForCoords(generatorIn, chunkX, chunkZ, ((IGalacticraftDimension) generatorIn.world.getDimension()).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
         int j = (int) dungeonPos;  //Java automatically gives the 32 least significant bits
         return i == chunkX && j == chunkZ;
@@ -105,9 +106,9 @@ public class MapGenAbandonedBase extends Structure<BaseConfiguration>
     {
 //        private BaseConfiguration configuration;
 
-        public Start(Structure<?> structure, int chunkX, int chunkZ, Biome biomeIn, MutableBoundingBox boundsIn, int referenceIn, long seed)
+        public Start(Structure<?> structure, int chunkX, int chunkZ, MutableBoundingBox boundsIn, int referenceIn, long seed)
         {
-            super(structure, chunkX, chunkZ, biomeIn, boundsIn, referenceIn, seed);
+            super(structure, chunkX, chunkZ, boundsIn, referenceIn, seed);
 //            this.configuration = configuration;
         }
 

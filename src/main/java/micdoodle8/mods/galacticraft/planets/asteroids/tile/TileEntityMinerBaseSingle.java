@@ -60,7 +60,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickableTi
 
             if (success)
             {
-                TileEntityMinerBase.addNewMinerBase(GCCoreUtil.getDimensionID(this), this.getPos());
+                TileEntityMinerBase.addNewMinerBase(GCCoreUtil.getDimensionType(this), this.getPos());
                 for (final TileEntity tile : attachedBaseBlocks)
                 {
                     ((TileEntityMinerBaseSingle) tile).corner = 1;

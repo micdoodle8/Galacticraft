@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -242,28 +241,28 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
         {
-            double modifier = this.posY - this.targetVec.getY();
+            double modifier = this.getPosY() - this.targetVec.getY();
             modifier = Math.max(modifier, 1.0);
             x1 *= modifier / 60.0D;
             y1 *= modifier / 60.0D;
             z1 *= modifier / 60.0D;
         }
 
-        final double y = this.prevPosY + (this.posY - this.prevPosY) - 0.4;
+        final double y = this.prevPosY + (this.getPosY() - this.prevPosY) - 0.4;
 
         if (this.isAlive())
         {
             LivingEntity riddenByEntity = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
             EntityParticleData particleData = new EntityParticleData(this.getLaunched() ? GCParticles.LAUNCH_FLAME_LAUNCHED : GCParticles.LAUNCH_FLAME_IDLE, riddenByEntity.getUniqueID());
-            this.world.addParticle(particleData, this.posX + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.posZ + 0.2 - this.rand.nextDouble() / 10 + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.posZ + 0.2 - this.rand.nextDouble() / 10 + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.posZ - 0.2 + this.rand.nextDouble() / 10 + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.posZ - 0.2 + this.rand.nextDouble() / 10 + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX + x1, y, this.posZ + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX + 0.2 + x1, y, this.posZ + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX - 0.2 + x1, y, this.posZ + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX + x1, y, this.posZ + 0.2D + z1, x1, y1, z1);
-            this.world.addParticle(particleData, this.posX + x1, y, this.posZ - 0.2D + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.getPosZ() + 0.2 - this.rand.nextDouble() / 10 + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.getPosZ() + 0.2 - this.rand.nextDouble() / 10 + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.getPosZ() - 0.2 + this.rand.nextDouble() / 10 + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.getPosZ() - 0.2 + this.rand.nextDouble() / 10 + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() + x1, y, this.getPosZ() + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() + 0.2 + x1, y, this.getPosZ() + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() - 0.2 + x1, y, this.getPosZ() + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() + x1, y, this.getPosZ() + 0.2D + z1, x1, y1, z1);
+            this.world.addParticle(particleData, this.getPosX() + x1, y, this.getPosZ() - 0.2D + z1, x1, y1, z1);
         }
     }
 
@@ -272,9 +271,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         this.rocketType = EnumRocketType.values()[buffer.readInt()];
         super.decodePacketdata(buffer);
-        this.posX = buffer.readDouble() / 8000.0D;
-        this.posY = buffer.readDouble() / 8000.0D;
-        this.posZ = buffer.readDouble() / 8000.0D;
+        this.setRawPosition(buffer.readDouble() / 8000.0D, buffer.readDouble() / 8000.0D, buffer.readDouble() / 8000.0D);
     }
 
     @Override
@@ -286,9 +283,9 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         }
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
-        list.add(this.posX * 8000.0D);
-        list.add(this.posY * 8000.0D);
-        list.add(this.posZ * 8000.0D);
+        list.add(this.getPosX() * 8000.0D);
+        list.add(this.getPosY() * 8000.0D);
+        list.add(this.getPosZ() * 8000.0D);
     }
 
     @Override
@@ -307,7 +304,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             GCLog.debug("Destination location = " + this.targetVec.toString());
-            if (this.targetDimension != GCCoreUtil.getDimensionID(this.world))
+            if (this.targetDimension != GCCoreUtil.getDimensionType(this.world))
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
                 Dimension targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);

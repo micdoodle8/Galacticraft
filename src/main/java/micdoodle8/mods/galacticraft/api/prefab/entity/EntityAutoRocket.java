@@ -38,7 +38,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
@@ -102,14 +102,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
     }
 
-//    public EntityAutoRocket(World world, double posX, double posY, double posZ)
+//    public EntityAutoRocket(World world, double getPosX(), double getPosY(), double getPosZ())
 //    {
 //        this(world);
 ////        this.setSize(0.98F, 2F);
-//        this.setPosition(posX, posY, posZ);
-//        this.prevPosX = posX;
-//        this.prevPosY = posY;
-//        this.prevPosZ = posZ;
+//        this.setPosition(getPosX(), getPosY(), getPosZ());
+//        this.prevPosX = getPosX();
+//        this.prevPosY = getPosY();
+//        this.prevPosZ = getPosZ();
 //    }
 
     //Used for Cargo Rockets, client is asking the server what is the status
@@ -301,8 +301,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         if (this.world.isRemote && this.addedToChunk && !CompatibilityManager.isCubicChunksLoaded)
         {
             Chunk chunk = this.world.getChunk(this.chunkCoordX, this.chunkCoordZ);
-            int cx = MathHelper.floor(this.posX) >> 4;
-            int cz = MathHelper.floor(this.posZ) >> 4;
+            int cx = MathHelper.floor(this.getPosX()) >> 4;
+            int cz = MathHelper.floor(this.getPosZ()) >> 4;
             if (chunk.loaded && this.chunkCoordX == cx && this.chunkCoordZ == cz)
             {
                 boolean thisfound = false;
@@ -326,11 +326,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             if (this.targetVec != null)
             {
-                double yDiff = this.posY - this.getOnPadYOffset() - this.targetVec.getY();
+                double yDiff = this.getPosY() - this.getOnPadYOffset() - this.targetVec.getY();
                 this.setMotion(this.getMotion().x, Math.max(-2.0, (yDiff - 0.04) / -55.0), this.getMotion().z);
 
                 //Some lateral motion in case not exactly on target (happens if rocket was moving laterally during launch)
-                double diff = this.posX - this.targetVec.getX() - 0.5D;
+                double diff = this.getPosX() - this.targetVec.getX() - 0.5D;
                 double motX, motZ;
                 if (diff > 0D)
                 {
@@ -344,7 +344,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 {
                     motX = 0D;
                 }
-                diff = this.posZ - this.targetVec.getZ() - 0.5D;
+                diff = this.getPosZ() - this.targetVec.getZ() - 0.5D;
                 if (diff > 0D)
                 {
                     motZ = Math.max(-0.1, diff / -100.0D);
@@ -385,9 +385,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 {
                     int yMin = MathHelper.floor(this.getBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
                     int yMax = MathHelper.floor(this.getBoundingBox().maxY) + 1;
-                    int zMin = MathHelper.floor(this.posZ) - 1;
-                    int zMax = MathHelper.floor(this.posZ) + 1;
-                    for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
+                    int zMin = MathHelper.floor(this.getPosZ()) - 1;
+                    int zMax = MathHelper.floor(this.getPosZ()) + 1;
+                    for (int x = MathHelper.floor(this.getPosX()) - 1; x <= MathHelper.floor(this.getPosX()) + 1; x++)
                     {
                         for (int z = zMin; z <= zMax; z++)
                         {
@@ -710,16 +710,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             {
                 if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
                 {
-                    if (clientPosY > this.posY)
+                    if (clientPosY > this.getPosY())
                     {
-                        this.setMotion(this.getMotion().x, this.getMotion().y + (clientPosY - this.posY) / 40D, this.getMotion().z);
+                        this.setMotion(this.getMotion().x, this.getMotion().y + (clientPosY - this.getPosY()) / 40D, this.getMotion().z);
                     }
                 }
                 else if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal())
                 {
-                    if (clientPosY < this.posY)
+                    if (clientPosY < this.getPosY())
                     {
-                        this.setMotion(this.getMotion().x, this.getMotion().y + (clientPosY - this.posY) / 40D, this.getMotion().z);
+                        this.setMotion(this.getMotion().x, this.getMotion().y + (clientPosY - this.getPosY()) / 40D, this.getMotion().z);
                     }
                 }
             }
@@ -837,7 +837,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             if (this.getPassengers().contains(Minecraft.getInstance().player) && this.hasValidFuel())
             {
-                list.add(this.posY);
+                list.add(this.getPosY());
             }
             else
             {
@@ -889,14 +889,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             //TODO: it would be good to land on an alternative neighbouring pad if there is already a rocket on the target pad
             for (int i = -3; i <= 3; i++)
             {
-                BlockPos pos = new BlockPos((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ));
-                if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null && this.world.getTileEntity(pos) instanceof IFuelDock && this.posY - this.targetVec.getY() < 5)
+                BlockPos pos = new BlockPos((int) Math.floor(this.getPosX()), (int) Math.floor(this.getPosY() + i), (int) Math.floor(this.getPosZ()));
+                if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null && this.world.getTileEntity(pos) instanceof IFuelDock && this.getPosY() - this.targetVec.getY() < 5)
                 {
-                    for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
+                    for (int x = MathHelper.floor(this.getPosX()) - 1; x <= MathHelper.floor(this.getPosX()) + 1; x++)
                     {
-                        for (int y = MathHelper.floor(this.posY - 3.0D); y <= MathHelper.floor(this.posY) + 1; y++)
+                        for (int y = MathHelper.floor(this.getPosY() - 3.0D); y <= MathHelper.floor(this.getPosY()) + 1; y++)
                         {
-                            for (int z = MathHelper.floor(this.posZ) - 1; z <= MathHelper.floor(this.posZ) + 1; z++)
+                            for (int z = MathHelper.floor(this.getPosZ()) - 1; z <= MathHelper.floor(this.getPosZ()) + 1; z++)
                             {
                                 BlockPos pos1 = new BlockPos(x, y, z);
                                 TileEntity tile = this.world.getTileEntity(pos1);
@@ -996,8 +996,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
                         if (!(this.world.getDimension() instanceof IOrbitDimension))
                         {
-                            stats.setCoordsTeleportedFromX(player.posX);
-                            stats.setCoordsTeleportedFromZ(player.posZ);
+                            stats.setCoordsTeleportedFromX(player.getPosX());
+                            stats.setCoordsTeleportedFromZ(player.getPosZ());
                         }
                     }
                 }
@@ -1012,11 +1012,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             int amountRemoved = 0;
 
             PADSEARCH:
-            for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
+            for (int x = MathHelper.floor(this.getPosX()) - 1; x <= MathHelper.floor(this.getPosX()) + 1; x++)
             {
-                for (int y = MathHelper.floor(this.posY) - 3; y <= MathHelper.floor(this.posY) + 1; y++)
+                for (int y = MathHelper.floor(this.getPosY()) - 3; y <= MathHelper.floor(this.getPosY()) + 1; y++)
                 {
-                    for (int z = MathHelper.floor(this.posZ) - 1; z <= MathHelper.floor(this.posZ) + 1; z++)
+                    for (int z = MathHelper.floor(this.getPosZ()) - 1; z <= MathHelper.floor(this.getPosZ()) + 1; z++)
                     {
                         BlockPos pos = new BlockPos(x, y, z);
                         final Block block = this.world.getBlockState(pos).getBlock();
@@ -1470,9 +1470,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @OnlyIn(Dist.CLIENT)
     public boolean isInRangeToRender3d(double x, double y, double z)
     {
-        double d0 = this.posX - x;
-        double d1 = this.posY - y;
-        double d2 = this.posZ - z;
+        double d0 = this.getPosX() - x;
+        double d1 = this.getPosY() - y;
+        double d2 = this.getPosZ() - z;
         double d3 = d0 * d0 + d1 * d1 + d2 * d2;
         return d3 < Constants.RENDERDISTANCE_LONG;
     }

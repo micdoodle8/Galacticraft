@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IShearable;
@@ -93,7 +94,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
     {
         if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
         {
@@ -159,7 +160,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         this.checkAndDropBlock(worldIn, pos);
     }
@@ -211,12 +212,12 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         return true;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
 //    @Override
 //    public BlockState getStateFromMeta(int meta)

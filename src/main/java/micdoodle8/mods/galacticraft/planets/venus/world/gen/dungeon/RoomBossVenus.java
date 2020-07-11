@@ -13,6 +13,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -87,7 +88,7 @@ public class RoomBossVenus extends SizedPieceVenus
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         MutableBoundingBox box = new MutableBoundingBox(new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE});
 
@@ -105,15 +106,15 @@ public class RoomBossVenus extends SizedPieceVenus
 
                     if (j == 0)
                     {
-                        this.setBlockState(worldIn, this.configuration.getBrickBlockFloor(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, this.configuration.getBrickBlockFloor(), i, j, k, mutableBoundingBoxIn);
                     }
                     else if (j < f)
                     {
-                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, mutableBoundingBoxIn);
 
-                        if (j + 1 >= f && (dXZ > 5) && random.nextInt(12) == 0)
+                        if (j + 1 >= f && (dXZ > 5) && randomIn.nextInt(12) == 0)
                         {
-                            int distFromFloor = random.nextInt(5) + 2;
+                            int distFromFloor = randomIn.nextInt(5) + 2;
                             for (int j0 = j; j0 >= distFromFloor + 1; --j0)
                             {
                                 BlockTorchWeb.EnumWebType webType;
@@ -125,7 +126,7 @@ public class RoomBossVenus extends SizedPieceVenus
                                 {
                                     webType = BlockTorchWeb.EnumWebType.WEB_0;
                                 }
-                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().with(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, chunkBox);
+                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().with(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, mutableBoundingBoxIn);
                             }
                         }
 
@@ -188,11 +189,11 @@ public class RoomBossVenus extends SizedPieceVenus
 
                         if (placeBlock)
                         {
-                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, this.configuration.getBrickBlock(), i, j, k, mutableBoundingBoxIn);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, mutableBoundingBoxIn);
                         }
                     }
                 }
@@ -204,7 +205,7 @@ public class RoomBossVenus extends SizedPieceVenus
         int spawnerZ = this.sizeZ / 2;
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
         //Is this position inside the chunk currently being generated?
-        if (chunkBox.isVecInside(blockpos))
+        if (mutableBoundingBoxIn.isVecInside(blockpos))
         {
             worldIn.setBlockState(blockpos, VenusBlocks.bossSpawner.getDefaultState(), 2);
             TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);

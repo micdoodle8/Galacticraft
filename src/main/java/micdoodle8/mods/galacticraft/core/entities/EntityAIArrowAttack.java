@@ -93,7 +93,7 @@ public class EntityAIArrowAttack extends Goal
     @Override
     public void tick()
     {
-        double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getBoundingBox().minY, this.attackTarget.posZ);
+        double d0 = this.entityHost.getDistanceSq(this.attackTarget.getPosX(), this.attackTarget.getBoundingBox().minY, this.attackTarget.getPosZ());
         boolean flag = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
         this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);

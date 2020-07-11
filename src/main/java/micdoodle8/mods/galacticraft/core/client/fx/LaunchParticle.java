@@ -65,7 +65,7 @@ public abstract class LaunchParticle extends SpriteTexturedParticle
 //        int ye = MathHelper.ceil(bb.maxY);
 //        int zs = MathHelper.floor(bb.minZ) - 1;
 //        int ze = MathHelper.ceil(bb.maxZ);
-//        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+//        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 //        BlockState iblockstate1;
 //        boolean xends, xzmiddle;
 //

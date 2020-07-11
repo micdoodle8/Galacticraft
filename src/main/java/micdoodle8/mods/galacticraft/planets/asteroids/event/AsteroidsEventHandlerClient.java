@@ -1,14 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.EventSpecialRender;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.DimensionAsteroids;
 import net.minecraft.client.Minecraft;
@@ -34,10 +32,10 @@ public class AsteroidsEventHandlerClient
         {
             if (world.getDimension() instanceof DimensionAsteroids)
             {
-                if (world.getDimension().getSkyRenderer() == null)
-                {
-                    world.getDimension().setSkyRenderer(new SkyProviderAsteroids((IGalacticraftDimension) world.getDimension()));
-                }
+//                if (world.getDimension().getSkyRenderer() == null)
+//                {
+//                    world.getDimension().setSkyRenderer(new SkyProviderAsteroids((IGalacticraftDimension) world.getDimension()));
+//                } TODO Sky provider
 
                 if (world.getDimension().getCloudRenderer() == null)
                 {

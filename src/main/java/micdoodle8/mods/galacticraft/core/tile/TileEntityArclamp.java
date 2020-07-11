@@ -194,7 +194,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                         }
 
                         double distanceNew = vecNewTarget.squareDistanceTo(thisVec3);
-                        double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.posX, mob.posY, mob.posZ));
+                        double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.getPosX(), mob.getPosY(), mob.getPosZ()));
                         if (distanceNew > distanceCurrent)
                         {
                             Vec3d vecOldTarget = null;
@@ -302,7 +302,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
         }
 //        long time1 = System.nanoTime();
         int index = 0;
-        Block air = Blocks.AIR;
+//        Block air = Blocks.AIR;
         Block breatheableAirID = GCBlocks.breatheableAir;
         BlockState brightAir = GCBlocks.brightAir.getDefaultState();
         BlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();

@@ -100,8 +100,8 @@ public class SoundUpdaterMiner extends TickableSound
 
     public void updateSoundLocation(Entity e)
     {
-        this.x = (float) e.posX;
-        this.y = (float) e.posY;
-        this.z = (float) e.posZ;
+        this.x = (float) e.getPosX();
+        this.y = (float) e.getPosY();
+        this.z = (float) e.getPosZ();
     }
 }

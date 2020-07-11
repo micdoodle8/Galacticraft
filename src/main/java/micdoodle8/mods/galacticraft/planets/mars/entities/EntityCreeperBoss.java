@@ -150,7 +150,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         {
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.world), new Object[]{getSoundPitch() - 0.1F}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionType(this.world), new Object[]{getSoundPitch() - 0.1F}), new PacketDistributor.TargetPoint(this.getPosX(), this.getPosY(), this.getPosZ(), 40.0D, GCCoreUtil.getDimensionType(this.world)));
             }
         }
     }
@@ -173,13 +173,13 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             this.headsRemaining = 2;
         }
 
-        final PlayerEntity player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
+        final PlayerEntity player = this.world.getClosestPlayer(this.getPosX(), this.getPosY(), this.getPosZ(), 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
             if (this.getDistanceSq(player) < 400.0D)
             {
-                this.getNavigator().getPathToEntityLiving(player, 0);
+                this.getNavigator().getPathToEntity(player, 0);
                 this.targetEntity = player;
             }
         }
@@ -200,7 +200,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
 //    @Override
 //    public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
 //    {
-//        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+//        final ItemEntity entityitem = new ItemEntity(this.world, this.getPosX(), this.getPosY() + par2, this.getPosZ(), par1ItemStack);
 //        entityitem.motionY = -2.0D;
 //        entityitem.setDefaultPickupDelay();
 //        if (this.captureDrops)
@@ -249,7 +249,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         boolean hasAstroMiner = false;
         // Check if player seems to have Tier 3 rocket or Astro Miner already - in that case we don't want more
         // (we don't really want him giving powerful schematics to his friends who are still on Overworld) 
-        final PlayerEntity player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
+        final PlayerEntity player = this.world.getClosestPlayer(this.getPosX(), this.getPosY(), this.getPosZ(), 20.0, false);
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
@@ -303,17 +303,14 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     public void attackEntityWithRangedAttack(LivingEntity entitylivingbase, float f)
     {
         this.world.playEvent(null, 1024, new BlockPos(this), 0);
-        double d3 = this.posX;
-        double d4 = this.posY + 5.5D;
-        double d5 = this.posZ;
-        double d6 = entitylivingbase.posX - d3;
-        double d7 = entitylivingbase.posY + entitylivingbase.getEyeHeight() * 0.5D - d4;
-        double d8 = entitylivingbase.posZ - d5;
+        double d3 = this.getPosX();
+        double d4 = this.getPosY() + 5.5D;
+        double d5 = this.getPosZ();
+        double d6 = entitylivingbase.getPosX() - d3;
+        double d7 = entitylivingbase.getPosY() + entitylivingbase.getEyeHeight() * 0.5D - d4;
+        double d8 = entitylivingbase.getPosZ() - d5;
         EntityProjectileTNT projectileTNT = EntityProjectileTNT.createEntityProjectileTNT(this.world, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
-
-        projectileTNT.posY = d4;
-        projectileTNT.posX = d3;
-        projectileTNT.posZ = d5;
+        projectileTNT.setRawPosition(d3, d4, d5);
         this.world.addEntity(projectileTNT);
     }
 

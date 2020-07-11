@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.core.client.model;
 //
 //import net.minecraft.client.model.ModelBase;
-//import net.minecraft.client.renderer.entity.model.RendererModel;
+//import net.minecraft.client.renderer.model.ModelRenderer;
 //import net.minecraft.client.renderer.model.Model;
 //import net.minecraft.entity.Entity;
 //import net.minecraftforge.api.distmarker.Dist;
@@ -13,55 +13,55 @@
 //public class ModelAluminumWire extends Model
 //{
 //    // fields
-//    RendererModel middle;
-//    RendererModel right;
-//    RendererModel left;
-//    RendererModel back;
-//    RendererModel front;
-//    RendererModel top;
-//    RendererModel bottom;
+//    ModelRenderer middle;
+//    ModelRenderer right;
+//    ModelRenderer left;
+//    ModelRenderer back;
+//    ModelRenderer front;
+//    ModelRenderer top;
+//    ModelRenderer bottom;
 //
 //    public ModelAluminumWire()
 //    {
 //        this.textureWidth = 64;
 //        this.textureHeight = 32;
-//        this.middle = new RendererModel(this, 0, 0);
+//        this.middle = new ModelRenderer(this, 0, 0);
 //        this.middle.addBox(-1F, -1F, -1F, 4, 4, 4);
 //        this.middle.setRotationPoint(-1F, 15F, -1F);
 //        this.middle.setTextureSize(64, 32);
 //        this.middle.mirror = true;
 //        this.setRotation(this.middle, 0F, 0F, 0F);
-//        this.right = new RendererModel(this, 21, 0);
+//        this.right = new ModelRenderer(this, 21, 0);
 //        this.right.addBox(0F, 0F, 0F, 6, 4, 4);
 //        this.right.setRotationPoint(2F, 14F, -2F);
 //        this.right.setTextureSize(64, 32);
 //        this.right.mirror = true;
 //        this.setRotation(this.right, 0F, 0F, 0F);
-//        this.left = new RendererModel(this, 21, 0);
+//        this.left = new ModelRenderer(this, 21, 0);
 //        this.left.addBox(0F, 0F, 0F, 6, 4, 4);
 //        this.left.setRotationPoint(-8F, 14F, -2F);
 //        this.left.setTextureSize(64, 32);
 //        this.left.mirror = true;
 //        this.setRotation(this.left, 0F, 0F, 0F);
-//        this.back = new RendererModel(this, 0, 11);
+//        this.back = new ModelRenderer(this, 0, 11);
 //        this.back.addBox(0F, 0F, 0F, 4, 4, 6);
 //        this.back.setRotationPoint(-2F, 14F, 2F);
 //        this.back.setTextureSize(64, 32);
 //        this.back.mirror = true;
 //        this.setRotation(this.back, 0F, 0F, 0F);
-//        this.front = new RendererModel(this, 0, 11);
+//        this.front = new ModelRenderer(this, 0, 11);
 //        this.front.addBox(0F, 0F, 0F, 4, 4, 6);
 //        this.front.setRotationPoint(-2F, 14F, -8F);
 //        this.front.setTextureSize(64, 32);
 //        this.front.mirror = true;
 //        this.setRotation(this.front, 0F, 0F, 0F);
-//        this.top = new RendererModel(this, 21, 11);
+//        this.top = new ModelRenderer(this, 21, 11);
 //        this.top.addBox(0F, 0F, 0F, 4, 6, 4);
 //        this.top.setRotationPoint(-2F, 8F, -2F);
 //        this.top.setTextureSize(64, 32);
 //        this.top.mirror = true;
 //        this.setRotation(this.top, 0F, 0F, 0F);
-//        this.bottom = new RendererModel(this, 21, 11);
+//        this.bottom = new ModelRenderer(this, 21, 11);
 //        this.bottom.addBox(0F, 0F, 0F, 4, 6, 4);
 //        this.bottom.setRotationPoint(-2F, 18F, -2F);
 //        this.bottom.setTextureSize(64, 32);
@@ -118,7 +118,7 @@
 //        // this.Front.render(0.0625F);
 //    }
 //
-//    private void setRotation(RendererModel model, float x, float y, float z)
+//    private void setRotation(ModelRenderer model, float x, float y, float z)
 //    {
 //        model.rotateAngleX = x;
 //        model.rotateAngleY = y;

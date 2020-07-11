@@ -13,6 +13,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -86,10 +87,10 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         world.setBlockState(pos, world.getBlockState(pos).with(FACING, world.getBlockState(pos).get(FACING).rotateY()), 3);
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -105,15 +106,15 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
 //    }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
         {
             ((TileEntityScreen) tile).changeChannel();
-            return true;
+            return ActionResultType.SUCCESS;
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override

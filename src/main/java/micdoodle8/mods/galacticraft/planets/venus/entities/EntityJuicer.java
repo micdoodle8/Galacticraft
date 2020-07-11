@@ -143,12 +143,12 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
             {
                 if (this.timeSinceLastJump <= 0)
                 {
-                    BlockPos posAbove = new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ);
+                    BlockPos posAbove = new BlockPos(this.getPosX(), this.getPosY() + (this.isHanging() ? 1.0 : -0.5), this.getPosZ());
                     BlockState blockAbove = this.world.getBlockState(posAbove);
 
                     if (blockAbove.getBlock() == VenusBlocks.dungeonBrick2 || blockAbove.getBlock() == VenusBlocks.dungeonBrick1)
                     {
-                        RayTraceResult hit = this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+                        RayTraceResult hit = this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ()), new Vec3d(this.getPosX(), this.getPosY() + (this.isHanging() ? -10 : 10), this.getPosZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 
                         if (hit.getType() == RayTraceResult.Type.BLOCK)
                         {
@@ -201,8 +201,8 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
         if (this.world.isRemote)
         {
             this.prevLimbSwingAmount = this.limbSwingAmount;
-            double d1 = this.posX - this.prevPosX;
-            double d0 = this.posZ - this.prevPosZ;
+            double d1 = this.getPosX() - this.prevPosX;
+            double d0 = this.getPosZ() - this.prevPosZ;
             float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
 
             if (f2 > 1.0F)
@@ -217,14 +217,14 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
         {
             if (this.jumpTarget != null)
             {
-                double diffX = this.jumpTarget.getX() - this.posX + 0.5;
-                double diffY = this.jumpTarget.getY() - this.posY + 0.6;
-                double diffZ = this.jumpTarget.getZ() - this.posZ + 0.5;
+                double diffX = this.jumpTarget.getX() - this.getPosX() + 0.5;
+                double diffY = this.jumpTarget.getY() - this.getPosY() + 0.6;
+                double diffZ = this.jumpTarget.getZ() - this.getPosZ() + 0.5;
                 double motY = diffY > 0 ? Math.min(diffY / 2.0F, 0.2123F) : Math.max(diffY / 2.0F, -0.2123F);
                 double motX = diffX > 0 ? Math.min(diffX / 2.0F, 0.2123F) : Math.max(diffX / 2.0F, -0.2123F);
                 double motZ = diffZ > 0 ? Math.min(diffZ / 2.0F, 0.2123F) : Math.max(diffZ / 2.0F, -0.2123F);
                 this.setMotion(motX, motY, motZ);
-                if (diffY > 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.getMotion().y)) < 0.4F)
+                if (diffY > 0.0F && Math.abs(this.jumpTarget.getY() - (this.getPosY() + this.getMotion().y)) < 0.4F)
                 {
                     this.setPosition(this.jumpTarget.getX() + 0.5, this.jumpTarget.getY() + 0.2, this.jumpTarget.getZ() + 0.5);
                     this.jumpTarget = null;
@@ -232,7 +232,7 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
                     this.timeSinceLastJump = this.rand.nextInt(180) + 60;
                     this.setHanging(true);
                 }
-                else if (diffY < 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.getMotion().y)) < 0.8F)
+                else if (diffY < 0.0F && Math.abs(this.jumpTarget.getY() - (this.getPosY() + this.getMotion().y)) < 0.8F)
                 {
                     this.setPosition(this.jumpTarget.getX() + 0.5, this.jumpTarget.getY() + 1.0, this.jumpTarget.getZ() + 0.5);
                     this.jumpTarget = null;

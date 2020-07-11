@@ -20,8 +20,8 @@ public class OverlayLander extends Overlay
         Minecraft mc = Minecraft.getInstance();
         if (mc.player.getRidingEntity() instanceof EntityLander)
         {
-            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.mainWindow.getScaledWidth() / (double) mc.mainWindow.getWidth());
-            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.mainWindow.getScaledHeight() / (double) mc.mainWindow.getHeight());
+            int width = (int) (mc.mouseHelper.getMouseX() * (double) mc.getMainWindow().getScaledWidth() / (double) mc.getMainWindow().getWidth());
+            int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
 //        mc.entityRenderer.setupOverlayRendering();
 
             GlStateManager.pushMatrix();

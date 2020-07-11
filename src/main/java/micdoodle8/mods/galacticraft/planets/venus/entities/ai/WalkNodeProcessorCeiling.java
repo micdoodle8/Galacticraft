@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.Region;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -27,9 +28,8 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
     protected MobEntity currentEntity;
 
     @Override
-    public void init(IWorldReader sourceIn, MobEntity mob)
-    {
-        super.init(sourceIn, mob);
+    public void func_225578_a_(Region region, MobEntity mob) {
+        super.func_225578_a_(region, mob);
         this.avoidsWater = mob.getPathPriority(PathNodeType.WATER);
     }
 
@@ -47,12 +47,12 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
         if (this.getCanSwim() && this.entity.isInWater())
         {
             i = MathHelper.floor(this.entity.getBoundingBox().minY);
-            BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(this.entity.posX, i, this.entity.posZ);
+            BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(this.entity.getPosX(), i, this.entity.getPosZ());
 
             for (BlockState blockstate = this.blockaccess.getBlockState(blockpos$mutableblockpos); blockstate.getBlock() == Blocks.WATER || blockstate.getFluidState() == Fluids.WATER.getStillFluidState(false); blockstate = this.blockaccess.getBlockState(blockpos$mutableblockpos))
             {
                 ++i;
-                blockpos$mutableblockpos.setPos(this.entity.posX, i, this.entity.posZ);
+                blockpos$mutableblockpos.setPos(this.entity.getPosX(), i, this.entity.getPosZ());
             }
 
             --i;
@@ -232,7 +232,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                         double d2 = (double) (x - facing.getXOffset()) + 0.5D;
                         double d3 = (double) (z - facing.getZOffset()) + 0.5D;
                         AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, getGroundY(this.blockaccess, new BlockPos(d2, y + 1, d3)) + 0.001D, d3 - d1, d2 + d1, (double) this.entity.getHeight() + getGroundY(this.blockaccess, new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z)) - 0.002D, d3 + d1);
-                        if (!this.blockaccess.isCollisionBoxesEmpty(this.entity, axisalignedbb))
+                        if (!this.blockaccess.hasNoCollisions(this.entity, axisalignedbb))
                         {
                             pathpoint = null;
                         }
@@ -264,7 +264,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                 if (pathnodetype == PathNodeType.OPEN)
                 {
                     AxisAlignedBB axisalignedbb1 = new AxisAlignedBB((double) x - d1 + 0.5D, (double) y + 0.001D, (double) z - d1 + 0.5D, (double) x + d1 + 0.5D, (float) y + this.entity.getHeight(), (double) z + d1 + 0.5D);
-                    if (!this.blockaccess.isCollisionBoxesEmpty(this.entity, axisalignedbb1))
+                    if (!this.blockaccess.hasNoCollisions(this.entity, axisalignedbb1))
                     {
                         return null;
                     }
@@ -467,7 +467,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
     {
         if (nodeType == PathNodeType.WALKABLE)
         {
-            try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain())
+            try (BlockPos.PooledMutable blockpos$pooledmutableblockpos = BlockPos.PooledMutable.retain())
             {
                 for (int i = -1; i <= 1; ++i)
                 {

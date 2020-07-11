@@ -309,7 +309,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
     private IPacket getAddTransmitterUpdate()
     {
         BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-        return PacketFluidNetworkUpdate.getAddTransmitterUpdate(GCCoreUtil.getDimensionID(this.world), pos, this.firstUpdate, this.pipesAdded);
+        return PacketFluidNetworkUpdate.getAddTransmitterUpdate(GCCoreUtil.getDimensionType(this.world), pos, this.firstUpdate, this.pipesAdded);
     }
 
     public void onUpdate()
@@ -349,7 +349,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 if (this.updateDelay == 0)
                 {
                     BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 30.0, GCCoreUtil.getDimensionID(this.world)));
+                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 30.0, GCCoreUtil.getDimensionType(this.world)));
                     this.firstUpdate = false;
                     this.pipesAdded.clear();
                     this.needsUpdate = true;
@@ -379,7 +379,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             if (this.didTransfer != this.prevTransfer || this.needsUpdate)
             {
                 BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(GCCoreUtil.getDimensionID(this.world), pos, this.buffer, this.didTransfer), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 20.0, GCCoreUtil.getDimensionID(this.world)));
+                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(GCCoreUtil.getDimensionType(this.world), pos, this.buffer, this.didTransfer), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 20.0, GCCoreUtil.getDimensionType(this.world)));
                 this.needsUpdate = false;
             }
 

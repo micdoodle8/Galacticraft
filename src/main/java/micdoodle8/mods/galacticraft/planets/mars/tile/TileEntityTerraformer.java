@@ -33,6 +33,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -265,7 +266,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                             {
                                 if (this.world.getLightSubtracted(vecSapling, 0) >= 9)
                                 {
-                                    ((SaplingBlock) b).grow(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
+                                    ((SaplingBlock) b).grow((ServerWorld) this.world, this.world.rand, vecSapling, this.world.getBlockState(vecSapling));
                                     this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
                                 }
                             }
@@ -278,7 +279,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                                     {
                                         if (this.world.getBlockState(vecSapling).getBlock() == b)
                                         {
-                                            b.tick(this.world.getBlockState(vecSapling), this.world, vecSapling, this.world.rand);
+                                            b.tick(this.world.getBlockState(vecSapling), (ServerWorld) this.world, vecSapling, this.world.rand);
                                         }
                                         else
                                         {

@@ -13,13 +13,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -30,12 +28,12 @@ public class BlockIceAsteroids extends BreakableBlock
         super(builder);
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer()
-    {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer()
+//    {
+//        return BlockRenderLayer.TRANSLUCENT;
+//    }
 
 //    @OnlyIn(Dist.CLIENT)
 //    @Override
@@ -73,11 +71,11 @@ public class BlockIceAsteroids extends BreakableBlock
 //    }
 
     @Override
-    public void tick(BlockState state, World worldIn, BlockPos pos, Random random)
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random)
     {
         if (worldIn.getLightFor(LightType.BLOCK, pos) > 13 - state.getOpacity(worldIn, pos))
         {
-            if (GCCoreUtil.getDimensionID(worldIn) == DimensionType.THE_NETHER || worldIn.dimension instanceof IGalacticraftDimension)
+            if (GCCoreUtil.getDimensionType(worldIn) == DimensionType.THE_NETHER || worldIn.dimension instanceof IGalacticraftDimension)
             {
                 worldIn.removeBlock(pos, false);
                 return;

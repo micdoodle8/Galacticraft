@@ -648,7 +648,7 @@ public class GuiCelestialSelection extends Screen
                     {
                         this.minecraft.gameSettings.thirdPersonView = 0;
                     }
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, GCCoreUtil.getDimensionID(minecraft.world), new Object[]{dimensionID}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{dimensionID}));
                     minecraft.displayGuiScreen(new GuiTeleporting(dimensionID));
                 }
                 catch (Exception e)
@@ -672,8 +672,8 @@ public class GuiCelestialSelection extends Screen
     public boolean mouseDragged(double x, double y, int activeButton, double relOffsetX, double relOffsetY)
     {
         // TODO Test celestial selection mouse accuracy
-        int mouseX = (int) (x / (double) this.minecraft.mainWindow.getScaledWidth() / (double) this.minecraft.mainWindow.getWidth());
-        int mouseY = (int) (y / (double) this.minecraft.mainWindow.getScaledHeight() / (double) this.minecraft.mainWindow.getHeight());
+        int mouseX = (int) (x / (double) this.minecraft.getMainWindow().getScaledWidth() / (double) this.minecraft.getMainWindow().getWidth());
+        int mouseY = (int) (y / (double) this.minecraft.getMainWindow().getScaledHeight() / (double) this.minecraft.getMainWindow().getHeight());
 
         if (mouseDragging && lastMovePosX != -1 && activeButton == 0)
         {
@@ -779,7 +779,7 @@ public class GuiCelestialSelection extends Screen
                     {
                         if (recipe.matches(this.minecraft.player, false) || this.minecraft.player.abilities.isCreativeMode)
                         {
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.selectedBody.getDimensionID()}));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BIND_SPACE_STATION_ID, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.selectedBody.getDimensionID()}));
                             //Zoom in on Overworld to show the new SpaceStation if not already zoomed
                             if (!this.isZoomed())
                             {
@@ -825,8 +825,8 @@ public class GuiCelestialSelection extends Screen
         // Need unscaled mouse coords
 //        int mouseX = Mouse.getX();
 //        int mouseY = Mouse.getY() * -1 + Minecraft.getInstance().displayHeight - 1;
-        int mouseX = (int) (x / (double) this.minecraft.mainWindow.getScaledWidth() / (double) this.minecraft.mainWindow.getWidth());
-        int mouseY = (int) (y / (double) this.minecraft.mainWindow.getScaledHeight() / (double) this.minecraft.mainWindow.getHeight());
+        int mouseX = (int) (x / (double) this.minecraft.getMainWindow().getScaledWidth() / (double) this.minecraft.getMainWindow().getWidth());
+        int mouseY = (int) (y / (double) this.minecraft.getMainWindow().getScaledHeight() / (double) this.minecraft.getMainWindow().getHeight());
 
         if (this.selectedBody instanceof Satellite)
         {
@@ -850,7 +850,7 @@ public class GuiCelestialSelection extends Screen
                         {
                             this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(strName).setStationName(this.renamingString);
 //	                    	this.spaceStationNames.put(strName, this.renamingString);
-                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.renamingString, spacestationID}));
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_RENAME_SPACE_STATION, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.renamingString, spacestationID}));
                         }
                         this.renamingSpaceStation = false;
                     }
@@ -1296,8 +1296,8 @@ public class GuiCelestialSelection extends Screen
         {
             Matrix4f planetMatrix = e.getValue();
             Matrix4f matrix0 = Matrix4f.mul(viewMatrix, planetMatrix, planetMatrix);
-            int x = (int) Math.floor((matrix0.m30 * 0.5 + 0.5) * minecraft.mainWindow.getWidth());
-            int y = (int) Math.floor(minecraft.mainWindow.getHeight() - (matrix0.m31 * 0.5 + 0.5) * minecraft.mainWindow.getHeight());
+            int x = (int) Math.floor((matrix0.m30 * 0.5 + 0.5) * minecraft.getMainWindow().getWidth());
+            int y = (int) Math.floor(minecraft.getMainWindow().getHeight() - (matrix0.m31 * 0.5 + 0.5) * minecraft.getMainWindow().getHeight());
             Vector2 vec = new Vector2(x, y);
 
             Matrix4f scaleVec = new Matrix4f();
@@ -1305,7 +1305,7 @@ public class GuiCelestialSelection extends Screen
             scaleVec.m11 = matrix0.m11;
             scaleVec.m22 = matrix0.m22;
             Vector4 newVec = Matrix4f.transform(scaleVec, new Vector4(2, -2, 0, 0), null);
-            float iconSize = (newVec.y * (minecraft.mainWindow.getHeight() / 2.0F)) * (e.getKey() instanceof Star ? 2 : 1) * (e.getKey() == this.selectedBody ? 1.5F : 1.0F);
+            float iconSize = (newVec.y * (minecraft.getMainWindow().getHeight() / 2.0F)) * (e.getKey() instanceof Star ? 2 : 1) * (e.getKey() == this.selectedBody ? 1.5F : 1.0F);
 
             this.planetPosMap.put(e.getKey(), new Vector3(vec.x, vec.y, iconSize)); // Store size on-screen in Z-value for ease
         }
@@ -1499,7 +1499,7 @@ public class GuiCelestialSelection extends Screen
 
     public void drawButtons(int mousePosX, int mousePosY)
     {
-        this.blitOffset = 0;
+        this.setBlitOffset(0);
         boolean handledSliderPos = false;
 
         final int LHS = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE;
@@ -1778,7 +1778,7 @@ public class GuiCelestialSelection extends Screen
                             if (next instanceof ItemStack)
                             {
                                 int amount = getAmountInInventory((ItemStack) next);
-                                RenderHelper.enableGUIStandardItemLighting();
+                                RenderHelper.enableStandardItemLighting();
                                 ItemStack toRender = ((ItemStack) next).copy();
                                 this.itemRenderer.renderItemAndEffectIntoGUI(toRender, xPos, yPos);
                                 this.itemRenderer.renderItemOverlayIntoGUI(font, toRender, xPos, yPos, null);
@@ -1844,7 +1844,7 @@ public class GuiCelestialSelection extends Screen
                                     amount += getAmountInInventory(stack);
                                 }
 
-                                RenderHelper.enableGUIStandardItemLighting();
+                                RenderHelper.enableStandardItemLighting();
 
                                 Iterator<ItemStack> it = items.iterator();
                                 int count = 0;
@@ -2295,10 +2295,10 @@ public class GuiCelestialSelection extends Screen
         float height1 = invertY ? vHeight : 0;
         float width0 = invertX ? uWidth : 0;
         float width1 = invertX ? 0 : uWidth;
-        worldRenderer.pos(x, y + height, this.blitOffset).tex((u + width0) * texModX, (v + height0) * texModY).endVertex();
-        worldRenderer.pos(x + width, y + height, this.blitOffset).tex((u + width1) * texModX, (v + height0) * texModY).endVertex();
-        worldRenderer.pos(x + width, y, this.blitOffset).tex((u + width1) * texModX, (v + height1) * texModY).endVertex();
-        worldRenderer.pos(x, y, this.blitOffset).tex((u + width0) * texModX, (v + height1) * texModY).endVertex();
+        worldRenderer.pos(x, y + height, this.getBlitOffset()).tex((u + width0) * texModX, (v + height0) * texModY).endVertex();
+        worldRenderer.pos(x + width, y + height, this.getBlitOffset()).tex((u + width1) * texModX, (v + height0) * texModY).endVertex();
+        worldRenderer.pos(x + width, y, this.getBlitOffset()).tex((u + width1) * texModX, (v + height1) * texModY).endVertex();
+        worldRenderer.pos(x, y, this.getBlitOffset()).tex((u + width0) * texModX, (v + height1) * texModY).endVertex();
         tessellator.draw();
     }
 

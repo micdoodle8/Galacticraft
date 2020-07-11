@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -170,7 +171,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         ((ServerPlayerEntity) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionID(this.world), new Object[]{finalPos, e.getEntityId()}), GCCoreUtil.getDimensionID(this.world));
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionType(this.world), new Object[]{finalPos, e.getEntityId()}), GCCoreUtil.getDimensionType(this.world));
                                 }
 
                                 if (containedEntities.size() > 0)
@@ -277,10 +278,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public boolean onActivated(PlayerEntity entityPlayer)
+    public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
 //        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()); TODO guis
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
@@ -476,7 +477,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         if (this.address >= 0)
         {
             ShortRangeTelepadHandler.TelepadEntry entry = ShortRangeTelepadHandler.getLocationFromAddress(this.address);
-            this.addressValid = entry == null || (this.world != null && (entry.dimensionID == GCCoreUtil.getDimensionID(this.world) && entry.position.x == this.getPos().getX() && entry.position.y == this.getPos().getY() && entry.position.z == this.getPos().getZ()));
+            this.addressValid = entry == null || (this.world != null && (entry.dimensionID == GCCoreUtil.getDimensionType(this.world) && entry.position.x == this.getPos().getX() && entry.position.y == this.getPos().getY() && entry.position.z == this.getPos().getZ()));
         }
         else
         {
@@ -499,7 +500,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
             if (addressResult != null)
             {
-                if (GCCoreUtil.getDimensionID(this.world) == addressResult.dimensionID)
+                if (GCCoreUtil.getDimensionType(this.world) == addressResult.dimensionID)
                 {
                     double distance = this.getDistanceSq(addressResult.position.x + 0.5F, addressResult.position.y + 0.5F, addressResult.position.z + 0.5F);
 

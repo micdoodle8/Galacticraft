@@ -19,7 +19,6 @@ import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.World;
 
@@ -411,11 +410,11 @@ public class ThreadFindSeal
                 }
             }
 
-            TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionID(this.world), changeList);
+            TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionType(this.world), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(GCCoreUtil.getDimensionID(this.world), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(GCCoreUtil.getDimensionType(this.world), this.torchesToUpdate);
         }
     }
 
@@ -436,11 +435,11 @@ public class ThreadFindSeal
             {
                 changeList.add(new ScheduledBlockChange(checkedVec.toBlockPos(), GCBlocks.brightAir.getDefaultState(), 0));
             }
-            TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionID(this.world), changeList);
+            TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionType(this.world), changeList);
         }
         if (!this.torchesToUpdate.isEmpty())
         {
-            TickHandlerServer.scheduleNewTorchUpdate(GCCoreUtil.getDimensionID(this.world), this.torchesToUpdate);
+            TickHandlerServer.scheduleNewTorchUpdate(GCCoreUtil.getDimensionType(this.world), this.torchesToUpdate);
         }
     }
 
@@ -1251,7 +1250,7 @@ public class ThreadFindSeal
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
 //        if (block.isSideSolid(state, this.world, vec.toBlockPos(), Direction.byIndex(side ^| 1)))
-        if (Block.func_220055_a(world, vec.toBlockPos(), side.getOpposite()))
+        if (vec.getBlockState(world).isSolidSide(world, vec.toBlockPos(), side.getOpposite()))
         {
             //Solid on all sides
             if (block.getMaterial(state).blocksMovement() && state.getShape(world, vec.toBlockPos()) == VoxelShapes.fullCube())
@@ -1280,7 +1279,7 @@ public class ThreadFindSeal
             {
                 continue;
             }
-            if (Block.func_220055_a(this.world, new BlockPos(vec.x, vec.y, vec.z), dir))
+            if (vec.getBlockState(world).isSolidSide(this.world, vec.toBlockPos(), dir))
             {
                 vec.setSideDone(dir.getIndex());
             }

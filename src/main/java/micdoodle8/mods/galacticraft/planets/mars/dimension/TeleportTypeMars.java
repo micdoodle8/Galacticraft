@@ -62,7 +62,7 @@ public class TeleportTypeMars implements ITeleportType
     @Override
     public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
+        return new Vector3D(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override

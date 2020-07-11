@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCParticles;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,7 +52,7 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -71,7 +69,7 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
     }
@@ -124,7 +122,7 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
                     if (var5 instanceof LivingEntity && var5.isAlive() && !var5.isBurning() && !var5.getUniqueID().equals(this.ridingEntity))
                     {
                         var5.setFire(3);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[]{var5.getEntityId()}));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionType(var5.world), new Object[]{var5.getEntityId()}));
                     }
                 }
             }

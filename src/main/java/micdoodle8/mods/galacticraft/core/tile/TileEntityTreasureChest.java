@@ -16,7 +16,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.*;
@@ -342,7 +341,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         {
             if (player.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, GCCoreUtil.getDimensionID(this.world), new Object[]{this.getTierOfKeyRequired()}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_ON_FAILED_CHEST_UNLOCK, GCCoreUtil.getDimensionType(this.world), new Object[]{this.getTierOfKeyRequired()}));
             }
             return true;
         }

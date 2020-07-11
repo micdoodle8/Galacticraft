@@ -78,7 +78,7 @@ public class OxygenPressureProtocol
     {
         if (ConfigManagerCore.enableSealerEdgeChecks)
         {
-            TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionID(world), vec);
+            TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionType(world), vec);
         }
     }
 

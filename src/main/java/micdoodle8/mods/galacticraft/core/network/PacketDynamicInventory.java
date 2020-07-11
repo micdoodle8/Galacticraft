@@ -32,7 +32,7 @@ public class PacketDynamicInventory extends PacketBase
 
     public PacketDynamicInventory(Entity entity)
     {
-        super(GCCoreUtil.getDimensionID(entity.world));
+        super(GCCoreUtil.getDimensionType(entity.world));
         assert entity instanceof IInventory : "Entity does not implement " + IInventory.class.getSimpleName();
         this.type = 0;
         this.identifier = new Integer(entity.getEntityId());
@@ -46,7 +46,7 @@ public class PacketDynamicInventory extends PacketBase
 
     public PacketDynamicInventory(TileEntity tile)
     {
-        super(GCCoreUtil.getDimensionID(tile.getWorld()));
+        super(GCCoreUtil.getDimensionType(tile.getWorld()));
         assert tile instanceof IInventory : "Tile does not implement " + IInventory.class.getSimpleName();
         IInventory chest = ((IInventory) tile);
         this.type = 1;

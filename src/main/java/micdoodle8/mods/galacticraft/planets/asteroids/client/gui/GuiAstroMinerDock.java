@@ -83,7 +83,7 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
         this.infoRegions.add(new GuiElementInfoRegion(xPos + 230, yPos + 108, 18, 18, batterySlotDesc, this.width, this.height, this));
         this.buttons.add(this.recallButton = new Button(xPos + 173, yPos + 195, 76, 20, GCCoreUtil.translate("gui.button.recall.name"), (button) ->
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[]{this.minerBase.getPos(), 0}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.minerBase.getPos(), 0}));
         }));
     }
 
@@ -179,12 +179,13 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
         BufferBuilder worldRenderer = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture();
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+                GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        worldRenderer.pos(x + 0, y + height, this.blitOffset).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
-        worldRenderer.pos(x + width, y + height, this.blitOffset).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
-        worldRenderer.pos(x + width, y + 0, this.blitOffset).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
-        worldRenderer.pos(x + 0, y + 0, this.blitOffset).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + 0, y + height, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + width, y + height, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + width, y + 0, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + 0, y + 0, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture();
         GlStateManager.disableBlend();

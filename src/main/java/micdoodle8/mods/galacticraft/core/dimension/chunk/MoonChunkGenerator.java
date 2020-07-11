@@ -54,7 +54,7 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
     public MoonChunkGenerator(IWorld worldIn, BiomeProvider biomeProvider, MoonGenSettings settingsIn)
     {
         super(worldIn, biomeProvider, 4, 8, 128, settingsIn, true);
-        depthNoise = new OctavesNoiseGenerator(randomSeed, 16);
+        this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
     }
 
 //    public ChunkProviderMoon(World par1World, long par2, boolean par4)
@@ -313,19 +313,20 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 
     // get depth / scale
     @Override
-    protected double[] func_222549_a(int x, int z)
+    protected double[] getBiomeNoiseColumn(int x, int z)
     {
         double[] depthAndScale = new double[2];
         float scaleF1 = 0.0F;
         float depthF1 = 0.0F;
         float divisor = 0.0F;
-        float baseDepth = this.biomeProvider.func_222366_b(x, z).getDepth();
+        int j = this.getSeaLevel();
+        float baseDepth = this.biomeProvider.getNoiseBiome(x, j, z).getDepth();
 
         for (int xMod = -2; xMod <= 2; ++xMod)
         {
             for (int zMod = -2; zMod <= 2; ++zMod)
             {
-                Biome biomeAt = this.biomeProvider.func_222366_b(x + xMod, z + zMod);
+                Biome biomeAt = this.biomeProvider.getNoiseBiome(x + xMod, j, z + zMod);
                 float biomeDepth = biomeAt.getDepth();
                 float biomeScale = biomeAt.getScale();
 
@@ -352,7 +353,7 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 
     private double getSpecialDepth(int x, int z)
     {
-        double sDepth = this.depthNoise.func_215462_a(x * 200, 10.0D, z * 200, 1.0D, 0.0D, true) / 8000.0D;
+        double sDepth = this.depthNoise.getValue(x * 200, 10.0D, z * 200, 1.0D, 0.0D, true) / 8000.0D;
         if (sDepth < 0.0D)
         {
             sDepth = -sDepth * 0.3D;
@@ -393,7 +394,7 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 
     // populate noise
     @Override
-    protected void func_222548_a(double[] doubles, int x, int z)
+    protected void fillNoiseColumn(double[] noiseColumn, int x, int z)
     {
         double xzScale = 684.4119873046875D;
         double yScale = 684.4119873046875D;
@@ -403,7 +404,7 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
         final int topSlideMax = 0;
         final int topSlideScale = 3;
 
-        func_222546_a(doubles, x, z, xzScale, yScale, xzOtherScale, yOtherScale, topSlideScale, topSlideMax);
+        calcNoiseColumn(noiseColumn, x, z, xzScale, yScale, xzOtherScale, yOtherScale, topSlideScale, topSlideMax);
     }
 
     @Override

@@ -7,14 +7,10 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.DelayTimer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
-import net.minecraft.block.Block;
-import net.minecraft.block.AirBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
@@ -35,9 +31,7 @@ import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -101,7 +95,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         if (!this.world.isRemote && updateClient && delayTimer.markTimeIfDelay(this.world))
         {
             PacketDynamic packet = new PacketDynamic(this);
-            GalacticraftCore.packetPipeline.sendToAllAround(packet, new PacketDistributor.TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange(), GCCoreUtil.getDimensionID(this.world)));
+            GalacticraftCore.packetPipeline.sendToAllAround(packet, new PacketDistributor.TargetPoint(getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange(), GCCoreUtil.getDimensionType(this.world)));
             this.updateClient = false;
         }
     }

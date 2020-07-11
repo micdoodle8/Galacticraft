@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -39,12 +40,12 @@ public class EntityCryoFX extends SpriteTexturedParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
         float f = ((float) this.age + partialTicks) / (float) this.maxAge * 32.0F;
         f = MathHelper.clamp(f, 0.0F, 1.0F);
         this.particleScale = this.scaleStart * f;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class EntityCryoFX extends SpriteTexturedParticle
         this.motionX *= 0.9599999785423279D;
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
-        PlayerEntity entityplayer = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 2.0D, false);
+        PlayerEntity entityplayer = this.world.getClosestPlayer(this.posX, posY, posZ, 2.0D, false);
 
         if (entityplayer != null && this.posY > entityplayer.getBoundingBox().minY)
         {

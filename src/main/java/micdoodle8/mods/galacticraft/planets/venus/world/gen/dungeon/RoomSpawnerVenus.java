@@ -13,6 +13,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -33,9 +34,9 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
     }
 
     @Override
-    public boolean addComponentParts(IWorld worldIn, Random random, MutableBoundingBox chunkBox, ChunkPos pos)
+    public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
-        if (super.addComponentParts(worldIn, random, chunkBox, pos))
+        if (super.create(worldIn, chunkGeneratorIn, randomIn, mutableBoundingBoxIn, chunkPosIn))
         {
             for (int i = 1; i <= this.sizeX - 1; ++i)
             {
@@ -43,7 +44,7 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
                 {
                     for (int k = 1; k <= this.sizeZ - 1; ++k)
                     {
-                        if (random.nextFloat() < 0.05F)
+                        if (randomIn.nextFloat() < 0.05F)
                         {
                             this.setBlockState(worldIn, Blocks.COBWEB.getDefaultState(), i, j, k, boundingBox);
                         }
@@ -51,8 +52,8 @@ public class RoomSpawnerVenus extends RoomEmptyVenus
                 }
             }
 
-            this.placeMobSpawner(worldIn, random, chunkBox, 1, 0, 1);
-            this.placeMobSpawner(worldIn, random, chunkBox, this.sizeX - 1, 0, this.sizeZ - 1);
+            this.placeMobSpawner(worldIn, randomIn, mutableBoundingBoxIn, 1, 0, 1);
+            this.placeMobSpawner(worldIn, randomIn, mutableBoundingBoxIn, this.sizeX - 1, 0, this.sizeZ - 1);
 
             return true;
         }

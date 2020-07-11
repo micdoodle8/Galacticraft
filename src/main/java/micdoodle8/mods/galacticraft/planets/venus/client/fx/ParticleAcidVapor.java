@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.fx;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -44,14 +45,14 @@ public class ParticleAcidVapor extends SpriteTexturedParticle
     }
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
         GlStateManager.disableLighting();
         float f = (float) Math.pow(this.age / 11.0, 2.0F);
         f = Math.max(f, 0.1F);
         this.particleAlpha = this.particleAlpha * 0.994F;
         this.particleScale = this.smokeParticleScale * f;
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, renderInfo, partialTicks);
     }
 
     @Override

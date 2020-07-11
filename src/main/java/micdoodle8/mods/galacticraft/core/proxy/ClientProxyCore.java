@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -8,20 +7,9 @@ import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.BubbleRenderer;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
-import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
-import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
-import micdoodle8.mods.galacticraft.core.client.render.entities.*;
-import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerFrequencyModule;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
-import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
-import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -30,9 +18,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
-import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.block.Block;
@@ -41,10 +27,7 @@ import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.model.IUnbakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
@@ -54,7 +37,6 @@ import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.IResourceManagerReloadListener;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -63,21 +45,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.BasicState;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.model.IModelState;
-import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,8 +101,8 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public void init()
     {
         ClientProxyCore.registerEntityRenderers();
-        ModelLoaderRegistry.registerLoader(OBJLoaderGC.instance);
-        OBJLoaderGC.instance.addDomain(Constants.MOD_ID_CORE);
+//        ModelLoaderRegistry.registerLoader(OBJLoaderGC.instance);
+//        OBJLoaderGC.instance.addDomain(Constants.MOD_ID_CORE); TODO Needed?
 
 //        if (CompatibilityManager.PlayerAPILoaded)
 //        {
@@ -181,15 +154,16 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         {
             try
             {
-                Field field = EntityRendererManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "field_178637_m");
-                field.setAccessible(true);
-                field.set(Minecraft.getInstance().getRenderManager(), new RenderPlayerGC());
-
-                field = EntityRendererManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "field_178636_l");
-                field.setAccessible(true);
-                Map<String, PlayerRenderer> skinMap = (Map<String, PlayerRenderer>) field.get(Minecraft.getInstance().getRenderManager());
-                skinMap.put("default", new RenderPlayerGC(skinMap.get("default"), false));
-                skinMap.put("slim", new RenderPlayerGC(skinMap.get("slim"), true));
+//                Field field = EntityRendererManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "field_178637_m");
+//                field.setAccessible(true);
+//                field.set(Minecraft.getInstance().getRenderManager(), new RenderPlayerGC());
+//
+//                field = EntityRendererManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "field_178636_l");
+//                field.setAccessible(true);
+//                Map<String, PlayerRenderer> skinMap = (Map<String, PlayerRenderer>) field.get(Minecraft.getInstance().getRenderManager());
+//                skinMap.put("default", new RenderPlayerGC(skinMap.get("default"), false));
+//                skinMap.put("slim", new RenderPlayerGC(skinMap.get("slim"), true));
+                // TODO Player rendering
             }
             catch (Exception e)
             {
@@ -326,7 +300,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
         World world = ClientProxyCore.mc.world;
 
-        if (world != null && GCCoreUtil.getDimensionID(world) == dimensionID)
+        if (world != null && GCCoreUtil.getDimensionType(world) == dimensionID)
         {
             return world;
         }
@@ -406,9 +380,9 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         //Specified transformations only take effect on the "inventory" variant, not other variants.
-        Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()), "inventory", "normal");
-        replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
+//        Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
+//        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()), "inventory", "normal");
+//        replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
         {
@@ -427,10 +401,10 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                 objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
                 break;
             }
-            replaceModelDefault(event, "buggy" + (i > 0 ? "_" + i : ""), "buggy_inv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
+//            replaceModelDefault(event, "buggy" + (i > 0 ? "_" + i : ""), "buggy_inv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
         }
 
-        replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
+//        replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
         ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":panel_lighting", "normal");
         ModelResourceLocation defaultLoc;
 //        if (GalacticraftCore.isPlanetsLoaded)
@@ -462,42 +436,42 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //        }
 
 
-        try
-        {
-            LayerFrequencyModule.moduleModel = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "frequency_module.obj"), ImmutableList.of("Main"));
-            LayerFrequencyModule.radarModel = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "frequency_module.obj"), ImmutableList.of("Radar"));
-
-            for (Direction facing : Direction.values())
-            {
-                try
-                {
-                    // Get the first character of the direction name (n/e/s/w/u/d)
-                    char c = Character.toLowerCase(facing.getName().charAt(0));
-                    IUnbakedModel model;
-                    synchronized (ModelLoaderRegistry.class)
-                    {
-                        model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID_CORE, "block/fluid_pipe_pull_" + c));
-                    }
-                    java.util.function.Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> Minecraft.getInstance().getTextureMap().getAtlasSprite(location.toString());
-                    TileEntityFluidPipeRenderer.fluidPipeModels[facing.ordinal()] = model.bake(event.getModelLoader(), textureGetter, new BasicState(model.getDefaultState(), false), DefaultVertexFormats.ITEM);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            BubbleRenderer.sphere = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "sphere.obj"), ImmutableList.of("Sphere"));
-            TileEntityArclampRenderer.lampMetal = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "arclamp_metal.obj"));
-            TileEntityBubbleProviderRenderer.sphere = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "sphere.obj"), ImmutableList.of("Sphere"));
-//                TileEntityDishRenderer.modelDish = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "teledish.obj"));
-//                TileEntityDishRenderer.modelFork = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "telefork.obj"));
-//                TileEntityDishRenderer.modelSupport = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "telesupport.obj"));
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+//        try
+//        {
+//            LayerFrequencyModule.moduleModel = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "frequency_module.obj"), ImmutableList.of("Main"));
+//            LayerFrequencyModule.radarModel = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "frequency_module.obj"), ImmutableList.of("Radar"));
+//
+//            for (Direction facing : Direction.values())
+//            {
+//                try
+//                {
+//                    // Get the first character of the direction name (n/e/s/w/u/d)
+//                    char c = Character.toLowerCase(facing.getName().charAt(0));
+//                    IUnbakedModel model;
+//                    synchronized (ModelLoaderRegistry.class)
+//                    {
+//                        model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID_CORE, "block/fluid_pipe_pull_" + c));
+//                    }
+//                    java.util.function.Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> Minecraft.getInstance().getTextureMap().getAtlasSprite(location.toString());
+//                    TileEntityFluidPipeRenderer.fluidPipeModels[facing.ordinal()] = model.bake(event.getModelLoader(), textureGetter, new BasicState(model.getDefaultState(), false), DefaultVertexFormats.ITEM);
+//                }
+//                catch (Exception e)
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            BubbleRenderer.sphere = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "sphere.obj"), ImmutableList.of("Sphere"));
+//            TileEntityArclampRenderer.lampMetal = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "arclamp_metal.obj"));
+//            TileEntityBubbleProviderRenderer.sphere = ClientUtil.modelFromOBJ(event.getModelLoader(), new ResourceLocation(Constants.MOD_ID_CORE, "sphere.obj"), ImmutableList.of("Sphere"));
+////                TileEntityDishRenderer.modelDish = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "teledish.obj"));
+////                TileEntityDishRenderer.modelFork = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "telefork.obj"));
+////                TileEntityDishRenderer.modelSupport = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.MOD_ID_CORE, "telesupport.obj"));
+//        }
+//        catch (Exception e)
+//        {
+//            throw new RuntimeException(e);
+//        }
     }
 
     /**
@@ -505,30 +479,30 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
      * Make sure that identity gives the correct model for other variants!
      * Used for example by the NASA Workbench: transform the model for inventory but not for normal model
      */
-    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
-    {
-        ClientUtil.replaceModel(Constants.MOD_ID_CORE, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
-    }
+//    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
+//    {
+//        ClientUtil.replaceModel(Constants.MOD_ID_CORE, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
+//    }
 
     public static void registerEntityRenderers()
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.MOD_ID_CORE, "rocket_t1"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, RenderEvolvedSpider::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, RenderEvolvedZombie::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, RenderEvolvedCreeper::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, RenderEvolvedSkeleton::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, RenderEvolvedSkeletonBoss::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, RenderMeteor::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, RenderFlag::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, RenderParaChest::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (EntityRendererManager manager) -> new RenderAlienVillager(manager)); TODO Villagers
-        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, RenderLander::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, RenderEntityFake::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, RenderBuggy::new); TODO Buggy renderer
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, RenderMeteorChunk::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityHangingSchematic.class, RenderSchematic::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedEnderman.class, RenderEvolvedEnderman::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedWitch.class, RenderEvolvedWitch::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.MOD_ID_CORE, "rocket_t1"));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, RenderEvolvedSpider::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, RenderEvolvedZombie::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, RenderEvolvedCreeper::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, RenderEvolvedSkeleton::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, RenderEvolvedSkeletonBoss::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, RenderMeteor::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, RenderFlag::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, RenderParaChest::new);
+////        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (EntityRendererManager manager) -> new RenderAlienVillager(manager)); TODO Villagers
+//        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, RenderLander::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, RenderEntityFake::new);
+////        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, RenderBuggy::new); TODO Buggy renderer
+//        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, RenderMeteorChunk::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityHangingSchematic.class, RenderSchematic::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedEnderman.class, RenderEvolvedEnderman::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedWitch.class, RenderEvolvedWitch::new);
     }
 
     private static void registerHandlers()
@@ -544,22 +518,22 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     private static void registerTileEntityRenderers()
     {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer<>(0.25F, 0.25F, 1.0F));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new TileEntityFluidTankRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityFluidPipeRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPanelLight.class, new TileEntityPanelLightRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlatform.class, new TileEntityPlatformRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEmergencyBox.class, new TileEntityEmergencyBoxRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
-//            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
+////        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer<>(0.25F, 0.25F, 1.0F));
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new TileEntityFluidTankRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityFluidPipeRenderer());
+////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
+////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+////        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPanelLight.class, new TileEntityPanelLightRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlatform.class, new TileEntityPlatformRenderer());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEmergencyBox.class, new TileEntityEmergencyBoxRenderer());
+////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
+////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
+////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
+////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectricIngotCompressor.class, new TileEntityMachineRenderer());
     }
 
     private static void registerInventoryJsons()
@@ -963,7 +937,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA2, GCCoreUtil.getDimensionID(player.world), new Object[]{id}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA2, GCCoreUtil.getDimensionType(player.world), new Object[]{id}));
                 ClientProxyCore.gearDataRequests.add(id);
             }
         }

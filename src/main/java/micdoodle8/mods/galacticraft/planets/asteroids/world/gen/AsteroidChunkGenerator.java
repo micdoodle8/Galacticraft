@@ -20,15 +20,15 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.gen.feature.*;
 
 import java.util.*;
 
@@ -637,7 +637,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
     }
 
     @Override
-    public void generateSurface(IChunk chunkIn)
+    public void generateSurface(WorldGenRegion region, IChunk chunkIn)
     {
         int chunkX = chunkIn.getPos().x;
         int chunkZ = chunkIn.getPos().z;
@@ -765,15 +765,15 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                     {
                         treeType = 0;
                     }
-                    BlockState log = Blocks.OAK_LOG.getDefaultState();
-                    BlockState leaves = Blocks.OAK_LEAVES.getDefaultState().with(PERSISTENT, true);
+//                    BlockState log = Blocks.OAK_LOG.getDefaultState();
+//                    BlockState leaves = Blocks.OAK_LEAVES.getDefaultState().with(PERSISTENT, true);
 //                    BlockState leaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(LeavesBlock.CHECK_DECAY, Boolean.valueOf(false));
-                    TreeFeature wg = new TreeFeature(NoFeatureConfig::deserialize, false, 2, log, leaves, false);
+                    ConfiguredFeature<TreeFeatureConfig, ?> wg = (new TreeFeature(TreeFeatureConfig::deserializeJungle)).withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG);
                     for (int tries = 0; tries < 5; tries++)
                     {
                         int i = world.getRandom().nextInt(16) + x + 8;
                         int k = world.getRandom().nextInt(16) + z + 8;
-                        if (wg.place(world, this, world.getRandom(), new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k), IFeatureConfig.NO_FEATURE_CONFIG))
+                        if (wg.place(world, this, world.getRandom(), new BlockPos(i, this.getTerrainHeightAt(i - x, k - z, sizeYArray, xMin, zMin, zSize, asteroidY, asteroidSize), k)))
                         {
                             break;
                         }

@@ -73,10 +73,10 @@ public class GuiElementCheckboxPreLaunch extends Button
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(par1 + 0, par2 + par6, this.blitOffset).tex((par3 + 0) * f, (par4 + texHeight) * f1).endVertex();
-        worldRenderer.pos(par1 + par5, par2 + par6, this.blitOffset).tex((par3 + texWidth) * f, (par4 + texHeight) * f1).endVertex();
-        worldRenderer.pos(par1 + par5, par2 + 0, this.blitOffset).tex((par3 + texWidth) * f, (par4 + 0) * f1).endVertex();
-        worldRenderer.pos(par1 + 0, par2 + 0, this.blitOffset).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
+        worldRenderer.pos(par1 + 0, par2 + par6, this.getBlitOffset()).tex((par3 + 0) * f, (par4 + texHeight) * f1).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + par6, this.getBlitOffset()).tex((par3 + texWidth) * f, (par4 + texHeight) * f1).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + 0, this.getBlitOffset()).tex((par3 + texWidth) * f, (par4 + 0) * f1).endVertex();
+        worldRenderer.pos(par1 + 0, par2 + 0, this.getBlitOffset()).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
         tessellator.draw();
     }
 

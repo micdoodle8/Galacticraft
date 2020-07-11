@@ -25,6 +25,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProviderType;
@@ -52,11 +53,11 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
 
     public DimensionVenus(World worldIn, DimensionType typeIn)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, 0.0F);
     }
 
     @Override
-    public Vector3 getFogColor()
+    public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
         float night = this.getStarBrightness(1.0F);
         float day = 1.0F - this.getStarBrightness(1.0F);
@@ -66,26 +67,26 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
         float nightColR = 131.0F / 255.0F;
         float nightColG = 108.0F / 255.0F;
         float nightColB = 46.0F / 255.0F;
-        return new Vector3(dayColR * day + nightColR * night,
+        return new Vec3d(dayColR * day + nightColR * night,
                 dayColG * day + nightColG * night,
                 dayColB * day + nightColB * night);
     }
 
-    @Override
-    public Vector3 getSkyColor()
-    {
-        float night = this.getStarBrightness(1.0F);
-        float day = 1.0F - this.getStarBrightness(1.0F);
-        float dayColR = 255.0F / 255.0F;
-        float dayColG = 207.0F / 255.0F;
-        float dayColB = 81.0F / 255.0F;
-        float nightColR = 118.0F / 255.0F;
-        float nightColG = 89.0F / 255.0F;
-        float nightColB = 21.0F / 255.0F;
-        return new Vector3(dayColR * day + nightColR * night,
-                dayColG * day + nightColG * night,
-                dayColB * day + nightColB * night);
-    }
+//    @Override
+//    public Vector3 getSkyColor()
+//    {
+//        float night = this.getStarBrightness(1.0F);
+//        float day = 1.0F - this.getStarBrightness(1.0F);
+//        float dayColR = 255.0F / 255.0F;
+//        float dayColG = 207.0F / 255.0F;
+//        float dayColB = 81.0F / 255.0F;
+//        float nightColR = 118.0F / 255.0F;
+//        float nightColG = 89.0F / 255.0F;
+//        float nightColB = 21.0F / 255.0F;
+//        return new Vector3(dayColR * day + nightColR * night,
+//                dayColG * day + nightColG * night,
+//                dayColB * day + nightColB * night);
+//    }
 
     @Override
     public IParticleData getParticle(ClientWorld world, double x, double y, double z)
@@ -117,11 +118,11 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
     {
         VenusGenSettings settings = new VenusGenSettings();
         BiomeProviderType<VenusBiomeProviderSettings, VenusBiomeProvider> type = VenusBiomeProviderTypes.VENUS.get();
-        VenusBiomeProviderSettings providerSettings = type.createSettings().setWorldInfo(world.getWorldInfo()).setGeneratorSettings(settings);
+        VenusBiomeProviderSettings providerSettings = type.createSettings(world.getWorldInfo()).setGeneratorSettings(settings);
         return new VenusChunkGenerator(this.world, type.create(providerSettings), settings);
     }
 
-    @Override
+//    @Override
     @OnlyIn(Dist.CLIENT)
     public float getStarBrightness(float par1)
     {
@@ -141,11 +142,11 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
         return f2 * f2 * 0.75F;
     }
 
-    @Override
-    public double getHorizon()
-    {
-        return 44.0D;
-    }
+//    @Override
+//    public double getHorizon()
+//    {
+//        return 44.0D;
+//    }
 
     @Override
     public int getSeaLevel()
@@ -176,7 +177,7 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid)
     {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(posX, 0, posZ);
         Biome biome = this.world.getBiome(blockpos$mutableblockpos);
         BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
         if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN))

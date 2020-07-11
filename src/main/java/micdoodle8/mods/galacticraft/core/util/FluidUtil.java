@@ -744,10 +744,10 @@ public class FluidUtil
     @OnlyIn(Dist.CLIENT)
     public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
     {
-        double d0 = entity.posY + entity.getEyeHeight();
-        int i = MathHelper.floor(entity.posX);
+        double d0 = entity.getPosY() + entity.getEyeHeight();
+        int i = MathHelper.floor(entity.getPosX());
         int j = MathHelper.floor(MathHelper.floor(d0));
-        int k = MathHelper.floor(entity.posZ);
+        int k = MathHelper.floor(entity.getPosZ());
         BlockPos pos = new BlockPos(i, j, k);
         Block block = entity.world.getBlockState(pos).getBlock();
 

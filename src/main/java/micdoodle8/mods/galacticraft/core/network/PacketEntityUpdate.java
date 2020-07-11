@@ -2,20 +2,15 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -46,7 +41,7 @@ public class PacketEntityUpdate extends PacketBase
 
     public PacketEntityUpdate(Entity entity)
     {
-        this(entity.getEntityId(), new Vector3D(entity.posX, entity.posY, entity.posZ), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3D(entity.getMotion()), entity.onGround, GCCoreUtil.getDimensionID(entity.world));
+        this(entity.getEntityId(), new Vector3D(entity.getPosX(), entity.getPosY(), entity.getPosZ()), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3D(entity.getMotion()), entity.onGround, GCCoreUtil.getDimensionType(entity.world));
     }
 
     public static void encode(final PacketEntityUpdate message, final PacketBuffer buf)

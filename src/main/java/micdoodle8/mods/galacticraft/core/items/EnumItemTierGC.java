@@ -1,13 +1,11 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.function.Supplier;
-
 import micdoodle8.mods.galacticraft.core.GCItems;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
+
+import java.util.function.Supplier;
 
 public enum EnumItemTierGC implements IItemTier
 {
@@ -21,7 +19,7 @@ public enum EnumItemTierGC implements IItemTier
     private final float efficiency;
     private final float attackDamage;
     private final int enchantability;
-    private final LazyLoadBase<Ingredient> repairMaterial;
+    private final LazyValue<Ingredient> repairMaterial;
 
     EnumItemTierGC(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn)
     {
@@ -30,7 +28,7 @@ public enum EnumItemTierGC implements IItemTier
         this.efficiency = efficiencyIn;
         this.attackDamage = attackDamageIn;
         this.enchantability = enchantabilityIn;
-        this.repairMaterial = new LazyLoadBase<>(repairMaterialIn);
+        this.repairMaterial = new LazyValue<>(repairMaterialIn);
     }
 
     @Override

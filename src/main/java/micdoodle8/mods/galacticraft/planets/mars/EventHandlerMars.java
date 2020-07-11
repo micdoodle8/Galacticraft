@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
@@ -30,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -79,7 +79,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        PlayerEntity player = event.getEntityPlayer();
+        PlayerEntity player = event.getPlayer();
         BlockPos c = player.getBedLocation(player.dimension);
         BlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
@@ -108,30 +108,30 @@ public class EventHandlerMars
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
-    {
-        BlockPos blockPos = event.getEntityPlayer().getBedLocation(event.getPlayer().dimension);
-        if (blockPos != null)
-        {
-            BlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
-            if (state.getBlock() == GCBlocks.fakeBlock && state.get(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
-            {
-                TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
-                if (tile instanceof TileEntityFake)
-                {
-                    state = event.getEntityPlayer().world.getBlockState(((TileEntityFake) tile).mainBlockPosition);
-                }
-            }
-
-            if (state.getBlock() == MarsBlocks.cryoChamber)
-            {
-                event.shouldRotate = true;
-                event.vanillaOverride = true;
-            }
-        }
-    }
+//    @OnlyIn(Dist.CLIENT)
+//    @SubscribeEvent
+//    public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
+//    {
+//        BlockPos blockPos = event.getEntityPlayer().getBedLocation(event.getPlayer().dimension);
+//        if (blockPos != null)
+//        {
+//            BlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
+//            if (state.getBlock() == GCBlocks.fakeBlock && state.get(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
+//            {
+//                TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
+//                if (tile instanceof TileEntityFake)
+//                {
+//                    state = event.getEntityPlayer().world.getBlockState(((TileEntityFake) tile).mainBlockPosition);
+//                }
+//            }
+//
+//            if (state.getBlock() == MarsBlocks.cryoChamber)
+//            {
+//                event.shouldRotate = true;
+//                event.vanillaOverride = true;
+//            }
+//        }
+//    } TODO Player rotation
 
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
@@ -149,7 +149,7 @@ public class EventHandlerMars
             for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
             {
                 blockpos = event.pos.add(event.rand.nextInt(16) + 8, event.rand.nextInt(104) + 24, event.rand.nextInt(16) + 8);
-                this.eggGenerator.place(event.world, event.world.getChunkProvider().getChunkGenerator(), event.rand, blockpos, new NoFeatureConfig());
+                this.eggGenerator.place(event.world, ((ServerChunkProvider) event.world.getChunkProvider()).getChunkGenerator(), event.rand, blockpos, new NoFeatureConfig());
             }
         }
     }
@@ -162,9 +162,9 @@ public class EventHandlerMars
 
         if (entity != null)
         {
-            int x = MathHelper.floor(entity.posX);
-            int y = MathHelper.floor(entity.posY);
-            int z = MathHelper.floor(entity.posZ);
+            int x = MathHelper.floor(entity.getPosX());
+            int y = MathHelper.floor(entity.getPosY());
+            int z = MathHelper.floor(entity.getPosZ());
             TileEntity tile = Minecraft.getInstance().world.getTileEntity(new BlockPos(x, y - 1, z));
 
             if (tile instanceof TileEntityFake)

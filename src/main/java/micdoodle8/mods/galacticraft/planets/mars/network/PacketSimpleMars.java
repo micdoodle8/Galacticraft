@@ -268,7 +268,8 @@ public class PacketSimpleMars extends PacketBase
             {
                 EventWakePlayer event = new EventWakePlayer(playerBase, c, true, true, false, true);
                 MinecraftForge.EVENT_BUS.post(event);
-                playerBase.wakeUpPlayer(true, true, false);
+//                playerBase.wakeUpPlayer(true, true, false);
+                playerBase.wakeUp();
             }
             break;
         case S_UPDATE_ADVANCED_GUI:

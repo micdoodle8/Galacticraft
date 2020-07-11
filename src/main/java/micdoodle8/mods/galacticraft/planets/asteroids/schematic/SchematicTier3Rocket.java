@@ -26,11 +26,11 @@ public class SchematicTier3Rocket implements ISchematicPage
         return ConfigManagerPlanets.idSchematicRocketT3;
     }
 
-    @Override
-    public int getGuiID()
-    {
-        return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
-    }
+//    @Override
+//    public int getGuiID()
+//    {
+//        return GuiIdsPlanets.NASA_WORKBENCH_TIER_3_ROCKET + Constants.MOD_ID_PLANETS.hashCode();
+//    }
 
     @Override
     public ItemStack getRequiredItem()

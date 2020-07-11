@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.util.text.LanguageMap;
 
 import java.util.Locale;
 

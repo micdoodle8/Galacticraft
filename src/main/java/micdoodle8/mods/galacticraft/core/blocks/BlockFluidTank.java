@@ -201,7 +201,7 @@
 //    }
 //
 //    @Override
-//    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
+//    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        TileEntity tile = world.getTileEntity(pos);
 //

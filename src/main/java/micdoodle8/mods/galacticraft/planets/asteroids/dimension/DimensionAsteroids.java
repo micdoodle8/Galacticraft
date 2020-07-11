@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProviderType;
@@ -50,7 +51,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
 
     public DimensionAsteroids(World worldIn, DimensionType typeIn)
     {
-        super(worldIn, typeIn);
+        super(worldIn, typeIn, 0.0F);
         this.nether = true;
     }
 
@@ -64,7 +65,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
     public ChunkGenerator createChunkGenerator()
     {
         AsteroidGenSettings settings = new AsteroidGenSettings();
-        return new AsteroidChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings().setBiome(BiomeMoon.moonBiome)), settings);
+        return new AsteroidChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings(world.getWorldInfo()).setBiome(BiomeMoon.moonBiome)), settings);
     }
 
     @Override
@@ -74,16 +75,22 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
     }
 
     @Override
-    public Vector3 getFogColor()
+    public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
-        return new Vector3(0, 0, 0);
+        return new Vec3d(0, 0, 0);
     }
 
-    @Override
-    public Vector3 getSkyColor()
-    {
-        return new Vector3(0, 0, 0);
-    }
+//    @Override
+//    public Vector3 getFogColor()
+//    {
+//        return new Vector3(0, 0, 0);
+//    }
+//
+//    @Override
+//    public Vector3 getSkyColor()
+//    {
+//        return new Vector3(0, 0, 0);
+//    }
 
     @Override
     public boolean hasSunset()
@@ -115,24 +122,24 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
         return 0.25F;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public float getStarBrightness(float par1)
-    {
-        return 1.0F;
-    }
-
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public float getStarBrightness(float par1)
+//    {
+//        return 1.0F;
+//    }
+//
 //	@Override
 //	public IChunkProvider createChunkGenerator()
 //	{
 //		return new ChunkProviderAsteroids(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
 //	}
 
-    @Override
-    public double getHorizon()
-    {
-        return 44.0D;
-    }
+//    @Override
+//    public double getHorizon()
+//    {
+//        return 44.0D;
+//    }
 
     @Override
     public int getSeaLevel()
@@ -163,7 +170,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid)
     {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(posX, 0, posZ);
         Biome biome = this.world.getBiome(blockpos$mutableblockpos);
         BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
         if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN))

@@ -61,7 +61,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     public EntityLanderBase(EntityType<?> type, ServerPlayerEntity player)
     {
-        this(type, player.world, player.posX, player.posY, player.posZ);
+        this(type, player.world, player.getPosX(), player.getPosY(), player.getPosZ());
 
         GCPlayerStats stats = GCPlayerStats.get(player);
         this.stacks = NonNullList.withSize(stats.getRocketStacks().size() + 1, ItemStack.EMPTY);
@@ -79,7 +79,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
             }
         }
 
-        this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+        this.setPositionAndRotation(player.getPosX(), player.getPosY(), player.getPosZ(), 0, 0);
 
         player.startRiding(this, true);
     }
@@ -89,7 +89,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         if (this.isPassenger(passenger))
         {
-            passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ);
+            passenger.setPosition(this.getPosX(), this.getPosY() + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ());
         }
     }
 
@@ -113,8 +113,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         if (this.syncAdjustFlag && this.world.isBlockLoaded(new BlockPos(x, 255D, z)))
         {
             PlayerEntity p = Minecraft.getInstance().player;
-            double dx = x - p.posX;
-            double dz = z - p.posZ;
+            double dx = x - p.getPosX();
+            double dz = z - p.getPosZ();
             if (dx * dx + dz * dz < 1024)
             {
                 if (this.world.getEntityByID(this.getEntityId()) == null)
@@ -129,9 +129,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                     }
                 }
 
-                this.posX = x;
-                this.posY = y;
-                this.posZ = z;
+                this.setRawPosition(x, y, z);
 
                 int cx = MathHelper.floor(x / 16.0D);
                 int cz = MathHelper.floor(z / 16.0D);
@@ -165,7 +163,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         super.tick();
 
-        if (this.ticks < 40 && this.posY > 150)
+        if (this.ticks < 40 && this.getPosY() > 150)
         {
             if (this.getPassengers().isEmpty())
             {
@@ -209,8 +207,8 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     {
         if (!this.getPassengers().contains(entityToPush) && this.getRidingEntity() != entityToPush)
         {
-            double d0 = this.posX - entityToPush.posX;
-            double d1 = this.posZ - entityToPush.posZ;
+            double d0 = this.getPosX() - entityToPush.getPosX();
+            double d1 = this.getPosZ() - entityToPush.getPosZ();
             double d2 = MathHelper.absMax(d0, d1);
 
             if (d2 >= 0.009999999776482582D)
@@ -524,16 +522,16 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         return id;
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public int getBrightnessForRender()
-    {
-        double height = this.posY + (double) this.getEyeHeight();
-        if (height > 255D)
-        {
-            height = 255D;
-        }
-        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
-        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getBrightnessForRender()
+//    {
+//        double height = this.getPosY() + (double) this.getEyeHeight();
+//        if (height > 255D)
+//        {
+//            height = 255D;
+//        }
+//        BlockPos blockpos = new BlockPos(this.getPosX(), height, this.getPosZ());
+//        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
+//    }
 }

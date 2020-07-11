@@ -10,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -94,7 +95,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 //    }
 
     @Override
-    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
 
@@ -103,7 +104,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
             return ((TileEntityBeamReflector) tile).onMachineActivated(world, pos, world.getBlockState(pos), entityPlayer, hand, heldItem, hit);
         }
 
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override

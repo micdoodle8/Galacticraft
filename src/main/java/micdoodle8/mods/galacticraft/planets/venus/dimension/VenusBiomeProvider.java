@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.dimension;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.BiomeVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.GenLayerVenusBiomes;
@@ -33,14 +34,13 @@ public class VenusBiomeProvider extends BiomeProvider
 
     protected final Set<BlockState> surfaceBlocks = Sets.newHashSet();
 
-    private final ImmutableList<Biome> possibleBiomes = ImmutableList.of(
-            BiomeVenus.venusFlat,
-            BiomeVenus.venusMountain,
-            BiomeVenus.venusValley
-    );
-
     public VenusBiomeProvider(final VenusBiomeProviderSettings settings)
     {
+        super(ImmutableSet.of(
+                BiomeVenus.venusFlat,
+                BiomeVenus.venusMountain,
+                BiomeVenus.venusValley
+        ));
         final WorldInfo info = settings.getWorldInfo();
         final VenusGenSettings generatorSettings = settings.getGeneratorSettings();
         final Layer[] layers = buildVenusProcedure(info.getSeed(), info.getGenerator(), generatorSettings);
@@ -70,73 +70,73 @@ public class VenusBiomeProvider extends BiomeProvider
         return ImmutableList.of(zoomLayer, blockLayer);
     }
 
-    @Override
-    public Biome getBiome(int x, int z)
-    {
-        return blockLayer.func_215738_a(x, z);
-    }
-
-    // get noise biome
-    @Override
-    public Biome func_222366_b(int x, int z)
-    {
-        return noiseLayer.func_215738_a(x, z);
-    }
-
-    @Override
-    public Biome[] getBiomes(int x, int z, int width, int length, boolean cacheFlag)
-    {
-        return blockLayer.generateBiomes(x, z, width, length);
-    }
-
-    @Override
-    public Set<Biome> getBiomesInSquare(int centerX, int centerZ, int sideLength)
-    {
-        int x0 = centerX - sideLength >> 2;
-        int z0 = centerZ - sideLength >> 2;
-        int x1 = centerX + sideLength >> 2;
-        int z1 = centerZ + sideLength >> 2;
-        int width = x1 - x0 + 1;
-        int height = z1 - z0 + 1;
-        Set<Biome> lvt_10_1_ = Sets.newHashSet();
-        Collections.addAll(lvt_10_1_, this.noiseLayer.generateBiomes(x0, z0, width, height));
-        return lvt_10_1_;
-    }
-
-    /**
-     * Checks if an area around a block contains only the specified biomes.
-     * To ensure NO other biomes, add a margin of at least four blocks to the radius
-     */
-    @Nullable
-    @Override
-    public BlockPos findBiomePosition(int x, int z, int range, List<Biome> allowedBiomes, Random random)
-    {
-        final int x0 = (x - range) >> 2;
-        final int z0 = (z - range) >> 2;
-        final int x1 = (x + range) >> 2;
-        final int z1 = (z + range) >> 2;
-
-        final int w = x1 - x0 + 1;
-        final int h = z1 - z0 + 1;
-        final Biome[] biomes = noiseLayer.generateBiomes(x0, z0, w, h);
-        BlockPos result = null;
-        int found = 0;
-        for (int i = 0; i < w * h; i++)
-        {
-            final int xx = (x0 + i % w) << 2;
-            final int zz = (z0 + i / w) << 2;
-            if (allowedBiomes.contains(biomes[i]))
-            {
-                if (result == null || random.nextInt(found + 1) == 0)
-                {
-                    result = new BlockPos(xx, 0, zz);
-                }
-                found++;
-            }
-        }
-
-        return result;
-    }
+//    @Override
+//    public Biome getBiome(int x, int z)
+//    {
+//        return blockLayer.func_215738_a(x, z);
+//    }
+//
+//    // get noise biome
+//    @Override
+//    public Biome func_222366_b(int x, int z)
+//    {
+//        return noiseLayer.func_215738_a(x, z);
+//    }
+//
+//    @Override
+//    public Biome[] getBiomes(int x, int z, int width, int length, boolean cacheFlag)
+//    {
+//        return blockLayer.generateBiomes(x, z, width, length);
+//    }
+//
+//    @Override
+//    public Set<Biome> getBiomesInSquare(int centerX, int centerZ, int sideLength)
+//    {
+//        int x0 = centerX - sideLength >> 2;
+//        int z0 = centerZ - sideLength >> 2;
+//        int x1 = centerX + sideLength >> 2;
+//        int z1 = centerZ + sideLength >> 2;
+//        int width = x1 - x0 + 1;
+//        int height = z1 - z0 + 1;
+//        Set<Biome> lvt_10_1_ = Sets.newHashSet();
+//        Collections.addAll(lvt_10_1_, this.noiseLayer.generateBiomes(x0, z0, width, height));
+//        return lvt_10_1_;
+//    }
+//
+//    /**
+//     * Checks if an area around a block contains only the specified biomes.
+//     * To ensure NO other biomes, add a margin of at least four blocks to the radius
+//     */
+//    @Nullable
+//    @Override
+//    public BlockPos findBiomePosition(int x, int z, int range, List<Biome> allowedBiomes, Random random)
+//    {
+//        final int x0 = (x - range) >> 2;
+//        final int z0 = (z - range) >> 2;
+//        final int x1 = (x + range) >> 2;
+//        final int z1 = (z + range) >> 2;
+//
+//        final int w = x1 - x0 + 1;
+//        final int h = z1 - z0 + 1;
+//        final Biome[] biomes = noiseLayer.generateBiomes(x0, z0, w, h);
+//        BlockPos result = null;
+//        int found = 0;
+//        for (int i = 0; i < w * h; i++)
+//        {
+//            final int xx = (x0 + i % w) << 2;
+//            final int zz = (z0 + i / w) << 2;
+//            if (allowedBiomes.contains(biomes[i]))
+//            {
+//                if (result == null || random.nextInt(found + 1) == 0)
+//                {
+//                    result = new BlockPos(xx, 0, zz);
+//                }
+//                found++;
+//            }
+//        }
+//
+//        return result;
+//    }
 
     // really is "can generate structure?"
     @Override
@@ -144,7 +144,7 @@ public class VenusBiomeProvider extends BiomeProvider
     {
         return this.hasStructureCache.computeIfAbsent(structure, (structure1) ->
         {
-            for (Biome biome : possibleBiomes)
+            for (Biome biome : biomes)
             {
                 if (biome.hasStructure(structure1))
                 {
@@ -161,11 +161,17 @@ public class VenusBiomeProvider extends BiomeProvider
     {
         if (surfaceBlocks.isEmpty())
         {
-            for (Biome biome : possibleBiomes)
+            for (Biome biome : biomes)
             {
                 surfaceBlocks.add(biome.getSurfaceBuilderConfig().getTop());
             }
         }
         return surfaceBlocks;
+    }
+
+    @Override
+    public Biome getNoiseBiome(int x, int y, int z)
+    {
+        return noiseLayer.func_215738_a(x, z);
     }
 }

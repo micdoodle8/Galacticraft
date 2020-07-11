@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,6 +54,7 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.TicketType;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.DimensionManager;
@@ -435,7 +437,7 @@ public class WorldUtil
     public static Dimension getProviderForDimensionClient(DimensionType id)
     {
         World ws = ClientProxyCore.mc.world;
-        if (ws != null && GCCoreUtil.getDimensionID(ws) == id)
+        if (ws != null && GCCoreUtil.getDimensionType(ws) == id)
         {
             return ws.dimension;
         }
@@ -484,9 +486,9 @@ public class WorldUtil
                     Dimension dimension = WorldUtil.getProviderForDimensionServer(id);
                     if (celestialBody != null && dimension != null)
                     {
-                        if (dimension instanceof IGalacticraftDimension && !(dimension instanceof IOrbitDimension) || GCCoreUtil.getDimensionID(dimension) == DimensionType.OVERWORLD)
+                        if (dimension instanceof IGalacticraftDimension && !(dimension instanceof IOrbitDimension) || GCCoreUtil.getDimensionType(dimension) == DimensionType.OVERWORLD)
                         {
-                            map.put(celestialBody.getName(), GCCoreUtil.getDimensionID(dimension));
+                            map.put(celestialBody.getName(), GCCoreUtil.getDimensionType(dimension));
                         }
                     }
                 }
@@ -1126,11 +1128,12 @@ public class WorldUtil
         if (entity instanceof ServerPlayerEntity)
         {
             ChunkPos chunkpos = new ChunkPos(spawnLocation.toBlockPos());
-            worldNew.getChunkProvider().func_217228_a(TicketType.POST_TELEPORT, chunkpos, 1, entity.getEntityId());
+            worldNew.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, chunkpos, 1, entity.getEntityId());
             entity.stopRiding();
             if (((ServerPlayerEntity) entity).isSleeping())
             {
-                ((ServerPlayerEntity) entity).wakeUpPlayer(true, true, false);
+//                ((ServerPlayerEntity) entity).wakeUpPlayer(true, true, false);
+                ((ServerPlayerEntity) entity).wakeUp();
             }
 
             if (worldNew == entity.world)
@@ -1168,7 +1171,7 @@ public class WorldUtil
                 entity.copyDataFromOld(entityOld);
                 entity.setLocationAndAngles(spawnLocation.x, spawnLocation.y, spawnLocation.z, f1, f);
                 entity.setRotationYawHead(f1);
-                worldNew.func_217460_e(entity); // Special "summon" method
+                worldNew.addFromAnotherDimension(entity); // Special "summon" method
             }
         }
 
@@ -1294,9 +1297,10 @@ public class WorldUtil
     @OnlyIn(Dist.CLIENT)
     public static PlayerEntity forceRespawnClient(DimensionType dimID, WorldType worldType, GameType gameType)
     {
-        SRespawnPacket fakePacket = new SRespawnPacket(dimID, worldType, gameType);
-        Minecraft.getInstance().player.connection.handleRespawn(fakePacket);
-        return Minecraft.getInstance().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        SRespawnPacket fakePacket = new SRespawnPacket(dimID, WorldInfo.byHashing(player.world.getWorldInfo().getSeed()), worldType, gameType);
+        player.connection.handleRespawn(fakePacket);
+        return player;
     }
 
     /**
@@ -1557,10 +1561,10 @@ public class WorldUtil
         }
 
         boolean canCreateStations = PermissionAPI.hasPermission(player, Constants.PERMISSION_CREATE_STATION);
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, GCCoreUtil.getDimensionID(player.world), new Object[]{PlayerUtil.getName(player), dimensionList, canCreateStations}), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DIMENSION_LIST, GCCoreUtil.getDimensionType(player.world), new Object[]{PlayerUtil.getName(player), dimensionList, canCreateStations}), player);
         stats.setUsingPlanetSelectionGui(true);
         stats.setSavedPlanetList(dimensionList);
-        Entity fakeEntity = new EntityCelestialFake(player.world, player.posX, player.posY, player.posZ);
+        Entity fakeEntity = new EntityCelestialFake(player.world, player.getPosX(), player.getPosY(), player.getPosZ());
         player.world.addEntity(fakeEntity);
         player.startRiding(fakeEntity);
     }
@@ -1686,7 +1690,7 @@ public class WorldUtil
             }
         }
 
-        if (GCCoreUtil.getDimensionID(wp) == DimensionType.OVERWORLD)
+        if (GCCoreUtil.getDimensionType(wp) == DimensionType.OVERWORLD)
         {
             return "overworld";
         }

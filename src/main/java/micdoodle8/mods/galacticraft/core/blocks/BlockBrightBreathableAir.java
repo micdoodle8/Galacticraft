@@ -76,7 +76,7 @@ public class BlockBrightBreathableAir extends BlockThermalAir
 //    }
 
 //    @Override
-//    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
+//    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        return 15;
 //    }
