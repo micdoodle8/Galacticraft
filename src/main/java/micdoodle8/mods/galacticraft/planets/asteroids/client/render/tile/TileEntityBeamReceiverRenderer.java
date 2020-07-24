@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 //
 //import com.google.common.collect.ImmutableList;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.core.util.ColorUtil;
@@ -47,39 +47,39 @@
 //            return;
 //        }
 //
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
-//        GlStateManager.scalef(0.85F, 0.85F, 0.85F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+//        RenderSystem.scalef(0.85F, 0.85F, 0.85F);
 //
 //        switch (tile.facing)
 //        {
 //        case DOWN:
-//            GlStateManager.translatef(0.7F, -0.15F, 0.0F);
-//            GlStateManager.rotatef(90, 0, 0, 1);
+//            RenderSystem.translatef(0.7F, -0.15F, 0.0F);
+//            RenderSystem.rotatef(90, 0, 0, 1);
 //            break;
 //        case UP:
-//            GlStateManager.translatef(-0.7F, 1.3F, 0.0F);
-//            GlStateManager.rotatef(-90, 0, 0, 1);
+//            RenderSystem.translatef(-0.7F, 1.3F, 0.0F);
+//            RenderSystem.rotatef(-90, 0, 0, 1);
 //            break;
 //        case EAST:
-//            GlStateManager.translatef(0.7F, -0.15F, 0.0F);
-//            GlStateManager.rotatef(180, 0, 1, 0);
+//            RenderSystem.translatef(0.7F, -0.15F, 0.0F);
+//            RenderSystem.rotatef(180, 0, 1, 0);
 //            break;
 //        case SOUTH:
-//            GlStateManager.translatef(0.0F, -0.15F, 0.7F);
-//            GlStateManager.rotatef(90, 0, 1, 0);
+//            RenderSystem.translatef(0.0F, -0.15F, 0.7F);
+//            RenderSystem.rotatef(90, 0, 1, 0);
 //            break;
 //        case WEST:
-//            GlStateManager.translatef(-0.7F, -0.15F, 0.0F);
-//            GlStateManager.rotatef(0, 0, 1, 0);
+//            RenderSystem.translatef(-0.7F, -0.15F, 0.0F);
+//            RenderSystem.rotatef(0, 0, 1, 0);
 //            break;
 //        case NORTH:
-//            GlStateManager.translatef(0.0F, -0.15F, -0.7F);
-//            GlStateManager.rotatef(270, 0, 1, 0);
+//            RenderSystem.translatef(0.0F, -0.15F, -0.7F);
+//            RenderSystem.rotatef(270, 0, 1, 0);
 //            break;
 //        default:
-//            GlStateManager.popMatrix();
+//            RenderSystem.popMatrix();
 //            return;
 //        }
 //
@@ -87,14 +87,14 @@
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        ClientUtil.drawBakedModel(reflectorModelMain);
 //
 //        int color;
@@ -112,25 +112,25 @@
 //            color = ColorUtil.to32BitColor(255, 25, 25, 25);
 //        }
 //
-//        GlStateManager.disableTexture();
-//        GlStateManager.disableCull();
+//        RenderSystem.disableTexture();
+//        RenderSystem.disableCull();
 //        ClientUtil.drawBakedModelColored(reflectorModelReceiver, color);
-//        GlStateManager.enableTexture();
-//        GlStateManager.enableCull();
+//        RenderSystem.enableTexture();
+//        RenderSystem.enableCull();
 //        float dX = 0.34772F;
 //        float dY = 0.75097F;
 //        float dZ = 0.0F;
-//        GlStateManager.translatef(dX, dY, dZ);
+//        RenderSystem.translatef(dX, dY, dZ);
 //
 //        if (tile.modeReceive != ReceiverMode.UNDEFINED.ordinal())
 //        {
-//            GlStateManager.rotatef(-tile.ticks * 50, 1, 0, 0);
+//            RenderSystem.rotatef(-tile.ticks * 50, 1, 0, 0);
 //        }
 //
-//        GlStateManager.translatef(-dX, -dY, -dZ);
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.translatef(-dX, -dY, -dZ);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        ClientUtil.drawBakedModel(reflectorModelRing);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //}

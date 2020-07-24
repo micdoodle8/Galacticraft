@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.client;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
 
-import java.awt.image.BufferedImage;
-
 public class DynamicTextureProper extends DynamicTexture
 {
     private boolean updateFlag = false;

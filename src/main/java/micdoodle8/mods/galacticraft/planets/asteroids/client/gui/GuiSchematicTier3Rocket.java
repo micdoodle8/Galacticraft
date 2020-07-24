@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier3Rocket extends GuiContainerGC<ContainerSchematicTier3Rocket> implements ISchematicResultPage
 {
@@ -32,13 +32,9 @@ public class GuiSchematicTier3Rocket extends GuiContainerGC<ContainerSchematicTi
         super.init();
         this.buttons.clear();
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
-        {
-            SchematicRegistry.flipToPrevPage(this, this.pageIndex);
-        }));
+                SchematicRegistry.flipToPrevPage(this, this.pageIndex)));
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
-        {
-            SchematicRegistry.flipToNextPage(this, this.pageIndex);
-        }));
+                SchematicRegistry.flipToNextPage(this, this.pageIndex)));
     }
 
     @Override
@@ -51,7 +47,7 @@ public class GuiSchematicTier3Rocket extends GuiContainerGC<ContainerSchematicTi
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.textureManager.bindTexture(GuiSchematicTier3Rocket.tier2SchematicTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;

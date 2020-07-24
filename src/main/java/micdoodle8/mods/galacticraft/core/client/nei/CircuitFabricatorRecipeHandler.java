@@ -53,7 +53,7 @@
 //    @Override
 //    public void drawBackground(int recipe)
 //    {
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(CircuitFabricatorRecipeHandler.circuitFabricatorTexture);
 //        GuiDraw.blit(-2, 9, 3, 4, 168, 64);
 //        GuiDraw.blit(68, 73, 73, 68, 96, 35);

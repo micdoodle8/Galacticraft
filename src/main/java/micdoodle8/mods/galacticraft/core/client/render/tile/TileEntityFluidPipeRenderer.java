@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.core.client.render.tile;
 //
 //import com.google.common.collect.Maps;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 //import micdoodle8.mods.galacticraft.core.GCBlocks;
 //import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
@@ -39,22 +39,22 @@
 //    {
 //        if (pipe.getBlockState().getBlock() == GCBlocks.fluidPipePull)
 //        {
-//            GL11.glPushMatrix();
+//            RenderSystem.pushMatrix();
 //
-//            GL11.glTranslatef((float) x, (float) y, (float) z);
+//            RenderSystem.translatef((float) x, (float) y, (float) z);
 //
 //            RenderHelper.disableStandardItemLighting();
 //            this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //            if (Minecraft.isAmbientOcclusionEnabled())
 //            {
-//                GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//                RenderSystem.shadeModel(7425);
 //            }
 //            else
 //            {
-//                GlStateManager.shadeModel(GL11.GL_FLAT);
+//                RenderSystem.shadeModel(7424);
 //            }
 //
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //            TileEntity[] adj = OxygenUtil.getAdjacentFluidConnections(pipe);
 //
@@ -64,31 +64,31 @@
 //
 //                if (sideTile != null && !(sideTile instanceof IBufferTransmitter))
 //                {
-//                    GL11.glPushMatrix();
+//                    RenderSystem.pushMatrix();
 //                    if (sideTile instanceof TileEntityFluidTank)
 //                    {
 //                        switch (facing)
 //                        {
 //                        case SOUTH:
-//                            GL11.glTranslatef(0F, 0F, 1 / 16F);
+//                            RenderSystem.translatef(0F, 0F, 1 / 16F);
 //                            break;
 //                        case NORTH:
-//                            GL11.glTranslatef(0F, 0F, -1 / 16F);
+//                            RenderSystem.translatef(0F, 0F, -1 / 16F);
 //                            break;
 //                        case EAST:
-//                            GL11.glTranslatef(1 / 16F, 0F, 0F);
+//                            RenderSystem.translatef(1 / 16F, 0F, 0F);
 //                            break;
 //                        case WEST:
-//                            GL11.glTranslatef(-1 / 16F, 0F, 0F);
+//                            RenderSystem.translatef(-1 / 16F, 0F, 0F);
 //                            break;
 //                        }
 //                    }
 //                    ClientUtil.drawBakedModel(fluidPipeModels[facing.ordinal()]);
-//                    GL11.glPopMatrix();
+//                    RenderSystem.popMatrix();
 //                }
 //            }
 //
-//            GL11.glPopMatrix();
+//            RenderSystem.popMatrix();
 //        }
 //
 //        float scale;
@@ -123,16 +123,16 @@
 //        if (scale > 0.01)
 //        {
 //            this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-//            GL11.glPushMatrix();
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//            GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
-//            GL11.glScalef(1.0F, -1.0F, -1.0F);
-//            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//            RenderSystem.pushMatrix();
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.translatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
+//            RenderSystem.scalef(1.0F, -1.0F, -1.0F);
+//            RenderSystem.translatef(0.5F, 0.5F, 0.5F);
 //
-//            GlStateManager.disableLighting();
-//            GlStateManager.enableBlend();
-//            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.disableLighting();
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFunc(770, 771);
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //            float opacity = 1.0F;
 //
@@ -143,7 +143,7 @@
 //                opacity = scale;
 //            }
 //
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, opacity);
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, opacity);
 //
 //            TileEntity[] connections = OxygenUtil.getAdjacentFluidConnections(pipe);
 //
@@ -159,12 +159,12 @@
 //                        if (!gas)
 //                        {
 //                            Integer list = displayLists[Math.max(3, (int) (scale * (stages - 1)))];
-//                            GL11.glCallList(list);
+//                            RenderSystem.callList(list);
 //                        }
 //                        else
 //                        {
 //                            Integer list = displayLists[stages - 1];
-//                            GL11.glCallList(list);
+//                            RenderSystem.callList(list);
 //                        }
 //                    }
 //                }
@@ -177,20 +177,20 @@
 //                if (!gas)
 //                {
 //                    Integer list = displayLists[Math.max(3, (int) (scale * (stages - 1)))];
-//                    GL11.glCallList(list);
+//                    RenderSystem.callList(list);
 //                }
 //                else
 //                {
 //                    Integer list = displayLists[stages - 1];
-//                    GL11.glCallList(list);
+//                    RenderSystem.callList(list);
 //                }
 //            }
 //
-//            GlStateManager.enableLighting();
-//            GlStateManager.disableBlend();
+//            RenderSystem.enableLighting();
+//            RenderSystem.disableBlend();
 //
-//            GL11.glPopMatrix();
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.popMatrix();
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        }
 //    }
 //
@@ -234,7 +234,7 @@
 //        for (int i = 0; i < stages; ++i)
 //        {
 //            displayLists[i] = GLAllocation.generateDisplayLists(1);
-//            GL11.glNewList(displayLists[i], GL11.GL_COMPILE);
+//            RenderSystem.NewList(displayLists[i], GL11.GL_COMPILE);
 //
 //            float level = (i / (float) stages);
 //
@@ -327,7 +327,7 @@
 //        double texMaxY_V = vMin + (maxY + 0.5F) * vDiff;
 //
 //        // North
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(minX, minY, minZ).tex(texMinX_U, texMinY_V).endVertex();
 //        worldRenderer.pos(minX, maxY, minZ).tex(texMinX_U, texMaxY_V).endVertex();
 //        worldRenderer.pos(maxX, maxY, minZ).tex(texMaxX_U, texMaxY_V).endVertex();
@@ -335,7 +335,7 @@
 //        tess.draw();
 //
 //        // South
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(maxX, minY, maxZ).tex(texMaxX_U, texMinY_V).endVertex();
 //        worldRenderer.pos(maxX, maxY, maxZ).tex(texMaxX_U, texMaxY_V).endVertex();
 //        worldRenderer.pos(minX, maxY, maxZ).tex(texMinX_U, texMaxY_V).endVertex();
@@ -343,7 +343,7 @@
 //        tess.draw();
 //
 //        // West
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(minX, maxY, minZ).tex(texMinZ_U, texMaxY_V).endVertex();
 //        worldRenderer.pos(minX, minY, minZ).tex(texMinZ_U, texMinY_V).endVertex();
 //        worldRenderer.pos(minX, minY, maxZ).tex(texMaxZ_U, texMinY_V).endVertex();
@@ -351,21 +351,21 @@
 //        tess.draw();
 //
 //        // East
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(maxX, maxY, maxZ).tex(texMaxZ_U, texMaxY_V).endVertex();
 //        worldRenderer.pos(maxX, minY, maxZ).tex(texMaxZ_U, texMinY_V).endVertex();
 //        worldRenderer.pos(maxX, minY, minZ).tex(texMinZ_U, texMinY_V).endVertex();
 //        worldRenderer.pos(maxX, maxY, minZ).tex(texMinZ_U, texMaxY_V).endVertex();
 //        tess.draw();
 //
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(maxX, minY, maxZ).tex(texMaxZ_U, texMaxX_V).endVertex();
 //        worldRenderer.pos(minX, minY, maxZ).tex(texMaxZ_U, texMinX_V).endVertex();
 //        worldRenderer.pos(minX, minY, minZ).tex(texMinZ_U, texMinX_V).endVertex();
 //        worldRenderer.pos(maxX, minY, minZ).tex(texMinZ_U, texMaxX_V).endVertex();
 //        tess.draw();
 //
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(maxX, maxY, maxZ).tex(texMaxZ_U, texMaxX_V).endVertex();
 //        worldRenderer.pos(maxX, maxY, minZ).tex(texMinZ_U, texMaxX_V).endVertex();
 //        worldRenderer.pos(minX, maxY, minZ).tex(texMinZ_U, texMinX_V).endVertex();

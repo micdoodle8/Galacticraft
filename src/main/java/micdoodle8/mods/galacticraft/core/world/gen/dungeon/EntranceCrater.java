@@ -79,18 +79,18 @@ public class EntranceCrater extends SizedPiece
         {
             switch (this.getCoordBaseMode())
             {
-            case SOUTH:
-                mirror = Mirror.LEFT_RIGHT;
-                break;
-            case WEST:
-                mirror = Mirror.LEFT_RIGHT;
-                rotation = Rotation.CLOCKWISE_90;
-                break;
-            case EAST:
-                rotation = Rotation.CLOCKWISE_90;
-                break;
-            default:
-                break;
+                case SOUTH:
+                    mirror = Mirror.LEFT_RIGHT;
+                    break;
+                case WEST:
+                    mirror = Mirror.LEFT_RIGHT;
+                    rotation = Rotation.CLOCKWISE_90;
+                    break;
+                case EAST:
+                    rotation = Rotation.CLOCKWISE_90;
+                    break;
+                default:
+                    break;
             }
         }
 

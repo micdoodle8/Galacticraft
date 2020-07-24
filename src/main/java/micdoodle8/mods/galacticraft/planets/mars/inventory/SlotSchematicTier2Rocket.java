@@ -1,19 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.dimension.DimensionType;
+
+import java.util.List;
 
 public class SlotSchematicTier2Rocket extends Slot
 {
@@ -42,10 +36,6 @@ public class SlotSchematicTier2Rocket extends Slot
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
     {
-        if (par1ItemStack == null)
-        {
-            return false;
-        }
 
         List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getRocketT2Recipes();
         for (INasaWorkbenchRecipe recipe : recipes)

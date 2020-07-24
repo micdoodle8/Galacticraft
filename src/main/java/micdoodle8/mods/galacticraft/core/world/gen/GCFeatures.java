@@ -17,14 +17,14 @@ public class GCFeatures
     public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, Constants.MOD_ID_CORE);
 
     public static final RegistryObject<MapGenDungeon> MOON_DUNGEON = register("moon_dungeon", () -> new MapGenDungeon(DungeonConfiguration::deserialize));
-    public static IStructurePieceType CMOON_DUNGEON_START = DungeonStart::new;
-    public static IStructurePieceType CMOON_DUNGEON_CORRIDOR = Corridor::new;
-    public static IStructurePieceType CMOON_DUNGEON_EMPTY = RoomEmpty::new;
-    public static IStructurePieceType CMOON_DUNGEON_BOSS = RoomBoss::new;
-    public static IStructurePieceType CMOON_DUNGEON_TREASURE = RoomTreasure::new;
-    public static IStructurePieceType CMOON_DUNGEON_SPAWNER = RoomSpawner::new;
-    public static IStructurePieceType CMOON_DUNGEON_CHEST = RoomChest::new;
-    public static IStructurePieceType CMOON_DUNGEON_ENTRANCE = RoomEntrance::new;
+    public static final IStructurePieceType CMOON_DUNGEON_START = DungeonStart::new;
+    public static final IStructurePieceType CMOON_DUNGEON_CORRIDOR = Corridor::new;
+    public static final IStructurePieceType CMOON_DUNGEON_EMPTY = RoomEmpty::new;
+    public static final IStructurePieceType CMOON_DUNGEON_BOSS = RoomBoss::new;
+    public static final IStructurePieceType CMOON_DUNGEON_TREASURE = RoomTreasure::new;
+    public static final IStructurePieceType CMOON_DUNGEON_SPAWNER = RoomSpawner::new;
+    public static final IStructurePieceType CMOON_DUNGEON_CHEST = RoomChest::new;
+    public static final IStructurePieceType CMOON_DUNGEON_ENTRANCE = RoomEntrance::new;
 
     public static void registerFeatures(RegistryEvent.Register<Feature<?>> event)
     {

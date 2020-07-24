@@ -8,10 +8,9 @@ import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
@@ -78,15 +77,15 @@ public class RoomSpawner extends RoomEmpty
     {
         switch (rand.nextInt(4))
         {
-        case 0:
-            return GCEntities.EVOLVED_SPIDER.get();
-        case 1:
-            return GCEntities.EVOLVED_CREEPER.get();
-        case 2:
-            return GCEntities.EVOLVED_SKELETON.get();
-        case 3:
-        default:
-            return GCEntities.EVOLVED_ZOMBIE.get();
+            case 0:
+                return GCEntities.EVOLVED_SPIDER.get();
+            case 1:
+                return GCEntities.EVOLVED_CREEPER.get();
+            case 2:
+                return GCEntities.EVOLVED_SKELETON.get();
+            case 3:
+            default:
+                return GCEntities.EVOLVED_ZOMBIE.get();
         }
     }
 }

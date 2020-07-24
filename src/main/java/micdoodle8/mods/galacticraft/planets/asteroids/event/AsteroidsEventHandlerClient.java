@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
@@ -56,11 +57,11 @@ public class AsteroidsEventHandlerClient
             if (screen instanceof GuiCelestialSelection)
             {
                 alpha = ((GuiCelestialSelection) screen).getAlpha(renderEvent.celestialBody);
-                GL11.glColor4f(0.7F, 0.0F, 0.0F, alpha / 2.0F);
+                RenderSystem.color4f(0.7F, 0.0F, 0.0F, alpha / 2.0F);
             }
             else
             {
-                GL11.glColor4f(0.3F, 0.1F, 0.1F, 1.0F);
+                RenderSystem.color4f(0.3F, 0.1F, 0.1F, 1.0F);
             }
             renderEvent.setCanceled(true);
             GL11.glBegin(GL11.GL_LINE_LOOP);
@@ -101,8 +102,8 @@ public class AsteroidsEventHandlerClient
             }
 
             GL11.glEnd();
-            GL11.glColor4f(0.7F, 0.0F, 0.0F, alpha / 10.0F);
-            GL11.glBegin(GL11.GL_QUADS);
+            RenderSystem.color4f(0.7F, 0.0F, 0.0F, alpha / 10.0F);
+            GL11.glBegin(7);
 
             x = min * renderEvent.celestialBody.getRelativeDistanceFromCenter().unScaledDistance;
             y = 0;
@@ -135,7 +136,7 @@ public class AsteroidsEventHandlerClient
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
-            GL11.glRotatef(ClientUtil.getClientTimeTotal() / 10.0F % 360, 0, 0, 1);
+            RenderSystem.rotatef(ClientUtil.getClientTimeTotal() / 10.0F % 360, 0, 0, 1);
         }
     }
 

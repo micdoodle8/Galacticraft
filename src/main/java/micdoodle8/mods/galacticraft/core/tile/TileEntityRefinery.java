@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
@@ -26,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -43,9 +42,9 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
     private final int tankCapacity = 24000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank oilTank = new FluidTank(this.tankCapacity);
+    public final FluidTank oilTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
+    public final FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     public static final int PROCESS_TIME_REQUIRED = 2;
     public static final int OUTPUT_PER_SECOND = 1;
@@ -214,14 +213,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 1:
-                return FluidUtil.isOilContainerAny(itemstack);
-            case 2:
-                return FluidUtil.isPartialContainer(itemstack, GCItems.fuelCanister);
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 1:
+                    return FluidUtil.isOilContainerAny(itemstack);
+                case 2:
+                    return FluidUtil.isPartialContainer(itemstack, GCItems.fuelCanister);
+                default:
+                    return false;
             }
         }
         return false;
@@ -234,14 +233,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
-            case 1:
-                return FluidUtil.isEmptyContainer(itemstack);
-            case 2:
-                return FluidUtil.isFullContainer(itemstack);
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
+                case 1:
+                    return FluidUtil.isEmptyContainer(itemstack);
+                case 2:
+                    return FluidUtil.isFullContainer(itemstack);
+                default:
+                    return false;
             }
         }
         return false;
@@ -252,11 +251,11 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         switch (slotID)
         {
-        case 0:
-            return !itemstack.isEmpty() && ItemElectricBase.isElectricItem(itemstack.getItem());
-        case 1:
-        case 2:
-            return FluidUtil.isValidContainer(itemstack);
+            case 0:
+                return !itemstack.isEmpty() && ItemElectricBase.isElectricItem(itemstack.getItem());
+            case 1:
+            case 2:
+                return FluidUtil.isValidContainer(itemstack);
         }
 
         return false;
@@ -376,10 +375,10 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         switch (tank)
         {
-        case 0:
-            return this.oilTank.getFluid();
-        case 1:
-            return this.fuelTank.getFluid();
+            case 0:
+                return this.oilTank.getFluid();
+            case 1:
+                return this.fuelTank.getFluid();
         }
         return FluidStack.EMPTY;
     }
@@ -389,10 +388,10 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         switch (tank)
         {
-        case 0:
-            return this.oilTank.getCapacity();
-        case 1:
-            return this.fuelTank.getCapacity();
+            case 0:
+                return this.oilTank.getCapacity();
+            case 1:
+                return this.fuelTank.getCapacity();
         }
         return 0;
     }
@@ -402,10 +401,10 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         switch (tank)
         {
-        case 0:
-            return this.oilTank.isFluidValid(stack);
-        case 1:
-            return this.fuelTank.isFluidValid(stack);
+            case 0:
+                return this.oilTank.isFluidValid(stack);
+            case 1:
+                return this.fuelTank.isFluidValid(stack);
         }
         return false;
     }

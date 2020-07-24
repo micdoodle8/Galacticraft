@@ -184,33 +184,33 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                             {
                                 switch (teleportResult)
                                 {
-                                case -1:
-                                    for (LivingEntity e : containedEntities)
-                                    {
-                                        if (e instanceof PlayerEntity)
+                                    case -1:
+                                        for (LivingEntity e : containedEntities)
                                         {
-                                            e.sendMessage(new StringTextComponent("Cannot Send client-LogicalSide")); // No need for translation, since this should never happen
+                                            if (e instanceof PlayerEntity)
+                                            {
+                                                e.sendMessage(new StringTextComponent("Cannot Send client-LogicalSide")); // No need for translation, since this should never happen
+                                            }
                                         }
-                                    }
-                                    break;
-                                case 1:
-                                    for (LivingEntity e : containedEntities)
-                                    {
-                                        if (e instanceof PlayerEntity)
+                                        break;
+                                    case 1:
+                                        for (LivingEntity e : containedEntities)
                                         {
-                                            e.sendMessage(new StringTextComponent("Target address invalid")); // No need for translation, since this should never happen
+                                            if (e instanceof PlayerEntity)
+                                            {
+                                                e.sendMessage(new StringTextComponent("Target address invalid")); // No need for translation, since this should never happen
+                                            }
                                         }
-                                    }
-                                    break;
-                                case 2:
-                                    for (LivingEntity e : containedEntities)
-                                    {
-                                        if (e instanceof PlayerEntity)
+                                        break;
+                                    case 2:
+                                        for (LivingEntity e : containedEntities)
                                         {
-                                            e.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            if (e instanceof PlayerEntity)
+                                            {
+                                                e.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            }
                                         }
-                                    }
-                                    break;
+                                        break;
                                 }
                             }
                         }
@@ -435,18 +435,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         if (this.disableCooldown == 0)
         {
-            switch (index)
+            if (index == 0)
             {
-            case 0:
                 this.disabled = disabled;
                 this.disableCooldown = 10;
                 if (world != null && !world.isRemote)
                 {
                     ShortRangeTelepadHandler.addShortRangeTelepad(this);
                 }
-                break;
-            default:
-                break;
             }
         }
     }
@@ -454,12 +450,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public boolean getDisabled(int index)
     {
-        switch (index)
+        if (index == 0)
         {
-        case 0:
             return this.disabled;
-        default:
-            break;
         }
 
         return true;

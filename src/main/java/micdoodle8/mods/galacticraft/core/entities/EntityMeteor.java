@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.ILaserTrackableFast;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.AirBlock;
 import net.minecraft.entity.Entity;
@@ -206,7 +204,7 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
      */
     public void setSize(int par1)
     {
-        this.dataManager.set(SIZE, Integer.valueOf(par1));
+        this.dataManager.set(SIZE, par1);
     }
 
     @Override

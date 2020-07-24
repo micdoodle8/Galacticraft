@@ -1,20 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class OverlayRocket extends Overlay
@@ -34,9 +36,9 @@ public class OverlayRocket extends Overlay
             }
             int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
 //            mc.entityRenderer.setupOverlayRendering();
-            GlStateManager.depthMask(true);
-            GlStateManager.enableTexture();
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.depthMask(true);
+            RenderSystem.enableTexture();
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             mc.textureManager.bindTexture(guiTexture);
 
             float var1 = 0F;
@@ -52,14 +54,14 @@ public class OverlayRocket extends Overlay
 
             final Tessellator tess = Tessellator.getInstance();
             BufferBuilder worldRenderer = tess.getBuffer();
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(var1 + 0, var2 + 242.0F * sizeScale, 0.0).tex((var3 + 0) * var7, (var4 + var6) * var8).endVertex();
             worldRenderer.pos(var1 + 20.0F * sizeScale, var2 + 242.0F * sizeScale, 0.0).tex((var3 + var5) * var7, (var4 + var6) * var8).endVertex();
             worldRenderer.pos(var1 + 20.0F * sizeScale, var2 + 0, 0.0).tex((var3 + var5) * var7, (var4 + 0) * var8).endVertex();
             worldRenderer.pos(var1 + 0, var2 + 0, 0.0).tex((var3 + 0) * var7, (var4 + 0) * var8).endVertex();
             tess.draw();
 
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
 
             Entity rocket = mc.player.getRidingEntity();
             float headOffset = 0;
@@ -80,53 +82,57 @@ public class OverlayRocket extends Overlay
             var7 = 1.0F / 64.0F;
             var8 = 1.0F / 64.0F;
 
-            GlStateManager.pushMatrix();
-            final int i = rocket.getBrightnessForRender();
+            RenderSystem.pushMatrix();
+            BlockPos blockPos = new BlockPos(rocket.getPosX(), rocket.getPosY() + (double) rocket.getEyeHeight(), rocket.getPosZ());
+            final int i = rocket.world.isBlockLoaded(blockPos) ? rocket.world.getLight(blockPos) : 0;
             int j = i % 65536;
             int k = i / 65536;
-            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableColorMaterial();
-            GlStateManager.translatef(var1 + 4, var2 + 6, 50F);
-            GlStateManager.scalef(5F, 5F, 5F);
-            GlStateManager.rotatef(180F, 1, 0, 0);
-            GlStateManager.rotatef(90F, 0, 1, 0);
+            RenderSystem.glMultiTexCoord2f(33985, (float) j, (float) k);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableColorMaterial();
+            MatrixStack matrices = new MatrixStack();
+            matrices.push();
+            matrices.translate(var1 + 4, var2 + 6, 50F);
+            matrices.scale(5F, 5F, 5F);
+            matrices.rotate(new Quaternion(Vector3f.XP, 180.0F, true));
+            matrices.rotate(new Quaternion(Vector3f.YP, 90.0F, true));
 
             try
             {
-                spaceshipRender.doRender((EntitySpaceshipBase) mc.player.getRidingEntity(), 0, 0, 0, 0, 0);
+                spaceshipRender.render((EntitySpaceshipBase) mc.player.getRidingEntity(), 0, 0, matrices, Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(), 0);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
-
-            GlStateManager.popMatrix();
+            Minecraft.getInstance().getRenderTypeBuffers().getBufferSource().finish();
+            matrices.pop();
+            RenderSystem.popMatrix();
 
             mc.textureManager.bindTexture(ClientProxyCore.playerHead);
 
-            GlStateManager.disableLighting();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(770, 771);
-            GlStateManager.translatef(0F, -12F + headOffset, 60F);
+            RenderSystem.disableLighting();
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(770, 771);
+            RenderSystem.translatef(0F, -12F + headOffset, 60F);
 
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(var1 + 0, var2 + var6, 0.0).tex((var3 + 0) * var7, (var4 + var6) * var8).endVertex();
             worldRenderer.pos(var1 + var5, var2 + var6, 0.0).tex((var3 + var5) * var7, (var4 + var6) * var8).endVertex();
             worldRenderer.pos(var1 + var5, var2 + 0, 0.0).tex((var3 + var5) * var7, (var4 + 0) * var8).endVertex();
             worldRenderer.pos(var1 + 0, var2 + 0, 0.0).tex((var3 + 0) * var7, (var4 + 0) * var8).endVertex();
             tess.draw();
 
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(var1 + 0, var2 + var6, 0.0).tex((var3b + 0) * var7, (var4 + var6) * var8).endVertex();
             worldRenderer.pos(var1 + var5, var2 + var6, 0.0).tex((var3b + var5) * var7, (var4 + var6) * var8).endVertex();
             worldRenderer.pos(var1 + var5, var2 + 0, 0.0).tex((var3b + var5) * var7, (var4 + 0) * var8).endVertex();
             worldRenderer.pos(var1 + 0, var2 + 0, 0.0).tex((var3b + 0) * var7, (var4 + 0) * var8).endVertex();
             tess.draw();
 
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableLighting();
-            GlStateManager.disableBlend();
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableLighting();
+            RenderSystem.disableBlend();
         }
 
     }

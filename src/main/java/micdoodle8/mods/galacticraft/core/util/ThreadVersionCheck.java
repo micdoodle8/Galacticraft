@@ -14,7 +14,7 @@ import java.net.URL;
 
 public class ThreadVersionCheck extends Thread
 {
-    public static ThreadVersionCheck INSTANCE = new ThreadVersionCheck();
+    public static final ThreadVersionCheck INSTANCE = new ThreadVersionCheck();
     private int count = 0;
 
     public static int remoteMajVer;
@@ -113,7 +113,7 @@ public class ThreadVersionCheck extends Thread
                     GCLog.severe(GCCoreUtil.translate("newversion.failed.name"));
                     Thread.sleep(15000);
                 }
-                catch (final InterruptedException e)
+                catch (final InterruptedException ignored)
                 {
                 }
             }

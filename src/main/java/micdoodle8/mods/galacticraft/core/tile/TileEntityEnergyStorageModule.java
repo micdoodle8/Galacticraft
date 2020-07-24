@@ -52,7 +52,7 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
 
-    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<>();
     public int scaledEnergyLevel;
     public int lastScaledEnergyLevel;
     private float lastEnergy = 0;
@@ -255,17 +255,17 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case LEFT:
-            return getFront().rotateY();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case RIGHT:
-        default:
-            return getFront().rotateYCCW();
+            case LEFT:
+                return getFront().rotateY();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case RIGHT:
+            default:
+                return getFront().rotateYCCW();
         }
     }
 
@@ -274,17 +274,17 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
     {
         switch (this.getSide(MachineSide.ELECTRIC_OUT))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 

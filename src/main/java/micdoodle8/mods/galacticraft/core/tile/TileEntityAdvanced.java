@@ -21,7 +21,7 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
     public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
-    private final Map<Field, Object> lastSentData = new HashMap<Field, Object>(4, 1F);
+    private final Map<Field, Object> lastSentData = new HashMap<>(4, 1F);
     private boolean networkDataChanged = false;
 
     public TileEntityAdvanced(TileEntityType<?> type)
@@ -78,8 +78,8 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
     {
         try
         {
-            this.fieldCacheClient = new LinkedHashSet<Field>();
-            this.fieldCacheServer = new LinkedHashSet<Field>();
+            this.fieldCacheClient = new LinkedHashSet<>();
+            this.fieldCacheServer = new LinkedHashSet<>();
 
             for (Field field : this.getClass().getFields())
             {
@@ -176,7 +176,7 @@ public abstract class TileEntityAdvanced extends TileEntityInventory implements 
         }
         else
         {
-            ArrayList<Object> prevSendData = new ArrayList<Object>(sendData);
+            ArrayList<Object> prevSendData = new ArrayList<>(sendData);
 
             this.addExtraNetworkedData(sendData);
 

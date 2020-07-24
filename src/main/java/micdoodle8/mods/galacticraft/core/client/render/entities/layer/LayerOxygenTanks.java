@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
@@ -120,11 +120,11 @@
 //
 //                for (int i = 0; i < 2; ++i)
 //                {
-//                    GlStateManager.enableRescaleNormal();
-//                    GlStateManager.pushMatrix();
-//                    GlStateManager.translatef(0.175F, 0.0F, 0.0F);
-//                    GlStateManager.translatef(0.0F, 0.2F, 0.0F);
-//                    GlStateManager.translatef(0.0F, 0.0F, 0.2F);
+//                    RenderSystem.enableRescaleNormal();
+//                    RenderSystem.pushMatrix();
+//                    RenderSystem.translatef(0.175F, 0.0F, 0.0F);
+//                    RenderSystem.translatef(0.0F, 0.2F, 0.0F);
+//                    RenderSystem.translatef(0.0F, 0.0F, 0.2F);
 //
 //                    if (wearingLeftTankRed)
 //                    {
@@ -141,12 +141,12 @@
 //                        this.greenOxygenTanks[0].render(scale);
 //                    }
 //
-//                    GlStateManager.popMatrix();
+//                    RenderSystem.popMatrix();
 //
-//                    GlStateManager.pushMatrix();
-//                    GlStateManager.translatef(-0.175F, 0.0F, 0.0F);
-//                    GlStateManager.translatef(0.0F, 0.2F, 0.0F);
-//                    GlStateManager.translatef(0.0F, 0.0F, 0.2F);
+//                    RenderSystem.pushMatrix();
+//                    RenderSystem.translatef(-0.175F, 0.0F, 0.0F);
+//                    RenderSystem.translatef(0.0F, 0.2F, 0.0F);
+//                    RenderSystem.translatef(0.0F, 0.0F, 0.2F);
 //
 //                    if (wearingRightTankRed)
 //                    {
@@ -162,8 +162,8 @@
 //                    {
 //                        this.greenOxygenTanks[1].render(scale);
 //                    }
-//                    GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-//                    GlStateManager.popMatrix();
+//                    RenderSystem.color3f(1.0F, 1.0F, 1.0F);
+//                    RenderSystem.popMatrix();
 //                }
 //            }
 //        }

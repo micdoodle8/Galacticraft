@@ -1,4 +1,15 @@
-//package micdoodle8.mods.galacticraft.core.blocks;
+package micdoodle8.mods.galacticraft.core.blocks;
+
+import net.minecraft.block.Block;
+
+public class BlockPanelLighting extends Block
+{
+
+    public BlockPanelLighting(Properties properties)
+    {
+        super(properties);
+    }
+}
 //
 //import micdoodle8.mods.galacticraft.api.item.IPaintable;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;

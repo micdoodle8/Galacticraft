@@ -5,7 +5,7 @@
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedEnderman;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedEnderman;
 //import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.client.renderer.GameRenderer;
 //import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -36,24 +36,24 @@
 //    public void render(EntityEvolvedEnderman entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
 //    {
 //        this.bindTexture(EYES_TEXTURE);
-//        GlStateManager.enableBlend();
-//        GlStateManager.disableAlphaTest();
-//        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-//        GlStateManager.disableLighting();
-//        GlStateManager.depthMask(!entity.isInvisible());
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+//        RenderSystem.disableLighting();
+//        RenderSystem.depthMask(!entity.isInvisible());
 //        int i = 61680;
 //        int j = 61680;
 //        int k = 0;
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 61680.0F, 0.0F);
-//        GlStateManager.enableLighting();
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.glMultiTexCoord2f(33985, 61680.0F, 0.0F);
+//        RenderSystem.enableLighting();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GameRenderer gamerenderer = Minecraft.getInstance().gameRenderer;
 //        gamerenderer.setupFogColor(true);
 //        this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 //        gamerenderer.setupFogColor(false);
 //        this.func_215334_a(entity);
-//        GlStateManager.depthMask(true);
-//        GlStateManager.disableBlend();
-//        GlStateManager.enableAlphaTest();
+//        RenderSystem.depthMask(true);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
 //    }
 //}

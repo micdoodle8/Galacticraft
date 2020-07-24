@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.fx;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
@@ -34,11 +33,11 @@ public class VenusParticles
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> evt)
     {
-        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
-
-        register(r, new BasicParticleType(false), VenusParticleTypeNames.acidExhaust);
-        register(r, new BasicParticleType(false), VenusParticleTypeNames.acidVapor);
-        Minecraft.getInstance().particles.registerFactory(ACID_EXHAUST, ParticleAcidExhaust.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(ACID_VAPOR, ParticleAcidVapor.Factory::new);
+//        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
+//
+//        register(r, new BasicParticleType(false), VenusParticleTypeNames.acidExhaust);
+//        register(r, new BasicParticleType(false), VenusParticleTypeNames.acidVapor);
+//        Minecraft.getInstance().particles.registerFactory(ACID_EXHAUST, ParticleAcidExhaust.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(ACID_VAPOR, ParticleAcidVapor.Factory::new);
     }
 }

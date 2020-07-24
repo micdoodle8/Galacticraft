@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
@@ -20,16 +21,14 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @OnlyIn(Dist.CLIENT)
 public class TileEntityTreasureChestRenderer<T extends TileEntityTreasureChest & IChestLid> extends ChestTileEntityRenderer<T>
 {
 //    private static final ResourceLocation treasureChestTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/treasure.png");
 
-//    private final ModelTreasureChest chestModel = new ModelTreasureChest();
-    public ModelRenderer[] keyParts = new ModelRenderer[6];
+    //    private final ModelTreasureChest chestModel = new ModelTreasureChest();
+    public final ModelRenderer[] keyParts = new ModelRenderer[6];
 
     public TileEntityTreasureChestRenderer(TileEntityRendererDispatcher rendererDispatcherIn)
     {
@@ -76,8 +75,8 @@ public class TileEntityTreasureChestRenderer<T extends TileEntityTreasureChest &
         Block block = blockstate.getBlock();
 
         matrixStackIn.push();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         matrixStackIn.scale(1.0F, -1.0F, -1.0F);
         matrixStackIn.translate(0.5F, 0.5F, 0.5F);
         float f = chest.getBlockState().get(ChestBlock.FACING).getHorizontalAngle();
@@ -90,9 +89,9 @@ public class TileEntityTreasureChestRenderer<T extends TileEntityTreasureChest &
             renderer.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
         }
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderSystem.disableRescaleNormal();
         matrixStackIn.pop();
         super.render(chest, partialTicks, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

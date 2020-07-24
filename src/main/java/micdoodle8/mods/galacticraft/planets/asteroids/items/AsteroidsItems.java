@@ -13,6 +13,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class AsteroidsItems
 {
     @ObjectHolder(AsteroidItemNames.grapple)

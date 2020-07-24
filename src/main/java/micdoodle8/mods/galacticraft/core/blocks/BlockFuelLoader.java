@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
@@ -31,7 +30,7 @@ import javax.annotation.Nullable;
 public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescription
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    public static final IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final EnumProperty SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public BlockFuelLoader(Properties builder)

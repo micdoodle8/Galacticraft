@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 //import net.minecraft.block.Blocks;
 //import net.minecraft.client.Minecraft;
@@ -27,15 +27,15 @@
 //    {
 //        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 //        RenderHelper.disableStandardItemLighting();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x, (float) y + 0.5F, (float) z);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x, (float) y + 0.5F, (float) z);
 //        this.bindEntityTexture(entity);
-//        GlStateManager.rotatef((entity.ticksExisted + partialTicks) * 50.0F, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-//        GlStateManager.translatef(-0.5F, -1F, 0.5F);
+//        RenderSystem.rotatef((entity.ticksExisted + partialTicks) * 50.0F, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.scalef(0.5F, 0.5F, 0.5F);
+//        RenderSystem.translatef(-0.5F, -1F, 0.5F);
 //        blockrendererdispatcher.renderBlockBrightness(Blocks.COBWEB.getDefaultState(), 1.0F);
-//        GlStateManager.translatef(0.0F, 0.0F, 1.0F);
-//        GlStateManager.popMatrix();
+//        RenderSystem.translatef(0.0F, 0.0F, 1.0F);
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //

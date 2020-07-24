@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -16,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -56,7 +56,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     public static int countEntities = 0;
     private static int countTemp = 0;
     private static boolean sealerCheckedThisTick = false;
-    public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList<>();
+    public static final ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList<>();
     private static final int UNSEALED_OXYGENPERTICK = 12;
     public List<BlockVec3> leaksClient;
 
@@ -250,14 +250,14 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 1:
-                return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
-            case 2:
-                return itemstack.getItem() == GCItems.ambientThermalController;
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 1:
+                    return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
+                case 2:
+                    return itemstack.getItem() == GCItems.ambientThermalController;
+                default:
+                    return false;
             }
         }
         return false;
@@ -268,12 +268,12 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     {
         switch (slotID)
         {
-        case 0:
-            return ItemElectricBase.isElectricItemEmpty(itemstack);
-        case 1:
-            return FluidUtil.isEmptyContainer(itemstack);
-        default:
-            return false;
+            case 0:
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
+            case 1:
+                return FluidUtil.isEmptyContainer(itemstack);
+            default:
+                return false;
         }
     }
 
@@ -354,9 +354,9 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
 
     public static HashMap<BlockVec3, TileEntityOxygenSealer> getSealersAround(World world, BlockPos pos, int rSquared)
     {
-        HashMap<BlockVec3, TileEntityOxygenSealer> ret = new HashMap<BlockVec3, TileEntityOxygenSealer>();
+        HashMap<BlockVec3, TileEntityOxygenSealer> ret = new HashMap<>();
 
-        for (TileEntityOxygenSealer tile : new ArrayList<TileEntityOxygenSealer>(TileEntityOxygenSealer.loadedTiles))
+        for (TileEntityOxygenSealer tile : new ArrayList<>(TileEntityOxygenSealer.loadedTiles))
         {
             if (tile != null && tile.getWorld() == world && tile.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < rSquared)
             {

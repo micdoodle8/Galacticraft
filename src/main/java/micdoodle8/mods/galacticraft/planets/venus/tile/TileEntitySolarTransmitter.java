@@ -147,9 +147,9 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
 
                 if (tileEntity != null)
                 {
-                    if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && ((INetworkProvider) tileEntity).hasNetwork())
+                    if (tileEntity.getClass() == this.getClass() && ((INetworkProvider) tileEntity).hasNetwork())
                     {
-                        if (!(tileEntity instanceof ITransmitter) || (((ITransmitter) tileEntity).canConnect(side.getOpposite(), ((ITransmitter) tileEntity).getNetworkType())))
+                        if (((ITransmitter) tileEntity).canConnect(side.getOpposite(), ((ITransmitter) tileEntity).getNetworkType()))
                         {
                             if (!this.hasNetwork())
                             {

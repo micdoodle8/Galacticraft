@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tick;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -12,15 +11,15 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.*;
+import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
+import micdoodle8.mods.galacticraft.core.client.GCParticles;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiTeleporting;
 import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
-import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -38,15 +37,11 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -57,7 +52,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
@@ -130,7 +124,7 @@ public class TickHandlerClient
 
     private static ThreadRequirementMissing missingRequirementThread;
 
-    public static HashSet<TileEntityScreen> screenConnectionsUpdateList = new HashSet<TileEntityScreen>();
+    public static final HashSet<TileEntityScreen> screenConnectionsUpdateList = new HashSet<>();
 
     static
     {
@@ -264,7 +258,7 @@ public class TickHandlerClient
                 // TODO Overlays
             }
 
-            if (playerBaseClient != null && player.world.getDimension() instanceof IGalacticraftDimension && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()))
+            if (player.world.getDimension() instanceof IGalacticraftDimension && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()))
             {
                 OverlayOxygenWarning.renderOxygenWarningOverlay(TickHandlerClient.tickCount);
             }
@@ -315,8 +309,9 @@ public class TickHandlerClient
 
         if (event.phase == TickEvent.Phase.START && player != null)
         {
-            if (ClientProxyCore.playerHead == null && player.getGameProfile() != null)
+            if (ClientProxyCore.playerHead == null)
             {
+                player.getGameProfile();
                 Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(player.getGameProfile());
 
                 if (map.containsKey(Type.SKIN))
@@ -458,7 +453,7 @@ public class TickHandlerClient
 
             if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
             {
-//                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.posX, (int) player.posY, (int) player.posZ); TODO Gui
+//                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ()); TODO Gui
                 TickHandlerClient.spaceRaceGuiScheduled = false;
             }
 
@@ -485,11 +480,11 @@ public class TickHandlerClient
                 if (world.getDimension() instanceof OverworldDimension)
                 {
 //                    if (world.getDimension().getSkyRenderer() == null && inSpaceShip &&
-//                            player.getRidingEntity().posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+//                            player.getRidingEntity().getPosY() > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
 //                    {
 //                        world.getDimension().setSkyRenderer(new SkyProviderOverworld());
 //                    }
-//                    else if (world.getDimension().getSkyRenderer() instanceof SkyProviderOverworld && player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+//                    else if (world.getDimension().getSkyRenderer() instanceof SkyProviderOverworld && player.getPosY() <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
 //                    {
 //                        world.getDimension().setSkyRenderer(null);
 //                    }  TODO Sky rendering
@@ -681,22 +676,22 @@ public class TickHandlerClient
 //        float f5 = (par6 >> 16 & 255) / 255.0F;
 //        float f6 = (par6 >> 8 & 255) / 255.0F;
 //        float f7 = (par6 & 255) / 255.0F;
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GL11.glEnable(GL11.GL_BLEND);
-//        GL11.glDisable(GL11.GL_ALPHA_TEST);
-//        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-//        GL11.glShadeModel(GL11.GL_SMOOTH);
+//        RenderSystem.disableTexture();
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+//        RenderSystem.shadeModel(7425);
 //        Tessellator tessellator = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tessellator.getBuffer();
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 //        worldRenderer.pos(par3, par2, 0.0D).color(f1, f2, f3, f).endVertex();
 //        worldRenderer.pos(par1, par2, 0.0D).color(f1, f2, f3, f).endVertex();
 //        worldRenderer.pos(par1, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
 //        worldRenderer.pos(par3, par4, 0.0D).color(f5, f6, f7, f4).endVertex();
 //        tessellator.draw();
-//        GL11.glShadeModel(GL11.GL_FLAT);
-//        GL11.glDisable(GL11.GL_BLEND);
-//        GL11.glEnable(GL11.GL_ALPHA_TEST);
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//        RenderSystem.shadeModel(7424);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enableTexture();
 //    }
 }

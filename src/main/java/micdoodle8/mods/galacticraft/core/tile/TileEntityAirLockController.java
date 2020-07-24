@@ -71,18 +71,18 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
                 switch (this.playerDistanceSelection)
                 {
-                case 0:
-                    distance = 1.0F;
-                    break;
-                case 1:
-                    distance = 2.0F;
-                    break;
-                case 2:
-                    distance = 5.0F;
-                    break;
-                case 3:
-                    distance = 10.0F;
-                    break;
+                    case 0:
+                        distance = 1.0F;
+                        break;
+                    case 1:
+                        distance = 2.0F;
+                        break;
+                    case 2:
+                        distance = 5.0F;
+                        break;
+                    case 3:
+                        distance = 10.0F;
+                        break;
                 }
 
                 Vector3 minPos = new Vector3(this).translate(0.5F - distance);

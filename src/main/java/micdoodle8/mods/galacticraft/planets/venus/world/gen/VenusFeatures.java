@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.*;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
@@ -18,14 +17,14 @@ public class VenusFeatures
     public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, Constants.MOD_ID_PLANETS);
 
     public static final RegistryObject<MapGenDungeonVenus> VENUS_DUNGEON = register("venus_dungeon", () -> new MapGenDungeonVenus(DungeonConfigurationVenus::deserialize));
-    public static IStructurePieceType CVENUS_DUNGEON_START = DungeonStartVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_CORRIDOR = CorridorVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_EMPTY = RoomEmptyVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_BOSS = RoomBossVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_TREASURE = RoomTreasureVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_SPAWNER = RoomSpawnerVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_CHEST = RoomChestVenus::new;
-    public static IStructurePieceType CVENUS_DUNGEON_ENTRANCE = RoomEntranceVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_START = DungeonStartVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_CORRIDOR = CorridorVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_EMPTY = RoomEmptyVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_BOSS = RoomBossVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_TREASURE = RoomTreasureVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_SPAWNER = RoomSpawnerVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_CHEST = RoomChestVenus::new;
+    public static final IStructurePieceType CVENUS_DUNGEON_ENTRANCE = RoomEntranceVenus::new;
 
     public static void registerFeatures(RegistryEvent.Register<Feature<?>> event)
     {

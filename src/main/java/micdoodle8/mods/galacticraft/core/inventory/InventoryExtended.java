@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
@@ -225,9 +224,9 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //
 //        if (mc != null && mc.getRenderViewEntity() != null && mc.particles != null)
 //        {
-//            final double dPosX = mc.getRenderViewEntity().posX - position.x;
-//            final double dPosY = mc.getRenderViewEntity().posY - position.y;
-//            final double dPosZ = mc.getRenderViewEntity().posZ - position.z;
+//            final double dPosX = mc.getRenderViewEntity().getPosX() - position.x;
+//            final double dPosY = mc.getRenderViewEntity().getPosY() - position.y;
+//            final double dPosZ = mc.getRenderViewEntity().getPosZ() - position.z;
 //            Particle particle = null;
 //            final double maxDistSqrd = 64.0D;
 //
@@ -260,12 +259,12 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         switch (gui)
         {
-        case 0:
-            Minecraft.getInstance().displayGuiScreen(new GuiSlimeling(slimeling));
-            break;
-        case 1:
-            Minecraft.getInstance().displayGuiScreen(new GuiSlimelingFeed(slimeling));
-            break;
+            case 0:
+                Minecraft.getInstance().displayGuiScreen(new GuiSlimeling(slimeling));
+                break;
+            case 1:
+                Minecraft.getInstance().displayGuiScreen(new GuiSlimelingFeed(slimeling));
+                break;
         }
     }
 

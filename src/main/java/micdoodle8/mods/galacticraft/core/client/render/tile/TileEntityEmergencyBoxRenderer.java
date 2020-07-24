@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.tile;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.blocks.BlockEmergencyBox;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityEmergencyBox;
@@ -160,8 +160,8 @@
 //        {
 //            return;
 //        }
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 //
 //        flapA.angle = emergencyBox.getAngleA(partialTicks);
 //        flapB.angle = emergencyBox.getAngleB(partialTicks);
@@ -171,39 +171,39 @@
 //
 //        if (height > 0F && b.get(BlockEmergencyBox.KIT))
 //        {
-//            GlStateManager.pushMatrix();
+//            RenderSystem.pushMatrix();
 //            this.bindTexture(packTexture);
 //            this.pack.render(height);
-//            GlStateManager.rotatef(180F, 1F, 0F, 0F);
+//            RenderSystem.rotatef(180F, 1F, 0F, 0F);
 //            this.bindTexture(oxygenMaskTexture);
-//            GlStateManager.translatef(0.0F, 0.0F, -0.07F);
+//            RenderSystem.translatef(0.0F, 0.0F, -0.07F);
 //            this.mask.render(-height);
 //            this.bindTexture(oxygenTankTexture);
-//            GlStateManager.translatef(0.1F, 0.11F, 0.3F);
+//            RenderSystem.translatef(0.1F, 0.11F, 0.3F);
 //            this.tank.render(-height);
-//            GlStateManager.translatef(-0.2F, 0F, 0F);
+//            RenderSystem.translatef(-0.2F, 0F, 0F);
 //            this.tank.render(-height);
-//            GlStateManager.popMatrix();
+//            RenderSystem.popMatrix();
 //        }
 //
 //        this.bindTexture(boxTexture);
 //        this.plat.render(height);
 //        this.bindTexture(flapTexture);
 //        this.flapA.render();
-//        GlStateManager.rotatef(90F, 0, 1F, 0F);
+//        RenderSystem.rotatef(90F, 0, 1F, 0F);
 //        this.flapB.render();
-//        GlStateManager.rotatef(90F, 0, 1F, 0F);
+//        RenderSystem.rotatef(90F, 0, 1F, 0F);
 //        this.flapC.render();
-//        GlStateManager.rotatef(90F, 0, 1F, 0F);
+//        RenderSystem.rotatef(90F, 0, 1F, 0F);
 //        this.flapD.render();
-//        GlStateManager.rotatef(180F, 1F, 0F, 0F);
+//        RenderSystem.rotatef(180F, 1F, 0F, 0F);
 //        this.flapB.render();
-//        GlStateManager.rotatef(90F, 0, 1F, 0F);
+//        RenderSystem.rotatef(90F, 0, 1F, 0F);
 //        this.flapA.render();
-//        GlStateManager.rotatef(90F, 0, 1F, 0F);
+//        RenderSystem.rotatef(90F, 0, 1F, 0F);
 //        this.flapD.render();
-//        GlStateManager.rotatef(90F, 0, 1F, 0F);
+//        RenderSystem.rotatef(90F, 0, 1F, 0F);
 //        this.flapC.render();
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

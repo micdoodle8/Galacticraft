@@ -18,7 +18,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidBlockNames.beamReflector)
     public static TileEntityType<TileEntityBeamReflector> TYPE;
 
-    public Vector3 color = new Vector3(0, 1, 0);
+    public final Vector3 color = new Vector3(0, 1, 0);
     private final EnergyStorage storage = new EnergyStorage(10, 1);
 
 //    @Override

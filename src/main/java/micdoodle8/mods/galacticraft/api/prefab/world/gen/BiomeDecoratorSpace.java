@@ -35,9 +35,9 @@
 //        {
 //            this.setCurrentWorld(world);
 //            this.rand = random;
-//            this.posX = posX;
-//            this.posZ = posZ;
-//            BlockPos pos = new BlockPos(this.posX, 0, this.posZ);
+//            this.getPosX() = posX;
+//            this.getPosZ() = posZ;
+//            BlockPos pos = new BlockPos(this.getPosX(), 0, this.getPosZ());
 //            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(world, this.rand, pos));
 //            this.decorate();
 //            MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(world, this.rand, pos));
@@ -55,9 +55,9 @@
 //        World currentWorld = this.getCurrentWorld();
 //		for (int var5 = 0; var5 < amountPerChunk; ++var5)
 //        {
-//            final int var6 = this.posX + this.rand.nextInt(16);
+//            final int var6 = this.getPosX() + this.rand.nextInt(16);
 //            final int var7 = this.rand.nextInt(maxY - minY) + minY;
-//            final int var8 = this.posZ + this.rand.nextInt(16);
+//            final int var8 = this.getPosZ() + this.rand.nextInt(16);
 //            worldGenerator.generate(currentWorld, this.rand, new BlockPos(var6, var7, var8));
 //        }
 //    }

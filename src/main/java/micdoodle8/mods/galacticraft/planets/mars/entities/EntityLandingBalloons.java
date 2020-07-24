@@ -3,13 +3,9 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
-import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +17,7 @@ import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -178,10 +175,6 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     @Override
     public boolean pressKey(int key)
     {
-        if (this.onGround)
-        {
-            return false;
-        }
 
 //        switch (key)
 //        {
@@ -278,7 +271,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     }
 
     @Override
-    public Vector3D getMotionVec()
+    public Vec3d getMotionVec()
     {
         if (this.onGround)
         {
@@ -292,7 +285,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
                 mX *= mag / 3.0D;
                 mY *= mag;
                 mZ *= mag / 3.0D;
-                return new Vector3D(mX, mY, mZ);
+                return new Vec3d(mX, mY, mZ);
             }
         }
 
@@ -304,17 +297,16 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
 
         if (!this.shouldMove())
         {
-            return new Vector3D(0, 0, 0);
+            return new Vec3d(0, 0, 0);
         }
 
-        return new Vector3D(this.getMotion().x, this.ticks < 40 ? 0 : this.getMotion().y, this.getMotion().z);
+        return new Vec3d(this.getMotion().x, this.ticks < 40 ? 0 : this.getMotion().y, this.getMotion().z);
     }
 
     @Override
     public ArrayList<Object> getNetworkedData()
     {
-        ArrayList<Object> objList = new ArrayList<Object>();
-        objList.addAll(super.getNetworkedData());
+        ArrayList<Object> objList = new ArrayList<>(super.getNetworkedData());
         if ((this.world.isRemote && this.hasReceivedPacket && this.groundHitCount <= 14) || (!this.world.isRemote && this.groundHitCount == 14))
         {
             objList.add(this.groundHitCount);

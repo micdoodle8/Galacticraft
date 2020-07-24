@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.planets.venus.client;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import net.minecraft.client.Minecraft;
@@ -63,14 +63,14 @@
 //
 //            Tessellator tessellator = Tessellator.getInstance();
 //            BufferBuilder worldrenderer = tessellator.getBuffer();
-//            GlStateManager.disableCull();
-//            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-//            GlStateManager.enableBlend();
-//            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-//            GlStateManager.alphaFunc(516, 0.1F);
-//            double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-//            double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-//            double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+//            RenderSystem.disableCull();
+//            RenderSystem.Normal3f(0.0F, 1.0F, 0.0F);
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+//            RenderSystem.alphaFunc(516, 0.1F);
+//            double d0 = entity.lastTickPosX + (entity.getPosX() - entity.lastTickPosX) * (double) partialTicks;
+//            double d1 = entity.lastTickPosY + (entity.getPosY() - entity.lastTickPosY) * (double) partialTicks;
+//            double d2 = entity.lastTickPosZ + (entity.getPosZ() - entity.lastTickPosZ) * (double) partialTicks;
 //            int l = MathHelper.floor(d1);
 //
 //            int r = 4;
@@ -81,12 +81,12 @@
 //
 //            int drawFlag = -1;
 //            worldrenderer.setTranslation(-d0, -d1, -d2);
-//            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //            BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-//            int px = MathHelper.floor(entity.posX);
-//            int py = MathHelper.floor(entity.posY);
-//            int pz = MathHelper.floor(entity.posZ);
+//            int px = MathHelper.floor(entity.getPosX());
+//            int py = MathHelper.floor(entity.getPosY());
+//            int pz = MathHelper.floor(entity.getPosZ());
 //
 //            for (int z = pz - r; z <= pz + r; ++z)
 //            {
@@ -136,8 +136,8 @@
 //                        double dz = (double) this.rainYCoords[index] * 0.5D;
 //                        double dy = -((double) (rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + (double) partialTicks) / 80.0D * (3.0D + this.random.nextDouble());
 //                        double yo = this.random.nextDouble() / 1.8D;
-//                        double xx = x + 0.5D - entity.posX;
-//                        double zz = z + 0.5D - entity.posZ;
+//                        double xx = x + 0.5D - entity.getPosX();
+//                        double zz = z + 0.5D - entity.getPosZ();
 //                        float rr = MathHelper.sqrt(xx * xx + zz * zz) / r;
 //                        float alpha = ((1.0F - rr * rr) * 0.5F + 0.5F) * strength / 0.6F;  //0.6F is the max rainstrength on Venus
 //                        mutablePos.setPos(x, yBase, z);
@@ -160,9 +160,9 @@
 //            }
 //
 //            worldrenderer.setTranslation(0.0D, 0.0D, 0.0D);
-//            GlStateManager.enableCull();
-//            GlStateManager.disableBlend();
-//            GlStateManager.alphaFunc(516, 0.1F);
+//            RenderSystem.enableCull();
+//            RenderSystem.disableBlend();
+//            RenderSystem.alphaFunc(516, 0.1F);
 //            mc.gameRenderer.disableLightmap();
 //        }
 //    }

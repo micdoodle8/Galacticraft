@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 
@@ -14,10 +13,10 @@ public class FakeLightningBoltRenderer
     {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldrenderer = tessellator.getBuffer();
-        GlStateManager.disableTexture();
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        RenderSystem.disableTexture();
+        RenderSystem.disableLighting();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(770, 1);
         double[] adouble = new double[8];
         double[] adouble1 = new double[8];
         double d0 = 0.0D;
@@ -122,9 +121,9 @@ public class FakeLightningBoltRenderer
             }
         }
 
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.disableBlend();
-        GlStateManager.enableLighting();
-        GlStateManager.enableTexture();
+        RenderSystem.blendFunc(770, 771);
+        RenderSystem.disableBlend();
+        RenderSystem.enableLighting();
+        RenderSystem.enableTexture();
     }
 }

@@ -259,11 +259,11 @@ public class GCItems
         register(r, new ItemOxygenTank(2, defaultBuilder().maxDamage(1800)), ItemNames.oxTankMedium);
         register(r, new ItemOxygenTank(3, defaultBuilder().maxDamage(2700)), ItemNames.oxTankHeavy);
         register(r, new ItemOxygenMask(defaultBuilder().maxStackSize(1)), ItemNames.oxMask);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOne);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCargo1);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCargo2);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCargo3);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCreative);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxStackSize(1)), ItemNames.rocketTierOne);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxStackSize(1)), ItemNames.rocketTierOneCargo1);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxStackSize(1)), ItemNames.rocketTierOneCargo2);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxStackSize(1)), ItemNames.rocketTierOneCargo3);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxStackSize(1)), ItemNames.rocketTierOneCreative);
         register(r, new ItemSensorGlasses(defaultBuilder()), ItemNames.sensorGlasses);
         register(r, new ItemPickaxeGC(defaultBuilder()), ItemNames.steelPickaxe);
         register(r, new ItemAxeGC(defaultBuilder()), ItemNames.steelAxe);
@@ -287,29 +287,29 @@ public class GCItems
         register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggyInventory1);
         register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggyInventory2);
         register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggyInventory3);
-        register(r, new ItemFlag(defaultBuilder().maxDamage(0)), ItemNames.flag);
+        register(r, new ItemFlag(defaultBuilder()), ItemNames.flag);
         register(r, new ItemOxygenGear(defaultBuilder()), ItemNames.oxygenGear);
         register(r, new ItemBase(defaultBuilder()), ItemNames.canvas);
         register(r, new ItemOilCanister(defaultBuilder()), ItemNames.oilCanister);
         register(r, new ItemFuelCanister(defaultBuilder()), ItemNames.fuelCanister);
         register(r, new ItemCanisterOxygenInfinite(defaultBuilder()), ItemNames.oxygenCanisterInfinite);
         register(r, new ItemBase(defaultBuilder()), ItemNames.flagPole);
-        register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicBuggy);
-        register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicRocketT2);
+        register(r, new ItemSchematic(defaultBuilder().maxStackSize(1)), ItemNames.schematicBuggy);
+        register(r, new ItemSchematic(defaultBuilder().maxStackSize(1)), ItemNames.schematicRocketT2);
         register(r, new ItemKey(defaultBuilder()), ItemNames.key);
 //        register(r, new ItemFood(defaultBuilder()), ItemNames.foodItem);
         register(r, new ItemBattery(defaultBuilder().maxDamage(ItemElectricBase.DAMAGE_RANGE)), ItemNames.battery);
         register(r, new ItemBatteryInfinite(defaultBuilder()), ItemNames.infiniteBatery);
         register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunk);
         register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunkHot);
-        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256).maxStackSize(1)), ItemNames.wrench);
+        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256)), ItemNames.wrench);
         register(r, new Item(defaultBuilder().food((new Food.Builder()).hunger(1).saturation(0.1F).fastToEat().build())), ItemNames.cheeseCurd);
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         register(r, new ItemBase(defaultBuilder()), ItemNames.meteoricIronRaw);
         register(r, new ItemPreLaunchChecklist(defaultBuilder()), ItemNames.prelaunchChecklist);
         register(r, new ItemBase(defaultBuilder()), ItemNames.dungeonFinder);
 //        register(r, new ItemIC2Compat(defaultBuilder()), ItemNames.ic2compat); TODO
-        register(r, new ItemEmergencyKit(defaultBuilder().maxDamage(0)), ItemNames.emergencyKit);
+        register(r, new ItemEmergencyKit(defaultBuilder()), ItemNames.emergencyKit);
         register(r, new ItemBase(defaultBuilder()), ItemNames.solarModule0);
         register(r, new ItemBase(defaultBuilder()), ItemNames.solarModule1);
         register(r, new ItemBase(defaultBuilder()), ItemNames.rawSilicon);
@@ -345,7 +345,7 @@ public class GCItems
         register(r, new ItemBase(defaultBuilder()), ItemNames.ingotMeteoricIron);
         register(r, new ItemBase(defaultBuilder()), ItemNames.compressedMeteoricIron);
         register(r, new ItemBase(defaultBuilder()), ItemNames.lunarSapphire);
-        Item.Properties parachuteProps = defaultBuilder().maxDamage(0).maxStackSize(1);
+        Item.Properties parachuteProps = defaultBuilder().maxStackSize(1);
         register(r, new ItemParaChute(DyeColor.WHITE, parachuteProps), ItemNames.parachutePlain);
         register(r, new ItemParaChute(DyeColor.BLACK, parachuteProps), ItemNames.parachuteBlack);
         register(r, new ItemParaChute(DyeColor.LIGHT_BLUE, parachuteProps), ItemNames.parachuteBlue);
@@ -362,8 +362,6 @@ public class GCItems
         register(r, new ItemParaChute(DyeColor.RED, parachuteProps), ItemNames.parachuteRed);
         register(r, new ItemParaChute(DyeColor.CYAN, parachuteProps), ItemNames.parachuteTeal);
         register(r, new ItemParaChute(DyeColor.YELLOW, parachuteProps), ItemNames.parachuteYellow);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketEngineT1);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketBoosterT1);
 
 //        GCItems.registerHarvestLevels();
 //

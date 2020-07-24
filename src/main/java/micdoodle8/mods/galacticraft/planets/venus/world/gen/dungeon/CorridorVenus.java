@@ -6,7 +6,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
@@ -79,7 +78,7 @@ public class CorridorVenus extends SizedPieceVenus
                             (this.getDirection().getAxis() == Direction.Axis.X && (k == 0 || k == this.boundingBox.getZSize() - 1)))
                     {
                         DungeonConfigurationVenus venusConfig = this.configuration;
-                        this.setBlockState(worldIn, j == 0 || j == this.boundingBox.getYSize() - 1 ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, this.boundingBox);
+                        this.setBlockState(worldIn, j == this.boundingBox.getYSize() - 1 ? venusConfig.getBrickBlockFloor() : this.configuration.getBrickBlock(), i, j, k, this.boundingBox);
                     }
                     else
                     {

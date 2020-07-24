@@ -1,17 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCoalGenerator extends GuiContainerGC<ContainerCoalGenerator>
 {
@@ -23,7 +20,6 @@ public class GuiCoalGenerator extends GuiContainerGC<ContainerCoalGenerator>
     {
         super(container, playerInv, title);
 //        super(new ContainerCoalGenerator(playerInv, coalGenerator), playerInv, new TranslationTextComponent("tile.machine.0.name"));
-        this.coalGenerator = coalGenerator;
     }
 
     @Override
@@ -56,7 +52,7 @@ public class GuiCoalGenerator extends GuiContainerGC<ContainerCoalGenerator>
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         this.minecraft.textureManager.bindTexture(GuiCoalGenerator.COAL_GENERATOR_TEXTURE);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;

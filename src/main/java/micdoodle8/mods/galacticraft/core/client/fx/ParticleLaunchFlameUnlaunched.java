@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;

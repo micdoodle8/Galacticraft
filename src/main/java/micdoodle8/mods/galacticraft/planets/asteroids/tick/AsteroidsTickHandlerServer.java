@@ -11,9 +11,9 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,8 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class AsteroidsTickHandlerServer
 {
     public static ShortRangeTelepadHandler spaceRaceData = null;
-    public static List<EntityAstroMiner> activeMiners = new ArrayList<>();
-    public static AtomicBoolean loadingSavedChunks = new AtomicBoolean();
+    public static final List<EntityAstroMiner> activeMiners = new ArrayList<>();
+    public static final AtomicBoolean loadingSavedChunks = new AtomicBoolean();
     private static Field droppedChunks = null;
 
     public static void restart()
@@ -51,14 +51,9 @@ public class AsteroidsTickHandlerServer
 
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
-                World world = server.getWorld(DimensionType.OVERWORLD);
-                AsteroidsTickHandlerServer.spaceRaceData = ((ServerWorld) world).getSavedData().getOrCreate(() -> new ShortRangeTelepadHandler(ShortRangeTelepadHandler.saveDataID), ShortRangeTelepadHandler.saveDataID);
+                ServerWorld world = server.getWorld(DimensionType.OVERWORLD);
+                AsteroidsTickHandlerServer.spaceRaceData = world.getSavedData().getOrCreate(() -> new ShortRangeTelepadHandler(ShortRangeTelepadHandler.saveDataID), ShortRangeTelepadHandler.saveDataID);
 
-                if (AsteroidsTickHandlerServer.spaceRaceData == null)
-                {
-                    AsteroidsTickHandlerServer.spaceRaceData = new ShortRangeTelepadHandler(ShortRangeTelepadHandler.saveDataID);
-                    ((ServerWorld) world).getSavedData().set(AsteroidsTickHandlerServer.spaceRaceData);
-                }
             }
 
             int index = -1;
@@ -74,35 +69,32 @@ public class AsteroidsTickHandlerServer
                 if (miner.playerMP != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(miner.playerMP);
-                    if (stats != null)
+                    List<BlockVec3> list = stats.getActiveAstroMinerChunks();
+                    boolean inListAlready = false;
+                    Iterator<BlockVec3> it = list.iterator();
+                    while (it.hasNext())
                     {
-                        List<BlockVec3> list = stats.getActiveAstroMinerChunks();
-                        boolean inListAlready = false;
-                        Iterator<BlockVec3> it = list.iterator();
-                        while (it.hasNext())
+                        BlockVec3 data = it.next();
+                        if (data.sideDoneBits == index)  //SideDoneBits won't be saved to NBT, but during an active server session we can use it as a cross-reference to the index here - it's a 4th data int hidden inside a BlockVec3
                         {
-                            BlockVec3 data = it.next();
-                            if (data.sideDoneBits == index)  //SideDoneBits won't be saved to NBT, but during an active server session we can use it as a cross-reference to the index here - it's a 4th data int hidden inside a BlockVec3
+                            if (!miner.isAlive())
                             {
-                                if (!miner.isAlive())
-                                {
-                                    it.remove();  //Player stats should not save position of dead AstroMiner entity (probably broken by player deliberately breaking it)
-                                }
-                                else
-                                {
-                                    data.x = miner.chunkCoordX;
-                                    data.z = miner.chunkCoordZ;
-                                }
-                                inListAlready = true;
-                                break;
+                                it.remove();  //Player stats should not save position of dead AstroMiner entity (probably broken by player deliberately breaking it)
                             }
+                            else
+                            {
+                                data.x = miner.chunkCoordX;
+                                data.z = miner.chunkCoordZ;
+                            }
+                            inListAlready = true;
+                            break;
                         }
-                        if (!inListAlready)
-                        {
-                            BlockVec3 data = new BlockVec3(miner.chunkCoordX, miner.dimension.getId(), miner.chunkCoordZ);
-                            data.sideDoneBits = index;
-                            list.add(data);
-                        }
+                    }
+                    if (!inListAlready)
+                    {
+                        BlockVec3 data = new BlockVec3(miner.chunkCoordX, miner.dimension.getId(), miner.chunkCoordZ);
+                        data.sideDoneBits = index;
+                        list.add(data);
                     }
                 }
 
@@ -146,7 +138,7 @@ public class AsteroidsTickHandlerServer
                     {
                         if (droppedChunks == null)
                         {
-                            Class clazz = ((ServerWorld) miner.world).getChunkProvider().getClass();
+                            Class<? extends ServerChunkProvider> clazz = ((ServerWorld) miner.world).getChunkProvider().getClass();
                             droppedChunks = clazz.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "droppedChunksSet" : "field_73248_b");
                             droppedChunks.setAccessible(true);
                         }
@@ -202,8 +194,9 @@ public class AsteroidsTickHandlerServer
             for (BlockVec3 data : copyList)
             {
                 Dimension p = WorldUtil.getProviderForDimensionServer(DimensionType.getById(data.y));
-                if (p != null && p.getWorld() != null)
+                if (p != null)
                 {
+                    p.getWorld();
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
                     ServerWorld w = (ServerWorld) p.getWorld();
                     boolean previous = CompatibilityManager.forceLoadChunks(w);

@@ -2,25 +2,12 @@ package micdoodle8.mods.galacticraft.core.client.screen;
 
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
-import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
-import micdoodle8.mods.galacticraft.api.galaxies.*;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.dimension.Dimension;
-import net.minecraftforge.common.MinecraftForge;
-
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.DoubleBuffer;
 
@@ -113,12 +100,12 @@ public class GameScreenCelestial implements IGameScreen
 
 //    private void drawBlackBackground(float greyLevel)
 //    {
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//        RenderSystem.blendFunc(770, 771);
+//        RenderSystem.disableTexture();
 //        final Tessellator tess = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tess.getBuffer();
-//        GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//        RenderSystem.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //
 //        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
 //        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
@@ -126,8 +113,8 @@ public class GameScreenCelestial implements IGameScreen
 //        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
 //        tess.draw();
 //
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.enableTexture();
 //    }
 //
 //    private void drawCelestialBodies(CelestialBody body, float ticks)
@@ -202,7 +189,7 @@ public class GameScreenCelestial implements IGameScreen
 //    {
 //        Tessellator tessellator = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tessellator.getBuffer();
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(x, y + height, 0F).tex(0D, 1.0).endVertex();
 //        worldRenderer.pos(x + width, y + height, 0F).tex(1.0, 1.0).endVertex();
 //        worldRenderer.pos(x + width, y, 0F).tex(1.0, 0D).endVertex();
@@ -221,15 +208,15 @@ public class GameScreenCelestial implements IGameScreen
 //            return;
 //        }
 //
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef(xPos + centreX, yPos + centreY, 0F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(xPos + centreX, yPos + centreY, 0F);
 //
 //        float alpha = 1.0F;
 //
 //        CelestialBodyRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.Pre(planet, planet.getBodyIcon(), 12);
 //        MinecraftForge.EVENT_BUS.post(preEvent);
 //
-//        GL11.glColor4f(1, 1, 1, alpha);
+//        RenderSystem.color4f(1, 1, 1, alpha);
 //        if (preEvent.celestialBodyTexture != null)
 //        {
 //            this.textureManager.bindTexture(preEvent.celestialBodyTexture);
@@ -244,14 +231,14 @@ public class GameScreenCelestial implements IGameScreen
 //        CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(planet);
 //        MinecraftForge.EVENT_BUS.post(postEvent);
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    private void drawCircle(CelestialBody cBody)
 //    {
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef(centreX, centreY, 0.002F);
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(centreX, centreY, 0.002F);
+//        RenderSystem.disableTexture();
 //
 //        float sd = 0.002514F * scale;
 //        float x = this.getScale(cBody);
@@ -259,10 +246,10 @@ public class GameScreenCelestial implements IGameScreen
 //        float grey = 0.1F + 0.65F * Math.max(0F, (0.5F - x));
 //        x = x * scale / sd;
 //
-//        GL11.glColor4f(grey, grey, grey, 1.0F);
-//        GL11.glLineWidth(0.002F);
+//        RenderSystem.color4f(grey, grey, grey, 1.0F);
+//        RenderSystem.lineWidth(0.002F);
 //
-//        GL11.glScalef(sd, sd, sd);
+//        RenderSystem.scalef(sd, sd, sd);
 //        CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre(cBody, new Vector3(0.0F, 0.0F, 0.0F));
 //        MinecraftForge.EVENT_BUS.post(preEvent);
 //
@@ -286,8 +273,8 @@ public class GameScreenCelestial implements IGameScreen
 //        CelestialBodyRenderEvent.CelestialRingRenderEvent.Post postEvent = new CelestialBodyRenderEvent.CelestialRingRenderEvent.Post(cBody);
 //        MinecraftForge.EVENT_BUS.post(postEvent);
 //
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glPopMatrix();
+//        RenderSystem.enableTexture();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    private Vector3 getCelestialBodyPosition(CelestialBody cBody, float ticks)
@@ -327,12 +314,12 @@ public class GameScreenCelestial implements IGameScreen
 //
 //    private void drawPlanetsTest(float ticks)
 //    {
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef(centreX, centreY, 0F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(centreX, centreY, 0F);
 //
 //        int id = (int) (ticks / 600F) % 5;
 //        RenderPlanet.renderID(id, scale, ticks);
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    private void drawTexturedRectUV(float x, float y, float width, float height, float ticks)
@@ -360,13 +347,13 @@ public class GameScreenCelestial implements IGameScreen
 //        BufferBuilder worldRenderer = tessellator.getBuffer();
 //        if (prog <= 0.75F)
 //        {
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(x, yab, 0F).tex(prog, y1).endVertex();
 //            worldRenderer.pos(x + width, yab, 0F).tex(prog + 0.25F, y1).endVertex();
 //            worldRenderer.pos(x + width, yaa, 0F).tex(prog + 0.25F, y0).endVertex();
 //            worldRenderer.pos(x, yaa, 0F).tex(prog, y0).endVertex();
 //            tessellator.draw();
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(x, ybb, 0F).tex(prog, y3).endVertex();
 //            worldRenderer.pos(x + width, ybb, 0F).tex(prog + 0.25F, y3).endVertex();
 //            worldRenderer.pos(x + width, yba, 0F).tex(prog + 0.25F, y2).endVertex();
@@ -376,25 +363,25 @@ public class GameScreenCelestial implements IGameScreen
 //        else
 //        {
 //            double xp = x + width * (1F - prog) / 0.25F;
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(x, yab, 0F).tex(prog, y1).endVertex();
 //            worldRenderer.pos(xp, yab, 0F).tex(1.0F, y1).endVertex();
 //            worldRenderer.pos(xp, yaa, 0F).tex(1.0F, y0).endVertex();
 //            worldRenderer.pos(x, yaa, 0F).tex(prog, y0).endVertex();
 //            tessellator.draw();
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(x, ybb, 0F).tex(prog, y3).endVertex();
 //            worldRenderer.pos(xp, ybb, 0F).tex(1.0F, y3).endVertex();
 //            worldRenderer.pos(xp, yba, 0F).tex(1.0F, y2).endVertex();
 //            worldRenderer.pos(x, yba, 0F).tex(prog, y2).endVertex();
 //            tessellator.draw();
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(xp, yab, 0F).tex(0F, y1).endVertex();
 //            worldRenderer.pos(x + width, yab, 0F).tex(prog - 0.75F, y1).endVertex();
 //            worldRenderer.pos(x + width, yaa, 0F).tex(prog - 0.75F, y0).endVertex();
 //            worldRenderer.pos(xp, yaa, 0F).tex(0F, y0).endVertex();
 //            tessellator.draw();
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(xp, ybb, 0F).tex(0F, y3).endVertex();
 //            worldRenderer.pos(x + width, ybb, 0F).tex(prog - 0.75F, y3).endVertex();
 //            worldRenderer.pos(x + width, yba, 0F).tex(prog - 0.75F, y2).endVertex();

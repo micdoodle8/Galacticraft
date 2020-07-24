@@ -9,9 +9,9 @@ import javax.annotation.Nonnull;
 
 public class FluidHandlerWrapper implements IFluidHandler
 {
-    public IFluidHandlerWrapper wrapper;
+    public final IFluidHandlerWrapper wrapper;
 
-    public Direction side;
+    public final Direction side;
 
     public FluidHandlerWrapper(IFluidHandlerWrapper w, Direction s)
     {

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
@@ -24,8 +24,8 @@ public class OverlayLander extends Overlay
             int height = (int) (mc.mouseHelper.getMouseY() * (double) mc.getMainWindow().getScaledHeight() / (double) mc.getMainWindow().getHeight());
 //        mc.entityRenderer.setupOverlayRendering();
 
-            GlStateManager.pushMatrix();
-            GlStateManager.scalef(2.0F, 2.0F, 0.0F);
+            RenderSystem.pushMatrix();
+            RenderSystem.scalef(2.0F, 2.0F, 0.0F);
 
             if (mc.player.getRidingEntity().getMotion().y < -2.0)
             {
@@ -36,7 +36,7 @@ public class OverlayLander extends Overlay
                 mc.fontRenderer.drawString(press1 + KeyHandlerClient.spaceKey.getLocalizedName() + press2, width / 4.0F - mc.fontRenderer.getStringWidth(press1 + KeyHandlerClient.spaceKey.getLocalizedName() + press2) / 2.0F, height / 8.0F, ColorUtil.to32BitColor(alpha, alpha, alpha, alpha));
             }
 
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
 
             if (mc.player.getRidingEntity().getMotion().y != 0.0D)
             {

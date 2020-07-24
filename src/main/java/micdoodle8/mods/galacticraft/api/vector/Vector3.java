@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
-import com.sun.javafx.geom.Vec3f;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,7 +10,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -72,9 +70,9 @@ public class Vector3 implements Cloneable
         this((float) par1.x, (float) par1.y, (float) par1.z);
     }
 
-    public Vector3(Vec3f par1)
+    public Vector3(Vec3i par1)
     {
-        this(par1.x, par1.y, par1.z);
+        this(par1.getX(), par1.getY(), par1.getZ());
     }
 
     public Vector3(RayTraceResult par1)
@@ -736,7 +734,7 @@ public class Vector3 implements Cloneable
         List<Entity> entitiesHit = world.getEntitiesWithinAABBExcludingEntity(null, boxToScan);
         float closestEntity = reachDistance;
 
-        if (entitiesHit == null || entitiesHit.isEmpty())
+        if (entitiesHit.isEmpty())
         {
             return null;
         }

@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -17,10 +17,10 @@ import java.util.function.Supplier;
 public class PacketEntityUpdate extends PacketBase
 {
     private int entityID;
-    private Vector3D position;
+    private Vec3d position;
     private float rotationYaw;
     private float rotationPitch;
-    private Vector3D motion;
+    private Vec3d motion;
     private boolean onGround;
 
     public PacketEntityUpdate()
@@ -28,7 +28,7 @@ public class PacketEntityUpdate extends PacketBase
         super();
     }
 
-    public PacketEntityUpdate(int entityID, Vector3D position, Vector2 rotation, Vector3D motion, boolean onGround, DimensionType dimID)
+    public PacketEntityUpdate(int entityID, Vec3d position, Vector2 rotation, Vec3d motion, boolean onGround, DimensionType dimID)
     {
         super(dimID);
         this.entityID = entityID;
@@ -41,7 +41,7 @@ public class PacketEntityUpdate extends PacketBase
 
     public PacketEntityUpdate(Entity entity)
     {
-        this(entity.getEntityId(), new Vector3D(entity.getPosX(), entity.getPosY(), entity.getPosZ()), new Vector2(entity.rotationYaw, entity.rotationPitch), new Vector3D(entity.getMotion()), entity.onGround, GCCoreUtil.getDimensionType(entity.world));
+        this(entity.getEntityId(), new Vec3d(entity.getPosX(), entity.getPosY(), entity.getPosZ()), new Vector2(entity.rotationYaw, entity.rotationPitch), entity.getMotion(), entity.onGround, GCCoreUtil.getDimensionType(entity.world));
     }
 
     public static void encode(final PacketEntityUpdate message, final PacketBuffer buf)
@@ -93,10 +93,10 @@ public class PacketEntityUpdate extends PacketBase
     {
         super.decodeInto(buffer);
         this.entityID = buffer.readInt();
-        this.position = new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+        this.position = new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         this.rotationYaw = buffer.readFloat();
         this.rotationPitch = buffer.readFloat();
-        this.motion = new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+        this.motion = new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         this.onGround = buffer.readBoolean();
     }
 

@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
@@ -40,7 +40,7 @@
 //    @Override
 //    protected void preRenderCallback(EntityEvolvedSkeleton par1EntityLiving, float par2)
 //    {
-//        GL11.glScalef(1.2F, 1.2F, 1.2F);
+//        RenderSystem.scalef(1.2F, 1.2F, 1.2F);
 //        if (texSwitch)
 //        {
 //            OverlaySensorGlasses.preRenderMobs();
@@ -64,11 +64,11 @@
 //    @Override
 //    protected void applyRotations(EntityEvolvedSkeleton skellie, float pitch, float yaw, float partialTicks)
 //    {
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-//        GL11.glTranslatef(0F, -skellie.getHeight() * 0.55F, 0F);
-//        GL11.glRotatef(skellie.getTumbleAngle(partialTicks), skellie.getTumbleAxisX(), 0F, skellie.getTumbleAxisZ());
-//        GL11.glTranslatef(0F, skellie.getHeight() * 0.55F, 0F);
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.translatef(0F, -skellie.getHeight() * 0.55F, 0F);
+//        RenderSystem.rotatef(skellie.getTumbleAngle(partialTicks), skellie.getTumbleAxisX(), 0F, skellie.getTumbleAxisZ());
+//        RenderSystem.translatef(0F, skellie.getHeight() * 0.55F, 0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
 //        super.applyRotations(skellie, pitch, yaw, partialTicks);
 //    }
 //}

@@ -593,8 +593,8 @@
 //        if (deltaTheta != 0F)
 //        {
 //            float angle;
-//            final double xx = e.posX - rotationCentreX;
-//            final double zz = e.posZ - rotationCentreZ;
+//            final double xx = e.getPosX() - rotationCentreX;
+//            final double zz = e.getPosZ() - rotationCentreZ;
 //            double arc = Math.sqrt(xx * xx + zz * zz);
 //            if (xx == 0D)
 //            {
@@ -612,13 +612,13 @@
 //            arc = arc * deltaTheta;
 //            final double offsetX = -arc * MathHelper.sin(angle);
 //            final double offsetZ = arc * MathHelper.cos(angle);
-//            e.posX += offsetX;
-//            e.posZ += offsetZ;
+//            e.getPosX() += offsetX;
+//            e.getPosZ() += offsetZ;
 //            e.lastTickPosX += offsetX;
 //            e.lastTickPosZ += offsetZ;
 //
 //            //Rotated into an unloaded chunk (probably also drifted out to there): byebye
-//            if (!e.world.isBlockLoaded(new BlockPos(MathHelper.floor(e.posX), 64, MathHelper.floor(e.posZ))))
+//            if (!e.world.isBlockLoaded(new BlockPos(MathHelper.floor(e.getPosX()), 64, MathHelper.floor(e.getPosZ()))))
 //            {
 //                e.remove();
 //                return;
@@ -665,8 +665,8 @@
 //
 //            boolean doCentrifugal = false;
 //            float angle;
-//            final double xx = p.posX - this.spinCentreX;
-//            final double zz = p.posZ - this.spinCentreZ;
+//            final double xx = p.getPosX() - this.spinCentreX;
+//            final double zz = p.getPosZ() - this.spinCentreZ;
 //            double arc = Math.sqrt(xx * xx + zz * zz);
 //            if (xx == 0D)
 //            {
@@ -718,8 +718,8 @@
 //                }
 //                while (collisions > 0);
 //
-//                p.posX += offsetX;
-//                p.posZ += offsetZ;
+//                p.getPosX() += offsetX;
+//                p.getPosZ() += offsetZ;
 //                p.setBoundingBox(p.getBoundingBox().offset(offsetX, 0.0D, offsetZ));
 //            }
 //
@@ -744,8 +744,8 @@
 //    public void applyCentrifugalForce(ClientPlayerEntity p)
 //    {
 //        int quadrant = 0;
-//        double xd = p.posX - this.spinCentreX;
-//        double zd = p.posZ - this.spinCentreZ;
+//        double xd = p.getPosX() - this.spinCentreX;
+//        double zd = p.getPosZ() - this.spinCentreZ;
 //        double accel = Math.sqrt(xd * xd + zd * zd) * this.angularVelocityRadians * this.angularVelocityRadians * 4D;
 //
 //        if (xd < 0)

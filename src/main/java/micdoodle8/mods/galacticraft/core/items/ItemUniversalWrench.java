@@ -116,7 +116,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
 
         if (state.getBlock() instanceof BlockAdvanced)
         {
-            if (((BlockAdvanced) state.getBlock()).onUseWrench(context.getWorld(), context.getPos(), context.getPlayer(), context.getHand(), context.getItem(), new BlockRayTraceResult(context.getHitVec(), context.getFace(), context.getPos(), context.func_221533_k())))
+            if (((BlockAdvanced) state.getBlock()).onUseWrench(context.getWorld(), context.getPos(), context.getPlayer(), context.getHand(), context.getItem(), new BlockRayTraceResult(context.getHitVec(), context.getFace(), context.getPos(), context.isInside())) == ActionResultType.SUCCESS)
             {
                 return ActionResultType.SUCCESS;
             }

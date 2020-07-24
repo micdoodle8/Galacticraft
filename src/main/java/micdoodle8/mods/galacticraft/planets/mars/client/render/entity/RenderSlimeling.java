@@ -35,11 +35,11 @@
 //    {
 //        super.preRenderCallback(slimeling, par2);
 //
-//        GL11.glRotatef(180.0F, 0F, 1F, 0F);
+//        RenderSystem.rotatef(180.0F, 0F, 1F, 0F);
 //
-//        GL11.glColor3f(slimeling.getColorRed(), slimeling.getColorGreen(), slimeling.getColorBlue());
-//        GL11.glScalef(slimeling.getScale(), slimeling.getScale(), slimeling.getScale());
-//        GL11.glTranslatef(0.0F, 1.10F, 0.0F);
+//        RenderSystem.color3f(slimeling.getColorRed(), slimeling.getColorGreen(), slimeling.getColorBlue());
+//        RenderSystem.scalef(slimeling.getScale(), slimeling.getScale(), slimeling.getScale());
+//        RenderSystem.translatef(0.0F, 1.10F, 0.0F);
 //        if (texSwitch)
 //        {
 //            OverlaySensorGlasses.preRenderMobs();
@@ -65,7 +65,7 @@
 //        super.renderLayers(slimeling, p_177093_2_, p_177093_3_, partialTicks, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_);
 //
 //        //After rendering the slimeling, reset the color tint to none
-//        GL11.glColor3f(1F, 1F, 1F);
+//        RenderSystem.color3f(1F, 1F, 1F);
 //    }
 //
 ////    @Override
@@ -78,17 +78,17 @@
 ////        else if (par2 == 0)
 ////        {
 ////            this.setRenderPassModel(this.renderPassModel);
-////            GL11.glEnable(GL11.GL_NORMALIZE);
-////            GL11.glEnable(GL11.GL_BLEND);
-////            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+////            RenderSystem.enable(GL11.GL_NORMALIZE);
+////            RenderSystem.enableBlend();
+////            RenderSystem.blendFunc(770, 771);
 ////            return 1;
 ////        }
 ////        else
 ////        {
 ////            if (par2 == 1)
 ////            {
-////                GL11.glDisable(GL11.GL_BLEND);
-////                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+////                RenderSystem.disableBlend();
+////                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 ////            }
 ////
 ////            return -1;
@@ -126,8 +126,8 @@
 ////        }
 ////
 ////        super.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
-////        GL11.glDisable(GL11.GL_NORMALIZE);
-////        GL11.glDisable(GL11.GL_BLEND);
+////        RenderSystem.disable(GL11.GL_NORMALIZE);
+////        RenderSystem.disableBlend();
 ////    }
 ////
 ////    protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)
@@ -139,17 +139,17 @@
 ////            FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
 ////            float f = 1.6F;
 ////            float f1 = 0.016666668F * f;
-////            GL11.glPushMatrix();
-////            GL11.glTranslatef((float) par3 + 0.0F, (float) par5 + par1EntityLivingBase.height + 0.55F, (float) par7);
-////            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-////            GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-////            GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-////            GL11.glScalef(-f1, -f1, f1);
-////            GL11.glDisable(GL11.GL_LIGHTING);
-////            GL11.glDepthMask(false);
-////            GL11.glDisable(GL11.GL_DEPTH_TEST);
-////            GL11.glEnable(GL11.GL_BLEND);
-////            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+////            RenderSystem.pushMatrix();
+////            RenderSystem.translatef((float) par3 + 0.0F, (float) par5 + par1EntityLivingBase.height + 0.55F, (float) par7);
+////            RenderSystem.Normal3f(0.0F, 1.0F, 0.0F);
+////            RenderSystem.rotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+////            RenderSystem.rotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+////            RenderSystem.scalef(-f1, -f1, f1);
+////            RenderSystem.disableLighting();
+////            RenderSystem.depthMask(false);
+////            RenderSystem.disableDepthTest();
+////            RenderSystem.enableBlend();
+////            RenderSystem.blendFunc(770, 771);
 ////            Tessellator tessellator = Tessellator.instance;
 ////            byte b0 = 0;
 ////
@@ -158,7 +158,7 @@
 ////                b0 = -10;
 ////            }
 ////
-////            GL11.glDisable(GL11.GL_TEXTURE_2D);
+////            RenderSystem.disableTexture();
 ////            tessellator.startDrawingQuads();
 ////            int j = fontrenderer.getStringWidth(par2Str) / 2;
 ////            tessellator.setColorRGBA_F(cR, cG, cB, 0.25F);
@@ -167,15 +167,15 @@
 ////            tessellator.addVertex(j + 1, 8 + b0, 0.0D);
 ////            tessellator.addVertex(j + 1, -1 + b0, 0.0D);
 ////            tessellator.draw();
-////            GL11.glEnable(GL11.GL_TEXTURE_2D);
+////            RenderSystem.enableTexture();
 ////            fontrenderer.drawString(par2Str, -fontrenderer.getStringWidth(par2Str) / 2, b0, 553648127);
-////            GL11.glEnable(GL11.GL_DEPTH_TEST);
-////            GL11.glDepthMask(true);
+////            RenderSystem.enableDepthTest();
+////            RenderSystem.depthMask(true);
 ////            fontrenderer.drawString(par2Str, -fontrenderer.getStringWidth(par2Str) / 2, b0, -1);
-////            GL11.glEnable(GL11.GL_LIGHTING);
-////            GL11.glDisable(GL11.GL_BLEND);
-////            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-////            GL11.glPopMatrix();
+////            RenderSystem.enableLighting();
+////            RenderSystem.disableBlend();
+////            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+////            RenderSystem.popMatrix();
 ////        }
 ////    }
 //}

@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSlimelingEgg;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -47,16 +46,16 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileE
 
                 switch (color)
                 {
-                case RED:
-                    colorRed = 1.0F;
-                    break;
-                case BLUE:
-                    colorBlue = 1.0F;
-                    break;
-                case YELLOW:
-                    colorRed = 1.0F;
-                    colorGreen = 1.0F;
-                    break;
+                    case RED:
+                        colorRed = 1.0F;
+                        break;
+                    case BLUE:
+                        colorBlue = 1.0F;
+                        break;
+                    case YELLOW:
+                        colorRed = 1.0F;
+                        colorGreen = 1.0F;
+                        break;
                 }
 
                 EntitySlimeling slimeling = EntitySlimeling.createEntitySlimeling(this.world, colorRed, colorGreen, colorBlue);

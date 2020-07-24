@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 //
 //import com.google.common.collect.ImmutableList;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
@@ -38,27 +38,27 @@
 //    @Override
 //    public void render(TileEntityShortRangeTelepad tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage)
 //    {
-//        GL11.glPushMatrix();
+//        RenderSystem.pushMatrix();
 //
 //        RenderHelper.disableStandardItemLighting();
 //        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
-//        GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+//        RenderSystem.translatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 //
-//        GL11.glScalef(0.745F, 1.0F, 0.745F);
+//        RenderSystem.scalef(0.745F, 1.0F, 0.745F);
 //
 //        ClientUtil.drawBakedModel(teleporterBottom);
-//        GL11.glTranslatef(0.0F, -0.7F, 0.0F);
+//        RenderSystem.translatef(0.0F, -0.7F, 0.0F);
 //        ClientUtil.drawBakedModel(teleporterTop);
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

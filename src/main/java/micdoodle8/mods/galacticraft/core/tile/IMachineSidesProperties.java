@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides.Face;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.util.IStringSerializable;
+
+import java.util.function.Predicate;
 
 /**
  * Used to create the blockState property corresponding to the machine sides,
@@ -15,13 +15,13 @@ import net.minecraft.util.IStringSerializable;
  */
 public class IMachineSidesProperties
 {
-    public static IMachineSidesProperties NOT_CONFIGURABLE = new IMachineSidesProperties(MachineSidesModel.noneConfigurable(), Face.Horizontals);
+    public static final IMachineSidesProperties NOT_CONFIGURABLE = new IMachineSidesProperties(MachineSidesModel.noneConfigurable(), Face.Horizontals);
     public static IMachineSidesProperties ONEFACE_HORIZ = new IMachineSidesProperties(MachineSidesModel.oneFacedHoriz(), Face.Horizontals);
     public static IMachineSidesProperties ONEFACE = new IMachineSidesProperties(MachineSidesModel.oneFacedAll(), Face.AllAvailable);
-    public static IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
+    public static final IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
     public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedAll(), Face.AllAvailable);
 
-    public EnumProperty<MachineSidesModel> asProperty;
+    public final EnumProperty<MachineSidesModel> asProperty;
     private final Predicate<MachineSidesModel> filter;
     private final Face[] toFaces;
 
@@ -50,7 +50,7 @@ public class IMachineSidesProperties
 
     public boolean isValidFor(MachineSidesModel machineSidesModel)
     {
-        return filter.apply(machineSidesModel);
+        return filter.test(machineSidesModel);
     }
 
     public static MachineSidesModel getModelForTwoFaces(Face faceA, Face faceB)
@@ -73,17 +73,17 @@ public class IMachineSidesProperties
     {
         switch (allowedSide)
         {
-        case RIGHT:
-            return MachineSidesModel.RIGHT1;
-        case REAR:
-            return MachineSidesModel.REAR1;
-        case TOP:
-            return MachineSidesModel.TOP1;
-        case BOTTOM:
-            return MachineSidesModel.BOTTOM1;
-        case LEFT:
-        default:
-            return MachineSidesModel.LEFT1;
+            case RIGHT:
+                return MachineSidesModel.RIGHT1;
+            case REAR:
+                return MachineSidesModel.REAR1;
+            case TOP:
+                return MachineSidesModel.TOP1;
+            case BOTTOM:
+                return MachineSidesModel.BOTTOM1;
+            case LEFT:
+            default:
+                return MachineSidesModel.LEFT1;
         }
     }
 
@@ -138,55 +138,27 @@ public class IMachineSidesProperties
 
         private static Predicate<MachineSidesModel> oneFacedAll()
         {
-            return new Predicate<MachineSidesModel>()
-            {
-                @Override
-                public boolean apply(MachineSidesModel msm)
-                {
-                    return (msm.ordinal() % 4) == 0;
-                }
-            };
+            return msm -> (msm.ordinal() % 4) == 0;
         }
 
         private static Predicate<MachineSidesModel> twoFacedAll()
         {
-            return Predicates.alwaysTrue();
+            return machineSidesModel -> true;
         }
 
         private static Predicate<MachineSidesModel> oneFacedHoriz()
         {
-            return new Predicate<MachineSidesModel>()
-            {
-                @Override
-                public boolean apply(MachineSidesModel msm)
-                {
-                    return msm.ordinal() < 12 && (msm.ordinal() % 4) == 0;
-                }
-            };
+            return msm -> msm.ordinal() < 12 && (msm.ordinal() % 4) == 0;
         }
 
         private static Predicate<MachineSidesModel> twoFacedHoriz()
         {
-            return new Predicate<MachineSidesModel>()
-            {
-                @Override
-                public boolean apply(MachineSidesModel msm)
-                {
-                    return msm.ordinal() < 12 && (msm.ordinal() % 4) < 2;
-                }
-            };
+            return msm -> msm.ordinal() < 12 && (msm.ordinal() % 4) < 2;
         }
 
         private static Predicate<MachineSidesModel> noneConfigurable()
         {
-            return new Predicate<MachineSidesModel>()
-            {
-                @Override
-                public boolean apply(MachineSidesModel msm)
-                {
-                    return msm == LEFT1;
-                }
-            };
+            return msm -> msm == LEFT1;
         }
     }
 }

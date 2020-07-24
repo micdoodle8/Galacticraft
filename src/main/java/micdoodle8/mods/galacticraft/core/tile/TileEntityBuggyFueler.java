@@ -63,7 +63,7 @@ public class TileEntityBuggyFueler extends TileEntityFake implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o != null && o instanceof IDockable && !this.world.isRemote)
+                if (o instanceof IDockable && !this.world.isRemote)
                 {
                     final IDockable fuelable = (IDockable) o;
 
@@ -206,7 +206,7 @@ public class TileEntityBuggyFueler extends TileEntityFake implements IMultiBlock
     @Override
     public HashSet<ILandingPadAttachable> getConnectedTiles()
     {
-        HashSet<ILandingPadAttachable> connectedTiles = new HashSet<ILandingPadAttachable>();
+        HashSet<ILandingPadAttachable> connectedTiles = new HashSet<>();
 
         for (int x = -2; x < 3; x++)
         {

@@ -1,16 +1,20 @@
 package micdoodle8.mods.galacticraft.core.fluid;
 
-import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Objects;
 
 /**
  * Credit to pupnewfster from the Mekanism project
@@ -31,24 +35,24 @@ public class FluidRegistrationEntry<STILL extends Fluid, FLOWING extends Fluid, 
         this.bucketRO = RegistryObject.of(new ResourceLocation(Constants.MOD_ID_CORE, name + "_bucket"), ForgeRegistries.ITEMS);
     }
 
-    public STILL getStillFluid()
+    public FlowingFluid getStillFluid() //FLUIDS AREN'T REGISTERED YET. This is placeholder code to prevent crashes
     {
-        return stillRO.get();
+        return Fluids.WATER/*stillRO.get()*/; //todo
     }
 
-    public FLOWING getFlowingFluid()
+    public FlowingFluid getFlowingFluid()
     {
-        return flowingRO.get();
+        return Fluids.FLOWING_WATER/*flowingRO.get()*/; //todo
     }
 
-    public BLOCK getBlock()
+    public FlowingFluidBlock getBlock()
     {
-        return blockRO.get();
+        return (FlowingFluidBlock) Blocks.WATER/*blockRO.get()*/; //todo
     }
 
-    public BUCKET getBucket()
+    public Item getBucket()
     {
-        return bucketRO.get();
+        return Items.WATER_BUCKET/*bucketRO.get()*/; //todo
     }
 
     //Make sure these update methods are package local as only the FluidDeferredRegister should be messing with them
@@ -73,7 +77,7 @@ public class FluidRegistrationEntry<STILL extends Fluid, FLOWING extends Fluid, 
     }
 
     @Nonnull
-    public STILL getFluid()
+    public FlowingFluid getFluid() //TODO
     {
         //Default our fluid to being the still variant
         return getStillFluid();

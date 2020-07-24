@@ -17,26 +17,26 @@ public class AsteroidsEventHandler
         {
             switch (event.armorIndex)
             {
-            case 0:
-                if (event.armorStack.getItem() == AsteroidsItems.thermalHelm)
-                {
-                    event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
-                }
-            case 1:
-                if (event.armorStack.getItem() == AsteroidsItems.thermalChestplate)
-                {
-                    event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
-                }
-            case 2:
-                if (event.armorStack.getItem() == AsteroidsItems.thermalLeggings)
-                {
-                    event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
-                }
-            case 3:
-                if (event.armorStack.getItem() == AsteroidsItems.thermalBoots)
-                {
-                    event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
-                }
+                case 0:
+                    if (event.armorStack.getItem() == AsteroidsItems.thermalHelm)
+                    {
+                        event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
+                case 1:
+                    if (event.armorStack.getItem() == AsteroidsItems.thermalChestplate)
+                    {
+                        event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
+                case 2:
+                    if (event.armorStack.getItem() == AsteroidsItems.thermalLeggings)
+                    {
+                        event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
+                case 3:
+                    if (event.armorStack.getItem() == AsteroidsItems.thermalBoots)
+                    {
+                        event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
             }
         }
     }

@@ -37,7 +37,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     private final EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
-    public Vector3 color = new Vector3(0, 1, 0);
+    public final Vector3 color = new Vector3(0, 1, 0);
 
     public TileEntityBeamReceiver()
     {

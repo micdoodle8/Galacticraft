@@ -3,16 +3,13 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 public class ParticleSparks extends SpriteTexturedParticle
 {
-    float smokeParticleScale;
+    final float smokeParticleScale;
     private final IAnimatedSprite animatedSprite;
 
     public ParticleSparks(World par1World, double par2, double par4, double par6, double par8, double par12, IAnimatedSprite animatedSprite)

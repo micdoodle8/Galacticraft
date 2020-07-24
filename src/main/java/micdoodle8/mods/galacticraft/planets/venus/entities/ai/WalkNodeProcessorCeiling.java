@@ -15,7 +15,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.Region;
 
 import javax.annotation.Nullable;
@@ -28,7 +27,8 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
     protected MobEntity currentEntity;
 
     @Override
-    public void func_225578_a_(Region region, MobEntity mob) {
+    public void func_225578_a_(Region region, MobEntity mob)
+    {
         super.func_225578_a_(region, mob);
         this.avoidsWater = mob.getPathPriority(PathNodeType.WATER);
     }
@@ -218,11 +218,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                 pathpoint.costMalus = Math.max(pathpoint.costMalus, f);
             }
 
-            if (pathnodetype == PathNodeType.WALKABLE)
-            {
-                return pathpoint;
-            }
-            else
+            if (pathnodetype != PathNodeType.WALKABLE)
             {
                 if ((pathpoint == null || pathpoint.costMalus < 0.0F) && stepHeight > 0 && pathnodetype != PathNodeType.FENCE && pathnodetype != PathNodeType.TRAPDOOR)
                 {
@@ -322,8 +318,8 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                     }
                 }
 
-                return pathpoint;
             }
+            return pathpoint;
         }
     }
 

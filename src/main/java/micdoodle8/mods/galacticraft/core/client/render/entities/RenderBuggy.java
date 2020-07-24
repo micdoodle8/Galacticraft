@@ -79,74 +79,74 @@
 //    public void doRender(EntityBuggy entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
 //        float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x, (float) y, (float) z);
-//        GlStateManager.scalef(1.0F, 1.0F, 1.0F);
-//        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
-//        GlStateManager.scalef(0.41F, 0.41F, 0.41F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.scalef(1.0F, 1.0F, 1.0F);
+//        RenderSystem.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.scalef(0.41F, 0.41F, 0.41F);
 //
 //        this.updateModels();
 //        this.bindEntityTexture(entity);
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
 //        // Front wheels
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
 //        float dZ = -2.727F;
 //        float dY = 0.976F;
 //        float dX = 1.25F;
 //        float rotation = entity.wheelRotationX;
-//        GlStateManager.translatef(dX, dY, dZ);
-//        GlStateManager.rotatef(entity.wheelRotationZ, 0, 1, 0);
+//        RenderSystem.translatef(dX, dY, dZ);
+//        RenderSystem.rotatef(entity.wheelRotationZ, 0, 1, 0);
 //        ClientUtil.drawBakedModel(this.wheelRightCover);
-//        GlStateManager.rotatef(rotation, 1, 0, 0);
+//        RenderSystem.rotatef(rotation, 1, 0, 0);
 //        ClientUtil.drawBakedModel(this.wheelRight);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef(-dX, dY, dZ);
-//        GlStateManager.rotatef(entity.wheelRotationZ, 0, 1, 0);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(-dX, dY, dZ);
+//        RenderSystem.rotatef(entity.wheelRotationZ, 0, 1, 0);
 //        ClientUtil.drawBakedModel(this.wheelLeftCover);
-//        GlStateManager.rotatef(rotation, 1, 0, 0);
+//        RenderSystem.rotatef(rotation, 1, 0, 0);
 //        ClientUtil.drawBakedModel(this.wheelLeft);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
 //        // Back wheels
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
 //        dX = 1.9F;
 //        dZ = -dZ;
-//        GlStateManager.translatef(dX, dY, dZ);
-//        GlStateManager.rotatef(-entity.wheelRotationZ, 0, 1, 0);
-//        GlStateManager.rotatef(rotation, 1, 0, 0);
+//        RenderSystem.translatef(dX, dY, dZ);
+//        RenderSystem.rotatef(-entity.wheelRotationZ, 0, 1, 0);
+//        RenderSystem.rotatef(rotation, 1, 0, 0);
 //        ClientUtil.drawBakedModel(this.wheelRight);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef(-dX, dY, dZ);
-//        GlStateManager.rotatef(-entity.wheelRotationZ, 0, 1, 0);
-//        GlStateManager.rotatef(rotation, 1, 0, 0);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(-dX, dY, dZ);
+//        RenderSystem.rotatef(-entity.wheelRotationZ, 0, 1, 0);
+//        RenderSystem.rotatef(rotation, 1, 0, 0);
 //        ClientUtil.drawBakedModel(this.wheelLeft);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
 //        ClientUtil.drawBakedModel(this.mainModel);
 //
 //        // Radar Dish
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef(-1.178F, 4.1F, -2.397F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(-1.178F, 4.1F, -2.397F);
 //        int ticks = entity.ticksExisted + entity.getEntityId() * 10000;
-//        GlStateManager.rotatef((float) Math.sin(ticks * 0.05) * 50.0F, 1, 0, 0);
-//        GlStateManager.rotatef((float) Math.cos(ticks * 0.1) * 50.0F, 0, 0, 1);
+//        RenderSystem.rotatef((float) Math.sin(ticks * 0.05) * 50.0F, 1, 0, 0);
+//        RenderSystem.rotatef((float) Math.cos(ticks * 0.1) * 50.0F, 0, 0, 1);
 //        ClientUtil.drawBakedModel(this.radarDish);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
 //        if (entity.buggyType > 0)
 //        {
@@ -163,7 +163,7 @@
 //            }
 //        }
 //
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //

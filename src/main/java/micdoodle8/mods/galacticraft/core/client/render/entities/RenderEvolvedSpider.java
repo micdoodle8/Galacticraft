@@ -31,10 +31,10 @@
 //    @Override
 //    protected void preRenderCallback(EntityEvolvedSpider spider, float par2)
 //    {
-//        GL11.glScalef(1.2F, 1.2F, 1.2F);
+//        RenderSystem.scalef(1.2F, 1.2F, 1.2F);
 //        if (texSwitch)
 //        {
-//            GL11.glTranslatef(0.0F, -0.03F, 0.0F);
+//            RenderSystem.translatef(0.0F, -0.03F, 0.0F);
 //            OverlaySensorGlasses.preRenderMobs();
 //        }
 //    }

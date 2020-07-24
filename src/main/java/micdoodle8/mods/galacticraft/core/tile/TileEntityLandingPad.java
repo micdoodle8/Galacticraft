@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import net.minecraft.block.BlockState;
@@ -201,7 +200,7 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
     @Override
     public HashSet<ILandingPadAttachable> getConnectedTiles()
     {
-        HashSet<ILandingPadAttachable> connectedTiles = new HashSet<ILandingPadAttachable>();
+        HashSet<ILandingPadAttachable> connectedTiles = new HashSet<>();
 
         for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
         {
@@ -272,7 +271,7 @@ public class TileEntityLandingPad extends TileEntityFake implements IMultiBlock,
     {
         TileEntity tile = world.getTileEntity(pos);
 
-        if (tile != null && tile instanceof ILandingPadAttachable)
+        if (tile instanceof ILandingPadAttachable)
         {
             return ((ILandingPadAttachable) tile).canAttachToLandingPad(world, this.getPos());
         }

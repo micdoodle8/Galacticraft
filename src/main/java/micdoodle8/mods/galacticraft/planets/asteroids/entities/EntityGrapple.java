@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -197,9 +196,9 @@ public class EntityGrapple extends Entity implements IProjectile
                 {
                     double deltaPosition = this.getDistanceSq(shootingEntity);
 
-                    Vector3D mot = new Vector3D(shootingEntity.getMotion().x, shootingEntity.getMotion().y, shootingEntity.getMotion().z);
+                    Vec3d mot = new Vec3d(shootingEntity.getMotion().x, shootingEntity.getMotion().y, shootingEntity.getMotion().z);
 
-                    if (mot.getMagnitudeSquared() < 0.01 && this.pullingPlayer)
+                    if (mot.lengthSquared() < 0.01 && this.pullingPlayer)
                     {
                         if (deltaPosition < 10)
                         {
@@ -224,10 +223,7 @@ public class EntityGrapple extends Entity implements IProjectile
                     if (shootingEntity.world.isRemote && shootingEntity.world.getDimension() instanceof IZeroGDimension)
                     {
                         GCPlayerStatsClient stats = GCPlayerStatsClient.get(shootingEntity);
-                        if (stats != null)
-                        {
-//                            stats.getFreefallHandler().updateFreefall(shootingEntity); TODO Freefall
-                        }
+                        //                            stats.getFreefallHandler().updateFreefall(shootingEntity); TODO Freefall
                     }
                 }
             }
@@ -248,7 +244,7 @@ public class EntityGrapple extends Entity implements IProjectile
             {
                 VoxelShape neighbour = state.getShape(this.world, this.hitVec);
 
-                if (neighbour != VoxelShapes.empty() && neighbour.getBoundingBox().contains(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ())))
+                if (neighbour != VoxelShapes.empty() && neighbour.getBoundingBox().contains(new net.minecraft.util.math.Vec3d(this.getPosX(), this.getPosY(), this.getPosZ())))
                 {
                     this.inGround = true;
                 }
@@ -313,15 +309,15 @@ public class EntityGrapple extends Entity implements IProjectile
                 this.remove();
             }
 
-            Vec3d vec31 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
-            Vec3d vec3 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
+            net.minecraft.util.math.Vec3d vec31 = new net.minecraft.util.math.Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+            net.minecraft.util.math.Vec3d vec3 = new net.minecraft.util.math.Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
             RayTraceResult castResult = this.world.rayTraceBlocks(new RayTraceContext(vec3, vec31, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-            vec31 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
-            vec3 = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
+            vec31 = new net.minecraft.util.math.Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
+            vec3 = new net.minecraft.util.math.Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
 
             if (castResult.getType() != RayTraceResult.Type.MISS)
             {
-                vec3 = new Vec3d(castResult.getHitVec().x, castResult.getHitVec().y, castResult.getHitVec().z);
+                vec3 = new net.minecraft.util.math.Vec3d(castResult.getHitVec().x, castResult.getHitVec().y, castResult.getHitVec().z);
             }
 
             Entity entity = null;
@@ -337,7 +333,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     AxisAlignedBB axisalignedbb1 = entity1.getBoundingBox().grow(border, border, border);
-                    Optional<Vec3d> rayResult = axisalignedbb1.rayTrace(vec3, vec31);
+                    Optional<net.minecraft.util.math.Vec3d> rayResult = axisalignedbb1.rayTrace(vec3, vec31);
 
                     if (rayResult.isPresent())
                     {
@@ -361,7 +357,7 @@ public class EntityGrapple extends Entity implements IProjectile
             {
                 PlayerEntity entityplayer = (PlayerEntity) ((EntityRayTraceResult) castResult).getEntity();
 
-                if (entityplayer.abilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !this.shootingEntity.canAttackPlayer(entityplayer))
+                if (entityplayer.abilities.disableDamage || this.shootingEntity != null && !this.shootingEntity.canAttackPlayer(entityplayer))
                 {
                     castResult = null;
                 }

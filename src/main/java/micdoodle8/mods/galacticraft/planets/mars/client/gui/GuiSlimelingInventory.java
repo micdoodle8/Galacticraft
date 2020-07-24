@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -75,18 +75,18 @@ public class GuiSlimelingInventory extends GuiContainerGC<ContainerSlimeling>
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         AbstractGui.fill(var5, var6, var5 + this.xSize, var6 + this.ySize, 0xFF000000);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
         int yOffset = (int) Math.floor(30.0D * (1.0F - this.slimeling.getScale()));
 
         GuiSlimeling.drawSlimelingOnGui(this.slimeling, this.width / 2, var6 + 62 - yOffset, 70, var5 + 51 - i, var6 + 75 - 50 - j);
 
 
-        GlStateManager.translatef(0, 0, 100);
+        RenderSystem.translatef(0, 0, 100);
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         this.minecraft.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
         this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
         this.blit(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
@@ -100,7 +100,7 @@ public class GuiSlimelingInventory extends GuiContainerGC<ContainerSlimeling>
         this.drawString(this.font, str, var5 + this.xSize - 15 - this.font.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.minecraft.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.blit(this.invX, this.invY, 176, 27, this.invWidth, this.invHeight);
         this.blit(var5 + 8, var6 + 8, 176, 9, 18, 18);
         this.blit(var5 + 8, var6 + 29, 176, 9, 18, 18);
@@ -121,6 +121,6 @@ public class GuiSlimelingInventory extends GuiContainerGC<ContainerSlimeling>
             }
         }
 
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 }

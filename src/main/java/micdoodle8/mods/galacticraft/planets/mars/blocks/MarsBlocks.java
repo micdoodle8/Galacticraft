@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

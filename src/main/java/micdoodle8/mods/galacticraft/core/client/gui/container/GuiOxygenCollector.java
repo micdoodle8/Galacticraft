@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCollector;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -11,9 +11,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +21,8 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
 
     private final TileEntityOxygenCollector collector;
 
-    private final GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<>(), this.width, this.height, this);
 
     public GuiOxygenCollector(ContainerOxygenCollector container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -39,7 +36,7 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
     protected void init()
     {
         super.init();
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
@@ -82,7 +79,7 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiOxygenCollector.collectorTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
@@ -105,12 +102,12 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
                 this.blit(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
-            List<String> oxygenDesc = new ArrayList<String>();
+            List<String> oxygenDesc = new ArrayList<>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
             oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.collector.getOxygenStored()) + " / " + (int) Math.floor(this.collector.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
-            List<String> electricityDesc = new ArrayList<String>();
+            List<String> electricityDesc = new ArrayList<>();
             electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
             EnergyDisplayHelper.getEnergyDisplayTooltip(this.collector.getEnergyStoredGC(), this.collector.getMaxEnergyStoredGC(), electricityDesc);
 //			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.collector.getEnergyStoredGC()) + " / " + (int) Math.floor(this.collector.getMaxEnergyStoredGC())));

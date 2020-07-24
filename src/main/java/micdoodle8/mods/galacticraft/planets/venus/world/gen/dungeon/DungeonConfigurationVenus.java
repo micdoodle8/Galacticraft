@@ -4,14 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class DungeonConfigurationVenus extends DungeonConfiguration
 {

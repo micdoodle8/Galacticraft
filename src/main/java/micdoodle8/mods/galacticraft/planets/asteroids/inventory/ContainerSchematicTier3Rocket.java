@@ -19,8 +19,8 @@ public class ContainerSchematicTier3Rocket extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SCHEMATIC_TIER_3_ROCKET)
     public static ContainerType<ContainerSchematicTier3Rocket> TYPE;
 
-    public InventorySchematicTier3Rocket craftMatrix = new InventorySchematicTier3Rocket(this);
-    public IInventory craftResult = new CraftResultInventory();
+    public final InventorySchematicTier3Rocket craftMatrix = new InventorySchematicTier3Rocket(this);
+    public final IInventory craftResult = new CraftResultInventory();
     private final World world;
 
     public ContainerSchematicTier3Rocket(int containerId, PlayerInventory playerInv)
@@ -166,21 +166,14 @@ public class ContainerSchematicTier3Rocket extends Container
 //                            break;
 //                        }
 //                    } TODO rocket container w/ cargo
-                    if (foundChest)
-                    {
-                        if (!this.mergeOneItemTestValid(var4, 19, 22, false))
-                        {
-                            return ItemStack.EMPTY;
-                        }
-                    }
-                    else if (par1 >= 22 && par1 < 49)
+                    if (par1 < 49)
                     {
                         if (!this.mergeItemStack(var4, 49, 58, false))
                         {
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (par1 >= 49 && par1 < 58)
+                    else if (par1 < 58)
                     {
                         if (!this.mergeItemStack(var4, 22, 49, false))
                         {

@@ -12,8 +12,8 @@ import org.lwjgl.glfw.GLFW;
 public class GuiElementTextBox extends Widget
 {
     public String text;
-    public boolean numericOnly;
-    public boolean centered;
+    public final boolean numericOnly;
+    public final boolean centered;
     private final int maxLength;
 
     public long backspacePressedMillis;
@@ -158,30 +158,27 @@ public class GuiElementTextBox extends Widget
             {
                 if (backspaceHeld && this.text.length() > 0)
                 {
-                    if (this.text.length() > 0)
+                    if (System.currentTimeMillis() - this.backspacePressedMillis > 200 / (1 + this.backspacePressedTicks * 0.3F) && this.parentGui.canPlayerEdit(this, this.minecraft.player))
                     {
-                        if (System.currentTimeMillis() - this.backspacePressedMillis > 200 / (1 + this.backspacePressedTicks * 0.3F) && this.parentGui.canPlayerEdit(this, this.minecraft.player))
-                        {
-                            String toBeParsed = this.text.substring(0, this.text.length() - 1);
+                        String toBeParsed = this.text.substring(0, this.text.length() - 1);
 
-                            if (this.isValid(toBeParsed))
-                            {
-                                this.text = toBeParsed;
-                                this.parentGui.onTextChanged(this, this.text);
-                            }
-                            else
-                            {
-                                this.text = "";
-                            }
-
-                            this.backspacePressedMillis = System.currentTimeMillis();
-                            this.backspacePressedTicks++;
-                        }
-                        else if (!this.parentGui.canPlayerEdit(this, this.minecraft.player))
+                        if (this.isValid(toBeParsed))
                         {
-                            this.incorrectUseTimer = 10;
-                            this.parentGui.onIntruderInteraction(this);
+                            this.text = toBeParsed;
+                            this.parentGui.onTextChanged(this, this.text);
                         }
+                        else
+                        {
+                            this.text = "";
+                        }
+
+                        this.backspacePressedMillis = System.currentTimeMillis();
+                        this.backspacePressedTicks++;
+                    }
+                    else if (!this.parentGui.canPlayerEdit(this, this.minecraft.player))
+                    {
+                        this.incorrectUseTimer = 10;
+                        this.parentGui.onIntruderInteraction(this);
                     }
                 }
                 else

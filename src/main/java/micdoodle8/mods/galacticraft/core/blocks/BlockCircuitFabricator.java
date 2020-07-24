@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.EnumProperty;
@@ -15,7 +14,7 @@ import javax.annotation.Nullable;
 public class BlockCircuitFabricator extends BlockMachineBase
 {
     //    public static final EnumProperty<EnumMachineExtendedType> TYPE = EnumProperty.create("type", EnumMachineExtendedType.class);
-    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    public static final IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final EnumProperty SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public BlockCircuitFabricator(Properties builder)

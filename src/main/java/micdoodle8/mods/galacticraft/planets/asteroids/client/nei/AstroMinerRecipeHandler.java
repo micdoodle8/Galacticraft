@@ -38,7 +38,7 @@
 //    @Override
 //    public void drawBackground(int recipe)
 //    {
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(AstroMinerRecipeHandler.rocketGuiTexture);
 //        GuiDraw.blit(0, -8, 3, 32, 168, 104);
 //    }

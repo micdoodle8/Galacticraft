@@ -145,9 +145,9 @@
 //    @OnlyIn(Dist.CLIENT)
 //    public int getBrightnessForRender()
 //    {
-//        double height = this.player.posY + (double)this.player.getEyeHeight();
+//        double height = this.player.getPosY() + (double)this.player.getEyeHeight();
 //        if (height > 255D) height = 255D;
-//        BlockPos blockpos = new BlockPos(this.player.posX, height, this.player.posZ);
+//        BlockPos blockpos = new BlockPos(this.player.getPosX(), height, this.player.getPosZ());
 //        return this.player.world.isBlockLoaded(blockpos) ? this.player.world.getCombinedLight(blockpos, 0) : 0;
 //    }
 //}

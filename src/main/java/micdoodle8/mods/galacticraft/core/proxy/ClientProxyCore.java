@@ -25,8 +25,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -62,11 +60,11 @@ import java.util.*;
 
 public class ClientProxyCore extends CommonProxyCore implements IResourceManagerReloadListener
 {
-    public static List<String> flagRequestsSent = new ArrayList<>();
-    public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
-    public static HashSet<Block> detectableBlocks = Sets.newHashSet();
+    public static final List<String> flagRequestsSent = new ArrayList<>();
+    public static final Set<BlockVec3> valueableBlocks = Sets.newHashSet();
+    public static final HashSet<Block> detectableBlocks = Sets.newHashSet();
     public static List<BlockVec3> leakTrace = null;
-    public static Map<UUID, PlayerGearData> playerItemData = Maps.newHashMap();
+    public static final Map<UUID, PlayerGearData> playerItemData = Maps.newHashMap();
     public static double playerPosX;
     public static double playerPosY;
     public static double playerPosZ;
@@ -76,19 +74,19 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     public static HashMap<DimensionType, DimensionType> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
-    public static Rarity galacticraftItem = Rarity.create("GCRarity", TextFormatting.BLUE);
-    public static Map<String, ResourceLocation> capeMap = new HashMap<>();
+    public static final Rarity galacticraftItem = Rarity.create("GCRarity", TextFormatting.BLUE);
+    public static final Map<String, ResourceLocation> capeMap = new HashMap<>();
     public static InventoryExtended dummyInventory = new InventoryExtended();
-    public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
-    public static IPlayerClient playerClientHandler = new PlayerClient();
-    public static Minecraft mc = Minecraft.getInstance();
-    public static List<UUID> gearDataRequests = Lists.newArrayList();
+    public static final Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
+    public static final IPlayerClient playerClientHandler = new PlayerClient();
+    public static final Minecraft mc = Minecraft.getInstance();
+    public static final List<UUID> gearDataRequests = Lists.newArrayList();
     public static DynamicTextureProper overworldTextureClient;
     public static DynamicTextureProper overworldTextureWide;
     public static DynamicTextureProper overworldTextureLarge;
     public static boolean overworldTextureRequestSent;
     public static boolean overworldTexturesValid;
-    public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
+    public static final float PLAYER_Y_OFFSET = 1.6200000047683716F;
     public static ResourceLocation playerHead = null;
     public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/saturn_rings.png");
     public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/uranus_rings.png");
@@ -389,17 +387,17 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             ImmutableList<String> objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right");
             switch (i)
             {
-            case 0:
-                break;
-            case 1:
-                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft");
-                break;
-            case 2:
-                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid");
-                break;
-            case 3:
-                objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
-                break;
+                case 0:
+                    break;
+                case 1:
+                    objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft");
+                    break;
+                case 2:
+                    objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid");
+                    break;
+                case 3:
+                    objects = ImmutableList.of("MainBody", "RadarDish_Dish", "Wheel_Back_Left", "Wheel_Back_Right", "Wheel_Front_Left", "Wheel_Front_Right", "CargoLeft", "CargoMid", "CargoRight");
+                    break;
             }
 //            replaceModelDefault(event, "buggy" + (i > 0 ? "_" + i : ""), "buggy_inv.obj", objects, ItemModelBuggy.class, TRSRTransformation.identity());
         }
@@ -483,7 +481,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //    {
 //        ClientUtil.replaceModel(Constants.MOD_ID_CORE, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
 //    }
-
     public static void registerEntityRenderers()
     {
 //        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.MOD_ID_CORE, "rocket_t1"));

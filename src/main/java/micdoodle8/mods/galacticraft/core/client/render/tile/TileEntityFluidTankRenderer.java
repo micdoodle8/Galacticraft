@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.tile;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.client.renderer.BufferBuilder;
@@ -39,16 +39,16 @@
 //        final double uMax = sprite.getMaxU();
 //        final double vMin = sprite.getMinV();
 //        final double vMax = sprite.getMaxV();
-//        GL11.glPushMatrix();
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glTranslatef((float) x, (float) y + 1.5F, (float) z + 1.0F);
-//        GL11.glScalef(1.0F, -1.0F, -1.0F);
-//        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.translatef((float) x, (float) y + 1.5F, (float) z + 1.0F);
+//        RenderSystem.scalef(1.0F, -1.0F, -1.0F);
+//        RenderSystem.translatef(0.5F, 0.5F, 0.5F);
 //
-//        GlStateManager.disableLighting();
-//        GlStateManager.enableBlend();
-//        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.disableLighting();
+//        RenderSystem.enableBlend();
+//        RenderSystem.blendFunc(770, 771);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        Tessellator tess = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tess.getBuffer();
 //
@@ -75,12 +75,12 @@
 //            }
 //        }
 //
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, opacity);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, opacity);
 //
 //        if (levelInv < 1.0F)
 //        {
 //            // North
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(-0.4, levelInv, -0.399).tex(uMin, vMin).endVertex();
 //            worldRenderer.pos(-0.4, 1.0, -0.399).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
 //            worldRenderer.pos(0.4, 1.0, -0.399).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
@@ -88,7 +88,7 @@
 //            tess.draw();
 //
 //            // South
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(0.4, levelInv, 0.399).tex(uMax, vMin).endVertex();
 //            worldRenderer.pos(0.4, 1.0, 0.399).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
 //            worldRenderer.pos(-0.4, 1.0, 0.399).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
@@ -96,7 +96,7 @@
 //            tess.draw();
 //
 //            // West
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(-0.399, 1.0, -0.4).tex(uMin, vMin + (vMax - vMin) * level).endVertex();
 //            worldRenderer.pos(-0.399, levelInv, -0.4).tex(uMin, vMin).endVertex();
 //            worldRenderer.pos(-0.399, levelInv, 0.4).tex(uMax, vMin).endVertex();
@@ -104,7 +104,7 @@
 //            tess.draw();
 //
 //            // East
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //            worldRenderer.pos(0.399, 1.0, 0.4).tex(uMax, vMin + (vMax - vMin) * level).endVertex();
 //            worldRenderer.pos(0.399, levelInv, 0.4).tex(uMax, vMin).endVertex();
 //            worldRenderer.pos(0.399, levelInv, -0.4).tex(uMin, vMin).endVertex();
@@ -113,7 +113,7 @@
 //
 //            if (tankAbove == null || (tankAbove.fluidTank.getFluidAmount() == 0 && !compositeGaseous))
 //            {
-//                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//                worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //                worldRenderer.pos(0.4, 0.01 + levelInv, 0.4).tex(uMax, vMax).endVertex();
 //                worldRenderer.pos(-0.4, 0.01 + levelInv, 0.4).tex(uMax, vMin).endVertex();
 //                worldRenderer.pos(-0.4, 0.01 + levelInv, -0.4).tex(uMin, vMin).endVertex();
@@ -123,7 +123,7 @@
 //
 //            if (tankBelow == null || (tankBelow.fluidTank.getFluidAmount() == 0 && !compositeGaseous))
 //            {
-//                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//                worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //                worldRenderer.pos(0.4, 0.99, 0.4).tex(uMax, vMax).endVertex();
 //                worldRenderer.pos(0.4, 0.99, -0.4).tex(uMin, vMax).endVertex();
 //                worldRenderer.pos(-0.4, 0.99, -0.4).tex(uMin, vMin).endVertex();
@@ -132,10 +132,10 @@
 //            }
 //        }
 //
-//        GlStateManager.enableLighting();
-//        GlStateManager.disableBlend();
+//        RenderSystem.enableLighting();
+//        RenderSystem.disableBlend();
 //
-//        GL11.glPopMatrix();
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.popMatrix();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //    }
 //}

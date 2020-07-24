@@ -23,9 +23,9 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyHandlerClient extends KeyHandler
 {
-    public static KeyBinding galaxyMap;
-    public static KeyBinding openFuelGui;
-    public static KeyBinding toggleAdvGoggles;
+    public static final KeyBinding galaxyMap;
+    public static final KeyBinding openFuelGui;
+    public static final KeyBinding toggleAdvGoggles;
 
     static
     {
@@ -82,7 +82,7 @@ public class KeyHandlerClient extends KeyHandler
             {
                 if (KeyHandlerClient.mc.currentScreen == null)
                 {
-//                    KeyHandlerClient.mc.player.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.world, (int) KeyHandlerClient.mc.player.posX, (int) KeyHandlerClient.mc.player.posY, (int) KeyHandlerClient.mc.player.posZ);
+//                    KeyHandlerClient.mc.player.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.world, (int) KeyHandlerClient.mc.player.getPosX(), (int) KeyHandlerClient.mc.player.getPosY(), (int) KeyHandlerClient.mc.player.getPosZ());
                     // TODO Gui
                 }
             }
@@ -95,10 +95,7 @@ public class KeyHandlerClient extends KeyHandler
             }
             else if (kb == KeyHandlerClient.toggleAdvGoggles)
             {
-                if (playerBase != null)
-                {
-                    stats.setUsingAdvancedGoggles(!stats.isUsingAdvancedGoggles());
-                }
+                stats.setUsingAdvancedGoggles(!stats.isUsingAdvancedGoggles());
             }
         }
 
@@ -132,7 +129,7 @@ public class KeyHandlerClient extends KeyHandler
             }
 
             Entity entityTest = KeyHandlerClient.mc.player.getRidingEntity();
-            if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
+            if (entityTest instanceof IControllableEntity && keyNum != -1)
             {
                 IControllableEntity entity = (IControllableEntity) entityTest;
 
@@ -143,7 +140,7 @@ public class KeyHandlerClient extends KeyHandler
 
                 entity.pressKey(keyNum);
             }
-            else if (entityTest != null && entityTest instanceof EntityAutoRocket)
+            else if (entityTest instanceof EntityAutoRocket)
             {
                 EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
 

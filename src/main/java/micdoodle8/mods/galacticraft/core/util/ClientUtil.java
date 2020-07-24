@@ -176,7 +176,7 @@ public class ClientUtil
 //    {
 //        Tessellator tessellator = Tessellator.getInstance();
 //        BufferBuilder worldrenderer = tessellator.getBuffer();
-//        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+//        worldrenderer.begin(7, DefaultVertexFormats.ITEM);
 //        Random random = new Random();
 //        random.setSeed(42);
 //
@@ -192,7 +192,7 @@ public class ClientUtil
 //    {
 //        Tessellator tessellator = Tessellator.getInstance();
 //        BufferBuilder worldrenderer = tessellator.getBuffer();
-//        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+//        worldrenderer.begin(7, DefaultVertexFormats.ITEM);
 //        Random random = new Random();
 //        random.setSeed(42);
 //

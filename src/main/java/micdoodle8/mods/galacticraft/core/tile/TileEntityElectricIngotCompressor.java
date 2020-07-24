@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
-import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
@@ -13,25 +13,22 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
@@ -78,7 +75,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     private static final int[] allSlots = new int[]{0, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     protected boolean advanced;
 
-    public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
+    public final PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     private static final Random randnum = new Random();
 
     public TileEntityElectricIngotCompressor(TileEntityType<?> type)
@@ -257,7 +254,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
             int j = nbttagcompound.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.inventory.size())
+            if (j < this.inventory.size())
             {
                 this.inventory.set(j, ItemStack.read(nbttagcompound));
             }
@@ -345,8 +342,6 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 var3 = this.inventory.get(par1);
                 this.inventory.set(par1, ItemStack.EMPTY);
-                this.markDirty();
-                return var3;
             }
             else
             {
@@ -357,9 +352,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                     this.inventory.set(par1, ItemStack.EMPTY);
                 }
 
-                this.markDirty();
-                return var3;
             }
+            this.markDirty();
+            return var3;
         }
         else
         {
@@ -432,7 +427,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         if (slotID == 0)
         {
-            return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
         else if (slotID >= 3)
         {
@@ -589,7 +584,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 for (Integer k : slotsWithSameItem)
                 {
                     doneSlots.add(k);
-                    if (k.intValue() != lowestSlot)
+                    if (k != lowestSlot)
                     {
                         removeSlots.add(k);
                     }
@@ -646,17 +641,17 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 

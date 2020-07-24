@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.planets;
 
 import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
-import micdoodle8.mods.galacticraft.core.dimension.DimensionOverworldOrbit;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.DimensionAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.DimensionVenus;

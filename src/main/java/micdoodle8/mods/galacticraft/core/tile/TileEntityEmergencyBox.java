@@ -291,10 +291,6 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                 }
                 CreatureEntity mob = (CreatureEntity) entry;
                 PathNavigator nav = mob.getNavigator();
-                if (nav == null)
-                {
-                    continue;
-                }
 
                 Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 12, 5, vec3Centre);
                 if (vecNewTarget == null)
@@ -383,111 +379,111 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
     {
         switch (side)
         {
-        case NORTH:
-            if (this.openN && this.cooldown == 0)
-            {
-                if (kitted)
+            case NORTH:
+                if (this.openN && this.cooldown == 0)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
-                    break;
-                }
-                else
-                {
-                    ItemStack stack = player.inventory.getCurrentItem();
-                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                    if (kitted)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
-                        this.openW = false;
-                        this.openS = false;
-                        this.openE = false;
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                        break;
+                    }
+                    else
+                    {
+                        ItemStack stack = player.inventory.getCurrentItem();
+                        if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                        {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                            this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                            this.openW = false;
+                            this.openS = false;
+                            this.openE = false;
+                        }
                     }
                 }
-            }
-            this.cooldown = 12;
-            this.openN = !this.openN;
-            this.updateClients();
-            break;
-        case WEST:
-            if (this.openW && this.cooldown == 0)
-            {
-                if (kitted)
+                this.cooldown = 12;
+                this.openN = !this.openN;
+                this.updateClients();
+                break;
+            case WEST:
+                if (this.openW && this.cooldown == 0)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
-                    break;
-                }
-                else
-                {
-                    ItemStack stack = player.inventory.getCurrentItem();
-                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                    if (kitted)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
-                        this.openN = false;
-                        this.openS = false;
-                        this.openE = false;
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                        break;
+                    }
+                    else
+                    {
+                        ItemStack stack = player.inventory.getCurrentItem();
+                        if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                        {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                            this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                            this.openN = false;
+                            this.openS = false;
+                            this.openE = false;
+                        }
                     }
                 }
-            }
-            this.cooldown = 12;
-            this.openW = !this.openW;
-            this.updateClients();
-            break;
-        case SOUTH:
-            if (this.openS && this.cooldown == 0)
-            {
-                if (kitted)
+                this.cooldown = 12;
+                this.openW = !this.openW;
+                this.updateClients();
+                break;
+            case SOUTH:
+                if (this.openS && this.cooldown == 0)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
-                    break;
-                }
-                else
-                {
-                    ItemStack stack = player.inventory.getCurrentItem();
-                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                    if (kitted)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
-                        this.openN = false;
-                        this.openW = false;
-                        this.openE = false;
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                        break;
+                    }
+                    else
+                    {
+                        ItemStack stack = player.inventory.getCurrentItem();
+                        if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                        {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                            this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                            this.openN = false;
+                            this.openW = false;
+                            this.openE = false;
+                        }
                     }
                 }
-            }
-            this.cooldown = 12;
-            this.openS = !this.openS;
-            this.updateClients();
-            break;
-        case EAST:
-            if (this.openE && this.cooldown == 0)
-            {
-                if (kitted)
+                this.cooldown = 12;
+                this.openS = !this.openS;
+                this.updateClients();
+                break;
+            case EAST:
+                if (this.openE && this.cooldown == 0)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
-                    break;
-                }
-                else
-                {
-                    ItemStack stack = player.inventory.getCurrentItem();
-                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                    if (kitted)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
-                        this.openN = false;
-                        this.openW = false;
-                        this.openS = false;
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                        break;
+                    }
+                    else
+                    {
+                        ItemStack stack = player.inventory.getCurrentItem();
+                        if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
+                        {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                            this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                            this.openN = false;
+                            this.openW = false;
+                            this.openS = false;
+                        }
                     }
                 }
-            }
-            this.cooldown = 12;
-            this.openE = !this.openE;
-            this.updateClients();
-            break;
-        default:
+                this.cooldown = 12;
+                this.openE = !this.openE;
+                this.updateClients();
+                break;
+            default:
         }
     }
 
@@ -509,10 +505,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                 for (int j = airBlocks.size() - 1; j >= 0; j--)
                 {
                     CompoundNBT tag1 = airBlocks.getCompound(j);
-                    if (tag1 != null)
-                    {
-                        this.airToRestore.add(BlockVec3.read(tag1));
-                    }
+                    this.airToRestore.add(BlockVec3.read(tag1));
                 }
             }
         }
@@ -546,10 +539,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
 
         int data = (this.openN ? 1 : 0) + (this.openW ? 2 : 0) + (this.openS ? 4 : 0) + (this.openE ? 8 : 0);
         sendData.add((byte) data);
-        for (BlockVec3 vec : this.airToRestore)
-        {
-            sendData.add(vec);
-        }
+        sendData.addAll(this.airToRestore);
     }
 
     @Override

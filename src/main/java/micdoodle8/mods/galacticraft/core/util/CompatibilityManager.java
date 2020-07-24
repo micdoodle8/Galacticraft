@@ -1,22 +1,18 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.server.ServerChunkProvider;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.ModList;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-
-import net.minecraft.entity.Entity;
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.ModList;
 
 
 public class CompatibilityManager
@@ -27,8 +23,8 @@ public class CompatibilityManager
     public final static String modBCraftTransport = "buildcrafttransport";
     public final static String modBCraftEnergy = "buildcraftenergy";
 
-    public static boolean PlayerAPILoaded = ModList.get().isLoaded("PlayerAPI");
-    public static boolean RenderPlayerAPILoaded = ModList.get().isLoaded("RenderPlayerAPI");
+    public static final boolean PlayerAPILoaded = ModList.get().isLoaded("PlayerAPI");
+    public static final boolean RenderPlayerAPILoaded = ModList.get().isLoaded("RenderPlayerAPI");
 
     public static boolean modJEILoaded = ModList.get().isLoaded("jei");
     private static final boolean modIc2Loaded = ModList.get().isLoaded(modidIC2);
@@ -45,18 +41,18 @@ public class CompatibilityManager
     private static boolean modPneumaticCraftLoaded;
     private static final boolean modBOPLoaded = ModList.get().isLoaded("biomesoplenty");
     private static final boolean modEIOLoaded = ModList.get().isLoaded("enderio");
-    public static boolean modAALoaded = ModList.get().isLoaded("actuallyadditions");
+    public static final boolean modAALoaded = ModList.get().isLoaded("actuallyadditions");
     private static boolean spongeLoaded;
     private static boolean modMatterOverdriveLoaded;
     private static boolean wailaLoaded;
-    public static boolean isMFRLoaded = ModList.get().isLoaded("minefactoryreloaded");
-    public static boolean isSmartMovingLoaded = ModList.get().isLoaded("smartmoving");
-    public static boolean isTConstructLoaded = ModList.get().isLoaded("tconstruct");
-    public static boolean isWitcheryLoaded = ModList.get().isLoaded("witchery");
+    public static final boolean isMFRLoaded = ModList.get().isLoaded("minefactoryreloaded");
+    public static final boolean isSmartMovingLoaded = ModList.get().isLoaded("smartmoving");
+    public static final boolean isTConstructLoaded = ModList.get().isLoaded("tconstruct");
+    public static final boolean isWitcheryLoaded = ModList.get().isLoaded("witchery");
     public static boolean isCubicChunksLoaded;
 //    public static int isBG2Loaded = 0;
 
-    public static Class<?> classGTOre = null;
+    public static final Class<?> classGTOre = null;
     private static Method spongeOverrideSet = null;
     private static Method spongeOverrideGet = null;
     public static Class classBCTransport;
@@ -136,7 +132,7 @@ public class CompatibilityManager
                 {
                     classIC2wrench = Class.forName("ic2.core.item.tool.ItemToolWrench");
                 }
-                catch (ClassNotFoundException e)
+                catch (ClassNotFoundException ignored)
                 {
                 }
 
@@ -144,7 +140,7 @@ public class CompatibilityManager
                 {
                     classIC2wrenchElectric = Class.forName("ic2.core.item.tool.ItemToolWrenchElectric");
                 }
-                catch (ClassNotFoundException e)
+                catch (ClassNotFoundException ignored)
                 {
                 }
 
@@ -153,7 +149,7 @@ public class CompatibilityManager
                     classIC2tileEventLoad = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
                     classIC2tileEventUnload = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
                 }
-                catch (ClassNotFoundException e)
+                catch (ClassNotFoundException ignored)
                 {
                 }
 
@@ -163,7 +159,7 @@ public class CompatibilityManager
                     fieldIC2networkManager = clazzIC2.getDeclaredField("network");
                     fieldIC2tickhandler = clazzIC2.getDeclaredField("tickHandler");
                 }
-                catch (Exception e)
+                catch (Exception ignored)
                 {
                 }
 
@@ -294,7 +290,7 @@ public class CompatibilityManager
         {
             try
             {
-                Class clazz = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer");
+                Class<?> clazz = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer");
                 spongeOverrideSet = clazz.getMethod("setForceChunkRequests", boolean.class);
                 spongeOverrideGet = clazz.getMethod("getForceChunkRequests");
                 spongeLoaded = true;
@@ -303,7 +299,7 @@ public class CompatibilityManager
             {
                 try
                 {
-                    Class clazz = Class.forName("org.spongepowered.common.bridge.world.chunk.ChunkProviderServerBridge");
+                    Class<?> clazz = Class.forName("org.spongepowered.common.bridge.world.chunk.ChunkProviderServerBridge");
                     spongeOverrideSet = clazz.getMethod("bridge$setForceChunkRequests", boolean.class);
                     spongeOverrideGet = clazz.getMethod("bridge$getForceChunkRequests");
                     spongeLoaded = true;

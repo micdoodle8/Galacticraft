@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockAsteroidRock;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.AsteroidGenSettings;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.DimensionAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.MapGenAbandonedBase;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,11 +27,11 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 
 import java.util.*;
-
-import static net.minecraft.block.LeavesBlock.PERSISTENT;
 
 public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
 {
@@ -117,9 +116,9 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
     private static final int LAVA_CHANCE = 2;
     private static final int GLOWSTONE_CHANCE = 20;
 
-    private final LinkedList<AsteroidData> largeAsteroids = new LinkedList<AsteroidData>();
+    private final LinkedList<AsteroidData> largeAsteroids = new LinkedList<>();
     private int largeCount = 0;
-    private static final HashSet<BlockVec3> chunksDone = new HashSet<BlockVec3>();
+    private static final HashSet<BlockVec3> chunksDone = new HashSet<>();
     private int largeAsteroidsLastChunkX;
     private int largeAsteroidsLastChunkZ;
 //    private final MapGenAbandonedBase dungeonGenerator = new MapGenAbandonedBase(); TODO Asteroid dungeons
@@ -486,7 +485,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         }
     }
 
-    private final void setOtherAxisFrequency(float frequency)
+    private void setOtherAxisFrequency(float frequency)
     {
         this.asteroidSkewX.frequencyY = frequency;
         this.asteroidSkewX.frequencyZ = frequency;
@@ -498,7 +497,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         this.asteroidSkewZ.frequencyY = frequency;
     }
 
-    private final int clamp(int x, int min, int max)
+    private int clamp(int x, int min, int max)
     {
         if (x < min)
         {
@@ -511,7 +510,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         return x;
     }
 
-    private final double clamp(double x, double min, double max)
+    private double clamp(double x, double min, double max)
     {
         if (x < min)
         {
@@ -524,12 +523,12 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         return x;
     }
 
-    private final int getTerrainHeightFor(float yMod, int asteroidY, int asteroidSize)
+    private int getTerrainHeightFor(float yMod, int asteroidY, int asteroidSize)
     {
         return (int) (asteroidY - asteroidSize / 4 + yMod * 1.5F);
     }
 
-    private final int getTerrainHeightAt(int x, int z, float[] yModArray, int xMin, int zMin, int zSize, int asteroidY, int asteroidSize)
+    private int getTerrainHeightAt(int x, int z, float[] yModArray, int xMin, int zMin, int zSize, int asteroidY, int asteroidSize)
     {
         final int index = (x - xMin) * zSize - zMin;
         if (index < yModArray.length && index >= 0)
@@ -743,7 +742,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         //Look for hollow asteroids to populate
         if (!this.largeAsteroids.isEmpty())
         {
-            for (AsteroidData asteroidIndex : new ArrayList<AsteroidData>(this.largeAsteroids))
+            for (AsteroidData asteroidIndex : new ArrayList<>(this.largeAsteroids))
             {
                 if (!asteroidIndex.isHollow)
                 {
@@ -971,11 +970,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                             {
                                 count = 12;
                             }
-                            if (count > 12)
-                            {
-                                count = 12;
-                            }
-//                            chunk.setBlockState(new BlockPos(x - 1, y, z), GCBlocks.brightAir.getStateFromMeta(13 - count)); TODO ? Has bright air ever had metadata?
+                            //                            chunk.setBlockState(new BlockPos(x - 1, y, z), GCBlocks.brightAir.getStateFromMeta(13 - count)); TODO ? Has bright air ever had metadata?
                             chunk.setBlockState(new BlockPos(x - 1, y, z), GCBlocks.brightAir.getDefaultState(), false);
 //                            ExtendedBlockStorage extendedblockstorage = chunk.getLastExtendedBlockStorage()[y >> 4];
 //                            if (extendedblockstorage != null)
@@ -1076,19 +1071,19 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         chunksDone.clear();
     }
 
-    private class AsteroidData
+    private static class AsteroidData
     {
-        public boolean isHollow;
-        public float[] sizeYArray;
-        public int xMinArray;
-        public int zMinArray;
-        public int xMax;
-        public int zMax;
-        public int zSizeArray;
-        public int asteroidSizeArray;
-        public int asteroidXArray;
-        public int asteroidYArray;
-        public int asteroidZArray;
+        public final boolean isHollow;
+        public final float[] sizeYArray;
+        public final int xMinArray;
+        public final int zMinArray;
+        public final int xMax;
+        public final int zMax;
+        public final int zSizeArray;
+        public final int asteroidSizeArray;
+        public final int asteroidXArray;
+        public final int asteroidYArray;
+        public final int asteroidZArray;
 
         public AsteroidData(boolean hollow, float[] sizeYArray2, int xMin, int zMin, int xmax, int zmax, int zSize, int size, int asteroidX, int asteroidY, int asteroidZ)
         {

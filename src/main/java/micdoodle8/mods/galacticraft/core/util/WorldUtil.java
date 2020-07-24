@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
@@ -47,6 +46,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
@@ -83,7 +83,7 @@ public class WorldUtil
     //    public static HashMap<DimensionType, DimensionType> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
     public static HashSet<DimensionType> registeredSpaceStations = new HashSet<>();
     //    public static Map<DimensionType, ResourceLocation> dimNames = new TreeMap<>();  //Dimension IDs and dimension names
-    public static Map<ServerPlayerEntity, HashMap<String, DimensionType>> celestialMapCache = new MapMaker().weakKeys().makeMap();
+    public static final Map<ServerPlayerEntity, HashMap<String, DimensionType>> celestialMapCache = new MapMaker().weakKeys().makeMap();
     public static List<DimensionType> registeredPlanets;
 
     public static DimensionType MOON_DIMENSION;
@@ -312,24 +312,21 @@ public class WorldUtil
             if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(PlayerUtil.getName(playerBase)) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
             {
                 //Satellites always reachable from their own homeworld or from its other satellites
-                if (playerBase != null)
+                DimensionType currentWorld = playerBase.dimension;
+                //Player is on homeworld
+                if (currentWorld == data.getHomePlanet())
                 {
-                    DimensionType currentWorld = playerBase.dimension;
-                    //Player is on homeworld
-                    if (currentWorld == data.getHomePlanet())
+                    temp.add(element);
+                    continue;
+                }
+                if (playerBase.world.getDimension() instanceof IOrbitDimension)
+                {
+                    //Player is currently on another space station around the same planet
+                    final SpaceStationWorldData dataCurrent = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, playerBase.dimension.getRegistryName(), null);
+                    if (dataCurrent.getHomePlanet() == data.getHomePlanet())
                     {
                         temp.add(element);
                         continue;
-                    }
-                    if (playerBase.world.getDimension() instanceof IOrbitDimension)
-                    {
-                        //Player is currently on another space station around the same planet
-                        final SpaceStationWorldData dataCurrent = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, playerBase.dimension.getRegistryName(), null);
-                        if (dataCurrent.getHomePlanet() == data.getHomePlanet())
-                        {
-                            temp.add(element);
-                            continue;
-                        }
                     }
                 }
 
@@ -825,22 +822,13 @@ public class WorldUtil
 
             MinecraftServer mcServer = world.getServer();
 
-            if (mcServer != null)
+            final ServerWorld var6 = mcServer.getWorld(dimensionID);
+
+            final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(var6.dimension.getClass());
+
+            if (type != null)
             {
-                final ServerWorld var6 = mcServer.getWorld(dimensionID);
-
-                if (var6 == null)
-                {
-                    System.err.println("Cannot Transfer Entity to Dimension: Could not get World for Dimension " + dimensionID);
-                    return null;
-                }
-
-                final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(var6.dimension.getClass());
-
-                if (type != null)
-                {
-                    return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv, ridingRocket);
-                }
+                return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv, ridingRocket);
             }
         }
 
@@ -1087,7 +1075,7 @@ public class WorldUtil
 //            worldNew.updateEntityWithOptionalForce(ridingRocket, true);
 //            CompatibilityManager.forceLoadChunksEnd((ServerWorld) worldNew, previous);
 //            entity.startRiding(ridingRocket);
-//            GCLog.debug("Entering rocket at : " + entity.posX + "," + entity.posZ + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
+//            GCLog.debug("Entering rocket at : " + entity.getPosX() + "," + entity.getPosZ() + " rocket at: " + ridingRocket.getPosX() + "," + ridingRocket.getPosZ());
 //        }
 //        else if (otherRiddenEntity != null)
 //        {
@@ -1101,7 +1089,7 @@ public class WorldUtil
 //                worldNew.addEntity(otherRiddenEntity);
 //                otherRiddenEntity.setWorld(worldNew);
 //            }
-//            otherRiddenEntity.setPositionAndRotation(entity.posX, entity.posY - 10, entity.posZ, otherRiddenEntity.rotationYaw, otherRiddenEntity.rotationPitch);
+//            otherRiddenEntity.setPositionAndRotation(entity.getPosX(), entity.getPosY() - 10, entity.getPosZ(), otherRiddenEntity.rotationYaw, otherRiddenEntity.rotationPitch);
 //            worldNew.updateEntityWithOptionalForce(otherRiddenEntity, true);
 //        }
 //
@@ -1113,12 +1101,12 @@ public class WorldUtil
 //            type.onSpaceDimensionChanged(worldNew, (ServerPlayerEntity) entity, ridingRocket != null);
 //        }
 
-        Vector3D spawnLocation;
+        Vec3d spawnLocation;
         float yaw = entity.rotationYaw;
         float pitch = entity.rotationPitch;
         if (ridingRocket != null)
         {
-            spawnLocation = new Vector3D(ridingRocket);
+            spawnLocation = ridingRocket.getPositionVector();
         }
         else
         {
@@ -1127,7 +1115,7 @@ public class WorldUtil
 
         if (entity instanceof ServerPlayerEntity)
         {
-            ChunkPos chunkpos = new ChunkPos(spawnLocation.toBlockPos());
+            ChunkPos chunkpos = new ChunkPos(new BlockPos(spawnLocation));
             worldNew.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, chunkpos, 1, entity.getEntityId());
             entity.stopRiding();
             if (((ServerPlayerEntity) entity).isSleeping())
@@ -1165,7 +1153,7 @@ public class WorldUtil
                 entity = entity.getType().create(worldNew);
                 if (entity == null)
                 {
-                    return entity;
+                    return null;
                 }
 
                 entity.copyDataFromOld(entityOld);
@@ -1588,7 +1576,7 @@ public class WorldUtil
             BlockPos pos1 = new BlockPos(position.intX(), position.intY(), position.intZ());
             // If the footprint is still over air....
             Block b2 = world.getBlockState(pos1).getBlock();
-            if (b2 != null && b2.isAir(world.getBlockState(pos1), world, pos1))
+            if (b2.isAir(world.getBlockState(pos1), world, pos1))
             {
                 for (Direction direction : Direction.values())
                 {
@@ -1670,9 +1658,9 @@ public class WorldUtil
         if (!input.isEmpty())
         {
             String[] str0 = input.split("\\?");
-            for (int i = 0; i < str0.length; ++i)
+            for (String s : str0)
             {
-                String[] str1 = str0[i].split("\\$");
+                String[] str1 = s.split("\\$");
                 data.put(DimensionType.getById(Integer.parseInt(str1[0])), DimensionType.getById(Integer.parseInt(str1[1])));
             }
         }

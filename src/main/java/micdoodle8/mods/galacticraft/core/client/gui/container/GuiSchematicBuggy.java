@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -9,7 +10,6 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicBuggy extends GuiContainerGC<ContainerSchematicBuggy> implements ISchematicResultPage
 {
@@ -29,13 +29,9 @@ public class GuiSchematicBuggy extends GuiContainerGC<ContainerSchematicBuggy> i
         super.init();
         this.buttons.clear();
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
-        {
-            SchematicRegistry.flipToPrevPage(this, this.pageIndex);
-        }));
+                SchematicRegistry.flipToPrevPage(this, this.pageIndex)));
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
-        {
-            SchematicRegistry.flipToNextPage(this, this.pageIndex);
-        }));
+                SchematicRegistry.flipToNextPage(this, this.pageIndex)));
     }
 
     @Override
@@ -48,7 +44,7 @@ public class GuiSchematicBuggy extends GuiContainerGC<ContainerSchematicBuggy> i
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.textureManager.bindTexture(GuiSchematicBuggy.buggyBenchTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - 221) / 2;

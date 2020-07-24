@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.proxy;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerServer;
@@ -24,7 +23,7 @@ import net.minecraft.world.dimension.DimensionType;
 
 public class CommonProxyCore
 {
-    public IPlayerServer player = new PlayerServer();
+    public final IPlayerServer player = new PlayerServer();
 
     public void registerVariants()
     {

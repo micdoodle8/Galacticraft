@@ -15,7 +15,7 @@ import java.util.List;
 public class VenusTickHandlerServer
 {
     private static final List<SolarModuleNetwork> solarModuleNetworks = Lists.newArrayList();
-    public static LinkedList<TileEntitySolarTransmitter> solarTransmitterUpdates = new LinkedList<>();
+    public static final LinkedList<TileEntitySolarTransmitter> solarTransmitterUpdates = new LinkedList<>();
 
     public static void addSolarNetwork(SolarModuleNetwork network)
     {
@@ -54,8 +54,7 @@ public class VenusTickHandlerServer
             int maxPasses = 10;
             while (!solarTransmitterUpdates.isEmpty())
             {
-                LinkedList<TileEntitySolarTransmitter> pass = new LinkedList<>();
-                pass.addAll(solarTransmitterUpdates);
+                LinkedList<TileEntitySolarTransmitter> pass = new LinkedList<>(solarTransmitterUpdates);
                 solarTransmitterUpdates.clear();
                 for (TileEntitySolarTransmitter newTile : pass)
                 {

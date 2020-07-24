@@ -4,9 +4,9 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public class ContainerBuggy extends Container
     private final IInventory playerInv;
     private final IInventory buggyInv;
 
-    public EntityBuggy.BuggyType buggyType;
+    public final EntityBuggy.BuggyType buggyType;
 
     public ContainerBuggy(int containerId, PlayerInventory playerInv, EntityBuggy.BuggyType type)
     {

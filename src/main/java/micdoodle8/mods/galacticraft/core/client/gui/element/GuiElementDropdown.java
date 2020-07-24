@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
@@ -8,16 +9,15 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class GuiElementDropdown extends Button
 {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
 
     public boolean dropdownClicked;
-    public String[] optionStrings;
+    public final String[] optionStrings;
     public int selectedOption = -1;
-    public FontRenderer font;
+    public final FontRenderer font;
     private final IDropboxCallback parentGui;
 
     public GuiElementDropdown(IDropboxCallback parentClass, int x, int y, String... text)
@@ -50,15 +50,15 @@ public class GuiElementDropdown extends Button
 
         if (this.visible)
         {
-//            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+//            RenderSystem.disableRescaleNormal();
 //            RenderHelper.disableStandardItemLighting();
-//            GL11.glDisable(GL11.GL_LIGHTING);
-//            GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GL11.glPushMatrix();
+//            RenderSystem.disableLighting();
+//            RenderSystem.disableDepthTest();
+            RenderSystem.pushMatrix();
 
             this.setBlitOffset(300);
-            GL11.glTranslatef(0, 0, 500);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.translatef(0, 0, 500);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
             AbstractGui.fill(this.x, this.y, this.x + this.width - 15, this.y + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), ColorUtil.to32BitColor(255, 0, 0, 0));
             AbstractGui.fill(this.x + 1, this.y + 1, this.x + this.width - 16, this.y + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, ColorUtil.to32BitColor(255, 150, 150, 150));
@@ -87,12 +87,12 @@ public class GuiElementDropdown extends Button
             minecraft.textureManager.bindTexture(TEXTURE);
             this.blit(this.x + this.width - 12, this.y + 5, 185, 0, 7, 4);
 
-            GL11.glPopMatrix();
+            RenderSystem.popMatrix();
             this.setBlitOffset(0);
-//            GL11.glEnable(GL11.GL_LIGHTING);
-//            GL11.glEnable(GL11.GL_DEPTH_TEST);
+//            RenderSystem.enableLighting();
+//            RenderSystem.enableDepthTest();
 //            RenderHelper.enableStandardItemLighting();
-//            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//            RenderSystem.enableRescaleNormal();
         }
     }
 

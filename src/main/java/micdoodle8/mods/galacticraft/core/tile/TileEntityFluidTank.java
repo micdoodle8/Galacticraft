@@ -28,7 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.LogicalSide;
@@ -113,7 +113,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         TileEntityFluidTank toFill = getLastTank();
 
         FluidStack fluid = toFill.fluidTank.getFluid();
-        if (fluid != null && fluid.getAmount() > 0 && !fluid.isFluidEqual(copy))
+        if (fluid.getAmount() > 0 && !fluid.isFluidEqual(copy))
         {
             return 0;
         }
@@ -153,7 +153,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     {
         TileEntityFluidTank last = getLastTank();
         FluidStack stack = last.fluidTank.drain(maxDrain, action);
-        if (action.execute() && stack != null && stack.getAmount() > 0)
+        if (action.execute() && stack.getAmount() > 0)
         {
             last.updateClient = true;
         }
@@ -395,10 +395,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         {
             return;
         }
-        if (pkt.getNbtCompound() == null)
-        {
-            throw new RuntimeException("[GC] Missing NBTTag compound!");
-        }
+        pkt.getNbtCompound();
         CompoundNBT nbt = pkt.getNbtCompound();
         try
         {

@@ -15,7 +15,7 @@ public abstract class NetworkedEntity extends Entity implements IPacketReceiver
     {
         super(type, world);
 
-        if (world != null && world.isRemote)
+        if (world.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }

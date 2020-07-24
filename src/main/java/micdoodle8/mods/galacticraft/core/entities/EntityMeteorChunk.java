@@ -137,7 +137,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             if (this.isHot)
             {
                 this.isHot = false;
-                this.setHot(this.isHot);
+                this.setHot(false);
             }
         }
         else if (!this.world.isRemote)

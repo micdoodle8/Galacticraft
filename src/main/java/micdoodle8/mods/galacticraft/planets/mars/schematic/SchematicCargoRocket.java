@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicBuggy;
 import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;

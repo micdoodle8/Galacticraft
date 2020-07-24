@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
@@ -45,33 +45,33 @@
 //
 //                if (wearingModule)
 //                {
-//                    GlStateManager.enableRescaleNormal();
-//                    GlStateManager.pushMatrix();
+//                    RenderSystem.enableRescaleNormal();
+//                    RenderSystem.pushMatrix();
 //                    Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //
-//                    GlStateManager.rotatef(180, 1, 0, 0);
-//                    GlStateManager.pushMatrix();
-//                    GlStateManager.rotatef(this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleY * -Constants.RADIANS_TO_DEGREES, 0, 1, 0);
-//                    GlStateManager.rotatef(this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleX * Constants.RADIANS_TO_DEGREES, 1, 0, 0);
-//                    GlStateManager.scalef(0.3F, 0.3F, 0.3F);
+//                    RenderSystem.rotatef(180, 1, 0, 0);
+//                    RenderSystem.pushMatrix();
+//                    RenderSystem.rotatef(this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleY * -Constants.RADIANS_TO_DEGREES, 0, 1, 0);
+//                    RenderSystem.rotatef(this.playerRenderer.getEntityModel().bipedHeadwear.rotateAngleX * Constants.RADIANS_TO_DEGREES, 1, 0, 0);
+//                    RenderSystem.scalef(0.3F, 0.3F, 0.3F);
 //
 //                    if (wearingHelmet)
 //                    {
-//                        GlStateManager.translatef(-1.1F, player.isSneaking() ? 0.35F : 1.2F, 0);
+//                        RenderSystem.translatef(-1.1F, player.isSneaking() ? 0.35F : 1.2F, 0);
 //                    }
 //                    else
 //                    {
-//                        GlStateManager.translatef(-0.9F, player.isSneaking() ? 0.1F : 0.9F, 0);
+//                        RenderSystem.translatef(-0.9F, player.isSneaking() ? 0.1F : 0.9F, 0);
 //                    }
 //
 //                    ClientUtil.drawBakedModel(moduleModel);
-//                    GlStateManager.translatef(0.0F, 1.3F, 0.0F);
-//                    GlStateManager.rotatef((float) (Math.sin(player.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
-//                    GlStateManager.rotatef((float) (Math.cos(player.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
+//                    RenderSystem.translatef(0.0F, 1.3F, 0.0F);
+//                    RenderSystem.rotatef((float) (Math.sin(player.ticksExisted * 0.05) * 50.0F), 1, 0, 0);
+//                    RenderSystem.rotatef((float) (Math.cos(player.ticksExisted * 0.1) * 50.0F), 0, 1, 0);
 //                    ClientUtil.drawBakedModel(radarModel);
-//                    GlStateManager.popMatrix();
-//                    GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-//                    GlStateManager.popMatrix();
+//                    RenderSystem.popMatrix();
+//                    RenderSystem.color3f(1.0F, 1.0F, 1.0F);
+//                    RenderSystem.popMatrix();
 //                }
 //            }
 //        }

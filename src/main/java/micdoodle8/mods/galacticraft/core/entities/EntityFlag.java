@@ -239,7 +239,7 @@ public class EntityFlag extends Entity
 
     public void setDamage(float par1)
     {
-        this.dataManager.set(DAMAGE, Float.valueOf(par1));
+        this.dataManager.set(DAMAGE, par1);
     }
 
     public float getDamage()
@@ -249,7 +249,7 @@ public class EntityFlag extends Entity
 
     public void setFacingAngle(int par1)
     {
-        this.dataManager.set(FACING_ANGLE, Integer.valueOf(par1));
+        this.dataManager.set(FACING_ANGLE, par1);
     }
 
     public int getFacingAngle()

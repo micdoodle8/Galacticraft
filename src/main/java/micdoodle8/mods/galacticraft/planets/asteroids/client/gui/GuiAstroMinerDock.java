@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiCargoLoader;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
@@ -14,14 +16,12 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.gui.widget.button.Button;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
     private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gui_astro_miner_dock.png");
     private final TileEntityMinerBase minerBase;
     private Button recallButton;
-    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 233, (this.height - this.ySize) / 2 + 31, 10, 68, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 233, (this.height - this.ySize) / 2 + 31, 10, 68, new ArrayList<>(), this.width, this.height, this);
     private boolean extraLines;
 
     public GuiAstroMinerDock(ContainerAstroMinerDock container, PlayerInventory playerInv, ITextComponent title)
@@ -82,9 +82,7 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(xPos + 230, yPos + 108, 18, 18, batterySlotDesc, this.width, this.height, this));
         this.buttons.add(this.recallButton = new Button(xPos + 173, yPos + 195, 76, 20, GCCoreUtil.translate("gui.button.recall.name"), (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.minerBase.getPos(), 0}));
-        }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.minerBase.getPos(), 0}))));
     }
 
     private String getDeltaString(int num)
@@ -123,28 +121,28 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
 
         switch (this.minerBase.linkedMinerDataAIState)
         {
-        case -3:  //no linked miner
-            return "";
-        case -2:
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.out_of_range");
-        case EntityAstroMiner.AISTATE_OFFLINE:
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.offline");
-        case EntityAstroMiner.AISTATE_STUCK:
-            this.extraLines = true;
-            return EnumColor.RED + GCCoreUtil.translate("gui.miner.stuck");
-        case EntityAstroMiner.AISTATE_ATBASE:
-            return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.docked");
-        case EntityAstroMiner.AISTATE_TRAVELLING:
-            this.extraLines = true;
-            return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.travelling");
-        case EntityAstroMiner.AISTATE_MINING:
-            this.extraLines = true;
-            return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.mining");
-        case EntityAstroMiner.AISTATE_RETURNING:
-            this.extraLines = true;
-            return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.returning");
-        case EntityAstroMiner.AISTATE_DOCKING:
-            return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.docking");
+            case -3:  //no linked miner
+                return "";
+            case -2:
+                return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.out_of_range");
+            case EntityAstroMiner.AISTATE_OFFLINE:
+                return EnumColor.ORANGE + GCCoreUtil.translate("gui.miner.offline");
+            case EntityAstroMiner.AISTATE_STUCK:
+                this.extraLines = true;
+                return EnumColor.RED + GCCoreUtil.translate("gui.miner.stuck");
+            case EntityAstroMiner.AISTATE_ATBASE:
+                return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.docked");
+            case EntityAstroMiner.AISTATE_TRAVELLING:
+                this.extraLines = true;
+                return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.travelling");
+            case EntityAstroMiner.AISTATE_MINING:
+                this.extraLines = true;
+                return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.mining");
+            case EntityAstroMiner.AISTATE_RETURNING:
+                this.extraLines = true;
+                return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.returning");
+            case EntityAstroMiner.AISTATE_DOCKING:
+                return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.miner.docking");
         }
         return "";
     }
@@ -152,7 +150,7 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
         this.minecraft.getTextureManager().bindTexture(GuiAstroMinerDock.dockGui);
@@ -177,18 +175,18 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
     {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture();
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
                 GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
         worldRenderer.pos(x + 0, y + height, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         worldRenderer.pos(x + width, y + height, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         worldRenderer.pos(x + width, y + 0, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         worldRenderer.pos(x + 0, y + 0, this.getBlitOffset()).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         tessellator.draw();
-        GlStateManager.enableTexture();
-        GlStateManager.disableBlend();
-        GlStateManager.blendFunc(770, 771);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+        RenderSystem.blendFunc(770, 771);
     }
 }

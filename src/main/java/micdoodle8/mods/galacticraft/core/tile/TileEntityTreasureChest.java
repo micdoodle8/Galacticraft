@@ -35,7 +35,6 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -128,11 +127,10 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             this.numPlayersUsing = 0;
             f = 5.0F;
             List list = this.world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((float) i - f, (float) j - f, (float) k - f, (float) (i + 1) + f, (float) (j + 1) + f, (float) (k + 1) + f));
-            Iterator iterator = list.iterator();
 
-            while (iterator.hasNext())
+            for (Object o : list)
             {
-                PlayerEntity entityplayer = (PlayerEntity) iterator.next();
+                PlayerEntity entityplayer = (PlayerEntity) o;
 
                 if (entityplayer.openContainer instanceof ChestContainer)
                 {

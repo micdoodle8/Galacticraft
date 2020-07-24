@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedZombie;
@@ -48,7 +48,7 @@
 //    @Override
 //    protected void preRenderCallback(EntityEvolvedZombie zombie, float par2)
 //    {
-//        GL11.glScalef(1.2F, 1.2F, 1.2F);
+//        RenderSystem.scalef(1.2F, 1.2F, 1.2F);
 //        if (texSwitch)
 //        {
 //            OverlaySensorGlasses.preRenderMobs();
@@ -71,11 +71,11 @@
 //    @Override
 //    protected void applyRotations(EntityEvolvedZombie zombie, float pitch, float yaw, float partialTicks)
 //    {
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-//        GL11.glTranslatef(0F, -zombie.getHeight() * 0.55F, 0F);
-//        GL11.glRotatef(zombie.getTumbleAngle(partialTicks), zombie.getTumbleAxisX(), 0F, zombie.getTumbleAxisZ());
-//        GL11.glTranslatef(0F, zombie.getHeight() * 0.55F, 0F);
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.translatef(0F, -zombie.getHeight() * 0.55F, 0F);
+//        RenderSystem.rotatef(zombie.getTumbleAngle(partialTicks), zombie.getTumbleAxisX(), 0F, zombie.getTumbleAxisZ());
+//        RenderSystem.translatef(0F, zombie.getHeight() * 0.55F, 0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
 //        super.applyRotations(zombie, pitch, yaw, partialTicks);
 //    }
 //}

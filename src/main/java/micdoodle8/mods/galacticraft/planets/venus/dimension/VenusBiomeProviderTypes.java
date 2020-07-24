@@ -18,28 +18,17 @@ public class VenusBiomeProviderTypes
 
     // TODO Yikes, fix this once forge makes BiomeProviderType constructor public
     public static final RegistryObject<BiomeProviderType<VenusBiomeProviderSettings, VenusBiomeProvider>> VENUS = register(
-            "venus_biome_provider_type", () -> {
+            "venus_biome_provider_type", () ->
+            {
                 Class<?> c = BiomeProviderType.class;
                 try
                 {
                     Constructor<?> cons = c.getConstructor(Function.class, Function.class);
                     Function<VenusBiomeProviderSettings, VenusBiomeProvider> f1 = VenusBiomeProvider::new;
                     Function<WorldInfo, VenusBiomeProviderSettings> f2 = VenusBiomeProviderSettings::new;
-                    return (BiomeProviderType<VenusBiomeProviderSettings, VenusBiomeProvider>)cons.newInstance(f1, f2);
+                    return (BiomeProviderType<VenusBiomeProviderSettings, VenusBiomeProvider>) cons.newInstance(f1, f2);
                 }
-                catch (NoSuchMethodException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (InstantiationException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (InvocationTargetException e)
+                catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
                 {
                     e.printStackTrace();
                 }

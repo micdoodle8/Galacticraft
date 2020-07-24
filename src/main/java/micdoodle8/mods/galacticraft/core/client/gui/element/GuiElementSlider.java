@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -10,7 +11,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.gui.GuiUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 
@@ -55,80 +55,79 @@ public class GuiElementSlider extends Button
 //                }
 //            } TODO Slider element
 
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glDisable(GL11.GL_ALPHA_TEST);
-            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.disableTexture();
+            RenderSystem.enableBlend();
+            RenderSystem.disableAlphaTest();
+            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
                     GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-            GL11.glShadeModel(GL11.GL_SMOOTH);
+            RenderSystem.shadeModel(7425);
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder worldRenderer = tessellator.getBuffer();
 
             if (this.isVertical)
             {
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) this.x + this.width, this.y, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 worldRenderer.pos(this.x, this.y, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 worldRenderer.pos(this.x, (double) this.y + this.height, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.width, (double) this.y + this.height, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 tessellator.draw();
 
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) this.x + this.width - 1, (double) this.y + 1, this.getBlitOffset()).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + 1, (double) this.y + 1, this.getBlitOffset()).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + 1, (double) this.y + this.height - 1, this.getBlitOffset()).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.width - 1, (double) this.y + this.height - 1, this.getBlitOffset()).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
                 tessellator.draw();
 
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) this.x + this.width, (double) this.y + this.sliderPos - 1, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
                 worldRenderer.pos(this.x, (double) this.y + this.sliderPos - 1, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
                 worldRenderer.pos(this.x, (double) this.y + this.sliderPos + 1, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.width, (double) this.y + this.sliderPos + 1, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
-                tessellator.draw();
             }
             else
             {
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) this.x + this.width, this.y, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 worldRenderer.pos(this.x, this.y, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 worldRenderer.pos(this.x, (double) this.y + this.height, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.width, (double) this.y + this.height, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                 tessellator.draw();
 
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) this.x + this.width - 1, (double) this.y + 1, this.getBlitOffset()).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + 1, (double) this.y + 1, this.getBlitOffset()).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + 1, (double) this.y + this.height - 1, this.getBlitOffset()).color(this.firstColor.floatX(), this.firstColor.floatY(), this.firstColor.floatZ(), 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.width - 1, (double) this.y + this.height - 1, this.getBlitOffset()).color(this.lastColor.floatX(), this.lastColor.floatY(), this.lastColor.floatZ(), 1.0F).endVertex();
                 tessellator.draw();
 
-                GL11.glShadeModel(GL11.GL_FLAT);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                RenderSystem.shadeModel(7424);
+                RenderSystem.disableBlend();
+                RenderSystem.enableAlphaTest();
+                RenderSystem.enableTexture();
 
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+                RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.disableTexture();
+                RenderSystem.enableBlend();
+                RenderSystem.disableAlphaTest();
+                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
                         GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-                GL11.glShadeModel(GL11.GL_SMOOTH);
+                RenderSystem.shadeModel(7425);
 
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+                worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) this.x + this.sliderPos + 1, this.y, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.sliderPos - 1, this.y, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.sliderPos - 1, (double) this.y + this.height, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
                 worldRenderer.pos((double) this.x + this.sliderPos + 1, (double) this.y + this.height, this.getBlitOffset()).color(1, 1, 1, 1.0F).endVertex();
-                tessellator.draw();
             }
+            tessellator.draw();
 
-            GL11.glShadeModel(GL11.GL_FLAT);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            RenderSystem.shadeModel(7424);
+            RenderSystem.disableBlend();
+            RenderSystem.enableAlphaTest();
+            RenderSystem.enableTexture();
         }
     }
 

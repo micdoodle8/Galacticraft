@@ -6,7 +6,6 @@ import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.BiomeVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.GenLayerVenusBiomes;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -20,10 +19,6 @@ import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.storage.WorldInfo;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.LongFunction;
 

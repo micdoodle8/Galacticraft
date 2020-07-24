@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 //import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
@@ -35,20 +35,20 @@
 //    @Override
 //    public void doRender(EntityFlag entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
 //        long seed = entity.getEntityId() * 493286711L;
 //        seed = seed * seed * 4392167121L + seed * 98761L;
 //        float seedX = (((seed >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 //        float seedY = (((seed >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
 //        float seedZ = (((seed >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-//        GlStateManager.translatef(seedX, seedY + 1.5F, seedZ);
-//        GlStateManager.translatef((float) x, (float) y, (float) z);
-//        GlStateManager.rotatef(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);
+//        RenderSystem.translatef(seedX, seedY + 1.5F, seedZ);
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.rotatef(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);
 //        this.bindEntityTexture(entity);
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
 //        this.modelFlag.render(entity, 0.0625F);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    @Override

@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedWitch;
@@ -42,7 +42,7 @@
 //    protected void preRenderCallback(EntityEvolvedWitch entity, float partialTickTime)
 //    {
 //        float f1 = 0.9375F;
-//        GlStateManager.scalef(f1, f1, f1);
+//        RenderSystem.scalef(f1, f1, f1);
 //        if (texSwitch)
 //        {
 //            OverlaySensorGlasses.preRenderMobs();

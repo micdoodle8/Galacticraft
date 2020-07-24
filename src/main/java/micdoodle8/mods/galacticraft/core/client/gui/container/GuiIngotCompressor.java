@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -10,9 +10,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +25,6 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
     {
         super(container, playerInv, title);
 //        super(new ContainerIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent("tile.machine.3.name"));
-        this.compressor = compressor;
         this.ySize = 192;
     }
 
@@ -36,7 +32,7 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
     protected void init()
     {
         super.init();
-        this.processInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.processInfoRegion.tooltipStrings = new ArrayList<>();
         this.processInfoRegion.xPosition = (this.width - this.xSize) / 2 + 77;
         this.processInfoRegion.yPosition = (this.height - this.ySize) / 2 + 30;
         this.processInfoRegion.parentWidth = this.width;
@@ -79,7 +75,7 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.textureManager.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int process;
         int containerWidth = (this.width - this.xSize) / 2;
@@ -95,8 +91,7 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
             process = 0;
         }
 
-        List<String> processDesc = new ArrayList<String>();
-        processDesc.clear();
+        List<String> processDesc = new ArrayList<>();
         processDesc.add(GCCoreUtil.translate("gui.electric_compressor.desc.0") + ": " + process + "%");
         this.processInfoRegion.tooltipStrings = processDesc;
 

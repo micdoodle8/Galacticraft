@@ -19,8 +19,8 @@ public class ContainerSchematicTier2Rocket extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.SCHEMATIC_T2_ROCKET)
     public static ContainerType<ContainerSchematicTier2Rocket> TYPE;
 
-    public InventorySchematicTier2Rocket craftMatrix = new InventorySchematicTier2Rocket(this);
-    public IInventory craftResult = new CraftResultInventory();
+    public final InventorySchematicTier2Rocket craftMatrix = new InventorySchematicTier2Rocket(this);
+    public final IInventory craftResult = new CraftResultInventory();
     private final World world;
 
     public ContainerSchematicTier2Rocket(int containerId, PlayerInventory playerInv)
@@ -166,38 +166,14 @@ public class ContainerSchematicTier2Rocket extends Container
 //                            break;
 //                        }
 //                    } TODO Oredictionary
-                    if (foundChest)
-                    {
-                        if (!this.inventorySlots.get(19).getHasStack())
-                        {
-                            if (!this.mergeOneItem(var4, 19, 20, false))
-                            {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                        else if (!this.inventorySlots.get(20).getHasStack())
-                        {
-                            if (!this.mergeOneItem(var4, 20, 21, false))
-                            {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                        else if (!this.inventorySlots.get(21).getHasStack())
-                        {
-                            if (!this.mergeOneItem(var4, 21, 22, false))
-                            {
-                                return ItemStack.EMPTY;
-                            }
-                        }
-                    }
-                    else if (par1 >= 22 && par1 < 49)
+                    if (par1 < 49)
                     {
                         if (!this.mergeItemStack(var4, 49, 58, false))
                         {
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (par1 >= 49 && par1 < 58)
+                    else if (par1 < 58)
                     {
                         if (!this.mergeItemStack(var4, 22, 49, false))
                         {

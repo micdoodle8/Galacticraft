@@ -105,7 +105,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             {
                 TileEntity chestTest = this.world.getTileEntity(this.spawner.getChestPos());
 
-                if (chestTest != null && chestTest instanceof TileEntityTreasureChest)
+                if (chestTest instanceof TileEntityTreasureChest)
                 {
                     chest = (TileEntityTreasureChest) chestTest;
                 }

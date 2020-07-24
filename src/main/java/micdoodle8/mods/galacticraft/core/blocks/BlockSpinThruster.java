@@ -1,5 +1,15 @@
-//package micdoodle8.mods.galacticraft.core.blocks;
-//
+package micdoodle8.mods.galacticraft.core.blocks;
+
+import net.minecraft.block.Block;
+
+public class BlockSpinThruster extends Block
+{
+
+    public BlockSpinThruster(Properties properties)
+    {
+        super(properties);
+    }
+}
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 //import micdoodle8.mods.galacticraft.core.items.IShiftDescription;

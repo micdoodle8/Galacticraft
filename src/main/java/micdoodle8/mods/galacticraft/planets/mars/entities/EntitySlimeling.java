@@ -43,7 +43,7 @@ import java.util.UUID;
 
 public class EntitySlimeling extends TameableEntity implements IEntityBreathable
 {
-    public InventorySlimeling slimelingInventory = new InventorySlimeling(this);
+    public final InventorySlimeling slimelingInventory = new InventorySlimeling(this);
 
     private static final DataParameter<Float> HEALTH = EntityDataManager.createKey(EntitySlimeling.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> COLOR_RED = EntityDataManager.createKey(EntitySlimeling.class, DataSerializers.FLOAT);
@@ -88,16 +88,16 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
 
         switch (this.rand.nextInt(3))
         {
-        case 0:
-            this.colorRed = 1.0F;
-            break;
-        case 1:
-            this.colorBlue = 1.0F;
-            break;
-        case 2:
-            this.colorRed = 1.0F;
-            this.colorGreen = 1.0F;
-            break;
+            case 0:
+                this.colorRed = 1.0F;
+                break;
+            case 1:
+                this.colorBlue = 1.0F;
+                break;
+            case 2:
+                this.colorRed = 1.0F;
+                this.colorGreen = 1.0F;
+                break;
         }
 
         this.setRandomFavFood();
@@ -166,36 +166,36 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
     {
         switch (this.rand.nextInt(10))
         {
-        case 0:
-            this.favFoodID = Item.getIdFromItem(Items.GOLD_INGOT);
-            break;
-        case 1:
-            this.favFoodID = Item.getIdFromItem(Items.FLINT_AND_STEEL);
-            break;
-        case 2:
-            this.favFoodID = Item.getIdFromItem(Items.BAKED_POTATO);
-            break;
-        case 3:
-            this.favFoodID = Item.getIdFromItem(Items.STONE_SWORD);
-            break;
-        case 4:
-            this.favFoodID = Item.getIdFromItem(Items.GUNPOWDER);
-            break;
-        case 5:
-            this.favFoodID = Item.getIdFromItem(Items.WOODEN_HOE);
-            break;
-        case 6:
-            this.favFoodID = Item.getIdFromItem(Items.EMERALD);
-            break;
-        case 7:
-            this.favFoodID = Item.getIdFromItem(Items.TROPICAL_FISH);
-            break;
-        case 8:
-            this.favFoodID = Item.getIdFromItem(Items.REPEATER);
-            break;
-        case 9:
-            this.favFoodID = Item.getIdFromItem(Items.OAK_BOAT);
-            break;
+            case 0:
+                this.favFoodID = Item.getIdFromItem(Items.GOLD_INGOT);
+                break;
+            case 1:
+                this.favFoodID = Item.getIdFromItem(Items.FLINT_AND_STEEL);
+                break;
+            case 2:
+                this.favFoodID = Item.getIdFromItem(Items.BAKED_POTATO);
+                break;
+            case 3:
+                this.favFoodID = Item.getIdFromItem(Items.STONE_SWORD);
+                break;
+            case 4:
+                this.favFoodID = Item.getIdFromItem(Items.GUNPOWDER);
+                break;
+            case 5:
+                this.favFoodID = Item.getIdFromItem(Items.WOODEN_HOE);
+                break;
+            case 6:
+                this.favFoodID = Item.getIdFromItem(Items.EMERALD);
+                break;
+            case 7:
+                this.favFoodID = Item.getIdFromItem(Items.TROPICAL_FISH);
+                break;
+            case 8:
+                this.favFoodID = Item.getIdFromItem(Items.REPEATER);
+                break;
+            case 9:
+                this.favFoodID = Item.getIdFromItem(Items.OAK_BOAT);
+                break;
         }
     }
 
@@ -731,11 +731,11 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
             }
             else
             {
-                Entity e = this.theEntity.getOwner();
-                if (e instanceof LivingEntity)
+                LivingEntity e = this.theEntity.getOwner();
+                if (e != null)
                 {
-                    LivingEntity living = (LivingEntity) e;
-                    return living == null || ((!(this.theEntity.getDistanceSq(living) < 144.0D) || living.getRevengeTarget() == null) && this.isSitting);
+                    LivingEntity living = e;
+                    return (!(this.theEntity.getDistanceSq(living) < 144.0D) || living.getRevengeTarget() == null) && this.isSitting;
                 }
                 return false;
             }

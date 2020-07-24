@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.GCContainerNames;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

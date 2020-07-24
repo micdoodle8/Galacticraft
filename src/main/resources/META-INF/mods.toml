@@ -1,0 +1,38 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+issueTrackerURL="https://github.com/micdoodle8/Galacticraft/issues/"
+#logoFile=""
+
+[[mods]]
+    modId="galacticraftcore"
+    version="1.15.2-4.0.0.0"
+#    updateJSONURL=""
+    displayURL="https://micdoodle8.com/"
+    displayName="Galacticraft"
+    authors="micdoodle8, radfast, EzerArch, fishtaco, SpaceViking, SteveKunG"
+    description='''
+An advanced space travel mod for Minecraft!
+'''
+[[mods]]
+    modId="galacticraftplanets"
+    version="1.15.2-4.0.0.0"
+#    updateJSONURL=""
+    displayURL="https://micdoodle8.com/"
+    displayName="Galacticraft"
+    authors="micdoodle8, radfast, EzerArch, fishtaco, SpaceViking, SteveKunG"
+    description='''
+An advanced space travel mod for Minecraft!
+'''
+[[dependencies.galacticraftcore]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.galacticraftcore]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"

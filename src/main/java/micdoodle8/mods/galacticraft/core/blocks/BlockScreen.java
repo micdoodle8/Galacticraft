@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
     public static final BooleanProperty RIGHT = BooleanProperty.create("right");
     public static final BooleanProperty UP = BooleanProperty.create("up");
@@ -150,19 +150,19 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     {
         switch (state.get(FACING))
         {
-        case EAST:
-            return EAST_AABB;
-        case WEST:
-            return WEST_AABB;
-        case SOUTH:
-            return SOUTH_AABB;
-        case NORTH:
-            return NORTH_AABB;
-        case DOWN:
-            return DOWN_AABB;
-        case UP:
-        default:
-            return UP_AABB;
+            case EAST:
+                return EAST_AABB;
+            case WEST:
+                return WEST_AABB;
+            case SOUTH:
+                return SOUTH_AABB;
+            case NORTH:
+                return NORTH_AABB;
+            case DOWN:
+                return DOWN_AABB;
+            case UP:
+            default:
+                return UP_AABB;
         }
     }
 

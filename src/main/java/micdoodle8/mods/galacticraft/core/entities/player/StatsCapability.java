@@ -1171,14 +1171,14 @@ public class StatsCapability extends GCPlayerStats
                     CompoundNBT nbttagcompound = nbttaglist1.getCompound(i);
                     int j = nbttagcompound.getByte("Slot") & 255;
 
-                    if (j >= 0 && j < this.stacks.size())
+                    if (j < this.stacks.size())
                     {
                         this.stacks.set(j, ItemStack.read(nbttagcompound));
                     }
                 }
             }
 
-            this.unlockedSchematics = new ArrayList<ISchematicPage>();
+            this.unlockedSchematics = new ArrayList<>();
 
             if (p != null)
             {

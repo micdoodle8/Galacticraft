@@ -5,12 +5,11 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -19,7 +18,7 @@ public class ContainerSchematic extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SCHEMATIC)
     public static ContainerType<ContainerSchematic> TYPE;
 
-    public InventorySchematic craftMatrix = new InventorySchematic(this);
+    public final InventorySchematic craftMatrix = new InventorySchematic(this);
     public IInventory craftResult = new CraftResultInventory();
     private final World world;
 

@@ -45,18 +45,18 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickableTil
             double hysteresis = result ? 3D : 0D;
             switch (facing)
             {
-            case 0:
-                this.playerSearch = new AxisAlignedBB(x - range / 2 + 0.5D - hysteresis, y - 6 - hysteresis, z - range - hysteresis, x + range / 2 + 0.5D + hysteresis, y + 2 + hysteresis, z + hysteresis);
-                break;
-            case 1:
-                this.playerSearch = new AxisAlignedBB(x + 1 - hysteresis, y - 6 - hysteresis, z - range / 2 + 0.5D - hysteresis, x + range + 1 + hysteresis, y + 2 + hysteresis, z + range / 2 + 0.5D + hysteresis);
-                break;
-            case 2:
-                //South
-                this.playerSearch = new AxisAlignedBB(x - range / 2 + 0.5D - hysteresis, y - 6 - hysteresis, z + 1 - hysteresis, x + range / 2 + 0.5D + hysteresis, y + 2 + hysteresis, z + range + 1D + hysteresis);
-                break;
-            case 3:
-                this.playerSearch = new AxisAlignedBB(x - range - hysteresis, y - 6 - hysteresis, z - range / 2 + 0.5D - hysteresis, x + hysteresis, y + 2 + hysteresis, z + range / 2 + 0.5D + hysteresis);
+                case 0:
+                    this.playerSearch = new AxisAlignedBB(x - range / 2 + 0.5D - hysteresis, y - 6 - hysteresis, z - range - hysteresis, x + range / 2 + 0.5D + hysteresis, y + 2 + hysteresis, z + hysteresis);
+                    break;
+                case 1:
+                    this.playerSearch = new AxisAlignedBB(x + 1 - hysteresis, y - 6 - hysteresis, z - range / 2 + 0.5D - hysteresis, x + range + 1 + hysteresis, y + 2 + hysteresis, z + range / 2 + 0.5D + hysteresis);
+                    break;
+                case 2:
+                    //South
+                    this.playerSearch = new AxisAlignedBB(x - range / 2 + 0.5D - hysteresis, y - 6 - hysteresis, z + 1 - hysteresis, x + range / 2 + 0.5D + hysteresis, y + 2 + hysteresis, z + range + 1D + hysteresis);
+                    break;
+                case 3:
+                    this.playerSearch = new AxisAlignedBB(x - range - hysteresis, y - 6 - hysteresis, z - range / 2 + 0.5D - hysteresis, x + hysteresis, y + 2 + hysteresis, z + range / 2 + 0.5D + hysteresis);
             }
             result = !this.world.getEntitiesWithinAABB(PlayerEntity.class, playerSearch).isEmpty();
             if (this.getBlockState().getBlock() instanceof BlockConcealedDetector)

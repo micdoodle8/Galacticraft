@@ -14,8 +14,8 @@ public class ContainerExtendedInventory extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.EXTENDED_INVENTORY)
     public static ContainerType<ContainerExtendedInventory> TYPE;
 
-    public PlayerInventory inventoryPlayer;
-    public InventoryExtended extendedInventory;
+    public final PlayerInventory inventoryPlayer;
+    public final InventoryExtended extendedInventory;
 
     public ContainerExtendedInventory(int containerId, PlayerInventory playerInv, InventoryExtended extendedInventory)
     {

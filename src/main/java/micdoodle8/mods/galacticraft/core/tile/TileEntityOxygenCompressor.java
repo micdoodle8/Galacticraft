@@ -92,14 +92,14 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
         {
             switch (slotID)
             {
-            case 0:
-                return itemstack.getDamage() > 1;
-            case 1:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 2:
-                return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
-            default:
-                return false;
+                case 0:
+                    return itemstack.getDamage() > 1;
+                case 1:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 2:
+                    return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
+                default:
+                    return false;
             }
         }
         return false;
@@ -110,14 +110,14 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
     {
         switch (slotID)
         {
-        case 0:
-            return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getDamage() == 0;
-        case 1:
-            return ItemElectricBase.isElectricItemEmpty(itemstack);
-        case 2:
-            return FluidUtil.isEmptyContainer(itemstack);
-        default:
-            return false;
+            case 0:
+                return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getDamage() == 0;
+            case 1:
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
+            case 2:
+                return FluidUtil.isEmptyContainer(itemstack);
+            default:
+                return false;
         }
     }
 
@@ -126,12 +126,12 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
     {
         switch (slotID)
         {
-        case 0:
-            return itemstack.getItem() instanceof ItemOxygenTank;
-        case 1:
-            return ItemElectricBase.isElectricItem(itemstack.getItem());
-        case 2:
-            return itemstack.getItem() instanceof IItemOxygenSupply;
+            case 0:
+                return itemstack.getItem() instanceof ItemOxygenTank;
+            case 1:
+                return ItemElectricBase.isElectricItem(itemstack.getItem());
+            case 2:
+                return itemstack.getItem() instanceof IItemOxygenSupply;
         }
 
         return false;

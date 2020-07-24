@@ -132,18 +132,18 @@ public class MapGenAbandonedBase extends Structure<BaseConfiguration>
             Direction direction = Direction.Plane.HORIZONTAL.random(rand);
             switch (direction)
             {
-            case NORTH:
-                zoffset = -size;
-                break;
-            case SOUTH:
-                zoffset = size;
-                break;
-            case WEST:
-                xoffset = -size;
-                break;
-            case EAST:
-                xoffset = size;
-                break;
+                case NORTH:
+                    zoffset = -size;
+                    break;
+                case SOUTH:
+                    zoffset = size;
+                    break;
+                case WEST:
+                    xoffset = -size;
+                    break;
+                case EAST:
+                    xoffset = size;
+                    break;
             }
             BaseStart startPiece = new BaseStart(config, rand, (chunkX << 4) + xoffset, (chunkZ << 4) + zoffset, direction);
             startPiece.buildComponent(startPiece, this.components, rand);

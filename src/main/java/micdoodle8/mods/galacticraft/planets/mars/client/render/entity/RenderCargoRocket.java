@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
@@ -48,26 +48,26 @@
 //    public void doRender(EntityCargoRocket entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
 //        float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x, (float) y + entity.getRenderOffsetY(), (float) z);
-//        GlStateManager.scalef(0.4F, 0.4F, 0.4F);
-//        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x, (float) y + entity.getRenderOffsetY(), (float) z);
+//        RenderSystem.scalef(0.4F, 0.4F, 0.4F);
+//        RenderSystem.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
 //        this.bindEntityTexture(entity);
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
 //        this.updateModel();
 //        ClientUtil.drawBakedModel(this.rocketModel);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //

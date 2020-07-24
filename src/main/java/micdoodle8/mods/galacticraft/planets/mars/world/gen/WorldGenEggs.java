@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import com.mojang.datafixers.Dynamic;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSlimelingEgg;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;

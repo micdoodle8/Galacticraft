@@ -93,7 +93,7 @@ public class PlayerClient implements IPlayerClient
 //                stats.getFreefallHandler().preVanillaMotion(player);
 //                if (stats.getPlatformControlled())
 //                {
-//                    player.motionY = stats.getPlatformVelocity(player.posY);
+//                    player.motionY = stats.getPlatformVelocity(player.getPosY());
 //                    player.motionX = 0D;
 //                    player.motionZ = 0D;
 //                } TODO Freefall handler
@@ -308,7 +308,7 @@ public class PlayerClient implements IPlayerClient
 //                    {
 //                        Vector3 pos = new Vector3(player);
 //                        // Set the footprint position to the block below and add random number to stop z-fighting
-//                        pos.y = MathHelper.floor(player.posY) + player.getRNG().nextFloat() / 100.0F;
+//                        pos.y = MathHelper.floor(player.getPosY()) + player.getRNG().nextFloat() / 100.0F;
 //
 //                        // Adjust footprint to left or right depending on step count
 //                        switch (stats.getLastStep())
@@ -386,24 +386,24 @@ public class PlayerClient implements IPlayerClient
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_BUILDFLAGS_UPDATE, GCCoreUtil.getDimensionType(player.world), new Object[]{stats.getBuildFlags()}));
         switch (i)
         {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-            player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/1" + "\"}}]"));
-            player.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
-            break;
-        case 4:
-        case 5:
-        case 6:
-            player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help2") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/2" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/2" + "\"}}]"));
-            break;
-        case 7:
-            player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help3") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/oil" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/oil" + "\"}}]"));
-            break;
-        case 8:
-            player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.prelaunch") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/pre" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/pre" + "\"}}]"));
-            break;
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/1" + "\"}}]"));
+                player.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
+                break;
+            case 4:
+            case 5:
+            case 6:
+                player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help2") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/2" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/2" + "\"}}]"));
+                break;
+            case 7:
+                player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help3") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/oil" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/oil" + "\"}}]"));
+                break;
+            case 8:
+                player.sendMessage(ITextComponent.Serializer.fromJson("[{\"text\":\"" + GCCoreUtil.translate("gui.message.prelaunch") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/pre" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/pre" + "\"}}]"));
+                break;
         }
     }
 }

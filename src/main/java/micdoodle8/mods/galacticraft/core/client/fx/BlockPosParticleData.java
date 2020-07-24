@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.command.arguments.BlockStateParser;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;

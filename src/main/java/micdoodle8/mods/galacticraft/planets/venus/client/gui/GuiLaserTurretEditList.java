@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.gui;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementGradientList;
@@ -15,11 +16,10 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.LanguageMap;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,95 +58,95 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
         super.init();
         switch (mode)
         {
-        case MAIN:
-            this.ySize = 144;
-            this.xSize = 222;
-            yTop = (this.height - this.ySize) / 2;
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name"), (button) ->
-            {
-                mode = EnumMode.ADD_PLAYER;
-                init();
-            }));
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name"), (button) ->
-            {
-                mode = EnumMode.ADD_ENTITY;
-                init();
-            }));
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name"), (button) ->
-            {
-                GuiElementGradientList.ListElement selected = entityListElement.getSelectedElement();
-                if (selected != null)
+            case MAIN:
+                this.ySize = 144;
+                this.xSize = 222;
+                yTop = (this.height - this.ySize) / 2;
+                this.buttons.add(new Button((this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name"), (button) ->
                 {
-                    boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player.name") + ": ");
-                    String toSend = isPlayer ? selected.value.substring(8) : selected.value;
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{isPlayer ? 2 : 3, laserTurret.getPos(), toSend}));
-                    if (isPlayer)
-                    {
-                        laserTurret.removePlayer(toSend);
-                    }
-                    else
-                    {
-                        laserTurret.removeEntity(new ResourceLocation(toSend));
-                    }
+                    mode = EnumMode.ADD_PLAYER;
                     init();
-                }
-            }));
-            this.entityListElement = new GuiElementGradientList((this.width - this.xSize) / 2 + 4, yTop + 26, xSize - 8, ySize - 45);
-            List<String> alphabeticalList = Lists.newArrayList();
-            alphabeticalList.addAll(laserTurret.getPlayers());
-            for (ResourceLocation res : laserTurret.getEntities())
-            {
-                alphabeticalList.add(res.toString());
-            }
-            Collections.sort(alphabeticalList);
-            for (int i = 0; i < alphabeticalList.size(); ++i)
-            {
-                if (laserTurret.getPlayers().contains(alphabeticalList.get(i)))
+                }));
+                this.buttons.add(new Button((this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name"), (button) ->
                 {
-                    alphabeticalList.set(i, GCCoreUtil.translate("gui.message.player.name") + ": " + alphabeticalList.get(i));
-                }
-            }
-            List<GuiElementGradientList.ListElement> list = Lists.newArrayList();
-            for (String str : alphabeticalList)
-            {
-                list.add(new GuiElementGradientList.ListElement(str, ColorUtil.to32BitColor(255, 240, 240, 240)));
-            }
-            this.entityListElement.updateListContents(list);
-            this.neverAttackSpaceRace = new GuiElementCheckbox(this, this.width / 2 - 106, yTop + 126, GCCoreUtil.translate("gui.button.never_fire_team.name"), 4210752);
-            this.buttons.add(this.neverAttackSpaceRace);
-            break;
-        case ADD_PLAYER:
-        case ADD_ENTITY:
-            this.ySize = 70;
-            this.xSize = 148;
-            yTop = (this.height - this.ySize) / 2;
-            this.name = new GuiElementTextBox(this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
-            this.name.resetOnClick = false;
-            this.addButton(this.name);
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name"), (button) ->
-            {
-                if (mode == EnumMode.ADD_ENTITY)
+                    mode = EnumMode.ADD_ENTITY;
+                    init();
+                }));
+                this.buttons.add(new Button((this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name"), (button) ->
                 {
-                    EntityType<?> entry = getEntityEntry();
-                    if (entry != null)
+                    GuiElementGradientList.ListElement selected = entityListElement.getSelectedElement();
+                    if (selected != null)
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{1, laserTurret.getPos(), entry.getRegistryName().toString()}));
-                        laserTurret.addEntity(entry.getRegistryName());
+                        boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player.name") + ": ");
+                        String toSend = isPlayer ? selected.value.substring(8) : selected.value;
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{isPlayer ? 2 : 3, laserTurret.getPos(), toSend}));
+                        if (isPlayer)
+                        {
+                            laserTurret.removePlayer(toSend);
+                        }
+                        else
+                        {
+                            laserTurret.removeEntity(new ResourceLocation(toSend));
+                        }
+                        init();
+                    }
+                }));
+                this.entityListElement = new GuiElementGradientList((this.width - this.xSize) / 2 + 4, yTop + 26, xSize - 8, ySize - 45);
+                List<String> alphabeticalList = Lists.newArrayList();
+                alphabeticalList.addAll(laserTurret.getPlayers());
+                for (ResourceLocation res : laserTurret.getEntities())
+                {
+                    alphabeticalList.add(res.toString());
+                }
+                Collections.sort(alphabeticalList);
+                for (int i = 0; i < alphabeticalList.size(); ++i)
+                {
+                    if (laserTurret.getPlayers().contains(alphabeticalList.get(i)))
+                    {
+                        alphabeticalList.set(i, GCCoreUtil.translate("gui.message.player.name") + ": " + alphabeticalList.get(i));
                     }
                 }
-                else if (mode == EnumMode.ADD_PLAYER)
+                List<GuiElementGradientList.ListElement> list = Lists.newArrayList();
+                for (String str : alphabeticalList)
                 {
-                    if (name.text != null && !name.text.isEmpty())
-                    {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{0, laserTurret.getPos(), name.text}));
-                        laserTurret.addPlayer(name.text);
-                    }
+                    list.add(new GuiElementGradientList.ListElement(str, ColorUtil.to32BitColor(255, 240, 240, 240)));
                 }
-                name.text = null;
-                mode = EnumMode.MAIN;
-                init();
-            }));
-            break;
+                this.entityListElement.updateListContents(list);
+                this.neverAttackSpaceRace = new GuiElementCheckbox(this, this.width / 2 - 106, yTop + 126, GCCoreUtil.translate("gui.button.never_fire_team.name"), 4210752);
+                this.buttons.add(this.neverAttackSpaceRace);
+                break;
+            case ADD_PLAYER:
+            case ADD_ENTITY:
+                this.ySize = 70;
+                this.xSize = 148;
+                yTop = (this.height - this.ySize) / 2;
+                this.name = new GuiElementTextBox(this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
+                this.name.resetOnClick = false;
+                this.addButton(this.name);
+                this.buttons.add(new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name"), (button) ->
+                {
+                    if (mode == EnumMode.ADD_ENTITY)
+                    {
+                        EntityType<?> entry = getEntityEntry();
+                        if (entry != null)
+                        {
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{1, laserTurret.getPos(), entry.getRegistryName().toString()}));
+                            laserTurret.addEntity(entry.getRegistryName());
+                        }
+                    }
+                    else if (mode == EnumMode.ADD_PLAYER)
+                    {
+                        if (name.text != null && !name.text.isEmpty())
+                        {
+                            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{0, laserTurret.getPos(), name.text}));
+                            laserTurret.addPlayer(name.text);
+                        }
+                    }
+                    name.text = null;
+                    mode = EnumMode.MAIN;
+                    init();
+                }));
+                break;
         }
     }
 
@@ -162,15 +162,14 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
         }
         else
         {
-            switch (mode)
+            if (mode == EnumMode.MAIN)
             {
-            case MAIN:
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_OPEN_LASER_TURRET_GUI, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{laserTurret.getPos()}));
-                break;
-            default:
+            }
+            else
+            {
                 mode = EnumMode.MAIN;
                 init();
-                break;
             }
         }
 
@@ -196,7 +195,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
     public void render(int mouseX, int mouseY, float partialTicks)
     {
         this.renderBackground();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiLaserTurretEditList.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;

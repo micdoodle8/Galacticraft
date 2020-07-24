@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -12,13 +12,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
-import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGEON_BOSS;
 import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_BOSS;
 
 public class RoomBossVenus extends SizedPieceVenus

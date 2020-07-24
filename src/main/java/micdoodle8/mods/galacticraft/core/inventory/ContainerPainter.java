@@ -90,7 +90,7 @@ public class ContainerPainter extends Container
                 }
                 slot.onSlotChange(stack, stackOrig);
             }
-            else if (index != 1 && index != 0)
+            else
             {
                 Item item = stack.getItem();
                 if (item instanceof IPaintable || (item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof IPaintable))

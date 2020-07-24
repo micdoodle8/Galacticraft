@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.screen;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
@@ -79,7 +78,7 @@ public class GameScreenText implements IGameScreen
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
             }
         }
@@ -151,7 +150,7 @@ public class GameScreenText implements IGameScreen
                         {
                             entity = telemeter.clientType.create(screen.driver.getWorld());
                         }
-                        catch (Exception ex)
+                        catch (Exception ignored)
                         {
                         }
                         if (entity != null)
@@ -295,8 +294,8 @@ public class GameScreenText implements IGameScreen
         }
         float Xoffset = (sizeX - borders - textWidthPixels * scaleText) / 2 + Xmargin;
         float Yoffset = (sizeY - borders - textHeightPixels * scaleText) / 2 + scaleText;
-        GL11.glTranslatef(border + Xoffset, border + Yoffset, 0.0F);
-        GL11.glScalef(scaleText, scaleText, 1.0F);
+        RenderSystem.translatef(border + Xoffset, border + Yoffset, 0.0F);
+        RenderSystem.scalef(scaleText, scaleText, 1.0F);
 
         //Actually draw the text
         int whiteColour = ColorUtil.to32BitColor(255, 240, 216, 255);
@@ -310,11 +309,11 @@ public class GameScreenText implements IGameScreen
         //If there is an entity to render, draw it on the left of the text
         if (renderEntity != null && entity != null)
         {
-            GL11.glTranslatef(-Xmargin / 2 / scaleText, textHeightPixels / 2 + (-Yoffset + (sizeY - borders) / 2) / scaleText, -0.0005F);
+            RenderSystem.translatef(-Xmargin / 2 / scaleText, textHeightPixels / 2 + (-Yoffset + (sizeY - borders) / 2) / scaleText, -0.0005F);
             float scalefactor = 38F / (float) Math.pow(Math.max(entity.getHeight(), entity.getWidth()), 0.65);
-            GL11.glScalef(scalefactor, scalefactor, 0.0015F);
-            GL11.glRotatef(180F, 0, 0, 1);
-            GL11.glRotatef(180F, 0, 1, 0);
+            RenderSystem.scalef(scalefactor, scalefactor, 0.0015F);
+            RenderSystem.rotatef(180F, 0, 0, 1);
+            RenderSystem.rotatef(180F, 0, 1, 0);
             if (entity instanceof ITelemetry)
             {
                 ((ITelemetry) entity).adjustDisplay(telemeter.clientData);
@@ -330,9 +329,9 @@ public class GameScreenText implements IGameScreen
 //            }
 //            RenderPlayerGC.flagThermalOverride = false;
             // TODO Player Rendering ^
-//            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//            RenderSystem.enableRescaleNormal();
 //            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-//            GL11.glDisable(GL11.GL_TEXTURE_2D);
+//            RenderSystem.disableTexture();
 //            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         }
 
@@ -353,8 +352,8 @@ public class GameScreenText implements IGameScreen
     // No lighting adjustment, no sitting, no name text, no sneaking and no Forge events
     private void renderLiving(LivingEntity entity, LivingRenderer render, float partialTicks)
     {
-//        GlStateManager.pushMatrix();
-//        GlStateManager.disableCull();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.disableCull();
 //        render.getEntityModel().isChild = entity.isChild();
 //
 //        try
@@ -364,11 +363,11 @@ public class GameScreenText implements IGameScreen
 //            float f2 = f1 - f;
 //            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 //            float f8 = 0F;
-//            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-//            GlStateManager.enableRescaleNormal();
-//            GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+//            RenderSystem.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.enableRescaleNormal();
+//            RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
 //            float f4 = 0.0625F;
-//            GlStateManager.translatef(0.0F, -1.5078125F, 0.0F);
+//            RenderSystem.translatef(0.0F, -1.5078125F, 0.0F);
 //            float f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
 //            float f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
 //
@@ -382,25 +381,25 @@ public class GameScreenText implements IGameScreen
 //                f5 = 1.0F;
 //            }
 //
-//            GlStateManager.enableAlphaTest();
+//            RenderSystem.enableAlphaTest();
 //            render.getEntityModel().setLivingAnimations(entity, f6, f5, partialTicks);
 //            render.getEntityModel().setRotationAngles(entity, f6, f5, f8, f2, f7, 0.0625F);
 //
 //            renderModelMethod.invoke(render, entity, f6, f5, f8, f2, f7, 0.0625F);
-//            GlStateManager.depthMask(true);
+//            RenderSystem.depthMask(true);
 //            renderLayersMethod.invoke(render, entity, f6, f5, partialTicks, f8, f2, f7, 0.0625F);
 //
-//            GlStateManager.disableRescaleNormal();
+//            RenderSystem.disableRescaleNormal();
 //        }
 //        catch (Exception exception)
 //        {
 //        }
 //
-//        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
-//        GlStateManager.enableTexture();
-//        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
-//        GlStateManager.enableCull();
-//        GlStateManager.popMatrix(); TODO Render entity
+//        RenderSystem.activeTexture(33985);
+//        RenderSystem.enableTexture();
+//        RenderSystem.activeTexture(33984);
+//        RenderSystem.enableCull();
+//        RenderSystem.popMatrix(); TODO Render entity
     }
 
     private String makeTimeString(int l)
@@ -450,20 +449,20 @@ public class GameScreenText implements IGameScreen
 
     private void drawBlackBackground(float greyLevel)
     {
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        RenderSystem.blendFunc(770, 771);
+        RenderSystem.disableTexture();
         final Tessellator tess = Tessellator.getInstance();
         BufferBuilder worldRenderer = tess.getBuffer();
-        GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        RenderSystem.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
         worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
         worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
         worldRenderer.pos(frameBx, frameA, 0.005F).endVertex();
         worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
         tess.draw();
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableTexture();
     }
 
     private void planeEquation(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)

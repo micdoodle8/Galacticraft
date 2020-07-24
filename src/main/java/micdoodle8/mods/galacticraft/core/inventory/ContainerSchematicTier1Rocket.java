@@ -11,7 +11,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -20,8 +19,8 @@ public class ContainerSchematicTier1Rocket extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SCHEMATIC_T1_ROCKET)
     public static ContainerType<ContainerSchematicTier1Rocket> TYPE;
 
-    public InventoryRocketBench craftMatrix = new InventoryRocketBench(this);
-    public IInventory craftResult = new CraftResultInventory();
+    public final InventoryRocketBench craftMatrix = new InventoryRocketBench(this);
+    public final IInventory craftResult = new CraftResultInventory();
     private final World world;
 
     public ContainerSchematicTier1Rocket(int containerId, PlayerInventory playerInv)
@@ -180,21 +179,14 @@ public class ContainerSchematicTier1Rocket extends Container
 //                        break;
 //                    }
 //                } TODO PR from github
-                if (foundChest)
-                {
-                    if (!this.mergeOneItem(var4, 15, 18, false))
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else if (par1 >= 18 && par1 < 45)
+                if (par1 < 45)
                 {
                     if (!this.mergeItemStack(var4, 45, 54, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-                else if (par1 >= 45 && par1 < 54)
+                else if (par1 < 54)
                 {
                     if (!this.mergeItemStack(var4, 18, 45, false))
                     {

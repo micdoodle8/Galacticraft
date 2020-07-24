@@ -67,7 +67,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
             var7 = 1.0F;
         }
 
-        if (var7 == 1.0F && var12 != null && var12.getType() == RayTraceResult.Type.BLOCK)
+        if (var7 == 1.0F && var12.getType() == RayTraceResult.Type.BLOCK)
         {
             BlockRayTraceResult blockResult = (BlockRayTraceResult) var12;
             final BlockPos pos = blockResult.getPos();

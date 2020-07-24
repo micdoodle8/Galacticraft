@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.ILaserTrackableFast;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.Annotations;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -22,11 +22,9 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockLaserTurret;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
-import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockLaserTurret;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -45,10 +43,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.LogicalSide;
-
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -256,7 +251,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                     }
                     else if (e instanceof TameableEntity && ((TameableEntity) e).getOwnerId() != null)
                     {
-                        if ((((TameableEntity) e).getOwnerId().equals(this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((TameableEntity) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((TameableEntity) e).getOwner().getName())))
+                        if ((Objects.equals(((TameableEntity) e).getOwnerId(), this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((TameableEntity) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((TameableEntity) e).getOwner().getName())))
                         {
                             shouldTarget = false;
                         }
@@ -369,7 +364,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             {
                 if (storage.getEnergyStoredGC() > 1000 && !this.getDisabled(0) && !RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos()))
                 {
-                    ((ServerWorld) world).getEntities().filter((e) -> e instanceof LivingEntity || e instanceof ILaserTrackableFast).forEach((e) -> trackEntity(e));
+                    ((ServerWorld) world).getEntities().filter((e) -> e instanceof LivingEntity || e instanceof ILaserTrackableFast).forEach(this::trackEntity);
                 }
                 else
                 {
@@ -652,17 +647,17 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 
@@ -826,7 +821,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
     //------------------END OF IMachineSides implementation
 
-    private class EntityEntrySortable
+    private static class EntityEntrySortable
     {
         private LivingEntity entity;
         private double distance;

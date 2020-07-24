@@ -29,8 +29,8 @@ class AirLockProtocol
 
     public AirLockProtocol(TileEntity head)
     {
-        this.adjacentAirLocks = new ArrayList<BlockPos>();
-        this.checked = new HashSet<BlockPos>();
+        this.adjacentAirLocks = new ArrayList<>();
+        this.checked = new HashSet<>();
         this.world = head.getWorld();
         this.head = head;
         this.maxLoops = 26;
@@ -115,7 +115,7 @@ class AirLockProtocol
         this.minZ = 6000000;
         this.maxZ = -6000000;
 
-        this.adjacentAirLocks = new ArrayList<BlockPos>();
+        this.adjacentAirLocks = new ArrayList<>();
         this.checked.clear();
         final BlockPos headPos = this.head.getPos();
         this.checked.add(headPos);

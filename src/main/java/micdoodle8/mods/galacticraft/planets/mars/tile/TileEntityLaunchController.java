@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -17,7 +18,6 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.*;
+import net.minecraft.world.server.ServerChunkProvider;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.server.TicketType;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -356,17 +358,17 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             switch (index)
             {
-            case 0:
-                this.disabled = disabled;
-                this.disableCooldown = 10;
-                break;
-            case 1:
-                this.launchSchedulingEnabled = disabled;
-                break;
-            case 2:
-                this.hideTargetDestination = disabled;
-                this.disableCooldown = 10;
-                break;
+                case 0:
+                    this.disabled = disabled;
+                    this.disableCooldown = 10;
+                    break;
+                case 1:
+                    this.launchSchedulingEnabled = disabled;
+                    break;
+                case 2:
+                    this.hideTargetDestination = disabled;
+                    this.disableCooldown = 10;
+                    break;
             }
         }
     }
@@ -376,12 +378,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         switch (index)
         {
-        case 0:
-            return this.disabled;
-        case 1:
-            return this.launchSchedulingEnabled;
-        case 2:
-            return this.hideTargetDestination;
+            case 0:
+                return this.disabled;
+            case 1:
+                return this.launchSchedulingEnabled;
+            case 2:
+                return this.hideTargetDestination;
         }
 
         return true;
@@ -407,7 +409,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             worldLoop:
             for (ServerWorld world : servers)
             {
-                for (TileEntity tile2 : new ArrayList<TileEntity>(world.loadedTileEntityList))
+                for (TileEntity tile2 : new ArrayList<>(world.loadedTileEntityList))
                 {
                     if (this != tile2)
                     {
@@ -458,7 +460,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 Iterable<ServerWorld> servers = GCCoreUtil.getWorldServerList(this.world);
                 for (ServerWorld world : servers)
                 {
-                    for (TileEntity tile2 : new ArrayList<TileEntity>(world.loadedTileEntityList))
+                    for (TileEntity tile2 : new ArrayList<>(world.loadedTileEntityList))
                     {
                         if (this != tile2)
                         {

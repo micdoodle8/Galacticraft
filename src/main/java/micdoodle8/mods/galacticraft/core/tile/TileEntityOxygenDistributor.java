@@ -43,7 +43,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     public boolean active;
     public boolean lastActive;
 
-    public static HashSet<BlockVec3Dim> loadedTiles = new HashSet<>();
+    public static final HashSet<BlockVec3Dim> loadedTiles = new HashSet<>();
     public float bubbleSize;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean shouldRenderBubble = true;
@@ -190,7 +190,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                     int i2 = dataStream.readInt();
                     int i3 = dataStream.readInt();
                     String str = NetworkUtil.readUTF8String(dataStream);
-                    if (str == null || str == "null")
+                    if (str == null || str.equals("null"))
                     {
                         continue;
                     }
@@ -342,12 +342,12 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 1:
-                return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 1:
+                    return itemstack.getDamage() < itemstack.getItem().getMaxDamage();
+                default:
+                    return false;
             }
         }
         return false;
@@ -358,12 +358,12 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     {
         switch (slotID)
         {
-        case 0:
-            return ItemElectricBase.isElectricItemEmpty(itemstack);
-        case 1:
-            return FluidUtil.isEmptyContainer(itemstack);
-        default:
-            return false;
+            case 0:
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
+            case 1:
+                return FluidUtil.isEmptyContainer(itemstack);
+            default:
+                return false;
         }
     }
 

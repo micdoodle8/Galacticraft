@@ -58,7 +58,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
 
 //    public FreefallHandler freefallHandler = new FreefallHandler(this); TODO Freefall handler
 
-    public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
+    public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<>();
 
 
     @Override
@@ -77,148 +77,148 @@ public class StatsClientCapability extends GCPlayerStatsClient
 
         switch (this.gdir.getIntValue())
         {
-        case 1:
-            switch (newGravity.getIntValue())
-            {
             case 1:
-                break;
-            case 2:
-                this.gravityTurnVecX = -2.0F;
-                break;
-            case 3:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 4:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 6:
-                this.gravityTurnVecX = -1.0F;
-            }
+                switch (newGravity.getIntValue())
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        this.gravityTurnVecX = -2.0F;
+                        break;
+                    case 3:
+                        this.gravityTurnVecY = -1.0F;
+                        this.gravityTurnYaw = -90.0F;
+                        break;
+                    case 4:
+                        this.gravityTurnVecY = 1.0F;
+                        this.gravityTurnYaw = 90.0F;
+                        break;
+                    case 5:
+                        this.gravityTurnVecX = 1.0F;
+                        break;
+                    case 6:
+                        this.gravityTurnVecX = -1.0F;
+                }
 
-            break;
-        case 2:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = -2.0F;
                 break;
             case 2:
-                break;
-            case 3:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 4:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 6:
-                this.gravityTurnVecX = 1.0F;
-            }
+                switch (newGravity.getIntValue())
+                {
+                    case 1:
+                        this.gravityTurnVecX = -2.0F;
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        this.gravityTurnVecY = 1.0F;
+                        this.gravityTurnYaw = 90.0F;
+                        break;
+                    case 4:
+                        this.gravityTurnVecY = -1.0F;
+                        this.gravityTurnYaw = -90.0F;
+                        break;
+                    case 5:
+                        this.gravityTurnVecX = -1.0F;
+                        break;
+                    case 6:
+                        this.gravityTurnVecX = 1.0F;
+                }
 
-            break;
-        case 3:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 2:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
                 break;
             case 3:
-                break;
-            case 4:
-                this.gravityTurnVecZ = -2.0F;
-                break;
-            case 5:
-                this.gravityTurnVecZ = -1.0F;
-                this.gravityTurnYaw = -180.0F;
-                break;
-            case 6:
-                this.gravityTurnVecZ = 1.0F;
-            }
+                switch (newGravity.getIntValue())
+                {
+                    case 1:
+                        this.gravityTurnVecY = 1.0F;
+                        this.gravityTurnYaw = 90.0F;
+                        break;
+                    case 2:
+                        this.gravityTurnVecY = -1.0F;
+                        this.gravityTurnYaw = -90.0F;
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        this.gravityTurnVecZ = -2.0F;
+                        break;
+                    case 5:
+                        this.gravityTurnVecZ = -1.0F;
+                        this.gravityTurnYaw = -180.0F;
+                        break;
+                    case 6:
+                        this.gravityTurnVecZ = 1.0F;
+                }
 
-            break;
-        case 4:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecY = -1.0F;
-                this.gravityTurnYaw = -90.0F;
-                break;
-            case 2:
-                this.gravityTurnVecY = 1.0F;
-                this.gravityTurnYaw = 90.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = -2.0F;
                 break;
             case 4:
-                break;
-            case 5:
-                this.gravityTurnVecZ = 1.0F;
-                this.gravityTurnYaw = -180.0F;
-                break;
-            case 6:
-                this.gravityTurnVecZ = -1.0F;
-            }
+                switch (newGravity.getIntValue())
+                {
+                    case 1:
+                        this.gravityTurnVecY = -1.0F;
+                        this.gravityTurnYaw = -90.0F;
+                        break;
+                    case 2:
+                        this.gravityTurnVecY = 1.0F;
+                        this.gravityTurnYaw = 90.0F;
+                        break;
+                    case 3:
+                        this.gravityTurnVecZ = -2.0F;
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        this.gravityTurnVecZ = 1.0F;
+                        this.gravityTurnYaw = -180.0F;
+                        break;
+                    case 6:
+                        this.gravityTurnVecZ = -1.0F;
+                }
 
-            break;
-        case 5:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 2:
-                this.gravityTurnVecX = 1.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = 1.0F;
-                this.gravityTurnYaw = 180.0F;
-                break;
-            case 4:
-                this.gravityTurnVecZ = -1.0F;
-                this.gravityTurnYaw = 180.0F;
                 break;
             case 5:
-                break;
-            case 6:
-                this.gravityTurnVecX = -2.0F;
-            }
+                switch (newGravity.getIntValue())
+                {
+                    case 1:
+                        this.gravityTurnVecX = -1.0F;
+                        break;
+                    case 2:
+                        this.gravityTurnVecX = 1.0F;
+                        break;
+                    case 3:
+                        this.gravityTurnVecZ = 1.0F;
+                        this.gravityTurnYaw = 180.0F;
+                        break;
+                    case 4:
+                        this.gravityTurnVecZ = -1.0F;
+                        this.gravityTurnYaw = 180.0F;
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        this.gravityTurnVecX = -2.0F;
+                }
 
-            break;
-        case 6:
-            switch (newGravity.getIntValue())
-            {
-            case 1:
-                this.gravityTurnVecX = 1.0F;
                 break;
-            case 2:
-                this.gravityTurnVecX = -1.0F;
-                break;
-            case 3:
-                this.gravityTurnVecZ = -1.0F;
-                break;
-            case 4:
-                this.gravityTurnVecZ = 1.0F;
-                break;
-            case 5:
-                this.gravityTurnVecX = -2.0F;
             case 6:
-            }
-            break;
+                switch (newGravity.getIntValue())
+                {
+                    case 1:
+                        this.gravityTurnVecX = 1.0F;
+                        break;
+                    case 2:
+                        this.gravityTurnVecX = -1.0F;
+                        break;
+                    case 3:
+                        this.gravityTurnVecZ = -1.0F;
+                        break;
+                    case 4:
+                        this.gravityTurnVecZ = 1.0F;
+                        break;
+                    case 5:
+                        this.gravityTurnVecX = -2.0F;
+                    case 6:
+                }
+                break;
         }
 
         this.gdir = newGravity;

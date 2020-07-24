@@ -20,7 +20,7 @@ import java.util.List;
 public class PlayerServer implements IPlayerServer
 {
     private boolean updatingRidden = false;
-    static List<PlayerEntity> noClipList = new LinkedList<>();
+    static final List<PlayerEntity> noClipList = new LinkedList<>();
 
     @Override
     public void updateRiddenPre(ServerPlayerEntity player)
@@ -85,11 +85,11 @@ public class PlayerServer implements IPlayerServer
             {
 //                if (player.world.getDimension() instanceof WorldProviderAsteroids)
 //                {
-//                    if (player.posY > -120D)
+//                    if (player.getPosY() > -120D)
 //                    {
 //                        return -1F;
 //                    }
-//                    if (player.posY > -180D)
+//                    if (player.getPosY() > -180D)
 //                    {
 //                        par2 /= 2;
 //                    }
@@ -108,10 +108,6 @@ public class PlayerServer implements IPlayerServer
 //                        }
 //                    }
 //                } TODO Planets
-                if (titaniumCount == 4)
-                {
-                    titaniumCount = 5;
-                }
                 par2 *= (1 - 0.15D * titaniumCount);
             }
         }
@@ -139,7 +135,7 @@ public class PlayerServer implements IPlayerServer
 
         if (player.getRNG().nextDouble() >= player.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue())
         {
-            player.isAirBorne = deshCount < 2;
+            player.isAirBorne = true;
             float f1 = MathHelper.sqrt(impulseX * impulseX + impulseZ * impulseZ);
             float f2 = 0.4F - deshCount * 0.05F;
             double d1 = 2.0D - deshCount * 0.15D;

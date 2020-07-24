@@ -5,28 +5,19 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
-import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.planets.PlanetFluids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
-import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.*;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Potions;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
 import net.minecraft.state.properties.Half;
 import net.minecraft.tileentity.BrewingStandTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -233,32 +224,32 @@ public class BaseRoom extends SizedPiece
         int facingScreen = 2;
         switch (this.direction)
         {
-        case WEST:
-            facing1 = 3;
-            facing2 = 2;
-            facingLamp = 3;
-            facingScreen = 5;
-            break;
-        case EAST:
-            facing = 2;
-            facing1 = 1;
-            facing2 = 0;
-            facingLamp = 2;
-            facingScreen = 4;
-            break;
-        case NORTH:
-            facing = 3;
-            facing1 = 2;
-            facing2 = 1;
-            facingLamp = 5;
-            facingScreen = 2;
-            break;
-        case SOUTH:
-            facing = 1;
-            facing1 = 0;
-            facing2 = 3;
-            facingLamp = 4;
-            facingScreen = 3;
+            case WEST:
+                facing1 = 3;
+                facing2 = 2;
+                facingLamp = 3;
+                facingScreen = 5;
+                break;
+            case EAST:
+                facing = 2;
+                facing1 = 1;
+                facing2 = 0;
+                facingLamp = 2;
+                facingScreen = 4;
+                break;
+            case NORTH:
+                facing = 3;
+                facing1 = 2;
+                facing2 = 1;
+                facingLamp = 5;
+                facingScreen = 2;
+                break;
+            case SOUTH:
+                facing = 1;
+                facing1 = 0;
+                facing2 = 3;
+                facingLamp = 4;
+                facingScreen = 3;
         }
 
         //Offset from centre - used for some rooms
@@ -574,24 +565,24 @@ public class BaseRoom extends SizedPiece
             {
                 switch (semirand % 4)
                 {
-                case 0:
-                    break;
-                case 1:
-                    ((TileEntityCrafting) tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting) tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
-                    break;
-                case 2:
-                    //Creeper or Zombie head
-                    int slot = semirand % 9;
-                    ((TileEntityCrafting) tile).setInventorySlotContents(slot, new ItemStack((semirand % 13 < 6) ? Items.CREEPER_HEAD : Items.ZOMBIE_HEAD));
-                    break;
-                case 3:
-                    ((TileEntityCrafting) tile).setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting) tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting) tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting) tile).setInventorySlotContents(4, new ItemStack(Items.STICK));
-                    ((TileEntityCrafting) tile).setInventorySlotContents(7, new ItemStack(Items.STICK));
-                    break;
+                    case 0:
+                        break;
+                    case 1:
+                        ((TileEntityCrafting) tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                        ((TileEntityCrafting) tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                        break;
+                    case 2:
+                        //Creeper or Zombie head
+                        int slot = semirand % 9;
+                        ((TileEntityCrafting) tile).setInventorySlotContents(slot, new ItemStack((semirand % 13 < 6) ? Items.CREEPER_HEAD : Items.ZOMBIE_HEAD));
+                        break;
+                    case 3:
+                        ((TileEntityCrafting) tile).setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
+                        ((TileEntityCrafting) tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                        ((TileEntityCrafting) tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                        ((TileEntityCrafting) tile).setInventorySlotContents(4, new ItemStack(Items.STICK));
+                        ((TileEntityCrafting) tile).setInventorySlotContents(7, new ItemStack(Items.STICK));
+                        break;
                 }
             }
             else if (tile instanceof BrewingStandTileEntity)

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
@@ -29,7 +28,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
@@ -44,7 +42,7 @@ import java.util.*;
 public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitter<FluidStack>, TileEntity>
 {
     public Map<BlockPos, IFluidHandler> acceptors = Maps.newHashMap();
-    public Map<BlockPos, EnumSet<Direction>> acceptorDirections = Maps.newHashMap();
+    public final Map<BlockPos, EnumSet<Direction>> acceptorDirections = Maps.newHashMap();
     public final Set<IBufferTransmitter<FluidStack>> pipes = Sets.newHashSet();
     private final Set<IBufferTransmitter<FluidStack>> pipesAdded = Sets.newHashSet();
     private final Set<DelayQueue> updateQueue = Sets.newLinkedHashSet();
@@ -213,8 +211,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     private int emitToAcceptors(FluidStack toSend, IFluidHandler.FluidAction action)
     {
-        List<Pair<BlockPos, Map<Direction, IFluidHandler>>> available = new ArrayList<>();
-        available.addAll(this.getAcceptors(toSend));
+        List<Pair<BlockPos, Map<Direction, IFluidHandler>>> available = new ArrayList<>(this.getAcceptors(toSend));
 
         Collections.shuffle(available);
 
@@ -337,7 +334,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
 
             }
@@ -445,8 +442,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             this.refreshAcceptors();
         }
 
-        List<BlockPos> acceptorsCopy = new ArrayList<>();
-        acceptorsCopy.addAll(acceptors.keySet());
+        List<BlockPos> acceptorsCopy = new ArrayList<>(acceptors.keySet());
 
         for (BlockPos coords : acceptorsCopy)
         {
@@ -510,7 +506,6 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 if (tileTransmitter.isRemoved() || tileTransmitter.getWorld() == null)
                 {
                     it.remove();
-                    continue;
                 }
                 else
                 {
@@ -713,7 +708,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     public static class DelayQueue
     {
-        public ServerPlayerEntity player;
+        public final ServerPlayerEntity player;
         public int delay;
 
         public DelayQueue(ServerPlayerEntity player)

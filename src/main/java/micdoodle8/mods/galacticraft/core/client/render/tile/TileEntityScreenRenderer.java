@@ -28,10 +28,10 @@
 //    @Override
 //    public void render(TileEntityScreen screen, double x, double y, double z, float partialTicks, int destroyStage)
 //    {
-//        GL11.glPushMatrix();
+//        RenderSystem.pushMatrix();
 //        // Texture file
 //        this.textureManager.bindTexture(TileEntityScreenRenderer.blockTexture);
-//        GL11.glTranslatef((float) x, (float) y, (float) z);
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
 //
 //        Direction dir = screen.getBlockState().get(BlockScreen.FACING);
 ////        boolean screenData = (meta >= 8);
@@ -39,42 +39,42 @@
 //        switch (dir)
 //        {
 //        case DOWN:
-//            GL11.glRotatef(180, 1, 0, 0);
-//            GL11.glTranslatef(0, -1.0F, -1.0F);
+//            RenderSystem.rotatef(180, 1, 0, 0);
+//            RenderSystem.translatef(0, -1.0F, -1.0F);
 //            break;
 //        case UP:
 //            break;
 //        case NORTH:
-//            GL11.glTranslatef(0.0F, 0.0F, -0.87F);
-//            GL11.glRotatef(90, 1.0F, 0, 0);
-//            GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+//            RenderSystem.translatef(0.0F, 0.0F, -0.87F);
+//            RenderSystem.rotatef(90, 1.0F, 0, 0);
+//            RenderSystem.translatef(0.0F, 0.0F, -1.0F);
 //            break;
 //        case SOUTH:
-//            GL11.glTranslatef(0.0F, 0.0F, 0.87F);
-//            GL11.glRotatef(90, -1.0F, 0, 0);
-//            GL11.glTranslatef(1.0F, -1.0F, 1.0F);
-//            GL11.glRotatef(180, 0, -1.0F, 0);
+//            RenderSystem.translatef(0.0F, 0.0F, 0.87F);
+//            RenderSystem.rotatef(90, -1.0F, 0, 0);
+//            RenderSystem.translatef(1.0F, -1.0F, 1.0F);
+//            RenderSystem.rotatef(180, 0, -1.0F, 0);
 //            break;
 //        case WEST:
-//            GL11.glTranslatef(-0.87F, 0.0F, 0.0F);
-//            GL11.glRotatef(90, 0, 0, -1.0F);
-//            GL11.glTranslatef(-1.0F, 0.0F, 1.0F);
-//            GL11.glRotatef(90, 0, 1.0F, 0);
+//            RenderSystem.translatef(-0.87F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(90, 0, 0, -1.0F);
+//            RenderSystem.translatef(-1.0F, 0.0F, 1.0F);
+//            RenderSystem.rotatef(90, 0, 1.0F, 0);
 //            break;
 //        case EAST:
-//            GL11.glTranslatef(0.87F, 0.0F, 0.0F);
-//            GL11.glRotatef(90, 0, 0, 1.0F);
-//            GL11.glTranslatef(1.0F, -1.0F, 0.0F);
-//            GL11.glRotatef(90, 0, -1.0F, 0);
+//            RenderSystem.translatef(0.87F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(90, 0, 0, 1.0F);
+//            RenderSystem.translatef(1.0F, -1.0F, 0.0F);
+//            RenderSystem.rotatef(90, 0, -1.0F, 0);
 //            break;
 //        default:
 //            break;
 //        }
 //
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
-//        GL11.glTranslatef(-screen.screenOffsetx, this.yPlane, -screen.screenOffsetz);
-//        GL11.glRotatef(90, 1F, 0F, 0F);
+//        RenderSystem.translatef(-screen.screenOffsetx, this.yPlane, -screen.screenOffsetz);
+//        RenderSystem.rotatef(90, 1F, 0F, 0F);
 //        boolean cornerblock = false;
 //        if (screen.connectionsLeft == 0 || screen.connectionsRight == 0)
 //        {
@@ -93,10 +93,10 @@
 //                }
 //            }
 //        }
-//        GL11.glRotatef(180, 0, 1, 0);
-//        GL11.glTranslatef(-screen.screen.getScaleX(), 0.0F, 0.0F);
+//        RenderSystem.rotatef(180, 0, 1, 0);
+//        RenderSystem.translatef(-screen.screen.getScaleX(), 0.0F, 0.0F);
 //        screen.screen.drawScreen(screen.imageType, partialTicks + screen.getWorld().getDayTime(), cornerblock);
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

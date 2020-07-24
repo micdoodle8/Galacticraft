@@ -9,10 +9,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.Items;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -42,7 +42,7 @@ public class ContainerTerraformer extends Container
 
         for (var6 = 0; var6 < 3; ++var6)
         {
-            List<ItemStack> stacks = new ArrayList<ItemStack>();
+            List<ItemStack> stacks = new ArrayList<>();
 
             if (var6 == 0)
             {
@@ -64,7 +64,7 @@ public class ContainerTerraformer extends Container
 
             for (var7 = 0; var7 < 4; ++var7)
             {
-                this.addSlot(new SlotSpecific(this.terraformer, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[stacks.size()])));
+                this.addSlot(new SlotSpecific(this.terraformer, var7 + var6 * 4 + 2, 25 + var7 * 18, 63 + var6 * 24, stacks.toArray(new ItemStack[0])));
             }
         }
 

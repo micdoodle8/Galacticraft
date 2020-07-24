@@ -4,11 +4,8 @@ import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,13 +20,12 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.LinkedList;
 
 public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements ILaserNode
 {
-    public LinkedList<ILaserNode> nodeList = new LinkedList<ILaserNode>();
+    public final LinkedList<ILaserNode> nodeList = new LinkedList<>();
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public BlockPos targetVec = new BlockPos(-1, -1, -1);
     public float pitch;
@@ -49,7 +45,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         {
             TileEntity tileAtTarget = this.world.getTileEntity(this.preLoadTarget);
 
-            if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
+            if (tileAtTarget instanceof ILaserNode)
             {
                 this.setTarget((ILaserNode) tileAtTarget);
                 this.preLoadTarget = null;
@@ -330,7 +326,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         {
             TileEntity tileAtTarget = this.world.getTileEntity(this.targetVec);
 
-            if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
+            if (tileAtTarget instanceof ILaserNode)
             {
                 return (ILaserNode) tileAtTarget;
             }

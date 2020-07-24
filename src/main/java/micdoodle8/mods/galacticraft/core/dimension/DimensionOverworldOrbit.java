@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import net.minecraft.block.Block;
@@ -18,16 +15,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -36,7 +29,7 @@ import java.util.Set;
 
 public class DimensionOverworldOrbit extends DimensionSpaceStation implements IOrbitDimension, IZeroGDimension, ISolarLevel, IExitHeight
 {
-    Set<Entity> freefallingEntities = new HashSet<>();
+    final Set<Entity> freefallingEntities = new HashSet<>();
 
     public DimensionOverworldOrbit(World worldIn, DimensionType typeIn)
     {
@@ -60,7 +53,6 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
 //    {
 //        return new Vector3(0, 0, 0);
 //    }
-
 
 
     @Override

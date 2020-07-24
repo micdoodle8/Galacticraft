@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.venus.client.model.ModelJuicer;
@@ -25,8 +25,8 @@
 //    @Override
 //    protected void preRenderCallback(EntityJuicer entity, float partialTickTime)
 //    {
-//        GlStateManager.rotatef(entity.isHanging() ? 180.0F : 0.0F, 1.0F, 0.0F, 0.0F);
-//        GlStateManager.translatef(0.0F, entity.isHanging() ? 1.8F : 1.3F, 0.0F);
+//        RenderSystem.rotatef(entity.isHanging() ? 180.0F : 0.0F, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.translatef(0.0F, entity.isHanging() ? 1.8F : 1.3F, 0.0F);
 //        super.preRenderCallback(entity, partialTickTime);
 //        if (texSwitch)
 //        {

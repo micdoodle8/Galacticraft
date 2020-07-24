@@ -26,7 +26,6 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IScaleableFuelLevel
@@ -36,7 +35,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
     private final int tankCapacity = 5000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
+    public final FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     public boolean adjacentChestChecked = false;
     public float lidAngle;
@@ -155,11 +154,10 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
             this.numUsingPlayers = 0;
             f = 5.0F;
             List<?> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
-            Iterator<?> iterator = list.iterator();
 
-            while (iterator.hasNext())
+            for (Object o : list)
             {
-                PlayerEntity entityplayer = (PlayerEntity) iterator.next();
+                PlayerEntity entityplayer = (PlayerEntity) o;
 
                 if (entityplayer.openContainer instanceof ContainerParaChest)
                 {

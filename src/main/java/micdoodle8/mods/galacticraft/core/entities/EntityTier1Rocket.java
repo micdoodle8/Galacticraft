@@ -29,7 +29,7 @@ import java.util.List;
 
 public class EntityTier1Rocket extends EntityTieredRocket
 {
-    public static int FUEL_CAPACITY = 1000 * ConfigManagerCore.rocketFuelFactor;
+    public static final int FUEL_CAPACITY = 1000 * ConfigManagerCore.rocketFuelFactor;
 
     public EntityTier1Rocket(EntityType<? extends EntityTier1Rocket> type, World worldIn)
     {
@@ -62,17 +62,17 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         switch (rocketType)
         {
-        default:
-        case DEFAULT:
-            return GCItems.rocketTierOne;
-        case INVENTORY27:
-            return GCItems.rocketTierOneCargo1;
-        case INVENTORY36:
-            return GCItems.rocketTierOneCargo2;
-        case INVENTORY54:
-            return GCItems.rocketTierOneCargo3;
-        case PREFUELED:
-            return GCItems.rocketTierOneCreative;
+            default:
+            case DEFAULT:
+                return GCItems.rocketTierOne;
+            case INVENTORY27:
+                return GCItems.rocketTierOneCargo1;
+            case INVENTORY36:
+                return GCItems.rocketTierOneCargo2;
+            case INVENTORY54:
+                return GCItems.rocketTierOneCargo3;
+            case PREFUELED:
+                return GCItems.rocketTierOneCreative;
         }
     }
 

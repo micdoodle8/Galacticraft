@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
@@ -96,27 +95,20 @@ public class PacketDynamic extends PacketBase
 
         switch (this.type)
         {
-        case 0:
-            buffer.writeInt((Integer) this.identifier);
-            break;
-        case 1:
-            BlockPos bp = (BlockPos) this.identifier;
-            buffer.writeInt(bp.getX());
-            buffer.writeInt(bp.getY());
-            buffer.writeInt(bp.getZ());
-            break;
+            case 0:
+                buffer.writeInt((Integer) this.identifier);
+                break;
+            case 1:
+                BlockPos bp = (BlockPos) this.identifier;
+                buffer.writeInt(bp.getX());
+                buffer.writeInt(bp.getY());
+                buffer.writeInt(bp.getZ());
+                break;
         }
 
         ByteBuf payloadData = Unpooled.buffer();
 
-        try
-        {
-            NetworkUtil.encodeData(payloadData, this.sendData);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        NetworkUtil.encodeData(payloadData, this.sendData);
 
         int readableBytes = payloadData.readableBytes();
         buffer.writeInt(readableBytes);
@@ -137,20 +129,20 @@ public class PacketDynamic extends PacketBase
 //
         switch (this.type)
         {
-        case 0:
-            this.identifier = new Integer(buffer.readInt());
+            case 0:
+                this.identifier = buffer.readInt();
 
-            int length = buffer.readInt();
-            payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
+                int length = buffer.readInt();
+                payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
 //                if (entity instanceof IPacketReceiver && buffer.readableBytes() > 0)
-            break;
-        case 1:
-            this.identifier = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+                break;
+            case 1:
+                this.identifier = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
 
-            length = buffer.readInt();
-            payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
+                length = buffer.readInt();
+                payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
 
-            break;
+                break;
         }
     }
 
@@ -170,45 +162,45 @@ public class PacketDynamic extends PacketBase
     {
         switch (this.type)
         {
-        case 0:
-            Entity entity = player.world.getEntityByID((Integer) this.identifier);
+            case 0:
+                Entity entity = player.world.getEntityByID((Integer) this.identifier);
 
-            if (entity instanceof IPacketReceiver)
-            {
-                if (this.payloadData.readableBytes() > 0)
-                {
-                    ((IPacketReceiver) entity).decodePacketdata(payloadData);
-                }
-
-                //Treat any packet received by a server from a client as an update request specifically to that client
-                if (LogicalSide == net.minecraftforge.fml.LogicalSide.SERVER && player instanceof ServerPlayerEntity && entity != null)
-                {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (ServerPlayerEntity) player);
-                }
-            }
-            break;
-
-        case 1:
-            BlockPos bp = (BlockPos) this.identifier;
-            if (player.world.isBlockLoaded(bp))
-            {
-                TileEntity tile = player.world.getTileEntity(bp);
-
-                if (tile instanceof IPacketReceiver)
+                if (entity instanceof IPacketReceiver)
                 {
                     if (this.payloadData.readableBytes() > 0)
                     {
-                        ((IPacketReceiver) tile).decodePacketdata(payloadData);
+                        ((IPacketReceiver) entity).decodePacketdata(payloadData);
                     }
 
                     //Treat any packet received by a server from a client as an update request specifically to that client
-                    if (LogicalSide == net.minecraftforge.fml.LogicalSide.SERVER && player instanceof ServerPlayerEntity && tile != null)
+                    if (LogicalSide == net.minecraftforge.fml.LogicalSide.SERVER && player instanceof ServerPlayerEntity)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (ServerPlayerEntity) player);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(entity), (ServerPlayerEntity) player);
                     }
                 }
-            }
-            break;
+                break;
+
+            case 1:
+                BlockPos bp = (BlockPos) this.identifier;
+                if (player.world.isBlockLoaded(bp))
+                {
+                    TileEntity tile = player.world.getTileEntity(bp);
+
+                    if (tile instanceof IPacketReceiver)
+                    {
+                        if (this.payloadData.readableBytes() > 0)
+                        {
+                            ((IPacketReceiver) tile).decodePacketdata(payloadData);
+                        }
+
+                        //Treat any packet received by a server from a client as an update request specifically to that client
+                        if (LogicalSide == net.minecraftforge.fml.LogicalSide.SERVER && player instanceof ServerPlayerEntity)
+                        {
+                            GalacticraftCore.packetPipeline.sendTo(new PacketDynamic(tile), (ServerPlayerEntity) player);
+                        }
+                    }
+                }
+                break;
         }
     }
 }

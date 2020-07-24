@@ -4,7 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ConfigManagerPlanets
 {
-    ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+    final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 
 //    public static int dimensionIDMars;
 //    public static int dimensionIDAsteroids;

@@ -51,8 +51,8 @@
 //    @Override
 //    public void doRender(EntityParachest entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef((float) x - 0.5F, (float) y, (float) z);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x - 0.5F, (float) y, (float) z);
 //
 //        this.bindEntityTexture(entity);
 //
@@ -61,6 +61,6 @@
 //            this.chestModel.renderAll();
 //        }
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

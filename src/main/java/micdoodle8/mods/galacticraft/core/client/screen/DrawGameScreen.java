@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.screen;
 
-import com.mojang.blaze3d.platform.GLX;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -16,7 +15,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
@@ -37,7 +35,7 @@ public class DrawGameScreen implements IScreenManager
     private final float scaleX;
     private final float scaleZ;
 
-    public TileEntity driver;
+    public final TileEntity driver;
     public EntityType<?> telemetryLastType;
     public String telemetryLastName;
     public Entity telemetryLastEntity;
@@ -186,19 +184,19 @@ public class DrawGameScreen implements IScreenManager
     {
 ////        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 ////        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-////        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
+////        RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
+//        RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
 //
 //        if (type > 0) TODO Drawing
 //        {
-//            GL11.glDisable(GL11.GL_LIGHTING);
+//            RenderSystem.disableLighting();
 //        }
 //
 //        GalacticraftRegistry.getGameScreen(type).render(type, ticks, scaleX, scaleZ, this);
 //
 //        if (type > 0)
 //        {
-//            GL11.glEnable(GL11.GL_LIGHTING);
+//            RenderSystem.enableLighting();
 //        }
 //
 ////        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);

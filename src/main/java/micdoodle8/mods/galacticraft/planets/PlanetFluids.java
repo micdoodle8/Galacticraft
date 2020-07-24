@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.fluid.FluidRegistrationEntry;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
@@ -14,8 +13,8 @@ import net.minecraftforge.fluids.FluidAttributes;
 
 import java.util.function.UnaryOperator;
 
-import static net.minecraftforge.fluids.ForgeFlowingFluid.Source;
 import static net.minecraftforge.fluids.ForgeFlowingFluid.Flowing;
+import static net.minecraftforge.fluids.ForgeFlowingFluid.Source;
 
 public class PlanetFluids
 {

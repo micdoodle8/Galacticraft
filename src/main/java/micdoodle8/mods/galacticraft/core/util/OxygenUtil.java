@@ -464,13 +464,13 @@ public class OxygenUtil
     {
         switch (slotIndex)
         {
-        case 0:
-            return stack.getItem() instanceof ItemOxygenMask;
-        case 1:
-            return stack.getItem() instanceof ItemOxygenGear;
-        case 2:
-        case 3:
-            return stack.getItem() instanceof ItemOxygenTank || stack.getItem() instanceof ItemCanisterOxygenInfinite;
+            case 0:
+                return stack.getItem() instanceof ItemOxygenMask;
+            case 1:
+                return stack.getItem() instanceof ItemOxygenGear;
+            case 2:
+            case 3:
+                return stack.getItem() instanceof ItemOxygenTank || stack.getItem() instanceof ItemCanisterOxygenInfinite;
         }
 
         return false;
@@ -504,7 +504,8 @@ public class OxygenUtil
             }
             else if (tileEntity != null)
             {
-                connectable = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite()) != null;
+                tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite());
+                connectable = true;
             }
 
             if (connectable)

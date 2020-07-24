@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelGrapple;
@@ -37,27 +37,27 @@
 //    @Override
 //    public void doRender(EntityGrapple grapple, double x, double y, double z, float par8, float partialTicks)
 //    {
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glPushMatrix();
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
 //
 //        Vec3d vec3 = new Vec3d(0.0D, -0.2D, 0.0D);
 //        PlayerEntity shootingEntity = grapple.getShootingEntity();
 //
 //        if (shootingEntity != null && grapple.getPullingEntity())
 //        {
-//            double d3 = shootingEntity.prevPosX + (shootingEntity.posX - shootingEntity.prevPosX) * partialTicks + vec3.x;
-//            double d4 = shootingEntity.prevPosY + (shootingEntity.posY - shootingEntity.prevPosY) * partialTicks + vec3.y;
-//            double d5 = shootingEntity.prevPosZ + (shootingEntity.posZ - shootingEntity.prevPosZ) * partialTicks + vec3.z;
+//            double d3 = shootingEntity.prevPosX + (shootingEntity.getPosX() - shootingEntity.prevPosX) * partialTicks + vec3.x;
+//            double d4 = shootingEntity.prevPosY + (shootingEntity.getPosY() - shootingEntity.prevPosY) * partialTicks + vec3.y;
+//            double d5 = shootingEntity.prevPosZ + (shootingEntity.getPosZ() - shootingEntity.prevPosZ) * partialTicks + vec3.z;
 //
 //            Tessellator tessellator = Tessellator.getInstance();
-//            GL11.glDisable(GL11.GL_TEXTURE_2D);
-//            GL11.glDisable(GL11.GL_LIGHTING);
-//            tessellator.getBuffer().begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+//            RenderSystem.disableTexture();
+//            RenderSystem.disableLighting();
+//            tessellator.getBuffer().begin(3, DefaultVertexFormats.POSITION_COLOR);
 //            byte b2 = 16;
 //
-//            double d14 = grapple.prevPosX + (grapple.posX - grapple.prevPosX) * partialTicks;
-//            double d8 = grapple.prevPosY + (grapple.posY - grapple.prevPosY) * partialTicks + 0.25D;
-//            double d10 = grapple.prevPosZ + (grapple.posZ - grapple.prevPosZ) * partialTicks;
+//            double d14 = grapple.prevPosX + (grapple.getPosX() - grapple.prevPosX) * partialTicks;
+//            double d8 = grapple.prevPosY + (grapple.getPosY() - grapple.prevPosY) * partialTicks + 0.25D;
+//            double d10 = grapple.prevPosZ + (grapple.getPosZ() - grapple.prevPosZ) * partialTicks;
 //            double d11 = (float) (d3 - d14);
 //            double d12 = (float) (d4 - d8);
 //            double d13 = (float) (d5 - d10);
@@ -71,14 +71,14 @@
 //
 //            tessellator.draw();
 //            tessellator.getBuffer().setTranslation(0, 0, 0);
-//            GL11.glEnable(GL11.GL_LIGHTING);
-//            GL11.glEnable(GL11.GL_TEXTURE_2D);
+//            RenderSystem.enableLighting();
+//            RenderSystem.enableTexture();
 //        }
 //
-//        GL11.glTranslatef((float) x, (float) y, (float) z);
-//        GL11.glRotatef(grapple.prevRotationYaw + (grapple.rotationYaw - grapple.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(grapple.prevRotationPitch + (grapple.rotationPitch - grapple.prevRotationPitch) * partialTicks - 180, 0.0F, 0.0F, 1.0F);
-//        GL11.glRotatef(grapple.prevRotationRoll + (grapple.rotationRoll - grapple.prevRotationRoll) * partialTicks, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.rotatef(grapple.prevRotationYaw + (grapple.rotationYaw - grapple.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(grapple.prevRotationPitch + (grapple.rotationPitch - grapple.prevRotationPitch) * partialTicks - 180, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.rotatef(grapple.prevRotationRoll + (grapple.rotationRoll - grapple.prevRotationRoll) * partialTicks, 1.0F, 0.0F, 0.0F);
 //
 //        updateModel();
 //
@@ -86,11 +86,11 @@
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
 //        ClientUtil.drawBakedModel(grappleModel);
@@ -98,7 +98,7 @@
 ////        this.bindEntityTexture(grapple);
 ////        ItemRendererGrappleHook.modelGrapple.renderAll(); TODO
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 ////    protected ResourceLocation getEntityTexture(EntityGrapple grapple)

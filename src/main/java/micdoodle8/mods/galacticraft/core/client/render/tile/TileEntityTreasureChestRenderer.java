@@ -26,21 +26,21 @@
 //    {
 //        this.bindTexture(treasureChestTexture);
 //
-//        GL11.glPushMatrix();
-//        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
-//        GL11.glScalef(1.0F, -1.0F, -1.0F);
-//        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.enableRescaleNormal();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.translatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
+//        RenderSystem.scalef(1.0F, -1.0F, -1.0F);
+//        RenderSystem.translatef(0.5F, 0.5F, 0.5F);
 //        float f = chest.getBlockState().get(ChestBlock.FACING).getHorizontalAngle();
-//        GL11.glRotatef(f, 0.0F, 1.0F, 0.0F);
-//        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+//        RenderSystem.rotatef(f, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.translatef(-0.5F, -0.5F, -0.5F);
 //        this.applyLidRotation(chest, partialTicks, chestModel);
 //        this.chestModel.renderAll(!chest.locked);
 //
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glPopMatrix();
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.popMatrix();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //    }
 //
 //    private void applyLidRotation(TileEntityTreasureChest chest, float partialTicks, ChestModel model)

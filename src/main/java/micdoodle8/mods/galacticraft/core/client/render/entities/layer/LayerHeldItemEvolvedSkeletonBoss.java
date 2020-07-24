@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeletonBoss;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedSkeletonBoss;
 //import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
@@ -42,21 +42,21 @@
 //
 //    private void renderHeldItem(EntitySkeletonBoss entity, ItemCameraTransforms.TransformType type)
 //    {
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
 //        this.renderer.getEntityModel().postRenderArm(0.0625F, type);
 //
 //        if (type == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND)
 //        {
-//            GlStateManager.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-//            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
-//            GlStateManager.translatef(0.05F, 0.125F, -1.525F);
+//            RenderSystem.rotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.translatef(0.05F, 0.125F, -1.525F);
 //        }
 //        else
 //        {
-//            GlStateManager.translatef(0.025F, 1.525F, -0.125F);
+//            RenderSystem.translatef(0.025F, 1.525F, -0.125F);
 //        }
 //
 //        Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entity, heldItem, type, false);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

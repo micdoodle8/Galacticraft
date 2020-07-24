@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -53,11 +53,11 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     private final int tankCapacity = 4000;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank waterTank = new FluidTank(this.tankCapacity);
+    public final FluidTank waterTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank liquidTank = new FluidTank(this.tankCapacity);
+    public final FluidTank liquidTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank liquidTank2 = new FluidTank(this.tankCapacity);
+    public final FluidTank liquidTank2 = new FluidTank(this.tankCapacity);
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -295,12 +295,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 1:
-                return itemstack.getItem() == Items.WATER_BUCKET;
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 1:
+                    return itemstack.getItem() == Items.WATER_BUCKET;
+                default:
+                    return false;
             }
         }
         return false;
@@ -313,12 +313,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemEmpty(itemstack);
-            case 1:
-                return itemstack.getItem() == Items.BUCKET;
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemEmpty(itemstack);
+                case 1:
+                    return itemstack.getItem() == Items.BUCKET;
+                default:
+                    return false;
             }
         }
         return false;
@@ -330,10 +330,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         Item item = itemstack.getItem();
         switch (slotID)
         {
-        case 0:
-            return ItemElectricBase.isElectricItem(item);
-        case 1:
-            return item == Items.BUCKET || item == Items.WATER_BUCKET;
+            case 0:
+                return ItemElectricBase.isElectricItem(item);
+            case 1:
+                return item == Items.BUCKET || item == Items.WATER_BUCKET;
         }
 
         return false;
@@ -468,12 +468,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         switch (tank)
         {
-        case 0:
-            return this.waterTank.getFluid();
-        case 1:
-            return this.liquidTank2.getFluid();
-        case 2:
-            return this.liquidTank.getFluid();
+            case 0:
+                return this.waterTank.getFluid();
+            case 1:
+                return this.liquidTank2.getFluid();
+            case 2:
+                return this.liquidTank.getFluid();
         }
         return FluidStack.EMPTY;
     }
@@ -483,12 +483,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         switch (tank)
         {
-        case 0:
-            return this.waterTank.getCapacity();
-        case 1:
-            return this.liquidTank2.getCapacity();
-        case 2:
-            return this.liquidTank.getCapacity();
+            case 0:
+                return this.waterTank.getCapacity();
+            case 1:
+                return this.liquidTank2.getCapacity();
+            case 2:
+                return this.liquidTank.getCapacity();
         }
         return 0;
     }
@@ -498,12 +498,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         switch (tank)
         {
-        case 0:
-            return this.waterTank.isFluidValid(stack);
-        case 1:
-            return this.liquidTank2.isFluidValid(stack);
-        case 2:
-            return this.liquidTank.isFluidValid(stack);
+            case 0:
+                return this.waterTank.isFluidValid(stack);
+            case 1:
+                return this.liquidTank2.isFluidValid(stack);
+            case 2:
+                return this.liquidTank.isFluidValid(stack);
         }
         return false;
     }

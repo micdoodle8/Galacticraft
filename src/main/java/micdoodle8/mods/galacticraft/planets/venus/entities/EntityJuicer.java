@@ -148,23 +148,23 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
 
                     if (blockAbove.getBlock() == VenusBlocks.dungeonBrick2 || blockAbove.getBlock() == VenusBlocks.dungeonBrick1)
                     {
-                        RayTraceResult hit = this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ()), new Vec3d(this.getPosX(), this.getPosY() + (this.isHanging() ? -10 : 10), this.getPosZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+                        BlockRayTraceResult hit = this.world.rayTraceBlocks(new RayTraceContext(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ()), new Vec3d(this.getPosX(), this.getPosY() + (this.isHanging() ? -10 : 10), this.getPosZ()), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 
                         if (hit.getType() == RayTraceResult.Type.BLOCK)
                         {
-                            BlockRayTraceResult blockResult = (BlockRayTraceResult) hit;
+                            BlockRayTraceResult blockResult = hit;
                             BlockState blockBelow = this.world.getBlockState(blockResult.getPos());
                             if (blockBelow.getBlock() == VenusBlocks.dungeonBrick1 || blockBelow.getBlock() == VenusBlocks.dungeonBrick2)
                             {
                                 if (this.isHanging())
                                 {
                                     this.jumpTarget = blockResult.getPos();
-                                    this.setFalling(this.jumpTarget != null);
+                                    this.setFalling(true);
                                 }
                                 else
                                 {
                                     this.jumpTarget = blockResult.getPos().offset(Direction.DOWN);
-                                    this.setFalling(this.jumpTarget != null);
+                                    this.setFalling(true);
                                 }
                             }
                         }

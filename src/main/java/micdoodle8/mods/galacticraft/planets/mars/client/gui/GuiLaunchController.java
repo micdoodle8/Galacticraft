@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -11,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -22,13 +22,10 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.SharedConstants;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.ITextComponent;
-
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +66,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         }
         else
         {
-            boolean isOwner = PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID());
+            boolean isOwner = this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID());
             this.enableControllerButton.active = isOwner;
             this.hideDestinationFrequency.active = isOwner;
         }
@@ -85,11 +82,11 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         this.infoRegions.clear();
         super.render(mouseX, mouseY, partialTicks);
 
-        GL11.glColor3f(1, 1, 1);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderSystem.color3f(1, 1, 1);
+        RenderSystem.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        RenderSystem.disableLighting();
+        RenderSystem.disableDepthTest();
 
         int k;
         for (k = 0; k < buttonList.size(); ++k)
@@ -111,25 +108,25 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
 //        this.labelList = labelList;
         this.infoRegions = infoRegions;
 
-//		GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+//		RenderSystem.enableTexture();
+        RenderSystem.enableLighting();
+        RenderSystem.enableDepthTest();
         RenderHelper.enableStandardItemLighting();
 
         if (Math.random() < 0.025 && !destinationFrequency.isTextFocused)
         {
-            if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()) && !this.launchController.getDisabled(2))
+            if (!this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID()) && !this.launchController.getDisabled(2))
             {
                 // in case the player is not equal to the owner of the controller,
                 // scramble the destination number such that other players can't
                 // fly to it directly
                 Random r = new Random();
-                String fakefrequency = "";
+                StringBuilder fakefrequency = new StringBuilder();
                 for (int i = 0; i < this.destinationFrequency.getMaxLength(); i++)
                 {
-                    fakefrequency += (char) (r.nextInt(126 - 33) + 33);
+                    fakefrequency.append((char) (r.nextInt(126 - 33) + 33));
                 }
-                destinationFrequency.text = fakefrequency;
+                destinationFrequency.text = fakefrequency.toString();
             }
             else
             {
@@ -186,7 +183,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         final int yTop = (this.height - this.ySize) / 2;
         this.enableControllerButton = new Button(xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
         {
-            if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
+            if (!this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
@@ -197,7 +194,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         this.destinationFrequency = new GuiElementTextBox(this, xLeft + 45, yTop + 16 + 22, 48, 20, "", true, 6, false);
         this.hideDestinationFrequency = new Button(xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"), (button) ->
         {
-            if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
+            if (!this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
@@ -206,7 +203,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         });
         this.openAdvancedConfig = new Button(xLeft + 48, yTop + 62, 80, 20, GCCoreUtil.translate("gui.launch_controller.advanced") + "...", (button) ->
         {
-            if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
+            if (!this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID()))
             {
                 this.cannotEditTimer = 50;
                 return;
@@ -218,24 +215,21 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         this.buttons.add(this.destinationFrequency);
         this.buttons.add(this.hideDestinationFrequency);
         this.buttons.add(this.openAdvancedConfig);
-        this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.electricInfoRegion.tooltipStrings = new ArrayList<>();
         this.electricInfoRegion.xPosition = xLeft + 98;
         this.electricInfoRegion.yPosition = yTop + 113;
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(xLeft + 151, yTop + 104, 18, 18, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.0"));
+        batterySlotDesc = new ArrayList<>(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.0"));
         this.infoRegions.add(new GuiElementInfoRegion(xLeft + 5, yTop + 20, 109, 13, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.1"));
+        batterySlotDesc = new ArrayList<>(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(xLeft + 5, yTop + 42, 87, 13, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.4"));
+        batterySlotDesc = new ArrayList<>(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.4"));
         this.infoRegions.add(new GuiElementInfoRegion(xLeft + 95, yTop + 38, 38, 20, batterySlotDesc, this.width, this.height, this));
     }
 
@@ -292,19 +286,19 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glPushMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.textureManager.bindTexture(GuiLaunchController.launchControllerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.launchController.getEnergyStoredGC(), this.launchController.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (this.launchController.getEnergyStoredGC() > 0)
         {
@@ -312,19 +306,19 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
             this.blit(var5 + 99, var6 + 114, 176, 0, Math.min(scale, 54), 7);
         }
 
-        GL11.glPopMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override
     public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
-        return PlayerUtil.getName(player).equals(this.launchController.getOwnerUUID());
+        return player.getUniqueID().equals(this.launchController.getOwnerUUID());
     }
 
     @Override
     public void onTextChanged(GuiElementTextBox textBox, String newText)
     {
-        if (PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
+        if (this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID()))
         {
             if (textBox.equals(this.frequency))
             {
@@ -348,7 +342,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         }
         else if (textBox.equals(this.destinationFrequency))
         {
-            if (PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()) || this.launchController.getDisabled(2))
+            if (this.minecraft.player.getUniqueID().equals(this.launchController.getOwnerUUID()) || this.launchController.getDisabled(2))
             {
                 return String.valueOf(this.launchController.destFrequency);
             }
@@ -358,12 +352,12 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
                 // scramble the destination number such that other players can't
                 // fly to it directly
                 Random r = new Random();
-                String fakefrequency = "";
+                StringBuilder fakefrequency = new StringBuilder();
                 for (int i = 0; i < this.destinationFrequency.getMaxLength(); i++)
                 {
-                    fakefrequency += (char) (r.nextInt(126 - 33) + 33);
+                    fakefrequency.append((char) (r.nextInt(126 - 33) + 33));
                 }
-                return fakefrequency;
+                return fakefrequency.toString();
             }
         }
 

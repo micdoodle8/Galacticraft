@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -329,28 +330,28 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         int z = blockPos.getZ();
         switch (this.corner)
         {
-        case NONE:
-            break;
-        case NW:
-            positions.add(new BlockPos(x + 1, y, z));
-            positions.add(new BlockPos(x, y, z + 1));
-            positions.add(new BlockPos(x + 1, y, z + 1));
-            break;
-        case SW:
-            positions.add(new BlockPos(x + 1, y, z));
-            positions.add(new BlockPos(x, y, z - 1));
-            positions.add(new BlockPos(x + 1, y, z - 1));
-            break;
-        case NE:
-            positions.add(new BlockPos(x - 1, y, z));
-            positions.add(new BlockPos(x, y, z + 1));
-            positions.add(new BlockPos(x - 1, y, z + 1));
-            break;
-        case SE:
-            positions.add(new BlockPos(x - 1, y, z));
-            positions.add(new BlockPos(x, y, z - 1));
-            positions.add(new BlockPos(x - 1, y, z - 1));
-            break;
+            case NONE:
+                break;
+            case NW:
+                positions.add(new BlockPos(x + 1, y, z));
+                positions.add(new BlockPos(x, y, z + 1));
+                positions.add(new BlockPos(x + 1, y, z + 1));
+                break;
+            case SW:
+                positions.add(new BlockPos(x + 1, y, z));
+                positions.add(new BlockPos(x, y, z - 1));
+                positions.add(new BlockPos(x + 1, y, z - 1));
+                break;
+            case NE:
+                positions.add(new BlockPos(x - 1, y, z));
+                positions.add(new BlockPos(x, y, z + 1));
+                positions.add(new BlockPos(x - 1, y, z + 1));
+                break;
+            case SE:
+                positions.add(new BlockPos(x - 1, y, z));
+                positions.add(new BlockPos(x, y, z - 1));
+                positions.add(new BlockPos(x - 1, y, z - 1));
+                break;
         }
     }
 
@@ -368,29 +369,29 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         int count = 0;
         switch (this.corner)
         {
-        case NONE:
-            count = 3;
-            break;
-        case NW:
-            count += checkState(new BlockPos(x + 1, y, z), EnumCorner.NE);
-            count += checkState(new BlockPos(x, y, z + 1), EnumCorner.SW);
-            count += checkState(new BlockPos(x + 1, y, z + 1), EnumCorner.SE);
-            break;
-        case SW:
-            count += checkState(new BlockPos(x + 1, y, z), EnumCorner.SE);
-            count += checkState(new BlockPos(x, y, z - 1), EnumCorner.NW);
-            count += checkState(new BlockPos(x + 1, y, z - 1), EnumCorner.NE);
-            break;
-        case NE:
-            count += checkState(new BlockPos(x - 1, y, z), EnumCorner.NW);
-            count += checkState(new BlockPos(x, y, z + 1), EnumCorner.SE);
-            count += checkState(new BlockPos(x - 1, y, z + 1), EnumCorner.SW);
-            break;
-        case SE:
-            count += checkState(new BlockPos(x - 1, y, z), EnumCorner.SW);
-            count += checkState(new BlockPos(x, y, z - 1), EnumCorner.NE);
-            count += checkState(new BlockPos(x - 1, y, z - 1), EnumCorner.NW);
-            break;
+            case NONE:
+                count = 3;
+                break;
+            case NW:
+                count += checkState(new BlockPos(x + 1, y, z), EnumCorner.NE);
+                count += checkState(new BlockPos(x, y, z + 1), EnumCorner.SW);
+                count += checkState(new BlockPos(x + 1, y, z + 1), EnumCorner.SE);
+                break;
+            case SW:
+                count += checkState(new BlockPos(x + 1, y, z), EnumCorner.SE);
+                count += checkState(new BlockPos(x, y, z - 1), EnumCorner.NW);
+                count += checkState(new BlockPos(x + 1, y, z - 1), EnumCorner.NE);
+                break;
+            case NE:
+                count += checkState(new BlockPos(x - 1, y, z), EnumCorner.NW);
+                count += checkState(new BlockPos(x, y, z + 1), EnumCorner.SE);
+                count += checkState(new BlockPos(x - 1, y, z + 1), EnumCorner.SW);
+                break;
+            case SE:
+                count += checkState(new BlockPos(x - 1, y, z), EnumCorner.SW);
+                count += checkState(new BlockPos(x, y, z - 1), EnumCorner.NE);
+                count += checkState(new BlockPos(x - 1, y, z - 1), EnumCorner.NW);
+                break;
         }
 
         if (count >= 3)
@@ -558,7 +559,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         double depth = velocityY < 0D ? 0.179D : 0D;
         AxisAlignedBB bb = new AxisAlignedBB(x - size, y - depth, z - size, x + size, y + height, z + size);
         BlockPlatform.ignoreCollisionTests = true;
-        boolean obstructed = this.world.getCollisionShapes(p, bb) != VoxelShapes.empty();
+        boolean obstructed = !this.world.getCollisionShapes(p, bb).allMatch(VoxelShape::isEmpty);
         BlockPlatform.ignoreCollisionTests = false;
         return obstructed;
     }

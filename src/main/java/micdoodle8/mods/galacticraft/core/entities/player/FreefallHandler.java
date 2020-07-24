@@ -61,8 +61,8 @@
 //            
 //        //Test whether feet are on a block, also stops the login glitch
 //        int playerFeetOnY = (int) (player.getBoundingBox().minY - 0.01D);
-//        int xx = MathHelper.floor(player.posX);
-//        int zz = MathHelper.floor(player.posZ);
+//        int xx = MathHelper.floor(player.getPosX());
+//        int zz = MathHelper.floor(player.getPosZ());
 //        BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
 //        BlockState state = player.world.getBlockState(pos);
 //        Block b = state.getBlock();
@@ -78,7 +78,7 @@
 //                player.onGround = true;
 //                if (player.getBoundingBox().minY - blockYmax > 0D)
 //                {
-//                    player.posY -= player.getBoundingBox().minY - blockYmax;
+//                    player.getPosY() -= player.getBoundingBox().minY - blockYmax;
 //                    player.setBoundingBox(player.getBoundingBox().offset(0, blockYmax - player.getBoundingBox().minY, 0));
 //                }
 //                else if (b.canCollideCheck(player.world.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
@@ -87,7 +87,7 @@
 //                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.world.getBlockState(offsetPos), player.world, offsetPos);
 //                    if (collisionBox != null && collisionBox.intersects(player.getBoundingBox()))
 //                    {
-//                        player.posY -= player.getBoundingBox().minY - blockYmax;
+//                        player.getPosY() -= player.getBoundingBox().minY - blockYmax;
 //                        player.setBoundingBox(player.getBoundingBox().offset(0, blockYmax - player.getBoundingBox().minY, 0));
 //                    }
 //                }
@@ -208,8 +208,8 @@
 //			//If that check didn't produce a result, see if the player is inside the walls
 //			//TODO: could apply special weightless movement here like Coriolis force - the player is inside the walls,  not touching them, and in a vacuum
 //			int quadrant = 0;
-//			double xd = p.posX - this.spinCentreX;
-//			double zd = p.posZ - this.spinCentreZ;
+//			double xd = p.getPosX() - this.spinCentreX;
+//			double zd = p.getPosZ() - this.spinCentreZ;
 //			if (xd<0)
 //			{
 //				if (xd<-Math.abs(zd))
@@ -518,7 +518,7 @@
 //        //Not freefall - within arm's length of something or jumping
 //        {
 //            double dy = p.motionY - this.pPrevMotionY;
-//            //if (p.motionY < 0 && this.pPrevMotionY >= 0) p.posY -= p.motionY;
+//            //if (p.motionY < 0 && this.pPrevMotionY >= 0) p.getPosY() -= p.motionY;
 //            //if (p.motionY != 0) p.motionY = this.pPrevMotionY;
 //            if (p.movementInput.jump)
 //            {
@@ -659,7 +659,7 @@
 //        {
 //            e.motionY /= 0.9800000190734863D;
 //            //e.motionY += 0.03999999910593033D;
-//            //e.posY += 0.03999999910593033D;
+//            //e.getPosY() += 0.03999999910593033D;
 //            //e.lastTickPosY += 0.03999999910593033D;
 //            if (e.motionY > 10D)
 //            {

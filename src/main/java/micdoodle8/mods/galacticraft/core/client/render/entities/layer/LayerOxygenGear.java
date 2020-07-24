@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
 //import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
@@ -123,23 +123,23 @@
 //                        {
 //                            ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.tubes[k][i]);
 //
-//                            GlStateManager.enableRescaleNormal();
-//                            GlStateManager.pushMatrix();
-//                            GlStateManager.translatef(0.175F * (float) (k * 2 - 1), 0.0F, 0.0F);
-//                            GlStateManager.translatef(0.0F, -0.0325F * (float) (i * 2 - 1), 0.0F);
-//                            GlStateManager.translatef(0.0F, 0.0F, -0.0325F * (float) (Math.pow(i * 2 - 1, 2) * 0.05));
-//                            GlStateManager.translatef(0.0F, 0.2F, 0.0F);
-//                            GlStateManager.translatef(0.0F, 0.0F, 0.2F);
+//                            RenderSystem.enableRescaleNormal();
+//                            RenderSystem.pushMatrix();
+//                            RenderSystem.translatef(0.175F * (float) (k * 2 - 1), 0.0F, 0.0F);
+//                            RenderSystem.translatef(0.0F, -0.0325F * (float) (i * 2 - 1), 0.0F);
+//                            RenderSystem.translatef(0.0F, 0.0F, -0.0325F * (float) (Math.pow(i * 2 - 1, 2) * 0.05));
+//                            RenderSystem.translatef(0.0F, 0.2F, 0.0F);
+//                            RenderSystem.translatef(0.0F, 0.0F, 0.2F);
 //
 //                            this.tubes[k][i].render(scale);
 //
-//                            GlStateManager.popMatrix();
+//                            RenderSystem.popMatrix();
 //                        }
 //                    }
 //                }
 //            }
 //        }
-//        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+//        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
 //    }
 //
 //    @Override

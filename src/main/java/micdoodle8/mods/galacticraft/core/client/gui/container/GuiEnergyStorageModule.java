@@ -1,17 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
 
 public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorageModule>
 {
@@ -23,7 +20,6 @@ public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorag
     {
         super(container, playerInv, title);
 //        super(new ContainerEnergyStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent(storageModule.getTierGC() == 1 ? "tile.machine.1.name" : "tile.machine.8.name"));
-        this.storageModule = storageModule;
     }
 
     /**
@@ -56,7 +52,7 @@ public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorag
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.textureManager.bindTexture(GuiEnergyStorageModule.batteryBoxTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;

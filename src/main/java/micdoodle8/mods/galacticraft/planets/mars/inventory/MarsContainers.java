@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerRocketInventory;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;

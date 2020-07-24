@@ -37,28 +37,28 @@
 ////            {
 ////                final float var4 = par1EntityCreeper.ticksExisted + par3;
 ////                this.bindTexture(RenderCreeperBoss.powerTexture);
-////                GL11.glMatrixMode(GL11.GL_TEXTURE);
-////                GL11.glLoadIdentity();
+////                RenderSystem.matrixMode(GL11.GL_TEXTURE);
+////                RenderSystem.loadIdentity();
 ////                final float var5 = var4 * 0.01F;
 ////                final float var6 = var4 * 0.01F;
-////                GL11.glTranslatef(var5, var6, 0.0F);
+////                RenderSystem.translatef(var5, var6, 0.0F);
 ////                this.setRenderPassModel(this.creeperModel);
-////                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-////                GL11.glEnable(GL11.GL_BLEND);
+////                RenderSystem.matrixMode(5888);
+////                RenderSystem.enableBlend();
 ////                final float var7 = 0.5F;
-////                GL11.glColor4f(var7, var7, var7, 1.0F);
-////                GL11.glDisable(GL11.GL_LIGHTING);
-////                GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+////                RenderSystem.color4f(var7, var7, var7, 1.0F);
+////                RenderSystem.disableLighting();
+////                RenderSystem.blendFunc(1, 1);
 ////                return 1;
 ////            }
 ////
 ////            if (par2 == 2)
 ////            {
-////                GL11.glMatrixMode(GL11.GL_TEXTURE);
-////                GL11.glLoadIdentity();
-////                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-////                GL11.glEnable(GL11.GL_LIGHTING);
-////                GL11.glDisable(GL11.GL_BLEND);
+////                RenderSystem.matrixMode(GL11.GL_TEXTURE);
+////                RenderSystem.loadIdentity();
+////                RenderSystem.matrixMode(5888);
+////                RenderSystem.enableLighting();
+////                RenderSystem.disableBlend();
 ////            }
 ////        }
 ////
@@ -68,8 +68,8 @@
 //    @Override
 //    protected void preRenderCallback(EntityCreeperBoss par1EntityLiving, float par2)
 //    {
-//        GL11.glScalef(4.0F, 4.0F, 4.0F);
-//        GL11.glRotatef((float) (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F + (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F - Math.pow(par1EntityLiving.deathTicks - 1, 2) / 5.0F) * par2), 0.0F, 1.0F, 0.0F);
+//        RenderSystem.scalef(4.0F, 4.0F, 4.0F);
+//        RenderSystem.rotatef((float) (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F + (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F - Math.pow(par1EntityLiving.deathTicks - 1, 2) / 5.0F) * par2), 0.0F, 1.0F, 0.0F);
 //    }
 //
 //    @Override

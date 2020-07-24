@@ -163,7 +163,7 @@
 //        {
 //            ((PlayerEntity) entityLiving).getFoodStats().addStats(this, stack);
 //        }
-//        worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+//        worldIn.playSound(null, entityLiving.getPosX(), entityLiving.getPosY(), entityLiving.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
 //        if (!worldIn.isRemote && (stack.getDamage() < 4 || stack.getDamage() == 9))
 //        {
 //            entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);

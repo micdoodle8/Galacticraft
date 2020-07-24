@@ -243,8 +243,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     public ItemStack getGuaranteedLoot(Random rand)
     {
-        List<ItemStack> stackList = new LinkedList<>();
-        stackList.addAll(GalacticraftRegistry.getDungeonLoot(2));
+        List<ItemStack> stackList = new LinkedList<>(GalacticraftRegistry.getDungeonLoot(2));
         boolean hasT3Rocket = false;
         boolean hasAstroMiner = false;
         // Check if player seems to have Tier 3 rocket or Astro Miner already - in that case we don't want more
@@ -253,18 +252,15 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
-            if (stats != null)
+            for (ISchematicPage page : stats.getUnlockedSchematics())
             {
-                for (ISchematicPage page : stats.getUnlockedSchematics())
+                if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3)
                 {
-                    if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3)
-                    {
-                        hasT3Rocket = true;
-                    }
-                    else if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3 + 1)
-                    {
-                        hasAstroMiner = true;
-                    }
+                    hasT3Rocket = true;
+                }
+                else if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3 + 1)
+                {
+                    hasAstroMiner = true;
                 }
             }
         }

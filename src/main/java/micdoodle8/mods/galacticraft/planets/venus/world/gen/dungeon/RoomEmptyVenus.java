@@ -6,7 +6,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -14,7 +13,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import java.util.Random;
 
 import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_EMPTY;
-import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_ENTRANCE;
 
 public class RoomEmptyVenus extends SizedPieceVenus
 {

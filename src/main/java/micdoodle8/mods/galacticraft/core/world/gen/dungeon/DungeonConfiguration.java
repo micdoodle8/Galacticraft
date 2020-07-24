@@ -3,17 +3,11 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.feature.EndSpikeFeature;
-import net.minecraft.world.gen.feature.EndSpikeFeatureConfig;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
 
 public class DungeonConfiguration implements IFeatureConfig
 {

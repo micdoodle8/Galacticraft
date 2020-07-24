@@ -1094,7 +1094,7 @@ public class GCPlayerHandler
 //                    {
 //                        Vector3 pos = new Vector3(player);
 //                        // Set the footprint position to the block below and add random number to stop z-fighting
-//                        pos.y = MathHelper.floor(player.posY - 1D) + player.world.rand.nextFloat() / 100.0F;
+//                        pos.y = MathHelper.floor(player.getPosY() - 1D) + player.world.rand.nextFloat() / 100.0F;
 //
 //                        // Adjust footprint to left or right depending on step count
 //                        switch (stats.getLastStep())
@@ -1145,7 +1145,7 @@ public class GCPlayerHandler
                 iArray[i] = page == null ? -2 : page.getPageID();
             }
 
-            List<Object> objList = new ArrayList<Object>();
+            List<Object> objList = new ArrayList<>();
             objList.add(iArray);
 
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, GCCoreUtil.getDimensionType(player.world), objList), player);
@@ -1444,7 +1444,8 @@ public class GCPlayerHandler
                 stats.setJustLanded(false);
 
                 //Set spawn point here if just descended from a lander for the first time
-                if (player.getBedLocation(GCCoreUtil.getDimensionType(player.world)) == null || stats.isNewAdventureSpawn())
+                player.getBedLocation(GCCoreUtil.getDimensionType(player.world));
+                if (stats.isNewAdventureSpawn())
                 {
                     int i = 30000000;
                     int j = Math.min(i, Math.max(-i, MathHelper.floor(player.getPosX() + 0.5D)));

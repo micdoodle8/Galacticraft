@@ -1,27 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.DimensionType;
-import org.lwjgl.opengl.GL11;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FootprintRenderer
 {
-    public static Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<Long, List<Footprint>>();
+    public static final Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<>();
     private static final ResourceLocation footprintTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/footprint.png");
 
     public static void renderFootprints(PlayerEntity player, float partialTicks)
@@ -45,19 +40,19 @@ public class FootprintRenderer
 //            return;
 //        }
 //
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
 //        double interpPosX = player.lastTickPosX + (player.getPosX() - player.lastTickPosX) * partialTicks;
 //        double interpPosY = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * partialTicks;
 //        double interpPosZ = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * partialTicks;
 //        Minecraft.getInstance().textureManager.bindTexture(FootprintRenderer.footprintTexture);
 //
-//        GlStateManager.depthMask(true);
-//        GlStateManager.enableDepthTest();
-//        GlStateManager.enableTexture();
-//        GlStateManager.disableCull();
+//        RenderSystem.depthMask(true);
+//        RenderSystem.enableDepthTest();
+//        RenderSystem.enableTexture();
+//        RenderSystem.disableCull();
 //
-//        GlStateManager.enableBlend();
-//        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+//        RenderSystem.enableBlend();
+//        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
 //        Tessellator tessellator = Tessellator.getInstance();
 //        float f7 = 1.0F;
 //        float f6 = 0.0F;
@@ -65,41 +60,41 @@ public class FootprintRenderer
 //        float f9 = 1.0F;
 //
 //        float f10 = 0.4F;
-//        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
+//        RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
 ////        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 ////        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
 //        boolean sensorGlasses = OverlaySensorGlasses.overrideMobTexture();
 //        if (sensorGlasses)
 //        {
-//            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
+//            RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
 //        }
 //
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //        for (Footprint footprint : footprintsToDraw)
 //        {
-//            GL11.glPushMatrix();
+//            RenderSystem.pushMatrix();
 //
 //            if (!sensorGlasses)
 //            {
 //                int j = footprint.lightmapVal % 65536;
 //                int k = footprint.lightmapVal / 65536;
-//                GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
+//                RenderSystem.glMultiTexCoord2f(33985, (float) j, (float) k);
 //            }
 //
 //            float ageScale = footprint.age / (float) Footprint.MAX_AGE;
 //            BufferBuilder worldRenderer = tessellator.getBuffer();
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //
 //            float f11 = (float) (footprint.position.x - interpPosX);
 //            float f12 = (float) (footprint.position.y - interpPosY) + 0.001F;
 //            float f13 = (float) (footprint.position.z - interpPosZ);
 //
-//            GL11.glTranslatef(f11, f12, f13);
+//            RenderSystem.translatef(f11, f12, f13);
 //
 //            int brightness = (int) (100 + ageScale * 155);
 //            //                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
-//            GlStateManager.color4f(1F - ageScale, 1F - ageScale, 1F - ageScale, 1F - ageScale);
+//            RenderSystem.color4f(1F - ageScale, 1F - ageScale, 1F - ageScale, 1F - ageScale);
 //            double footprintScale = 0.5F;
 //            worldRenderer.pos(Math.sin((45 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale, 0, Math.cos((45 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale).tex(f7, f9).endVertex();
 //            worldRenderer.pos(Math.sin((135 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale, 0, Math.cos((135 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale).tex(f7, f8).endVertex();
@@ -107,7 +102,7 @@ public class FootprintRenderer
 //            worldRenderer.pos(Math.sin((315 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale, 0, Math.cos((315 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale).tex(f6, f9).endVertex();
 //
 //            tessellator.draw();
-//            GlStateManager.popMatrix();
+//            RenderSystem.popMatrix();
 //        }
 //
 ////        if (sensorGlasses)
@@ -115,7 +110,7 @@ public class FootprintRenderer
 ////            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
 ////        }
 //
-//        GlStateManager.popMatrix(); TODO Footprint renderer
+//        RenderSystem.popMatrix(); TODO Footprint renderer
     }
 
     public static void addFootprint(long chunkKey, Footprint footprint)
@@ -124,7 +119,7 @@ public class FootprintRenderer
 
         if (footprintList == null)
         {
-            footprintList = new ArrayList<Footprint>();
+            footprintList = new ArrayList<>();
         }
 
         footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation, footprint.owner, footprint.lightmapVal));
@@ -142,17 +137,15 @@ public class FootprintRenderer
 
         if (footprintList == null)
         {
-            footprintList = new ArrayList<Footprint>();
+            footprintList = new ArrayList<>();
         }
 
         Iterator<Footprint> i = footprintList.iterator();
         while (i.hasNext())
         {
             Footprint print = i.next();
-            if (!print.owner.equals(Minecraft.getInstance().player.getName()))
-            {
-                i.remove();
-            }
+            Minecraft.getInstance().player.getName();
+            i.remove();
         }
 
         footprintList.addAll(prints);

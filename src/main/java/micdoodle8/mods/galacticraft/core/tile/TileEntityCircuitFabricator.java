@@ -187,7 +187,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         if (slotID == 0)
         {
-            return itemStack != null && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return ItemElectricBase.isElectricItem(itemStack.getItem());
         }
 
         if (slotID > 5)
@@ -251,17 +251,17 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 

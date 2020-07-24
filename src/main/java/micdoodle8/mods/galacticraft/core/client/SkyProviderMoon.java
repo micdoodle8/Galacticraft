@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
@@ -34,14 +34,14 @@
 //
 //    public SkyProviderMoon()
 //    {
-//        GL11.glPushMatrix();
-//        GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.NewList(this.starGLCallList, GL11.GL_COMPILE);
 //        this.renderStars();
 //        GL11.glEndList();
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //        final Tessellator tessellator = Tessellator.getInstance();
 //        this.glSkyList = this.starGLCallList + 1;
-//        GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
+//        RenderSystem.NewList(this.glSkyList, GL11.GL_COMPILE);
 //        final byte byte2 = 64;
 //        final int i = 256 / byte2 + 2;
 //        float f = 16F;
@@ -51,7 +51,7 @@
 //        {
 //            for (int l = -byte2 * i; l <= byte2 * i; l += byte2)
 //            {
-//                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//                worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //                worldRenderer.pos(j + 0, f, l + 0).endVertex();
 //                worldRenderer.pos(j + byte2, f, l + 0).endVertex();
 //                worldRenderer.pos(j + byte2, f, l + byte2).endVertex();
@@ -62,9 +62,9 @@
 //
 //        GL11.glEndList();
 //        this.glSkyList2 = this.starGLCallList + 2;
-//        GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
+//        RenderSystem.NewList(this.glSkyList2, GL11.GL_COMPILE);
 //        f = -16F;
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //
 //        for (int k = -byte2 * i; k <= byte2 * i; k += byte2)
 //        {
@@ -97,18 +97,18 @@
 //            gcProvider = (DimensionMoon) world.getDimension();
 //        }
 //
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GlStateManager.disableRescaleNormal();
-//        GL11.glColor3f(1F, 1F, 1F);
+//        RenderSystem.disableTexture();
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.color3f(1F, 1F, 1F);
 //        final Tessellator var23 = Tessellator.getInstance();
-//        GL11.glDepthMask(false);
-//        GL11.glEnable(GL11.GL_FOG);
-//        GL11.glColor3f(0, 0, 0);
-//        GL11.glCallList(this.glSkyList);
-//        GL11.glDisable(GL11.GL_FOG);
-//        GL11.glDisable(GL11.GL_ALPHA_TEST);
-//        GL11.glEnable(GL11.GL_BLEND);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//        RenderSystem.depthMask(false);
+//        RenderSystem.enable(GL11.GL_FOG);
+//        RenderSystem.color3f(0, 0, 0);
+//        RenderSystem.callList(this.glSkyList);
+//        RenderSystem.disable(GL11.GL_FOG);
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.enableBlend();
+//        RenderSystem.blendFunc(770, 771);
 //        RenderHelper.disableStandardItemLighting();
 //        float var10;
 //        float var11;
@@ -123,66 +123,66 @@
 //
 //        if (var20 > 0.0F)
 //        {
-//            GL11.glPushMatrix();
-//            GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-//            GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-//            GL11.glRotatef(-19.0F, 0, 1.0F, 0);
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, var20);
-//            GL11.glCallList(this.starGLCallList);
-//            GL11.glPopMatrix();
+//            RenderSystem.pushMatrix();
+//            RenderSystem.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.rotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(-19.0F, 0, 1.0F, 0);
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, var20);
+//            RenderSystem.callList(this.starGLCallList);
+//            RenderSystem.popMatrix();
 //        }
 //
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-//        GL11.glPushMatrix();
+//        RenderSystem.enableTexture();
+//        RenderSystem.blendFunc(770, 1);
+//        RenderSystem.pushMatrix();
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //
-//        GL11.glPushMatrix();
+//        RenderSystem.pushMatrix();
 //
-//        GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
-//        GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 5F);
+//        RenderSystem.rotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.blendFunc(770, 771);
+//        RenderSystem.disableTexture();
+//        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 1.0F);
 //        var12 = 20.0F / 3.5F;
 //        BufferBuilder worldRenderer = var23.getBuffer();
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //        worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
 //        worldRenderer.pos(var12, 99.9D, -var12).endVertex();
 //        worldRenderer.pos(var12, 99.9D, var12).endVertex();
 //        worldRenderer.pos(-var12, 99.9D, var12).endVertex();
 //        var23.draw();
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.enableTexture();
+//        RenderSystem.blendFunc(770, 1);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        var12 = 20.0F;
 //        Minecraft.getInstance().textureManager.bindTexture(SkyProviderMoon.sunTexture);
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(-var12, 100.0D, -var12).tex(0.0D, 0.0D).endVertex();
 //        worldRenderer.pos(var12, 100.0D, -var12).tex(1.0D, 0.0D).endVertex();
 //        worldRenderer.pos(var12, 100.0D, var12).tex(1.0D, 1.0D).endVertex();
 //        worldRenderer.pos(-var12, 100.0D, var12).tex(0.0D, 1.0D).endVertex();
 //        var23.draw();
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //
-//        GL11.glPushMatrix();
+//        RenderSystem.pushMatrix();
 //
-//        GL11.glDisable(GL11.GL_BLEND);
+//        RenderSystem.disableBlend();
 //
 //        // HOME:
 //        var12 = 10.0F;
-//        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.player.posZ) * 0.01F;
-//        GL11.glScalef(0.6F, 0.6F, 0.6F);
-//        GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
-//        GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
+//        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.player.getPosZ()) * 0.01F;
+//        RenderSystem.scalef(0.6F, 0.6F, 0.6F);
+//        RenderSystem.rotatef(earthRotation, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.rotatef(200F, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1F);
 //
 //        if (ClientProxyCore.overworldTexturesValid)
 //        {
-//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+//            RenderSystem.bindTexture(ClientProxyCore.overworldTextureClient.getGlTextureId());
 //        }
 //        else
 //        {
@@ -191,32 +191,32 @@
 //        }
 //
 //        world.getMoonPhase();
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //        worldRenderer.pos(-var12, -100.0D, var12).tex(0D, 1.0D).endVertex();
 //        worldRenderer.pos(var12, -100.0D, var12).tex(1.0D, 1.0D).endVertex();
 //        worldRenderer.pos(var12, -100.0D, -var12).tex(1.0D, 0D).endVertex();
 //        worldRenderer.pos(-var12, -100.0D, -var12).tex(0D, 0D).endVertex();
 //        var23.draw();
 //
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glDisable(GL11.GL_BLEND);
-//        GL11.glEnable(GL11.GL_ALPHA_TEST);
-//        GL11.glEnable(GL11.GL_FOG);
-//        GL11.glPopMatrix();
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GL11.glColor3f(0.0F, 0.0F, 0.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
+//        RenderSystem.enable(GL11.GL_FOG);
+//        RenderSystem.popMatrix();
+//        RenderSystem.disableTexture();
+//        RenderSystem.color3f(0.0F, 0.0F, 0.0F);
 //        final double var25 = mc.player.getPosition().getY() - world.getHorizon();
 //
 //        if (var25 < 0.0D)
 //        {
-//            GL11.glPushMatrix();
-//            GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-//            GL11.glCallList(this.glSkyList2);
-//            GL11.glPopMatrix();
+//            RenderSystem.pushMatrix();
+//            RenderSystem.translatef(0.0F, 12.0F, 0.0F);
+//            RenderSystem.callList(this.glSkyList2);
+//            RenderSystem.popMatrix();
 //            var10 = 1.0F;
 //            var11 = -((float) (var25 + 65.0D));
 //            var12 = -var10;
-//            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+//            worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 //            worldRenderer.pos(-var10, var11, var10).color(0, 0, 0, 1.0F).endVertex();
 //            worldRenderer.pos(var10, var11, var10).color(0, 0, 0, 1.0F).endVertex();
 //            worldRenderer.pos(var10, var12, var10).color(0, 0, 0, 1.0F).endVertex();
@@ -240,18 +240,18 @@
 //            var23.draw();
 //        }
 //
-//        GL11.glColor3f(70F / 256F, 70F / 256F, 70F / 256F);
+//        RenderSystem.color3f(70F / 256F, 70F / 256F, 70F / 256F);
 //
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
-//        GL11.glCallList(this.glSkyList2);
-//        GL11.glPopMatrix();
-//        GlStateManager.enableRescaleNormal();
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glDepthMask(true);
-//        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GL11.glDisable(GL11.GL_BLEND);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
+//        RenderSystem.callList(this.glSkyList2);
+//        RenderSystem.popMatrix();
+//        RenderSystem.enableRescaleNormal();
+//        RenderSystem.enableTexture();
+//        RenderSystem.depthMask(true);
+//        RenderSystem.enable(GL11.GL_COLOR_MATERIAL);
+//        RenderSystem.blendFunc(770, 771);
+//        RenderSystem.disableBlend();
 //    }
 //
 //    private void renderStars()
@@ -259,7 +259,7 @@
 //        final Random var1 = new Random(10842L);
 //        final Tessellator var2 = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = var2.getBuffer();
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //
 //        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
 //        {

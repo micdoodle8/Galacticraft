@@ -74,7 +74,7 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
 
         if (canShoot)
         {
-            ItemStack pickupString = string == ItemStack.EMPTY ? ItemStack.EMPTY : new ItemStack(string.getItem(), 1);
+            ItemStack pickupString = ItemStack.EMPTY;
             pickupString.setTag(string.getTag());
             EntityGrapple grapple = EntityGrapple.createEntityGrapple(worldIn, player, 2.0F, pickupString);
 

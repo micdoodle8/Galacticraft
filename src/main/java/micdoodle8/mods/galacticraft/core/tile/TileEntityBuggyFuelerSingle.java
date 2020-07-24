@@ -28,7 +28,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
     {
         if (!this.world.isRemote && this.corner == 0)
         {
-            final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<TileEntity>();
+            final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<>();
 
             for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
             {

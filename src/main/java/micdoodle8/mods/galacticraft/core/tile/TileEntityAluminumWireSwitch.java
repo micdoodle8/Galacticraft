@@ -90,7 +90,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
         boolean newDisableConnections = this.disableConnections();
         if (newDisableConnections && !this.disableConnections)
         {
-            this.disableConnections = newDisableConnections;
+            this.disableConnections = true;
             if (!this.world.isRemote)
             {
                 this.disConnect();
@@ -98,7 +98,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
         }
         else if (!newDisableConnections && this.disableConnections)
         {
-            this.disableConnections = newDisableConnections;
+            this.disableConnections = false;
             if (!this.world.isRemote)
             {
                 this.setNetwork(null);  //Force a full network refresh of this and conductors either LogicalSide

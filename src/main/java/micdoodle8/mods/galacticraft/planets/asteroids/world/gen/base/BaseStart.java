@@ -14,8 +14,8 @@ import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidF
 
 public class BaseStart extends BaseDeck
 {
-    public List<StructurePiece> attachedComponents = Lists.newArrayList();
-    public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
+    public final List<StructurePiece> attachedComponents = Lists.newArrayList();
+    public final List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
     public BaseStart(TemplateManager templateManager, CompoundNBT nbt)
     {

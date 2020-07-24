@@ -1,17 +1,14 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +30,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
     protected void init()
     {
         super.init();
-        List<String> oxygenSlotDesc = new ArrayList<String>();
+        List<String> oxygenSlotDesc = new ArrayList<>();
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygen_slot.desc.0"));
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygen_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 16, (this.height - this.ySize) / 2 + 21, 18, 18, oxygenSlotDesc, this.width, this.height, this));
@@ -66,7 +63,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.textureManager.bindTexture(GuiOxygenStorageModule.batteryBoxTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;

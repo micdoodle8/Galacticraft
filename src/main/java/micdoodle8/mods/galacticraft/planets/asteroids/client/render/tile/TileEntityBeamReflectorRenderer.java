@@ -2,7 +2,7 @@
 //
 //import com.google.common.base.Function;
 //import com.google.common.collect.ImmutableList;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -47,36 +47,36 @@
 //    @Override
 //    public void render(TileEntityBeamReflector tile, double x, double y, double z, float partialTicks, int destroyStage)
 //    {
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
-//        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+//        RenderSystem.scalef(0.5F, 0.5F, 0.5F);
 //        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
 //        ClientUtil.drawBakedModel(reflectorModelBase);
-//        GlStateManager.rotatef(tile.yaw, 0, 1, 0);
+//        RenderSystem.rotatef(tile.yaw, 0, 1, 0);
 //        ClientUtil.drawBakedModel(reflectorModelAxle);
 //        float dX = 0.0F;
 //        float dY = 1.13228F;
 //        float dZ = 0.0F;
-//        GlStateManager.translatef(dX, dY, dZ);
-//        GlStateManager.rotatef(tile.pitch, 1, 0, 0);
-//        GlStateManager.translatef(-dX, -dY, -dZ);
+//        RenderSystem.translatef(dX, dY, dZ);
+//        RenderSystem.rotatef(tile.pitch, 1, 0, 0);
+//        RenderSystem.translatef(-dX, -dY, -dZ);
 //        ClientUtil.drawBakedModel(reflectorModelEnergyBlaster);
-//        GlStateManager.translatef(dX, dY, dZ);
-//        GlStateManager.rotatef(tile.ticks * 5, 0, 0, 1);
-//        GlStateManager.translatef(-dX, -dY, -dZ);
+//        RenderSystem.translatef(dX, dY, dZ);
+//        RenderSystem.rotatef(tile.ticks * 5, 0, 0, 1);
+//        RenderSystem.translatef(-dX, -dY, -dZ);
 //        ClientUtil.drawBakedModel(reflectorModelRing);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //}

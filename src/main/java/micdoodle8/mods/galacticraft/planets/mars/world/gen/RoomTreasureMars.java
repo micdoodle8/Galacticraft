@@ -23,7 +23,7 @@ import static micdoodle8.mods.galacticraft.planets.mars.world.gen.MarsFeatures.C
 
 public class RoomTreasureMars extends RoomTreasure
 {
-    public static ResourceLocation MARSCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_2");
+    public static final ResourceLocation MARSCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_2");
 //    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTables.register(MARSCHEST);
 
     public RoomTreasureMars(TemplateManager templateManager, CompoundNBT nbt)

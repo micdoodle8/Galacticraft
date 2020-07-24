@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.advancement;
 
-import java.lang.reflect.Method;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -11,9 +9,10 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.server.ServerWorld;
+
+import java.lang.reflect.Method;
 
 public class GCTriggers
 {
@@ -80,7 +79,7 @@ public class GCTriggers
             for (Method m : mm)
             {
                 Class<?>[] params = m.getParameterTypes();
-                if (params != null && params.length == 1 && params[0] == ICriterionTrigger.class)
+                if (params.length == 1 && params[0] == ICriterionTrigger.class)
                 {
                     register = m;
                     break;

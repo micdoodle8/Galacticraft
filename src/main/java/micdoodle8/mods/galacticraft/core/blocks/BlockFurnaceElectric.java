@@ -2,14 +2,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.EnumProperty;
-import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
@@ -17,7 +14,7 @@ import javax.annotation.Nullable;
 public class BlockFurnaceElectric extends BlockMachineBase
 {
     //    public static final EnumProperty<EnumTieredMachineType> TYPE = EnumProperty.create("type", EnumTieredMachineType.class);
-    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    public static final IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final EnumProperty SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public BlockFurnaceElectric(Properties builder)

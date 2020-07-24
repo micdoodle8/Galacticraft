@@ -51,33 +51,33 @@
 //
 //        final PlayerEntity player = Minecraft.getInstance().player;
 //
-//        GL11.glPushMatrix();
-//        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-//        GL11.glTranslatef(0.5F, 1.0F, 0.5F);
-//        GL11.glScalef(1.6F, 1.25F, 1.6F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.enableRescaleNormal();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.translatef((float) par2, (float) par4, (float) par6);
+//        RenderSystem.translatef(0.5F, 1.0F, 0.5F);
+//        RenderSystem.scalef(1.6F, 1.25F, 1.6F);
 //
 //        this.textureManager.bindTexture(textureSupport);
 //        ClientUtil.drawBakedModel(modelSupport);
-//        GL11.glScalef(1.25F, 1.6F, 1.25F);
-//        GL11.glTranslatef(0F, 2.88F * 0.15F / 1.6F, 0F);
-//        GL11.glScalef(0.85F, 0.85F, 0.85F);
-//        GL11.glRotatef(hour, 0, -1, 0);
+//        RenderSystem.scalef(1.25F, 1.6F, 1.25F);
+//        RenderSystem.translatef(0F, 2.88F * 0.15F / 1.6F, 0F);
+//        RenderSystem.scalef(0.85F, 0.85F, 0.85F);
+//        RenderSystem.rotatef(hour, 0, -1, 0);
 //        this.textureManager.bindTexture(textureFork);
 //        ClientUtil.drawBakedModel(modelFork);
 //
 ////        float celestialAngle = (dish.getWorldObj().getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
 ////        float celestialAngle2 = dish.getWorldObj().getCelestialAngle(1.0F) * 360.0F;
 //
-//        GL11.glTranslatef(0.0F, 2.3F, 0.0F);
-//        GL11.glRotatef(declination, 1.0F, 0.0F, 0.0F);
-//        GL11.glTranslatef(0.0F, -2.3F, 0.0F);
+//        RenderSystem.translatef(0.0F, 2.3F, 0.0F);
+//        RenderSystem.rotatef(declination, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.translatef(0.0F, -2.3F, 0.0F);
 //
 //        this.textureManager.bindTexture(textureDish);
 //        ClientUtil.drawBakedModel(modelDish);
 //
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glPopMatrix();
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.popMatrix();
 //    }
 //}

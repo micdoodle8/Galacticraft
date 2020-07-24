@@ -55,15 +55,15 @@ public class TickHandlerServer
     private static final Map<DimensionType, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
     private static final Map<DimensionType, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
     private static final Map<DimensionType, Set<BlockPos>> edgeChecks = new TreeMap<>();
-    private static final LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
-    public static Map<DimensionType, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<>();
-    public static List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
+    private static final LinkedList<EnergyNetwork> networkTicks = new LinkedList<>();
+    public static final Map<DimensionType, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<>();
+    public static final List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
-    public static ArrayList<ServerPlayerEntity> playersRequestingMapData = Lists.newArrayList();
+    public static final ArrayList<ServerPlayerEntity> playersRequestingMapData = Lists.newArrayList();
     private static long tickCount;
-    public static LinkedList<TileEntityFluidTransmitter> oxygenTransmitterUpdates = new LinkedList<TileEntityFluidTransmitter>();
-    public static LinkedList<TileBaseConductor> energyTransmitterUpdates = new LinkedList<TileBaseConductor>();
-    private static final CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
+    public static final LinkedList<TileEntityFluidTransmitter> oxygenTransmitterUpdates = new LinkedList<>();
+    public static final LinkedList<TileBaseConductor> energyTransmitterUpdates = new LinkedList<>();
+    private static final CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<>();
     private final int MAX_BLOCKS_PER_TICK = 50000;
     //    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static final List<FluidNetwork> fluidNetworks = Lists.newArrayList();
@@ -125,20 +125,15 @@ public class TickHandlerServer
 
         if (footprintMap == null)
         {
-            footprintMap = new HashMap<Long, List<Footprint>>();
+            footprintMap = new HashMap<>();
             TickHandlerServer.serverFootprintMap.put(dimID, footprintMap);
-            footprints = new ArrayList<Footprint>();
+            footprints = new ArrayList<>();
             footprintMap.put(chunkKey, footprints);
         }
         else
         {
-            footprints = footprintMap.get(chunkKey);
+            footprints = footprintMap.computeIfAbsent(chunkKey, k -> new ArrayList<>());
 
-            if (footprints == null)
-            {
-                footprints = new ArrayList<Footprint>();
-                footprintMap.put(chunkKey, footprints);
-            }
         }
 
         footprints.add(print);
@@ -150,7 +145,7 @@ public class TickHandlerServer
 
         if (changeList == null)
         {
-            changeList = new CopyOnWriteArrayList<ScheduledBlockChange>();
+            changeList = new CopyOnWriteArrayList<>();
         }
 
         changeList.add(change);
@@ -169,7 +164,7 @@ public class TickHandlerServer
 
         if (changeList == null)
         {
-            changeList = new CopyOnWriteArrayList<ScheduledBlockChange>();
+            changeList = new CopyOnWriteArrayList<>();
         }
 
         changeList.addAll(changeAdd);
@@ -187,7 +182,7 @@ public class TickHandlerServer
 
         if (updateList == null)
         {
-            updateList = new CopyOnWriteArrayList<BlockVec3>();
+            updateList = new CopyOnWriteArrayList<>();
         }
 
         updateList.addAll(torches);
@@ -200,7 +195,7 @@ public class TickHandlerServer
 
         if (updateList == null)
         {
-            updateList = new HashSet<BlockPos>();
+            updateList = new HashSet<>();
         }
 
         updateList.add(edgeBlock);
@@ -425,7 +420,7 @@ public class TickHandlerServer
                     }
                     else
                     {
-                        ArrayList<ServerPlayerEntity> copy = new ArrayList<ServerPlayerEntity>(playersRequestingMapData);
+                        ArrayList<ServerPlayerEntity> copy = new ArrayList<>(playersRequestingMapData);
                         BufferedImage reusable = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
                         for (ServerPlayerEntity playerMP : copy)
                         {
@@ -458,8 +453,7 @@ public class TickHandlerServer
             int maxPasses = 10;
             while (!TickHandlerServer.networkTicks.isEmpty())
             {
-                LinkedList<EnergyNetwork> pass = new LinkedList<>();
-                pass.addAll(TickHandlerServer.networkTicks);
+                LinkedList<EnergyNetwork> pass = new LinkedList<>(TickHandlerServer.networkTicks);
                 TickHandlerServer.networkTicks.clear();
                 for (EnergyNetwork grid : pass)
                 {
@@ -475,8 +469,7 @@ public class TickHandlerServer
             maxPasses = 10;
             while (!TickHandlerServer.oxygenTransmitterUpdates.isEmpty())
             {
-                LinkedList<TileEntityFluidTransmitter> pass = new LinkedList<>();
-                pass.addAll(TickHandlerServer.oxygenTransmitterUpdates);
+                LinkedList<TileEntityFluidTransmitter> pass = new LinkedList<>(TickHandlerServer.oxygenTransmitterUpdates);
                 TickHandlerServer.oxygenTransmitterUpdates.clear();
                 for (TileEntityFluidTransmitter newTile : pass)
                 {
@@ -495,8 +488,7 @@ public class TickHandlerServer
             maxPasses = 10;
             while (!TickHandlerServer.energyTransmitterUpdates.isEmpty())
             {
-                LinkedList<TileBaseConductor> pass = new LinkedList<>();
-                pass.addAll(TickHandlerServer.energyTransmitterUpdates);
+                LinkedList<TileBaseConductor> pass = new LinkedList<>(TickHandlerServer.energyTransmitterUpdates);
                 TickHandlerServer.energyTransmitterUpdates.clear();
                 for (TileBaseConductor newTile : pass)
                 {
@@ -516,7 +508,7 @@ public class TickHandlerServer
         }
     }
 
-    private static final Set<DimensionType> worldsNeedingUpdate = new HashSet<DimensionType>();
+    private static final Set<DimensionType> worldsNeedingUpdate = new HashSet<>();
 
     public static void markWorldNeedsUpdate(DimensionType dimension)
     {
@@ -536,7 +528,7 @@ public class TickHandlerServer
             {
                 int blockCount = 0;
                 int blockCountMax = Math.max(this.MAX_BLOCKS_PER_TICK, changeList.size() / 4);
-                List<ScheduledBlockChange> newList = new ArrayList<ScheduledBlockChange>(Math.max(0, changeList.size() - blockCountMax));
+                List<ScheduledBlockChange> newList = new ArrayList<>(Math.max(0, changeList.size() - blockCountMax));
 
                 for (ScheduledBlockChange change : changeList)
                 {
@@ -551,7 +543,7 @@ public class TickHandlerServer
                             BlockPos changePosition = change.getChangePosition();
                             Block block = world.getBlockState(changePosition).getBlock();
                             //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
-                            if (changePosition != null && (block instanceof AirBlock || block == Blocks.FIRE))
+                            if (block instanceof AirBlock || block == Blocks.FIRE)
                             {
                                 world.setBlockState(changePosition, change.getChangeState(), change.getChangeUpdateFlag());
                             }
@@ -563,7 +555,7 @@ public class TickHandlerServer
                 TickHandlerServer.scheduledBlockChanges.remove(GCCoreUtil.getDimensionType(world));
                 if (newList.size() > 0)
                 {
-                    TickHandlerServer.scheduledBlockChanges.put(GCCoreUtil.getDimensionType(world), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
+                    TickHandlerServer.scheduledBlockChanges.put(GCCoreUtil.getDimensionType(world), new CopyOnWriteArrayList<>(newList));
                 }
             }
 
@@ -625,8 +617,7 @@ public class TickHandlerServer
 
             if (edgesList != null && !edgesList.isEmpty())
             {
-                List<BlockPos> edgesListCopy = new ArrayList<>();
-                edgesListCopy.addAll(edgesList);
+                List<BlockPos> edgesListCopy = new ArrayList<>(edgesList);
                 for (BlockPos edgeBlock : edgesListCopy)
                 {
                     if (edgeBlock != null && !checkedThisTick.contains(edgeBlock))
@@ -636,7 +627,7 @@ public class TickHandlerServer
                             continue;
                         }
 
-                        ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 0, new ArrayList<TileEntityOxygenSealer>());
+                        ThreadFindSeal done = new ThreadFindSeal(world, edgeBlock, 0, new ArrayList<>());
                         checkedThisTick.addAll(done.checkedAll());
                     }
                 }

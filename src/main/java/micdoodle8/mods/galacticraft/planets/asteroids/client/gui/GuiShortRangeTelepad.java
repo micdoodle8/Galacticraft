@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -21,7 +22,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,29 +81,25 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.enableControllerButton = new Button(var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.telepad.getPos(), 0}));
-        });
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.telepad.getPos(), 0})));
         this.address = new GuiElementTextBox(this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.targetAddress = new GuiElementTextBox(this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
         this.buttons.add(this.enableControllerButton);
         this.buttons.add(this.address);
         this.buttons.add(this.targetAddress);
-        this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.electricInfoRegion.tooltipStrings = new ArrayList<>();
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 98;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 113;
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 104, 18, 18, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.telepad.desc.0"));
+        batterySlotDesc = new ArrayList<>(GCCoreUtil.translateWithSplit("gui.telepad.desc.0"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 20, 59, 13, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.telepad.desc.1"));
+        batterySlotDesc = new ArrayList<>(GCCoreUtil.translateWithSplit("gui.telepad.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 42, 117, 13, batterySlotDesc, this.width, this.height, this));
     }
 
@@ -132,19 +128,19 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glPushMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.textureManager.bindTexture(GuiShortRangeTelepad.launchControllerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.telepad.getEnergyStoredGC(), this.telepad.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (this.telepad.getEnergyStoredGC() > 0)
         {
@@ -152,7 +148,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
             this.blit(var5 + 99, var6 + 114, 176, 0, Math.min(scale, 54), 7);
         }
 
-        GL11.glPopMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override

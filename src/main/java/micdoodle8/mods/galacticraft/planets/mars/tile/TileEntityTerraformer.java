@@ -58,13 +58,13 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     private final int tankCapacity = 2000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank waterTank = new FluidTank(this.tankCapacity);
+    public final FluidTank waterTank = new FluidTank(this.tankCapacity);
     public boolean active;
     public boolean lastActive;
     public static final int WATTS_PER_TICK = 1;
-    private final ArrayList<BlockPos> terraformableBlocksList = new ArrayList<BlockPos>();
-    private final ArrayList<BlockPos> grassBlockList = new ArrayList<BlockPos>();
-    private final ArrayList<BlockPos> grownTreesList = new ArrayList<BlockPos>();
+    private final ArrayList<BlockPos> terraformableBlocksList = new ArrayList<>();
+    private final ArrayList<BlockPos> grassBlockList = new ArrayList<>();
+    private final ArrayList<BlockPos> grownTreesList = new ArrayList<>();
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int terraformableBlocksListSize = 0; // used for server->client ease
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -153,10 +153,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                         {
                             BlockPos pos = new BlockPos(x, y, z);
                             Block blockID = this.world.getBlockState(pos).getBlock();
-                            if (blockID == null)
-                            {
-                                continue;
-                            }
 
                             if (!(blockID.isAir(this.world.getBlockState(pos), this.world, pos)) && this.getDistanceFromServer(x, y, z) < bubbleSizeSq)
                             {
@@ -181,7 +177,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (!this.world.isRemote && this.terraformableBlocksList.size() > 0 && this.ticks % 15 == 0)
         {
-            ArrayList<BlockPos> terraformableBlocks2 = new ArrayList<BlockPos>(this.terraformableBlocksList);
+            ArrayList<BlockPos> terraformableBlocks2 = new ArrayList<>(this.terraformableBlocksList);
 
             int randomIndex = this.world.rand.nextInt(this.terraformableBlocksList.size());
             BlockPos vec = terraformableBlocks2.get(randomIndex);
@@ -190,9 +186,8 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             {
                 Block id;
 
-                switch (this.world.rand.nextInt(40))
+                if (this.world.rand.nextInt(40) == 0)
                 {
-                case 0:
                     boolean water = true;
                     for (Direction dir : Direction.values())
                     {
@@ -210,10 +205,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                     {
                         id = Blocks.GRASS;
                     }
-                    break;
-                default:
+                }
+                else
+                {
                     id = Blocks.GRASS;
-                    break;
                 }
 
                 this.world.setBlockState(vec, id.getDefaultState());
@@ -224,7 +219,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                     this.waterTank.drain(1, IFluidHandler.FluidAction.EXECUTE);
                     this.checkUsage(1);
                 }
-                else if (id == Blocks.WATER)
+                else
                 {
                     this.checkUsage(2);
                 }
@@ -353,28 +348,28 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         switch (type)
         {
-        case 0:
-            stack = this.getInventory().get(this.saplingIndex);
-
-            if (!stack.isEmpty())
-            {
-                stack.shrink(1);
-            }
-            break;
-        case 1:
-            if (this.useCount[0] % 4 == 0)
-            {
-                stack = this.getFirstSeedStack();
+            case 0:
+                stack = this.getInventory().get(this.saplingIndex);
 
                 if (!stack.isEmpty())
                 {
                     stack.shrink(1);
                 }
-            }
-            break;
-        case 2:
-            this.waterTank.drain(50, IFluidHandler.FluidAction.EXECUTE);
-            break;
+                break;
+            case 1:
+                if (this.useCount[0] % 4 == 0)
+                {
+                    stack = this.getFirstSeedStack();
+
+                    if (!stack.isEmpty())
+                    {
+                        stack.shrink(1);
+                    }
+                }
+                break;
+            case 2:
+                this.waterTank.drain(50, IFluidHandler.FluidAction.EXECUTE);
+                break;
         }
     }
 
@@ -542,26 +537,26 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         switch (slotID)
         {
-        case 0:
-            LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(itemstack);
-            return holder.isPresent() && holder.orElse(null).getFluid() == Fluids.WATER;
-        case 1:
-            return ItemElectricBase.isElectricItem(itemstack.getItem());
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            return itemstack.getItem() == Items.BONE_MEAL;
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            return ContainerTerraformer.isOnSaplingList(itemstack);
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-            return itemstack.getItem() == Items.WHEAT_SEEDS;
+            case 0:
+                LazyOptional<FluidStack> holder = net.minecraftforge.fluids.FluidUtil.getFluidContained(itemstack);
+                return holder.isPresent() && holder.orElse(null).getFluid() == Fluids.WATER;
+            case 1:
+                return ItemElectricBase.isElectricItem(itemstack.getItem());
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                return itemstack.getItem() == Items.BONE_MEAL;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                return ContainerTerraformer.isOnSaplingList(itemstack);
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+                return itemstack.getItem() == Items.WHEAT_SEEDS;
         }
         return false;
     }
@@ -585,12 +580,12 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         {
             switch (index)
             {
-            case 0:
-                this.treesDisabled = !this.treesDisabled;
-                break;
-            case 1:
-                this.grassDisabled = !this.grassDisabled;
-                break;
+                case 0:
+                    this.treesDisabled = !this.treesDisabled;
+                    break;
+                case 1:
+                    this.grassDisabled = !this.grassDisabled;
+                    break;
             }
 
             this.disableCooldown = 10;
@@ -602,10 +597,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         switch (index)
         {
-        case 0:
-            return this.treesDisabled;
-        case 1:
-            return this.grassDisabled;
+            case 0:
+                return this.treesDisabled;
+            case 1:
+                return this.grassDisabled;
         }
 
         return false;

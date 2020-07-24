@@ -31,28 +31,28 @@ public class SlotExtendedInventory extends Slot
     {
         switch (this.getSlotIndex())
         {
-        case 0:
-            return EnumExtendedInventorySlot.MASK;
-        case 1:
-            return EnumExtendedInventorySlot.GEAR;
-        case 2:
-            return EnumExtendedInventorySlot.LEFT_TANK;
-        case 3:
-            return EnumExtendedInventorySlot.RIGHT_TANK;
-        case 4:
-            return EnumExtendedInventorySlot.PARACHUTE;
-        case 5:
-            return EnumExtendedInventorySlot.FREQUENCY_MODULE;
-        case 6:
-            return EnumExtendedInventorySlot.THERMAL_HELMET;
-        case 7:
-            return EnumExtendedInventorySlot.THERMAL_CHESTPLATE;
-        case 8:
-            return EnumExtendedInventorySlot.THERMAL_LEGGINGS;
-        case 9:
-            return EnumExtendedInventorySlot.THERMAL_BOOTS;
-        case 10:
-            return EnumExtendedInventorySlot.SHIELD_CONTROLLER;
+            case 0:
+                return EnumExtendedInventorySlot.MASK;
+            case 1:
+                return EnumExtendedInventorySlot.GEAR;
+            case 2:
+                return EnumExtendedInventorySlot.LEFT_TANK;
+            case 3:
+                return EnumExtendedInventorySlot.RIGHT_TANK;
+            case 4:
+                return EnumExtendedInventorySlot.PARACHUTE;
+            case 5:
+                return EnumExtendedInventorySlot.FREQUENCY_MODULE;
+            case 6:
+                return EnumExtendedInventorySlot.THERMAL_HELMET;
+            case 7:
+                return EnumExtendedInventorySlot.THERMAL_CHESTPLATE;
+            case 8:
+                return EnumExtendedInventorySlot.THERMAL_LEGGINGS;
+            case 9:
+                return EnumExtendedInventorySlot.THERMAL_BOOTS;
+            case 10:
+                return EnumExtendedInventorySlot.SHIELD_CONTROLLER;
         }
 
         return null;

@@ -6,7 +6,7 @@
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 //import net.minecraft.client.Minecraft;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.renderer.RenderHelper;
 //import net.minecraft.client.renderer.model.IBakedModel;
 //import net.minecraft.client.renderer.culling.ICamera;
@@ -45,28 +45,28 @@
 //    {
 //        float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 //        float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x, (float) y, (float) z);
-//        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.rotatef(180.0F - pitch, 0.0F, 0.0F, 1.0F);
-//        GlStateManager.rotatef(-yaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(180.0F - pitch, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.rotatef(-yaw, 0.0F, 1.0F, 0.0F);
 //
 //        this.bindEntityTexture(entity);
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-//        GlStateManager.scalef(0.65F, 0.6F, 0.65F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(0.65F, 0.6F, 0.65F);
 //        ClientUtil.drawBakedModel(modelEntryPod);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //

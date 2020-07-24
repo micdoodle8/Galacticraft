@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -22,19 +22,19 @@ public class TeleportTypeSpaceStation implements ITeleportType
     }
 
     @Override
-    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vec3d getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
-        return new Vector3D(0.5, 65.0, 0.5);
+        return new Vec3d(0.5, 65.0, 0.5);
     }
 
     @Override
-    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity player)
+    public Vec3d getEntitySpawnLocation(ServerWorld world, Entity player)
     {
-        return new Vector3D(0.5, 65.0, 0.5);
+        return new Vec3d(0.5, 65.0, 0.5);
     }
 
     @Override
-    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vec3d getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         return null;
     }

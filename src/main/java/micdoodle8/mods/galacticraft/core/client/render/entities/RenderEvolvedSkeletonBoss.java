@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeletonBoss;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerHeldItemEvolvedSkeletonBoss;
@@ -31,7 +31,7 @@
 //    @Override
 //    protected void preRenderCallback(EntitySkeletonBoss entity, float partialTicks)
 //    {
-//        GlStateManager.scalef(1.2F, 1.2F, 1.2F);
-//        GlStateManager.rotatef((float) (Math.pow(entity.deathTicks, 2) / 5.0F + (Math.pow(entity.deathTicks, 2) / 5.0F - Math.pow(entity.deathTicks - 1, 2) / 5.0F) * partialTicks), 0.0F, 1.0F, 0.0F);
+//        RenderSystem.scalef(1.2F, 1.2F, 1.2F);
+//        RenderSystem.rotatef((float) (Math.pow(entity.deathTicks, 2) / 5.0F + (Math.pow(entity.deathTicks, 2) / 5.0F - Math.pow(entity.deathTicks - 1, 2) / 5.0F) * partialTicks), 0.0F, 1.0F, 0.0F);
 //    }
 //}

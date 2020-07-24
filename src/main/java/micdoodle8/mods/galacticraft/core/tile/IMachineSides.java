@@ -38,8 +38,8 @@ public interface IMachineSides extends ITileClientUpdates
         private final String name;
         private final int next;
         private final int prior;
-        public static Face[] Horizontals = new Face[]{Face.LEFT, Face.REAR, Face.RIGHT};
-        public static Face[] AllAvailable = new Face[]{Face.LEFT, Face.REAR, Face.RIGHT, Face.TOP, Face.BOTTOM};
+        public static final Face[] Horizontals = new Face[]{Face.LEFT, Face.REAR, Face.RIGHT};
+        public static final Face[] AllAvailable = new Face[]{Face.LEFT, Face.REAR, Face.RIGHT, Face.TOP, Face.BOTTOM};
 
         Face(String newname, int theNext, int thePrior)
         {
@@ -356,11 +356,11 @@ public interface IMachineSides extends ITileClientUpdates
         int length = listConfigurableSides().length;
         switch (length)
         {
-        case 1:
-            return IMachineSidesProperties.getModelForOneFace(this.getAllowedSide(0)).validFor(getConfigurationType());
-        case 2:
-        default:
-            return IMachineSidesProperties.getModelForTwoFaces(this.getAllowedSide(0), this.getAllowedSide(1)).validFor(getConfigurationType());
+            case 1:
+                return IMachineSidesProperties.getModelForOneFace(this.getAllowedSide(0)).validFor(getConfigurationType());
+            case 2:
+            default:
+                return IMachineSidesProperties.getModelForTwoFaces(this.getAllowedSide(0), this.getAllowedSide(1)).validFor(getConfigurationType());
         }
     }
 
@@ -401,23 +401,23 @@ public interface IMachineSides extends ITileClientUpdates
         //TODO: adapt result of Face.next() and Face.prior() according to Horiz or All models
         switch (length)
         {
-        case 1:
-            this.setSide(0, this.getSide(0).next());
-            break;
-        case 2:
-            Face leadingSide = this.getSide(0);
-            if (this.getSide(1) != leadingSide.next())
-            {
-                this.setSide(1, leadingSide.prior());
-                this.setSide(0, leadingSide.next());
-            }
-            else
-            {
-                this.setSide(1, leadingSide.prior());
-            }
-            break;
-        default:
-            //Override this for 3 or more configurable sides!
+            case 1:
+                this.setSide(0, this.getSide(0).next());
+                break;
+            case 2:
+                Face leadingSide = this.getSide(0);
+                if (this.getSide(1) != leadingSide.next())
+                {
+                    this.setSide(1, leadingSide.prior());
+                    this.setSide(0, leadingSide.next());
+                }
+                else
+                {
+                    this.setSide(1, leadingSide.prior());
+                }
+                break;
+            default:
+                //Override this for 3 or more configurable sides!
         }
 
         if (te.getWorld().isRemote)

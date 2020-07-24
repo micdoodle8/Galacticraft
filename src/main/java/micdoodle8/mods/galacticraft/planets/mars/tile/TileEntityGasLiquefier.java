@@ -55,11 +55,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     private final int tankCapacity = 2000;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank gasTank = new FluidTank(this.tankCapacity * 2);
+    public final FluidTank gasTank = new FluidTank(this.tankCapacity * 2);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank liquidTank = new FluidTank(this.tankCapacity);
+    public final FluidTank liquidTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank liquidTank2 = new FluidTank(this.tankCapacity);
+    public final FluidTank liquidTank2 = new FluidTank(this.tankCapacity);
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -82,9 +82,9 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         ARGON(3, PlanetFluids.GAS_ARGON.getFluid(), PlanetFluids.LIQUID_ARGON.getFluid()),
         AIR(4, PlanetFluids.GAS_ATMOSPHERIC.getFluid(), null);
 
-        int index;
-        Fluid gas;
-        Fluid liquid;
+        final int index;
+        final Fluid gas;
+        final Fluid liquid;
 
         TankGases(int id, Fluid fluidname, Fluid outputname)
         {
@@ -276,7 +276,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                                 this.gasTank.fill(gcMethane, IFluidHandler.FluidAction.EXECUTE);
                                 this.gasTankType = 0;
                                 ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
-                                getInventory().set(1, stack == null ? ItemStack.EMPTY : stack);
+                                getInventory().set(1, stack);
                             }
                         }
                         else                        //Oxygen -> Oxygen tank
@@ -289,7 +289,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                                     this.gasTank.fill(gcgas, IFluidHandler.FluidAction.EXECUTE);
                                     this.gasTankType = TankGases.OXYGEN.index;
                                     ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
-                                    getInventory().set(1, stack == null ? ItemStack.EMPTY : stack);
+                                    getInventory().set(1, stack);
                                 }
                             }
                             else                        //Nitrogen -> Nitrogen tank
@@ -302,7 +302,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                                         this.gasTank.fill(gcgas, IFluidHandler.FluidAction.EXECUTE);
                                         this.gasTankType = TankGases.NITROGEN.index;
                                         ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
-                                        getInventory().set(1, stack == null ? ItemStack.EMPTY : stack);
+                                        getInventory().set(1, stack);
                                     }
                                 }
                     }
@@ -354,20 +354,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         {
             final FluidStack liquid = tank.getFluid();
 
-            if (liquid != null && liquid.getAmount() > 0)
+            if (liquid.getAmount() > 0)
             {
                 String liquidname = liquid.getFluid().getRegistryName().getPath();
                 if (liquidname.startsWith("fuel"))
                 {
                     FluidUtil.tryFillContainerFuel(tank, this.getInventory(), slot);
-                }
-                else if (liquidname.equals(TankGases.OXYGEN.liquid))
-                {
-                    FluidUtil.tryFillContainer(tank, liquid, this.getInventory(), slot, AsteroidsItems.canisterLOX);
-                }
-                else if (liquidname.equals(TankGases.NITROGEN.liquid))
-                {
-                    FluidUtil.tryFillContainer(tank, liquid, this.getInventory(), slot, AsteroidsItems.canisterLN2);
                 }
             }
         }
@@ -632,16 +624,16 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 1:
-                return FluidUtil.isMethaneContainerAny(itemstack);
-            case 2:
-                return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank.getFluid());
-            case 3:
-                return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank2.getFluid());
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 1:
+                    return FluidUtil.isMethaneContainerAny(itemstack);
+                case 2:
+                    return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank.getFluid());
+                case 3:
+                    return FluidUtil.isEmptyContainerFor(itemstack, this.liquidTank2.getFluid());
+                default:
+                    return false;
             }
         }
         return false;
@@ -652,16 +644,16 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         switch (slotID)
         {
-        case 0:
-            return ItemElectricBase.isElectricItemEmpty(itemstack);
-        case 1:
-            return FluidUtil.isEmptyContainer(itemstack);
-        case 2:
-            return FluidUtil.isFullContainer(itemstack);
-        case 3:
-            return FluidUtil.isFullContainer(itemstack);
-        default:
-            return false;
+            case 0:
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
+            case 1:
+                return FluidUtil.isEmptyContainer(itemstack);
+            case 2:
+                return FluidUtil.isFullContainer(itemstack);
+            case 3:
+                return FluidUtil.isFullContainer(itemstack);
+            default:
+                return false;
         }
     }
 
@@ -670,12 +662,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         switch (slotID)
         {
-        case 0:
-            return ItemElectricBase.isElectricItem(itemstack.getItem());
-        case 1:
-        case 2:
-        case 3:
-            return FluidUtil.isValidContainer(itemstack);
+            case 0:
+                return ItemElectricBase.isElectricItem(itemstack.getItem());
+            case 1:
+            case 2:
+            case 3:
+                return FluidUtil.isValidContainer(itemstack);
         }
 
         return false;
@@ -819,12 +811,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         switch (tank)
         {
-        case 0:
-            return this.gasTank.getFluid();
-        case 1:
-            return this.liquidTank2.getFluid();
-        case 2:
-            return this.liquidTank.getFluid();
+            case 0:
+                return this.gasTank.getFluid();
+            case 1:
+                return this.liquidTank2.getFluid();
+            case 2:
+                return this.liquidTank.getFluid();
         }
         return FluidStack.EMPTY;
     }
@@ -834,12 +826,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         switch (tank)
         {
-        case 0:
-            return this.gasTank.getCapacity();
-        case 1:
-            return this.liquidTank2.getCapacity();
-        case 2:
-            return this.liquidTank.getCapacity();
+            case 0:
+                return this.gasTank.getCapacity();
+            case 1:
+                return this.liquidTank2.getCapacity();
+            case 2:
+                return this.liquidTank.getCapacity();
         }
         return 0;
     }
@@ -849,12 +841,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         switch (tank)
         {
-        case 0:
-            return this.gasTank.isFluidValid(stack);
-        case 1:
-            return this.liquidTank2.isFluidValid(stack);
-        case 2:
-            return this.liquidTank.isFluidValid(stack);
+            case 0:
+                return this.gasTank.isFluidValid(stack);
+            case 1:
+                return this.liquidTank2.isFluidValid(stack);
+            case 2:
+                return this.liquidTank.isFluidValid(stack);
         }
         return false;
     }

@@ -13,12 +13,13 @@ import java.lang.ref.WeakReference;
 
 public class CapabilityProviderStats implements ICapabilitySerializable<CompoundNBT>
 {
-    private ServerPlayerEntity owner;
-    private final LazyOptional<GCPlayerStats> holder = LazyOptional.of(() -> new StatsCapability(new WeakReference<>(this.owner)));
+    private final ServerPlayerEntity owner;
+    private final LazyOptional<GCPlayerStats> holder;
 
     public CapabilityProviderStats(ServerPlayerEntity owner)
     {
         this.owner = owner;
+        this.holder = LazyOptional.of(() -> new StatsCapability(new WeakReference<>(this.owner)));
     }
 
 //    @Override

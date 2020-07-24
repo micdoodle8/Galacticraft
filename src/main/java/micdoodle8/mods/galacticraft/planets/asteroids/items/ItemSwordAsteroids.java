@@ -73,9 +73,7 @@ public class ItemSwordAsteroids extends SwordItem implements ISortableItem
         if (hardness > 0F)
         {
             stack.damageItem(hardness > 0.2001F ? 2 : 1, entityLiving, (e) ->
-            {
-                e.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-            });
+                    e.sendBreakAnimation(EquipmentSlotType.MAINHAND));
         }
 
         return true;

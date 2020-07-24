@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -74,12 +73,12 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
                     float difficulty = 0;
                     switch (this.world.getDifficulty())
                     {
-                    case HARD:
-                        difficulty = 2F;
-                        break;
-                    case NORMAL:
-                        difficulty = 1F;
-                        break;
+                        case HARD:
+                            difficulty = 2F;
+                            break;
+                        case NORMAL:
+                            difficulty = 1F;
+                            break;
                     }
                     entityResult.getEntity().attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
                 }

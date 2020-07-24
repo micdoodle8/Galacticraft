@@ -12,9 +12,6 @@ import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
 {
@@ -56,12 +53,12 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
 //    @OnlyIn(Dist.CLIENT)
 //    public int getBrightnessForRender()
 //    {
-//        double height = this.posY + (double) this.getEyeHeight();
+//        double height = this.getPosY() + (double) this.getEyeHeight();
 //        if (height > 255D)
 //        {
 //            height = 255D;
 //        }
-//        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
+//        BlockPos blockpos = new BlockPos(this.getPosX(), height, this.getPosZ());
 //        return this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
 //    }
 
@@ -70,13 +67,17 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
     {
         if (EventHandlerClient.sneakRenderOverride && !(this.world.getDimension() instanceof IZeroGDimension))
         {
-            if (this.onGround && this.inventory.getCurrentItem() != null && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
+            if (this.onGround)
             {
-                IHoldableItem holdableItem = (IHoldableItem) this.inventory.getCurrentItem().getItem();
-
-                if (holdableItem.shouldCrouch(this))
+                this.inventory.getCurrentItem();
+                if (this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
                 {
-                    return true;
+                    IHoldableItem holdableItem = (IHoldableItem) this.inventory.getCurrentItem().getItem();
+
+                    if (holdableItem.shouldCrouch(this))
+                    {
+                        return true;
+                    }
                 }
             }
         }

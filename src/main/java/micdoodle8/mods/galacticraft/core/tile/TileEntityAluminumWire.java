@@ -3,10 +3,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityAluminumWire extends TileBaseUniversalConductor

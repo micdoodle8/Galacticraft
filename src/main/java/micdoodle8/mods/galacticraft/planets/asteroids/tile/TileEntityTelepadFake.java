@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -116,7 +116,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
             {
                 if (tileEntity instanceof TileEntityShortRangeTelepad)
                 {
-                    mainTelepad = new WeakReference<TileEntityShortRangeTelepad>(((TileEntityShortRangeTelepad) tileEntity));
+                    mainTelepad = new WeakReference<>(((TileEntityShortRangeTelepad) tileEntity));
                 }
             }
         }

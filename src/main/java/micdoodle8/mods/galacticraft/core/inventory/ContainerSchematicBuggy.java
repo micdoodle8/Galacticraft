@@ -6,13 +6,12 @@ import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -21,8 +20,8 @@ public class ContainerSchematicBuggy extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SCHEMATIC_BUGGY)
     public static ContainerType<ContainerSchematicBuggy> TYPE;
 
-    public InventoryBuggyBench craftMatrix = new InventoryBuggyBench(this);
-    public IInventory craftResult = new CraftResultInventory();
+    public final InventoryBuggyBench craftMatrix = new InventoryBuggyBench(this);
+    public final IInventory craftResult = new CraftResultInventory();
     private final World world;
 
     public ContainerSchematicBuggy(int containerId, PlayerInventory playerInv)

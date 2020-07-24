@@ -48,7 +48,9 @@ public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
         {
             return false;
         }
-        return target.isEmpty() && input.isEmpty() || target.getItem() == input.getItem() && (/*target.getDamage() == OreDictionary.WILDCARD_VALUE ||*/ target.getDamage() == input.getDamage());
+        /*target.getDamage() == OreDictionary.WILDCARD_VALUE ||*/
+        /*target.getDamage() == OreDictionary.WILDCARD_VALUE ||*/
+        return target.isEmpty() || target.getItem() == input.getItem() && target.getDamage() == input.getDamage();
     }
 
     @Override

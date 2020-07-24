@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
@@ -82,7 +82,7 @@
 //                    this.parachuteStrings[3].rotateAngleX = -(23F / Constants.RADIANS_TO_DEGREES);
 //                    this.parachuteStrings[3].setRotationPoint(9.0F, -7.0F, 2.0F);
 //
-//                    GlStateManager.pushMatrix();
+//                    RenderSystem.pushMatrix();
 //
 //                    Minecraft.getInstance().textureManager.bindTexture(gearData.getParachute());
 //
@@ -95,7 +95,7 @@
 //                    this.parachuteStrings[2].render(scale);
 //                    this.parachuteStrings[3].render(scale);
 //
-//                    GlStateManager.popMatrix();
+//                    RenderSystem.popMatrix();
 //                }
 //            }
 //        }

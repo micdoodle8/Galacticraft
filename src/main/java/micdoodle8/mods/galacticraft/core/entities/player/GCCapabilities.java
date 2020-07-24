@@ -12,10 +12,10 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 public class GCCapabilities
 {
     @CapabilityInject(GCPlayerStats.class)
-    public static Capability<GCPlayerStats> GC_STATS_CAPABILITY = null;
+    public static final Capability<GCPlayerStats> GC_STATS_CAPABILITY = null;
 
     @CapabilityInject(GCPlayerStatsClient.class)
-    public static Capability<GCPlayerStatsClient> GC_STATS_CLIENT_CAPABILITY = null;
+    public static final Capability<GCPlayerStatsClient> GC_STATS_CLIENT_CAPABILITY = null;
 
     public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.MOD_ID_CORE, "player_stats");
     public static final ResourceLocation GC_PLAYER_CLIENT_PROP = new ResourceLocation(Constants.MOD_ID_CORE, "player_stats_client");

@@ -6,8 +6,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-import java.util.Random;
-
 public class WorldGenSpaceStation
 {
     public boolean place(IWorld world, BlockPos pos)

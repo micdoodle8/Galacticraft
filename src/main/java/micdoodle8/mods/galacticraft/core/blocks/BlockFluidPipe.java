@@ -129,32 +129,32 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
     {
         int i = 0;
 
-        if (state.get(NORTH).booleanValue())
+        if (state.get(NORTH))
         {
             i |= 1 << Direction.NORTH.getHorizontalIndex();
         }
 
-        if (state.get(EAST).booleanValue())
+        if (state.get(EAST))
         {
             i |= 1 << Direction.EAST.getHorizontalIndex();
         }
 
-        if (state.get(SOUTH).booleanValue())
+        if (state.get(SOUTH))
         {
             i |= 1 << Direction.SOUTH.getHorizontalIndex();
         }
 
-        if (state.get(WEST).booleanValue())
+        if (state.get(WEST))
         {
             i |= 1 << Direction.WEST.getHorizontalIndex();
         }
 
-        if (state.get(DOWN).booleanValue())
+        if (state.get(DOWN))
         {
             i |= 1 << 4;
         }
 
-        if (state.get(UP).booleanValue())
+        if (state.get(UP))
         {
             i |= 1 << 5;
         }
@@ -259,7 +259,7 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
                     {
                         final TileEntity tileAt = worldIn.getTileEntity(tileVec.offset(dir));
 
-                        if (tileAt != null && tileAt instanceof IColorable)
+                        if (tileAt instanceof IColorable)
                         {
                             ((IColorable) tileAt).onAdjacentColorChanged(dir);
                         }

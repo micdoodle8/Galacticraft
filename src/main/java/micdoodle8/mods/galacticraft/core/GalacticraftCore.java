@@ -16,9 +16,11 @@ import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenCelestial;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenText;
-import micdoodle8.mods.galacticraft.core.dimension.*;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeMoon;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOverworld;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
-import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -31,12 +33,11 @@ import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import net.minecraft.block.Block;
-//import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,7 +55,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
@@ -66,13 +67,14 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.function.Supplier;
+
+//import net.minecraft.creativetab.CreativeTabs;
 
 //@Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 @Mod(Constants.MOD_ID_CORE)
@@ -137,6 +139,8 @@ public class GalacticraftCore
     {
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion();
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
+        MinecraftForge.EVENT_BUS.addListener(this::commonSetup);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(FMLCommonSetupEvent event)

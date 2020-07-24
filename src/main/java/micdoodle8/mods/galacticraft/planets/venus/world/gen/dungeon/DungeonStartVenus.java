@@ -15,8 +15,8 @@ import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures
 
 public class DungeonStartVenus extends EntranceCraterVenus
 {
-    public List<StructurePiece> attachedComponents = Lists.newArrayList();
-    public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
+    public final List<StructurePiece> attachedComponents = Lists.newArrayList();
+    public final List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
     public DungeonStartVenus(TemplateManager templateManager, CompoundNBT nbt)
     {

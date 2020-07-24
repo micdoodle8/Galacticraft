@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -11,6 +9,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.dimension.DimensionType;
+
+import java.util.List;
 
 public class SlotBuggyBench extends Slot
 {
@@ -39,10 +39,6 @@ public class SlotBuggyBench extends Slot
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
     {
-        if (par1ItemStack == null)
-        {
-            return false;
-        }
 
         List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getBuggyBenchRecipes();
         for (INasaWorkbenchRecipe recipe : recipes)

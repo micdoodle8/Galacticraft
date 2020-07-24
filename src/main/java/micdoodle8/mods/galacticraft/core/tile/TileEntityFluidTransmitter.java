@@ -124,14 +124,11 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
                     {
                         IFluidHandler handler = sideTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite()).orElse(null);
 
-                        if (handler != null)
-                        {
-                            FluidStack received = handler.drain(this.pullAmount, IFluidHandler.FluidAction.SIMULATE);
+                        FluidStack received = handler.drain(this.pullAmount, IFluidHandler.FluidAction.SIMULATE);
 
-                            if (received != FluidStack.EMPTY && received.getAmount() != 0)
-                            {
-                                handler.drain(this.fill(Direction.DOWN, received, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                            }
+                        if (received != FluidStack.EMPTY && received.getAmount() != 0)
+                        {
+                            handler.drain(this.fill(Direction.DOWN, received, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                         }
                     }
                 }
@@ -190,9 +187,9 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
 
                 if (tileEntity != null)
                 {
-                    if (tileEntity.getClass() == this.getClass() && tileEntity instanceof INetworkProvider && ((INetworkProvider) tileEntity).hasNetwork())
+                    if (tileEntity.getClass() == this.getClass() && ((INetworkProvider) tileEntity).hasNetwork())
                     {
-                        if (!(tileEntity instanceof ITransmitter) || (((ITransmitter) tileEntity).canConnect(side.getOpposite(), ((ITransmitter) tileEntity).getNetworkType())))
+                        if (((ITransmitter) tileEntity).canConnect(side.getOpposite(), ((ITransmitter) tileEntity).getNetworkType()))
                         {
                             if (!this.hasNetwork())
                             {

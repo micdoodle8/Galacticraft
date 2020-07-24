@@ -36,11 +36,11 @@
 //    @Override
 //    public void doRender(EntityLander lander, double par2, double par4, double par6, float par8, float par9)
 //    {
-//        GL11.glPushMatrix();
+//        RenderSystem.pushMatrix();
 //        final float var24 = lander.prevRotationPitch + (lander.rotationPitch - lander.prevRotationPitch) * par9;
-//        GL11.glTranslatef((float) par2, (float) par4 + 1.55F, (float) par6);
-//        GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.translatef((float) par2, (float) par4 + 1.55F, (float) par6);
+//        RenderSystem.rotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(-var24, 0.0F, 0.0F, 1.0F);
 //
 //        float f6 = lander.timeSinceHit - par9;
 //        float f7 = lander.currentDamage - par9;
@@ -52,13 +52,13 @@
 //
 //        if (f6 > 0.0F)
 //        {
-//            GL11.glRotatef((float) Math.sin(f6) * 0.2F * f6 * f7 / 25.0F, 1.0F, 0.0F, 0.0F);
+//            RenderSystem.rotatef((float) Math.sin(f6) * 0.2F * f6 * f7 / 25.0F, 1.0F, 0.0F, 0.0F);
 //        }
 //
 //        this.bindEntityTexture(lander);
-//        GL11.glScalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
 //        this.landerModel.render(lander, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    @Override

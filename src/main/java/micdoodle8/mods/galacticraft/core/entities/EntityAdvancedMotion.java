@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
@@ -194,7 +193,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
     public abstract void onGroundHit();
 
-    public abstract Vector3D getMotionVec();
+    public abstract Vec3d getMotionVec();
 
     /**
      * Can be called in the superclass init method
@@ -256,7 +255,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @Override
-    public void move(MoverType typeIn, Vec3d pos)
+    public void move(MoverType typeIn, net.minecraft.util.math.Vec3d pos)
     {
         if (this.shouldMove())
         {
@@ -328,7 +327,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
         if (this.world.isRemote)
         {
-            Vector3D mot = this.getMotionVec();
+            Vec3d mot = this.getMotionVec();
             this.setMotion(mot.x, mot.y, mot.z);
         }
         //Necessary on both server and client to achieve a correct this.onGround setting

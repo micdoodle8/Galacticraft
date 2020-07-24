@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.inventory;
 
-import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
-import micdoodle8.mods.galacticraft.planets.mars.client.gui.*;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiLaserTurret;

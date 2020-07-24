@@ -81,7 +81,7 @@ public class BlockCheese extends Block implements IShiftDescription
 
             if (i < 6)
             {
-                worldIn.setBlockState(pos, state.with(BITES, Integer.valueOf(i + 1)), 3);
+                worldIn.setBlockState(pos, state.with(BITES, i + 1), 3);
             }
             else
             {

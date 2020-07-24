@@ -31,14 +31,14 @@ public abstract class StructureComponentGC extends StructurePiece
         {
             switch (SwitchEnumFacing.field_176064_a[coordBaseMode.ordinal()])
             {
-            case 0:
-                return new MutableBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
-            case 1:
-                return new MutableBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
-            case 2:
-                return new MutableBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
-            case 3:
-                return new MutableBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
+                case 0:
+                    return new MutableBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
+                case 1:
+                    return new MutableBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
+                case 2:
+                    return new MutableBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
+                case 3:
+                    return new MutableBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
             }
         }
         return new MutableBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
@@ -88,20 +88,20 @@ public abstract class StructureComponentGC extends StructurePiece
     {
         switch (getCoordBaseMode().getHorizontalIndex())
         {
-        case 0:
-            return this.boundingBox.minX + var1;
+            case 0:
+                return this.boundingBox.minX + var1;
 
-        case 1:
-            return this.boundingBox.maxX - var2;
+            case 1:
+                return this.boundingBox.maxX - var2;
 
-        case 2:
-            return this.boundingBox.maxX - var1;
+            case 2:
+                return this.boundingBox.maxX - var1;
 
-        case 3:
-            return this.boundingBox.minX + var2;
+            case 3:
+                return this.boundingBox.minX + var2;
 
-        default:
-            return var1;
+            default:
+                return var1;
         }
     }
 
@@ -110,20 +110,20 @@ public abstract class StructureComponentGC extends StructurePiece
     {
         switch (getCoordBaseMode().getHorizontalIndex())
         {
-        case 0:
-            return this.boundingBox.minZ + var2;
+            case 0:
+                return this.boundingBox.minZ + var2;
 
-        case 1:
-            return this.boundingBox.minZ + var1;
+            case 1:
+                return this.boundingBox.minZ + var1;
 
-        case 2:
-            return this.boundingBox.maxZ - var2;
+            case 2:
+                return this.boundingBox.maxZ - var2;
 
-        case 3:
-            return this.boundingBox.maxZ - var1;
+            case 3:
+                return this.boundingBox.maxZ - var1;
 
-        default:
-            return var2;
+            default:
+                return var2;
         }
     }
 
@@ -135,7 +135,7 @@ public abstract class StructureComponentGC extends StructurePiece
 
     protected static class SwitchEnumFacing
     {
-        protected static int[] field_176064_a = new int[Direction.values().length];
+        protected static final int[] field_176064_a = new int[Direction.values().length];
 
         static
         {
@@ -143,7 +143,7 @@ public abstract class StructureComponentGC extends StructurePiece
             {
                 field_176064_a[Direction.NORTH.ordinal()] = 1;
             }
-            catch (NoSuchFieldError var4)
+            catch (NoSuchFieldError ignored)
             {
             }
 
@@ -151,7 +151,7 @@ public abstract class StructureComponentGC extends StructurePiece
             {
                 field_176064_a[Direction.SOUTH.ordinal()] = 2;
             }
-            catch (NoSuchFieldError var3)
+            catch (NoSuchFieldError ignored)
             {
             }
 
@@ -159,7 +159,7 @@ public abstract class StructureComponentGC extends StructurePiece
             {
                 field_176064_a[Direction.WEST.ordinal()] = 3;
             }
-            catch (NoSuchFieldError var2)
+            catch (NoSuchFieldError ignored)
             {
             }
 
@@ -167,7 +167,7 @@ public abstract class StructureComponentGC extends StructurePiece
             {
                 field_176064_a[Direction.EAST.ordinal()] = 4;
             }
-            catch (NoSuchFieldError var1)
+            catch (NoSuchFieldError ignored)
             {
             }
         }

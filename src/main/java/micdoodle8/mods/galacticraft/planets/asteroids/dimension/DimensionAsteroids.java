@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -31,8 +30,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -339,10 +336,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
             {
                 CompoundNBT tag1 = coordList.getCompound(j);
 
-                if (tag1 != null)
-                {
-                    this.asteroids.add(AsteroidData.readFromNBT(tag1));
-                }
+                this.asteroids.add(AsteroidData.readFromNBT(tag1));
             }
         }
     }
@@ -439,30 +433,30 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
             BlockVec3 test = roid.centre;
             switch (facing)
             {
-            case 2:
-                if (z - 16 < test.z)
-                {
-                    continue;
-                }
-                break;
-            case 3:
-                if (z + 16 > test.z)
-                {
-                    continue;
-                }
-                break;
-            case 4:
-                if (x - 16 < test.x)
-                {
-                    continue;
-                }
-                break;
-            case 5:
-                if (x + 16 > test.x)
-                {
-                    continue;
-                }
-                break;
+                case 2:
+                    if (z - 16 < test.z)
+                    {
+                        continue;
+                    }
+                    break;
+                case 3:
+                    if (z + 16 > test.z)
+                    {
+                        continue;
+                    }
+                    break;
+                case 4:
+                    if (x - 16 < test.x)
+                    {
+                        continue;
+                    }
+                    break;
+                case 5:
+                    if (x + 16 > test.x)
+                    {
+                        continue;
+                    }
+                    break;
             }
             int dx = x - test.x;
             int dz = z - test.z;
@@ -488,18 +482,18 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
             GCLog.debug("Found nearby asteroid at " + target.toString());
             switch (facing)
             {
-            case 2:
-                coords.z += offset;
-                break;
-            case 3:
-                coords.z -= offset;
-                break;
-            case 4:
-                coords.x += offset;
-                break;
-            case 5:
-                coords.x -= offset;
-                break;
+                case 2:
+                    coords.z += offset;
+                    break;
+                case 3:
+                    coords.z -= offset;
+                    break;
+                case 4:
+                    coords.x += offset;
+                    break;
+                case 5:
+                    coords.x -= offset;
+                    break;
             }
             returnValues.add(coords);
             if (++i >= count)
@@ -530,7 +524,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
 
     private static class AsteroidData
     {
-        protected BlockVec3 centre;
+        protected final BlockVec3 centre;
         protected int sizeAndLandedFlag = 15;
         protected int coreAndSpawnedFlag = -2;
 

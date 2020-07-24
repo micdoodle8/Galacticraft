@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ChestScreen;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;

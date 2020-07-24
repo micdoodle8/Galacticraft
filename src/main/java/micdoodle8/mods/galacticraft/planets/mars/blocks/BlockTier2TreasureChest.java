@@ -5,8 +5,6 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMar
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 
 public class BlockTier2TreasureChest extends BlockTier1TreasureChest
 {

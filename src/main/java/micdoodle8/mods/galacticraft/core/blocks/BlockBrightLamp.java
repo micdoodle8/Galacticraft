@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
@@ -26,7 +25,7 @@ import net.minecraft.world.World;
 
 public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
 //    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     protected static final VoxelShape DOWN_AABB = Block.makeCuboidShape(0.2F, 0.0F, 0.2F, 0.8F, 0.6F, 0.8F);
@@ -49,19 +48,19 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
     {
         switch (state.get(FACING))
         {
-        case EAST:
-            return EAST_AABB;
-        case WEST:
-            return WEST_AABB;
-        case SOUTH:
-            return SOUTH_AABB;
-        case NORTH:
-            return NORTH_AABB;
-        case DOWN:
-            return DOWN_AABB;
-        case UP:
-        default:
-            return UP_AABB;
+            case EAST:
+                return EAST_AABB;
+            case WEST:
+                return WEST_AABB;
+            case SOUTH:
+                return SOUTH_AABB;
+            case NORTH:
+                return NORTH_AABB;
+            case DOWN:
+                return DOWN_AABB;
+            case UP:
+            default:
+                return UP_AABB;
         }
     }
 

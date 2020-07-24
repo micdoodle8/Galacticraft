@@ -16,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.io.IOException;
 import java.util.function.Supplier;
 
 public class PacketDynamicInventory extends PacketBase
@@ -35,7 +34,7 @@ public class PacketDynamicInventory extends PacketBase
         super(GCCoreUtil.getDimensionType(entity.world));
         assert entity instanceof IInventory : "Entity does not implement " + IInventory.class.getSimpleName();
         this.type = 0;
-        this.identifier = new Integer(entity.getEntityId());
+        this.identifier = entity.getEntityId();
         this.stacks = new ItemStack[((IInventory) entity).getSizeInventory()];
 
         for (int i = 0; i < this.stacks.length; i++)
@@ -104,29 +103,22 @@ public class PacketDynamicInventory extends PacketBase
 
         switch (this.type)
         {
-        case 0:
-            buffer.writeInt((Integer) this.identifier);
-            break;
-        case 1:
-            BlockPos pos = (BlockPos) this.identifier;
-            buffer.writeInt(pos.getX());
-            buffer.writeInt(pos.getY());
-            buffer.writeInt(pos.getZ());
-            break;
+            case 0:
+                buffer.writeInt((Integer) this.identifier);
+                break;
+            case 1:
+                BlockPos pos = (BlockPos) this.identifier;
+                buffer.writeInt(pos.getX());
+                buffer.writeInt(pos.getY());
+                buffer.writeInt(pos.getZ());
+                break;
         }
 
         buffer.writeInt(this.stacks.length);
 
-        for (int i = 0; i < this.stacks.length; i++)
+        for (ItemStack stack : this.stacks)
         {
-            try
-            {
-                NetworkUtil.writeItemStack(this.stacks[i], buffer);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            NetworkUtil.writeItemStack(stack, buffer);
         }
     }
 
@@ -138,26 +130,19 @@ public class PacketDynamicInventory extends PacketBase
 
         switch (this.type)
         {
-        case 0:
-            this.identifier = new Integer(buffer.readInt());
-            break;
-        case 1:
-            this.identifier = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
-            break;
+            case 0:
+                this.identifier = buffer.readInt();
+                break;
+            case 1:
+                this.identifier = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+                break;
         }
 
         this.stacks = new ItemStack[buffer.readInt()];
 
         for (int i = 0; i < this.stacks.length; i++)
         {
-            try
-            {
-                this.stacks[i] = NetworkUtil.readItemStack(buffer);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            this.stacks[i] = NetworkUtil.readItemStack(buffer);
         }
     }
 
@@ -171,28 +156,28 @@ public class PacketDynamicInventory extends PacketBase
 
         switch (this.type)
         {
-        case 0:
-            Entity entity = player.world.getEntityByID((Integer) this.identifier);
+            case 0:
+                Entity entity = player.world.getEntityByID((Integer) this.identifier);
 
-            if (entity instanceof IInventorySettable)
-            {
-                this.setInventoryStacks((IInventorySettable) entity);
-            }
+                if (entity instanceof IInventorySettable)
+                {
+                    this.setInventoryStacks((IInventorySettable) entity);
+                }
 
-            break;
-        case 1:
-            TileEntity tile = player.world.getTileEntity((BlockPos) this.identifier);
+                break;
+            case 1:
+                TileEntity tile = player.world.getTileEntity((BlockPos) this.identifier);
 
-            if (tile instanceof TileEntityCrafting)
-            {
-                ((TileEntityCrafting) tile).setStacksClientSide(this.stacks);
-            }
-            else if (tile instanceof IInventorySettable)
-            {
-                this.setInventoryStacks((IInventorySettable) tile);
-            }
+                if (tile instanceof TileEntityCrafting)
+                {
+                    ((TileEntityCrafting) tile).setStacksClientSide(this.stacks);
+                }
+                else if (tile instanceof IInventorySettable)
+                {
+                    this.setInventoryStacks((IInventorySettable) tile);
+                }
 
-            break;
+                break;
         }
     }
 
@@ -201,24 +186,24 @@ public class PacketDynamicInventory extends PacketBase
     {
         switch (this.type)
         {
-        case 0:
-            Entity entity = player.world.getEntityByID((Integer) this.identifier);
+            case 0:
+                Entity entity = player.world.getEntityByID((Integer) this.identifier);
 
-            if (entity instanceof IInventorySettable)
-            {
-                GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(entity), (ServerPlayerEntity) player);
-            }
+                if (entity instanceof IInventorySettable)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(entity), (ServerPlayerEntity) player);
+                }
 
-            break;
-        case 1:
-            TileEntity tile = player.world.getTileEntity((BlockPos) this.identifier);
+                break;
+            case 1:
+                TileEntity tile = player.world.getTileEntity((BlockPos) this.identifier);
 
-            if (tile instanceof IInventorySettable)
-            {
-                GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(tile), (ServerPlayerEntity) player);
-            }
+                if (tile instanceof IInventorySettable)
+                {
+                    GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(tile), (ServerPlayerEntity) player);
+                }
 
-            break;
+                break;
         }
     }
 

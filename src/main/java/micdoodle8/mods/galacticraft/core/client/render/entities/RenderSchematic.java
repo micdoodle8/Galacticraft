@@ -3,7 +3,7 @@
 //import com.mojang.blaze3d.platform.GLX;
 //import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 //import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.renderer.Tessellator;
 //import net.minecraft.client.renderer.BufferBuilder;
 //import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -34,16 +34,16 @@
 //    @Override
 //    public void doRender(EntityHangingSchematic entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translated(x, y, z);
-//        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.enableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translated(x, y, z);
+//        RenderSystem.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.enableRescaleNormal();
 //        this.bindEntityTexture(entity);
 //        float f = 0.0625F;
-//        GlStateManager.scalef(f, f, f);
+//        RenderSystem.scalef(f, f, f);
 //        this.renderPainting(entity, entity.getWidthPixels(), entity.getHeightPixels());
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.popMatrix();
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.popMatrix();
 //        super.doRender(entity, x, y, z, entityYaw, partialTicks);
 //    }
 //
@@ -112,35 +112,35 @@
 //
 //    private void setLightmap(HangingEntity painting, double p_77008_2_, double p_77008_3_)
 //    {
-//        int i = MathHelper.floor(painting.posX);
-//        int j = MathHelper.floor(painting.posY + (p_77008_3_ / 16.0F));
-//        int k = MathHelper.floor(painting.posZ);
+//        int i = MathHelper.floor(painting.getPosX());
+//        int j = MathHelper.floor(painting.getPosY() + (p_77008_3_ / 16.0F));
+//        int k = MathHelper.floor(painting.getPosZ());
 //        Direction enumfacing = painting.getHorizontalFacing();
 //
 //        if (enumfacing == Direction.NORTH)
 //        {
-//            i = MathHelper.floor(painting.posX + (p_77008_2_ / 16.0F));
+//            i = MathHelper.floor(painting.getPosX() + (p_77008_2_ / 16.0F));
 //        }
 //
 //        if (enumfacing == Direction.WEST)
 //        {
-//            k = MathHelper.floor(painting.posZ - (p_77008_2_ / 16.0F));
+//            k = MathHelper.floor(painting.getPosZ() - (p_77008_2_ / 16.0F));
 //        }
 //
 //        if (enumfacing == Direction.SOUTH)
 //        {
-//            i = MathHelper.floor(painting.posX - (p_77008_2_ / 16.0F));
+//            i = MathHelper.floor(painting.getPosX() - (p_77008_2_ / 16.0F));
 //        }
 //
 //        if (enumfacing == Direction.EAST)
 //        {
-//            k = MathHelper.floor(painting.posZ + (p_77008_2_ / 16.0F));
+//            k = MathHelper.floor(painting.getPosZ() + (p_77008_2_ / 16.0F));
 //        }
 //
 //        int l = this.renderManager.world.getCombinedLight(new BlockPos(i, j, k), 0);
 //        int i1 = l % 65536;
 //        int j1 = l / 65536;
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j1, (float) j1);
-//        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+//        RenderSystem.glMultiTexCoord2f(33985, (float) j1, (float) j1);
+//        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
 //    }
 //}

@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
@@ -61,9 +59,7 @@ public class GuiSlimeling extends Screen
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.stayButton = new Button(i + 120, j + 122, 50, 20, "", (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionType(this.slimeling.world), new Object[]{this.slimeling.getEntityId(), 0, ""}));
-        });
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionType(this.slimeling.world), new Object[]{this.slimeling.getEntityId(), 0, ""})));
         this.stayButton.active = this.slimeling.isOwner(this.minecraft.player);
         this.stayButton.setMessage(this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.button.follow") : GCCoreUtil.translate("gui.slimeling.button.sit"));
         this.buttons.add(this.stayButton);
@@ -138,17 +134,17 @@ public class GuiSlimeling extends Screen
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(0, 0, -70.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0, 0, -70.0F);
         AbstractGui.fill(i, j, i + this.xSize, j + this.ySize - 20, 0xFF000000);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
         int yOffset = (int) Math.floor(30.0D * (1.0F - this.slimeling.getScale()));
 
         GuiSlimeling.drawSlimelingOnGui(this.slimeling, this.width / 2, j + 62 - yOffset, 70, i + 51 - mouseX, j + 75 - 50 - mouseY);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(0, 0, 150.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0, 0, 150.0F);
         this.minecraft.textureManager.bindTexture(GuiSlimeling.slimelingPanelGui);
         this.blit(i, j, 0, 0, this.xSize, this.ySize);
         this.blit(i + this.xSize - 15, j + 9, 176, 0, 9, 9);
@@ -162,7 +158,7 @@ public class GuiSlimeling extends Screen
         this.drawString(this.font, str, i + this.xSize - 15 - this.font.getStringWidth(str), j + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.minecraft.textureManager.bindTexture(GuiSlimeling.slimelingPanelGui);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.blit(this.invX, this.invY, 176, 9, this.invWidth, this.invHeight);
 
         super.render(mouseX, mouseY, partialTicks);
@@ -188,14 +184,14 @@ public class GuiSlimeling extends Screen
         this.font.drawString(str, dX + i + 55, dY + j + 46 + 13, 0x404040);
 
         RenderHelper.enableStandardItemLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.enableLighting();
-        GlStateManager.enableRescaleNormal();
+        RenderSystem.enableBlend();
+        RenderSystem.enableLighting();
+        RenderSystem.enableRescaleNormal();
         this.minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(this.slimeling.getFavoriteFood()), dX + i + 55 + this.font.getStringWidth(str), dY + j + 41 + 14);
-        GlStateManager.disableLighting();
-        GlStateManager.disableBlend();
+        RenderSystem.disableLighting();
+        RenderSystem.disableBlend();
         this.nameField.renderButton(mouseX, mouseY, partialTicks);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
         ItemStack foodStack = new ItemStack(this.slimeling.getFavoriteFood());
 
         if (!foodStack.isEmpty() && mouseX >= this.invX - 66 && mouseX < this.invX + this.invWidth - 68 && mouseY >= this.invY + 44 && mouseY < this.invY + this.invHeight + 42)
@@ -207,14 +203,14 @@ public class GuiSlimeling extends Screen
     public static void drawSlimelingOnGui(EntitySlimeling slimeling, int x, int y, int scale, float mouseX, float mouseY)
     {
         GuiSlimeling.renderingOnGui = true;
-        float f = (float)Math.atan((double)(mouseX / 40.0F));
-        float f1 = (float)Math.atan((double)(mouseY / 40.0F));
+        float f = (float) Math.atan(mouseX / 40.0F);
+        float f1 = (float) Math.atan(mouseY / 40.0F);
         RenderSystem.pushMatrix();
-        RenderSystem.translatef((float)x, (float)y, 1050.0F);
+        RenderSystem.translatef((float) x, (float) y, 1050.0F);
         RenderSystem.scalef(1.0F, 1.0F, -1.0F);
         MatrixStack matrixstack = new MatrixStack();
         matrixstack.translate(0.0D, 0.0D, 1000.0D);
-        matrixstack.scale((float)scale, (float)scale, (float)scale);
+        matrixstack.scale((float) scale, (float) scale, (float) scale);
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
         quaternion.multiply(quaternion1);

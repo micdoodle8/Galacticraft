@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -17,10 +14,12 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityFake extends TileEntity
 {
@@ -176,7 +175,7 @@ public class TileEntityFake extends TileEntity
                 result = false;
             }
         }
-        if (result == false && !world.isRemote)
+        if (!result && !world.isRemote)
         {
 //            //Try again to create all the multiblocks - currently disabled because making new tiles here interferes with server->client tileEntity sync during worldgen (Abandoned Base)
 //            thisTile.onCreate(world, pos);

@@ -60,7 +60,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public boolean updateClientFlag;
     public boolean findTargetPointsFlag;
     public int linkCountDown = 0;
-    public static Map<DimensionType, List<BlockPos>> newMinerBases = new HashMap<>();
+    public static final Map<DimensionType, List<BlockPos>> newMinerBases = new HashMap<>();
     private AxisAlignedBB renderAABB;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int linkedMinerDataAIState;
@@ -320,7 +320,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
             if (tileEntity instanceof TileEntityMinerBase)
             {
-                masterTile = new WeakReference<TileEntityMinerBase>(((TileEntityMinerBase) tileEntity));
+                masterTile = new WeakReference<>(((TileEntityMinerBase) tileEntity));
             }
 
             if (masterTile == null)
@@ -409,9 +409,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             nbt.putLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
         }
         ListNBT mpList = new ListNBT();
-        for (int j = 0; j < this.targetPoints.size(); j++)
+        for (BlockVec3 targetPoint : this.targetPoints)
         {
-            mpList.add(this.targetPoints.get(j).write(new CompoundNBT()));
+            mpList.add(targetPoint.write(new CompoundNBT()));
         }
         nbt.put("TargetPoints", mpList);
         return nbt;
@@ -692,18 +692,18 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             // Re-orient the block
             switch (this.facing)
             {
-            case SOUTH:
-                this.facing = Direction.WEST;
-                break;
-            case EAST:
-                this.facing = Direction.SOUTH;
-                break;
-            case WEST:
-                this.facing = Direction.NORTH;
-                break;
-            case NORTH:
-                this.facing = Direction.EAST;
-                break;
+                case SOUTH:
+                    this.facing = Direction.WEST;
+                    break;
+                case EAST:
+                    this.facing = Direction.SOUTH;
+                    break;
+                case WEST:
+                    this.facing = Direction.NORTH;
+                    break;
+                case NORTH:
+                    this.facing = Direction.EAST;
+                    break;
             }
 
             super.updateFacing();
@@ -927,7 +927,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             master.setInventorySlotContents(par1, par2ItemStack);
         }
 
-        return;
     }
 
     @Override
@@ -1028,7 +1027,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
 
         this.markDirty();
-        return;
     }
 
     @Override

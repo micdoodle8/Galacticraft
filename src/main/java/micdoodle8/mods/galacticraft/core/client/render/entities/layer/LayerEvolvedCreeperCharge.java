@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedCreeper;
 //import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
@@ -27,26 +27,26 @@
 //        if (entity.getPowered())
 //        {
 //            boolean flag = entity.isInvisible();
-//            GlStateManager.depthMask(!flag);
+//            RenderSystem.depthMask(!flag);
 //            this.render.bindTexture(new ResourceLocation("textures/entity/creeper/creeper_armor.png"));
-//            GlStateManager.matrixMode(5890);
-//            GlStateManager.loadIdentity();
+//            RenderSystem.matrixMode(5890);
+//            RenderSystem.loadIdentity();
 //            float f = entity.ticksExisted + partialTicks;
-//            GlStateManager.translatef(f * 0.01F, f * 0.01F, 0.0F);
-//            GlStateManager.matrixMode(5888);
-//            GlStateManager.enableBlend();
+//            RenderSystem.translatef(f * 0.01F, f * 0.01F, 0.0F);
+//            RenderSystem.matrixMode(5888);
+//            RenderSystem.enableBlend();
 //            float f1 = 0.5F;
-//            GlStateManager.color4f(f1, f1, f1, 1.0F);
-//            GlStateManager.disableLighting();
-//            GlStateManager.blendFunc(1, 1);
+//            RenderSystem.color4f(f1, f1, f1, 1.0F);
+//            RenderSystem.disableLighting();
+//            RenderSystem.blendFunc(1, 1);
 //            this.creeperModel.setModelAttributes(this.render.getEntityModel());
 //            this.creeperModel.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//            GlStateManager.matrixMode(5890);
-//            GlStateManager.loadIdentity();
-//            GlStateManager.matrixMode(5888);
-//            GlStateManager.enableLighting();
-//            GlStateManager.disableBlend();
-//            GlStateManager.depthMask(flag);
+//            RenderSystem.matrixMode(5890);
+//            RenderSystem.loadIdentity();
+//            RenderSystem.matrixMode(5888);
+//            RenderSystem.enableLighting();
+//            RenderSystem.disableBlend();
+//            RenderSystem.depthMask(flag);
 //        }
 //    }
 //

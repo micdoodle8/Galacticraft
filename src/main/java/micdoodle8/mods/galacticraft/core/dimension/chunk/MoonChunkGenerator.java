@@ -6,7 +6,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
-import net.minecraft.world.gen.OverworldGenSettings;
 
 public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 {

@@ -5,13 +5,12 @@ import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoBase;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.ObjectHolder;
 

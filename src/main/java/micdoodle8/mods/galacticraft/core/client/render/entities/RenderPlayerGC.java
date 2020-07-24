@@ -225,7 +225,7 @@
 //            {
 //                entitylivingbaseIn.rotationYawHead = 0;
 //                entitylivingbaseIn.prevRotationYawHead = 0;
-//                GL11.glTranslatef(0.0F, 0.3F, 0.0F);
+//                RenderSystem.translatef(0.0F, 0.3F, 0.0F);
 //            }
 //        }
 //    }
@@ -245,7 +245,7 @@
 ////            }
 ////            else if (event.shouldRotate == null)
 ////            {
-////                GL11.glRotatef(entityLiving.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+////                RenderSystem.rotatef(entityLiving.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
 ////            }
 ////            else if (event.shouldRotate)
 ////            {
@@ -287,7 +287,7 @@
 ////                    }
 ////                }
 ////
-////                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+////                RenderSystem.rotatef(rotation, 0.0F, 1.0F, 0.0F);
 ////            }
 ////        }
 ////        else
@@ -302,12 +302,12 @@
 ////                    float rotateOffset = ((ICameraZoomEntity)rocket).getRotateOffset();
 ////                    if (rotateOffset > -10F)
 ////                    {
-////                        GL11.glTranslatef(0, -rotateOffset, 0);
+////                        RenderSystem.translatef(0, -rotateOffset, 0);
 ////                        float anglePitch = rocket.prevRotationPitch;
 ////                        float angleYaw = rocket.prevRotationYaw;
-////                        GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-////                        GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-////                        GL11.glTranslatef(0, rotateOffset, 0);
+////                        RenderSystem.rotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+////                        RenderSystem.rotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+////                        RenderSystem.translatef(0, rotateOffset, 0);
 ////                    }
 ////                }
 ////            }

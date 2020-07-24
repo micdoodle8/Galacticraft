@@ -1,17 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.fx.*;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.particle.SuspendedTownParticle;
-import net.minecraft.entity.LivingEntity;
+import micdoodle8.mods.galacticraft.core.client.fx.EntityParticleData;
+import micdoodle8.mods.galacticraft.core.client.fx.ParticleTypeNames;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -58,27 +51,28 @@ public class GCParticles
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> evt)
     {
-        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
+//        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
 
-        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmoke);
-        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmokeLaunched);
-        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmokeLarge);
-        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmokeLaunchedLarge);
-        register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.launchFlame);
-        register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.launchFlameLaunched);
-        register(r, new BasicParticleType(false), ParticleTypeNames.launchSmoke);
-        register(r, new BasicParticleType(false), ParticleTypeNames.oilDrip);
-        register(r, new BasicParticleType(false), ParticleTypeNames.oxygen);
-        register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.landerFlame);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE, ParticleSmokeUnlaunched.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED, ParticleSmokeLaunched.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE_LARGE, ParticleSmokeUnlaunchedLarge.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED_LARGE, ParticleSmokeLaunchedLarge.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_IDLE, ParticleLaunchFlameUnlaunched.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_LAUNCHED, ParticleLaunchFlame.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LAUNCH_SMOKE_TINY, ParticleSmokeSmall.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(OIL_DRIP, DripParticleGC.DrippingOilFactory::new);
-        Minecraft.getInstance().particles.registerFactory(OXYGEN, ParticleOxygen.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LANDER_FLAME, ParticleLanderFlame.Factory::new);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmoke);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmokeLaunched);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmokeLarge);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.whiteSmokeLaunchedLarge);
+//        register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.launchFlame);
+//        register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.launchFlameLaunched);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.launchSmoke);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.oilDrip);
+//        register(r, new BasicParticleType(false), ParticleTypeNames.oxygen);
+//        register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.landerFlame);
+
+//        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE, ParticleSmokeUnlaunched.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED, ParticleSmokeLaunched.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE_LARGE, ParticleSmokeUnlaunchedLarge.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED_LARGE, ParticleSmokeLaunchedLarge.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_IDLE, ParticleLaunchFlameUnlaunched.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_LAUNCHED, ParticleLaunchFlame.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(LAUNCH_SMOKE_TINY, ParticleSmokeSmall.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(OIL_DRIP, DripParticleGC.DrippingOilFactory::new);
+//        Minecraft.getInstance().particles.registerFactory(OXYGEN, ParticleOxygen.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(LANDER_FLAME, ParticleLanderFlame.Factory::new);
     }
 }

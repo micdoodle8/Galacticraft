@@ -1,26 +1,24 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.Dynamic;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.world.gen.GCFeatures;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.*;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
-import net.minecraft.world.gen.feature.structure.*;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;

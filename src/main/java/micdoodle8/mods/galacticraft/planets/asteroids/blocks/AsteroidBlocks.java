@@ -4,8 +4,6 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.DecoBlock;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
-import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -13,10 +11,13 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class AsteroidBlocks
 {
     @ObjectHolder(AsteroidBlockNames.blockWalkway)

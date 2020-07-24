@@ -8,8 +8,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.BiomeDictionary;
 
-import java.util.LinkedList;
-
 import static net.minecraft.world.gen.surfacebuilders.SurfaceBuilder.STONE_STONE_GRAVEL_CONFIG;
 
 public class BiomeAsteroids extends BiomeGC

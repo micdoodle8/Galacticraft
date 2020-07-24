@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -10,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -24,7 +23,7 @@ public class TeleportTypeMoon implements ITeleportType
     }
 
     @Override
-    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vec3d getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -55,26 +54,26 @@ public class TeleportTypeMoon implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vector3D(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
+            return new Vec3d(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
         }
 
         return null;
     }
 
     @Override
-    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
+    public Vec3d getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
+        return new Vec3d(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override
-    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vec3d getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         if (ConfigManagerCore.disableLander)
         {
             final float x = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
             final float z = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
-            return new Vector3D(player.posX + x, 220.0, player.posZ + z);
+            return new Vec3d(player.getPosX() + x, 220.0, player.getPosZ() + z);
         }
 
         return null;
@@ -92,7 +91,7 @@ public class TeleportTypeMoon implements ITeleportType
             }
 
             EntityLander lander = new EntityLander(player);
-            lander.setPosition(player.posX, player.posY, player.posZ);
+            lander.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
 
             if (!newWorld.isRemote)
             {
@@ -104,7 +103,7 @@ public class TeleportTypeMoon implements ITeleportType
                 ((ServerWorld) newWorld).chunkCheck(lander);
                 player.startRiding(lander);
                 CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
-                GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
+                GCLog.debug("Entering lander at : " + player.getPosX() + "," + player.getPosZ() + " lander spawn at: " + lander.getPosX() + "," + lander.getPosZ());
             }
 
             stats.setTeleportCooldown(10);

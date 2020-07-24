@@ -56,7 +56,7 @@
 //    public void drawBackground(int recipe)
 //    {
 //        int progress = this.ticksPassed % 144;
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //        GuiDraw.changeTexture(MethaneSynthesizerRecipeHandler.synthesizerGuiTexture);
 //        GuiDraw.blit(-2, 0, 3, 4, 168, 66);

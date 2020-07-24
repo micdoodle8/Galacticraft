@@ -4,11 +4,8 @@ import micdoodle8.mods.galacticraft.api.entity.ILaserTrackableFast;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.planets.PlanetFluids;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
-import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.server.ServerWorld;
@@ -16,8 +13,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-
-import java.util.ArrayList;
 
 public class EventHandlerVenus
 {
@@ -47,26 +42,26 @@ public class EventHandlerVenus
         {
             switch (event.armorIndex)
             {
-            case 0:
-                if (event.armorStack.getItem() == VenusItems.thermal_helmet_t2)
-                {
-                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
-                }
-            case 1:
-                if (event.armorStack.getItem() == VenusItems.thermal_chestplate_t2)
-                {
-                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
-                }
-            case 2:
-                if (event.armorStack.getItem() == VenusItems.thermal_leggings_t2)
-                {
-                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
-                }
-            case 3:
-                if (event.armorStack.getItem() == VenusItems.thermal_boots_t2)
-                {
-                    event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
-                }
+                case 0:
+                    if (event.armorStack.getItem() == VenusItems.thermal_helmet_t2)
+                    {
+                        event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
+                case 1:
+                    if (event.armorStack.getItem() == VenusItems.thermal_chestplate_t2)
+                    {
+                        event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
+                case 2:
+                    if (event.armorStack.getItem() == VenusItems.thermal_leggings_t2)
+                    {
+                        event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
+                case 3:
+                    if (event.armorStack.getItem() == VenusItems.thermal_boots_t2)
+                    {
+                        event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.ADD);
+                    }
             }
         }
     }

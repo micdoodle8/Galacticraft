@@ -1,18 +1,15 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventoryRocketBench implements IInventory
 {
-    public NonNullList<ItemStack> stacks;
+    public final NonNullList<ItemStack> stacks;
     private final int inventoryWidth;
     private final Container eventHandler;
 

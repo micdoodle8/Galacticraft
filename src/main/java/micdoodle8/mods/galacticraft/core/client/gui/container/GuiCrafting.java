@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCrafting;
@@ -15,11 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
 {
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/crafting_table.png");
-    TileEntityCrafting tileCrafting;
-    List<String> memorySlotDesc = new ArrayList<String>();
+    final TileEntityCrafting tileCrafting;
+    final List<String> memorySlotDesc = new ArrayList<>();
 
     public GuiCrafting(ContainerCrafting containerCrafting, PlayerInventory playerInv, ITextComponent title)
     {
@@ -47,7 +47,7 @@ public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(craftingTableGuiTextures);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
@@ -57,7 +57,7 @@ public class GuiCrafting extends GuiContainerGC<ContainerCrafting>
         boolean memoryStored = !mem.isEmpty();
         memorySlotDesc.clear();
         memorySlotDesc.add(GCCoreUtil.translate(memoryStored ? "gui.crafting_memory.desc.0" : "gui.crafting_memory.desc.1"));
-        if (mem != null && !mem.isEmpty())
+        if (!mem.isEmpty())
         {
             this.itemRenderer.renderItemAndEffectIntoGUI(mem, i + 124, j + 59);
         }

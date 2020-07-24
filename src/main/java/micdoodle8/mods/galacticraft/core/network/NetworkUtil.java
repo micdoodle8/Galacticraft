@@ -4,7 +4,6 @@ import com.google.common.math.DoubleMath;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorage;
 import micdoodle8.mods.galacticraft.core.tile.FluidTankGC;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -20,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -28,7 +28,6 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ import java.util.UUID;
 
 public class NetworkUtil
 {
-    public static void encodeData(ByteBuf buffer, Collection<Object> sendData) throws IOException
+    public static void encodeData(ByteBuf buffer, Collection<Object> sendData)
     {
         for (Object dataValue : sendData)
         {
@@ -153,9 +152,9 @@ public class NetworkUtil
                 Integer[] array = (Integer[]) dataValue;
                 buffer.writeInt(array.length);
 
-                for (int i = 0; i < array.length; i++)
+                for (Integer integer : array)
                 {
-                    buffer.writeInt(array[i]);
+                    buffer.writeInt(integer);
                 }
             }
             else if (dataValue instanceof String[])
@@ -163,9 +162,9 @@ public class NetworkUtil
                 String[] array = (String[]) dataValue;
                 buffer.writeInt(array.length);
 
-                for (int i = 0; i < array.length; i++)
+                for (String s : array)
                 {
-                    writeUTF8String(buffer, array[i]);
+                    writeUTF8String(buffer, s);
                 }
             }
             else if (dataValue instanceof Footprint[])
@@ -173,16 +172,16 @@ public class NetworkUtil
                 Footprint[] array = (Footprint[]) dataValue;
                 buffer.writeInt(array.length);
 
-                for (int i = 0; i < array.length; i++)
+                for (Footprint footprint : array)
                 {
-                    buffer.writeInt(array[i].dimension.getId());
-                    buffer.writeFloat(array[i].position.x);
-                    buffer.writeFloat(array[i].position.y + 1);
-                    buffer.writeFloat(array[i].position.z);
-                    buffer.writeFloat(array[i].rotation);
-                    buffer.writeShort(array[i].age);
+                    buffer.writeInt(footprint.dimension.getId());
+                    buffer.writeFloat(footprint.position.x);
+                    buffer.writeFloat(footprint.position.y + 1);
+                    buffer.writeFloat(footprint.position.z);
+                    buffer.writeFloat(footprint.rotation);
+                    buffer.writeShort(footprint.age);
 
-                    writeUTF8String(buffer, array[i].owner);
+                    writeUTF8String(buffer, footprint.owner);
                 }
             }
             else if (dataValue instanceof Direction)
@@ -213,7 +212,7 @@ public class NetworkUtil
 
     public static ArrayList<Object> decodeData(Class<?>[] types, ByteBuf buffer)
     {
-        ArrayList<Object> objList = new ArrayList<Object>();
+        ArrayList<Object> objList = new ArrayList<>();
 
         for (Class clazz : types)
         {
@@ -264,14 +263,7 @@ public class NetworkUtil
             }
             else if (clazz.equals(CompoundNBT.class))
             {
-                try
-                {
-                    objList.add(NetworkUtil.readNBTTagCompound(buffer));
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                objList.add(NetworkUtil.readNBTTagCompound(buffer));
             }
             else if (clazz.equals(BlockVec3.class))
             {
@@ -285,9 +277,9 @@ public class NetworkUtil
             {
                 objList.add(new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
             }
-            else if (clazz.equals(Vector3D.class))
+            else if (clazz.equals(Vec3d.class))
             {
-                objList.add(new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
+                objList.add(new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
             }
             else if (clazz.equals(FlagData.class))
             {
@@ -349,7 +341,7 @@ public class NetworkUtil
         return objList;
     }
 
-    public static Object getFieldValueFromStream(Field field, ByteBuf buffer, World world) throws IOException
+    public static Object getFieldValueFromStream(Field field, ByteBuf buffer, World world)
     {
         Class<?> dataValue = field.getType();
 
@@ -401,9 +393,9 @@ public class NetworkUtil
         {
             return new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
         }
-        else if (dataValue.equals(Vector3D.class))
+        else if (dataValue.equals(Vec3d.class))
         {
-            return new Vector3D(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+            return new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         }
         else if (dataValue.equals(BlockVec3.class))
         {
@@ -461,7 +453,7 @@ public class NetworkUtil
         throw new NullPointerException("Field type not found: " + field.getType().getSimpleName());
     }
 
-    public static ItemStack readItemStack(ByteBuf buffer) throws IOException
+    public static ItemStack readItemStack(ByteBuf buffer)
     {
         ItemStack itemstack = ItemStack.EMPTY;
         short itemID = buffer.readShort();
@@ -479,7 +471,7 @@ public class NetworkUtil
         return itemstack;
     }
 
-    public static void writeItemStack(ItemStack itemStack, ByteBuf buffer) throws IOException
+    public static void writeItemStack(ItemStack itemStack, ByteBuf buffer)
     {
         if (itemStack.isEmpty())
         {
@@ -498,7 +490,7 @@ public class NetworkUtil
         }
     }
 
-    public static CompoundNBT readNBTTagCompound(ByteBuf buffer) throws IOException
+    public static CompoundNBT readNBTTagCompound(ByteBuf buffer)
     {
         try
         {
@@ -515,7 +507,7 @@ public class NetworkUtil
         }
     }
 
-    public static void writeNBTTagCompound(CompoundNBT nbt, ByteBuf buffer) throws IOException
+    public static void writeNBTTagCompound(CompoundNBT nbt, ByteBuf buffer)
     {
         try
         {
@@ -531,7 +523,7 @@ public class NetworkUtil
         }
     }
 
-    public static void writeFluidTank(FluidTank fluidTank, ByteBuf buffer) throws IOException
+    public static void writeFluidTank(FluidTank fluidTank, ByteBuf buffer)
     {
         if (fluidTank == null)
         {
@@ -547,7 +539,7 @@ public class NetworkUtil
         }
     }
 
-    public static FluidTankGC readFluidTankGC(ByteBuf buffer, World world) throws IOException
+    public static FluidTankGC readFluidTankGC(ByteBuf buffer, World world)
     {
         BlockPos pos = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         TileEntity tile = world.getTileEntity(pos);
@@ -562,7 +554,7 @@ public class NetworkUtil
         return fluidTank;
     }
 
-    public static FluidTank readFluidTank(ByteBuf buffer) throws IOException
+    public static FluidTank readFluidTank(ByteBuf buffer)
     {
         int capacity = buffer.readInt();
         String fluidName = readUTF8String(buffer);

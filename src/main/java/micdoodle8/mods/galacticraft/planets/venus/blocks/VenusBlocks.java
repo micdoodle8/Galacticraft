@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.venus.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

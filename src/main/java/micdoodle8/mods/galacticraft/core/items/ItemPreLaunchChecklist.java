@@ -71,7 +71,7 @@ public class ItemPreLaunchChecklist extends Item implements ISortableItem
         if (worldIn.isRemote)
         {
             Minecraft.getInstance().displayGuiScreen(new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), itemStack.getTag().getCompound("checklistData")));
-//            playerIn.openGui(GalacticraftCore.instance, GuiIdsCore.PRE_LAUNCH_CHECKLIST, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+//            playerIn.openGui(GalacticraftCore.instance, GuiIdsCore.PRE_LAUNCH_CHECKLIST, playerIn.world, (int) playerIn.getPosX(), (int) playerIn.getPosY(), (int) playerIn.getPosZ());
             return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
         }
 

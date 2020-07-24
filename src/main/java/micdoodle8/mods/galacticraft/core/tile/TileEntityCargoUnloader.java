@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -97,7 +96,7 @@ public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILan
         {
             final TileEntity pad = thisVec.getTileEntityOnSide(this.world, dir);
 
-            if (pad != null && pad instanceof TileEntityFake)
+            if (pad instanceof TileEntityFake)
             {
                 final TileEntity mainTile = ((TileEntityFake) pad).getMainBlockTile();
 
@@ -108,7 +107,7 @@ public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILan
                     break;
                 }
             }
-            else if (pad != null && pad instanceof ICargoEntity)
+            else if (pad instanceof ICargoEntity)
             {
                 this.attachedFuelable = (ICargoEntity) pad;
                 foundFuelable = true;

@@ -18,7 +18,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import java.util.Random;
 
 import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_HANGAR;
-import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_PLATE;
 
 public class BaseHangar extends SizedPiece
 {
@@ -228,13 +227,10 @@ public class BaseHangar extends SizedPiece
             this.setBlockState(worldIn, blockGrid, 8, 0, zz, mutableBoundingBoxIn);
             this.setBlockState(worldIn, blockGrid, 18, 0, zz, mutableBoundingBoxIn);
 
-            if (zz > HANGARLENGTH - 5)
-            {
-                this.setBlockState(worldIn, blockPlain, 10, 0, zz, mutableBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 16, 0, zz, mutableBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 11, 0, zz, mutableBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 15, 0, zz, mutableBoundingBoxIn);
-            }
+            this.setBlockState(worldIn, blockPlain, 10, 0, zz, mutableBoundingBoxIn);
+            this.setBlockState(worldIn, blockPlain, 16, 0, zz, mutableBoundingBoxIn);
+            this.setBlockState(worldIn, blockPlain, 11, 0, zz, mutableBoundingBoxIn);
+            this.setBlockState(worldIn, blockPlain, 15, 0, zz, mutableBoundingBoxIn);
 
             if (zz > HANGARLENGTH - 4)
             {

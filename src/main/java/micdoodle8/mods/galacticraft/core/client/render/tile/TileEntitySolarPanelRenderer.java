@@ -28,43 +28,43 @@
 //            this.bindTexture(TileEntitySolarPanelRenderer.solarPanelTexture);
 //        }
 //
-//        GL11.glPushMatrix();
-//        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glTranslatef((float) x, (float) y, (float) z);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.enableRescaleNormal();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
 //
-//        GL11.glTranslatef(0.5F, 1.0F, 0.5F);
+//        RenderSystem.translatef(0.5F, 1.0F, 0.5F);
 //        if (doSkyRotation)
 //        {
-//            GL11.glPushMatrix();
-////            GL11.glRotatef(((DimensionSpaceStation)panel.getWorld().dimension).getSkyRotation(), 0.0F, 1.0F, 0.0F); TODO Sky rotation
+//            RenderSystem.pushMatrix();
+////            RenderSystem.rotatef(((DimensionSpaceStation)panel.getWorld().dimension).getSkyRotation(), 0.0F, 1.0F, 0.0F); TODO Sky rotation
 //            this.model.renderPole();
-//            GL11.glPopMatrix();
+//            RenderSystem.popMatrix();
 //        }
 //        else
 //        {
 //            this.model.renderPole();
 //        }
 //
-//        GL11.glTranslatef(0.0F, 1.5F, 0.0F);
+//        RenderSystem.translatef(0.0F, 1.5F, 0.0F);
 //
-//        GL11.glRotatef(180.0F, 0, 0, 1);
-//        GL11.glRotatef(-90.0F, 0, 1, 0);
+//        RenderSystem.rotatef(180.0F, 0, 0, 1);
+//        RenderSystem.rotatef(-90.0F, 0, 1, 0);
 //
 //        float celestialAngle = (panel.getWorld().getCelestialAngle(1.0F) - 0.784690560F) * 360.0F;
 //        float celestialAngle2 = panel.getWorld().getCelestialAngle(1.0F) * 360.0F;
 //
 //        if (doSkyRotation)
 //        {
-////            GL11.glRotatef(((DimensionSpaceStation)panel.getWorld().dimension).getSkyRotation(), 0.0F, -1.0F, 0.0F); TODO Sky rotation
+////            RenderSystem.rotatef(((DimensionSpaceStation)panel.getWorld().dimension).getSkyRotation(), 0.0F, -1.0F, 0.0F); TODO Sky rotation
 //        }
 //
-//        GL11.glRotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);
+//        RenderSystem.rotatef(panel.currentAngle - (celestialAngle - celestialAngle2), 1.0F, 0.0F, 0.0F);
 //
 //        this.model.renderPanel();
 //
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glPopMatrix();
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.popMatrix();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //    }
 //}

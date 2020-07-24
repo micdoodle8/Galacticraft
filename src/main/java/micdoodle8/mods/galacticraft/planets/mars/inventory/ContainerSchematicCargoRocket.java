@@ -2,19 +2,17 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
-import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.block.Blocks;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -23,8 +21,8 @@ public class ContainerSchematicCargoRocket extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsContainerNames.SCHEMATIC_CARGO_ROCKET)
     public static ContainerType<ContainerSchematicCargoRocket> TYPE;
 
-    public InventorySchematicCargoRocket craftMatrix = new InventorySchematicCargoRocket(this);
-    public IInventory craftResult = new CraftResultInventory();
+    public final InventorySchematicCargoRocket craftMatrix = new InventorySchematicCargoRocket(this);
+    public final IInventory craftResult = new CraftResultInventory();
     private final World world;
 
     public ContainerSchematicCargoRocket(int containerId, PlayerInventory playerInv)
@@ -184,14 +182,14 @@ public class ContainerSchematicCargoRocket extends Container
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (par1 >= 17 && par1 < 44)
+                    else if (par1 < 44)
                     {
                         if (!this.mergeItemStack(var4, 44, 53, false))
                         {
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (par1 >= 44 && par1 < 53)
+                    else if (par1 < 53)
                     {
                         if (!this.mergeItemStack(var4, 17, 44, false))
                         {

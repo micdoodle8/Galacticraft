@@ -36,7 +36,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fluidPipe)
     public static TileEntityType<TileEntityFluidPipe> TYPE;
 
-    public FluidTankGC buffer = new FluidTankGC(1000, this);
+    public final FluidTankGC buffer = new FluidTankGC(1000, this);
     private final boolean dataRequest = false;
     private AxisAlignedBB renderAABB;
 
@@ -299,14 +299,13 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
             return false;
         }
 
-        switch (((BlockFluidPipe) currentType).getMode())
+        if (((BlockFluidPipe) currentType).getMode() == BlockFluidPipe.EnumPipeMode.NORMAL)
         {
-        case NORMAL:
             block = GCBlocks.fluidPipePull;
-            break;
-        default:
+        }
+        else
+        {
             block = GCBlocks.fluidPipe;
-            break;
         }
 
         BlockFluidPipe.ignoreDrop = true;

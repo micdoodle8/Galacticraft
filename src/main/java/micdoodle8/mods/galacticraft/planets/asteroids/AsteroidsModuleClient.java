@@ -216,9 +216,9 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 //
 //        if (mc != null && mc.getRenderViewEntity() != null && mc.particles != null)
 //        {
-//            double dX = mc.getRenderViewEntity().posX - position.x;
-//            double dY = mc.getRenderViewEntity().posY - position.y;
-//            double dZ = mc.getRenderViewEntity().posZ - position.z;
+//            double dX = mc.getRenderViewEntity().getPosX() - position.x;
+//            double dY = mc.getRenderViewEntity().getPosY() - position.y;
+//            double dZ = mc.getRenderViewEntity().getPosZ() - position.z;
 //            Particle particle = null;
 //            double viewDistance = 64.0D;
 //

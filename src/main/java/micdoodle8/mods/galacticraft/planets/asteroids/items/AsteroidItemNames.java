@@ -26,7 +26,7 @@ public class AsteroidItemNames
     public static final String titaniumHoe = "titanium_hoe";
     public static final String strangeSeed1 = "strange_seed_1";
     public static final String strangeSeed2 = "strange_seed_2";
-    public static final String canisterLAr = "canisterPartialLAr";
+    public static final String canisterLAr = "canister_partial_l_a_r";
     public static final String atmosphericValve = "atmospheric_valve";
     public static final String titaniumSword = "titanium_sword";
     public static final String titaniumChestplate = "titanium_chestplate";

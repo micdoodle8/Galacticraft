@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -8,7 +9,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 public class RenderPlanet
 {
@@ -23,7 +23,7 @@ public class RenderPlanet
 
     public static void renderPlanet(int textureId, float scale, float ticks, float relSize)
     {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+        RenderSystem.bindTexture(textureId);
         float size = relSize / 70 * scale;
         ticks = ((float) System.nanoTime()) / 50000000F;
         RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks);
@@ -42,23 +42,23 @@ public class RenderPlanet
         ResourceLocation texture;
         switch (id)
         {
-        case 0:
-            texture = textureEuropa;
-            break;
-        case 1:
-            texture = textureGanymede;
-            break;
-        case 2:
-            texture = textureIo;
-            break;
-        case 3:
-            texture = textureJupiterInner;
-            break;
-        case 4:
-            texture = textureSaturn;
-            break;
-        default:
-            texture = textureGanymede;
+            case 0:
+                texture = textureEuropa;
+                break;
+            case 1:
+                texture = textureGanymede;
+                break;
+            case 2:
+                texture = textureIo;
+                break;
+            case 3:
+                texture = textureJupiterInner;
+                break;
+            case 4:
+                texture = textureSaturn;
+                break;
+            default:
+                texture = textureGanymede;
         }
         if (id == 3)  //Jupiter
         {
@@ -66,8 +66,8 @@ public class RenderPlanet
             float size = relSize / 70 * scale;
             RenderPlanet.textureManager.bindTexture(texture);
             RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glTranslatef(0, 0, -0.001F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.translatef(0, 0, -0.001F);
             RenderPlanet.textureManager.bindTexture(textureJupiterUpper);
             size *= 1.001F;
             RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks * 0.85F);
@@ -108,46 +108,45 @@ public class RenderPlanet
         BufferBuilder worldRenderer = tessellator.getBuffer();
         if (prog <= 1F - span)
         {
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(x, yab, 0F).tex(prog, y1).endVertex();
             worldRenderer.pos(x + width, yab, 0F).tex(prog + span, y1).endVertex();
             worldRenderer.pos(x + width, yaa, 0F).tex(prog + span, y0).endVertex();
             worldRenderer.pos(x, yaa, 0F).tex(prog, y0).endVertex();
             tessellator.draw();
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(x, ybb, 0F).tex(prog, y3).endVertex();
             worldRenderer.pos(x + width, ybb, 0F).tex(prog + span, y3).endVertex();
             worldRenderer.pos(x + width, yba, 0F).tex(prog + span, y2).endVertex();
             worldRenderer.pos(x, yba, 0F).tex(prog, y2).endVertex();
-            tessellator.draw();
         }
         else
         {
             double xp = x + width * (1F - prog) / span;
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(x, yab, 0F).tex(prog, y1).endVertex();
             worldRenderer.pos(xp, yab, 0F).tex(1.0F, y1).endVertex();
             worldRenderer.pos(xp, yaa, 0F).tex(1.0F, y0).endVertex();
             worldRenderer.pos(x, yaa, 0F).tex(prog, y0).endVertex();
             tessellator.draw();
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(x, ybb, 0F).tex(prog, y3).endVertex();
             worldRenderer.pos(xp, ybb, 0F).tex(1.0F, y3).endVertex();
             worldRenderer.pos(xp, yba, 0F).tex(1.0F, y2).endVertex();
             worldRenderer.pos(x, yba, 0F).tex(prog, y2).endVertex();
             tessellator.draw();
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(xp, yab, 0F).tex(0F, y1).endVertex();
             worldRenderer.pos(x + width, yab, 0F).tex(prog - 1F + span, y1).endVertex();
             worldRenderer.pos(x + width, yaa, 0F).tex(prog - 1F + span, y0).endVertex();
             worldRenderer.pos(xp, yaa, 0F).tex(0F, y0).endVertex();
             tessellator.draw();
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(xp, ybb, 0F).tex(0F, y3).endVertex();
             worldRenderer.pos(x + width, ybb, 0F).tex(prog - 1F + span, y3).endVertex();
             worldRenderer.pos(x + width, yba, 0F).tex(prog - 1F + span, y2).endVertex();
             worldRenderer.pos(xp, yba, 0F).tex(0F, y2).endVertex();
-            tessellator.draw();
         }
+        tessellator.draw();
     }
 }

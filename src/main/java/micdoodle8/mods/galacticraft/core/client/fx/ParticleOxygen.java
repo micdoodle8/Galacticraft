@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

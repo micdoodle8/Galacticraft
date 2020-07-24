@@ -48,29 +48,29 @@
 //    @Override
 //    public void doRender(EntityTier1Rocket entity, double par2, double par4, double par6, float par8, float par9)
 //    {
-//        GL11.glPushMatrix();
+//        RenderSystem.pushMatrix();
 //        final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
 //        final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
 //
-//        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-//        GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
-//        GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
-//        GL11.glTranslatef(0.0F, entity.getRenderOffsetY(), 0.0F);
+//        RenderSystem.translatef((float) par2, (float) par4, (float) par6);
+//        RenderSystem.rotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(-var24, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.rotatef(-var25, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.translatef(0.0F, entity.getRenderOffsetY(), 0.0F);
 //        final float var28 = entity.rollAmplitude - par9;
 //
 //        if (var28 > 0.0F)
 //        {
 //            final float i = entity.getLaunched() ? (5 - MathHelper.floor(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
-//            GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 0.0F);
-//            GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 1.0F);
+//            RenderSystem.rotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 1.0F);
 //        }
 //
 //        this.bindEntityTexture(entity);
-//        GL11.glScalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
 //        this.rocketModel.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    @Override

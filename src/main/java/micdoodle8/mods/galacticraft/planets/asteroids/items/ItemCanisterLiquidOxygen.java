@@ -83,7 +83,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
 
     public static void saveDamage(ItemStack itemstack, int damage)
     {
-        ItemCanisterLiquidOxygen.craftingvalues.put(itemstack, Integer.valueOf(damage));
+        ItemCanisterLiquidOxygen.craftingvalues.put(itemstack, damage);
     }
 
     @Override

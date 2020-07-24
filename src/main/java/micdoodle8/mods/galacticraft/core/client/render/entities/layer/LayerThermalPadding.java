@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
@@ -116,11 +116,11 @@
 //            model.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 //
 //            // Start alpha render
-//            GlStateManager.disableLighting();
+//            RenderSystem.disableLighting();
 //            Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
-//            GlStateManager.enableAlphaTest();
-//            GlStateManager.enableBlend();
-//            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//            RenderSystem.enableAlphaTest();
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFunc(770, 771);
 //            float time = entityLivingBaseIn.ticksExisted / 10.0F;
 //            float sTime = (float) Math.sin(time) * 0.5F + 0.5F;
 //
@@ -144,12 +144,12 @@
 //                }
 //            }
 //
-//            GlStateManager.color4f(r, g, b, 0.4F * sTime);
+//            RenderSystem.color4f(r, g, b, 0.4F * sTime);
 //            model.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//            GlStateManager.color4f(1, 1, 1, 1);
-//            GlStateManager.disableBlend();
-//            GlStateManager.enableAlphaTest();
-//            GlStateManager.enableLighting();
+//            RenderSystem.color4f(1, 1, 1, 1);
+//            RenderSystem.disableBlend();
+//            RenderSystem.enableAlphaTest();
+//            RenderSystem.enableLighting();
 //        }
 //    }
 //

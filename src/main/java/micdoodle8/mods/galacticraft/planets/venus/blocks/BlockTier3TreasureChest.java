@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVe
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 
 public class BlockTier3TreasureChest extends BlockTier1TreasureChest
 {

@@ -1,27 +1,17 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DifficultyInstance;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 import javax.annotation.Nullable;
 
@@ -40,14 +30,14 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
         double difficulty = 0;
         switch (this.world.getDifficulty())
         {
-        case HARD:
-            difficulty = 2D;
-            break;
-        case NORMAL:
-            difficulty = 1D;
-            break;
-        default:
-            break;
+            case HARD:
+                difficulty = 2D;
+                break;
+            case NORMAL:
+                difficulty = 1D;
+                break;
+            default:
+                break;
         }
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3 + 0.05 * difficulty);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D + difficulty);

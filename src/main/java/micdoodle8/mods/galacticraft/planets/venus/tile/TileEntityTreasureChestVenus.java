@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;

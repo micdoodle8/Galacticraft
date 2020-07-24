@@ -40,12 +40,12 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     public static TileEntityType<TileEntityPainter> TYPE;
 
     private static final int RANGE_DEFAULT = 96;
-    public static Map<DimensionType, Set<BlockVec3>> loadedTilesForDim = new HashMap<>();
+    public static final Map<DimensionType, Set<BlockVec3>> loadedTilesForDim = new HashMap<>();
 
     public int range = RANGE_DEFAULT;  //currently unused
 
-    public int[] glassColor = new int[]{-1, -1, -1};  //Size of this array must match GlassType enum
-    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
+    public final int[] glassColor = new int[]{-1, -1, -1};  //Size of this array must match GlassType enum
+    public final Set<PlayerEntity> playersUsing = new HashSet<>();
 
     public int guiColor = 0xffffff;
 
@@ -82,7 +82,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
                 MaterialColor mc = b.getDefaultState().getMaterialColor(world, null);
                 color = mc.colorValue;
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
             }
         }
@@ -191,13 +191,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     private static Set<BlockVec3> getLoadedTiles(World world)
     {
         DimensionType dimID = GCCoreUtil.getDimensionType(world);
-        Set<BlockVec3> loaded = loadedTilesForDim.get(dimID);
-
-        if (loaded == null)
-        {
-            loaded = new HashSet<BlockVec3>();
-            loadedTilesForDim.put(dimID, loaded);
-        }
+        Set<BlockVec3> loaded = loadedTilesForDim.computeIfAbsent(dimID, k -> new HashSet<>());
 
         return loaded;
     }
@@ -298,15 +292,15 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     {
         switch (index)
         {
-        case 0:  //Apply Paint
-            this.applyColorToItem(this.getStackInSlot(1), this.guiColor, player);
-            break;
-        case 1:  //Mix Colors
-            this.takeColorFromItem(this.getStackInSlot(0));
-            break;
-        case 2:  //Reset Colors
-            this.guiColor = 0xffffff;
-            break;
+            case 0:  //Apply Paint
+                this.applyColorToItem(this.getStackInSlot(1), this.guiColor, player);
+                break;
+            case 1:  //Mix Colors
+                this.takeColorFromItem(this.getStackInSlot(0));
+                break;
+            case 2:  //Reset Colors
+                this.guiColor = 0xffffff;
+                break;
         }
     }
 

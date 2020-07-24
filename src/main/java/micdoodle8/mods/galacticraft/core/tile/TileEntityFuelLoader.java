@@ -4,17 +4,17 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
@@ -29,7 +29,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -46,7 +46,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
     private final int tankCapacity = 12000;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank fuelTank = new FluidTank(this.tankCapacity);
+    public final FluidTank fuelTank = new FluidTank(this.tankCapacity);
     public IFuelable attachedFuelable;
     private boolean loadedFuelLastTick = false;
 
@@ -188,7 +188,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return (slotID == 1 && itemstack != null && itemstack.getItem() == GCItems.fuelCanister) || (slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem()));
+        return slotID == 1 && itemstack.getItem() == GCItems.fuelCanister || slotID == 0 && ItemElectricBase.isElectricItem(itemstack.getItem());
     }
 
     @Override
@@ -348,17 +348,17 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 
@@ -367,17 +367,17 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         switch (this.getSide(MachineSide.PIPE_IN))
         {
-        case RIGHT:
-        default:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-            return getFront().rotateY();
+            case RIGHT:
+            default:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+                return getFront().rotateY();
         }
     }
 

@@ -13,11 +13,8 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
-
-import static micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusFeatures.CVENUS_DUNGEON_ENTRANCE;
 
 public class EntranceCraterVenus extends SizedPieceVenus
 {
@@ -75,18 +72,18 @@ public class EntranceCraterVenus extends SizedPieceVenus
         {
             switch (this.getCoordBaseMode())
             {
-            case SOUTH:
-                mirror = Mirror.LEFT_RIGHT;
-                break;
-            case WEST:
-                mirror = Mirror.LEFT_RIGHT;
-                rotation = Rotation.CLOCKWISE_90;
-                break;
-            case EAST:
-                rotation = Rotation.CLOCKWISE_90;
-                break;
-            default:
-                break;
+                case SOUTH:
+                    mirror = Mirror.LEFT_RIGHT;
+                    break;
+                case WEST:
+                    mirror = Mirror.LEFT_RIGHT;
+                    rotation = Rotation.CLOCKWISE_90;
+                    break;
+                case EAST:
+                    rotation = Rotation.CLOCKWISE_90;
+                    break;
+                default:
+                    break;
             }
         }
 

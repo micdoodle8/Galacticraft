@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
@@ -85,7 +84,7 @@ public abstract class KeyHandler
             {
                 if (state)
                 {
-                    this.keyDown(type, keyBinding, tickEnd, state != this.keyDown[i]);
+                    this.keyDown(type, keyBinding, tickEnd, !this.keyDown[i]);
                 }
                 else
                 {
@@ -108,7 +107,7 @@ public abstract class KeyHandler
             {
                 if (state)
                 {
-                    this.keyDown(type, keyBinding, tickEnd, state != this.keyDown[i + this.keyBindings.length]);
+                    this.keyDown(type, keyBinding, tickEnd, !this.keyDown[i + this.keyBindings.length]);
                 }
                 else
                 {

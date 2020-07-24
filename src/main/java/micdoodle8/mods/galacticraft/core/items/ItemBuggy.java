@@ -68,9 +68,9 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final float var4 = 1.0F;
         final float var5 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * var4;
         final float var6 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * var4;
-        final double var7 = playerIn.prevPosX + (playerIn.posX - playerIn.prevPosX) * var4;
-        final double var9 = playerIn.prevPosY + (playerIn.posY - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
-        final double var11 = playerIn.prevPosZ + (playerIn.posZ - playerIn.prevPosZ) * var4;
+        final double var7 = playerIn.prevPosX + (playerIn.getPosX() - playerIn.prevPosX) * var4;
+        final double var9 = playerIn.prevPosY + (playerIn.getPosY() - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
+        final double var11 = playerIn.prevPosZ + (playerIn.getPosZ() - playerIn.prevPosZ) * var4;
         final Vec3d var13 = new Vec3d(var7, var9, var11);
         final float var14 = MathHelper.cos(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
         final float var15 = MathHelper.sin(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
@@ -80,7 +80,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final float var20 = var14 * var16;
         final double var21 = 5.0D;
         final Vec3d var23 = var13.add(var18 * var21, var17 * var21, var20 * var21);
-        final RayTraceResult var24 = worldIn.rayTraceBlocks(new RayTraceContext(var13, var23, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, playerIn));
+        final BlockRayTraceResult var24 = worldIn.rayTraceBlocks(new RayTraceContext(var13, var23, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, playerIn));
 
         if (var24.getType() == RayTraceResult.Type.MISS)
         {
@@ -93,9 +93,9 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             final float var27 = 1.0F;
             final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getBoundingBox().grow(var25.x * var21, var25.y * var21, var25.z * var21).expand(var27, var27, var27));
 
-            for (int i = 0; i < var28.size(); ++i)
+            for (Object o : var28)
             {
-                final Entity var30 = (Entity) var28.get(i);
+                final Entity var30 = (Entity) o;
 
                 if (var30.canBeCollidedWith())
                 {
@@ -117,7 +117,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             {
                 if (var24.getType() == RayTraceResult.Type.BLOCK)
                 {
-                    BlockRayTraceResult blockResult = (BlockRayTraceResult) var24;
+                    BlockRayTraceResult blockResult = var24;
                     int x = blockResult.getPos().getX();
                     int y = blockResult.getPos().getY();
                     int z = blockResult.getPos().getZ();

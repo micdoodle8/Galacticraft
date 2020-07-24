@@ -29,8 +29,7 @@ public class EntityMoveHelperCeiling extends MovementController
 
             if (d3 >= 2.500000277905201E-7D)
             {
-                float f = (float) MathHelper.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - 90.0F;
-                this.mob.rotationYaw = f;
+                this.mob.rotationYaw = (float) MathHelper.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - 90.0F;
                 this.mob.setAIMoveSpeed((float) (this.speed * this.mob.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue()));
 
                 if (d2 > 0.0D && d0 * d0 + d1 * d1 < 1.0D)

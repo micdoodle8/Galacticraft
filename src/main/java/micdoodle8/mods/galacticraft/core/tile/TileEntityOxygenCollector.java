@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
@@ -32,7 +32,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
 
     public boolean active;
     public static final int OUTPUT_PER_TICK = 100;
-    public static float OXYGEN_PER_PLANT = 0.75F;
+    public static final float OXYGEN_PER_PLANT = 0.75F;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public float lastOxygenCollected;
     private boolean noAtmosphericOxygen = true;

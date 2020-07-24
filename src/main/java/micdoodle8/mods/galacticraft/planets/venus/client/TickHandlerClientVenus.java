@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.client;
 
 import com.google.common.collect.Maps;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
@@ -45,10 +44,8 @@ public class TickHandlerClientVenus
         final ClientPlayerEntity player = minecraft.player;
         if (player != null && !ConfigManagerPlanets.disableAmbientLightning)
         {
-            Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
-            while (it.hasNext())
+            for (Map.Entry<BlockPos, Integer> entry : lightning.entrySet())
             {
-                Map.Entry<BlockPos, Integer> entry = it.next();
                 long seed = entry.getValue() / 10 + entry.getKey().getX() + entry.getKey().getZ();
                 FakeLightningBoltRenderer.renderBolt(seed, entry.getKey().getX() - ClientProxyCore.playerPosX, entry.getKey().getY() - ClientProxyCore.playerPosY, entry.getKey().getZ() - ClientProxyCore.playerPosZ);
             }

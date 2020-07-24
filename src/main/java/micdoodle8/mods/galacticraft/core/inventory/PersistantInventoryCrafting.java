@@ -1,18 +1,17 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 
 public class PersistantInventoryCrafting extends CraftingInventory
 {
-    public NonNullList<ItemStack> stacks;
+    public final NonNullList<ItemStack> stacks;
 
     private final int inventoryWidth;
     private final int inventoryHeight;

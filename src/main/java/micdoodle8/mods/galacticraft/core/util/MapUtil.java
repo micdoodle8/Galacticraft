@@ -48,17 +48,17 @@ import java.util.zip.Inflater;
 public class MapUtil
 {
     //Mapgen management
-    public static AtomicBoolean calculatingMap = new AtomicBoolean();
-    public static AtomicBoolean resetClientFlag = new AtomicBoolean();
+    public static final AtomicBoolean calculatingMap = new AtomicBoolean();
+    public static final AtomicBoolean resetClientFlag = new AtomicBoolean();
     private static MapGen currentMap = null;
     private static MapGen slowMap = null;
     private static Thread threadCurrentMap = null;
     private static Thread threadSlowMap = null;
     public static boolean doneOverworldTexture = false;
     private static final LinkedList<MapGen> queuedMaps = new LinkedList<>();
-    public static LinkedList<String> clientRequests = new LinkedList<>();
+    public static final LinkedList<String> clientRequests = new LinkedList<>();
 
-    public static ArrayList<BlockVec3> biomeColours = new ArrayList<BlockVec3>(40);
+    public static final ArrayList<BlockVec3> biomeColours = new ArrayList<>(40);
     private static final Random rand = new Random();
     private static byte[] overworldImageBytesPart; //Used client LogicalSide only
     private static byte[] overworldImageCompressed = null;
@@ -145,28 +145,25 @@ public class MapUtil
                 Chunk chunk = world.getChunk(chunkXPos + x0, chunkZPos + z0);
                 BlockPos pos = null;
 
-                if (chunk != null)
+                for (int z = 0; z < 16; z++)
                 {
-                    for (int z = 0; z < 16; z++)
+                    for (int x = 0; x < 16; x++)
                     {
-                        for (int x = 0; x < 16; x++)
+                        int l4 = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
+                        BlockState state = Blocks.AIR.getDefaultState();
+
+                        if (l4 > 1)
                         {
-                            int l4 = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                            BlockState state = Blocks.AIR.getDefaultState();
-
-                            if (l4 > 1)
+                            do
                             {
-                                do
-                                {
-                                    --l4;
-                                    state = chunk.getBlockState(new BlockPos(x, l4, z));
-                                }
-                                while (state.getMaterialColor(world, pos) == MaterialColor.AIR && l4 > 0);
+                                --l4;
+                                state = chunk.getBlockState(new BlockPos(x, l4, z));
                             }
-
-                            int col = pos != null ? state.getMaterialColor(world, pos).colorValue : 0;
-                            image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
+                            while (state.getMaterialColor(world, pos) == MaterialColor.AIR && l4 > 0);
                         }
+
+                        int col = pos != null ? state.getMaterialColor(world, pos).colorValue : 0;
+                        image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
                     }
                 }
             }
@@ -180,10 +177,6 @@ public class MapUtil
             return;
         }
         World overworld = WorldUtil.getProviderForDimensionServer(DimensionType.OVERWORLD).getWorld();
-        if (overworld == null)
-        {
-            return;
-        }
 
         if (overworld.getWorldType() == WorldType.FLAT || !(overworld.getDimension() instanceof OverworldDimension))
         {
@@ -272,7 +265,7 @@ public class MapUtil
         }
     }
 
-    public static void sendMapPacket(int cx, int cz, ServerPlayerEntity client, byte[] largeMap) throws IOException
+    public static void sendMapPacket(int cx, int cz, ServerPlayerEntity client, byte[] largeMap)
     {
         byte[] compressed;
         if (cx == LARGEMAP_MARKER)
@@ -308,7 +301,7 @@ public class MapUtil
         sendMapPacketAllCompressed(cx, cz, compressed);
     }
 
-    private static void sendMapPacketCompressed(int cx, int cz, ServerPlayerEntity client, byte[] map) throws IOException
+    private static void sendMapPacketCompressed(int cx, int cz, ServerPlayerEntity client, byte[] map)
     {
         if (cx == LARGEMAP_MARKER && map.length < 2080000)
         {
@@ -435,7 +428,7 @@ public class MapUtil
             {
                 Thread.sleep(90);
             }
-            catch (InterruptedException e)
+            catch (InterruptedException ignored)
             {
             }
             slowMap.writeOutputFile(false);
@@ -485,10 +478,7 @@ public class MapUtil
                     }
                     else
                     {
-                        if (slowMap != null)
-                        {
-                            slowMap.resume();
-                        }
+                        slowMap.resume();
                     }
                 }
             }
@@ -526,7 +516,6 @@ public class MapUtil
                 calculatingMap.set(false);
             }
 
-            return;
         }
     }
 
@@ -710,7 +699,7 @@ public class MapUtil
                 GalacticraftCore.jpgWriter.write(null, new IIOImage(img, null, null), GalacticraftCore.writeParam);
                 outputStreamA.close();
             }
-            catch (Exception e)
+            catch (Exception ignored)
             {
             }
         }
@@ -761,10 +750,8 @@ public class MapUtil
             {
                 byte[] overWorldImageComplete = Arrays.copyOf(raw, cz);
                 int offsetPartB = cz / 2;
-                for (int i = offsetPartB; i < cz; i++)
-                {
-                    overWorldImageComplete[i] = overworldImageBytesPart[i - offsetPartB];
-                }
+                if (cz - offsetPartB >= 0)
+                    System.arraycopy(overworldImageBytesPart, offsetPartB - offsetPartB, overWorldImageComplete, offsetPartB, cz - offsetPartB);
                 overworldImageBytesPart = null;
                 raw = overWorldImageComplete;
             }
@@ -781,10 +768,8 @@ public class MapUtil
             {
                 byte[] overWorldImageComplete = Arrays.copyOf(overworldImageBytesPart, cz);
                 int offsetPartB = cz / 2;
-                for (int i = offsetPartB; i < cz; i++)
-                {
-                    overWorldImageComplete[i] = raw[i - offsetPartB];
-                }
+                if (cz - offsetPartB >= 0)
+                    System.arraycopy(raw, offsetPartB - offsetPartB, overWorldImageComplete, offsetPartB, cz - offsetPartB);
                 overworldImageBytesPart = null;
                 raw = overWorldImageComplete;
             }
@@ -829,7 +814,7 @@ public class MapUtil
             //raw is a WIDTH_WORLD x HEIGHT_WORLD array of 2 byte entries: biome type followed by height
             //Here we will make a texture from that, but twice as large: 4 pixels for each data point, it just looks better that way when the texture is used
             BufferedImage worldImageLarge = new BufferedImage(OVERWORLD_LARGEMAP_WIDTH * 2, OVERWORLD_LARGEMAP_HEIGHT * 2, BufferedImage.TYPE_INT_RGB);
-            ArrayList<Integer> cols = new ArrayList<Integer>();
+            ArrayList<Integer> cols = new ArrayList<>();
             int lastcol = -1;
             int idx = 0;
             for (int x = 0; x < OVERWORLD_LARGEMAP_WIDTH; x++)
@@ -878,7 +863,7 @@ public class MapUtil
         {
             //raw is a WIDTH_STD x HEIGHT_STD array of 2 byte entries: biome type followed by height
             BufferedImage worldImage = new BufferedImage(OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT, BufferedImage.TYPE_INT_RGB);
-            ArrayList<Integer> cols = new ArrayList<Integer>();
+            ArrayList<Integer> cols = new ArrayList<>();
             int lastcol = -1;
             int idx = 0;
             for (int x = 0; x < OVERWORLD_TEXTURE_WIDTH; x++)
@@ -920,20 +905,17 @@ public class MapUtil
 
             NativeImage result = convertTo12pxTexture(worldImage, paletteImage);
 
-            if (result != null)
+            if (ClientProxyCore.overworldTextureWide == null)
             {
-                if (ClientProxyCore.overworldTextureWide == null)
-                {
-                    ClientProxyCore.overworldTextureWide = new DynamicTextureProper(OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT, false);
-                }
-                if (ClientProxyCore.overworldTextureClient == null)
-                {
-                    ClientProxyCore.overworldTextureClient = new DynamicTextureProper(OVERWORLD_TEXTURE_HEIGHT, OVERWORLD_TEXTURE_HEIGHT, false);
-                }
-                ClientProxyCore.overworldTextureWide.update(result);
-                ClientProxyCore.overworldTextureClient.update(result);
-                ClientProxyCore.overworldTexturesValid = true;
+                ClientProxyCore.overworldTextureWide = new DynamicTextureProper(OVERWORLD_TEXTURE_WIDTH, OVERWORLD_TEXTURE_HEIGHT, false);
             }
+            if (ClientProxyCore.overworldTextureClient == null)
+            {
+                ClientProxyCore.overworldTextureClient = new DynamicTextureProper(OVERWORLD_TEXTURE_HEIGHT, OVERWORLD_TEXTURE_HEIGHT, false);
+            }
+            ClientProxyCore.overworldTextureWide.update(result);
+            ClientProxyCore.overworldTextureClient.update(result);
+            ClientProxyCore.overworldTexturesValid = true;
         }
         else if (folder != null)
         {
@@ -967,7 +949,7 @@ public class MapUtil
 
         DimensionType dim = GCCoreUtil.getDimensionType(world);
         boolean result = true;
-        if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, result))
+        if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, true))
         {
             result = false;
         }
@@ -1247,30 +1229,27 @@ public class MapUtil
             {
                 Chunk chunk = world.getChunk(chunkXPos + x0, chunkZPos + z0);
 
-                if (chunk != null)
+                for (int z = 0; z < 16; z++)
                 {
-                    for (int z = 0; z < 16; z++)
+                    for (int x = 0; x < 16; x++)
                     {
-                        for (int x = 0; x < 16; x++)
+                        int l4 = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
+                        BlockState state = Blocks.AIR.getDefaultState();
+                        BlockPos pos = null;
+
+                        if (l4 > 1)
                         {
-                            int l4 = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
-                            BlockState state = Blocks.AIR.getDefaultState();
-                            BlockPos pos = null;
-
-                            if (l4 > 1)
+                            do
                             {
-                                do
-                                {
-                                    --l4;
-                                    pos = new BlockPos(x, l4, z);
-                                    state = chunk.getBlockState(pos);
-                                }
-                                while (state.getMaterialColor(world, pos) == MaterialColor.AIR && l4 > 0);
+                                --l4;
+                                pos = new BlockPos(x, l4, z);
+                                state = chunk.getBlockState(pos);
                             }
-
-                            int col = pos != null ? state.getMaterialColor(world, pos).colorValue : 0;
-                            image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
+                            while (state.getMaterialColor(world, pos) == MaterialColor.AIR && l4 > 0);
                         }
+
+                        int col = pos != null ? state.getMaterialColor(world, pos).colorValue : 0;
+                        image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
                     }
                 }
             }

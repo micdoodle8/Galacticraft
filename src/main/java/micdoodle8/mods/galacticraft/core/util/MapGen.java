@@ -43,7 +43,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
 
     //    private BiomeCache biomeCache;
     private Layer genBiomes;
-//    private Layer biomeIndexLayer;
+    //    private Layer biomeIndexLayer;
     public File biomeMapFile;
     private byte[] biomeAndHeightArray = null;
     private int biomeMapSizeX;
@@ -237,7 +237,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
         {
             Thread.sleep(90);
         }
-        catch (InterruptedException e)
+        catch (InterruptedException ignored)
         {
         }
 
@@ -254,7 +254,7 @@ public class MapGen /*extends BiomeProvider*/ implements Runnable
                     //Sleep for a bit, next time around maybe will not be paused?
                     Thread.sleep(1211);
                 }
-                catch (InterruptedException e)
+                catch (InterruptedException ignored)
                 {
                 }
             }

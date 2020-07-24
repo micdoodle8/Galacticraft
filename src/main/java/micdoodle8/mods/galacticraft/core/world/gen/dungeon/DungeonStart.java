@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
@@ -16,8 +15,8 @@ import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGE
 
 public class DungeonStart extends EntranceCrater
 {
-    public List<StructurePiece> attachedComponents = Lists.newArrayList();
-    public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
+    public final List<StructurePiece> attachedComponents = Lists.newArrayList();
+    public final List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
     //    public DungeonStart(IStructurePieceType type)
 //    {

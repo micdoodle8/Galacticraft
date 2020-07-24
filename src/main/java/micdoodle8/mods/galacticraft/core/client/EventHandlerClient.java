@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -15,20 +15,19 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
 
 public class EventHandlerClient
 {
-    public static Minecraft mc = Minecraft.getInstance();
+    public static final Minecraft mc = Minecraft.getInstance();
     public static boolean sneakRenderOverride;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     //Lowest priority to do the PushMatrix last, just before vanilla RenderPlayer - this also means if it gets cancelled first by another mod, this will never be called
     public void onRenderPlayerPre(RenderPlayerEvent.Pre event)
     {
-        GL11.glPushMatrix();
+        RenderSystem.pushMatrix();
 
-        final PlayerEntity player = event.getEntityPlayer();
+        final PlayerEntity player = event.getPlayer();
 
         if (player.getRidingEntity() instanceof ICameraZoomEntity && player == Minecraft.getInstance().player
                 && Minecraft.getInstance().gameSettings.thirdPersonView == 0)
@@ -38,12 +37,12 @@ public class EventHandlerClient
             if (rotateOffset > -10F)
             {
                 rotateOffset += ClientProxyCore.PLAYER_Y_OFFSET;
-                GL11.glTranslatef(0, -rotateOffset, 0);
+                RenderSystem.translatef(0, -rotateOffset, 0);
                 float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.getPartialRenderTick();
                 float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.getPartialRenderTick();
-                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(0, rotateOffset, 0);
+                RenderSystem.rotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+                RenderSystem.rotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                RenderSystem.translatef(0, rotateOffset, 0);
             }
         }
 
@@ -59,9 +58,9 @@ public class EventHandlerClient
     //Highest priority to do the PushMatrix first, just after vanilla RenderPlayer
     public void onRenderPlayerPost(RenderPlayerEvent.Post event)
     {
-        GL11.glPopMatrix();
+        RenderSystem.popMatrix();
 
-        if (event.getEntityPlayer() instanceof ClientPlayerEntity)
+        if (event.getPlayer() instanceof ClientPlayerEntity)
         {
             sneakRenderOverride = false;
         }
@@ -81,7 +80,7 @@ public class EventHandlerClient
             if (ClientProxyCore.overworldTexturesValid)
             {
                 event.celestialBodyTexture = null;
-                GlStateManager.bindTexture(ClientProxyCore.overworldTextureClient.getGlTextureId());
+                RenderSystem.bindTexture(ClientProxyCore.overworldTextureClient.getGlTextureId());
             }
         }
     }

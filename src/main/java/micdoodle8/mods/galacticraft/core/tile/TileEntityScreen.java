@@ -16,14 +16,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static net.minecraft.util.Direction.*;
 
 public class TileEntityScreen extends TileEntityAdvanced implements ITileClientUpdates
 {
@@ -735,7 +732,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 
         Direction facing = this.getBlockState().get(BlockScreen.FACING);
         BlockVec3 vec = new BlockVec3(this);
-        ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
+        ArrayList<TileEntityScreen> screenList = new ArrayList<>();
 
 //		int side = this.getRight(facing);
         Direction side = getFront().rotateY();

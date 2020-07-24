@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -28,6 +27,7 @@ import net.minecraft.potion.Potions;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.server.ServerWorld;
@@ -43,7 +43,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     }
 
     @Override
-    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vec3d getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -106,23 +106,23 @@ public class TeleportTypeAsteroids implements ITeleportType
 
                     if (goodAsteroidEntry(world, bv3.x, bv3.y, bv3.z))
                     {
-                        return new Vector3D(bv3.x, 310, bv3.z);
+                        return new Vec3d(bv3.x, 310, bv3.z);
                     }
                     if (goodAsteroidEntry(world, bv3.x + 2, bv3.y, bv3.z + 2))
                     {
-                        return new Vector3D(bv3.x + 2, 310, bv3.z + 2);
+                        return new Vec3d(bv3.x + 2, 310, bv3.z + 2);
                     }
                     if (goodAsteroidEntry(world, bv3.x + 2, bv3.y, bv3.z - 2))
                     {
-                        return new Vector3D(bv3.x + 2, 310, bv3.z - 2);
+                        return new Vec3d(bv3.x + 2, 310, bv3.z - 2);
                     }
                     if (goodAsteroidEntry(world, bv3.x - 2, bv3.y, bv3.z - 2))
                     {
-                        return new Vector3D(bv3.x - 2, 310, bv3.z - 2);
+                        return new Vec3d(bv3.x - 2, 310, bv3.z - 2);
                     }
                     if (goodAsteroidEntry(world, bv3.x - 2, bv3.y, bv3.z + 2))
                     {
-                        return new Vector3D(bv3.x - 2, 310, bv3.z + 2);
+                        return new Vec3d(bv3.x - 2, 310, bv3.z + 2);
                     }
 
                     //Failed to find an asteroid even though there should be one there
@@ -139,11 +139,11 @@ public class TeleportTypeAsteroids implements ITeleportType
 
             GCLog.info("Failed to find good large asteroid landing spot! Falling back to making a small one.");
             this.makeSmallLandingSpot(world, x, z);
-            return new Vector3D(x, 310, z);
+            return new Vec3d(x, 310, z);
         }
 
         GCLog.severe("Null player when teleporting to Asteroids!");
-        return new Vector3D(0, 310, 0);
+        return new Vec3d(0, 310, 0);
     }
 
     private boolean goodAsteroidEntry(World world, int x, int yorig, int z)
@@ -215,7 +215,6 @@ public class TeleportTypeAsteroids implements ITeleportType
         }
 
         this.makePlatform(world, x, 48 + world.rand.nextInt(128), z);
-        return;
     }
 
     private void loadChunksAround(int x, int z, int i, AbstractChunkProvider cp)
@@ -276,13 +275,13 @@ public class TeleportTypeAsteroids implements ITeleportType
     }
 
     @Override
-    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
+    public Vec3d getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
+        return new Vec3d(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override
-    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vec3d getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         return null;
     }

@@ -29,6 +29,7 @@ import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class FluidUtil
 {
@@ -277,7 +278,6 @@ public class FluidUtil
                 inventory.set(slot, stack);
                 tank.drain(used, IFluidHandler.FluidAction.EXECUTE);
             }
-            return;
         }
 //        else if (slotItem.getCount() == 1)
 //        {
@@ -530,7 +530,7 @@ public class FluidUtil
             if (fluidHandler.isPresent())
             {
                 FluidStack drain = fluidHandler.orElse(null).drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-                return drain == null ? 0 : drain.getAmount();
+                return drain.getAmount();
             }
         }
         return 0;
@@ -719,25 +719,14 @@ public class FluidUtil
     {
         LazyOptional<IFluidHandlerItem> holder = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
         IFluidHandlerItem handler = holder.orElse(null);
-        if (FluidUtil.isBucket(container) && handler != null)
+        if (FluidUtil.isBucket(container))
         {
             return new ItemStack(Items.BUCKET, container.getCount());
         }
-        else if (handler != null)
+        else
         {
             handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
             return handler.getContainer();
-        }
-        else
-        {
-            container.shrink(1);
-
-            if (!container.isEmpty())
-            {
-                return ItemStack.EMPTY;
-            }
-
-            return container;
         }
     }
 
@@ -751,7 +740,7 @@ public class FluidUtil
         BlockPos pos = new BlockPos(i, j, k);
         Block block = entity.world.getBlockState(pos).getBlock();
 
-        if (block != null && block instanceof IFluidBlock && ((IFluidBlock) block).getFluid().getRegistryName().equals(fluid.getRegistryName()))
+        if (block instanceof IFluidBlock && Objects.equals(((IFluidBlock) block).getFluid().getRegistryName(), fluid.getRegistryName()))
         {
             double filled = ((IFluidBlock) block).getFilledPercentage(entity.world, pos);
             if (filled < 0)
@@ -779,17 +768,13 @@ public class FluidUtil
 
         LazyOptional<IFluidHandlerItem> holder = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
         IFluidHandlerItem handlerItem = holder.orElse(null);
-        if (handlerItem != null)
+        if (container.getItem() == Items.BUCKET)
         {
-            if (container.getItem() == Items.BUCKET)
-            {
-                return true;
-            }
-
-            return handlerItem.getContainer().getItem() == Items.BUCKET;
+            return true;
         }
 
-        return false;
+        return handlerItem.getContainer().getItem() == Items.BUCKET;
+
     }
 
     @Nonnull

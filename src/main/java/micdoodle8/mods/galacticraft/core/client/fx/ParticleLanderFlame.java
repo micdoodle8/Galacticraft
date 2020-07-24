@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -7,13 +8,11 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.UUID;
@@ -53,8 +52,8 @@ public class ParticleLanderFlame extends SpriteTexturedParticle
     @Override
     public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
-        GL11.glDepthMask(false);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        RenderSystem.depthMask(false);
+        RenderSystem.disableDepthTest();
         float var8 = (this.age + partialTicks) / this.maxAge * 32.0F;
 
         if (var8 < 0.0F)
@@ -69,8 +68,8 @@ public class ParticleLanderFlame extends SpriteTexturedParticle
 
         this.particleScale = this.smokeParticleScale * var8;
         super.renderParticle(buffer, renderInfo, partialTicks);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthMask(true);
     }
 
     @Override
@@ -107,17 +106,14 @@ public class ParticleLanderFlame extends SpriteTexturedParticle
         {
             final List<?> var3 = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox().grow(1.0D, 0.5D, 1.0D));
 
-            if (var3 != null)
+            for (Object o : var3)
             {
-                for (int var4 = 0; var4 < var3.size(); ++var4)
-                {
-                    final Entity var5 = (Entity) var3.get(var4);
+                final Entity var5 = (Entity) o;
 
-                    if (var5 instanceof LivingEntity && var5.isAlive() && !var5.isBurning() && !var5.getUniqueID().equals(this.ridingEntity))
-                    {
-                        var5.setFire(3);
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionType(var5.world), new Object[]{var5.getEntityId()}));
-                    }
+                if (var5 instanceof LivingEntity && var5.isAlive() && !var5.isBurning() && !var5.getUniqueID().equals(this.ridingEntity))
+                {
+                    var5.setFire(3);
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionType(var5.world), new Object[]{var5.getEntityId()}));
                 }
             }
         }

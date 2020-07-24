@@ -11,7 +11,7 @@
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 //import net.minecraft.client.Minecraft;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.renderer.RenderHelper;
 //import net.minecraft.client.renderer.culling.ICamera;
 //import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -69,34 +69,34 @@
 //    public void doRender(EntityTier3Rocket entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
 //        float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks + 180;
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x, (float) y, (float) z);
-//        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
-//        GlStateManager.translatef(0.0F, entity.getRenderOffsetY(), 0.0F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(-pitch, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.translatef(0.0F, entity.getRenderOffsetY(), 0.0F);
 //        float rollAmplitude = entity.rollAmplitude / 3 - partialTicks;
 //
 //        if (rollAmplitude > 0.0F)
 //        {
 //            final float i = entity.getLaunched() ? (5 - MathHelper.floor(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
-//            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
-//            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
+//            RenderSystem.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
 //        }
 //
 //        this.bindEntityTexture(entity);
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-//        GlStateManager.scalef(0.8F, 0.8F, 0.8F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(0.8F, 0.8F, 0.8F);
 //        ClientUtil.drawBakedModel(rocketModel);
 //
 //        Vector3 teamColor = ClientUtil.updateTeamColor(PlayerUtil.getName(Minecraft.getInstance().player), true);
@@ -104,26 +104,26 @@
 //        if (teamColor != null)
 //        {
 //            int color = ColorUtil.to32BitColor(255, (int) (teamColor.floatZ() * 255), (int) (teamColor.floatY() * 255), (int) (teamColor.floatX() * 255));
-//            GlStateManager.disableTexture();
+//            RenderSystem.disableTexture();
 //            ClientUtil.drawBakedModelColored(coneModel, color);
 //        }
 //        else
 //        {
 //            ClientUtil.drawBakedModel(coneModel);
-//            GlStateManager.disableTexture();
+//            RenderSystem.disableTexture();
 //        }
 //
-//        GlStateManager.disableLighting();
+//        RenderSystem.disableLighting();
 //
 //        boolean red = Minecraft.getInstance().player.ticksExisted / 10 % 2 < 1;
 //        int color = ColorUtil.to32BitColor(255, 0, red ? 0 : 255, red ? 255 : 0);
 //        ClientUtil.drawBakedModelColored(cubeModel, color);
 //
-//        GlStateManager.enableTexture();
-//        GlStateManager.enableLighting();
+//        RenderSystem.enableTexture();
+//        RenderSystem.enableLighting();
 //
-//        GlStateManager.color3f(1F, 1F, 1F);
-//        GlStateManager.popMatrix();
+//        RenderSystem.color3f(1F, 1F, 1F);
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //

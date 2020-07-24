@@ -10,7 +10,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.FurnaceResultSlot;
@@ -41,21 +40,21 @@ public class ContainerCircuitFabricator extends Container
 
         // Diamond
         ArrayList<ItemStack> slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(0);
-        this.addSlot(new SlotSpecific(fabricator, 1, 15, 17, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 1, 15, 17, slotContentsList.toArray(new ItemStack[0])));
 
         // Silicon
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(1);
-        this.addSlot(new SlotSpecific(fabricator, 2, 74, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 2, 74, 46, slotContentsList.toArray(new ItemStack[0])));
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(2);
-        this.addSlot(new SlotSpecific(fabricator, 3, 74, 64, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 3, 74, 64, slotContentsList.toArray(new ItemStack[0])));
 
         // Redstone
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(3);
-        this.addSlot(new SlotSpecific(fabricator, 4, 122, 46, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 4, 122, 46, slotContentsList.toArray(new ItemStack[0])));
 
         // Optional
         slotContentsList = CircuitFabricatorRecipes.slotValidItems.get(4);
-        this.addSlot(new SlotSpecific(fabricator, 5, 145, 20, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
+        this.addSlot(new SlotSpecific(fabricator, 5, 145, 20, slotContentsList.toArray(new ItemStack[0])));
 
         // Smelting result
         this.addSlot(new FurnaceResultSlot(playerInv.player, fabricator, 6, 152, 86));

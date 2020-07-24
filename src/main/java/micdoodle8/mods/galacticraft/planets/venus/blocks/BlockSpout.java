@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

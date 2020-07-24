@@ -2,17 +2,15 @@ package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -21,8 +19,8 @@ public class ContainerSchematicAstroMiner extends Container
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SCHEMATIC_ASTRO_MINER)
     public static ContainerType<ContainerSchematicAstroMiner> TYPE;
 
-    public InventorySchematicAstroMiner craftMatrix = new InventorySchematicAstroMiner(this);
-    public IInventory craftResult = new CraftResultInventory();
+    public final InventorySchematicAstroMiner craftMatrix = new InventorySchematicAstroMiner(this);
+    public final IInventory craftResult = new CraftResultInventory();
     private final World world;
 
     public ContainerSchematicAstroMiner(int containerId, PlayerInventory playerInv)
@@ -149,14 +147,14 @@ public class ContainerSchematicAstroMiner extends Container
                 }
                 else
                 {
-                    if (par1 >= 15 && par1 < 42)
+                    if (par1 < 42)
                     {
                         if (!this.mergeItemStack(var4, 42, 51, false))
                         {
                             return ItemStack.EMPTY;
                         }
                     }
-                    else if (par1 >= 42 && par1 < 51)
+                    else if (par1 < 51)
                     {
                         if (!this.mergeItemStack(var4, 15, 42, false))
                         {

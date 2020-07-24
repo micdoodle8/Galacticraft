@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.items.ItemBase;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
@@ -10,6 +11,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import static micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems.register;
 
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class MarsItems
 {
     @ObjectHolder(MarsItemNames.deshPickaxe)

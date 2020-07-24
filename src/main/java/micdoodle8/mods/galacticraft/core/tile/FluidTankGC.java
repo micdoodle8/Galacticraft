@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class FluidTankGC extends FluidTank
 {
-    protected TileEntity tile;
+    protected final TileEntity tile;
 
     public FluidTankGC(int capacity, TileEntity tile)
     {

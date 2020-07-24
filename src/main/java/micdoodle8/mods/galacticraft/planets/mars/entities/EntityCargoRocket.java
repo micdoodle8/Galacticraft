@@ -63,16 +63,16 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         switch (rocketType)
         {
-        default:
-        case DEFAULT:
-        case INVENTORY27:
-            return MarsItems.rocketCargo1;
-        case INVENTORY36:
-            return MarsItems.rocketCargo2;
-        case INVENTORY54:
-            return MarsItems.rocketCargo3;
-        case PREFUELED:
-            return MarsItems.rocketCargoCreative;
+            default:
+            case DEFAULT:
+            case INVENTORY27:
+                return MarsItems.rocketCargo1;
+            case INVENTORY36:
+                return MarsItems.rocketCargo2;
+            case INVENTORY54:
+                return MarsItems.rocketCargo3;
+            case PREFUELED:
+                return MarsItems.rocketCargoCreative;
         }
     }
 
@@ -331,14 +331,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                 }
                 GCLog.info("Error: the server failed to load the dimension the cargo rocket is supposed to land in. Destroying rocket!");
                 this.remove();
-                return;
             }
             else
             {
                 GCLog.debug("Cargo rocket going into landing mode in same destination.");
                 this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                 this.setLaunchPhase(EnumLaunchPhase.LANDING);
-                return;
             }
         }
         else

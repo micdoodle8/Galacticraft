@@ -15,8 +15,8 @@ public class GuiElementGradientList extends FocusableGui
 {
     public static class ListElement
     {
-        public String value;
-        public int color;
+        public final String value;
+        public final int color;
 
         public ListElement(String value, int color)
         {
@@ -26,11 +26,11 @@ public class GuiElementGradientList extends FocusableGui
     }
 
     public static final int BUTTON_HEIGHT = 20;
-    public int width;
-    public int height;
-    public int xPosition;
-    public int yPosition;
-    public List<ListElement> listContents = new ArrayList<ListElement>();
+    public final int width;
+    public final int height;
+    public final int xPosition;
+    public final int yPosition;
+    public List<ListElement> listContents = new ArrayList<>();
     public int sliderPos;
     private int lastMousePosY;
     private boolean sliderGrabbed;

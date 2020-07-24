@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.prefab.entity;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
@@ -41,14 +42,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
-
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.lwjgl.opengl.GL11;
-
-import com.google.common.base.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Do not include this prefab class in your released mod download.
@@ -746,8 +744,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public void adjustDisplay(int[] data)
     {
-        GL11.glRotatef(data[4], -1, 0, 0);
-        GL11.glTranslatef(0, this.getHeight() / 4, 0);
+        RenderSystem.rotatef(data[4], -1, 0, 0);
+        RenderSystem.translatef(0, this.getHeight() / 4, 0);
     }
 
     /**

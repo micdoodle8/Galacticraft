@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import net.minecraft.item.Item;
-import net.minecraftforge.registries.ObjectHolder;
-
 public class ItemNames
 {
     public static final String ambientThermalController = "ambient_thermal_controller";
@@ -21,7 +18,7 @@ public class ItemNames
     public static final String canisterTin = "canister_tin";
     public static final String cannedBeef = "canned_beef";
     public static final String canvas = "canvas";
-    public static final String cheeseBlock = "null";
+    public static final String cheeseBlock = "cheese_block";
     public static final String cheeseCurd = "cheese_curd";
     public static final String cheeseSlice = "cheese_slice";
     public static final String cheeseburger = "cheeseburger";
@@ -59,9 +56,9 @@ public class ItemNames
     public static final String meteoricIronRaw = "meteoric_iron_raw";
     public static final String oilCanister = "oil_canister_partial";
     public static final String oxMask = "oxygen_mask";
-    public static final String oxTankHeavy = "null";
-    public static final String oxTankLight = "null";
-    public static final String oxTankMedium = "null";
+    public static final String oxTankHeavy = "oxygen_tank_heavy";
+    public static final String oxTankLight = "oxygen_tank_light";
+    public static final String oxTankMedium = "oxygen_tank_medium";
     public static final String oxygenCanisterInfinite = "infinite_oxygen";
     public static final String oxygenConcentrator = "oxygen_concentrator";
     public static final String oxygenFan = "air_fan";
@@ -101,12 +98,12 @@ public class ItemNames
     public static final String solarModule0 = "solar_module_0";
     public static final String solarModule1 = "solar_module_1";
     public static final String steelAxe = "steel_axe";
-    public static final String steelBoots = "null";
+    public static final String steelBoots = "steel_boots";
     //    public static final String foodItem = "food";
-    public static final String steelChestplate = "null";
-    public static final String steelHelmet = "null";
+    public static final String steelChestplate = "steel_chestplate";
+    public static final String steelHelmet = "steel_helmet";
     public static final String steelHoe = "steel_hoe";
-    public static final String steelLeggings = "null";
+    public static final String steelLeggings = "steel_leggings";
     public static final String steelPickaxe = "steel_pickaxe";
     public static final String steelSpade = "steel_shovel";
     public static final String steelSword = "steel_sword";

@@ -5,7 +5,7 @@
 //import net.minecraft.client.entity.player.ClientPlayerEntity;
 //import net.minecraft.client.renderer.entity.model.PlayerModel;
 //import net.minecraft.client.renderer.model.ModelRenderer;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.util.ResourceLocation;
 //
 //public class ModelPlayerGC extends PlayerModel<ClientPlayerEntity>
@@ -38,8 +38,8 @@
 //    @Override
 //    public void render(ClientPlayerEntity entityIn, float f1, float f2, float f3, float f4, float f5, float scale)
 //    {
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
 //        super.render(entityIn, f1, f2, f3, f4, f5, scale);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

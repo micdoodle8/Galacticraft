@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -8,7 +9,6 @@ import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCrashedProbe extends GuiContainerGC<ContainerCrashedProbe>
 {
@@ -27,7 +27,7 @@ public class GuiCrashedProbe extends GuiContainerGC<ContainerCrashedProbe>
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiCrashedProbe.guiTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;

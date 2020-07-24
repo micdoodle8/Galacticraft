@@ -8,7 +8,7 @@ import java.util.EnumSet;
 
 public class EntityAIThrowPlayer extends Goal
 {
-    EntitySkeletonBoss skeletonBoss;
+    final EntitySkeletonBoss skeletonBoss;
 
     PlayerEntity targetPlayer;
 

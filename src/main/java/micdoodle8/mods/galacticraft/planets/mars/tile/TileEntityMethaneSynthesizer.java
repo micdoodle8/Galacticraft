@@ -58,11 +58,11 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     private final int tankCapacity = 4000;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank gasTank = new FluidTank(this.tankCapacity);
+    public final FluidTank gasTank = new FluidTank(this.tankCapacity);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank gasTank2 = new FluidTank(this.tankCapacity / 2);
+    public final FluidTank gasTank2 = new FluidTank(this.tankCapacity / 2);
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTank liquidTank = new FluidTank(this.tankCapacity / 2);
+    public final FluidTank liquidTank = new FluidTank(this.tankCapacity / 2);
 
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -218,10 +218,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         {
             final FluidStack liquid = tank.getFluid();
 
-            if (liquid != null)
-            {
-                FluidUtil.tryFillContainer(tank, liquid, this.getInventory(), slot, AsteroidsItems.methaneCanister);
-            }
+            FluidUtil.tryFillContainer(tank, liquid, this.getInventory(), slot, AsteroidsItems.methaneCanister);
         }
         else if (!this.getInventory().get(slot).isEmpty() && this.getInventory().get(slot).getItem() == AsteroidsItems.atmosphericValve)
         {
@@ -406,14 +403,14 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            case 3:
-                return itemstack.getItem() == MarsItems.carbonFragments;
-            case 4:
-                return FluidUtil.isPartialContainer(itemstack, AsteroidsItems.methaneCanister);
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                case 3:
+                    return itemstack.getItem() == MarsItems.carbonFragments;
+                case 4:
+                    return FluidUtil.isPartialContainer(itemstack, AsteroidsItems.methaneCanister);
+                default:
+                    return false;
             }
         }
         return false;
@@ -426,12 +423,12 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         {
             switch (slotID)
             {
-            case 0:
-                return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
-            case 4:
-                return FluidUtil.isFullContainer(itemstack);
-            default:
-                return false;
+                case 0:
+                    return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
+                case 4:
+                    return FluidUtil.isFullContainer(itemstack);
+                default:
+                    return false;
             }
         }
         return false;
@@ -442,16 +439,16 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         switch (slotID)
         {
-        case 0:
-            return ItemElectricBase.isElectricItem(itemstack.getItem());
-        case 1:
-            return false;
-        case 2:
-            return itemstack.getItem() == AsteroidsItems.atmosphericValve;
-        case 3:
-            return itemstack.getItem() == MarsItems.carbonFragments;
-        case 4:
-            return FluidUtil.isValidContainer(itemstack);
+            case 0:
+                return ItemElectricBase.isElectricItem(itemstack.getItem());
+            case 1:
+                return false;
+            case 2:
+                return itemstack.getItem() == AsteroidsItems.atmosphericValve;
+            case 3:
+                return itemstack.getItem() == MarsItems.carbonFragments;
+            case 4:
+                return FluidUtil.isValidContainer(itemstack);
         }
 
         return false;
@@ -567,10 +564,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         switch (tank)
         {
-        case 0:
-            return this.gasTank.getFluid();
-        case 1:
-            return this.liquidTank.getFluid();
+            case 0:
+                return this.gasTank.getFluid();
+            case 1:
+                return this.liquidTank.getFluid();
         }
         return FluidStack.EMPTY;
     }
@@ -580,10 +577,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         switch (tank)
         {
-        case 0:
-            return this.gasTank.getCapacity();
-        case 1:
-            return this.liquidTank.getCapacity();
+            case 0:
+                return this.gasTank.getCapacity();
+            case 1:
+                return this.liquidTank.getCapacity();
         }
         return 0;
     }
@@ -593,10 +590,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         switch (tank)
         {
-        case 0:
-            return this.gasTank.isFluidValid(stack);
-        case 1:
-            return this.liquidTank.isFluidValid(stack);
+            case 0:
+                return this.gasTank.isFluidValid(stack);
+            case 1:
+                return this.liquidTank.isFluidValid(stack);
         }
         return false;
     }

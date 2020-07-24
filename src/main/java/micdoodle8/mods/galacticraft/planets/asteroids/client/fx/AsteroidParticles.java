@@ -1,8 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.fx;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.fx.*;
-import net.minecraft.client.Minecraft;
+import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -34,11 +33,11 @@ public class AsteroidParticles
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> evt)
     {
-        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
-
-        register(r, new ParticleType<>(false, BlockPosParticleData.DESERIALIZER), AsteroidParticleTypeNames.telepadDown);
-        register(r, new ParticleType<>(false, BlockPosParticleData.DESERIALIZER), AsteroidParticleTypeNames.telepadUp);
-        Minecraft.getInstance().particles.registerFactory(TELEPAD_DOWN, ParticleTelepad.DownFactory::new);
-        Minecraft.getInstance().particles.registerFactory(TELEPAD_UP, ParticleTelepad.UpFactory::new);
+//        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
+//
+//        register(r, new ParticleType<>(false, BlockPosParticleData.DESERIALIZER), AsteroidParticleTypeNames.telepadDown);
+//        register(r, new ParticleType<>(false, BlockPosParticleData.DESERIALIZER), AsteroidParticleTypeNames.telepadUp);
+//        Minecraft.getInstance().particles.registerFactory(TELEPAD_DOWN, ParticleTelepad.DownFactory::new);
+//        Minecraft.getInstance().particles.registerFactory(TELEPAD_UP, ParticleTelepad.UpFactory::new);
     }
 }

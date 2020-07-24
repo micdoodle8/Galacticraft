@@ -12,10 +12,13 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -23,9 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
 {
@@ -106,7 +108,7 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
         {
             EntityHangingSchematic entityhanging = this.createEntity(context.getWorld(), blockpos, facing, this.getIndex(stack.getDamage()));
 
-            if (entityhanging != null && entityhanging.onValidSurface())
+            if (entityhanging.onValidSurface())
             {
                 if (!context.getWorld().isRemote)
                 {

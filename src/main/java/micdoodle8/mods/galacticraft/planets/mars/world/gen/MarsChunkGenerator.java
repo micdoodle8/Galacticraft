@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import micdoodle8.mods.galacticraft.planets.mars.dimension.MarsGenSettings;
-import micdoodle8.mods.galacticraft.planets.venus.dimension.VenusGenSettings;
 import net.minecraft.util.Util;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
@@ -150,7 +149,7 @@ public class MarsChunkGenerator extends NoiseChunkGenerator<MarsGenSettings>
         {
             for (int zMod = -2; zMod <= 2; ++zMod)
             {
-                Biome biomeAt = this.biomeProvider.getNoiseBiome(x + xMod, j,z + zMod);
+                Biome biomeAt = this.biomeProvider.getNoiseBiome(x + xMod, j, z + zMod);
                 float biomeDepth = biomeAt.getDepth();
                 float biomeScale = biomeAt.getScale();
 

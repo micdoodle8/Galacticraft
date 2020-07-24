@@ -33,14 +33,14 @@
 //    @Override
 //    public void doRender(EntityMeteor meteor, double par2, double par4, double par6, float par8, float par9)
 //    {
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-//        GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(par8, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) par2, (float) par4, (float) par6);
+//        RenderSystem.rotatef(par8, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(par8, 1.0F, 0.0F, 0.0F);
 //        final float f = meteor.getSize();
-//        GL11.glScalef(f / 2, f / 2, f / 2);
+//        RenderSystem.scalef(f / 2, f / 2, f / 2);
 //        this.bindEntityTexture(meteor);
 //        this.modelMeteor.render(meteor, 0.0F, 0.0F, -0.5F, 0.0F, 0.0F, 0.1F);
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

@@ -28,7 +28,6 @@ import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.commons.io.Charsets;
 
-import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -149,7 +148,7 @@ public class GCCoreUtil
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)
         {
-            Character c = key.charAt(i);
+            char c = key.charAt(i);
             if (Character.isUpperCase(c))
             {
                 System.err.println(ret);
@@ -184,7 +183,7 @@ public class GCCoreUtil
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)
         {
-            Character c = key.charAt(i);
+            char c = key.charAt(i);
             if (Character.isUpperCase(c))
             {
                 System.err.println(ret);
@@ -213,10 +212,9 @@ public class GCCoreUtil
         return GCCoreUtil.translate(string).toLowerCase();
     }
 
-    @Nullable
     public static InputStream supplementEntityKeys(InputStream inputstream, String assetprefix) throws IOException
     {
-        ArrayList<String> langLines = new ArrayList<String>();
+        ArrayList<String> langLines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
         String line;
         String supplemented = "entity." + assetprefix.toLowerCase() + ".";
@@ -400,12 +398,12 @@ public class GCCoreUtil
     public static ItemStack getMatchingItemEitherHand(PlayerEntity player, Item item)
     {
         ItemStack stack = player.inventory.getStackInSlot(player.inventory.currentItem);
-        if (stack != null && stack.getItem() == item)
+        if (stack.getItem() == item)
         {
             return stack;
         }
         stack = player.inventory.offHandInventory.get(0);
-        if (stack != null && stack.getItem() == item)
+        if (stack.getItem() == item)
         {
             return stack;
         }

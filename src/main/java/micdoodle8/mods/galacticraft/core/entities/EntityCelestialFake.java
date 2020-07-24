@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -17,9 +15,12 @@ import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnoreShift
 {
@@ -96,7 +97,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
         final List<Entity> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 
-        if (var15 != null && !var15.isEmpty())
+        if (!var15.isEmpty())
         {
             for (Entity entity : var15)
             {
@@ -182,7 +183,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public ArrayList<Object> getNetworkedData()
     {
-        final ArrayList<Object> objList = new ArrayList<Object>();
+        final ArrayList<Object> objList = new ArrayList<>();
 
         if (this.world.isRemote)
         {
@@ -360,9 +361,9 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    public Vector3D getMotionVec()
+    public Vec3d getMotionVec()
     {
-        return new Vector3D(0, 0, 0);
+        return new Vec3d(0, 0, 0);
     }
 
     @Override

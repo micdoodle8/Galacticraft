@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelMeteorChunk;
 //import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
@@ -37,15 +37,15 @@
 //    @Override
 //    public void doRender(EntityMeteorChunk entity, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
 //        final float pitch = entity.rotationPitch;
 //        final float yaw = entity.rotationYaw;
-//        GlStateManager.translatef((float) x, (float) y, (float) z);
-//        GlStateManager.scalef(0.3F, 0.3F, 0.3F);
-//        GlStateManager.rotatef(yaw, 1.0F, 0.0F, 0.0F);
-//        GlStateManager.rotatef(pitch, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.scalef(0.3F, 0.3F, 0.3F);
+//        RenderSystem.rotatef(yaw, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.rotatef(pitch, 0.0F, 0.0F, 1.0F);
 //        this.bindEntityTexture(entity);
 //        this.modelMeteor.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

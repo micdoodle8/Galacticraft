@@ -76,12 +76,12 @@ public class GCBlocks
     public static Block airLockController;
     @ObjectHolder(BlockNames.airLockSeal)
     public static Block airLockSeal;
-    @ObjectHolder(BlockNames.spaceGlassClear)
-    public static Block spaceGlassClear;
-    @ObjectHolder(BlockNames.spaceGlassVanilla)
-    public static Block spaceGlassVanilla;
-    @ObjectHolder(BlockNames.spaceGlassStrong)
-    public static Block spaceGlassStrong;
+    //    @ObjectHolder(BlockNames.spaceGlassClear) //todo
+//    public static Block spaceGlassClear;
+//    @ObjectHolder(BlockNames.spaceGlassVanilla)
+//    public static Block spaceGlassVanilla;
+//    @ObjectHolder(BlockNames.spaceGlassStrong)
+//    public static Block spaceGlassStrong;
     @ObjectHolder(BlockNames.spaceGlassTinClear)
     public static Block spaceGlassTinClear;
     @ObjectHolder(BlockNames.spaceGlassTinVanilla)
@@ -102,8 +102,8 @@ public class GCBlocks
     public static Block spaceStationBase;
     @ObjectHolder(BlockNames.fakeBlock)
     public static Block fakeBlock;
-    @ObjectHolder(BlockNames.sealableBlock)
-    public static Block sealableBlock;
+    //    @ObjectHolder(BlockNames.sealableBlock) //todo
+//    public static Block sealableBlock;
     @ObjectHolder(BlockNames.cargoLoader)
     public static Block cargoLoader;
     @ObjectHolder(BlockNames.cargoUnloader)
@@ -114,8 +114,8 @@ public class GCBlocks
     public static Block solarPanel;
     @ObjectHolder(BlockNames.solarPanelAdvanced)
     public static Block solarPanelAdvanced;
-    @ObjectHolder(BlockNames.radioTelescope)
-    public static Block radioTelescope;
+    //    @ObjectHolder(BlockNames.radioTelescope) //todo
+//    public static Block radioTelescope;
     //    @ObjectHolder(BlockNames.machineBase) public static Block machineBase;
     @ObjectHolder(BlockNames.ingotCompressor)
     public static Block ingotCompressor;
@@ -169,16 +169,16 @@ public class GCBlocks
     public static Block slabGCHalf;
     @ObjectHolder(BlockNames.slabGCDouble)
     public static Block slabGCDouble;
-    @ObjectHolder(BlockNames.tinStairs1)
-    public static Block tinStairs1;
+    //    @ObjectHolder(BlockNames.tinStairs1) //todo
+//    public static Block tinStairs1;
     @ObjectHolder(BlockNames.tinStairs2)
     public static Block tinStairs2;
     @ObjectHolder(BlockNames.moonStoneStairs)
     public static Block moonStoneStairs;
-    @ObjectHolder(BlockNames.moonBricksStairs)
-    public static Block moonBricksStairs;
-    @ObjectHolder(BlockNames.wallGC)
-    public static Block wallGC;
+    //    @ObjectHolder(BlockNames.moonBricksStairs) //todo
+//    public static Block moonBricksStairs;
+//    @ObjectHolder(BlockNames.wallGC) //todo
+//    public static Block wallGC;
     @ObjectHolder(BlockNames.concealedRedstone)
     public static Block concealedRedstone;
     @ObjectHolder(BlockNames.concealedRepeater)
@@ -189,12 +189,12 @@ public class GCBlocks
     public static Block platform;
     @ObjectHolder(BlockNames.emergencyBox)
     public static Block emergencyBox;
-    @ObjectHolder(BlockNames.grating)
-    public static Block grating;
-    @ObjectHolder(BlockNames.gratingWater)
-    public static Block gratingWater;
-    @ObjectHolder(BlockNames.gratingLava)
-    public static Block gratingLava;
+    //    @ObjectHolder(BlockNames.grating)
+//    public static Block grating; //todo
+//    @ObjectHolder(BlockNames.gratingWater)
+//    public static Block gratingWater;
+//    @ObjectHolder(BlockNames.gratingLava)
+//    public static Block gratingLava;
     @ObjectHolder(BlockNames.decoBlock0)
     public static Block decoBlock0;
     @ObjectHolder(BlockNames.decoBlock1)
@@ -299,11 +299,11 @@ public class GCBlocks
 //    public static Block gratingWater;
 //    public static Block gratingLava;
 
-    public static final Material machine = new Material.Builder(MaterialColor.IRON).build();
+    public static Material machine = new Material.Builder(MaterialColor.IRON).build();
 
-    public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
-    public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
-    public static ArrayList<Block> otherModTorchesUnlit = new ArrayList<Block>();
+    public static ArrayList<Block> hiddenBlocks = new ArrayList<>();
+    public static ArrayList<Block> otherModTorchesLit = new ArrayList<>();
+    public static ArrayList<Block> otherModTorchesUnlit = new ArrayList<>();
 
     public static Map<EnumSortCategoryBlock, List<StackSorted>> sortMapBlocks = Maps.newHashMap();
     public static HashMap<Block, Block> itemChanges = new HashMap<>(4, 1.0F);
@@ -356,7 +356,6 @@ public class GCBlocks
         register(r, new BlockIngotCompressor(builder), BlockNames.ingotCompressor);
         register(r, new BlockIngotCompressorElectric(builder), BlockNames.ingotCompressorElectric);
         register(r, new BlockIngotCompressorElectricAdvanced(builder), BlockNames.ingotCompressorElectricAdvanced);
-        register(r, new BlockCoalGenerator(builder), BlockNames.coalGenerator);
         register(r, new BlockCircuitFabricator(builder), BlockNames.circuitFabricator);
         register(r, new BlockOxygenStorageModule(builder), BlockNames.oxygenStorageModule);
         register(r, new BlockDeconstructor(builder), BlockNames.deconstructor);
@@ -377,8 +376,8 @@ public class GCBlocks
         register(r, new BlockEnergyStorageCluster(builder), BlockNames.storageCluster);
         register(r, new BlockFurnaceElectric(builder), BlockNames.furnaceElectric);
         register(r, new BlockFurnaceArc(builder), BlockNames.furanceArc);
-//        register(r, new BlockPanelLighting(builder), BlockNames.panelLighting);
-//        register(r, new BlockSpinThruster(builder), BlockNames.spinThruster);
+        register(r, new BlockPanelLighting(builder), BlockNames.panelLighting); //todo
+        register(r, new BlockSpinThruster(builder), BlockNames.spinThruster); //todo
         register(r, new BlockTelemetry(builder), BlockNames.telemetry);
         register(r, new BlockConcealedRedstone(builder), BlockNames.concealedRedstone);
         register(r, new BlockConcealedRepeater(builder), BlockNames.concealedRepeater);
@@ -423,6 +422,15 @@ public class GCBlocks
 
         builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH);
         register(r, new BlockAluminumWire(builder), BlockNames.aluminumWire);
+
+        builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH); //todo
+        register(r, new BlockAluminumWire(builder), BlockNames.aluminumWireHeavy);
+
+        builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH); //todo
+        register(r, new BlockAluminumWire(builder), BlockNames.aluminumWireSwitchable);
+
+        builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH); //todo
+        register(r, new BlockAluminumWire(builder), BlockNames.aluminumWireSwitchableHeavy);
 
 //        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 2.5F).sound(SoundType.STONE);
 //        register(r, new BlockBasicMoon(builder), BlockNames.blockMoon);
@@ -897,9 +905,9 @@ public class GCBlocks
 //        register(r, TileEntityType.Builder.create(TileEntityPanelLight::new, panelLighting).build(null), BlockNames.panelLighting);
         register(r, TileEntityType.Builder.create(TileEntityTelemetry::new, telemetry).build(null), BlockNames.telemetry);
 //        register(r, TileEntityType.Builder.create(TileEntityPainter::new, "GC Painter").build(null));
-        register(r, TileEntityType.Builder.create(TileEntityFluidTank::new, fluidTank).build(null), BlockNames.fluidTank);
+//        register(r, TileEntityType.Builder.create(TileEntityFluidTank::new, fluidTank).build(null), BlockNames.fluidTank); //todo
         register(r, TileEntityType.Builder.create(TileEntityPlayerDetector::new, concealedDetector).build(null), BlockNames.concealedDetector);
-        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform);
+//        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform); //todo
         register(r, TileEntityType.Builder.create(TileEntityEmergencyBox::new, emergencyBox).build(null), BlockNames.emergencyBox);
 //        register(r, TileEntityType.Builder.create(TileEntityNull::new, "GC Null Tile").build(null));
     }

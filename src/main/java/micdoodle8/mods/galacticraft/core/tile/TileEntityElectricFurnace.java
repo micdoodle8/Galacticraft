@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
@@ -59,7 +58,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     //
     //The efficiency can be increased using a Tier 2 furnace
 
-    public static int PROCESS_TIME_REQUIRED = 130;
+    public static final int PROCESS_TIME_REQUIRED = 130;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTimeRequired = PROCESS_TIME_REQUIRED;
@@ -67,7 +66,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
 
-    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<>();
 
     private boolean initialised = false;
 
@@ -381,17 +380,17 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 

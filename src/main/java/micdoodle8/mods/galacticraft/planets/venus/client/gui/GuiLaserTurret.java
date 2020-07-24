@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckbox;
@@ -20,7 +21,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
     private int cannotEditTimer;
 
     private Button buttonEnable;
-    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<>(), this.width, this.height, this);
 
     public GuiLaserTurret(ContainerLaserTurret container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -54,7 +54,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         final int yTop = (this.height - this.ySize) / 2;
         this.buttons.clear();
         super.init();
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.laserTurret.getEnergyStoredGC()) + " / " + (int) Math.floor(this.laserTurret.getMaxEnergyStoredGC())));
         this.electricInfoRegion.tooltipStrings = electricityDesc;
@@ -63,7 +63,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 81, (this.height - this.ySize) / 2 + 92, 18, 18, batterySlotDesc, this.width, this.height, this));
@@ -134,13 +134,13 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiLaserTurret.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.blit(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.laserTurret.getEnergyStoredGC(), this.laserTurret.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 

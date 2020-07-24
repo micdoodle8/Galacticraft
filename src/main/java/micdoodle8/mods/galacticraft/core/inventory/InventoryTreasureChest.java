@@ -3,9 +3,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventoryTreasureChest implements IInventory
 {

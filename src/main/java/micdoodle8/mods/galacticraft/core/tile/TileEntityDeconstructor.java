@@ -27,7 +27,6 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,14 +37,14 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     public static final float SALVAGE_CHANCE = 0.75F;
     public static final int PROCESS_TIME_REQUIRED_BASE = 250;
-    public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
+    public final int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public int processTicks = 0;
     private final ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
-    public static List<ItemStack> salvageable = new LinkedList<>();
-    public static List<INasaWorkbenchRecipe> knownRecipes = new LinkedList<>();
+    public static final List<ItemStack> salvageable = new LinkedList<>();
+    public static final List<INasaWorkbenchRecipe> knownRecipes = new LinkedList<>();
     private int recursiveCount;
 
     static
@@ -227,14 +226,8 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 {
                     if (done != null)
                     {
-                        Iterator<ItemStack> it = ingredients2.iterator();
-                        while (it.hasNext())
-                        {
-                            if (ItemStack.areItemStacksEqual(it.next(), done))
-                            {
-                                it.remove();  //prevent recursive A->{B}  B->{A} type recipe chains
-                            }
-                        }
+                        //prevent recursive A->{B}  B->{A} type recipe chains
+                        ingredients2.removeIf(itemStack -> ItemStack.areItemStacksEqual(itemStack, done));
                     }
                     List<ItemStack> recursive = this.getSalvageable(ingredients2, stack);
                     if (recursive != null && !recursive.isEmpty())
@@ -470,7 +463,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         if (slotID == 0)
         {
-            return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
 
         return slotID == 1;
@@ -510,17 +503,17 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case RIGHT:
-            return getFront().rotateYCCW();
-        case REAR:
-            return getFront().getOpposite();
-        case TOP:
-            return Direction.UP;
-        case BOTTOM:
-            return Direction.DOWN;
-        case LEFT:
-        default:
-            return getFront().rotateY();
+            case RIGHT:
+                return getFront().rotateYCCW();
+            case REAR:
+                return getFront().getOpposite();
+            case TOP:
+                return Direction.UP;
+            case BOTTOM:
+                return Direction.DOWN;
+            case LEFT:
+            default:
+                return getFront().rotateY();
         }
     }
 

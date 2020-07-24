@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -14,19 +14,19 @@ public class ColorUtil
 {
     //Credit to Mark Ransom @ StackOverflow for the colorwheel idea
 
-    static Vector3 red = new Vector3(255, 0, 0);
-    static Vector3 orange = new Vector3(255, 160, 0);
-    static Vector3 yellow = new Vector3(255, 255, 0);
-    static Vector3 green = new Vector3(0, 255, 0);
-    static Vector3 cyan = new Vector3(0, 255, 255);
-    static Vector3 blue = new Vector3(0, 0, 255);
-    static Vector3 magenta = new Vector3(255, 0, 255);
+    static final Vector3 red = new Vector3(255, 0, 0);
+    static final Vector3 orange = new Vector3(255, 160, 0);
+    static final Vector3 yellow = new Vector3(255, 255, 0);
+    static final Vector3 green = new Vector3(0, 255, 0);
+    static final Vector3 cyan = new Vector3(0, 255, 255);
+    static final Vector3 blue = new Vector3(0, 0, 255);
+    static final Vector3 magenta = new Vector3(255, 0, 255);
     static Vector3 white = new Vector3(255, 255, 255);
     static Vector3 black = new Vector3(0, 0, 0);
     static Vector3 mud = new Vector3(94, 81, 74);
 
-    static float[] colorwheelAngles = {-110F, -30F, 0F, 60F, 120F, 180F, 215F, 250F, 330F, 360F, 420F, 480F};
-    static Vector3[] colorwheelColors = {blue, magenta, red, orange, yellow, green, cyan, blue, magenta, red, orange, yellow};
+    static final float[] colorwheelAngles = {-110F, -30F, 0F, 60F, 120F, 180F, 215F, 250F, 330F, 360F, 420F, 480F};
+    static final Vector3[] colorwheelColors = {blue, magenta, red, orange, yellow, green, cyan, blue, magenta, red, orange, yellow};
 
     private static Vector3 hue_to_rgb(float deg)
     {
@@ -36,7 +36,7 @@ public class ColorUtil
 
         for (int i = 2; i < colorwheelAngles.length - 2; i++)
         {
-            Float angle = colorwheelAngles[i];
+            float angle = colorwheelAngles[i];
             if (deg <= angle)
             {
                 return interpolateInArray(colorwheelColors, i, (angle - deg) / (angle - previous_angle));
@@ -316,7 +316,7 @@ public class ColorUtil
     public static void sendUpdatedColorsToPlayer(GCPlayerStats stats)
     {
         DimensionType dimID = stats.getPlayer().get().dimension;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[]{Integer.valueOf(stats.getGlassColor1()), Integer.valueOf(stats.getGlassColor2()), Integer.valueOf(stats.getGlassColor3())}), stats.getPlayer().get());
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RECOLOR_ALL_GLASS, dimID, new Object[]{stats.getGlassColor1(), stats.getGlassColor2(), stats.getGlassColor3()}), stats.getPlayer().get());
     }
 
     public static void updateColorsForArea(DimensionType dimID, BlockPos pos, int range, int color1, int color2, int color3)
@@ -330,6 +330,6 @@ public class ColorUtil
         int rr = gg >> 8;
         gg &= 255;
         int bb = col & 255;
-        GlStateManager.color4f(rr / 255F, gg / 255F, bb / 255F, 1.0F);
+        RenderSystem.color4f(rr / 255F, gg / 255F, bb / 255F, 1.0F);
     }
 }

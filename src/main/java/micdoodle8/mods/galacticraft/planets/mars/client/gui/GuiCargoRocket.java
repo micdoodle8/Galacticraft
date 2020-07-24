@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -17,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +58,9 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
         final int var6 = (this.height - this.ySize) / 2;
         final int var7 = (this.width - this.xSize) / 2;
         this.launchButton = new Button(var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"), (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.rocket.getEntityId(), 0}));
-        });
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.rocket.getEntityId(), 0})));
         this.buttons.add(this.launchButton);
-        List<String> fuelTankDesc = new ArrayList<String>();
+        List<String> fuelTankDesc = new ArrayList<>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.0"));
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + (this.rocket.rocketType.getInventorySpace() == 2 ? 70 : 71), (this.height - this.ySize) / 2 + 6, 36, 40, fuelTankDesc, this.width, this.height, this));
@@ -130,7 +128,7 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.getTextureManager().bindTexture(GuiCargoRocket.rocketTextures[(this.rocket.getSizeInventory() - 2) / 18]);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;

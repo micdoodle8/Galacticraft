@@ -8,7 +8,7 @@
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.renderer.model.IBakedModel;
 //import net.minecraft.client.renderer.texture.AtlasTexture;
 //import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -57,46 +57,46 @@
 //
 //        updateModels();
 //
-//        GL11.glPushMatrix();
-//        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glTranslatef((float) x + 0.5F, (float) y + 1.0F, (float) z + 0.5F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.enableRescaleNormal();
+//        RenderSystem.translatef((float) x + 0.5F, (float) y + 1.0F, (float) z + 0.5F);
 //
 //        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //
-//        GL11.glEnable(GL11.GL_BLEND);
-//        GL11.glDisable(GL11.GL_LIGHTING);
-//        GL11.glDisable(GL11.GL_CULL_FACE);
+//        RenderSystem.enableBlend();
+//        RenderSystem.disableLighting();
+//        RenderSystem.disable(GL11.GL_CULL_FACE);
 //
-//        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GL11.glColor4f(this.colorRed / 2.0F, this.colorGreen / 2.0F, this.colorBlue / 2.0F, 1.0F);
-//        GL11.glMatrixMode(GL11.GL_TEXTURE);
-//        GL11.glLoadIdentity();
-//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//        GL11.glDepthMask(false);
+//        RenderSystem.AlphaFunc(GL11.GL_GREATER, 0.1F);
+//        RenderSystem.blendFunc(770, 771);
+//        RenderSystem.color4f(this.colorRed / 2.0F, this.colorGreen / 2.0F, this.colorBlue / 2.0F, 1.0F);
+//        RenderSystem.matrixMode(GL11.GL_TEXTURE);
+//        RenderSystem.loadIdentity();
+//        RenderSystem.matrixMode(5888);
+//        RenderSystem.depthMask(false);
 ////        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
 ////        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-////        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-//        GL11.glScalef(tile.getBubbleSize(), tile.getBubbleSize(), tile.getBubbleSize());
+////        RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
+//        RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
+//        RenderSystem.scalef(tile.getBubbleSize(), tile.getBubbleSize(), tile.getBubbleSize());
 //
 //        int color = ColorUtil.to32BitColor(30, (int) (this.colorBlue / 2.0F * 255), (int) (this.colorGreen / 2.0F * 255), (int) (this.colorRed / 2.0F * 255));
 //        ClientUtil.drawBakedModelColored(sphere, color);
 //
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glMatrixMode(GL11.GL_TEXTURE);
-//        GL11.glDepthMask(true);
-//        GL11.glLoadIdentity();
-//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//        GL11.glEnable(GL11.GL_LIGHTING);
-//        GL11.glDisable(GL11.GL_BLEND);
-//        GL11.glDepthFunc(GL11.GL_LEQUAL);
-//        GL11.glEnable(GL11.GL_CULL_FACE);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.matrixMode(GL11.GL_TEXTURE);
+//        RenderSystem.depthMask(true);
+//        RenderSystem.loadIdentity();
+//        RenderSystem.matrixMode(5888);
+//        RenderSystem.enableLighting();
+//        RenderSystem.disableBlend();
+//        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+//        RenderSystem.enable(GL11.GL_CULL_FACE);
 //
 ////        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
 //
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-//        GL11.glPopMatrix();
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.popMatrix();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //    }
 //}

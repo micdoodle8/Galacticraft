@@ -68,7 +68,7 @@ public class OxygenPressureProtocol
         {
             head.threadSeal = new ThreadFindSeal(head);
         }
-        catch (IllegalThreadStateException e)
+        catch (IllegalThreadStateException ignored)
         {
 
         }
@@ -91,10 +91,6 @@ public class OxygenPressureProtocol
     public static boolean canBlockPassAir(World world, BlockState state, BlockPos pos, Direction side)
     {
         Block block = state.getBlock();
-        if (block == null)
-        {
-            return true;
-        }
 
         if (block instanceof IPartialSealableBlock)
         {
@@ -145,7 +141,7 @@ public class OxygenPressureProtocol
 
         if (block instanceof PistonBlock)
         {
-            if (state.get(PistonBlock.EXTENDED).booleanValue())
+            if (state.get(PistonBlock.EXTENDED))
             {
                 Direction facing = state.get(PistonBlock.FACING);
                 return side != facing;

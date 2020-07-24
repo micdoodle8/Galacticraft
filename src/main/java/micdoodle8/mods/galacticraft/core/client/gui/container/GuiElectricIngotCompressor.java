@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -11,9 +11,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,6 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
     {
         super(container, playerInv, title);
 //        super(new ContainerElectricIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent(compressor.getTierGC() == 2 ? "tile.machine2.4.name" : "tile.machine4.11.name"));
-        this.compressor = compressor;
         this.ySize = 199;
     }
 
@@ -37,17 +33,17 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
     protected void init()
     {
         super.init();
-        this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.electricInfoRegion.tooltipStrings = new ArrayList<>();
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 17;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 95;
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 54, (this.height - this.ySize) / 2 + 74, 18, 18, batterySlotDesc, this.width, this.height, this));
-        this.processInfoRegion.tooltipStrings = new ArrayList<String>();
+        this.processInfoRegion.tooltipStrings = new ArrayList<>();
         this.processInfoRegion.xPosition = (this.width - this.xSize) / 2 + 77;
         this.processInfoRegion.yPosition = (this.height - this.ySize) / 2 + 30;
         this.processInfoRegion.parentWidth = this.width;
@@ -87,14 +83,14 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.textureManager.bindTexture(GuiElectricIngotCompressor.electricFurnaceTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
         this.blit(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         int scale;
 
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.compressor.getEnergyStoredGC(), this.compressor.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
@@ -108,8 +104,7 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
             scale = 0;
         }
 
-        List<String> processDesc = new ArrayList<String>();
-        processDesc.clear();
+        List<String> processDesc = new ArrayList<>();
         processDesc.add(GCCoreUtil.translate("gui.electric_compressor.desc.0") + ": " + scale + "%");
         this.processInfoRegion.tooltipStrings = processDesc;
 

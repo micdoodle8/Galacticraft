@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.IWeatherProvider;
@@ -14,7 +14,10 @@ import micdoodle8.mods.galacticraft.core.entities.player.EnumGravity;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -37,7 +40,8 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -50,10 +54,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -270,10 +272,8 @@ public class TransformerHooks
         try
         {
             Class target = Class.forName(name);
-            if (target != null)
-            {
-                final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
-                regField.setAccessible(true);
+            final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
+            regField.setAccessible(true);
 //                Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
 //                for (IWorldGenerator gen : registeredGenerators)
 //                {
@@ -284,9 +284,8 @@ public class TransformerHooks
 //                        return;
 //                    }
 //                } TODO Overworld gen
-            }
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
         }
     }
@@ -473,13 +472,13 @@ public class TransformerHooks
             if (offset > -10F)
             {
                 offset += PLAYER_Y_OFFSET;
-                GL11.glTranslatef(0, -offset, 0);
+                RenderSystem.translatef(0, -offset, 0);
                 float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
                 float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-                GL11.glRotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(angleYaw, 0.0F, 1.0F, 0.0F);
+                RenderSystem.rotatef(-anglePitch, 0.0F, 0.0F, 1.0F);
+                RenderSystem.rotatef(angleYaw, 0.0F, 1.0F, 0.0F);
 
-                GL11.glTranslatef(0, offset, 0);
+                RenderSystem.translatef(0, offset, 0);
             }
         }
 
@@ -489,35 +488,35 @@ public class TransformerHooks
             float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
             float eyeHeightChange = viewEntity.getWidth() / 2.0F;
 
-//            GL11.glTranslatef(0.0F, -f1, 0.0F);
-            GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
-            GL11.glTranslatef(0.0F, 0.0F, 0.1F);
+//            RenderSystem.translatef(0.0F, -f1, 0.0F);
+            RenderSystem.rotatef(-yaw, 0.0F, 1.0F, 0.0F);
+            RenderSystem.rotatef(-pitch, 1.0F, 0.0F, 0.0F);
+            RenderSystem.translatef(0.0F, 0.0F, 0.1F);
 
             EnumGravity gDir = stats.getGdir();
-            GL11.glRotatef(180.0F * gDir.getThetaX(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(180.0F * gDir.getThetaZ(), 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(pitch * gDir.getPitchGravityX(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(pitch * gDir.getPitchGravityY(), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(yaw * gDir.getYawGravityX(), 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(yaw * gDir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(yaw * gDir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
+            RenderSystem.rotatef(180.0F * gDir.getThetaX(), 1.0F, 0.0F, 0.0F);
+            RenderSystem.rotatef(180.0F * gDir.getThetaZ(), 0.0F, 0.0F, 1.0F);
+            RenderSystem.rotatef(pitch * gDir.getPitchGravityX(), 1.0F, 0.0F, 0.0F);
+            RenderSystem.rotatef(pitch * gDir.getPitchGravityY(), 0.0F, 1.0F, 0.0F);
+            RenderSystem.rotatef(yaw * gDir.getYawGravityX(), 1.0F, 0.0F, 0.0F);
+            RenderSystem.rotatef(yaw * gDir.getYawGravityY(), 0.0F, 1.0F, 0.0F);
+            RenderSystem.rotatef(yaw * gDir.getYawGravityZ(), 0.0F, 0.0F, 1.0F);
 
-//        	GL11.glTranslatef(sneakY * gDir.getSneakVecX(), sneakY * gDir.getSneakVecY(), sneakY * gDir.getSneakVecZ());
+//        	RenderSystem.translatef(sneakY * gDir.getSneakVecX(), sneakY * gDir.getSneakVecY(), sneakY * gDir.getSneakVecZ());
 
-            GL11.glTranslatef(eyeHeightChange * gDir.getEyeVecX(), eyeHeightChange * gDir.getEyeVecY(), eyeHeightChange * gDir.getEyeVecZ());
+            RenderSystem.translatef(eyeHeightChange * gDir.getEyeVecX(), eyeHeightChange * gDir.getEyeVecY(), eyeHeightChange * gDir.getEyeVecZ());
 
             if (stats.getGravityTurnRate() < 1.0F)
             {
-                GL11.glRotatef(90.0F * (stats.getGravityTurnRatePrev() + (stats.getGravityTurnRate() - stats.getGravityTurnRatePrev()) * partialTicks), stats.getGravityTurnVecX(), stats.getGravityTurnVecY(), stats.getGravityTurnVecZ());
+                RenderSystem.rotatef(90.0F * (stats.getGravityTurnRatePrev() + (stats.getGravityTurnRate() - stats.getGravityTurnRatePrev()) * partialTicks), stats.getGravityTurnVecX(), stats.getGravityTurnVecY(), stats.getGravityTurnVecZ());
             }
         }
 
         //omit this for interesting 3P views
-//        GL11.glTranslatef(0.0F, 0.0F, -0.1F);
-//        GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
-//        GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
-//        GL11.glTranslatef(0.0F, f1, 0.0F);
+//        RenderSystem.translatef(0.0F, 0.0F, -0.1F);
+//        RenderSystem.rotatef(pitch, 1.0F, 0.0F, 0.0F);
+//        RenderSystem.rotatef(yaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.translatef(0.0F, f1, 0.0F);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -541,10 +540,10 @@ public class TransformerHooks
 
         Tessellator tessellator = Tessellator.getInstance();
         float f1 = ClientProxyCore.mc.player.getBrightness() / 3.0F;
-        GL11.glColor4f(f1, f1, f1, 1.0F);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glPushMatrix();
+        RenderSystem.color4f(f1, f1, f1, 1.0F);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(770, 771);
+        RenderSystem.pushMatrix();
         float f2 = 4.0F;
         float f3 = -1.1F;
         float f4 = 1.1F;
@@ -554,15 +553,15 @@ public class TransformerHooks
         float f8 = -ClientProxyCore.mc.player.rotationYaw / 64.0F;
         float f9 = ClientProxyCore.mc.player.rotationPitch / 64.0F;
         BufferBuilder worldRenderer = tessellator.getBuffer();
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(f3, f5, f7).tex(f2 + f8, f2 + f9).endVertex();
         worldRenderer.pos(f4, f5, f7).tex(0.0F + f8, f2 + f9).endVertex();
         worldRenderer.pos(f4, f6, f7).tex(0.0F + f8, 0.0F + f9).endVertex();
         worldRenderer.pos(f3, f6, f7).tex(f2 + f8, 0.0F + f9).endVertex();
         tessellator.draw();
-        GL11.glPopMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
+        RenderSystem.popMatrix();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableBlend();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -595,14 +594,11 @@ public class TransformerHooks
         if (entity instanceof PlayerEntity && GalacticraftCore.isPlanetsLoaded)
         {
             GCPlayerStats stats = GCPlayerStats.get(entity);
-            if (stats != null)
-            {
-                ItemStack shield = stats.getShieldControllerInSlot();
+            ItemStack shield = stats.getShieldControllerInSlot();
 //                if (shield != null && !shield.isEmpty() && shield.getItem() == VenusItems.basicItem && shield.getDamage() == 0)
 //                {
 //                    return 0D;
 //                } TODO Planets
-            }
         }
         return 1D;
     }

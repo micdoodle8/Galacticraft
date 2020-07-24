@@ -3,7 +3,7 @@
 //import com.google.common.collect.ImmutableList;
 //import com.google.common.collect.ImmutableMap;
 //import com.mojang.blaze3d.platform.GLX;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
@@ -76,27 +76,27 @@
 //        light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 1), 0);
 //        j += light % 65536;
 //        k += light / 65536;
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j / 8.0F, (float) k / 8.0F);
+//        RenderSystem.glMultiTexCoord2f(33985, (float) j / 8.0F, (float) k / 8.0F);
 ////        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 8.0F, k / 8.0F);
 //
-//        GL11.glPushMatrix();
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
-//        GL11.glTranslatef((float) x + 1F, (float) y + 1F, (float) z + 1F);
-//        GL11.glScalef(0.05F, 0.05F, 0.05F);
+//        RenderSystem.translatef((float) x + 1F, (float) y + 1F, (float) z + 1F);
+//        RenderSystem.scalef(0.05F, 0.05F, 0.05F);
 //
 //        switch (tile.facing)
 //        {
 //        case SOUTH:
-//            GL11.glRotatef(180F, 0, 1F, 0);
+//            RenderSystem.rotatef(180F, 0, 1F, 0);
 //            break;
 //        case WEST:
-//            GL11.glRotatef(90F, 0, 1F, 0);
+//            RenderSystem.rotatef(90F, 0, 1F, 0);
 //            break;
 //        case NORTH:
 //            break;
 //        case EAST:
-//            GL11.glRotatef(270F, 0, 1F, 0);
+//            RenderSystem.rotatef(270F, 0, 1F, 0);
 //            break;
 //        }
 //
@@ -104,13 +104,13 @@
 //        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //
 //        Tessellator tessellator = Tessellator.getInstance();
-//        tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-//        GlStateManager.translatef(-tile.getPos().getX(), -tile.getPos().getY(), -tile.getPos().getZ());
+//        tessellator.getBuffer().begin(7, DefaultVertexFormats.BLOCK);
+//        RenderSystem.translatef(-tile.getPos().getX(), -tile.getPos().getY(), -tile.getPos().getZ());
 //        IModelData data = minerBaseModelBaked.getModelData(tile.getWorld(), tile.getPos(), tile.getBlockState(), ModelDataManager.getModelData(tile.getWorld(), tile.getPos()));
 //        Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(tile.getWorld(), minerBaseModelBaked, tile.getWorld().getBlockState(tile.getPos()), tile.getPos(), tessellator.getBuffer(), false, new Random(), 42, data);
 //        tessellator.draw();
 //
 //        RenderHelper.enableStandardItemLighting();
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //}

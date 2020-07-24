@@ -81,12 +81,12 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
         {
             switch (slotID)
             {
-            case 0:
-                return itemstack.getDamage() < itemstack.getMaxDamage();
-            case 1:
-                return ItemElectricBase.isElectricItemCharged(itemstack);
-            default:
-                return false;
+                case 0:
+                    return itemstack.getDamage() < itemstack.getMaxDamage();
+                case 1:
+                    return ItemElectricBase.isElectricItemCharged(itemstack);
+                default:
+                    return false;
             }
         }
         return false;
@@ -99,12 +99,12 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
         {
             switch (slotID)
             {
-            case 0:
-                return itemstack.getDamage() == itemstack.getMaxDamage();
-            case 1:
-                return ItemElectricBase.isElectricItemEmpty(itemstack);
-            default:
-                return false;
+                case 0:
+                    return itemstack.getDamage() == itemstack.getMaxDamage();
+                case 1:
+                    return ItemElectricBase.isElectricItemEmpty(itemstack);
+                default:
+                    return false;
             }
         }
         return false;
@@ -115,10 +115,10 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     {
         switch (slotID)
         {
-        case 0:
-            return itemstack.getItem() instanceof ItemOxygenTank;
-        case 1:
-            return ItemElectricBase.isElectricItem(itemstack.getItem());
+            case 0:
+                return itemstack.getItem() instanceof ItemOxygenTank;
+            case 1:
+                return ItemElectricBase.isElectricItem(itemstack.getItem());
         }
 
         return false;

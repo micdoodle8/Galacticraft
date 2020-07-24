@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.venus.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IWeatherProvider;
@@ -10,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
-import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidVapor;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.VenusChunkGenerator;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomTreasureVenus;
 import net.minecraft.block.Block;
@@ -122,7 +120,7 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
         return new VenusChunkGenerator(this.world, type.create(providerSettings), settings);
     }
 
-//    @Override
+    //    @Override
     @OnlyIn(Dist.CLIENT)
     public float getStarBrightness(float par1)
     {

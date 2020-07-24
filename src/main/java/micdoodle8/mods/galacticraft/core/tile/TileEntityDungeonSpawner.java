@@ -5,13 +5,11 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Util;
@@ -166,7 +164,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
     public List<Class<? extends MobEntity>> getDisabledCreatures()
     {
-        List<Class<? extends MobEntity>> list = new ArrayList<Class<? extends MobEntity>>();
+        List<Class<? extends MobEntity>> list = new ArrayList<>();
         list.add(EntityEvolvedSkeleton.class);
         list.add(EntityEvolvedCreeper.class);
         list.add(EntityEvolvedZombie.class);

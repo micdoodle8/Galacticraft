@@ -29,16 +29,17 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 {
     public int oxygenPerTick;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
-    public FluidTankGC tank;
+    public final FluidTankGC tank;
     public float lastStoredOxygen;
     public static int timeSinceOxygenRequest;
-    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
+    private final LazyOptional<IFluidHandler> holder;
 
     public TileEntityOxygen(TileEntityType<?> type, int maxOxygen, int oxygenPerTick)
     {
         super(type);
         this.tank = new FluidTankGC(maxOxygen, this);
         this.oxygenPerTick = oxygenPerTick;
+        this.holder = LazyOptional.of(() -> tank);
     }
 
 //    @Override

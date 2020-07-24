@@ -199,10 +199,8 @@ public class EntityWebShot extends Entity implements IProjectile
         double d0 = 0.0D;
         final double border = 0.3D;
 
-        for (int i = 0; i < list.size(); ++i)
+        for (Entity entity1 : list)
         {
-            Entity entity1 = list.get(i);
-
             if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
             {
                 AxisAlignedBB axisalignedbb1 = entity1.getBoundingBox().grow(border, border, border);

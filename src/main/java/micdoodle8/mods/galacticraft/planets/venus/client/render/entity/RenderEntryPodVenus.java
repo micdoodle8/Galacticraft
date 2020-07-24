@@ -11,8 +11,8 @@
 //import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
 //import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 //import net.minecraft.client.Minecraft;
-//import com.mojang.blaze3d.platform.GlStateManager;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.renderer.RenderHelper;
 //import net.minecraft.client.renderer.culling.ICamera;
 //import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -57,59 +57,59 @@
 //    @Override
 //    public void doRender(EntityEntryPodVenus entityEntryPod, double x, double y, double z, float entityYaw, float partialTicks)
 //    {
-//        GlStateManager.disableRescaleNormal();
-//        GlStateManager.pushMatrix();
+//        RenderSystem.disableRescaleNormal();
+//        RenderSystem.pushMatrix();
 //        final float var24 = entityEntryPod.prevRotationPitch + (entityEntryPod.rotationPitch - entityEntryPod.prevRotationPitch) * partialTicks;
 //        final float var25 = entityEntryPod.prevRotationYaw + (entityEntryPod.rotationYaw - entityEntryPod.prevRotationYaw) * partialTicks;
 //
-//        GlStateManager.translatef((float) x, (float) y, (float) z);
-//        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-//        GlStateManager.rotatef(180.0F - var24, 0.0F, 0.0F, 1.0F);
-//        GlStateManager.rotatef(-var25, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.translatef((float) x, (float) y, (float) z);
+//        RenderSystem.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(180.0F - var24, 0.0F, 0.0F, 1.0F);
+//        RenderSystem.rotatef(-var25, 0.0F, 1.0F, 0.0F);
 //
 //        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-//        GlStateManager.scalef(0.65F, 0.6F, 0.65F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(0.65F, 0.6F, 0.65F);
 //        ClientUtil.drawBakedModel(modelEntryPod);
 //
-//        if (entityEntryPod.posY > 382.0F)
+//        if (entityEntryPod.getPosY() > 382.0F)
 //        {
 //            RenderHelper.disableStandardItemLighting();
-//            GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
-//            GlStateManager.disableLighting();
-//            GlStateManager.enableBlend();
-//            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-//            GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
+//            RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
+//            RenderSystem.disableLighting();
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFunc(770, 1);
+//            RenderSystem.cullFace(RenderSystem.CullFace.FRONT);
 //
-//            int color = ColorUtil.to32BitColor(entityEntryPod.posY >= 790.0F ? 255 : (int) Math.max(Math.min(255, -(entityEntryPod.getMotion().y + 0.6F) * 100.0F), 0), 255, 255, 255);
+//            int color = ColorUtil.to32BitColor(entityEntryPod.getPosY() >= 790.0F ? 255 : (int) Math.max(Math.min(255, -(entityEntryPod.getMotion().y + 0.6F) * 100.0F), 0), 255, 255, 255);
 //
-//            GlStateManager.pushMatrix();
+//            RenderSystem.pushMatrix();
 //            float val = (float) (Math.sin(entityEntryPod.ticksExisted) / 20.0F + 0.5F);
-//            GlStateManager.scalef(1.0F, 1.0F + val, 1.0F);
-//            GlStateManager.rotatef(entityEntryPod.ticksExisted * 20.0F, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.scalef(1.0F, 1.0F + val, 1.0F);
+//            RenderSystem.rotatef(entityEntryPod.ticksExisted * 20.0F, 0.0F, 1.0F, 0.0F);
 //            ClientUtil.drawBakedModelColored(modelFlame, color);
-//            GlStateManager.popMatrix();
+//            RenderSystem.popMatrix();
 //
-//            GlStateManager.scalef(1.0F, 1.0F + val / 6.0F, 1.0F);
-//            GlStateManager.rotatef(entityEntryPod.ticksExisted * 5.0F, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.scalef(1.0F, 1.0F + val / 6.0F, 1.0F);
+//            RenderSystem.rotatef(entityEntryPod.ticksExisted * 5.0F, 0.0F, 1.0F, 0.0F);
 //            ClientUtil.drawBakedModelColored(modelFlame, color);
 //
-//            GlStateManager.cullFace(GlStateManager.CullFace.BACK);
-//            GlStateManager.enableCull();
-//            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//            RenderSystem.cullFace(RenderSystem.CullFace.BACK);
+//            RenderSystem.enableCull();
+//            RenderSystem.blendFunc(770, 771);
 //            RenderHelper.enableStandardItemLighting();
 //        }
 //
-//        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.posY - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.posY <= 242.0F)
+//        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.getPosY() - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.getPosY() <= 242.0F)
 //        {
-//            GlStateManager.pushMatrix();
-//            GlStateManager.translatef(-1.4F, 1.5F, -0.3F);
-//            GlStateManager.scalef(2.5F, 3.0F, 2.5F);
+//            RenderSystem.pushMatrix();
+//            RenderSystem.translatef(-1.4F, 1.5F, -0.3F);
+//            RenderSystem.scalef(2.5F, 3.0F, 2.5F);
 //            this.parachuteModel.renderAll();
-//            GlStateManager.popMatrix();
+//            RenderSystem.popMatrix();
 //        }
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    @Override

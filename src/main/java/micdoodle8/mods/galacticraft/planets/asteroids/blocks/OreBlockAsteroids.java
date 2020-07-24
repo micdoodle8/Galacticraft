@@ -1,19 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OreBlockAsteroids extends Block implements IDetectableResource

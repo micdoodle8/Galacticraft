@@ -32,7 +32,7 @@ public class BlockConcealedRedstone extends Block
     public BlockConcealedRedstone(Block.Properties properties)
     {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(POWER, Integer.valueOf(0)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(POWER, 0));
     }
 
     protected static boolean canConnectTo(BlockState blockState, IBlockReader world, BlockPos pos, @Nullable Direction side)
@@ -165,7 +165,7 @@ public class BlockConcealedRedstone extends Block
 
         if (i != l)
         {
-            p_212568_3_ = p_212568_3_.with(POWER, Integer.valueOf(l));
+            p_212568_3_ = p_212568_3_.with(POWER, l);
             if (p_212568_1_.getBlockState(p_212568_2_) == blockstate)
             {
                 p_212568_1_.setBlockState(p_212568_2_, p_212568_3_, 2);
@@ -234,7 +234,7 @@ public class BlockConcealedRedstone extends Block
     {
         if (!isMoving && state.getBlock() != newState.getBlock())
         {
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
+            super.onReplaced(state, worldIn, pos, newState, false);
             if (!worldIn.isRemote)
             {
                 for (Direction direction : Direction.values())

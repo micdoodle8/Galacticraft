@@ -4,7 +4,7 @@
 //import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 //import net.minecraft.client.gui.widget.button.Button;
 //import net.minecraft.client.gui.screen.Screen;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import net.minecraft.client.renderer.RenderHelper;
 //import net.minecraft.client.renderer.ItemRenderer;
 //import net.minecraft.item.ItemStack;
@@ -41,7 +41,7 @@
 //		}
 //		if (this.visible)
 //		{
-//		    GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//		    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 //
 //			int yTexPos = this.enabled ? 3 : 32;
 //			int ySize = this.enabled ? 25 : 32;
@@ -54,12 +54,12 @@
 //			RenderHelper.enableGUIStandardItemLighting();
 //			this.zLevel = 100.0F;
 //            this.itemRender.zLevel = 100.0F;
-//            GlStateManager.enableLighting();
-//            GlStateManager.enableRescaleNormal();
+//            RenderSystem.enableLighting();
+//            RenderSystem.enableRescaleNormal();
 //            this.itemRender.renderItemAndEffectIntoGUI(this.renderStack, this.x + 6, this.y + 8);
 //            this.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, this.renderStack, this.x + 6, this.y + 8, null);
-//            GlStateManager.disableLighting();
-//            GlStateManager.enableBlend();
+//            RenderSystem.disableLighting();
+//            RenderSystem.enableBlend();
 //            this.itemRender.zLevel = 0.0F;
 //			this.zLevel = 0.0F;
 //			RenderHelper.disableStandardItemLighting();

@@ -2,7 +2,7 @@
 //
 //import com.google.common.collect.ImmutableList;
 //import com.mojang.blaze3d.platform.GLX;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -55,48 +55,48 @@
 //    @Override
 //    public void render(TileEntityLaserTurret tile, double x, double y, double z, float partialTicks, int destroyStage)
 //    {
-//        GlStateManager.pushMatrix();
-//        GlStateManager.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-//        GlStateManager.pushMatrix();
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+//        RenderSystem.pushMatrix();
 //        RenderHelper.disableStandardItemLighting();
 //
 //        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
-//        GlStateManager.scalef(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
+//        RenderSystem.scalef(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
 //
-//        GlStateManager.pushMatrix();
-//        GlStateManager.scalef(0.9F, 1.0F, 0.9F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.scalef(0.9F, 1.0F, 0.9F);
 //        ClientUtil.drawBakedModel(laserBase);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
-//        GlStateManager.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
+//        RenderSystem.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
 //
 //        // Interpolate between yaw and targetYaw
 //
 //        float partialRot = Math.signum(tile.pitch) * tile.pitch * (tile.pitch / 120.0F);
-//        GlStateManager.rotatef(partialRot, 0.0F, 0.0F, -1.0F);
+//        RenderSystem.rotatef(partialRot, 0.0F, 0.0F, -1.0F);
 //
-//        GlStateManager.pushMatrix();
-//        GlStateManager.scalef(1.1F, 1.0F, 1.0F);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.scalef(1.1F, 1.0F, 1.0F);
 //
 //        ClientUtil.drawBakedModel(laserPhalange);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //
-//        GlStateManager.rotatef(tile.pitch - partialRot, 0.0F, 0.0F, -1.0F);
+//        RenderSystem.rotatef(tile.pitch - partialRot, 0.0F, 0.0F, -1.0F);
 //
 //        ClientUtil.drawBakedModel(laserPhalangeAxle);
 //        ClientUtil.drawBakedModel(tile.active ? laserTurrets : laserTurretsOff);
 //
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        Tessellator tess = Tessellator.getInstance();
 //
 //        float inv = (float) (Math.pow(tile.chargeLevel / 5.0F + 1.0F, 2.5F) * 1.0F);
@@ -105,18 +105,18 @@
 //
 //        float lightMapSaveX = GLX.lastBrightnessX;
 //        float lightMapSaveY = GLX.lastBrightnessY;
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
+//        RenderSystem.glMultiTexCoord2f(33985, 240.0F, 240.0F);
 //
 //        if (tile.chargeLevel > 0)
 //        {
-//            GlStateManager.pushMatrix();
-//            GlStateManager.enableBlend();
-//            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-//            GlStateManager.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
-//            GlStateManager.rotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
-//            GlStateManager.translatef(-0.6F, 0.28F, 0.0F);
+//            RenderSystem.pushMatrix();
+//            RenderSystem.enableBlend();
+//            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//            RenderSystem.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.rotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
+//            RenderSystem.translatef(-0.6F, 0.28F, 0.0F);
 //
-//            GlStateManager.disableTexture();
+//            RenderSystem.disableTexture();
 //
 //            tess.getBuffer().begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
 //
@@ -125,16 +125,16 @@
 //            tess.getBuffer().pos(0.09F, 0.0F, -0.275F).color(0.0F, 1.0F, 0.0F, 1.0F).endVertex();
 //
 //            tess.draw();
-//            GlStateManager.enableTexture();
+//            RenderSystem.enableTexture();
 //
 //            float scale = tile.chargeLevel / 600.0F;
-//            GlStateManager.scalef(0.01F + scale, 0.01F + scale, 0.01F + scale);
-//            GlStateManager.rotatef(rotate, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.scalef(0.01F + scale, 0.01F + scale, 0.01F + scale);
+//            RenderSystem.rotatef(rotate, 0.0F, 1.0F, 0.0F);
 //            ClientUtil.drawBakedModel(orb1);
-//            GlStateManager.rotatef(rotate, 0.0F, 1.0F, 0.0F);
+//            RenderSystem.rotatef(rotate, 0.0F, 1.0F, 0.0F);
 //            ClientUtil.drawBakedModel(orb2);
-//            GlStateManager.disableBlend();
-//            GlStateManager.popMatrix();
+//            RenderSystem.disableBlend();
+//            RenderSystem.popMatrix();
 //        }
 //
 //        if (tile.timeSinceShot > 0 && tile.timeSinceShot < 5)
@@ -143,20 +143,20 @@
 //
 //            if (e != null)
 //            {
-//                GlStateManager.disableTexture();
-//                GlStateManager.pushMatrix();
-//                GlStateManager.enableBlend();
-//                GlStateManager.disableCull();
-//                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-//                GlStateManager.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
-//                GlStateManager.rotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
-//                GlStateManager.translatef(-0.6F, 0.28F, 0.0F);
+//                RenderSystem.disableTexture();
+//                RenderSystem.pushMatrix();
+//                RenderSystem.enableBlend();
+//                RenderSystem.disableCull();
+//                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//                RenderSystem.rotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
+//                RenderSystem.rotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
+//                RenderSystem.translatef(-0.6F, 0.28F, 0.0F);
 //
 //                BufferBuilder bb = tess.getBuffer();
 //
-//                bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+//                bb.begin(7, DefaultVertexFormats.POSITION_COLOR);
 //
-//                Vector3D vec = new Vector3D(e.posX, e.posY + e.getEyeHeight(), e.posZ);
+//                Vector3D vec = new Vector3D(e.getPosX(), e.getPosY() + e.getEyeHeight(), e.getPosZ());
 //                vec.translate(new Vector3D(-(tile.getPos().getX() + 0.5F), -(tile.getPos().getY() + 1.78F), -(tile.getPos().getZ() + 0.5F)));
 //                float dist = (float) vec.getMagnitude() - 0.8F;
 //                float shotTimer = (float) (Math.pow((5.0F - tile.timeSinceShot) / 5.0F + 1.0F, 2.5F) * 0.5F);
@@ -189,12 +189,12 @@
 //
 //                tess.draw();
 //
-//                GlStateManager.enableCull();
-//                GlStateManager.enableTexture();
-//                GlStateManager.popMatrix();
+//                RenderSystem.enableCull();
+//                RenderSystem.enableTexture();
+//                RenderSystem.popMatrix();
 //            }
 //        }
-//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightMapSaveX, lightMapSaveY);
-//        GlStateManager.popMatrix();
+//        RenderSystem.glMultiTexCoord2f(33985, lightMapSaveX, lightMapSaveY);
+//        RenderSystem.popMatrix();
 //    }
 //}

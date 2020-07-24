@@ -1,17 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventorySlimeling implements IInventory
 {
@@ -92,8 +88,6 @@ public class InventorySlimeling implements IInventory
                 this.removeInventoryBagContents();
                 var3 = this.stacks.get(par1);
                 this.stacks.set(par1, ItemStack.EMPTY);
-                this.markDirty();
-                return var3;
             }
             else
             //Normal case of decrStackSize for a slot
@@ -111,9 +105,9 @@ public class InventorySlimeling implements IInventory
                     this.stacks.set(par1, ItemStack.EMPTY);
                 }
 
-                this.markDirty();
-                return var3;
             }
+            this.markDirty();
+            return var3;
         }
         else
         {

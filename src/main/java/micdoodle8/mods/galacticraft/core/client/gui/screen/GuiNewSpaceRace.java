@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -29,7 +30,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
-import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -95,7 +95,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 //    private final ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;
-    public Map<String, Integer> recentlyInvited = new HashMap<String, Integer>();
+    public final Map<String, Integer> recentlyInvited = new HashMap<>();
 
     private boolean lastMousePressed = false;
     private boolean isDirty = true;
@@ -114,7 +114,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
         }
         else
         {
-            List<String> playerList = new ArrayList<String>();
+            List<String> playerList = new ArrayList<>();
             playerList.add(PlayerUtil.getName(player));
             this.spaceRaceData = new SpaceRace(playerList, SpaceRace.DEFAULT_NAME, new FlagData(48, 32), new Vector3(1, 1, 1));
         }
@@ -125,7 +125,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
     private boolean canPlayerEdit()
     {
-        return PlayerUtil.getName(this.minecraft.player).equals(this.spaceRaceData.getPlayerNames().get(0));
+        return Objects.equals(PlayerUtil.getName(this.minecraft.player), this.spaceRaceData.getPlayerNames().get(0));
     }
 
     @Override
@@ -169,149 +169,149 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
             switch (this.currentState)
             {
-            case MAIN:
-                this.textBoxRename = new GuiElementTextBox(this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, GCCoreUtil.translate("gui.space_race.create.rename.name"), false, 25, true);
-                this.buttons.add(this.textBoxRename);
-                if (this.canEdit)
-                {
-                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.add_players.name"), (button) ->
+                case MAIN:
+                    this.textBoxRename = new GuiElementTextBox(this, this.width / 2 - 75, this.buttonFlag_yPosition + this.buttonFlag_height + 10, 150, 16, GCCoreUtil.translate("gui.space_race.create.rename.name"), false, 25, true);
+                    this.buttons.add(this.textBoxRename);
+                    if (this.canEdit)
                     {
-                        if (this.currentState == EnumSpaceRaceGui.MAIN && this.canEdit)
+                        this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.add_players.name"), (button) ->
                         {
-                            this.currentState = EnumSpaceRaceGui.ADD_PLAYER;
-                            this.init();
-                        }
-                    }));
-                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.rem_players.name"), (button) ->
-                    {
-                        if (this.currentState == EnumSpaceRaceGui.MAIN && this.canEdit)
+                            if (this.currentState == EnumSpaceRaceGui.MAIN && this.canEdit)
+                            {
+                                this.currentState = EnumSpaceRaceGui.ADD_PLAYER;
+                                this.init();
+                            }
+                        }));
+                        this.buttons.add(new GuiElementGradientButton(this.width / 2 - 120, this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.rem_players.name"), (button) ->
                         {
-                            this.currentState = EnumSpaceRaceGui.REMOVE_PLAYER;
-                            this.init();
-                        }
-                    }));
-                }
+                            if (this.currentState == EnumSpaceRaceGui.MAIN && this.canEdit)
+                            {
+                                this.currentState = EnumSpaceRaceGui.REMOVE_PLAYER;
+                                this.init();
+                            }
+                        }));
+                    }
 
-                GuiElementGradientButton localStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.server_stats.name"), (button) ->
-                {
-                });
-                GuiElementGradientButton serverStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.global_stats.name"), (button) ->
-                {
-                });
-                localStats.active = false;
-                serverStats.active = false;
-                this.buttons.add(localStats);
-                this.buttons.add(serverStats);
-                break;
-            case ADD_PLAYER:
-                this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.send_invite.name"), (button) ->
-                {
-                    if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER)
+                    GuiElementGradientButton localStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.server_stats.name"), (button) ->
                     {
-                        ListElement playerToInvite = this.gradientListAddPlayers.getSelectedElement();
-                        if (playerToInvite != null && !this.recentlyInvited.containsKey(playerToInvite.value))
+                    });
+                    GuiElementGradientButton serverStats = new GuiElementGradientButton(this.width / 2 + (this.canEdit ? 20 : -50), this.textBoxRename.y + this.height / 10 + this.height / 10 + this.height / 50, 100, this.height / 10, GCCoreUtil.translate("gui.space_race.create.global_stats.name"), (button) ->
+                    {
+                    });
+                    localStats.active = false;
+                    serverStats.active = false;
+                    this.buttons.add(localStats);
+                    this.buttons.add(serverStats);
+                    break;
+                case ADD_PLAYER:
+                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.send_invite.name"), (button) ->
+                    {
+                        if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER)
                         {
-                            SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
-                            if (race != null)
+                            ListElement playerToInvite = this.gradientListAddPlayers.getSelectedElement();
+                            if (playerToInvite != null && !this.recentlyInvited.containsKey(playerToInvite.value))
                             {
-                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{playerToInvite.value, race.getSpaceRaceID()}));
-                                this.recentlyInvited.put(playerToInvite.value, 20 * 60);
+                                SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
+                                if (race != null)
+                                {
+                                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{playerToInvite.value, race.getSpaceRaceID()}));
+                                    this.recentlyInvited.put(playerToInvite.value, 20 * 60);
+                                }
                             }
                         }
-                    }
-                }));
-                int xPos0 = ((GuiElementGradientButton) this.buttons.get(0)).x + this.buttons.get(0).getWidth() + 10;
-                int xPos1 = this.width / 2 + this.width / 3 - 10;
-                int yPos0 = this.height / 2 - this.height / 3 + 10;
-                int yPos1 = this.height / 2 + this.height / 3 - 10;
-                this.gradientListAddPlayers = new GuiElementGradientList(xPos0, yPos0, xPos1 - xPos0, yPos1 - yPos0);
-                break;
-            case REMOVE_PLAYER:
-                this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.remove.name"), (button) ->
-                {
-                    if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER)
+                    }));
+                    int xPos0 = ((GuiElementGradientButton) this.buttons.get(0)).x + this.buttons.get(0).getWidth() + 10;
+                    int xPos1 = this.width / 2 + this.width / 3 - 10;
+                    int yPos0 = this.height / 2 - this.height / 3 + 10;
+                    int yPos1 = this.height / 2 + this.height / 3 - 10;
+                    this.gradientListAddPlayers = new GuiElementGradientList(xPos0, yPos0, xPos1 - xPos0, yPos1 - yPos0);
+                    break;
+                case REMOVE_PLAYER:
+                    this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 7, this.height / 2 + this.height / 4 - 15, 64, 15, GCCoreUtil.translate("gui.space_race.create.remove.name"), (button) ->
                     {
-                        ListElement playerToRemove = this.gradientListRemovePlayers.getSelectedElement();
-                        if (playerToRemove != null)
+                        if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER)
                         {
-                            SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
-                            if (race != null)
+                            ListElement playerToRemove = this.gradientListRemovePlayers.getSelectedElement();
+                            if (playerToRemove != null)
                             {
-                                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{playerToRemove.value, race.getSpaceRaceID()}));
+                                SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
+                                if (race != null)
+                                {
+                                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{playerToRemove.value, race.getSpaceRaceID()}));
+                                }
                             }
                         }
-                    }
-                }));
-                int xPos0b = ((GuiElementGradientButton) this.buttons.get(0)).x + this.buttons.get(0).getWidth() + 10;
-                int xPos1b = this.width / 2 + this.width / 3 - 10;
-                int yPos0b = this.height / 2 - this.height / 3 + 10;
-                int yPos1b = this.height / 2 + this.height / 3 - 10;
-                this.gradientListRemovePlayers = new GuiElementGradientList(xPos0b, yPos0b, xPos1b - xPos0b, yPos1b - yPos0b);
-                break;
-            case DESIGN_FLAG:
-                int guiBottom = this.height / 2 + this.height / 4;
-                int guiTop = this.height / 2 - this.height / 4;
-                int guiRight = this.width / 2 + this.width / 3;
-                int guiLeft;
-                this.flagDesignerScale = new Vector2(this.width / 130.0F, this.height / 70.0F);
-                this.flagDesignerMinX = this.width / 2 - this.spaceRaceData.getFlagData().getWidth() * this.flagDesignerScale.x / 2;
-                this.flagDesignerMinY = this.height / 2 - this.spaceRaceData.getFlagData().getHeight() * this.flagDesignerScale.y / 2;
-                this.flagDesignerWidth = this.spaceRaceData.getFlagData().getWidth() * this.flagDesignerScale.x;
-                this.flagDesignerHeight = this.spaceRaceData.getFlagData().getHeight() * this.flagDesignerScale.y;
-                int flagDesignerRight = (int) (this.flagDesignerMinX + this.flagDesignerWidth);
-                int availWidth = (int) ((guiRight - 10 - (this.flagDesignerMinX + this.flagDesignerWidth + 10)) / 3);
-                float x1 = flagDesignerRight + 10;
-                float x2 = guiRight - 10;
-                float y1 = guiBottom - 10 - (x2 - x1);
-                int height = (int) (y1 - 10 - (guiTop + 10));
-                this.sliderColorR = new GuiElementSlider(flagDesignerRight + 10, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(1, 0, 0));
-                this.sliderColorG = new GuiElementSlider(flagDesignerRight + 11 + availWidth, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-                this.sliderColorB = new GuiElementSlider(flagDesignerRight + 12 + availWidth * 2, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 0, 1));
-                this.sliderColorR.setSliderPos(sliderR);
-                this.sliderColorG.setSliderPos(sliderG);
-                this.sliderColorB.setSliderPos(sliderB);
-                this.buttons.add(this.sliderColorR);
-                this.buttons.add(this.sliderColorG);
-                this.buttons.add(this.sliderColorB);
-                this.checkboxPaintbrush = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 10, 13, 13, 26, 26, 133, 0, "", 4210752, false);
-                this.checkboxEraser = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 25, 13, 13, 26, 26, 133, 52, "", 4210752, false);
-                this.checkboxSelector = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 40, 13, 13, 26, 26, 133, 78, "", 4210752, false);
-                this.checkboxColorSelector = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 55, 13, 13, 26, 26, 133, 104, "", 4210752, false);
-                this.checkboxShowGrid = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 90, 13, 13, 26, 26, 133, 26, "", 4210752, false);
-                this.sliderBrushSize = new GuiElementSlider(this.checkboxPaintbrush.x - 40, this.checkboxPaintbrush.y, 35, 13, false, new Vector3(0.34F, 0.34F, 0.34F), new Vector3(0.34F, 0.34F, 0.34F), GCCoreUtil.translate("gui.space_race.create.brush_size.name"));
-                this.sliderEraserSize = new GuiElementSlider(this.checkboxEraser.x - 40, this.checkboxEraser.y, 35, 13, false, new Vector3(0.34F, 0.34F, 0.34F), new Vector3(0.34F, 0.34F, 0.34F), GCCoreUtil.translate("gui.space_race.create.eraser_size.name"));
-                this.sliderEraserSize.visible = false;
-                this.buttons.add(this.checkboxPaintbrush);
-                this.buttons.add(this.checkboxShowGrid);
-                this.buttons.add(this.checkboxEraser);
-                this.buttons.add(this.checkboxSelector);
-                this.buttons.add(this.checkboxColorSelector);
-                this.buttons.add(this.sliderBrushSize);
-                this.buttons.add(this.sliderEraserSize);
-                break;
-            case CHANGE_TEAM_COLOR:
-                guiBottom = this.height / 2 + this.height / 4;
-                guiTop = this.height / 2 - this.height / 4;
-                guiLeft = this.width / 6;
-                guiRight = this.width / 2 + this.width / 3;
-                flagDesignerRight = guiLeft;
-                availWidth = (guiRight - guiLeft - 100) / 3;
-                x1 = flagDesignerRight + 10;
-                x2 = guiLeft - 10;
-                y1 = guiBottom - 10 - (x2 - x1);
-                height = (int) (y1 - 10 - (guiTop + 30));
-                this.sliderColorR = new GuiElementSlider(flagDesignerRight + 25, guiTop + 30, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(1, 0, 0));
-                this.sliderColorG = new GuiElementSlider(flagDesignerRight + availWidth + 50, guiTop + 30, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
-                this.sliderColorB = new GuiElementSlider(flagDesignerRight + availWidth * 2 + 75, guiTop + 30, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 0, 1));
-                this.sliderColorR.setSliderPos(this.spaceRaceData.getTeamColor().floatX());
-                this.sliderColorG.setSliderPos(this.spaceRaceData.getTeamColor().floatY());
-                this.sliderColorB.setSliderPos(this.spaceRaceData.getTeamColor().floatZ());
-                this.buttons.add(this.sliderColorR);
-                this.buttons.add(this.sliderColorG);
-                this.buttons.add(this.sliderColorB);
-                break;
-            default:
-                break;
+                    }));
+                    int xPos0b = ((GuiElementGradientButton) this.buttons.get(0)).x + this.buttons.get(0).getWidth() + 10;
+                    int xPos1b = this.width / 2 + this.width / 3 - 10;
+                    int yPos0b = this.height / 2 - this.height / 3 + 10;
+                    int yPos1b = this.height / 2 + this.height / 3 - 10;
+                    this.gradientListRemovePlayers = new GuiElementGradientList(xPos0b, yPos0b, xPos1b - xPos0b, yPos1b - yPos0b);
+                    break;
+                case DESIGN_FLAG:
+                    int guiBottom = this.height / 2 + this.height / 4;
+                    int guiTop = this.height / 2 - this.height / 4;
+                    int guiRight = this.width / 2 + this.width / 3;
+                    int guiLeft;
+                    this.flagDesignerScale = new Vector2(this.width / 130.0F, this.height / 70.0F);
+                    this.flagDesignerMinX = this.width / 2 - this.spaceRaceData.getFlagData().getWidth() * this.flagDesignerScale.x / 2;
+                    this.flagDesignerMinY = this.height / 2 - this.spaceRaceData.getFlagData().getHeight() * this.flagDesignerScale.y / 2;
+                    this.flagDesignerWidth = this.spaceRaceData.getFlagData().getWidth() * this.flagDesignerScale.x;
+                    this.flagDesignerHeight = this.spaceRaceData.getFlagData().getHeight() * this.flagDesignerScale.y;
+                    int flagDesignerRight = (int) (this.flagDesignerMinX + this.flagDesignerWidth);
+                    int availWidth = (int) ((guiRight - 10 - (this.flagDesignerMinX + this.flagDesignerWidth + 10)) / 3);
+                    float x1 = flagDesignerRight + 10;
+                    float x2 = guiRight - 10;
+                    float y1 = guiBottom - 10 - (x2 - x1);
+                    int height = (int) (y1 - 10 - (guiTop + 10));
+                    this.sliderColorR = new GuiElementSlider(flagDesignerRight + 10, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(1, 0, 0));
+                    this.sliderColorG = new GuiElementSlider(flagDesignerRight + 11 + availWidth, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+                    this.sliderColorB = new GuiElementSlider(flagDesignerRight + 12 + availWidth * 2, guiTop + 10, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+                    this.sliderColorR.setSliderPos(sliderR);
+                    this.sliderColorG.setSliderPos(sliderG);
+                    this.sliderColorB.setSliderPos(sliderB);
+                    this.buttons.add(this.sliderColorR);
+                    this.buttons.add(this.sliderColorG);
+                    this.buttons.add(this.sliderColorB);
+                    this.checkboxPaintbrush = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 10, 13, 13, 26, 26, 133, 0, "", 4210752, false);
+                    this.checkboxEraser = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 25, 13, 13, 26, 26, 133, 52, "", 4210752, false);
+                    this.checkboxSelector = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 40, 13, 13, 26, 26, 133, 78, "", 4210752, false);
+                    this.checkboxColorSelector = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 55, 13, 13, 26, 26, 133, 104, "", 4210752, false);
+                    this.checkboxShowGrid = new GuiElementCheckbox(this, (int) (this.flagDesignerMinX - 15), this.height / 2 - this.height / 4 + 90, 13, 13, 26, 26, 133, 26, "", 4210752, false);
+                    this.sliderBrushSize = new GuiElementSlider(this.checkboxPaintbrush.x - 40, this.checkboxPaintbrush.y, 35, 13, false, new Vector3(0.34F, 0.34F, 0.34F), new Vector3(0.34F, 0.34F, 0.34F), GCCoreUtil.translate("gui.space_race.create.brush_size.name"));
+                    this.sliderEraserSize = new GuiElementSlider(this.checkboxEraser.x - 40, this.checkboxEraser.y, 35, 13, false, new Vector3(0.34F, 0.34F, 0.34F), new Vector3(0.34F, 0.34F, 0.34F), GCCoreUtil.translate("gui.space_race.create.eraser_size.name"));
+                    this.sliderEraserSize.visible = false;
+                    this.buttons.add(this.checkboxPaintbrush);
+                    this.buttons.add(this.checkboxShowGrid);
+                    this.buttons.add(this.checkboxEraser);
+                    this.buttons.add(this.checkboxSelector);
+                    this.buttons.add(this.checkboxColorSelector);
+                    this.buttons.add(this.sliderBrushSize);
+                    this.buttons.add(this.sliderEraserSize);
+                    break;
+                case CHANGE_TEAM_COLOR:
+                    guiBottom = this.height / 2 + this.height / 4;
+                    guiTop = this.height / 2 - this.height / 4;
+                    guiLeft = this.width / 6;
+                    guiRight = this.width / 2 + this.width / 3;
+                    flagDesignerRight = guiLeft;
+                    availWidth = (guiRight - guiLeft - 100) / 3;
+                    x1 = flagDesignerRight + 10;
+                    x2 = guiLeft - 10;
+                    y1 = guiBottom - 10 - (x2 - x1);
+                    height = (int) (y1 - 10 - (guiTop + 30));
+                    this.sliderColorR = new GuiElementSlider(flagDesignerRight + 25, guiTop + 30, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(1, 0, 0));
+                    this.sliderColorG = new GuiElementSlider(flagDesignerRight + availWidth + 50, guiTop + 30, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+                    this.sliderColorB = new GuiElementSlider(flagDesignerRight + availWidth * 2 + 75, guiTop + 30, availWidth, height, true, new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+                    this.sliderColorR.setSliderPos(this.spaceRaceData.getTeamColor().floatX());
+                    this.sliderColorG.setSliderPos(this.spaceRaceData.getTeamColor().floatY());
+                    this.sliderColorB.setSliderPos(this.spaceRaceData.getTeamColor().floatZ());
+                    this.buttons.add(this.sliderColorR);
+                    this.buttons.add(this.sliderColorG);
+                    this.buttons.add(this.sliderColorB);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -401,7 +401,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
         ++this.ticksPassed;
 
-        for (Entry<String, Integer> e : new HashSet<Entry<String, Integer>>(this.recentlyInvited.entrySet()))
+        for (Entry<String, Integer> e : new HashSet<>(this.recentlyInvited.entrySet()))
         {
             int timeLeft = e.getValue();
             if (--timeLeft < 0)
@@ -416,7 +416,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
         if (this.currentState == EnumSpaceRaceGui.ADD_PLAYER && this.gradientListAddPlayers != null && this.ticksPassed % 20 == 0)
         {
-            List<ListElement> playerNames = new ArrayList<ListElement>();
+            List<ListElement> playerNames = new ArrayList<>();
             for (int i = 0; i < this.thePlayer.world.getPlayers().size(); i++)
             {
                 PlayerEntity player = this.thePlayer.world.getPlayers().get(i);
@@ -442,7 +442,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
         if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER && this.gradientListRemovePlayers != null && this.ticksPassed % 20 == 0)
         {
-            List<ListElement> playerNames = new ArrayList<ListElement>();
+            List<ListElement> playerNames = new ArrayList<>();
             for (int i = 1; i < this.spaceRaceData.getPlayerNames().size(); i++)
             {
                 String playerName = this.spaceRaceData.getPlayerNames().get(i);
@@ -654,12 +654,12 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     {
         if (this.canEdit)
         {
-            List<Object> objList = new ArrayList<Object>();
+            List<Object> objList = new ArrayList<>();
             objList.add(this.spaceRaceData.getSpaceRaceID());
             objList.add(this.spaceRaceData.getTeamName());
             objList.add(this.spaceRaceData.getFlagData());
             objList.add(this.spaceRaceData.getTeamColor());
-            objList.add(this.spaceRaceData.getPlayerNames().toArray(new String[this.spaceRaceData.getPlayerNames().size()]));
+            objList.add(this.spaceRaceData.getPlayerNames().toArray(new String[0]));
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_START_NEW_SPACE_RACE, GCCoreUtil.getDimensionType(minecraft.world), objList));
         }
     }
@@ -676,165 +676,165 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
             switch (this.currentState)
             {
-            case MAIN:
-                this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
-                this.drawFlagButton();
-                this.drawColorButton();
+                case MAIN:
+                    this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+                    this.drawFlagButton();
+                    this.drawColorButton();
 
-                GuiElementGradientButton serverStats = (GuiElementGradientButton) this.buttons.get(this.canEdit ? 4 : 2);
-                GuiElementGradientButton localStats = (GuiElementGradientButton) this.buttons.get(this.canEdit ? 5 : 3);
+                    GuiElementGradientButton serverStats = (GuiElementGradientButton) this.buttons.get(this.canEdit ? 4 : 2);
+                    GuiElementGradientButton localStats = (GuiElementGradientButton) this.buttons.get(this.canEdit ? 5 : 3);
 
-                if (par1 > serverStats.x && par1 < serverStats.x + serverStats.getWidth() && par2 > serverStats.y && par2 < serverStats.y + serverStats.getHeight())
-                {
-                    serverStats.setMessage(GCCoreUtil.translate("gui.space_race.coming_soon"));
-                }
-                else
-                {
-                    serverStats.setMessage(GCCoreUtil.translate("gui.space_race.create.server_stats.name"));
-                }
-
-                if (par1 > localStats.x && par1 < localStats.x + localStats.getWidth() && par2 > localStats.y && par2 < localStats.y + localStats.getHeight())
-                {
-                    localStats.setMessage(GCCoreUtil.translate("gui.space_race.coming_soon"));
-                }
-                else
-                {
-                    localStats.setMessage(GCCoreUtil.translate("gui.space_race.create.global_stats.name"));
-                }
-
-                break;
-            case ADD_PLAYER:
-                this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.invite_player.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
-                this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.player_radius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, ColorUtil.to32BitColor(255, 180, 40, 40));
-                break;
-            case REMOVE_PLAYER:
-                this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.remove_player.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
-                break;
-            case DESIGN_FLAG:
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
-                        GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-                GL11.glShadeModel(GL11.GL_SMOOTH);
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder worldRenderer = tessellator.getBuffer();
-
-                for (int x = 0; x < this.spaceRaceData.getFlagData().getWidth(); x++)
-                {
-                    for (int y = 0; y < this.spaceRaceData.getFlagData().getHeight(); y++)
+                    if (par1 > serverStats.x && par1 < serverStats.x + serverStats.getWidth() && par2 > serverStats.y && par2 < serverStats.y + serverStats.getHeight())
                     {
-                        Vector3 color = this.spaceRaceData.getFlagData().getColorAt(x, y);
-                        GL11.glColor4f(color.floatX(), color.floatY(), color.floatZ(), 1.0F);
-                        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
-                        tessellator.draw();
+                        serverStats.setMessage(GCCoreUtil.translate("gui.space_race.coming_soon"));
                     }
-                }
-
-                if (this.checkboxShowGrid != null && this.checkboxShowGrid.isSelected != null && this.checkboxShowGrid.isSelected)
-                {
-                    for (int x = 0; x <= this.spaceRaceData.getFlagData().getWidth(); x++)
+                    else
                     {
-                        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        tessellator.draw();
+                        serverStats.setMessage(GCCoreUtil.translate("gui.space_race.create.server_stats.name"));
                     }
 
-                    for (int y = 0; y <= this.spaceRaceData.getFlagData().getHeight(); y++)
+                    if (par1 > localStats.x && par1 < localStats.x + localStats.getWidth() && par2 > localStats.y && par2 < localStats.y + localStats.getHeight())
                     {
-                        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-                        worldRenderer.pos(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-                        worldRenderer.pos(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                        localStats.setMessage(GCCoreUtil.translate("gui.space_race.coming_soon"));
+                    }
+                    else
+                    {
+                        localStats.setMessage(GCCoreUtil.translate("gui.space_race.create.global_stats.name"));
+                    }
+
+                    break;
+                case ADD_PLAYER:
+                    this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.invite_player.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+                    this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.player_radius.name"), this.width / 2, this.height / 2 + this.height / 3 + 3, ColorUtil.to32BitColor(255, 180, 40, 40));
+                    break;
+                case REMOVE_PLAYER:
+                    this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.create.remove_player.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+                    break;
+                case DESIGN_FLAG:
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    RenderSystem.disableTexture();
+                    RenderSystem.enableBlend();
+                    RenderSystem.disableAlphaTest();
+                    RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+                            GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+                    RenderSystem.shadeModel(7425);
+                    Tessellator tessellator = Tessellator.getInstance();
+                    BufferBuilder worldRenderer = tessellator.getBuffer();
+
+                    for (int x = 0; x < this.spaceRaceData.getFlagData().getWidth(); x++)
+                    {
+                        for (int y = 0; y < this.spaceRaceData.getFlagData().getHeight(); y++)
+                        {
+                            Vector3 color = this.spaceRaceData.getFlagData().getColorAt(x, y);
+                            RenderSystem.color4f(color.floatX(), color.floatY(), color.floatZ(), 1.0F);
+                            worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+                            worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
+                            worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y + 1 * this.flagDesignerScale.y, 0.0D).endVertex();
+                            worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x + 1 * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
+                            worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + y * this.flagDesignerScale.y, 0.0D).endVertex();
+                            tessellator.draw();
+                        }
+                    }
+
+                    if (this.checkboxShowGrid != null && this.checkboxShowGrid.isSelected != null && this.checkboxShowGrid.isSelected)
+                    {
+                        for (int x = 0; x <= this.spaceRaceData.getFlagData().getWidth(); x++)
+                        {
+                            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+                            worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                            worldRenderer.pos(this.flagDesignerMinX + x * this.flagDesignerScale.x, this.flagDesignerMinY + this.flagDesignerHeight, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                            tessellator.draw();
+                        }
+
+                        for (int y = 0; y <= this.spaceRaceData.getFlagData().getHeight(); y++)
+                        {
+                            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+                            worldRenderer.pos(this.flagDesignerMinX, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                            worldRenderer.pos(this.flagDesignerMinX + this.flagDesignerWidth, this.flagDesignerMinY + y * this.flagDesignerScale.y, this.getBlitOffset()).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
+                            tessellator.draw();
+                        }
+                    }
+
+                    if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - this.selectionMinX > 0 && this.selectionMaxY - this.selectionMinY > 0)
+                    {
+                        worldRenderer.begin(3, DefaultVertexFormats.POSITION_COLOR);
+                        float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
+                        worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                        worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
                         tessellator.draw();
                     }
-                }
 
-                if (!(this.lastMousePressed && this.checkboxSelector.isSelected != null && this.checkboxSelector.isSelected) && this.selectionMaxX - this.selectionMinX > 0 && this.selectionMaxY - this.selectionMinY > 0)
-                {
-                    worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-                    float col = (float) (Math.sin(this.ticksPassed * 0.3) * 0.4 + 0.1);
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMaxX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMaxY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
-                    worldRenderer.pos(this.flagDesignerMinX + this.selectionMinX * this.flagDesignerScale.x, this.flagDesignerMinY + this.selectionMinY * this.flagDesignerScale.y, this.getBlitOffset()).color(col, col, col, 1.0F).endVertex();
+                    int guiRight = this.width / 2 + this.width / 3;
+                    int guiBottom = this.height / 2 + this.height / 4;
+                    float x1 = this.sliderColorR.x;
+                    float x2 = guiRight - 10;
+                    float y1 = guiBottom - 10 - (x2 - x1);
+                    float y2 = guiBottom - 10;
+
+                    worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    worldRenderer.pos(x2, y1, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
+                    worldRenderer.pos(x1, y1, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
+                    worldRenderer.pos(x1, y2, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
+                    worldRenderer.pos(x2, y2, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
                     tessellator.draw();
-                }
 
-                int guiRight = this.width / 2 + this.width / 3;
-                int guiBottom = this.height / 2 + this.height / 4;
-                float x1 = this.sliderColorR.x;
-                float x2 = guiRight - 10;
-                float y1 = guiBottom - 10 - (x2 - x1);
-                float y2 = guiBottom - 10;
+                    worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    tessellator.draw();
 
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos(x2, y1, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
-                worldRenderer.pos(x1, y1, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
-                worldRenderer.pos(x1, y2, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
-                worldRenderer.pos(x2, y2, this.getBlitOffset()).color(0, 0, 0, 1.0F).endVertex();
-                tessellator.draw();
+                    RenderSystem.shadeModel(7424);
+                    RenderSystem.disableBlend();
+                    RenderSystem.enableAlphaTest();
+                    RenderSystem.enableTexture();
 
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                tessellator.draw();
+                    break;
+                case CHANGE_TEAM_COLOR:
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    RenderSystem.disableTexture();
+                    RenderSystem.enableBlend();
+                    RenderSystem.disableAlphaTest();
+                    RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
+                            GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+                    RenderSystem.shadeModel(7425);
+                    x1 = this.sliderColorG.x;
+                    x2 = this.sliderColorG.x + this.sliderColorG.getWidth();
+                    y1 = this.height / 2 - this.height / 3 + 5;
+                    y2 = this.sliderColorG.y - 5;
+                    float xDiff = x2 - x1;
+                    float yDiff = y2 - y1;
 
-                GL11.glShadeModel(GL11.GL_FLAT);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    if (xDiff > yDiff)
+                    {
+                        x1 = this.sliderColorG.x + this.sliderColorG.getWidth() / 2 - yDiff / 2;
+                        x2 = this.sliderColorG.x + this.sliderColorG.getWidth() / 2 + yDiff / 2;
+                    }
+                    else
+                    {
+                        y2 = y1 + xDiff;
+                    }
 
-                break;
-            case CHANGE_TEAM_COLOR:
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param,
-                        GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-                GL11.glShadeModel(GL11.GL_SMOOTH);
-                x1 = this.sliderColorG.x;
-                x2 = this.sliderColorG.x + this.sliderColorG.getWidth();
-                y1 = this.height / 2 - this.height / 3 + 5;
-                y2 = this.sliderColorG.y - 5;
-                float xDiff = x2 - x1;
-                float yDiff = y2 - y1;
+                    tessellator = Tessellator.getInstance();
+                    worldRenderer = tessellator.getBuffer();
+                    worldRenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
+                    tessellator.draw();
 
-                if (xDiff > yDiff)
-                {
-                    x1 = this.sliderColorG.x + this.sliderColorG.getWidth() / 2 - yDiff / 2;
-                    x2 = this.sliderColorG.x + this.sliderColorG.getWidth() / 2 + yDiff / 2;
-                }
-                else
-                {
-                    y2 = y1 + xDiff;
-                }
+                    this.spaceRaceData.setTeamColor(new Vector3(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue()));
 
-                tessellator = Tessellator.getInstance();
-                worldRenderer = tessellator.getBuffer();
-                worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-                worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x1 + 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                worldRenderer.pos((double) x2 - 1, (double) y2 - 1, this.getBlitOffset()).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
-                tessellator.draw();
-
-                this.spaceRaceData.setTeamColor(new Vector3(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue()));
-
-                GL11.glShadeModel(GL11.GL_FLAT);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-                break;
+                    RenderSystem.shadeModel(7424);
+                    RenderSystem.disableBlend();
+                    RenderSystem.enableAlphaTest();
+                    RenderSystem.enableTexture();
+                    break;
             }
         }
 
@@ -866,25 +866,25 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
 
     private void drawFlagButton()
     {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(this.buttonFlag_xPosition + 2.9F, this.buttonFlag_yPosition + this.buttonFlag_height + 1 - 4, 0);
-        GL11.glScalef(74.0F, 74.0F, 1F);
-        GL11.glTranslatef(0.0F, 0.36F, 1.0F);
-        GL11.glScalef(1.0F, 1.0F, -1F);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(this.buttonFlag_xPosition + 2.9F, this.buttonFlag_yPosition + this.buttonFlag_height + 1 - 4, 0);
+        RenderSystem.scalef(74.0F, 74.0F, 1F);
+        RenderSystem.translatef(0.0F, 0.36F, 1.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1F);
         this.dummyFlag.flagData = this.spaceRaceData.getFlagData();
 //        this.dummyModel.renderFlag(this.dummyFlag, this.ticksPassed); TODO Render flag
-        GL11.glColor3f(1, 1, 1);
-        GL11.glPopMatrix();
+        RenderSystem.color3f(1, 1, 1);
+        RenderSystem.popMatrix();
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.0F, 500.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0.0F, 0.0F, 500.0F);
         int color = this.buttonFlag_hover ? 170 : 100;
         if (this.canEdit)
         {
             String message = GCCoreUtil.translate("gui.space_race.create.customize.name");
             this.font.drawString(message, this.buttonFlag_xPosition + this.buttonFlag_width / 2 - this.font.getStringWidth(message) / 2, this.buttonFlag_yPosition + this.buttonFlag_height / 2 - 5, ColorUtil.to32BitColor(255, color, color, color)/*, this.buttonFlag_hover*/);
         }
-        GL11.glPopMatrix();
+        RenderSystem.popMatrix();
 
         if (this.buttonFlag_hover)
         {
@@ -901,8 +901,8 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     {
         AbstractGui.fill(this.buttonTeamColor_xPosition + 2, this.buttonTeamColor_yPosition + 2, this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 2, ColorUtil.to32BitColor(255, (int) (this.spaceRaceData.getTeamColor().x * 255.0F), (int) (this.spaceRaceData.getTeamColor().y * 255.0F), (int) (this.spaceRaceData.getTeamColor().z * 255.0F)));
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.0F, 500.0F);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(0.0F, 0.0F, 500.0F);
         int color = this.buttonTeamColor_hover ? 170 : 100;
         if (canEdit)
         {
@@ -910,7 +910,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
         }
         this.font.drawString(GCCoreUtil.translate("gui.space_race.create.change_color.name.1"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.font.getStringWidth(GCCoreUtil.translate("gui.space_race.create.change_color.name.1")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 - (canEdit ? 3 : 9), ColorUtil.to32BitColor(255, color, color, color)/*, this.buttonTeamColor_hover*/);
         this.font.drawString(GCCoreUtil.translate("gui.space_race.create.change_color.name.2"), this.buttonTeamColor_xPosition + this.buttonTeamColor_width / 2 - this.font.getStringWidth(GCCoreUtil.translate("gui.space_race.create.change_color.name.2")) / 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height / 2 + (canEdit ? 7 : 1), ColorUtil.to32BitColor(255, color, color, color)/*, this.buttonTeamColor_hover*/);
-        GL11.glPopMatrix();
+        RenderSystem.popMatrix();
 
         if (this.buttonTeamColor_hover)
         {

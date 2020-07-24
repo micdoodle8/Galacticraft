@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.dimension;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -8,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -22,7 +22,7 @@ public class TeleportTypeMars implements ITeleportType
     }
 
     @Override
-    public Vector3D getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
+    public Vec3d getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -53,20 +53,20 @@ public class TeleportTypeMars implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vector3D(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
+            return new Vec3d(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
         }
 
         return null;
     }
 
     @Override
-    public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
+    public Vec3d getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
+        return new Vec3d(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override
-    public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
+    public Vec3d getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         return null;
     }

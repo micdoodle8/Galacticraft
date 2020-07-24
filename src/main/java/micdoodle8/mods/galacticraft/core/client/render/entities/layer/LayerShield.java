@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 //import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
@@ -52,33 +52,33 @@
 //                    this.shieldModel.setModelAttributes(this.renderer.getEntityModel());
 //                    this.shieldModel.setLivingAnimations(player, f2, f3, partialTicks);
 //                    this.renderer.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
-//                    GlStateManager.matrixMode(5890);
-//                    GlStateManager.loadIdentity();
+//                    RenderSystem.matrixMode(5890);
+//                    RenderSystem.loadIdentity();
 //                    float f = (float) Math.sin((player.ticksExisted + partialTicks) / 20.0F) * 5.0F;
-//                    GlStateManager.translatef(0.0F, f * 0.01F, 0.0F);
-//                    GlStateManager.matrixMode(5888);
+//                    RenderSystem.translatef(0.0F, f * 0.01F, 0.0F);
+//                    RenderSystem.matrixMode(5888);
 //
-//                    GL11.glDisable(GL11.GL_LIGHTING);
+//                    RenderSystem.disableLighting();
 //                    Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.heatShieldTexture);
-//                    GL11.glEnable(GL11.GL_BLEND);
+//                    RenderSystem.enableBlend();
 //                    float sTime = (float) ((1.0F - Math.sin((player.ticksExisted + partialTicks) / 10.0F)) * 0.1F + 0.0F);
 //
 //                    float r = 0.9F * sTime;
 //                    float g = 0.2F * sTime;
 //                    float b = 0.9F * sTime;
 //
-//                    GlStateManager.depthMask(false);
-//                    GL11.glColor4f(r, g, b, 0.2F);
-//                    GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+//                    RenderSystem.depthMask(false);
+//                    RenderSystem.color4f(r, g, b, 0.2F);
+//                    RenderSystem.blendFunc(1, 1);
 //                    this.shieldModel.render(player, f2, f3, f5, f6, f7, scale);
-//                    GlStateManager.matrixMode(5890);
-//                    GlStateManager.loadIdentity();
-//                    GlStateManager.matrixMode(5888);
-//                    GL11.glColor4f(1, 1, 1, 1);
-//                    GL11.glDisable(GL11.GL_BLEND);
-//                    GL11.glEnable(GL11.GL_ALPHA_TEST);
-//                    GL11.glEnable(GL11.GL_LIGHTING);
-//                    GlStateManager.depthMask(true);
+//                    RenderSystem.matrixMode(5890);
+//                    RenderSystem.loadIdentity();
+//                    RenderSystem.matrixMode(5888);
+//                    RenderSystem.color4f(1, 1, 1, 1);
+//                    RenderSystem.disableBlend();
+//                    RenderSystem.enableAlphaTest();
+//                    RenderSystem.enableLighting();
+//                    RenderSystem.depthMask(true);
 //                }
 //            }
 //        }

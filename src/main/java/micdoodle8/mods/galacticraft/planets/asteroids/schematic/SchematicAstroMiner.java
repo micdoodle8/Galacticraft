@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.schematic;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.gui.container.GuiSchematicBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicBuggy;
 import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
-import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerSchematicAstroMiner;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;

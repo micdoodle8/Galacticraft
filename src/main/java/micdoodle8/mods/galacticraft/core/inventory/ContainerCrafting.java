@@ -27,9 +27,9 @@ public class ContainerCrafting extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.CRAFTING)
     public static ContainerType<ContainerCrafting> TYPE;
 
-    public TileEntityCrafting tileCrafting;
-    public PersistantInventoryCrafting craftMatrix;
-    public IInventory craftResult = new CraftResultInventory();
+    public final TileEntityCrafting tileCrafting;
+    public final PersistantInventoryCrafting craftMatrix;
+    public final IInventory craftResult = new CraftResultInventory();
     private final NonNullList<ItemStack> memory = NonNullList.withSize(9, ItemStack.EMPTY);
 
     public ContainerCrafting(int containerId, PlayerInventory playerInv, TileEntityCrafting crafting)
@@ -72,9 +72,9 @@ public class ContainerCrafting extends Container
     {
         NonNullList<ItemStack> list = NonNullList.create();
 
-        for (int i = 0; i < this.inventorySlots.size(); ++i)
+        for (Slot inventorySlot : this.inventorySlots)
         {
-            list.add(this.inventorySlots.get(i).getStack());
+            list.add(inventorySlot.getStack());
         }
 
         //Override this method to trick vanilla networking into carrying our memory at end of its packets
@@ -170,14 +170,14 @@ public class ContainerCrafting extends Container
                     return ItemStack.EMPTY;
                 }
             }
-            else if (index >= 10 && index < 37)
+            else if (index < 37)
             {
                 if (!this.mergeItemStack(itemstack1, 37, 46, false))
                 {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (index >= 37 && index < 46)
+            else if (index < 46)
             {
                 if (!this.mergeItemStack(itemstack1, 10, 37, false))
                 {

@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class GuiElementSpinner extends Button
 {
@@ -42,7 +42,7 @@ public class GuiElementSpinner extends Button
         {
             Minecraft minecraft = Minecraft.getInstance();
             minecraft.getTextureManager().bindTexture(GuiElementSpinner.texture);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             this.hoverUpper = mouseX >= this.x + 20 && mouseX < this.x + width && mouseY > this.y && mouseY < this.y + this.height / 2;
             this.hoverLower = mouseX >= this.x + 20 && mouseX < this.x + width && mouseY > this.y + this.height / 2 && mouseY < this.y + this.height;

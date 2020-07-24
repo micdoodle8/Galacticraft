@@ -45,8 +45,8 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private long ticks;
 
     private ItemStack producingStack = ItemStack.EMPTY;
-    public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
-    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
+    public final PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
+    public final Set<PlayerEntity> playersUsing = new HashSet<>();
     private static final Random random = new Random();
 
     public TileEntityIngotCompressor()
@@ -275,7 +275,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
             int j = nbttagcompound.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.getInventory().size())
+            if (j < this.getInventory().size())
             {
                 this.getInventory().set(j, ItemStack.read(nbttagcompound));
             }
@@ -367,8 +367,6 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 var3 = this.getInventory().get(par1);
                 this.getInventory().set(par1, ItemStack.EMPTY);
-                this.markDirty();
-                return var3;
             }
             else
             {
@@ -379,9 +377,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     this.getInventory().set(par1, ItemStack.EMPTY);
                 }
 
-                this.markDirty();
-                return var3;
             }
+            this.markDirty();
+            return var3;
         }
         else
         {

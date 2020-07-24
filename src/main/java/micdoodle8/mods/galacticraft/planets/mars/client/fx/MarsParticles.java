@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
-import net.minecraft.client.Minecraft;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
@@ -35,11 +33,11 @@ public class MarsParticles
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> evt)
     {
-        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
-
-        register(r, new BasicParticleType(false), MarsParticleTypeNames.drip);
-        register(r, new BasicParticleType(false), MarsParticleTypeNames.cryo);
-        Minecraft.getInstance().particles.registerFactory(DRIP, ParticleDrip.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(CRYO, EntityCryoFX.Factory::new);
+//        IForgeRegistry<ParticleType<?>> r = evt.getRegistry();
+//
+//        register(r, new BasicParticleType(false), MarsParticleTypeNames.drip);
+//        register(r, new BasicParticleType(false), MarsParticleTypeNames.cryo);
+//        Minecraft.getInstance().particles.registerFactory(DRIP, ParticleDrip.Factory::new);
+//        Minecraft.getInstance().particles.registerFactory(CRYO, EntityCryoFX.Factory::new);
     }
 }

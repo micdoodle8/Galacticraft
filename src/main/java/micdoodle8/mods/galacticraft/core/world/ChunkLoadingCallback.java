@@ -345,13 +345,13 @@
 //        // World world = loader.getWorldObj();
 //        //
 //        // BlockPos coords = loader.getCoords();
-//        // TileEntity tile = world.getTileEntity(coords.posX, coords.posY,
-//        // coords.posZ);
+//        // TileEntity tile = world.getTileEntity(coords.getPosX(), coords.getPosY(),
+//        // coords.getPosZ());
 //        //
 //        // if (tile != null && tile.equals(loader))
 //        // {
-//        // Chunk chunkAt = world.getChunkFromChunkCoords(coords.posX >> 4,
-//        // coords.posZ >> 4);
+//        // Chunk chunkAt = world.getChunkFromChunkCoords(coords.getPosX() >> 4,
+//        // coords.getPosZ() >> 4);
 //        // boolean foundOtherLoader = false;
 //        //
 //        // for (Object o : chunkAt.chunkTileEntityMap.values())
@@ -387,7 +387,7 @@
 //        // if (!foundOtherLoader)
 //        // {
 //        // ForgeChunkManager.unforceChunk(loader.getTicket(), new
-//        // ChunkCoordIntPair(coords.posX >> 4, coords.posZ >> 4));
+//        // ChunkCoordIntPair(coords.getPosX() >> 4, coords.getPosZ() >> 4));
 //        // dimEntry.getValue().remove(loader);
 //        // }
 //        // }

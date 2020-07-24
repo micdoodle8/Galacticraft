@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicResultPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -13,7 +14,6 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implem
     protected void init()
     {
         super.init();
-        List<String> schematicSlotDesc = new ArrayList<String>();
+        List<String> schematicSlotDesc = new ArrayList<>();
         Button nextButton;
         schematicSlotDesc.add(GCCoreUtil.translate("gui.new_schematic.slot.desc.0"));
         schematicSlotDesc.add(GCCoreUtil.translate("gui.new_schematic.slot.desc.1"));
@@ -42,17 +42,11 @@ public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implem
         schematicSlotDesc.add(GCCoreUtil.translate("gui.new_schematic.slot.desc.3"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 79, (this.height - this.ySize) / 2, 18, 18, schematicSlotDesc, this.width, this.height, this));
         this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
-        {
-            SchematicRegistry.flipToPrevPage(this, this.pageIndex);
-        }));
+                SchematicRegistry.flipToPrevPage(this, this.pageIndex)));
         this.buttons.add(nextButton = new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
-        {
-            SchematicRegistry.flipToNextPage(this, this.pageIndex);
-        }));
+                SchematicRegistry.flipToNextPage(this, this.pageIndex)));
         this.buttons.add(new Button(this.width / 2 - 92 / 2, this.height / 2 - 52, 92, 20, GCCoreUtil.translate("gui.button.unlockschematic.name"), (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{}));
-        }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{}))));
         nextButton.active = false;
     }
 
@@ -66,7 +60,7 @@ public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implem
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.textureManager.bindTexture(GuiSchematicInput.schematicInputTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - 220) / 2;

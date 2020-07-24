@@ -1,11 +1,7 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
@@ -19,9 +15,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,13 +30,13 @@ public class GalacticraftPlanets
 
     public static GalacticraftPlanets instance;
 
-    public static List<IPlanetsModule> commonModules = new ArrayList<IPlanetsModule>();
-    public static List<IPlanetsModuleClient> clientModules = new ArrayList<IPlanetsModuleClient>();
+    public static final List<IPlanetsModule> commonModules = new ArrayList<>();
+    public static final List<IPlanetsModuleClient> clientModules = new ArrayList<>();
 
     public static final String ASSET_PREFIX = "galacticraftplanets";
     public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
 
-    public static PlanetsProxy proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> () -> new PlanetsProxy());
+    public static final PlanetsProxy proxy = DistExecutor.runForDist(GalacticraftPlanets::getClientProxy, () -> PlanetsProxy::new);
 
     @OnlyIn(Dist.CLIENT)
     private static Supplier<PlanetsProxy> getClientProxy()

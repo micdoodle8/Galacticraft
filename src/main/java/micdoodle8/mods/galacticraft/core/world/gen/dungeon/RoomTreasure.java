@@ -23,7 +23,7 @@ import static micdoodle8.mods.galacticraft.core.world.gen.GCFeatures.CMOON_DUNGE
 
 public class RoomTreasure extends SizedPiece
 {
-    public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_1");
+    public static final ResourceLocation MOONCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_1");
 
     public RoomTreasure(TemplateManager templateManager, CompoundNBT nbt)
     {

@@ -46,7 +46,7 @@
 //            OverlaySensorGlasses.preRenderMobs();
 //        }
 //
-//        GL11.glScalef(f1, f1, f1);
+//        RenderSystem.scalef(f1, f1, f1);
 //    }
 //
 //    @Override

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
@@ -37,7 +36,7 @@ import java.util.UUID;
 public abstract class EntityLanderBase extends EntityAdvancedMotion implements IInventorySettable, IScaleableFuelLevel
 {
     private final int FUEL_TANK_CAPACITY = 5000;
-    public FluidTank fuelTank = new FluidTank(this.FUEL_TANK_CAPACITY);
+    public final FluidTank fuelTank = new FluidTank(this.FUEL_TANK_CAPACITY);
     protected boolean hasReceivedPacket;
     private boolean lastShouldMove;
     private UUID persistantRiderUUID;
@@ -185,7 +184,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         final List<Entity> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 
-        if (var15 != null && !var15.isEmpty())
+        if (!var15.isEmpty())
         {
             for (Entity entity : var15)
             {
@@ -321,7 +320,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public ArrayList<Object> getNetworkedData()
     {
-        final ArrayList<Object> objList = new ArrayList<Object>();
+        final ArrayList<Object> objList = new ArrayList<>();
 
         if (!this.world.isRemote)
         {

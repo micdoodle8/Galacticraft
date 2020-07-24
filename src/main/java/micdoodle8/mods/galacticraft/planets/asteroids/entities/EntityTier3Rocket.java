@@ -67,17 +67,17 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         switch (rocketType)
         {
-        default:
-        case DEFAULT:
-            return AsteroidsItems.rocketTierThree;
-        case INVENTORY27:
-            return AsteroidsItems.rocketTierThreeCargo1;
-        case INVENTORY36:
-            return AsteroidsItems.rocketTierThreeCargo2;
-        case INVENTORY54:
-            return AsteroidsItems.rocketTierThreeCargo3;
-        case PREFUELED:
-            return AsteroidsItems.rocketTierThreeCreative;
+            default:
+            case DEFAULT:
+                return AsteroidsItems.rocketTierThree;
+            case INVENTORY27:
+                return AsteroidsItems.rocketTierThreeCargo1;
+            case INVENTORY36:
+                return AsteroidsItems.rocketTierThreeCargo2;
+            case INVENTORY54:
+                return AsteroidsItems.rocketTierThreeCargo3;
+            case PREFUELED:
+                return AsteroidsItems.rocketTierThreeCreative;
         }
     }
 

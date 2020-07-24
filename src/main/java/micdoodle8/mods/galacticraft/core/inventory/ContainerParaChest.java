@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ public class ContainerParaChest extends Container
     public static ContainerType<ContainerParaChest> TYPE;
 
     private final TileEntityParaChest paraChest;
-    public int numRows;
+    public final int numRows;
 
     public ContainerParaChest(int containerId, PlayerInventory playerInv, TileEntityParaChest paraChest)
     {

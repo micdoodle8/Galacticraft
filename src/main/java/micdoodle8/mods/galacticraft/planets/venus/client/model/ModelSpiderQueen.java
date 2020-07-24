@@ -234,7 +234,7 @@
 //            this.convertToChild(this.leg8[i], this.leg8[i + 1]);
 //        }
 //
-//        this.legLength0 = this.leg1[0].cubeList.get(0).posX2 - this.leg1[0].cubeList.get(0).posX1;
+//        this.legLength0 = this.leg1[0].cubeList.get(0).getPosX()2 - this.leg1[0].cubeList.get(0).getPosX()1;
 //    }
 //
 //    private void convertToChild(ModelRendererGC parent, ModelRendererGC child)

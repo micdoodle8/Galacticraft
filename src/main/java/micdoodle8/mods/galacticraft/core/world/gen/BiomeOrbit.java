@@ -1,8 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGC;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;

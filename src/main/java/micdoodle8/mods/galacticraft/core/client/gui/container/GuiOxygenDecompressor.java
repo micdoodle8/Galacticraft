@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
@@ -11,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class GuiOxygenDecompressor extends GuiContainerGC<ContainerOxygenDecompr
 
     private final TileEntityOxygenDecompressor decompressor;
 
-    private final GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<>(), this.width, this.height, this);
 
     public GuiOxygenDecompressor(ContainerOxygenDecompressor container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -37,15 +37,15 @@ public class GuiOxygenDecompressor extends GuiContainerGC<ContainerOxygenDecompr
     protected void init()
     {
         super.init();
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 31, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
-        List<String> compressorSlotDesc = new ArrayList<String>();
+        List<String> compressorSlotDesc = new ArrayList<>();
         compressorSlotDesc.add(GCCoreUtil.translate("gui.oxygen_decompressor.slot.desc.0"));
         compressorSlotDesc.add(GCCoreUtil.translate("gui.oxygen_decompressor.slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 132, (this.height - this.ySize) / 2 + 70, 18, 18, compressorSlotDesc, this.width, this.height, this));
-        List<String> oxygenDesc = new ArrayList<String>();
+        List<String> oxygenDesc = new ArrayList<>();
         oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
         oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.decompressor.getOxygenStored()) + " / " + (int) Math.floor(this.decompressor.getMaxOxygenStored())));
         this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
@@ -54,7 +54,7 @@ public class GuiOxygenDecompressor extends GuiContainerGC<ContainerOxygenDecompr
         this.oxygenInfoRegion.parentWidth = this.width;
         this.oxygenInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.oxygenInfoRegion);
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.decompressor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.decompressor.getMaxEnergyStoredGC())));
         this.electricInfoRegion.tooltipStrings = electricityDesc;
@@ -100,7 +100,7 @@ public class GuiOxygenDecompressor extends GuiContainerGC<ContainerOxygenDecompr
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GuiOxygenDecompressor.compressorTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
@@ -123,12 +123,12 @@ public class GuiOxygenDecompressor extends GuiContainerGC<ContainerOxygenDecompr
                 this.blit(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
-            List<String> oxygenDesc = new ArrayList<String>();
+            List<String> oxygenDesc = new ArrayList<>();
             oxygenDesc.add(GCCoreUtil.translate("gui.oxygen_storage.desc.0"));
             oxygenDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.oxygen_storage.desc.1") + ": " + ((int) Math.floor(this.decompressor.getOxygenStored()) + " / " + (int) Math.floor(this.decompressor.getMaxOxygenStored())));
             this.oxygenInfoRegion.tooltipStrings = oxygenDesc;
 
-            List<String> electricityDesc = new ArrayList<String>();
+            List<String> electricityDesc = new ArrayList<>();
             electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
             EnergyDisplayHelper.getEnergyDisplayTooltip(this.decompressor.getEnergyStoredGC(), this.decompressor.getMaxEnergyStoredGC(), electricityDesc);
 //			electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.decompressor.getEnergyStoredGC()) + " / " + (int) Math.floor(this.decompressor.getMaxEnergyStoredGC())));

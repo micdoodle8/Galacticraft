@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -15,7 +16,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,9 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
 
     private Button buttonDisable;
 
-    private final GuiElementInfoRegion fuelTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion oilTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion fuelTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion oilTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<>(), this.width, this.height, this);
 
     public GuiRefinery(ContainerRefinery container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -44,7 +44,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
     protected void init()
     {
         super.init();
-        List<String> oilTankDesc = new ArrayList<String>();
+        List<String> oilTankDesc = new ArrayList<>();
         oilTankDesc.add(GCCoreUtil.translate("gui.oil_tank.desc.0"));
         oilTankDesc.add(GCCoreUtil.translate("gui.oil_tank.desc.1"));
         int oilLevel = this.refinery.oilTank != null && this.refinery.oilTank.getFluid() != FluidStack.EMPTY ? this.refinery.oilTank.getFluid().getAmount() : 0;
@@ -56,11 +56,11 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         this.oilTankRegion.parentWidth = this.width;
         this.oilTankRegion.parentHeight = this.height;
         this.infoRegions.add(this.oilTankRegion);
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 37, (this.height - this.ySize) / 2 + 50, 18, 18, batterySlotDesc, this.width, this.height, this));
-        List<String> fuelTankDesc = new ArrayList<String>();
+        List<String> fuelTankDesc = new ArrayList<>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.4"));
         int fuelLevel = this.refinery.fuelTank != null && this.refinery.fuelTank.getFluid() != FluidStack.EMPTY ? this.refinery.fuelTank.getFluid().getAmount() : 0;
         int fuelCapacity = this.refinery.fuelTank != null ? this.refinery.fuelTank.getCapacity() : 0;
@@ -71,12 +71,12 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         this.fuelTankRegion.parentWidth = this.width;
         this.fuelTankRegion.parentHeight = this.height;
         this.infoRegions.add(this.fuelTankRegion);
-        List<String> fuelSlotDesc = new ArrayList<String>();
+        List<String> fuelSlotDesc = new ArrayList<>();
         fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.0"));
         fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.1"));
         fuelSlotDesc.add(GCCoreUtil.translate("gui.fuel_output.desc.2"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.refinery.getEnergyStoredGC()) + " / " + (int) Math.floor(this.refinery.getMaxEnergyStoredGC())));
         this.electricInfoRegion.tooltipStrings = electricityDesc;
@@ -86,9 +86,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 39, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.refine.name"), (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.refinery.getPos(), 0}));
-        }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.refinery.getPos(), 0}))));
     }
 
     @Override
@@ -119,7 +117,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.textureManager.bindTexture(GuiRefinery.refineryTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
@@ -131,7 +129,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         displayInt = this.refinery.getScaledFuelLevel(38);
         this.blit((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 17 + 49 - displayInt, 176 + 16, 38 - displayInt, 16, displayInt);
 
-        List<String> oilTankDesc = new ArrayList<String>();
+        List<String> oilTankDesc = new ArrayList<>();
         oilTankDesc.add(GCCoreUtil.translate("gui.oil_tank.desc.0"));
         oilTankDesc.add(GCCoreUtil.translate("gui.oil_tank.desc.1"));
         int oilLevel = this.refinery.oilTank != null && this.refinery.oilTank.getFluid() != FluidStack.EMPTY ? this.refinery.oilTank.getFluid().getAmount() : 0;
@@ -139,14 +137,14 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil.name") + ": " + oilLevel + " / " + oilCapacity);
         this.oilTankRegion.tooltipStrings = oilTankDesc;
 
-        List<String> fuelTankDesc = new ArrayList<String>();
+        List<String> fuelTankDesc = new ArrayList<>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.4"));
         int fuelLevel = this.refinery.fuelTank != null && this.refinery.fuelTank.getFluid() != FluidStack.EMPTY ? this.refinery.fuelTank.getFluid().getAmount() : 0;
         int fuelCapacity = this.refinery.fuelTank != null ? this.refinery.fuelTank.getCapacity() : 0;
         fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
         this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
 //		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.refinery.getEnergyStoredGC(), this.refinery.getMaxEnergyStoredGC(), electricityDesc);

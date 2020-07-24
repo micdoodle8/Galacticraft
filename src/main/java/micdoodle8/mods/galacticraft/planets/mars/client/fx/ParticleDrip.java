@@ -1,12 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 
-import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;

@@ -16,8 +16,8 @@ public class MarsFeatures
     public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, Constants.MOD_ID_CORE);
 
     public static final RegistryObject<MapGenDungeonMars> MARS_DUNGEON = GCFeatures.register("mars_dungeon", () -> new MapGenDungeonMars(DungeonConfiguration::deserialize));
-    public static IStructurePieceType CMARS_DUNGEON_BOSS = RoomBossMars::new;
-    public static IStructurePieceType CMARS_DUNGEON_TREASURE = RoomTreasureMars::new;
+    public static final IStructurePieceType CMARS_DUNGEON_BOSS = RoomBossMars::new;
+    public static final IStructurePieceType CMARS_DUNGEON_TREASURE = RoomTreasureMars::new;
 
     public static void registerFeatures(RegistryEvent.Register<Feature<?>> event)
     {

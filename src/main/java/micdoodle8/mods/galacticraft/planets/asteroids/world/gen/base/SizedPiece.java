@@ -1,11 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
@@ -96,16 +94,16 @@ public abstract class SizedPiece extends Piece
         {
             switch (this.getCoordBaseMode())
             {
-            case NORTH:
-                return this.boundingBox.minX + x;
-            case SOUTH:
-                return this.boundingBox.maxX - x;
-            case WEST:
-                return this.boundingBox.maxX - z;
-            case EAST:
-                return this.boundingBox.minX + z;
-            default:
-                return x;
+                case NORTH:
+                    return this.boundingBox.minX + x;
+                case SOUTH:
+                    return this.boundingBox.maxX - x;
+                case WEST:
+                    return this.boundingBox.maxX - z;
+                case EAST:
+                    return this.boundingBox.minX + z;
+                default:
+                    return x;
             }
         }
     }
@@ -121,16 +119,16 @@ public abstract class SizedPiece extends Piece
         {
             switch (this.getCoordBaseMode())
             {
-            case NORTH:
-                return this.boundingBox.minZ + z;
-            case SOUTH:
-                return this.boundingBox.maxZ - z;
-            case WEST:
-                return this.boundingBox.minZ + x;
-            case EAST:
-                return this.boundingBox.maxZ - x;
-            default:
-                return z;
+                case NORTH:
+                    return this.boundingBox.minZ + z;
+                case SOUTH:
+                    return this.boundingBox.maxZ - z;
+                case WEST:
+                    return this.boundingBox.minZ + x;
+                case EAST:
+                    return this.boundingBox.maxZ - x;
+                default:
+                    return z;
             }
         }
     }
@@ -145,24 +143,15 @@ public abstract class SizedPiece extends Piece
         int sizeZ;
         boolean valid;
         int attempts = maxAttempts;
-        do
-        {
-            int randDir = rand.nextInt(4);
-            randomDir = Direction.byHorizontalIndex((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
-            MutableBoundingBox extension = getExtension(randomDir, 1, 3);
-            blockX = extension.minX;
-            blockZ = extension.minZ;
-            sizeX = extension.maxX - extension.minX;
-            sizeZ = extension.maxZ - extension.minZ;
-            valid = true;
-            attempts--;
-        }
-        while (!valid && attempts > 0);
-
-        if (!valid)
-        {
-            return null;
-        }
+        int randDir = rand.nextInt(4);
+        randomDir = Direction.byHorizontalIndex((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
+        MutableBoundingBox extension = getExtension(randomDir, 1, 3);
+        blockX = extension.minX;
+        blockZ = extension.minZ;
+        sizeX = extension.maxX - extension.minX;
+        sizeZ = extension.maxZ - extension.minZ;
+        valid = true;
+        attempts--;
 
         return new BaseLinking(this.configuration, rand, blockX, this.boundingBox.minY, blockZ, sizeX, 3, sizeZ, randomDir);
     }

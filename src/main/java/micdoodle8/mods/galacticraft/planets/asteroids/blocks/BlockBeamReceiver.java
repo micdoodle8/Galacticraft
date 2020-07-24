@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 
 public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.values());
     protected static final VoxelShape UP_AABB = Block.makeCuboidShape(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
     protected static final VoxelShape DOWN_AABB = Block.makeCuboidShape(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
     protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
@@ -52,19 +52,19 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
     {
         switch (state.get(FACING))
         {
-        case UP:
-            return UP_AABB;
-        case DOWN:
-            return DOWN_AABB;
-        case EAST:
-            return EAST_AABB;
-        case WEST:
-            return WEST_AABB;
-        case SOUTH:
-            return SOUTH_AABB;
-        default:
-        case NORTH:
-            return NORTH_AABB;
+            case UP:
+                return UP_AABB;
+            case DOWN:
+                return DOWN_AABB;
+            case EAST:
+                return EAST_AABB;
+            case WEST:
+                return WEST_AABB;
+            case SOUTH:
+                return SOUTH_AABB;
+            default:
+            case NORTH:
+                return NORTH_AABB;
         }
     }
 

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import com.google.common.primitives.Ints;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -13,14 +12,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ConfigManagerCore
 {
 //    static Configuration config;
 
-    ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+    final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 
     // GAME CONTROL
     public static boolean forceOverworldRespawn;

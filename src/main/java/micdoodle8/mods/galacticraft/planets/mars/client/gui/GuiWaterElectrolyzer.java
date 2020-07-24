@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.container.GuiContainerGC;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
@@ -19,7 +20,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +35,10 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
 
     private Button buttonDisable;
 
-    private final GuiElementInfoRegion fuelTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion fuelTank2Region = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion gasTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<String>(), this.width, this.height, this);
-    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<String>(), this.width, this.height, this);
+    private final GuiElementInfoRegion fuelTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion fuelTank2Region = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 153, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion gasTankRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 28, 16, 38, new ArrayList<>(), this.width, this.height, this);
+    private final GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 62, (this.height - this.ySize) / 2 + 16, 56, 9, new ArrayList<>(), this.width, this.height, this);
 
     public GuiWaterElectrolyzer(ContainerElectrolyzer container, PlayerInventory playerInv, ITextComponent title)
     {
@@ -58,7 +58,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
         this.gasTankRegion.parentHeight = this.height;
         this.infoRegions.add(this.gasTankRegion);
 
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 33, (this.height - this.ySize) / 2 + 49, 18, 18, batterySlotDesc, this.width, this.height, this));
@@ -78,8 +78,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
         //this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 152, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
         //this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 131, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
-        List<String> fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.water_bucket_slot.desc"));
+        List<String> fuelSlotDesc = new ArrayList<>(GCCoreUtil.translateWithSplit("gui.water_bucket_slot.desc"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 6, (this.height - this.ySize) / 2 + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 42;
@@ -91,9 +90,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
         this.addToolTips();
 
         this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) ->
-        {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.tileEntity.getWorld()), new Object[]{this.tileEntity.getPos(), 0}));
-        }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.tileEntity.getWorld()), new Object[]{this.tileEntity.getPos(), 0}))));
     }
 
     @Override
@@ -145,7 +142,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         this.minecraft.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeLeft = (this.width - this.xSize) / 2;
         int edgeTop = (this.height - this.ySize) / 2;
@@ -176,11 +173,11 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
 
     private void addToolTips()
     {
-        List<String> gasTankDesc = new ArrayList<String>();
+        List<String> gasTankDesc = new ArrayList<>();
         gasTankDesc.add(GCCoreUtil.translate("gui.terraformer.desc.0"));
         this.gasTankRegion.tooltipStrings = gasTankDesc;
 
-        List<String> fuelTankDesc = new ArrayList<String>();
+        List<String> fuelTankDesc = new ArrayList<>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.gas_tank.desc.0"));
         FluidStack gasTankContents = this.tileEntity.liquidTank != null ? this.tileEntity.liquidTank.getFluid() : null;
         if (gasTankContents != null)
@@ -197,7 +194,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
         fuelTankDesc.add(EnumColor.YELLOW + " " + fuelLevel + " / " + fuelCapacity);
         this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 
-        fuelTankDesc = new ArrayList<String>();
+        fuelTankDesc = new ArrayList<>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.gas_tank.desc.0"));
         gasTankContents = this.tileEntity.liquidTank2 != null ? this.tileEntity.liquidTank2.getFluid() : null;
         if (gasTankContents != null)
@@ -214,7 +211,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
         fuelTankDesc.add(EnumColor.YELLOW + " " + fuelLevel + " / " + fuelCapacity);
         this.fuelTank2Region.tooltipStrings = fuelTankDesc;
 
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
 //		electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.tileEntity.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tileEntity.getMaxEnergyStoredGC())));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);

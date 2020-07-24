@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class GuiElementTexturedButton extends Widget
 {
@@ -27,7 +26,7 @@ public class GuiElementTexturedButton extends Widget
         {
             Minecraft minecraft = Minecraft.getInstance();
             final FontRenderer var4 = minecraft.fontRenderer;
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             minecraft.textureManager.bindTexture(this.texture);
             this.blit(this.x, this.y, 0, 0, this.bWidth, this.bHeight);

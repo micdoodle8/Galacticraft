@@ -20,18 +20,18 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.play.server.SSpawnObjectPacket;
-import net.minecraft.util.*;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
@@ -43,9 +43,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
@@ -95,9 +95,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public double speed;
     public float wheelRotationZ;
     public float wheelRotationX;
-    float maxSpeed = 0.5F;
-    float accel = 0.2F;
-    float turnFactor = 3.0F;
+    final float maxSpeed = 0.5F;
+    final float accel = 0.2F;
+    final float turnFactor = 3.0F;
     public String texture;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(60, ItemStack.EMPTY);
     public double boatX;
@@ -139,15 +139,15 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         switch (buggyType)
         {
-        default:
-        case NO_INVENTORY:
-            return GCItems.buggy;
-        case INVENTORY_1:
-            return GCItems.buggyInventory1;
-        case INVENTORY_2:
-            return GCItems.buggyInventory2;
-        case INVENTORY_3:
-            return GCItems.buggyInventory3;
+            default:
+            case NO_INVENTORY:
+                return GCItems.buggy;
+            case INVENTORY_1:
+                return GCItems.buggyInventory1;
+            case INVENTORY_2:
+                return GCItems.buggyInventory2;
+            case INVENTORY_3:
+                return GCItems.buggyInventory3;
         }
     }
 
@@ -358,7 +358,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
     public List<ItemStack> getItemsDropped()
     {
-        final List<ItemStack> items = new ArrayList<ItemStack>();
+        final List<ItemStack> items = new ArrayList<>();
 
         ItemStack buggy = new ItemStack(getItemFromType(getBuggyType()), 1);
         buggy.setTag(new CompoundNBT());
@@ -409,7 +409,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
             this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ * 0.9F));
         }
 
-        if (this.world.isRemote && !Minecraft.getInstance().player.equals(this.world.getClosestPlayer(this, -1)))
+        if (this.world.isRemote && !Objects.equals(Minecraft.getInstance().player, this.world.getClosestPlayer(this, -1)))
         {
             double x;
             double y;
@@ -543,14 +543,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         this.buggyType = BuggyType.values()[buffer.readInt()];
 
-        try
-        {
-            this.buggyFuelTank = NetworkUtil.readFluidTank(buffer);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        this.buggyFuelTank = NetworkUtil.readFluidTank(buffer);
     }
 
     @Override
@@ -704,22 +697,22 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         switch (key)
         {
-        case 0: // Accelerate
-            this.speed += this.accel / 20D;
-            this.shouldClimb = true;
-            return true;
-        case 1: // Deccelerate
-            this.speed -= this.accel / 20D;
-            this.shouldClimb = true;
-            return true;
-        case 2: // Left
-            this.rotationYaw -= 0.5F * this.turnFactor;
-            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ + 0.5F));
-            return true;
-        case 3: // Right
-            this.rotationYaw += 0.5F * this.turnFactor;
-            this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ - 0.5F));
-            return true;
+            case 0: // Accelerate
+                this.speed += this.accel / 20D;
+                this.shouldClimb = true;
+                return true;
+            case 1: // Deccelerate
+                this.speed -= this.accel / 20D;
+                this.shouldClimb = true;
+                return true;
+            case 2: // Left
+                this.rotationYaw -= 0.5F * this.turnFactor;
+                this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ + 0.5F));
+                return true;
+            case 3: // Right
+                this.rotationYaw += 0.5F * this.turnFactor;
+                this.wheelRotationZ = Math.max(-30.0F, Math.min(30.0F, this.wheelRotationZ - 0.5F));
+                return true;
         }
 
         return false;

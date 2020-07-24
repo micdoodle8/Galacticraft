@@ -14,12 +14,12 @@ import java.util.Set;
 
 public class NetworkFinderSolar
 {
-    public World worldObj;
-    public BlockVec3 start;
+    public final World worldObj;
+    public final BlockVec3 start;
     private final BlockVec3 toIgnore;
 
     private final Set<BlockVec3> iterated = new HashSet<>();
-    public List<ITransmitter> found = new LinkedList<>();
+    public final List<ITransmitter> found = new LinkedList<>();
 
     public NetworkFinderSolar(World world, BlockVec3 location, BlockVec3 ignore)
     {
@@ -40,24 +40,24 @@ public class NetworkFinderSolar
             }
             switch (dir)
             {
-            case 0:
-                obj = new BlockVec3(x, y - 1, z);
-                break;
-            case 1:
-                obj = new BlockVec3(x, y + 1, z);
-                break;
-            case 2:
-                obj = new BlockVec3(x, y, z - 1);
-                break;
-            case 3:
-                obj = new BlockVec3(x, y, z + 1);
-                break;
-            case 4:
-                obj = new BlockVec3(x - 1, y, z);
-                break;
-            case 5:
-                obj = new BlockVec3(x + 1, y, z);
-                break;
+                case 0:
+                    obj = new BlockVec3(x, y - 1, z);
+                    break;
+                case 1:
+                    obj = new BlockVec3(x, y + 1, z);
+                    break;
+                case 2:
+                    obj = new BlockVec3(x, y, z - 1);
+                    break;
+                case 3:
+                    obj = new BlockVec3(x, y, z + 1);
+                    break;
+                case 4:
+                    obj = new BlockVec3(x - 1, y, z);
+                    break;
+                case 5:
+                    obj = new BlockVec3(x + 1, y, z);
+                    break;
             }
 
             if (!iterated.contains(obj))

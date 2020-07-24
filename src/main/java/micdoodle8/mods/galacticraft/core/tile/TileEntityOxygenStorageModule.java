@@ -27,7 +27,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenStorageModule)
     public static TileEntityType<TileEntityOxygenStorageModule> TYPE;
 
-    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<>();
     public int scaledOxygenLevel;
     private int lastScaledOxygenLevel;
 
@@ -188,7 +188,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return slotID == 0 && itemstack != null && itemstack.getItem() instanceof IItemOxygenSupply;
+        return slotID == 0 && itemstack.getItem() instanceof IItemOxygenSupply;
     }
 
     //ISidedInventory
@@ -283,21 +283,21 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         Direction dir;
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
-        case REAR:
-            dir = getFront().getOpposite();
-            break;
-        case TOP:
-            dir = Direction.UP;
-            break;
-        case BOTTOM:
-            dir = Direction.DOWN;
-            break;
-        case RIGHT:
-            dir = getFront().rotateYCCW();
-            break;
-        case LEFT:
-        default:
-            dir = getFront().rotateY();
+            case REAR:
+                dir = getFront().getOpposite();
+                break;
+            case TOP:
+                dir = Direction.UP;
+                break;
+            case BOTTOM:
+                dir = Direction.DOWN;
+                break;
+            case RIGHT:
+                dir = getFront().rotateYCCW();
+                break;
+            case LEFT:
+            default:
+                dir = getFront().rotateY();
         }
         return EnumSet.of(dir);
     }
@@ -308,21 +308,21 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         Direction dir;
         switch (this.getSide(MachineSide.PIPE_OUT))
         {
-        case REAR:
-            dir = getFront().getOpposite();
-            break;
-        case TOP:
-            dir = Direction.UP;
-            break;
-        case BOTTOM:
-            dir = Direction.DOWN;
-            break;
-        case LEFT:
-            dir = getFront().rotateY();
-            break;
-        case RIGHT:
-        default:
-            dir = getFront().rotateYCCW();
+            case REAR:
+                dir = getFront().getOpposite();
+                break;
+            case TOP:
+                dir = Direction.UP;
+                break;
+            case BOTTOM:
+                dir = Direction.DOWN;
+                break;
+            case LEFT:
+                dir = getFront().rotateY();
+                break;
+            case RIGHT:
+            default:
+                dir = getFront().rotateYCCW();
         }
         return EnumSet.of(dir);
     }

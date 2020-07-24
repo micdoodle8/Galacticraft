@@ -200,7 +200,7 @@
 //        convertToChild(tail0, tail1);
 //        convertToChild(tail1, stinger);
 //
-//        this.legLength0 = this.legLeftFront1.cubeList.get(0).posX2 - this.legLeftFront1.cubeList.get(0).posX1;
+//        this.legLength0 = this.legLeftFront1.cubeList.get(0).getPosX()2 - this.legLeftFront1.cubeList.get(0).getPosX()1;
 //    }
 //
 //    private void convertToChild(ModelRenderer parent, ModelRenderer child)

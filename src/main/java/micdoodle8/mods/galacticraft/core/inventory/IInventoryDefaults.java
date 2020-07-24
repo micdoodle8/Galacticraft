@@ -2,9 +2,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 /*
  * IInventory providing defaults for the eight methods

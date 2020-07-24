@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class PlayerUtil
 {
-    public static HashMap<String, GameProfile> knownSkins = new HashMap<>();
+    public static final HashMap<String, GameProfile> knownSkins = new HashMap<>();
 
     public static ServerPlayerEntity getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
@@ -181,10 +181,7 @@ public class PlayerUtil
             return null;
         }
 
-        if (player.getGameProfile() == null)
-        {
-            return null;
-        }
+        player.getGameProfile();
 
         return player.getGameProfile().getName();
     }

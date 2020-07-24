@@ -5,7 +5,7 @@ import net.minecraft.world.storage.WorldInfo;
 
 public class VenusBiomeProviderSettings implements IBiomeProviderSettings
 {
-    private WorldInfo worldInfo;
+    private final WorldInfo worldInfo;
     private VenusGenSettings generatorSettings;
 
     public VenusBiomeProviderSettings(WorldInfo worldInfo)

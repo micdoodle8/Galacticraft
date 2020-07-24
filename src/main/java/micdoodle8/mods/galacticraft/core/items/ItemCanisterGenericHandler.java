@@ -1,24 +1,24 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import micdoodle8.mods.galacticraft.core.GCItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilityProvider
 {
     private final LazyOptional<IFluidHandlerItem> holder = LazyOptional.of(() -> this);
     @Nonnull
-    protected ItemStack container;
+    protected final ItemStack container;
 
     public ItemCanisterGenericHandler(@Nonnull ItemStack container)
     {

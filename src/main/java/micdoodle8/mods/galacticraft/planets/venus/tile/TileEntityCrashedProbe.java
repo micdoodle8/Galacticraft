@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.venus.tile;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityInventory;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -11,12 +10,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.registries.ObjectHolder;
-
-import java.util.Random;
 
 public class TileEntityCrashedProbe extends TileEntityInventory
 {

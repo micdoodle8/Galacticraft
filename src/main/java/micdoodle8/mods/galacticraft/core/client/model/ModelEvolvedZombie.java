@@ -172,18 +172,18 @@
 //        if (this.isChild)
 //        {
 //            float f6 = 2.0F;
-//            GL11.glPushMatrix();
-//            GL11.glScalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
-//            GL11.glTranslatef(0.0F, 16.0F * f5, 0.0F);
+//            RenderSystem.pushMatrix();
+//            RenderSystem.scalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
+//            RenderSystem.translatef(0.0F, 16.0F * f5, 0.0F);
 //            this.bipedHead.render(f5);
 //            if (this.renderGear)
 //            {
 //                this.oxygenMask.render(f5);
 //            }
-//            GL11.glPopMatrix();
-//            GL11.glPushMatrix();
-//            GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
-//            GL11.glTranslatef(0.0F, 24.0F * f5, 0.0F);
+//            RenderSystem.popMatrix();
+//            RenderSystem.pushMatrix();
+//            RenderSystem.scalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
+//            RenderSystem.translatef(0.0F, 24.0F * f5, 0.0F);
 //            if (this.renderGear)
 //            {
 //                this.leftOxygenTank.render(f5);
@@ -210,7 +210,7 @@
 //            this.bipedRightLeg.render(f5);
 //            this.bipedLeftLeg.render(f5);
 //            this.bipedHeadwear.render(f5);
-//            GL11.glPopMatrix();
+//            RenderSystem.popMatrix();
 //        }
 //        else
 //        {

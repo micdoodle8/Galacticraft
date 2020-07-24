@@ -33,14 +33,14 @@
 //                    this.compileDisplayList(par1);
 //                }
 //
-//                GL11.glTranslatef(this.offsetX, this.offsetY, this.offsetZ);
+//                RenderSystem.translatef(this.offsetX, this.offsetY, this.offsetZ);
 //                int i;
 //
 //                if (this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F)
 //                {
 //                    if (this.rotationPointX == 0.0F && this.rotationPointY == 0.0F && this.rotationPointZ == 0.0F)
 //                    {
-//                        GL11.glCallList(this.displayList);
+//                        RenderSystem.callList(this.displayList);
 //
 //                        if (this.childModels != null)
 //                        {
@@ -52,8 +52,8 @@
 //                    }
 //                    else
 //                    {
-//                        GL11.glTranslatef(this.rotationPointX * par1, this.rotationPointY * par1, this.rotationPointZ * par1);
-//                        GL11.glCallList(this.displayList);
+//                        RenderSystem.translatef(this.rotationPointX * par1, this.rotationPointY * par1, this.rotationPointZ * par1);
+//                        RenderSystem.callList(this.displayList);
 //
 //                        if (this.childModels != null)
 //                        {
@@ -63,30 +63,30 @@
 //                            }
 //                        }
 //
-//                        GL11.glTranslatef(-this.rotationPointX * par1, -this.rotationPointY * par1, -this.rotationPointZ * par1);
+//                        RenderSystem.translatef(-this.rotationPointX * par1, -this.rotationPointY * par1, -this.rotationPointZ * par1);
 //                    }
 //                }
 //                else
 //                {
-//                    GL11.glPushMatrix();
-//                    GL11.glTranslatef(this.rotationPointX * par1, this.rotationPointY * par1, this.rotationPointZ * par1);
+//                    RenderSystem.pushMatrix();
+//                    RenderSystem.translatef(this.rotationPointX * par1, this.rotationPointY * par1, this.rotationPointZ * par1);
 //
 //                    if (this.rotateAngleY != 0.0F)
 //                    {
-//                        GL11.glRotatef(this.rotateAngleY * Constants.RADIANS_TO_DEGREES, 0.0F, 1.0F, 0.0F);
+//                        RenderSystem.rotatef(this.rotateAngleY * Constants.RADIANS_TO_DEGREES, 0.0F, 1.0F, 0.0F);
 //                    }
 ////
 //                    if (this.rotateAngleZ != 0.0F)
 //                    {
-//                        GL11.glRotatef(this.rotateAngleZ * Constants.RADIANS_TO_DEGREES, 0.0F, 0.0F, 1.0F);
+//                        RenderSystem.rotatef(this.rotateAngleZ * Constants.RADIANS_TO_DEGREES, 0.0F, 0.0F, 1.0F);
 //                    }
 //
 //                    if (this.rotateAngleX != 0.0F)
 //                    {
-//                        GL11.glRotatef(this.rotateAngleX * Constants.RADIANS_TO_DEGREES, 1.0F, 0.0F, 0.0F);
+//                        RenderSystem.rotatef(this.rotateAngleX * Constants.RADIANS_TO_DEGREES, 1.0F, 0.0F, 0.0F);
 //                    }
 //
-//                    GL11.glCallList(this.displayList);
+//                    RenderSystem.callList(this.displayList);
 //
 //                    if (this.childModels != null)
 //                    {
@@ -96,10 +96,10 @@
 //                        }
 //                    }
 //
-//                    GL11.glPopMatrix();
+//                    RenderSystem.popMatrix();
 //                }
 //
-//                GL11.glTranslatef(-this.offsetX, -this.offsetY, -this.offsetZ);
+//                RenderSystem.translatef(-this.offsetX, -this.offsetY, -this.offsetZ);
 //            }
 //        }
 //    }
@@ -108,7 +108,7 @@
 //    private void compileDisplayList(float par1)
 //    {
 //        this.displayList = GLAllocation.generateDisplayLists(1);
-//        GL11.glNewList(this.displayList, GL11.GL_COMPILE);
+//        RenderSystem.NewList(this.displayList, GL11.GL_COMPILE);
 //        Tessellator tessellator = Tessellator.getInstance();
 //
 //        for (ModelBox modelBox : this.cubeList)

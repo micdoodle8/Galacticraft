@@ -60,7 +60,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
     public String clientName;
     public GameProfile clientGameProfile = null;
 
-    public static HashSet<BlockVec3Dim> loadedList = new HashSet<BlockVec3Dim>();
+    public static final HashSet<BlockVec3Dim> loadedList = new HashSet<>();
     public Entity linkedEntity;
     private UUID toUpdate = null;
     private int pulseRate = 400;
@@ -132,12 +132,6 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
                         name = res.toString();
                     }
 
-                    if (name == null)
-                    {
-                        GCLog.info("Telemetry Unit: Error finding name for " + linkedEntity.getClass().getSimpleName());
-                        name = "";
-                    }
-
                     double xmotion = linkedEntity.getMotion().x;
                     double ymotion = linkedEntity instanceof LivingEntity ? linkedEntity.getMotion().y + 0.078D : linkedEntity.getMotion().y;
                     double zmotion = linkedEntity.getMotion().z;
@@ -185,10 +179,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
                             GCPlayerStats stats = GCPlayerStats.get(eLiving);
                             data[4] = stats.getAirRemaining() * 4096 + stats.getAirRemaining2();
                             UUID uuid = eLiving.getUniqueID();
-                            if (uuid != null)
-                            {
-                                strUUID = uuid.toString();
-                            }
+                            strUUID = uuid.toString();
                         }
                         else if (eLiving instanceof HorseEntity)
                         {
@@ -263,8 +254,8 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
     public void read(CompoundNBT nbt)
     {
         super.read(nbt);
-        Long msb = nbt.getLong("entityUUIDMost");
-        Long lsb = nbt.getLong("entityUUIDLeast");
+        long msb = nbt.getLong("entityUUIDMost");
+        long lsb = nbt.getLong("entityUUIDLeast");
         this.toUpdate = new UUID(msb, lsb);
     }
 
@@ -387,12 +378,13 @@ public class TileEntityTelemetry extends TileEntity implements ITickableTileEnti
             int z = fmData.getInt("teCoordZ");
             Dimension wp = WorldUtil.getProviderForDimensionServer(DimensionType.getById(dim));
             //TODO
-            if (wp == null || wp.getWorld() == null)
+            if (wp == null)
             {
                 GCLog.debug("Frequency module worn: world dimension is null.  This is a bug. " + dim);
             }
             else
             {
+                wp.getWorld();
                 TileEntity te = wp.getWorld().getTileEntity(new BlockPos(x, y, z));
                 if (te instanceof TileEntityTelemetry)
                 {

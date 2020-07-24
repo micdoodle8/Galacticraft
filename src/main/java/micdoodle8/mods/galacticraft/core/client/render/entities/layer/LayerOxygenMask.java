@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 //import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
@@ -49,20 +49,20 @@
 //                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedHeadwear, this.oxygenMask);
 //                this.oxygenMask.rotationPointY = this.playerRenderer.getEntityModel().bipedHeadwear.rotationPointY * 8.0F;
 //
-//                GlStateManager.enableRescaleNormal();
-//                GlStateManager.pushMatrix();
-//                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+//                RenderSystem.enableRescaleNormal();
+//                RenderSystem.pushMatrix();
+//                RenderSystem.scalef(0.5F, 0.5F, 0.5F);
 //
 //                if (wearingMask)
 //                {
-//                    GL11.glPushMatrix();
-//                    GL11.glScalef(1.05F, 1.05F, 1.05F);
+//                    RenderSystem.pushMatrix();
+//                    RenderSystem.scalef(1.05F, 1.05F, 1.05F);
 //                    this.oxygenMask.render(scale);
-//                    GL11.glScalef(1F, 1F, 1F);
-//                    GL11.glPopMatrix();
+//                    RenderSystem.scalef(1F, 1F, 1F);
+//                    RenderSystem.popMatrix();
 //                }
 //
-//                GlStateManager.popMatrix();
+//                RenderSystem.popMatrix();
 //            }
 //        }
 //    }

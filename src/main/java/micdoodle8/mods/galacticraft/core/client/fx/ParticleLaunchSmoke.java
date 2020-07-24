@@ -1,20 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class ParticleLaunchSmoke extends LaunchParticle
 {
-    float smokeParticleScale;
+    final float smokeParticleScale;
     private final IAnimatedSprite animatedSprite;
 
     public ParticleLaunchSmoke(World par1World, double posX, double posY, double posZ, double motX, double motY, double motZ, float size, boolean launched, IAnimatedSprite animatedSprite)
@@ -58,9 +56,9 @@ public class ParticleLaunchSmoke extends LaunchParticle
     @Override
     public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
-        GL11.glPushMatrix();
-        GL11.glDepthMask(false);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        RenderSystem.pushMatrix();
+        RenderSystem.depthMask(false);
+        RenderSystem.disableDepthTest();
         float var8 = (this.age + partialTicks) / this.maxAge * 32.0F;
 
         if (var8 < 0.0F)
@@ -76,9 +74,9 @@ public class ParticleLaunchSmoke extends LaunchParticle
         this.particleScale = this.smokeParticleScale * var8;
         super.renderParticle(buffer, renderInfo, partialTicks);
 
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthMask(true);
-        GL11.glPopMatrix();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthMask(true);
+        RenderSystem.popMatrix();
     }
 
     @Override

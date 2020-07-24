@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;

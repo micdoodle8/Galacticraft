@@ -49,13 +49,13 @@
 //    {
 //        if (entity.flagData != null)
 //        {
-//            GL11.glPushMatrix();
+//            RenderSystem.pushMatrix();
 //
-//            GL11.glScalef(0.5F, 0.5F, 0.5F);
-//            GL11.glTranslatef(0.0F, -1.1F, 0.0F);
+//            RenderSystem.scalef(0.5F, 0.5F, 0.5F);
+//            RenderSystem.translatef(0.0F, -1.1F, 0.0F);
 //
-//            GL11.glDisable(GL11.GL_TEXTURE_2D);
-//            GL11.glDisable(GL11.GL_CULL_FACE);
+//            RenderSystem.disableTexture();
+//            RenderSystem.disable(GL11.GL_CULL_FACE);
 //
 //            float windLevel = 1.0F;
 //
@@ -68,8 +68,8 @@
 //            {
 //                for (int j = 0; j < entity.flagData.getHeight(); j++)
 //                {
-//                    GL11.glPushMatrix();
-//                    GL11.glTranslatef(0, -1.0F, 0);
+//                    RenderSystem.pushMatrix();
+//                    RenderSystem.translatef(0, -1.0F, 0);
 //                    float offset = 0.0F;
 //                    float offsetAhead = 0.0F;
 //
@@ -82,7 +82,7 @@
 //                    }
 //
 //                    Vector3 col = entity.flagData.getColorAt(i, j);
-//                    GL11.glColor3f(col.floatX(), col.floatY(), col.floatZ());
+//                    RenderSystem.color3f(col.floatX(), col.floatY(), col.floatZ());
 //
 //                    Tessellator tess = Tessellator.getInstance();
 //                    BufferBuilder worldRenderer = tess.getBuffer();
@@ -98,15 +98,15 @@
 //
 //                    tess.draw();
 //
-//                    GL11.glColor3f(1, 1, 1);
-//                    GL11.glPopMatrix();
+//                    RenderSystem.color3f(1, 1, 1);
+//                    RenderSystem.popMatrix();
 //                }
 //            }
 //
-//            GL11.glEnable(GL11.GL_TEXTURE_2D);
-//            GL11.glEnable(GL11.GL_CULL_FACE);
+//            RenderSystem.enableTexture();
+//            RenderSystem.enable(GL11.GL_CULL_FACE);
 //
-//            GL11.glPopMatrix();
+//            RenderSystem.popMatrix();
 //        }
 //    }
 //

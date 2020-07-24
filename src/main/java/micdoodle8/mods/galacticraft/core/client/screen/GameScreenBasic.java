@@ -1,21 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class GameScreenBasic implements IGameScreen
 {
@@ -81,17 +70,17 @@ public class GameScreenBasic implements IGameScreen
 //        case 1:
 //            if (scr instanceof DrawGameScreen && ((DrawGameScreen) scr).mapDone)
 //            {
-//                GlStateManager.bindTexture(DrawGameScreen.reusableMap.getGlTextureId());
+//                RenderSystem.bindTexture(DrawGameScreen.reusableMap.getGlTextureId());
 //                draw2DTexture();
 //            }
 //            else if (ClientProxyCore.overworldTexturesValid)
 //            {
-//                GlStateManager.pushMatrix();
+//                RenderSystem.pushMatrix();
 //                float centreX = scaleX / 2;
 //                float centreY = scaleY / 2;
-//                GlStateManager.translatef(centreX, centreY, 0F);
+//                RenderSystem.translatef(centreX, centreY, 0F);
 //                RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
-//                GlStateManager.popMatrix();
+//                RenderSystem.popMatrix();
 //            }
 //            else
 //            {
@@ -116,8 +105,8 @@ public class GameScreenBasic implements IGameScreen
 //    {
 //        final Tessellator tess = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tess.getBuffer();
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 //
 //        worldRenderer.pos(frameA, frameBy, 0F).tex(textureAx, textureBy).endVertex();
 //        worldRenderer.pos(frameBx, frameBy, 0F).tex(textureBx, textureBy).endVertex();
@@ -128,13 +117,13 @@ public class GameScreenBasic implements IGameScreen
 //
 //    private void drawBlackBackground(float greyLevel)
 //    {
-//        GlStateManager.disableLighting();
-//        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
-//        GlStateManager.disableTexture();
+//        RenderSystem.disableLighting();
+//        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+//        RenderSystem.disableTexture();
 //        final Tessellator tess = Tessellator.getInstance();
 //        BufferBuilder worldRenderer = tess.getBuffer();
-//        GlStateManager.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
-//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+//        RenderSystem.color4f(greyLevel, greyLevel, greyLevel, 1.0F);
+//        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //
 //        worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
 //        worldRenderer.pos(frameBx, frameBy, 0.005F).endVertex();
@@ -142,8 +131,8 @@ public class GameScreenBasic implements IGameScreen
 //        worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
 //        tess.draw();
 //
-//        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GlStateManager.enableTexture();
-//        GlStateManager.enableLighting();
+//        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        RenderSystem.enableTexture();
+//        RenderSystem.enableLighting();
 //    }
 }

@@ -22,17 +22,17 @@
 //    public void doRender(EntitySmallAsteroid asteroid, double x, double y, double z, float f, float partialTickTime)
 //    {
 //        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+//        RenderSystem.disableRescaleNormal();
 //
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef((float) x, (float) y + 0.5F, (float) z);
-//        GL11.glRotatef(asteroid.rotationPitch, 1, 0, 0);
-//        GL11.glRotatef(asteroid.rotationYaw, 0, 1, 0);
+//        RenderSystem.pushMatrix();
+//        RenderSystem.translatef((float) x, (float) y + 0.5F, (float) z);
+//        RenderSystem.rotatef(asteroid.rotationPitch, 1, 0, 0);
+//        RenderSystem.rotatef(asteroid.rotationYaw, 0, 1, 0);
 //
 //        this.bindEntityTexture(asteroid);
 //        dispatcher.renderBlockBrightness(AsteroidBlocks.rock0.getDefaultState(), 1.0F);
 //
-//        GL11.glPopMatrix();
+//        RenderSystem.popMatrix();
 //    }
 //
 //    @Override

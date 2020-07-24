@@ -98,7 +98,7 @@ public class BlockNames
     public static final String oreTin = "ore_tin_gc";
     public static final String oreAluminum = "ore_aluminum_gc";
     public static final String oreSilicon = "ore_silicon";
-    public static final String oreMeteoricIron = "block_meteoric_iron_gc";
+    public static final String oreMeteoricIron = "ore_meteoric_iron_gc";
     public static final String decoBlockCopper = "block_copper_gc";
     public static final String decoBlockTin = "block_tin_gc";
     public static final String decoBlockAluminum = "block_aluminum_gc";

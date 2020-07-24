@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 //
 //import com.mojang.blaze3d.matrix.MatrixStack;
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 //import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 //import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
@@ -60,7 +60,7 @@
 //    {
 //        float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks + 180;
 //        float rollAmplitude = entity.rollAmplitude / 3 - partialTicks;
-//        GlStateManager.disableRescaleNormal();
+//        RenderSystem.disableRescaleNormal();
 //        matrixStackIn.push();
 //        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entityYaw));
 //        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(-pitch));
@@ -69,8 +69,8 @@
 //        if (rollAmplitude > 0.0F)
 //        {
 //            final float i = entity.getLaunched() ? (5 - MathHelper.floor(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
-//            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
-//            GlStateManager.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
+//            RenderSystem.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 0.0F);
+//            RenderSystem.rotatef(MathHelper.sin(rollAmplitude) * rollAmplitude * i * partialTicks, 1.0F, 0.0F, 1.0F);
 //        }
 //
 //        this.updateModel();
@@ -78,17 +78,17 @@
 //
 //        if (Minecraft.isAmbientOcclusionEnabled())
 //        {
-//            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+//            RenderSystem.shadeModel(7425);
 //        }
 //        else
 //        {
-//            GlStateManager.shadeModel(GL11.GL_FLAT);
+//            RenderSystem.shadeModel(7424);
 //        }
 //
-//        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
-//        GlStateManager.scalef(0.8F, 0.8F, 0.8F);
+//        RenderSystem.scalef(-1.0F, -1.0F, 1.0F);
+//        RenderSystem.scalef(0.8F, 0.8F, 0.8F);
 //        ClientUtil.drawBakedModel(this.rocketModel);
-//        GlStateManager.popMatrix();
+//        RenderSystem.popMatrix();
 //        RenderHelper.enableStandardItemLighting();
 //    }
 //

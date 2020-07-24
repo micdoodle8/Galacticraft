@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.core.items.EnumItemTierGC;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;

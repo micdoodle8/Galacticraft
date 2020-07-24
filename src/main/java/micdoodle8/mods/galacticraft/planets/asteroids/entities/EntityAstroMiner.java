@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
@@ -53,7 +54,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.IFluidBlock;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -169,8 +169,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private BlockVec3 mineLast = null;
     private int mineCountDown = 0;
     private int pathBlockedCount = 0;
-    public LinkedList<BlockVec3> laserBlocks = new LinkedList<>();
-    public LinkedList<Integer> laserTimes = new LinkedList<>();
+    public final LinkedList<BlockVec3> laserBlocks = new LinkedList<>();
+    public final LinkedList<Integer> laserTimes = new LinkedList<>();
     public float retraction = 1F;
     protected TickableSound soundUpdater;
     private boolean soundToStop = false;
@@ -585,66 +585,66 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
         switch (this.AIstate)
         {
-        case AISTATE_STUCK:
-            //TODO blinking distress light or something?
-            //Attempt to re-start every 30 seconds or so
-            if (this.ticksExisted % 600 == 0)
-            {
-                if ((this.givenFailMessage & 8) > 0)
+            case AISTATE_STUCK:
+                //TODO blinking distress light or something?
+                //Attempt to re-start every 30 seconds or so
+                if (this.ticksExisted % 600 == 0)
                 {
-                    //The base was destroyed - see if it has been replaced?
-                    this.atBase();
+                    if ((this.givenFailMessage & 8) > 0)
+                    {
+                        //The base was destroyed - see if it has been replaced?
+                        this.atBase();
+                    }
+                    else
+                    {
+                        //See if the return path has been unblocked, and give a small amount of backup energy to try to get home
+                        this.AIstate = AISTATE_RETURNING;
+                        if (this.energyLevel <= 0)
+                        {
+                            this.energyLevel = 20;
+                        }
+                    }
+                }
+                break;
+            case AISTATE_ATBASE:
+                this.atBase();
+                break;
+            case AISTATE_TRAVELLING:
+                if (!this.moveToTarget())
+                {
+                    this.prepareMove(TEMPFAST ? 8 : 2, 2);
+                }
+                break;
+            case AISTATE_MINING:
+                if (!this.doMining() && this.ticksExisted % 2 == 0)
+                {
+                    this.energyLevel--;
+                    this.prepareMove(TEMPFAST ? 8 : 1, 2);
+                }
+                break;
+            case AISTATE_RETURNING:
+                this.moveToBase();
+                this.prepareMove(TEMPFAST ? 8 : 4, 1);
+                break;
+            case AISTATE_DOCKING:
+                if (this.waypointBase != null)
+                {
+                    this.speed = speedbase / 1.6;
+                    this.rotSpeed = rotSpeedBase / 1.6F;
+                    if (this.moveToPos(this.waypointBase, true))
+                    {
+                        this.AIstate = AISTATE_ATBASE;
+                        this.setMotion(0.0, 0.0, 0.0);
+                        this.speed = speedbase;
+                        this.rotSpeed = rotSpeedBase;
+                    }
                 }
                 else
                 {
-                    //See if the return path has been unblocked, and give a small amount of backup energy to try to get home
-                    this.AIstate = AISTATE_RETURNING;
-                    if (this.energyLevel <= 0)
-                    {
-                        this.energyLevel = 20;
-                    }
+                    GCLog.severe("AstroMiner missing base position: this is a bug.");
+                    this.AIstate = AISTATE_STUCK;
                 }
-            }
-            break;
-        case AISTATE_ATBASE:
-            this.atBase();
-            break;
-        case AISTATE_TRAVELLING:
-            if (!this.moveToTarget())
-            {
-                this.prepareMove(TEMPFAST ? 8 : 2, 2);
-            }
-            break;
-        case AISTATE_MINING:
-            if (!this.doMining() && this.ticksExisted % 2 == 0)
-            {
-                this.energyLevel--;
-                this.prepareMove(TEMPFAST ? 8 : 1, 2);
-            }
-            break;
-        case AISTATE_RETURNING:
-            this.moveToBase();
-            this.prepareMove(TEMPFAST ? 8 : 4, 1);
-            break;
-        case AISTATE_DOCKING:
-            if (this.waypointBase != null)
-            {
-                this.speed = speedbase / 1.6;
-                this.rotSpeed = rotSpeedBase / 1.6F;
-                if (this.moveToPos(this.waypointBase, true))
-                {
-                    this.AIstate = AISTATE_ATBASE;
-                    this.setMotion(0.0, 0.0, 0.0);
-                    this.speed = speedbase;
-                    this.rotSpeed = rotSpeedBase;
-                }
-            }
-            else
-            {
-                GCLog.severe("AstroMiner missing base position: this is a bug.");
-                this.AIstate = AISTATE_STUCK;
-            }
-            break;
+                break;
         }
 
         GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), GCCoreUtil.getDimensionType(this.world));
@@ -924,40 +924,40 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         switch (this.baseFacing)
         {
-        case NORTH:
-        case SOUTH:
-            this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
-            this.minePoints.add(inFront.clone().translate(4, 0, otherEnd));
-            this.minePoints.add(inFront.clone().translate(4, 0, 0));
-            this.minePoints.add(inFront.clone().translate(2, 3, 0));
-            this.minePoints.add(inFront.clone().translate(2, 3, otherEnd));
-            this.minePoints.add(inFront.clone().translate(-2, 3, otherEnd));
-            this.minePoints.add(inFront.clone().translate(-2, 3, 0));
-            this.minePoints.add(inFront.clone().translate(-4, 0, 0));
-            this.minePoints.add(inFront.clone().translate(-4, 0, otherEnd));
-            this.minePoints.add(inFront.clone().translate(-2, -3, otherEnd));
-            this.minePoints.add(inFront.clone().translate(-2, -3, 0));
-            this.minePoints.add(inFront.clone().translate(2, -3, 0));
-            this.minePoints.add(inFront.clone().translate(2, -3, otherEnd));
-            this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
-            break;
-        case WEST:
-        case EAST:
-            this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
-            this.minePoints.add(inFront.clone().translate(otherEnd, 0, 4));
-            this.minePoints.add(inFront.clone().translate(0, 0, 4));
-            this.minePoints.add(inFront.clone().translate(0, 3, 2));
-            this.minePoints.add(inFront.clone().translate(otherEnd, 3, 2));
-            this.minePoints.add(inFront.clone().translate(otherEnd, 3, -2));
-            this.minePoints.add(inFront.clone().translate(0, 3, -2));
-            this.minePoints.add(inFront.clone().translate(0, 0, -4));
-            this.minePoints.add(inFront.clone().translate(otherEnd, 0, -4));
-            this.minePoints.add(inFront.clone().translate(otherEnd, -3, -2));
-            this.minePoints.add(inFront.clone().translate(0, -3, -2));
-            this.minePoints.add(inFront.clone().translate(0, -3, 2));
-            this.minePoints.add(inFront.clone().translate(otherEnd, -3, 2));
-            this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
-            break;
+            case NORTH:
+            case SOUTH:
+                this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
+                this.minePoints.add(inFront.clone().translate(4, 0, otherEnd));
+                this.minePoints.add(inFront.clone().translate(4, 0, 0));
+                this.minePoints.add(inFront.clone().translate(2, 3, 0));
+                this.minePoints.add(inFront.clone().translate(2, 3, otherEnd));
+                this.minePoints.add(inFront.clone().translate(-2, 3, otherEnd));
+                this.minePoints.add(inFront.clone().translate(-2, 3, 0));
+                this.minePoints.add(inFront.clone().translate(-4, 0, 0));
+                this.minePoints.add(inFront.clone().translate(-4, 0, otherEnd));
+                this.minePoints.add(inFront.clone().translate(-2, -3, otherEnd));
+                this.minePoints.add(inFront.clone().translate(-2, -3, 0));
+                this.minePoints.add(inFront.clone().translate(2, -3, 0));
+                this.minePoints.add(inFront.clone().translate(2, -3, otherEnd));
+                this.minePoints.add(inFront.clone().translate(0, 0, otherEnd));
+                break;
+            case WEST:
+            case EAST:
+                this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
+                this.minePoints.add(inFront.clone().translate(otherEnd, 0, 4));
+                this.minePoints.add(inFront.clone().translate(0, 0, 4));
+                this.minePoints.add(inFront.clone().translate(0, 3, 2));
+                this.minePoints.add(inFront.clone().translate(otherEnd, 3, 2));
+                this.minePoints.add(inFront.clone().translate(otherEnd, 3, -2));
+                this.minePoints.add(inFront.clone().translate(0, 3, -2));
+                this.minePoints.add(inFront.clone().translate(0, 0, -4));
+                this.minePoints.add(inFront.clone().translate(otherEnd, 0, -4));
+                this.minePoints.add(inFront.clone().translate(otherEnd, -3, -2));
+                this.minePoints.add(inFront.clone().translate(0, -3, -2));
+                this.minePoints.add(inFront.clone().translate(0, -3, 2));
+                this.minePoints.add(inFront.clone().translate(otherEnd, -3, 2));
+                this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
+                break;
         }
     }
 
@@ -994,18 +994,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.AIstate = AISTATE_DOCKING;
             switch (this.baseFacing)
             {
-            case NORTH:
-                this.targetYaw = 180;
-                break;
-            case SOUTH:
-                this.targetYaw = 0;
-                break;
-            case WEST:
-                this.targetYaw = 270;
-                break;
-            case EAST:
-                this.targetYaw = 90;
-                break;
+                case NORTH:
+                    this.targetYaw = 180;
+                    break;
+                case SOUTH:
+                    this.targetYaw = 0;
+                    break;
+                case WEST:
+                    this.targetYaw = 270;
+                    break;
+                case EAST:
+                    this.targetYaw = 90;
+                    break;
             }
         }
         else
@@ -1073,156 +1073,156 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         BlockPos pos = new BlockPos(x, y, z);
         switch (Direction.byIndex(this.facingAI.getIndex() & 6))
         {
-        case DOWN:
-            if (tryMineBlock(pos))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(1, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 0, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, 0, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-2, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-2, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, 0, 1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 0, 1)))
-            {
-                wayBarred = true;
-            }
-            break;
-        case NORTH:
-            if (tryMineBlock(pos.add(0, -2, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, -2, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(1, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-2, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-2, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(-1, 1, 0)))
-            {
-                wayBarred = true;
-            }
-            break;
-        case WEST:
-            if (tryMineBlock(pos.add(0, -2, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, -1, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, -1, +1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, -1, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 0, 1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 0, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, -2, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 1, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos))
-            {
-                wayBarred = true;
-            }
-            if (tryMineBlock(pos.add(0, 1, 0)))
-            {
-                wayBarred = true;
-            }
-            break;
+            case DOWN:
+                if (tryMineBlock(pos))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(1, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 0, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, 0, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-2, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-2, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, 0, 1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 0, 1)))
+                {
+                    wayBarred = true;
+                }
+                break;
+            case NORTH:
+                if (tryMineBlock(pos.add(0, -2, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, -2, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(1, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-2, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-2, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(-1, 1, 0)))
+                {
+                    wayBarred = true;
+                }
+                break;
+            case WEST:
+                if (tryMineBlock(pos.add(0, -2, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, -1, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, -1, +1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, -1, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 0, 1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 0, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, -2, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 1, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos))
+                {
+                    wayBarred = true;
+                }
+                if (tryMineBlock(pos.add(0, 1, 0)))
+                {
+                    wayBarred = true;
+                }
+                break;
         }
 
         //If it is obstructed, return to base, or stand still if that is impossible
@@ -1306,156 +1306,156 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         BlockPos pos = new BlockPos(x, y, z);
         switch (Direction.byIndex(this.facing.getIndex() & 6))
         {
-        case DOWN:
-            if (tryBlockClient(pos))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(1, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 0, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, 0, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-2, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-2, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, 0, 1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 0, 1)))
-            {
-                wayBarred = true;
-            }
-            break;
-        case NORTH:
-            if (tryBlockClient(pos.add(0, -2, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, -2, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(1, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-2, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-2, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, 0, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(-1, 1, 0)))
-            {
-                wayBarred = true;
-            }
-            break;
-        case WEST:
-            if (tryBlockClient(pos.add(0, -2, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, -1, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, -1, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, -1, +1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, -1, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 0, 1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 0, -2)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 0, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, -2, 0)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 1, -1)))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos))
-            {
-                wayBarred = true;
-            }
-            if (tryBlockClient(pos.add(0, 1, 0)))
-            {
-                wayBarred = true;
-            }
-            break;
+            case DOWN:
+                if (tryBlockClient(pos))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(1, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 0, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, 0, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-2, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-2, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, 0, 1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 0, 1)))
+                {
+                    wayBarred = true;
+                }
+                break;
+            case NORTH:
+                if (tryBlockClient(pos.add(0, -2, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, -2, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(1, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-2, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-2, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, 0, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(-1, 1, 0)))
+                {
+                    wayBarred = true;
+                }
+                break;
+            case WEST:
+                if (tryBlockClient(pos.add(0, -2, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, -1, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, -1, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, -1, +1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, -1, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 0, 1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 0, -2)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 0, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, -2, 0)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 1, -1)))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos))
+                {
+                    wayBarred = true;
+                }
+                if (tryBlockClient(pos.add(0, 1, 0)))
+                {
+                    wayBarred = true;
+                }
+                break;
         }
 
         //If it is obstructed, return to base, or stand still if that is impossible
@@ -1489,7 +1489,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         }
         if (b instanceof FlowingFluidBlock)
         {
-            if ((b == Blocks.LAVA || b == Blocks.LAVA) && state.get(FlowingFluidBlock.LEVEL) == 0 && this.AIstate != AISTATE_RETURNING)
+            if (b == Blocks.LAVA && state.get(FlowingFluidBlock.LEVEL) == 0 && this.AIstate != AISTATE_RETURNING)
             {
                 blockingBlock = Blocks.LAVA.getDefaultState().with(FlowingFluidBlock.LEVEL, 0);
                 return true;
@@ -1580,7 +1580,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private ItemStack getGTDrops(ServerWorld w, BlockPos pos, Block b)
     {
         List<ItemStack> array = Block.getDrops(b.getDefaultState(), w, pos, w.getTileEntity(pos));
-        if (array != null && !array.isEmpty())
+        if (!array.isEmpty())
         {
             return array.get(0);
         }
@@ -1658,13 +1658,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         int i = 0;
         Item item = Item.getItemFromBlock(b);
 
-        if (item == null)
-        {
-            GCLog.info("AstroMiner was unable to mine anything from: " + b.getNameTextComponent().getFormattedText());
-            return null;
-        }
-
-//        if (item.getHasSubtypes())
+        //        if (item.getHasSubtypes())
 //        {
 //            i = b.getMetaFromState(world.getBlockState(pos));
 //        }
@@ -2058,18 +2052,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         miner.targetPitch = 0;
         switch (facing)
         {
-        case NORTH:
-            miner.targetYaw = 180;
-            break;
-        case SOUTH:
-            miner.targetYaw = 0;
-            break;
-        case WEST:
-            miner.targetYaw = 270;
-            break;
-        case EAST:
-            miner.targetYaw = 90;
-            break;
+            case NORTH:
+                miner.targetYaw = 180;
+                break;
+            case SOUTH:
+                miner.targetYaw = 0;
+                break;
+            case WEST:
+                miner.targetYaw = 270;
+                break;
+            case EAST:
+                miner.targetYaw = 90;
+                break;
         }
         miner.rotationPitch = miner.targetPitch;
         miner.rotationYaw = miner.targetYaw;
@@ -2121,20 +2115,20 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         float zsize = cWIDTH;
         switch (this.facing)
         {
-        case DOWN:
-        case UP:
-            ysize = cLENGTH;
-            break;
-        case NORTH:
-        case SOUTH:
-            ysize = cHEIGHT;
-            zsize = cLENGTH;
-            break;
-        case WEST:
-        case EAST:
-            ysize = cHEIGHT;
-            xsize = cLENGTH;
-            break;
+            case DOWN:
+            case UP:
+                ysize = cLENGTH;
+                break;
+            case NORTH:
+            case SOUTH:
+                ysize = cHEIGHT;
+                zsize = cLENGTH;
+                break;
+            case WEST:
+            case EAST:
+                ysize = cHEIGHT;
+                xsize = cLENGTH;
+                break;
         }
         minerSize = EntitySize.flexible(Math.max(xsize, zsize), ysize);
 //        this.width = Math.max(xsize, zsize);
@@ -2244,7 +2238,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 
     public void setDamage(float p_70492_1_)
     {
-        this.dataManager.set(DAMAGE, Float.valueOf(p_70492_1_));
+        this.dataManager.set(DAMAGE, p_70492_1_);
     }
 
     @Override
@@ -2357,7 +2351,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             return;
         }
 
-        for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
+        for (final ItemStack item : this.getItemsDropped(new ArrayList<>()))
         {
             ItemEntity entityItem = this.entityDropItem(item, 0);
 
@@ -2413,34 +2407,34 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         str[4] = GCCoreUtil.translate("gui.energy_storage.desc.1") + ": " + energyPerCent + "%";
         switch (data[4])
         {
-        case EntityAstroMiner.AISTATE_STUCK:
-            str[0] = GCCoreUtil.translate("gui.message.no_energy.name");
-            break;
-        case EntityAstroMiner.AISTATE_ATBASE:
-            str[0] = GCCoreUtil.translate("gui.miner.docked");
-            break;
-        case EntityAstroMiner.AISTATE_TRAVELLING:
-            str[0] = GCCoreUtil.translate("gui.miner.travelling");
-            break;
-        case EntityAstroMiner.AISTATE_MINING:
-            str[0] = GCCoreUtil.translate("gui.miner.mining");
-            break;
-        case EntityAstroMiner.AISTATE_RETURNING:
-            str[0] = GCCoreUtil.translate("gui.miner.returning");
-            break;
-        case EntityAstroMiner.AISTATE_DOCKING:
-            str[0] = GCCoreUtil.translate("gui.miner.docking");
-            break;
-        case EntityAstroMiner.AISTATE_OFFLINE:
-            str[0] = GCCoreUtil.translate("gui.miner.offline");
-            break;
+            case EntityAstroMiner.AISTATE_STUCK:
+                str[0] = GCCoreUtil.translate("gui.message.no_energy.name");
+                break;
+            case EntityAstroMiner.AISTATE_ATBASE:
+                str[0] = GCCoreUtil.translate("gui.miner.docked");
+                break;
+            case EntityAstroMiner.AISTATE_TRAVELLING:
+                str[0] = GCCoreUtil.translate("gui.miner.travelling");
+                break;
+            case EntityAstroMiner.AISTATE_MINING:
+                str[0] = GCCoreUtil.translate("gui.miner.mining");
+                break;
+            case EntityAstroMiner.AISTATE_RETURNING:
+                str[0] = GCCoreUtil.translate("gui.miner.returning");
+                break;
+            case EntityAstroMiner.AISTATE_DOCKING:
+                str[0] = GCCoreUtil.translate("gui.miner.docking");
+                break;
+            case EntityAstroMiner.AISTATE_OFFLINE:
+                str[0] = GCCoreUtil.translate("gui.miner.offline");
+                break;
         }
     }
 
     @Override
     public void adjustDisplay(int[] data)
     {
-        GL11.glScalef(0.9F, 0.9F, 0.9F);
+        RenderSystem.scalef(0.9F, 0.9F, 0.9F);
     }
 
     @Override
@@ -2494,18 +2488,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
             this.facingAI = Direction.byIndex(nbt.getInt("Facing"));
             switch (this.facingAI)
             {
-            case NORTH:
-                this.targetYaw = 180;
-                break;
-            case SOUTH:
-                this.targetYaw = 0;
-                break;
-            case WEST:
-                this.targetYaw = 270;
-                break;
-            case EAST:
-                this.targetYaw = 90;
-                break;
+                case NORTH:
+                    this.targetYaw = 180;
+                    break;
+                case SOUTH:
+                    this.targetYaw = 0;
+                    break;
+                case WEST:
+                    this.targetYaw = 270;
+                    break;
+                case EAST:
+                    this.targetYaw = 90;
+                    break;
             }
         }
         this.lastFacing = null;
@@ -2597,18 +2591,18 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         if (this.wayPoints.size() > 0)
         {
             ListNBT wpList = new ListNBT();
-            for (int j = 0; j < this.wayPoints.size(); j++)
+            for (BlockVec3 wayPoint : this.wayPoints)
             {
-                wpList.add(this.wayPoints.get(j).write(new CompoundNBT()));
+                wpList.add(wayPoint.write(new CompoundNBT()));
             }
             nbt.put("WayPoints", wpList);
         }
         if (this.minePoints.size() > 0)
         {
             ListNBT mpList = new ListNBT();
-            for (int j = 0; j < this.minePoints.size(); j++)
+            for (BlockVec3 minePoint : this.minePoints)
             {
-                mpList.add(this.minePoints.get(j).write(new CompoundNBT()));
+                mpList.add(minePoint.write(new CompoundNBT()));
             }
             nbt.put("MinePoints", mpList);
         }

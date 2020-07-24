@@ -123,37 +123,37 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                 this.sideRear = facing;
                 switch (facing)
                 {
-                case DOWN:
-                    this.facingSide = Direction.byIndex(this.facing + 2);
-                    break;
-                case UP:
-                    this.facingSide = Direction.byIndex(this.facing + 2);
-                    break;
-                case NORTH:
-                    this.facingSide = Direction.byIndex(this.facing);
-                    if (this.facing > 1)
-                    {
-                        this.facingSide = Direction.byIndex(7 - this.facing);
-                    }
-                    break;
-                case SOUTH:
-                    this.facingSide = Direction.byIndex(this.facing);
-                    if (this.facing > 1)
-                    {
-                        this.facingSide = Direction.byIndex(this.facingSide.getIndex() + 2);
-                    }
-                    break;
-                case WEST:
-                    this.facingSide = Direction.byIndex(this.facing);
-                    break;
-                case EAST:
-                    this.facingSide = Direction.byIndex(this.facing);
-                    if (this.facing > 1)
-                    {
-                        this.facingSide = Direction.byIndex(5 - this.facing);
-                    }
-                    break;
-                default:
+                    case DOWN:
+                        this.facingSide = Direction.byIndex(this.facing + 2);
+                        break;
+                    case UP:
+                        this.facingSide = Direction.byIndex(this.facing + 2);
+                        break;
+                    case NORTH:
+                        this.facingSide = Direction.byIndex(this.facing);
+                        if (this.facing > 1)
+                        {
+                            this.facingSide = Direction.byIndex(7 - this.facing);
+                        }
+                        break;
+                    case SOUTH:
+                        this.facingSide = Direction.byIndex(this.facing);
+                        if (this.facing > 1)
+                        {
+                            this.facingSide = Direction.byIndex(this.facingSide.getIndex() + 2);
+                        }
+                        break;
+                    case WEST:
+                        this.facingSide = Direction.byIndex(this.facing);
+                        break;
+                    case EAST:
+                        this.facingSide = Direction.byIndex(this.facing);
+                        if (this.facing > 1)
+                        {
+                            this.facingSide = Direction.byIndex(5 - this.facing);
+                        }
+                        break;
+                    default:
                 }
 
                 this.thisAABB = getAABBforSideAndFacing();
@@ -179,13 +179,9 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                         }
                         CreatureEntity mob = (CreatureEntity) entry;
                         //Check whether the mob can actually *see* the arclamp tile
-                        //if (this.world.func_147447_a(thisPos, new Vec3(entry.posX, entry.posY, entry.posZ), true, true, false) != null) continue;
+                        //if (this.world.func_147447_a(thisPos, new Vec3(entry.getPosX(), entry.getPosY(), entry.getPosZ()), true, true, false) != null) continue;
 
                         PathNavigator nav = mob.getNavigator();
-                        if (nav == null)
-                        {
-                            continue;
-                        }
 
                         Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 28, 11, this.thisPos);
                         if (vecNewTarget == null)
@@ -308,8 +304,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
         BlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
         boolean dirty = false;
         checkedClear();
-        HashSet<BlockVec3> airToRevert = new HashSet<>();
-        airToRevert.addAll(airToRestore);
+        HashSet<BlockVec3> airToRevert = new HashSet<>(airToRestore);
         LinkedList<BlockVec3> airNew = new LinkedList<>();
         LinkedList<BlockVec3> currentLayer = new LinkedList<>();
         LinkedList<BlockVec3> nextLayer = new LinkedList<>();
@@ -364,46 +359,46 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                     int offset = 0;
                     switch (this.facingSide)
                     {
-                    case DOWN:
-                        offset = inFront.y - vec.y;
-                        break;
-                    case UP:
-                        offset = vec.y - inFront.y;
-                        break;
-                    case NORTH:
-                        offset = inFront.z - vec.z;
-                        break;
-                    case SOUTH:
-                        offset = vec.z - inFront.z;
-                        break;
-                    case WEST:
-                        offset = inFront.x - vec.x;
-                        break;
-                    case EAST:
-                        offset = vec.x - inFront.x;
-                        break;
+                        case DOWN:
+                            offset = inFront.y - vec.y;
+                            break;
+                        case UP:
+                            offset = vec.y - inFront.y;
+                            break;
+                        case NORTH:
+                            offset = inFront.z - vec.z;
+                            break;
+                        case SOUTH:
+                            offset = vec.z - inFront.z;
+                            break;
+                        case WEST:
+                            offset = inFront.x - vec.x;
+                            break;
+                        case EAST:
+                            offset = vec.x - inFront.x;
+                            break;
                     }
                     int offset2 = 0;
                     switch (this.sideRear.getOpposite())
                     {
-                    case DOWN:
-                        offset2 = inFront.y - vec.y;
-                        break;
-                    case UP:
-                        offset2 = vec.y - inFront.y;
-                        break;
-                    case NORTH:
-                        offset2 = inFront.z - vec.z;
-                        break;
-                    case SOUTH:
-                        offset2 = vec.z - inFront.z;
-                        break;
-                    case WEST:
-                        offset2 = inFront.x - vec.x;
-                        break;
-                    case EAST:
-                        offset2 = vec.x - inFront.x;
-                        break;
+                        case DOWN:
+                            offset2 = inFront.y - vec.y;
+                            break;
+                        case UP:
+                            offset2 = vec.y - inFront.y;
+                            break;
+                        case NORTH:
+                            offset2 = inFront.z - vec.z;
+                            break;
+                        case SOUTH:
+                            offset2 = vec.z - inFront.z;
+                            break;
+                        case WEST:
+                            offset2 = inFront.x - vec.x;
+                            break;
+                        case EAST:
+                            offset2 = vec.x - inFront.x;
+                            break;
                     }
                     if (offset2 - 2 > offset)
                     {
@@ -462,7 +457,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                             //Glass blocks go through to the next layer as well
                             if (LogicalSide != sideskip1 && LogicalSide != sideskip2)
                             {
-                                if (toAdd && b != null && b.getOpacity(bs, world, sideVec.toBlockPos()) == 0)
+                                if (toAdd && b.getOpacity(bs, world, sideVec.toBlockPos()) == 0)
                                 {
                                     nextLayer.add(sideVec);
                                 }
@@ -496,7 +491,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                 break;
             }
             currentLayer = nextLayer;
-            nextLayer = new LinkedList<BlockVec3>();
+            nextLayer = new LinkedList<>();
         }
 
         if (dirty)
@@ -547,10 +542,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
                 for (int j = airBlocks.size() - 1; j >= 0; j--)
                 {
                     CompoundNBT tag1 = airBlocks.getCompound(j);
-                    if (tag1 != null)
-                    {
-                        this.airToRestore.add(BlockVec3.read(tag1));
-                    }
+                    this.airToRestore.add(BlockVec3.read(tag1));
                 }
             }
         }
@@ -1026,31 +1018,31 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
         int dz = this.pos.getZ() - vec.z;
         switch (LogicalSide)
         {
-        case 0:
-            y--;
-            if (y < 0)
-            {
-                return true;
-            }
-            break;
-        case 1:
-            y++;
-            if (y > 255)
-            {
-                return true;
-            }
-            break;
-        case 2:
-            dz++;
-            break;
-        case 3:
-            dz--;
-            break;
-        case 4:
-            dx++;
-            break;
-        case 5:
-            dx--;
+            case 0:
+                y--;
+                if (y < 0)
+                {
+                    return true;
+                }
+                break;
+            case 1:
+                y++;
+                if (y > 255)
+                {
+                    return true;
+                }
+                break;
+            case 2:
+                dz++;
+                break;
+            case 3:
+                dz--;
+                break;
+            case 4:
+                dx++;
+                break;
+            case 5:
+                dx--;
         }
         if (dx < -8191 || dx > 8192)
         {
@@ -1168,10 +1160,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
     {
-        for (BlockVec3 vec : this.airToRestore)
-        {
-            sendData.add(vec);
-        }
+        sendData.addAll(this.airToRestore);
     }
 
     @Override

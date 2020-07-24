@@ -1,6 +1,6 @@
 //package micdoodle8.mods.galacticraft.core.client.render.entities;
 //
-//import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 //import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
@@ -35,14 +35,14 @@
 //        f = f * f;
 //        float f2 = (1.0F + f * 0.4F) * f1;
 //        float f3 = (1.0F + f * 0.1F) / f1;
-//        GlStateManager.scalef(0.2F + f2, 0.2F + f3, 0.2F + f2);
+//        RenderSystem.scalef(0.2F + f2, 0.2F + f3, 0.2F + f2);
 //
 //        if (this.texSwitch)
 //        {
-//            GlStateManager.translatef(0.0F, -0.03F, 0.0F);
+//            RenderSystem.translatef(0.0F, -0.03F, 0.0F);
 //            OverlaySensorGlasses.preRenderMobs();
 //        }
-//        GlStateManager.translatef(0.0F, 0.125F, 0.0F);
+//        RenderSystem.translatef(0.0F, 0.125F, 0.0F);
 //    }
 //
 //    @Override

@@ -25,9 +25,9 @@ public class ShortRangeTelepadHandler extends WorldSavedData
 
     public static class TelepadEntry
     {
-        public DimensionType dimensionID;
-        public BlockVec3 position;
-        public boolean enabled;
+        public final DimensionType dimensionID;
+        public final BlockVec3 position;
+        public final boolean enabled;
 
         public TelepadEntry(DimensionType dimID, BlockVec3 position, boolean enabled)
         {
