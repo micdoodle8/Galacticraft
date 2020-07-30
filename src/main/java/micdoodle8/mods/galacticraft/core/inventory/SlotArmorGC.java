@@ -43,7 +43,7 @@ public class SlotArmorGC extends Slot
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public Pair<ResourceLocation, ResourceLocation> func_225517_c_() {
+    public Pair<ResourceLocation, ResourceLocation> getBackground() {
         return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, ARMOR_SLOT_TEXTURES[armorType]);
     }
 }

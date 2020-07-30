@@ -68,9 +68,9 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final float var4 = 1.0F;
         final float var5 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * var4;
         final float var6 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * var4;
-        final double var7 = playerIn.prevPosX + (playerIn.posX - playerIn.prevPosX) * var4;
-        final double var9 = playerIn.prevPosY + (playerIn.posY - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
-        final double var11 = playerIn.prevPosZ + (playerIn.posZ - playerIn.prevPosZ) * var4;
+        final double var7 = playerIn.prevPosX + (playerIn.getPosX() - playerIn.prevPosX) * var4;
+        final double var9 = playerIn.prevPosY + (playerIn.getPosY() - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
+        final double var11 = playerIn.prevPosZ + (playerIn.getPosZ() - playerIn.prevPosZ) * var4;
         final Vec3d var13 = new Vec3d(var7, var9, var11);
         final float var14 = MathHelper.cos(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
         final float var15 = MathHelper.sin(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);

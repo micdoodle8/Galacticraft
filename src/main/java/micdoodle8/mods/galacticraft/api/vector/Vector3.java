@@ -1,9 +1,15 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
-import com.sun.javafx.geom.Vec3f;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -11,12 +17,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Vector3 Class is used for defining objects in a 3D space.
@@ -72,9 +72,9 @@ public class Vector3 implements Cloneable
         this((float) par1.x, (float) par1.y, (float) par1.z);
     }
 
-    public Vector3(Vec3f par1)
+    public Vector3(Vector3f par1)
     {
-        this(par1.x, par1.y, par1.z);
+        this(par1.getX(), par1.getY(), par1.getZ());
     }
 
     public Vector3(RayTraceResult par1)

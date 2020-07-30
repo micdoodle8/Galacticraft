@@ -135,7 +135,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
             itemStack.shrink(1);
         }
 
-        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.random.nextFloat() * 0.1F));
+        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.random.nextFloat() * 0.1F));
 
         if (!world.isRemote)
         {

@@ -60,10 +60,10 @@ public class OverlaySensorGlasses extends Overlay
         final Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(width / 2 - height - f * 80, height + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
-        worldRenderer.pos(width / 2 + height + f * 80, height + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
-        worldRenderer.pos(width / 2 + height + f * 80, 0.0D - f * 40, -90D).tex(1.0D, 0.0D).endVertex();
-        worldRenderer.pos(width / 2 - height - f * 80, 0.0D - f * 40, -90D).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(width / 2 - height - f * 80, height + f * 40, -90D).tex(0.0F, 1.0F).endVertex();
+        worldRenderer.pos(width / 2 + height + f * 80, height + f * 40, -90D).tex(1.0F, 1.0F).endVertex();
+        worldRenderer.pos(width / 2 + height + f * 80, 0.0D - f * 40, -90D).tex(1.0F, 0.0F).endVertex();
+        worldRenderer.pos(width / 2 - height - f * 80, 0.0D - f * 40, -90D).tex(0.0F, 0.0F).endVertex();
         tessellator.draw();
 
         GL11.glDepthMask(true);
@@ -145,7 +145,7 @@ public class OverlaySensorGlasses extends Overlay
         int i = 15728880;
         int j = i % 65536;
         int k = i / 65536;
-        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
+//        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) j, (float) k);
 //        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
         GL11.glTranslatef(0.0F, 0.045F, 0.0F);
         GL11.glScalef(1.07F, 1.035F, 1.07F);

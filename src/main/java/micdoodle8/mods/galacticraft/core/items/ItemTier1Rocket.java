@@ -135,7 +135,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
         spaceship.setPosition(centerX, centerY, centerZ);
         spaceship.rocketType = EntityTier1Rocket.getTypeFromItem(stack.getItem());
 
-        spaceship.setPosition(spaceship.posX, spaceship.posY + spaceship.getOnPadYOffset(), spaceship.posZ);
+        spaceship.setPosition(spaceship.getPosX(), spaceship.getPosY() + spaceship.getOnPadYOffset(), spaceship.getPosZ());
         worldIn.addEntity(spaceship);
 
         if (spaceship.rocketType.getPreFueled())

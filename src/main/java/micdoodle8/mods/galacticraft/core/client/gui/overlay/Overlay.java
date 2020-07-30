@@ -19,10 +19,10 @@ public class Overlay
     {
         if (player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityTier1Rocket)
         {
-            return (int) Math.floor(((EntityTier1Rocket) player.getRidingEntity()).posY);
+            return (int) Math.floor(((EntityTier1Rocket) player.getRidingEntity()).getPosY());
         }
 
-        return (int) Math.floor(player.posY);
+        return (int) Math.floor(player.getPosY());
     }
 
     /**
@@ -65,10 +65,10 @@ public class Overlay
         final Tessellator tess = Tessellator.getInstance();
         BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(var1 - var7, var3 + var9, var5).tex(0.0D, 1.0D).endVertex();
-        worldRenderer.pos(var1 + var7, var3 + var9, var5).tex(1.0D, 1.0D).endVertex();
-        worldRenderer.pos(var1 + var7, var3 - var9, var5).tex(1.0D, 0.0D).endVertex();
-        worldRenderer.pos(var1 - var7, var3 - var9, var5).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(var1 - var7, var3 + var9, var5).tex(0.0F, 1.0F).endVertex();
+        worldRenderer.pos(var1 + var7, var3 + var9, var5).tex(1.0F, 1.0F).endVertex();
+        worldRenderer.pos(var1 + var7, var3 - var9, var5).tex(1.0F, 0.0F).endVertex();
+        worldRenderer.pos(var1 - var7, var3 - var9, var5).tex(0.0F, 0.0F).endVertex();
         tess.draw();
     }
 }

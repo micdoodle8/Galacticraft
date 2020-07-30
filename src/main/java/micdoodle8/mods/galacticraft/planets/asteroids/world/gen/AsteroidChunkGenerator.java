@@ -631,7 +631,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
     }
 
     @Override
-    public int func_222529_a(int p_222529_1_, int p_222529_2_, Heightmap.Type p_222529_3_)
+    public int getHeight(int x, int z, Heightmap.Type heightmapType)
     {
         return 0;
     }

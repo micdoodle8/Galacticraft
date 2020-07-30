@@ -27,14 +27,14 @@ public class OverlayDockingRocket extends Overlay
 
             if (rocket.launchPhase == EnumLaunchPhase.LANDING.ordinal() && rocket.targetVec != null)
             {
-                double dX = Math.round((rocket.posX - rocket.targetVec.getX()) * 100.0D) / 100.0D;
-                double dY = Math.round((rocket.posY - rocket.targetVec.getY()) * 100.0D) / 100.0D;
-                double dZ = Math.round((rocket.posZ - rocket.targetVec.getZ()) * 100.0D) / 100.0D;
+                double dX = Math.round((rocket.getPosX() - rocket.targetVec.getX()) * 100.0D) / 100.0D;
+                double dY = Math.round((rocket.getPosY() - rocket.targetVec.getY()) * 100.0D) / 100.0D;
+                double dZ = Math.round((rocket.getPosZ() - rocket.targetVec.getZ()) * 100.0D) / 100.0D;
                 String dXStr = String.valueOf(dX);
                 String dYStr = String.valueOf(dY);
                 String dZStr = String.valueOf(dZ);
 
-                double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.getY()) / -100.0D, -0.9D) * 100.0D) / 100.0D;
+                double targetMotionY = Math.round(Math.max((rocket.getPosY() - rocket.targetVec.getY()) / -100.0D, -0.9D) * 100.0D) / 100.0D;
                 double currentMotionY = Math.round(rocket.getMotion().y * 100.0D) / 100.0D;
                 double dMY = Math.floor((targetMotionY - currentMotionY) * 300);
                 int dMotionY = (int) Math.max(1, Math.min(255, dMY));
