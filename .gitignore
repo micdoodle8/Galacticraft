@@ -223,3 +223,5 @@ dependencies/main/resources/micdoodlecore_at.cfg
 dependencies/main/resources/META-INF/MANIFEST.MF
 dependencies/main/java/micdoodle8/mods/miccore/*
 dependencies/main/java/codechicken/core/CCUpdateChecker.java
+
+!gradlew.bat
