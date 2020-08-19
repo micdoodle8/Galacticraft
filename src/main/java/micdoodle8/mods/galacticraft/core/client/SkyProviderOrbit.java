@@ -24,9 +24,12 @@ public class SkyProviderOrbit extends IRenderHandler
     private static final ResourceLocation moonTexture = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation sunTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
 
-    public int starGLCallList = GLAllocation.generateDisplayLists(3);
-    public int glSkyList;
-    public int glSkyList2;
+    /* These are created once, then re-used */
+    public static boolean displayListsInitialized = false;
+    public static int starGLCallList;
+    public static int glSkyList;
+    public static int glSkyList2;
+
     private final ResourceLocation planetToRender;
     private final boolean renderMoon;
     private final boolean renderSun;
@@ -40,6 +43,15 @@ public class SkyProviderOrbit extends IRenderHandler
         this.planetToRender = planet;
         this.renderMoon = renderMoon;
         this.renderSun = renderSun;
+
+        if (!displayListsInitialized) {
+            initializeDisplayLists();
+        }
+    }
+
+    private void initializeDisplayLists() {
+        starGLCallList = GLAllocation.generateDisplayLists(3);
+
         GL11.glPushMatrix();
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
         this.renderStars();
@@ -85,6 +97,8 @@ public class SkyProviderOrbit extends IRenderHandler
 
         tessellator.draw();
         GL11.glEndList();
+
+        displayListsInitialized = true;
     }
 
     private final Minecraft minecraft = FMLClientHandler.instance().getClient();
