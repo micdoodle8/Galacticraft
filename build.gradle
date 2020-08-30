@@ -41,7 +41,7 @@ minecraft {
 	// stable_#            Stables are built at the discretion of the MCP team.
 	// Use non-default mappings at your own risk. they may not always work.
 	// Simply re-run your setup task after changing the mappings to update your workspace.
-	mappings channel: 'snapshot', version: '20200514-1.15.1'
+	mappings channel: 'snapshot', version: '20200830-1.15.1'
 	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
 	// accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -103,29 +103,21 @@ minecraft {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.15.2-31.2.0'
+	minecraft 'net.minecraftforge:forge:1.15.2-31.2.36'
 }
 
 repositories {
 	maven {
-		name = 'curseforge'
-		url = 'https://minecraft.curseforge.com/api/maven/'
-	}
-	maven {
-		url = "https://mod-buildcraft.com/maven/"
+		name = 'cursemaven'
+		url = 'https://www.cursemaven.com/'
 	}
 }
 
 dependencies {
-//	compile "jei:jei_1.12.2:4.15.0.268"
-//	compile "mekanism:Mekanism-1.12.2:9.4.13.349:api"
-//	compile "applied-energistics-2:appliedenergistics2-rv6:stable:6"
-//	compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"
-//	compile "com.mod-buildcraft:buildcraft-api:7.99.24.6"
-//	compile "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
-//	compile "actually-additions:ActuallyAdditions:1.12.2:r144"
-//	compile "industrial-craft:industrialcraft-2-2.8.109:ex112:api"
-//	compile "player-api:PlayerAPI:1.12.1:1.0"
+	compile "curse.maven:jei:3039710"
+	compile "curse.maven:mekanism:2996531"
+	compile "curse.maven:applied-energistics-2:3045258"
+	compile "curse.maven:biomesoplenty:2988999"
 }
 					
 // Keep a list of core files/directories for easy jar packing

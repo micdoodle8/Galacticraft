@@ -41,10 +41,9 @@ public class SlotArmorGC extends Slot
 //        return item != null && item.isValidArmor(par1ItemStack, VALID_EQUIPMENT_SLOTS[this.armorType], this.thePlayer);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public Pair<ResourceLocation, ResourceLocation> func_225517_c_()
-    {
+    @OnlyIn(Dist.CLIENT)
+    public Pair<ResourceLocation, ResourceLocation> getBackground() {
         return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, ARMOR_SLOT_TEXTURES[armorType]);
     }
 }

@@ -11,7 +11,7 @@ public enum VenusVoronoiZoomLayer implements IAreaTransformer1
     private static final int ZOOM_BITS = 2;
 
     @Override
-    public int func_215728_a(IExtendedNoiseRandom<?> random, IArea area, int x, int y)
+    public int apply(IExtendedNoiseRandom<?> random, IArea area, int x, int y)
     {
         int absx = x - 2;
         int absy = y - 2;
@@ -44,26 +44,26 @@ public enum VenusVoronoiZoomLayer implements IAreaTransformer1
         //double a3 = ((double)yy - offsetXXY) * ((double)yy - offsetXXY) + ((double)xx - offsetYXY) * ((double)xx - offsetYXY);
         if (a0 < a1 && a0 < a2 && a0 < a3)
         {
-            return area.getValue(this.func_215721_a(backX), this.func_215722_b(backY));
+            return area.getValue(this.getOffsetX(backX), this.getOffsetZ(backY));
         }
         else if (a1 < a0 && a1 < a2 && a1 < a3)
         {
-            return area.getValue(this.func_215721_a(backX + 4), this.func_215722_b(backY)) & 255;
+            return area.getValue(this.getOffsetX(backX + 4), this.getOffsetZ(backY)) & 255;
         }
         else
         {
-            return a2 < a0 && a2 < a1 && a2 < a3 ? area.getValue(this.func_215721_a(backX), this.func_215722_b(backY + 4)) : area.getValue(this.func_215721_a(backX + 4), this.func_215722_b(backY + 4)) & 255;
+            return a2 < a0 && a2 < a1 && a2 < a3 ? area.getValue(this.getOffsetX(backX), this.getOffsetZ(backY + 4)) : area.getValue(this.getOffsetX(backX + 4), this.getOffsetZ(backY + 4)) & 255;
         }
     }
 
     @Override
-    public int func_215721_a(int x)
+    public int getOffsetX(int x)
     {
         return x >> ZOOM_BITS;
     }
 
     @Override
-    public int func_215722_b(int z)
+    public int getOffsetZ(int z)
     {
         return z >> ZOOM_BITS;
     }
