@@ -79,7 +79,7 @@ import java.util.function.Supplier;
 
 public class WorldUtil
 {
-    public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MOD_ID_CORE);
+    public static final DeferredRegister<ModDimension> DIMENSIONS = DeferredRegister.create(ForgeRegistries.MOD_DIMENSIONS, Constants.MOD_ID_CORE);
     //    public static HashMap<DimensionType, DimensionType> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
     public static HashSet<DimensionType> registeredSpaceStations = new HashSet<>();
     //    public static Map<DimensionType, ResourceLocation> dimNames = new TreeMap<>();  //Dimension IDs and dimension names
@@ -129,7 +129,6 @@ public class WorldUtil
             if (DimensionType.byName(id) == null)
             {
                 MOON_DIMENSION = DimensionManager.registerDimension(id, MOON_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-                MOON_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(MOON_DIMENSION, false);
             }
             else

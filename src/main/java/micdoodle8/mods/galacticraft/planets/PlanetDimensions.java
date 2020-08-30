@@ -16,6 +16,7 @@ import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -24,7 +25,7 @@ import java.util.function.Supplier;
 
 public class PlanetDimensions
 {
-    private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MOD_ID_PLANETS);
+    private static final DeferredRegister<ModDimension> DIMENSIONS = DeferredRegister.create(ForgeRegistries.MOD_DIMENSIONS, Constants.MOD_ID_PLANETS);
 
     public static DimensionType MARS_DIMENSION;
     public static DimensionType ASTEROIDS_DIMENSION;
@@ -77,6 +78,11 @@ public class PlanetDimensions
         return DIMENSIONS.register(name, sup);
     }
 
+    public static void registerDeferredRegistry()
+    {
+        DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
+    }
+
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS)
     public static class EventDimensionType
     {
@@ -87,7 +93,6 @@ public class PlanetDimensions
             if (DimensionType.byName(id) == null)
             {
                 MARS_DIMENSION = DimensionManager.registerDimension(id, MARS_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-                MARS_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(MARS_DIMENSION, false);
             }
             else
@@ -99,7 +104,6 @@ public class PlanetDimensions
             if (DimensionType.byName(id) == null)
             {
                 ASTEROIDS_DIMENSION = DimensionManager.registerDimension(id, ASTEROIDS_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-                ASTEROIDS_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(ASTEROIDS_DIMENSION, false);
             }
             else
@@ -111,7 +115,6 @@ public class PlanetDimensions
             if (DimensionType.byName(id) == null)
             {
                 VENUS_DIMENSION = DimensionManager.registerDimension(id, VENUS_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-                VENUS_DIMENSION.setRegistryName(id);
                 DimensionManager.keepLoaded(VENUS_DIMENSION, false);
             }
             else

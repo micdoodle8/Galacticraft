@@ -60,6 +60,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -141,6 +142,7 @@ public class GalacticraftCore
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
         MinecraftForge.EVENT_BUS.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
+        WorldUtil.DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private void commonSetup(FMLCommonSetupEvent event)

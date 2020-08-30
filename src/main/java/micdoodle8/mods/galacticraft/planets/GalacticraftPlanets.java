@@ -38,6 +38,11 @@ public class GalacticraftPlanets
 
     public static final PlanetsProxy proxy = DistExecutor.runForDist(GalacticraftPlanets::getClientProxy, () -> PlanetsProxy::new);
 
+    public GalacticraftPlanets()
+    {
+        PlanetDimensions.registerDeferredRegistry();
+    }
+
     @OnlyIn(Dist.CLIENT)
     private static Supplier<PlanetsProxy> getClientProxy()
     {
