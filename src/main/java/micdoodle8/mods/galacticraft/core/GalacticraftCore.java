@@ -140,7 +140,7 @@ public class GalacticraftCore
     {
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion();
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-        MinecraftForge.EVENT_BUS.addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         WorldUtil.DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }

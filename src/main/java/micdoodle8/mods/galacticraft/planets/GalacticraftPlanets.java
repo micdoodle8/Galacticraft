@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import micdoodle8.mods.galacticraft.planets.venus.dimension.VenusBiomeProviderTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,9 @@ public class GalacticraftPlanets
     public GalacticraftPlanets()
     {
         PlanetDimensions.registerDeferredRegistry();
+        VenusBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        MinecraftForge.EVENT_BUS.register(this);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -52,11 +57,10 @@ public class GalacticraftPlanets
 
     public static Map<String, List<String>> propOrder = new TreeMap<>();
 
-    private void commonSetup(FMLCommonSetupEvent event)
+    public void commonSetup(FMLCommonSetupEvent event)
     {
 //        GCPlanetsSource = event.getSourceFile();
 //        this.initModInfo(event.getModMetadata());
-        MinecraftForge.EVENT_BUS.register(this);
 
         //Initialise configs, converting mars.conf + asteroids.conf to planets.conf if necessary
 //        File oldMarsConf = new File(event.getModConfigurationDirectory(), "Galacticraft/mars.conf");
