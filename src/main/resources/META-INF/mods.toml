@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/micdoodle8/Galacticraft/issues/"
 
 [[mods]]
     modId="galacticraftcore"
-    version="1.15.2-4.0.0.0"
+    version="1.15.2-5.0.0.0"
 #    updateJSONURL=""
     displayURL="https://micdoodle8.com/"
     displayName="Galacticraft"
@@ -15,7 +15,7 @@ An advanced space travel mod for Minecraft!
 '''
 [[mods]]
     modId="galacticraftplanets"
-    version="1.15.2-4.0.0.0"
+    version="1.15.2-5.0.0.0"
 #    updateJSONURL=""
     displayURL="https://micdoodle8.com/"
     displayName="Galacticraft"
