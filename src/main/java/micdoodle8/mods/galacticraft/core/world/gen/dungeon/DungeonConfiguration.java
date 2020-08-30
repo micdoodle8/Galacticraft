@@ -104,26 +104,4 @@ public class DungeonConfiguration
     {
         return treasureRoom;
     }
-
-    @Override
-    public String
-
-
-
-
-
-
-
-    toString() {
-        return "DungeonConfiguration{" +
-                "brickBlock=" + brickBlock +
-                ", yPosition=" + yPosition +
-                ", hallwayLengthMin=" + hallwayLengthMin +
-                ", hallwayLengthMax=" + hallwayLengthMax +
-                ", hallwayHeight=" + hallwayHeight +
-                ", roomHeight=" + roomHeight +
-                ", bossRoom=" + bossRoom +
-                ", treasureRoom=" + treasureRoom +
-                '}';
-    }
 }

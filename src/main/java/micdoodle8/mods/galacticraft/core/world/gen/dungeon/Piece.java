@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -8,11 +7,9 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
@@ -87,47 +84,36 @@ public abstract class Piece extends StructureComponent
     }
 
     @Override
-    protected void setBlockState(World worldIn, IBlockState blockstateIn, int x, int y, int z, StructureBoundingBox boundingboxIn) {
+    protected void setBlockState(World worldIn, IBlockState blockstateIn, int x, int y, int z, StructureBoundingBox boundingboxIn)
+    {
         BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
-//        if (!boundingboxIn.isVecInside(blockpos)) {
-//            GCLog.info("tried to place block out of bounds. allowing anyway"); //1000's of lines of log spam
-//            GCLog.info(this.toString());
-//            GCLog.info(blockpos.toString() + " Block: " + ForgeRegistries.BLOCKS.getKey(blockstateIn.getBlock()).toString());
-//        }
-//        if (boundingboxIn.isVecInside(blockpos)) { //IGNORE BOUNDS
-            Field mirror = ReflectionHelper.findField(StructureComponent.class, "mirror", "field_186168_b");
-            Field rot = ReflectionHelper.findField(StructureComponent.class, "rotation", "field_186169_c");
-            mirror.setAccessible(true);
-            rot.setAccessible(true);
-            Mirror mirror1;
-            Rotation rotation;
-            try {
-                mirror1 = (Mirror) mirror.get(this);
-                rotation = (Rotation) rot.get(this);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                super.setBlockState(worldIn, blockstateIn, x, y, z, boundingboxIn);
-                return;
-            }
-            if (mirror1 != Mirror.NONE) {
-                blockstateIn = blockstateIn.withMirror(mirror1);
-            }
+        Field mirror = ReflectionHelper.findField(StructureComponent.class, "mirror", "field_186168_b");
+        Field rot = ReflectionHelper.findField(StructureComponent.class, "rotation", "field_186169_c");
+        mirror.setAccessible(true);
+        rot.setAccessible(true);
+        Mirror mirror1;
+        Rotation rotation;
+        try
+        {
+            mirror1 = (Mirror) mirror.get(this);
+            rotation = (Rotation) rot.get(this);
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+            super.setBlockState(worldIn, blockstateIn, x, y, z, boundingboxIn);
+            return;
+        }
+        if (mirror1 != Mirror.NONE)
+        {
+            blockstateIn = blockstateIn.withMirror(mirror1);
+        }
 
-            if (rotation != Rotation.NONE) {
-                blockstateIn = blockstateIn.withRotation(rotation);
-            }
+        if (rotation != Rotation.NONE)
+        {
+            blockstateIn = blockstateIn.withRotation(rotation);
+        }
 
-            boolean b= worldIn.setBlockState(blockpos, blockstateIn, 2);
-            if (!b) {
-                if (!blockstateIn.equals(worldIn.getBlockState(blockpos))) {
-//                    GCLog.severe("\nFailed to set blockstate!?\n" + blockpos.toString() + "\nBlock: " + ForgeRegistries.BLOCKS.getKey(blockstateIn.getBlock()).toString() + "\n" + this.toString());
-//                    GCLog.info("cur " + ForgeRegistries.BLOCKS.getKey(worldIn.getBlockState(blockpos).getBlock()).toString()); // more log spam
-                    Chunk chunk = worldIn.getChunkFromBlockCoords(blockpos);
-                    blockpos = blockpos.toImmutable();
-                    IBlockState state =  chunk.setBlockState(blockpos, blockstateIn);
-                    if (state == null) GCLog.info("failed on attempt #2");
-                }
-            }
-//        }
+        worldIn.setBlockState(blockpos, blockstateIn, 2);
     }
 }
