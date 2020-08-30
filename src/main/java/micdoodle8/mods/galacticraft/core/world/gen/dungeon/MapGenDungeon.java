@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -172,15 +173,20 @@ public class MapGenDungeon extends MapGenStructure
 
         @Override
         public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb) {
-            Iterator<StructureComponent> iterator = this.components.iterator();
-
-            while (iterator.hasNext())
+            if (CompatibilityManager.isSpongeLoaded())
             {
-                StructureComponent structurecomponent = iterator.next(); //IGNORE structure bounds
-                if (/*structurecomponent.getBoundingBox().intersectsWith(structurebb) && */!structurecomponent.addComponentParts(worldIn, rand, structurebb))
+                Iterator<StructureComponent> iterator = this.components.iterator();
+
+                while (iterator.hasNext())
                 {
-                    iterator.remove();
+                    StructureComponent structurecomponent = iterator.next(); //IGNORE structure bounds
+                    if (/*structurecomponent.getBoundingBox().intersectsWith(structurebb) && */!structurecomponent.addComponentParts(worldIn, rand, structurebb))
+                    {
+                        iterator.remove();
+                    }
                 }
+            } else {
+                super.generateStructure(worldIn, rand, structurebb);
             }
         }
     }

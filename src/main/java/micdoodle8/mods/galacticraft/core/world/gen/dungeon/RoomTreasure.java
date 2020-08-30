@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -99,7 +100,7 @@ public class RoomTreasure extends SizedPiece
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
-                        if (chunkBox.isVecInside(blockpos))
+                        if (chunkBox.isVecInside(blockpos) || CompatibilityManager.isSpongeLoaded())
                         {
                             worldIn.setBlockState(blockpos, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), 2);
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);

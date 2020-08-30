@@ -316,6 +316,11 @@ public class CompatibilityManager
         }
     }
 
+    public static boolean isSpongeLoaded()
+    {
+        return CompatibilityManager.spongeLoaded;
+    }
+
     public static boolean isIc2Loaded()
     {
         return CompatibilityManager.modIc2Loaded;

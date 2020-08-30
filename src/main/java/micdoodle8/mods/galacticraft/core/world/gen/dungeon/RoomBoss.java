@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -121,7 +122,7 @@ public class RoomBoss extends SizedPiece
         int spawnerZ = this.sizeZ / 2;
         BlockPos blockpos = new BlockPos(this.getXWithOffset(spawnerX, spawnerZ), this.getYWithOffset(spawnerY), this.getZWithOffset(spawnerX, spawnerZ));
         //Is this position inside the chunk currently being generated?
-        if (chunkBox.isVecInside(blockpos))
+        if (chunkBox.isVecInside(blockpos) || CompatibilityManager.isSpongeLoaded())
         {
             worldIn.setBlockState(blockpos, GCBlocks.bossSpawner.getDefaultState(), 2);
             TileEntityDungeonSpawner spawner = (TileEntityDungeonSpawner) worldIn.getTileEntity(blockpos);

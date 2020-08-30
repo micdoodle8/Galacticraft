@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +14,7 @@ import java.util.Random;
 
 public class RoomSpawner extends RoomEmpty
 {
+    private boolean generated = false;
     public RoomSpawner()
     {
     }
@@ -25,6 +27,7 @@ public class RoomSpawner extends RoomEmpty
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
     {
+        if (CompatibilityManager.isSpongeLoaded() && generated) return true;
         if (super.addComponentParts(worldIn, random, boundingBox))
         {
             for (int i = 1; i <= this.sizeX - 1; ++i)
@@ -59,7 +62,7 @@ public class RoomSpawner extends RoomEmpty
             {
                 spawner.getSpawnerBaseLogic().setEntityId(getMob(random));
             }
-
+            generated = true;
             return true;
         }
 
