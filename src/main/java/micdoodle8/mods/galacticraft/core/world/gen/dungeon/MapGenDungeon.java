@@ -10,6 +10,7 @@ import net.minecraft.world.gen.structure.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -167,6 +168,20 @@ public class MapGenDungeon extends MapGenStructure
             }
 
             this.updateBoundingBox();
+        }
+
+        @Override
+        public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb) {
+            Iterator<StructureComponent> iterator = this.components.iterator();
+
+            while (iterator.hasNext())
+            {
+                StructureComponent structurecomponent = iterator.next(); //IGNORE structure bounds
+                if (/*structurecomponent.getBoundingBox().intersectsWith(structurebb) && */!structurecomponent.addComponentParts(worldIn, rand, structurebb))
+                {
+                    iterator.remove();
+                }
+            }
         }
     }
 

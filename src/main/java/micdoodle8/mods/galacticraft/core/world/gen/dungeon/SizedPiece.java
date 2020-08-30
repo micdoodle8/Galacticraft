@@ -56,4 +56,16 @@ public abstract class SizedPiece extends DirectionalPiece
     {
         return sizeZ;
     }
+
+    @Override
+    public String toString() {
+        return getClass() + "{" +
+                "sizeX=" + sizeX +
+                ", sizeY=" + sizeY +
+                ", sizeZ=" + sizeZ +
+                ", configuration=" + configuration +
+                ", boundingBox=" + boundingBox +
+                ", componentType=" + componentType +
+                '}';
+    }
 }
