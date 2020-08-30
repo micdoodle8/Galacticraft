@@ -102,10 +102,6 @@ minecraft {
 	}
 }
 
-dependencies {
-	minecraft 'net.minecraftforge:forge:1.15.2-31.2.36'
-}
-
 repositories {
 	maven {
 		name = 'cursemaven'
@@ -114,12 +110,14 @@ repositories {
 }
 
 dependencies {
-	compile "curse.maven:jei:3039710"
-	compile "curse.maven:mekanism:2996531"
-	compile "curse.maven:applied-energistics-2:3045258"
-	compile "curse.maven:biomesoplenty:2988999"
+	minecraft 'net.minecraftforge:forge:1.15.2-31.2.36'
+
+//	compile "curse.maven:jei:3039710"
+//	compile "curse.maven:mekanism:2996531"
+//	compile "curse.maven:applied-energistics-2:3045258"
+//	compile "curse.maven:biomesoplenty:2988999"
 }
-					
+
 // Keep a list of core files/directories for easy jar packing
 ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
 					
