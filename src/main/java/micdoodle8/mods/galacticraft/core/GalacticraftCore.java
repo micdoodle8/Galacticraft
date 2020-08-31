@@ -87,10 +87,10 @@ public class GalacticraftCore
 //    @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
 //    public static CommonProxyCore proxy;
 
-    public static CommonProxyCore proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> () -> new CommonProxyCore());
+    public static CommonProxyCore proxy = DistExecutor.safeRunForDist(GalacticraftCore::getClientProxy, () -> CommonProxyCore::new);
 
     @OnlyIn(Dist.CLIENT)
-    private static Supplier<CommonProxyCore> getClientProxy()
+    private static DistExecutor.SafeSupplier<CommonProxyCore> getClientProxy()
     {
         //NOTE: This extra method is needed to avoid classloading issues on servers
         return CommonProxyCore::new;
@@ -140,12 +140,16 @@ public class GalacticraftCore
     {
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion();
         MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
         WorldUtil.DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        handler = new GCPlayerHandler();
+        GCEntities.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        MinecraftForge.EVENT_BUS.register(handler);
     }
 
-    private void commonSetup(FMLCommonSetupEvent event)
+    @SubscribeEvent
+    public void commonSetup(FMLCommonSetupEvent event)
     {
 //        GCCoreSource = event.getSourceFile();
         GCCapabilities.register();
@@ -158,14 +162,8 @@ public class GalacticraftCore
             isHeightConflictingModInstalled = true;
         }
 
-        GalacticraftCore.solarSystemSol = new SolarSystem("sol", "milky_way").setMapPosition(new Vector3(0.0F, 0.0F, 0.0F));
-        GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.0F);
-        GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(13F, 13F)).setRelativeOrbitTime(1 / 0.01F);
-        GalacticraftCore.satelliteSpaceStation = (Satellite) new Satellite("spacestation.overworld").setParentBody(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(9F, 9F)).setRelativeOrbitTime(1 / 0.05F);
-
         MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
-        handler = new GCPlayerHandler();
-        MinecraftForge.EVENT_BUS.register(handler);
+
 
 //        ConnectionPacket.bus = PacketBase.createChannel(GalacticraftCore.rl(Constants.MOD_ID_CORE));
 //        ConnectionPacket.bus.register(new ConnectionPacket());
@@ -184,14 +182,20 @@ public class GalacticraftCore
 //            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
         }
 
+        GalacticraftCore.solarSystemSol = new SolarSystem("sol", "milky_way").setMapPosition(new Vector3(0.0F, 0.0F, 0.0F));
+        GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.0F);
+        GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(13F, 13F)).setRelativeOrbitTime(1 / 0.01F);
+        GalacticraftCore.satelliteSpaceStation = (Satellite) new Satellite("spacestation.overworld").setParentBody(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(9F, 9F)).setRelativeOrbitTime(1 / 0.05F);
+
+        GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
+        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonBiome);
+
 //        GCBlocks.initBlocks();
 //        GCItems.initItems();
 
 //        GCFluidRegistry.registerFluids();
 
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
-        GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
-        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonBiome);
 
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.oxygenCompressor)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTierOne));
@@ -778,7 +782,7 @@ public class GalacticraftCore
 //        }
 //
     @SubscribeEvent
-    public static void registerBiomes(RegistryEvent.Register<Biome> event)
+    public void registerBiomes(RegistryEvent.Register<Biome> event)
     {
         // First, final steps of item registration
         GalacticraftCore.handler.registerTorchTypes();
@@ -792,6 +796,8 @@ public class GalacticraftCore
                 biome.registerTypes(biome);
             }
         }
+
+
     }
 //
 //        @SubscribeEvent

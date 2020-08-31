@@ -6,9 +6,11 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.VenusBiomeProviderTypes;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -38,18 +40,18 @@ public class GalacticraftPlanets
     public static final String ASSET_PREFIX = "galacticraftplanets";
     public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
 
-    public static final PlanetsProxy proxy = DistExecutor.runForDist(GalacticraftPlanets::getClientProxy, () -> PlanetsProxy::new);
+    public static final PlanetsProxy proxy = DistExecutor.safeRunForDist(GalacticraftPlanets::getClientProxy, () -> PlanetsProxy::new);
 
     public GalacticraftPlanets()
     {
         PlanetDimensions.registerDeferredRegistry();
         VenusBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
         MinecraftForge.EVENT_BUS.register(this);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().register(this);
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static Supplier<PlanetsProxy> getClientProxy()
+    private static DistExecutor.SafeSupplier<PlanetsProxy> getClientProxy()
     {
         //NOTE: This extra method is needed to avoid classloading issues on servers
         return PlanetsProxyClient::new;
@@ -57,6 +59,7 @@ public class GalacticraftPlanets
 
     public static Map<String, List<String>> propOrder = new TreeMap<>();
 
+    @SubscribeEvent
     public void commonSetup(FMLCommonSetupEvent event)
     {
 //        GCPlanetsSource = event.getSourceFile();
@@ -184,5 +187,4 @@ public class GalacticraftPlanets
 //        info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
 //        info.logoFile = "assets/galacticraftplanets/galacticraft_logo.png";
 //    }
-
 }

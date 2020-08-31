@@ -18,7 +18,7 @@ public class BiomeMoon extends BiomeGC
 
     BiomeMoon()
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, MOON_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).parent(null), true);
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, MOON_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(10724259).waterFogColor(9868950).parent(null), true);
     }
 
 //    @Override

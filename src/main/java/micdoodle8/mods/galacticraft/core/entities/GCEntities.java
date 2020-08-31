@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class GCEntities
 {
-    public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Constants.MOD_ID_CORE);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Constants.MOD_ID_CORE);
 
     public static final RegistryObject<EntityType<EntityEvolvedSpider>> EVOLVED_SPIDER = register(GCEntityNames.evolvedSpider, GCEntities::evolvedSpider);
     public static final RegistryObject<EntityType<EntityEvolvedZombie>> EVOLVED_ZOMBIE = register(GCEntityNames.evolvedZombie, GCEntities::evolvedZombie);

@@ -15,7 +15,7 @@ public class BiomeOrbit extends BiomeGC
 
     private BiomeOrbit()
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).temperature(0.0F).downfall(0.0F).parent(null), true);
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).depth(0).scale(0).precipitation(Biome.RainType.NONE).category(Category.NONE).temperature(0.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null), true);
         addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE.get(), 10, 4, 4));
         addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SPIDER.get(), 10, 4, 4));
     }

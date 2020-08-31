@@ -12,9 +12,9 @@ public class BiomeVenus extends BiomeGC
     public static final BlockState TURF = VenusBlocks.rockHard.getDefaultState();
     public static final BlockState DIRT = VenusBlocks.rockSoft.getDefaultState();
     public static final SurfaceBuilderConfig VENUS_CONFIG = new SurfaceBuilderConfig(TURF, DIRT, DIRT);
-    public static final Biome venusFlat = new BiomeVenus((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, VENUS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(0.5F).scale(0.4F).temperature(4.0F).downfall(0.0F).parent(null));
-    public static final Biome venusMountain = new BiomeVenus((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, VENUS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(2.0F).scale(1.0F).temperature(4.0F).downfall(0.0F).parent(null));
-    public static final Biome venusValley = new BiomeVenus((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, VENUS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(-0.4F).scale(0.2F).temperature(4.0F).downfall(0.0F).parent(null));
+    public static final Biome venusFlat = new BiomeVenus((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, VENUS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(0.5F).scale(0.4F).temperature(4.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null));
+    public static final Biome venusMountain = new BiomeVenus((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, VENUS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(2.0F).scale(1.0F).temperature(4.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null));
+    public static final Biome venusValley = new BiomeVenus((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, VENUS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(-0.4F).scale(0.2F).temperature(4.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null));
 
     BiomeVenus(Biome.Builder biomeBuilder)
     {

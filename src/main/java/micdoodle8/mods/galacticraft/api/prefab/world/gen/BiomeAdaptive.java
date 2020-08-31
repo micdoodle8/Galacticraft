@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.world.BiomeGC;
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.SharedSeedRandom;
@@ -30,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
+//todo get rid of this. there are enough ids now
 public class BiomeAdaptive extends BiomeGC
 {
     public static BiomeAdaptive biomeDefault;
@@ -41,7 +42,7 @@ public class BiomeAdaptive extends BiomeGC
 
     public BiomeAdaptive(int i, Biome biomeInitial)
     {
-        super((new Builder().precipitation(RainType.NONE)));
+        super((new Builder().surfaceBuilder(biomeInitial.getSurfaceBuilder()).category(biomeInitial.getCategory()).depth(biomeInitial.getDepth()).scale(biomeInitial.getScale()).temperature(biomeInitial.getDefaultTemperature()).downfall(biomeInitial.getDownfall()).waterColor(biomeInitial.getWaterColor()).waterFogColor(biomeInitial.getWaterFogColor()).precipitation(biomeInitial.getPrecipitation())));
 //        super(new BiomeProperties().setRainfall(0.0F));
         this.index = i;
         this.biomeTrue = biomeInitial;
@@ -70,7 +71,7 @@ public class BiomeAdaptive extends BiomeGC
         if (index >= biomeList.size())
         {
             BiomeAdaptive newAdaptive = new BiomeAdaptive(index, biome);
-            Registry.register(Registry.BIOME, index, "Outer Space" + (index == 0 ? "" : " " + index), newAdaptive);
+            Registry.register(Registry.BIOME, index, Constants.MOD_ID_CORE + ":outer_space" + (index == 0 ? "" : "_" + index), newAdaptive);
             biomeList.add(newAdaptive);
             return newAdaptive;
         }
