@@ -18,7 +18,7 @@ public class BiomeVenus extends BiomeGC
 
     BiomeVenus(Biome.Builder biomeBuilder)
     {
-        super(biomeBuilder, true);
+        super(biomeBuilder);
     }
 
 //    @Override

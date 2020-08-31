@@ -73,7 +73,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.function.Supplier;
 
 //import net.minecraft.creativetab.CreativeTabs;
 
@@ -105,8 +104,8 @@ public class GalacticraftCore
     public static GalacticraftChannelHandler packetPipeline = new GalacticraftChannelHandler();
     public static GCPlayerHandler handler;
 
-    public static CreativeTabGC galacticraftBlocksTab;
-    public static CreativeTabGC galacticraftItemsTab;
+    public static ItemGroupGC galacticraftBlocksTab;
+    public static ItemGroupGC galacticraftItemsTab;
 
     public static SolarSystem solarSystemSol;
     public static Planet planetMercury;
@@ -197,8 +196,8 @@ public class GalacticraftCore
 
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
 
-        GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.oxygenCompressor)));
-        GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTierOne));
+        GalacticraftCore.galacticraftBlocksTab = new ItemGroupGC(-1, "gc_blocks", new ItemStack(GCBlocks.oxygenCompressor), (stack1, stack2) -> 0); //todo sorter
+        GalacticraftCore.galacticraftItemsTab = new ItemGroupGC(-1, "gc_items", new ItemStack(GCItems.rocketTierOne), (stack1, stack2) -> 0); //todo sorter
 
 //        if (FMLCommonHandler.instance().getSide() == LogicalSide.CLIENT)
 //        {
@@ -404,7 +403,7 @@ public class GalacticraftCore
         {
             if (body.shouldAutoRegister())
             {
-                int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID().getId());
+//                int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID().getId());
                 //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
 //                DimensionType type = GalacticraftRegistry.registerDimension(body.getUnlocalizedName(), body.getDimensionSuffix(), body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
 //                if (type != null)

@@ -54,9 +54,9 @@ public class TickHandlerServer
 {
     private static final Map<DimensionType, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
     private static final Map<DimensionType, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
-    private static final Map<DimensionType, Set<BlockPos>> edgeChecks = new TreeMap<>();
+    private static final Map<DimensionType, Set<BlockPos>> edgeChecks = new HashMap<>();
     private static final LinkedList<EnergyNetwork> networkTicks = new LinkedList<>();
-    public static final Map<DimensionType, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<>();
+    public static final Map<DimensionType, Map<Long, List<Footprint>>> serverFootprintMap = new HashMap<>();
     public static final List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
     public static final ArrayList<ServerPlayerEntity> playersRequestingMapData = Lists.newArrayList();

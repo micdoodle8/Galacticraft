@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import com.google.common.collect.Maps;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.world.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
@@ -35,7 +34,6 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
     protected LinkedList<Biome> biomeInfo;
     public LinkedList<Biome> biomesToGenerate;
-    public BiomeGC[] biomesToAdapt;
     protected Map<SpawnListEntry, EntityClassification> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
@@ -326,24 +324,13 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public void setBiomeInfo(Biome... biomes)
     {
-        this.biomeInfo = new LinkedList<Biome>();
-        this.biomesToGenerate = new LinkedList<Biome>();
-        LinkedList<BiomeGC> adaptiveBiomes = new LinkedList<>();
-        int index = 0;
+        this.biomeInfo = new LinkedList<>();
+        this.biomesToGenerate = new LinkedList<>();
         for (Biome b : biomes)
         {
             this.biomeInfo.add(b);
-            if (b instanceof BiomeGC && ((BiomeGC) b).isAdaptiveBiome)
-            {
-                this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGC) b));
-                adaptiveBiomes.add((BiomeGC) b);
-            }
-            else
-            {
-                this.biomesToGenerate.add(b);
-            }
+            this.biomesToGenerate.add(b);
         }
-        this.biomesToAdapt = adaptiveBiomes.toArray(new BiomeGC[adaptiveBiomes.size()]);
     }
 
     public List<Biome> getBiomes()

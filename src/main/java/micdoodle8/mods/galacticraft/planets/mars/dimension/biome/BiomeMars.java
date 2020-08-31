@@ -18,7 +18,7 @@ public class BiomeMars extends BiomeGC
 
     BiomeMars()
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, MARS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(2.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(12208699).waterFogColor(9845808).parent(null), true);
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, MARS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(2.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(12208699).waterFogColor(9845808).parent(null));
     }
 
 //    @Override

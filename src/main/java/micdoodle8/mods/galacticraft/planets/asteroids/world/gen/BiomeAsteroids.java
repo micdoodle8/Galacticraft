@@ -16,7 +16,7 @@ public class BiomeAsteroids extends BiomeGC
 
     private BiomeAsteroids()
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null), true);
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null));
         this.getSpawns(EntityClassification.MONSTER).clear();
         this.getSpawns(EntityClassification.WATER_CREATURE).clear();
         this.getSpawns(EntityClassification.CREATURE).clear();

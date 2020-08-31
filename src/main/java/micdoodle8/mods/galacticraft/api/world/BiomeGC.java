@@ -26,11 +26,6 @@ public abstract class BiomeGC extends Biome implements IMobSpawnBiome
         this.isAdaptiveBiome = false;
     }
 
-    protected BiomeGC(Biome.Builder biomeBuilder, boolean adaptive)
-    {
-        super(biomeBuilder);
-        this.isAdaptiveBiome = adaptive;
-    }
 
     /**
      * Override this in your biomes

@@ -10,14 +10,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Comparator;
 
-public class CreativeTabGC extends ItemGroup
+public class ItemGroupGC extends ItemGroup
 {
     private ItemStack itemForTab;
     private Comparator<ItemStack> tabSorter;
 
-    public CreativeTabGC(int par1, String par2Str, ItemStack itemForTab, Comparator<ItemStack> tabSorter)
+    public ItemGroupGC(int index, String label, ItemStack itemForTab, Comparator<ItemStack> tabSorter)
     {
-        super(par1, par2Str);
+        super(index, label);
         this.itemForTab = itemForTab;
         this.tabSorter = tabSorter;
     }
@@ -31,23 +31,6 @@ public class CreativeTabGC extends ItemGroup
     public void setItemForTab(ItemStack itemForTab)
     {
         this.itemForTab = itemForTab;
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public String getTranslationKey()
-    {
-        return "itemGroup." + this.getTabLabel();
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void fill(NonNullList<ItemStack> items)
-    {
-        for (Item item : Registry.ITEM)
-        {
-            item.fillItemGroup(this, items);
-        }
     }
 
 //    @Override
