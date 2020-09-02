@@ -22,7 +22,7 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
     public ItemOilCanister(Item.Properties builder)
     {
         super(builder);
-//        this.setAllowedFluid(ConfigManagerCore.useOldOilFluidID ? "oilgc" : "oil");
+//        this.setAllowedFluid(ConfigManagerCore.INSTANCE.useOldOilFluidID ? "oilgc" : "oil");
         this.setAllowedFluid(GCFluids.OIL.getFluid().getRegistryName()); // TODO Other oil support
 //        this.setContainerItem(this);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);

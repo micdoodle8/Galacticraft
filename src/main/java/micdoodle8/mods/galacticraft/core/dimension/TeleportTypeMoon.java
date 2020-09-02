@@ -19,7 +19,7 @@ public class TeleportTypeMoon implements ITeleportType
     @Override
     public boolean useParachute()
     {
-        return ConfigManagerCore.disableLander;
+        return ConfigManagerCore.INSTANCE.disableLander.get();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class TeleportTypeMoon implements ITeleportType
             GCPlayerStats stats = GCPlayerStats.get(player);
             double x = stats.getCoordsTeleportedFromX();
             double z = stats.getCoordsTeleportedFromZ();
-            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            int limit = ConfigManagerCore.INSTANCE.otherPlanetWorldBorders.get() - 2;
             if (limit > 20)
             {
                 if (x > limit)
@@ -54,7 +54,7 @@ public class TeleportTypeMoon implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vec3d(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
+            return new Vec3d(x, ConfigManagerCore.INSTANCE.disableLander.get() ? 250.0 : 900.0, z);
         }
 
         return null;
@@ -63,13 +63,13 @@ public class TeleportTypeMoon implements ITeleportType
     @Override
     public Vec3d getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vec3d(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
+        return new Vec3d(entity.getPosX(), ConfigManagerCore.INSTANCE.disableLander.get() ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override
     public Vec3d getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
-        if (ConfigManagerCore.disableLander)
+        if (ConfigManagerCore.INSTANCE.disableLander.get())
         {
             final float x = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
             final float z = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
@@ -83,7 +83,7 @@ public class TeleportTypeMoon implements ITeleportType
     public void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket)
     {
         GCPlayerStats stats = GCPlayerStats.get(player);
-        if (!ridingAutoRocket && !ConfigManagerCore.disableLander && stats.getTeleportCooldown() <= 0)
+        if (!ridingAutoRocket && !ConfigManagerCore.INSTANCE.disableLander.get() && stats.getTeleportCooldown() <= 0)
         {
             if (player.abilities.isFlying)
             {

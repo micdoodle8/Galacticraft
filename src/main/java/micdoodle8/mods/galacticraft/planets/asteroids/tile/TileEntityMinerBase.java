@@ -97,7 +97,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public TileEntityMinerBase()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 20 : 12);
+        this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 20 : 12);
         this.slotArray = new int[HOLDSIZE];
         for (int i = 0; i < HOLDSIZE; i++)
         {

@@ -815,7 +815,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         catch (IOException e)
         {
             GCLog.severe("Error getting capes list URL");
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.INSTANCE.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -830,7 +830,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.INSTANCE.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -847,7 +847,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.INSTANCE.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -870,7 +870,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.INSTANCE.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -883,7 +883,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             }
             catch (IOException e)
             {
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.INSTANCE.enableDebug.get())
                 {
                     e.printStackTrace();
                 }

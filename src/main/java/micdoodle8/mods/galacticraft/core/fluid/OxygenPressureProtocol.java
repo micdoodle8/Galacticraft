@@ -22,7 +22,7 @@ public class OxygenPressureProtocol
 
     static
     {
-        for (final String str : ConfigManagerCore.sealableIDs)
+        for (final String str : ConfigManagerCore.INSTANCE.sealableIDs.get())
         {
             try
             {
@@ -76,7 +76,7 @@ public class OxygenPressureProtocol
 
     public static void onEdgeBlockUpdated(World world, BlockPos vec)
     {
-        if (ConfigManagerCore.enableSealerEdgeChecks)
+        if (ConfigManagerCore.INSTANCE.enableSealerEdgeChecks.get())
         {
             TickHandlerServer.scheduleNewEdgeCheck(GCCoreUtil.getDimensionType(world), vec);
         }

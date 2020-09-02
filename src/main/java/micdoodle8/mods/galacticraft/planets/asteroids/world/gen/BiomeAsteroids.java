@@ -22,7 +22,7 @@ public class BiomeAsteroids extends BiomeGC
         this.getSpawns(EntityClassification.CREATURE).clear();
         this.getSpawns(EntityClassification.AMBIENT).clear();
         this.getSpawns(EntityClassification.MISC).clear();
-        this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
+        this.resetMonsterListByMode(ConfigManagerCore.INSTANCE.challengeMobDropsAndSpawning);
     }
 
     @Override

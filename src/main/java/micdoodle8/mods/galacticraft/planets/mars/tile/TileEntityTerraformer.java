@@ -83,7 +83,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public TileEntityTerraformer()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
+        this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 60 : 30);
         this.inventory = NonNullList.withSize(14, ItemStack.EMPTY);
     }
 

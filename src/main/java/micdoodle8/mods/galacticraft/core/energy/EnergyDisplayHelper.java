@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -16,21 +17,21 @@ public class EnergyDisplayHelper
 
     public static String getEnergyDisplayS(float energyVal)
     {
-        if (EnergyConfigHandler.displayEnergyUnitsIC2)
+        if (ConfigManagerCore.INSTANCE.displayEnergyUnitsIC2.get())
         {
-            return getEnergyDisplayIC2(energyVal * EnergyConfigHandler.TO_IC2_RATIOdisp);
+            return getEnergyDisplayIC2(energyVal * ConfigManagerCore.INSTANCE.getToIc2ConversionRateDisplay());
         }
-        else if (EnergyConfigHandler.displayEnergyUnitsBC)
+        else if (ConfigManagerCore.INSTANCE.displayEnergyUnitsBC.get())
         {
-            return getEnergyDisplayBC(energyVal * EnergyConfigHandler.TO_BC_RATIOdisp);
+            return getEnergyDisplayBC(energyVal * ConfigManagerCore.INSTANCE.getToBcConversionRateDisplay());
         }
-        else if (EnergyConfigHandler.displayEnergyUnitsMek)
+        else if (ConfigManagerCore.INSTANCE.displayEnergyUnitsMek.get())
         {
-            return getEnergyDisplayMek(energyVal * EnergyConfigHandler.TO_MEKANISM_RATIOdisp);
+            return getEnergyDisplayMek(energyVal * ConfigManagerCore.INSTANCE.getToMekConversionRateDisplay());
         }
-        else if (EnergyConfigHandler.displayEnergyUnitsRF)
+        else if (ConfigManagerCore.INSTANCE.displayEnergyUnitsRF.get())
         {
-            return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_RF_RATIOdisp);
+            return getEnergyDisplayRF(energyVal * ConfigManagerCore.INSTANCE.getToRfConversionRateDisplay());
         }
         String val = String.valueOf(getEnergyDisplayI(energyVal));
         String newVal = "";

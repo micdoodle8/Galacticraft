@@ -557,7 +557,7 @@ public class GCBlocks
 //        GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
 //        GCBlocks.platform = new BlockPlatform("platform");
 //        GCBlocks.emergencyBox = new BlockEmergencyBox("emergency_box");
-//        GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.allowLiquidGratings ? Material.CARPET : Material.IRON);
+//        GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.INSTANCE.allowLiquidGratings ? Material.CARPET : Material.IRON);
 //        GCBlocks.gratingWater = new BlockGrating("grating1", Material.WATER);
 //        GCBlocks.gratingLava = new BlockGrating("grating2", Material.LAVA).setLightLevel(1.0F);
 

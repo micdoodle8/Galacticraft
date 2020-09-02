@@ -18,7 +18,7 @@ public class SchematicAdd extends SchematicPage
     @Override
     public int getPageID()
     {
-        return ConfigManagerCore.idSchematicAddSchematic;
+        return ConfigManagerCore.INSTANCE.idSchematicAddSchematic.get();
     }
 
 //    @Override

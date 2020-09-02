@@ -16,6 +16,6 @@
 //    @Override
 //    public Ingredient parse(JsonContext context, JsonObject json)
 //    {
-//        return new OreIngredient(ConfigManagerCore.otherModsSilicon);
+//        return new OreIngredient(ConfigManagerCore.INSTANCE.otherModsSilicon);
 //    }
 //}

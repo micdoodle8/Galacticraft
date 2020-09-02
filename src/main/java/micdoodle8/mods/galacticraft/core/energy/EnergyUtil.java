@@ -31,13 +31,12 @@ import java.util.Set;
 
 public class EnergyUtil
 {
-    private static final boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-    private static final boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
-    private static final boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
-    private static final boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
-    private static final boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
+    private static final boolean isMekLoaded = CompatibilityManager.isMekanismLoaded();
+//    private static final boolean isRFLoaded = ConfigManagerCore.INSTANCE.isRFAPILoaded();
+//    private static final boolean isRF1Loaded = ConfigManagerCore.INSTANCE.isRFAPIv1Loaded();
+//    private static final boolean isRF2Loaded = ConfigManagerCore.INSTANCE.isRFAPIv2Loaded();
+    private static final boolean isIC2Loaded = CompatibilityManager.isIc2Loaded();
     private static boolean isIC2TileLoaded = false;
-    private static final boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftLoaded();
 
     public static boolean voltageParameterIC2 = false;
     public static Method demandedEnergyIC2 = null;
@@ -252,7 +251,7 @@ public class EnergyUtil
                 if (forgeEnergy.isPresent())
                 {
                     IEnergyStorage storage = forgeEnergy.orElse(null);
-                    if (storage.canReceive() && !EnergyConfigHandler.disableFEOutput || storage.canExtract() && !EnergyConfigHandler.disableFEInput)
+                    if (storage.canReceive() && !ConfigManagerCore.INSTANCE.disableFEOutput.get() || storage.canExtract() && !ConfigManagerCore.INSTANCE.disableFEInput.get())
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
                     }
@@ -367,7 +366,7 @@ public class EnergyUtil
 //                continue;
 //            }
 
-            if (!EnergyConfigHandler.disableFEOutput)
+            if (!ConfigManagerCore.INSTANCE.disableFEOutput.get())
             {
                 if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
                 {
@@ -419,7 +418,7 @@ public class EnergyUtil
             }
             catch (Exception ex)
             {
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.INSTANCE.enableDebug)
                 {
                     ex.printStackTrace();
                 }
@@ -447,7 +446,7 @@ public class EnergyUtil
                 }
                 catch (Exception ex)
                 {
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.INSTANCE.enableDebug)
                     {
                         ex.printStackTrace();
                     }
@@ -474,7 +473,7 @@ public class EnergyUtil
             return sent;
         }
         else */
-        if (!EnergyConfigHandler.disableFEOutput)
+        if (!ConfigManagerCore.INSTANCE.disableFEOutput.get())
         {
             LazyOptional<IEnergyStorage> forgeEnergy = getCapability(tileAdj, CapabilityEnergy.ENERGY, inputAdj);
             if (forgeEnergy.isPresent())
@@ -482,7 +481,7 @@ public class EnergyUtil
                 IEnergyStorage storage = forgeEnergy.orElse(null);
                 if (storage.canReceive())
                 {
-                    float sent = storage.receiveEnergy((int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+                    float sent = storage.receiveEnergy((int) Math.floor(toSend * ConfigManagerCore.INSTANCE.getToRfConversionRate()), simulate) / ConfigManagerCore.INSTANCE.getToRfConversionRate();
                     return sent;
                 }
             }
@@ -502,7 +501,7 @@ public class EnergyUtil
             }
             catch (Exception ex)
             {
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.INSTANCE.enableDebug)
                 {
                     ex.printStackTrace();
                 }
@@ -523,7 +522,7 @@ public class EnergyUtil
                 }
                 catch (Exception ex)
                 {
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.INSTANCE.enableDebug)
                     {
                         ex.printStackTrace();
                     }
@@ -548,7 +547,7 @@ public class EnergyUtil
             return sent;
         }
         else */
-        if (!EnergyConfigHandler.disableFEInput)
+        if (!ConfigManagerCore.INSTANCE.disableFEInput.get())
         {
             LazyOptional<IEnergyStorage> forgeEnergy = getCapability(tileAdj, CapabilityEnergy.ENERGY, inputAdj);
             if (forgeEnergy.isPresent())
@@ -556,7 +555,7 @@ public class EnergyUtil
                 IEnergyStorage storage = forgeEnergy.orElse(null);
                 if (storage.canExtract())
                 {
-                    float sent = storage.extractEnergy((int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+                    float sent = storage.extractEnergy((int) Math.floor(toPull * ConfigManagerCore.INSTANCE.getToRfConversionRate()), simulate) / ConfigManagerCore.INSTANCE.getToRfConversionRate();
                     return sent;
                 }
             }

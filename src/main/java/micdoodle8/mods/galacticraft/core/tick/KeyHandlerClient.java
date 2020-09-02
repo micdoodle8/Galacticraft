@@ -29,9 +29,9 @@ public class KeyHandlerClient extends KeyHandler
 
     static
     {
-        galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), ConfigManagerCore.keyOverrideMapI == 0 ? GLFW.GLFW_KEY_M : ConfigManagerCore.keyOverrideMapI, Constants.MOD_NAME_SIMPLE);
-        openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv.name"), ConfigManagerCore.keyOverrideFuelLevelI == 0 ? GLFW.GLFW_KEY_F : ConfigManagerCore.keyOverrideFuelLevelI, Constants.MOD_NAME_SIMPLE);
-        toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), ConfigManagerCore.keyOverrideToggleAdvGogglesI == 0 ? GLFW.GLFW_KEY_K : ConfigManagerCore.keyOverrideToggleAdvGogglesI, Constants.MOD_NAME_SIMPLE);
+        galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), ConfigManagerCore.INSTANCE.keyOverrideMapI == 0 ? GLFW.GLFW_KEY_M : ConfigManagerCore.INSTANCE.keyOverrideMapI, Constants.MOD_NAME_SIMPLE);
+        openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv.name"), ConfigManagerCore.INSTANCE.keyOverrideFuelLevelI == 0 ? GLFW.GLFW_KEY_F : ConfigManagerCore.INSTANCE.keyOverrideFuelLevelI, Constants.MOD_NAME_SIMPLE);
+        toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), ConfigManagerCore.INSTANCE.keyOverrideToggleAdvGogglesI == 0 ? GLFW.GLFW_KEY_K : ConfigManagerCore.INSTANCE.keyOverrideToggleAdvGogglesI, Constants.MOD_NAME_SIMPLE);
         // See ConfigManagerCore.class for actual defaults. These do nothing
     }
 

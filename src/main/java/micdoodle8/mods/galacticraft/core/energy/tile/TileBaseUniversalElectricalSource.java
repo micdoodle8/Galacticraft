@@ -6,8 +6,9 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -287,7 +288,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     @Override
     public float getProvide(Direction direction)
     {
-        if (direction == null && EnergyConfigHandler.isIndustrialCraft2Loaded())
+        if (direction == null && CompatibilityManager.isIc2Loaded())
         {
             TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, this.getElectricOutputDirection());
             if (tile instanceof IConductor)
@@ -351,23 +352,23 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         @Override
         public int getEnergyStored()
         {
-            if (EnergyConfigHandler.disableFEOutput)
+            if (ConfigManagerCore.INSTANCE.disableFEOutput.get())
             {
                 return 0;
             }
 
-            return MathHelper.floor(tile.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+            return MathHelper.floor(tile.getEnergyStoredGC() / ConfigManagerCore.INSTANCE.getRfConversionRate());
         }
 
         @Override
         public int getMaxEnergyStored()
         {
-            if (EnergyConfigHandler.disableFEOutput)
+            if (ConfigManagerCore.INSTANCE.disableFEOutput.get())
             {
                 return 0;
             }
 
-            return MathHelper.floor(tile.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+            return MathHelper.floor(tile.getMaxEnergyStoredGC() / ConfigManagerCore.INSTANCE.getRfConversionRate());
         }
 
         @Override
@@ -378,13 +379,13 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
                 return 0;
             }
 
-            return MathHelper.floor(tile.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+            return MathHelper.floor(tile.storage.extractEnergyGC(maxExtract / ConfigManagerCore.INSTANCE.getToRfConversionRate(), !simulate) * ConfigManagerCore.INSTANCE.getToRfConversionRate());
         }
 
         @Override
         public boolean canExtract()
         {
-            return !EnergyConfigHandler.disableFEOutput;
+            return !ConfigManagerCore.INSTANCE.disableFEOutput.get();
         }
     }
 }

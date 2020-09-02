@@ -327,8 +327,8 @@
 //
 //        if (p.movementInput.moveForward != 0)
 //        {
-//            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode ? 600F : 200F);
-//            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode ? 600F : 200F);
+//            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.INSTANCE.hardMode ? 600F : 200F);
+//            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.INSTANCE.hardMode ? 600F : 200F);
 //        }
 //
 //        if (jetpackBoost != 0)
@@ -344,7 +344,7 @@
 ////              posOffsetY += 0.0268;
 //                sneakLast = true;
 //            }
-//            p.motionY -= ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
+//            p.motionY -= ConfigManagerCore.INSTANCE.hardMode ? 0.002D : 0.0032D;
 //        }
 //        else if (sneakLast)
 //        {
@@ -354,10 +354,10 @@
 //
 //        if (!jetpackUsed && p.movementInput.jump)
 //        {
-//            p.motionY += ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
+//            p.motionY += ConfigManagerCore.INSTANCE.hardMode ? 0.002D : 0.0032D;
 //        }
 //
-//        float speedLimit = ConfigManagerCore.hardMode ? 0.9F : 0.7F;
+//        float speedLimit = ConfigManagerCore.INSTANCE.hardMode ? 0.9F : 0.7F;
 //
 //        if (p.motionX > speedLimit)
 //        {

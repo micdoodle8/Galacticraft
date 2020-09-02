@@ -156,7 +156,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
             i = 1;
         }
 
-        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.INSTANCE.disableSpaceshipParticles.get() && this.hasValidFuel())
         {
             if (this.world.isRemote)
             {

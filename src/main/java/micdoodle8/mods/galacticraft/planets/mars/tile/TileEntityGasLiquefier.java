@@ -98,7 +98,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public TileEntityGasLiquefier()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
+        this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 90 : 60);
         this.setTierGC(2);
         this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }

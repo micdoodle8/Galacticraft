@@ -41,7 +41,7 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
             this.checkedCape = true;
         }
 
-        if ((ConfigManagerCore.overrideCapes || vanillaCape == null) && galacticraftCape != null)
+        if ((ConfigManagerCore.INSTANCE.overrideCapes.get() || vanillaCape == null) && galacticraftCape != null)
         {
             return galacticraftCape;
         }

@@ -254,7 +254,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
             float f2;
             float f3;
-            double damage = ConfigManagerCore.hardMode ? 3.2D : 1.6D;
+            double damage = ConfigManagerCore.INSTANCE.hardMode.get() ? 3.2D : 1.6D;
 
             if (castResult != null)
             {

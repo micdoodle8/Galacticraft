@@ -226,6 +226,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         if (packetType.getDecodeClasses().length != data.size())
         {
             GCLog.info("Simple Packet Core found data length different than packet type");
+            GCLog.info("Type: " + packetType.name());
             new RuntimeException().printStackTrace();
         }
 
@@ -300,7 +301,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                 if (String.valueOf(this.data.get(0)).equals(PlayerUtil.getName(player)))
                 {
                     String dimensionList = (String) this.data.get(1);
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.INSTANCE.enableDebug.get())
                     {
                         if (!dimensionList.equals(PacketSimple.spamCheckString))
                         {
@@ -490,8 +491,8 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                 WorldUtil.decodePlanetsListClient(data);
                 break;
 //        case C_UPDATE_CONFIGS:
-//            ConfigManagerCore.saveClientConfigOverrideable();
-//            ConfigManagerCore.setConfigOverride(data);
+//            ConfigManagerCore.INSTANCE.saveClientConfigOverrideable();
+//            ConfigManagerCore.INSTANCE.setConfigOverride(data);
 //            break;
             case C_ADD_NEW_SCHEMATIC:
                 final ISchematicPage page = SchematicRegistry.getMatchingRecipeForID((Integer) this.data.get(0));
@@ -694,7 +695,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             case C_RESPAWN_PLAYER:
 //            final Dimension dimension = WorldUtil.getProviderForNameClient((String) this.data.get(0));
 //            final DimensionType dimID = GCCoreUtil.getDimensionID(dimension);
-//            if (ConfigManagerCore.enableDebug)
+//            if (ConfigManagerCore.INSTANCE.enableDebug)
 //            {
 //                GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
 //            }
@@ -878,7 +879,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             case S_BIND_SPACE_STATION_ID:
                 DimensionType homeID = DimensionType.getById((Integer) this.data.get(0));
                 if ((!stats.getSpaceStationDimensionData().containsKey(homeID) || stats.getSpaceStationDimensionData().get(homeID) == DimensionType.THE_NETHER || stats.getSpaceStationDimensionData().get(homeID) == DimensionType.OVERWORLD)
-                        && !ConfigManagerCore.disableSpaceStationCreation)
+                        && !ConfigManagerCore.INSTANCE.disableSpaceStationCreation.get())
                 {
                     if (playerBase.abilities.isCreativeMode || WorldUtil.getSpaceStationRecipe(homeID).matches(playerBase, true))
                     {

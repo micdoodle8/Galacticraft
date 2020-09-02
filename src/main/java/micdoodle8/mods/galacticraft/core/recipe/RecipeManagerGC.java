@@ -316,19 +316,19 @@
 //        if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT && CompatibilityManager.modJEILoaded) TickHandlerClient.updateJEIhiding = true;
 //
 //        // Update Aluminium Wire and Battery crafting recipes and GC Advanced Metals recipes
-//        ItemStack aluWire = new ItemStack(GCBlocks.aluminumWire, ConfigManagerCore.quickMode ? 9 : 6, 0);
-//        ItemStack battery = new ItemStack(GCItems.battery, ConfigManagerCore.quickMode ? 3 : 2, 100);
-//        boolean doQuickMode = ConfigManagerCore.quickMode != configSaved_QuickMode;
-//        configSaved_QuickMode = ConfigManagerCore.quickMode;
+//        ItemStack aluWire = new ItemStack(GCBlocks.aluminumWire, ConfigManagerCore.INSTANCE.quickMode ? 9 : 6, 0);
+//        ItemStack battery = new ItemStack(GCItems.battery, ConfigManagerCore.INSTANCE.quickMode ? 3 : 2, 100);
+//        boolean doQuickMode = ConfigManagerCore.INSTANCE.quickMode != configSaved_QuickMode;
+//        configSaved_QuickMode = ConfigManagerCore.INSTANCE.quickMode;
 //
 //        ItemStack meteoricIronIngot = new ItemStack(GCItems.itemBasicMoon, 1, 0);
 //        ItemStack meteoricIronPlate = new ItemStack(GCItems.itemBasicMoon, 1, 1);
-//        boolean doMetalsToOreDict = configSaved_RequireGCmetals && !ConfigManagerCore.recipesRequireGCAdvancedMetals;
-//        boolean doMetalsToGC = !configSaved_RequireGCmetals && ConfigManagerCore.recipesRequireGCAdvancedMetals;
-//        configSaved_RequireGCmetals = ConfigManagerCore.recipesRequireGCAdvancedMetals;
+//        boolean doMetalsToOreDict = configSaved_RequireGCmetals && !ConfigManagerCore.INSTANCE.recipesRequireGCAdvancedMetals;
+//        boolean doMetalsToGC = !configSaved_RequireGCmetals && ConfigManagerCore.INSTANCE.recipesRequireGCAdvancedMetals;
+//        configSaved_RequireGCmetals = ConfigManagerCore.INSTANCE.recipesRequireGCAdvancedMetals;
 //
-//        boolean doSilicon = !ConfigManagerCore.otherModsSilicon.equals(configSaved_Silicon);
-//        configSaved_Silicon = ConfigManagerCore.otherModsSilicon;
+//        boolean doSilicon = !ConfigManagerCore.INSTANCE.otherModsSilicon.equals(configSaved_Silicon);
+//        configSaved_Silicon = ConfigManagerCore.INSTANCE.otherModsSilicon;
 //
 //        if (doQuickMode || doMetalsToOreDict || doMetalsToGC)
 //        {
@@ -382,7 +382,7 @@
 //        {
 //            ItemStack siliconGC =  new ItemStack(GCItems.basicItem, 1, 2);
 //            boolean needNewList = true;
-//            List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
+//            List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.INSTANCE.otherModsSilicon);
 //            if (silicons.size() > 0)
 //            {
 //                for (ItemStack s : silicons)
@@ -406,7 +406,7 @@
 //
 //        if (doMetalsToOreDict || doMetalsToGC)
 //        {
-//            if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
+//            if (ConfigManagerCore.INSTANCE.recipesRequireGCAdvancedMetals)
 //            {
 //                CompressorRecipes.replaceRecipeIngredient(meteoricIronIngot);
 //            }
@@ -464,7 +464,7 @@
 //
 //    private static void setConfigurableRecipesPlanets()
 //    {
-//        if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
+//        if (ConfigManagerCore.INSTANCE.recipesRequireGCAdvancedMetals)
 //        {
 //            CompressorRecipes.replaceRecipeIngredient(new ItemStack(MarsItems.marsItemBasic, 1, 2));
 //            CompressorRecipes.replaceRecipeIngredient(new ItemStack(AsteroidsItems.basicItem, 1, 0));

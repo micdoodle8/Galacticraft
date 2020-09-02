@@ -137,7 +137,7 @@
 //        this.spinCentreZ = z;
 //        if (this.clientSide)
 //        {
-//            if (ConfigManagerCore.enableDebug)
+//            if (ConfigManagerCore.INSTANCE.enableDebug)
 //            {
 //                GCLog.info("Clientside update to spin centre: " + x + "," + z);
 //            }
@@ -326,7 +326,7 @@
 //            if (foundThrusters.size() > 0)
 //            {
 //                //The thruster was not placed on the existing contiguous space station: it must be.
-//                if (ConfigManagerCore.enableDebug)
+//                if (ConfigManagerCore.INSTANCE.enableDebug)
 //                {
 //                    GCLog.info("Thruster placed on wrong part of space station: base at " + this.oneSSBlock + " - baseBlock was " + baseBlock + " - found " + foundThrusters.size());
 //                }
@@ -479,7 +479,7 @@
 //                        this.angularVelocityTarget = spinCap;
 //                    }
 //
-//                if (ConfigManagerCore.enableDebug)
+//                if (ConfigManagerCore.INSTANCE.enableDebug)
 //                {
 //                    GCLog.info("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
 //                }
@@ -501,7 +501,7 @@
 //            {
 //                this.savefile = OrbitSpinSaveData.initWorldData(this.worldProvider.getWorld());
 //                this.readFromNBT(this.savefile.datacompound);
-//                if (ConfigManagerCore.enableDebug)
+//                if (ConfigManagerCore.INSTANCE.enableDebug)
 //                {
 //                    GCLog.info("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
 //                }

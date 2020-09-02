@@ -185,7 +185,7 @@ public class PlayerClient implements IPlayerClient
 
         if (ridingThirdPersonEntity && !stats.isLastRidingCameraZoomEntity())
         {
-            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.INSTANCE.disableVehicleCameraChanges.get())
             {
                 Minecraft.getInstance().gameSettings.thirdPersonView = 1;
             }
@@ -193,7 +193,7 @@ public class PlayerClient implements IPlayerClient
 
         if (player.getRidingEntity() instanceof ICameraZoomEntity)
         {
-            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.INSTANCE.disableVehicleCameraChanges.get())
             {
                 stats.setLastZoomed(true);
                 TickHandlerClient.zoom(((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom());
@@ -201,7 +201,7 @@ public class PlayerClient implements IPlayerClient
         }
         else if (stats.isLastZoomed())
         {
-            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.INSTANCE.disableVehicleCameraChanges.get())
             {
                 stats.setLastZoomed(false);
                 TickHandlerClient.zoom(4.0F);

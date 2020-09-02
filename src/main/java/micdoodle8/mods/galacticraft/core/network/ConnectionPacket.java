@@ -49,9 +49,9 @@
 //            try
 //            {
 //                data = NetworkUtil.decodeData(EnumSimplePacket.C_UPDATE_CONFIGS.getDecodeClasses(), payload);
-//                ConfigManagerCore.saveClientConfigOverrideable();
-//                ConfigManagerCore.setConfigOverride(data);
-//                if (ConfigManagerCore.enableDebug)
+//                ConfigManagerCore.INSTANCE.saveClientConfigOverrideable();
+//                ConfigManagerCore.INSTANCE.setConfigOverride(data);
+//                if (ConfigManagerCore.INSTANCE.enableDebug)
 //                {
 //                    GCLog.info("Server-set configs received OK on client.");
 //                }

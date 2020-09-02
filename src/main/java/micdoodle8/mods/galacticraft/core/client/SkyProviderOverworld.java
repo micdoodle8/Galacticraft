@@ -421,7 +421,7 @@
 //    {
 //        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //
-//        for (int i = 0; i < (ConfigManagerCore.moreStars ? 4000 : 1200); ++i)
+//        for (int i = 0; i < (ConfigManagerCore.INSTANCE.moreStars ? 4000 : 1200); ++i)
 //        {
 //            double x = rand.nextFloat() * 2.0F - 1.0F;
 //            double y = rand.nextFloat() * 2.0F - 1.0F;
@@ -435,13 +435,13 @@
 //                x *= r;
 //                y *= r;
 //                z *= r;
-//                final double xx = x * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
-//                final double zz = z * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+//                final double xx = x * (ConfigManagerCore.INSTANCE.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+//                final double zz = z * (ConfigManagerCore.INSTANCE.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
 //                if (Math.abs(xx) < 29D && Math.abs(zz) < 29D)
 //                {
 //                    continue;
 //                }
-//                final double yy = y * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+//                final double yy = y * (ConfigManagerCore.INSTANCE.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
 //                final double theta = Math.atan2(x, z);
 //                final double sinth = Math.sin(theta);
 //                final double costh = Math.cos(theta);

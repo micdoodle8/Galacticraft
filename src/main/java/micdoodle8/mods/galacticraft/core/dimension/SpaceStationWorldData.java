@@ -146,7 +146,7 @@ public class SpaceStationWorldData extends WorldSavedData
 //        else
 //        {
 //            GCLog.info("Static dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
-//            this.dimensionIdStatic = ConfigManagerCore.idDimensionOverworldOrbitStatic;
+//            this.dimensionIdStatic = ConfigManagerCore.INSTANCE.idDimensionOverworldOrbitStatic;
 //        }
 //
 //        if (nbt.contains("dimensionIdDynamic"))
@@ -156,7 +156,7 @@ public class SpaceStationWorldData extends WorldSavedData
 //        else
 //        {
 //            GCLog.info("Dynamic dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
-//            this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit;
+//            this.dimensionIdDynamic = ConfigManagerCore.INSTANCE.idDimensionOverworldOrbit;
 //        }
 
         this.allowAllPlayers = nbt.getBoolean("allowedAll");

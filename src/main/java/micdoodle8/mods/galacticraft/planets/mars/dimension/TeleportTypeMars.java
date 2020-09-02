@@ -29,7 +29,7 @@ public class TeleportTypeMars implements ITeleportType
             GCPlayerStats stats = GCPlayerStats.get(player);
             double x = stats.getCoordsTeleportedFromX();
             double z = stats.getCoordsTeleportedFromZ();
-            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            int limit = ConfigManagerCore.INSTANCE.otherPlanetWorldBorders.get() - 2;
             if (limit > 20)
             {
                 if (x > limit)
@@ -53,7 +53,7 @@ public class TeleportTypeMars implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vec3d(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
+            return new Vec3d(x, ConfigManagerCore.INSTANCE.disableLander.get() ? 250.0 : 900.0, z);
         }
 
         return null;
@@ -62,7 +62,7 @@ public class TeleportTypeMars implements ITeleportType
     @Override
     public Vec3d getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vec3d(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
+        return new Vec3d(entity.getPosX(), ConfigManagerCore.INSTANCE.disableLander.get() ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override

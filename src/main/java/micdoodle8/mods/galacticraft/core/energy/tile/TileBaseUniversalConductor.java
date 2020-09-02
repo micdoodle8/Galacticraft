@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
-
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -212,21 +211,21 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate)
     {
-        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput)
+        if (this.getNetwork() == null || ConfigManagerCore.INSTANCE.disableFEInput.get())
         {
             return 0;
         }
 
-        float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
+        float receiveGC = maxReceive * ConfigManagerCore.INSTANCE.getRfConversionRate();
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
-        return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(sentGC / ConfigManagerCore.INSTANCE.getRfConversionRate());
     }
 
     //ForgeEnergy OR BuildCraft (method name clash!)
     @Override
     public boolean canReceive()
     {
-        return !EnergyConfigHandler.disableBuildCraftInput || !EnergyConfigHandler.disableFEInput;
+        return !ConfigManagerCore.INSTANCE.disableBuildCraftInput.get() || !ConfigManagerCore.INSTANCE.disableFEInput.get();
     }
 
     //ForgeEnergy
@@ -240,12 +239,12 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int getMaxEnergyStored()
     {
-        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput)
+        if (this.getNetwork() == null || ConfigManagerCore.INSTANCE.disableFEInput.get())
         {
             return 0;
         }
 
-        return MathHelper.floor(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getNetwork().getRequest(this) / ConfigManagerCore.INSTANCE.getRfConversionRate());
     }
 
     //ForgeEnergy

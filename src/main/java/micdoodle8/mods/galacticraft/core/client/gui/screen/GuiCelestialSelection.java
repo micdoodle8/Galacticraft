@@ -500,7 +500,7 @@ public class GuiCelestialSelection extends Screen
 
     protected boolean canCreateSpaceStation(CelestialBody atBody)
     {
-        if (this.mapMode || ConfigManagerCore.disableSpaceStationCreation || !this.canCreateStations)
+        if (this.mapMode || ConfigManagerCore.INSTANCE.disableSpaceStationCreation.get() || !this.canCreateStations)
         {
             return false;
         }
@@ -693,8 +693,8 @@ public class GuiCelestialSelection extends Screen
                 scollMultiplier = -0.15F;
             }
 
-            translation.x += (deltaX - deltaY) * scollMultiplier * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity * 0.2F;
-            translation.y += (deltaY + deltaX) * scollMultiplier * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity * 0.2F;
+            translation.x += (deltaX - deltaY) * scollMultiplier * (ConfigManagerCore.INSTANCE.invertMapMouseScroll.get() ? -1.0F : 1.0F) * ConfigManagerCore.INSTANCE.mapMouseScrollSensitivity.get() * 0.2F;
+            translation.y += (deltaY + deltaX) * scollMultiplier * (ConfigManagerCore.INSTANCE.invertMapMouseScroll.get() ? -1.0F : 1.0F) * ConfigManagerCore.INSTANCE.mapMouseScrollSensitivity.get() * 0.2F;
         }
 
         lastMovePosX = mouseX;
@@ -728,8 +728,8 @@ public class GuiCelestialSelection extends Screen
 //                scollMultiplier = -0.15F;
 //            }
 //
-//            translation.x += (deltaX - deltaY) * scollMultiplier * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity * 0.2F;
-//            translation.y += (deltaY + deltaX) * scollMultiplier * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity * 0.2F;
+//            translation.x += (deltaX - deltaY) * scollMultiplier * (ConfigManagerCore.INSTANCE.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.INSTANCE.mapMouseScrollSensitivity * 0.2F;
+//            translation.y += (deltaY + deltaX) * scollMultiplier * (ConfigManagerCore.INSTANCE.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.INSTANCE.mapMouseScrollSensitivity * 0.2F;
 //        }
 //
 //        lastMovePosX = x;

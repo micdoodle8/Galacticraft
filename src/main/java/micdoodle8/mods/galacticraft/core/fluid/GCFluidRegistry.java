@@ -75,8 +75,8 @@ public class GCFluidRegistry
 //        //NOTE: the way this operates will depend on the order in which different mods initialize (normally alphabetical order)
 //        //Galacticraft can handle things OK if another mod registers oil or fuel first.  The other mod may not be so happy if GC registers oil or fuel first.
 //
-//        String oilID = ConfigManagerCore.useOldOilFluidID ? "oilgc" : "oil";
-//        String fuelID = ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel";
+//        String oilID = ConfigManagerCore.INSTANCE.useOldOilFluidID ? "oilgc" : "oil";
+//        String fuelID = ConfigManagerCore.INSTANCE.useOldFuelFluidID ? "fuelgc" : "fuel";
 //
 //        // Oil:
 //        if (!FluidRegistry.isFluidRegistered(oilID))
@@ -168,11 +168,11 @@ public class GCFluidRegistry
 //    public static void registerLegacyFluids()
 //    {
 //        //If any other mod has registered "fuel" or "oil" and GC has not, then allow GC's appropriate canisters to be fillable with that one as well
-////        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
+////        if (ConfigManagerCore.INSTANCE.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
 ////        {
 ////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 ////        }
-////        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
+////        if (ConfigManagerCore.INSTANCE.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
 ////        {
 ////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 //            //And allow Buildcraft oil buckets to be filled with oilgc

@@ -108,7 +108,7 @@ public class EventHandlerGC
 //    {
 //        if (event.getModID().equals(Constants.MOD_ID_CORE))
 //        {
-////            ConfigManagerCore.syncConfig(false); TODO Config sync?
+////            ConfigManagerCore.INSTANCE.syncConfig(false); TODO Config sync?
 //        }
 //    }
 
@@ -179,7 +179,7 @@ public class EventHandlerGC
     public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
     {
         PlayerEntity p = event.getPlayer();
-        if (!p.onGround && p.world.getDimension() instanceof IZeroGDimension && !ConfigManagerCore.hardMode && event.getOriginalSpeed() < 5.0F)
+        if (!p.onGround && p.world.getDimension() instanceof IZeroGDimension && !ConfigManagerCore.INSTANCE.hardMode.get() && event.getOriginalSpeed() < 5.0F)
         {
             event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
         }
@@ -324,7 +324,7 @@ public class EventHandlerGC
             return;
         }
 
-        if (entityLiving.ticksExisted % ConfigManagerCore.suffocationCooldown == 0)
+        if (entityLiving.ticksExisted % ConfigManagerCore.INSTANCE.suffocationCooldown.get() == 0)
         {
             if (entityLiving.world.getDimension() instanceof IGalacticraftDimension)
             {
@@ -340,7 +340,7 @@ public class EventHandlerGC
                             return;
                         }
 
-                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, Math.max(ConfigManagerCore.suffocationDamage / 2, 1));
+                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, Math.max(ConfigManagerCore.INSTANCE.suffocationDamage.get() / 2, 1));
 
                         GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
@@ -429,7 +429,7 @@ public class EventHandlerGC
     {
         boolean doGen2 = false;
 
-        for (Integer dim : ConfigManagerCore.externalOilGen)
+        for (Integer dim : ConfigManagerCore.INSTANCE.externalOilGen.get())
         {
             if (dim == GCCoreUtil.getDimensionType(world).getId())
             {
@@ -455,7 +455,7 @@ public class EventHandlerGC
         long j1 = rand.nextInt() / 2L * 2L + 1L;
         rand.setSeed(x * i1 + z * j1 ^ world.getSeed());
 
-        double randMod = Math.min(0.2D, 0.05D * ConfigManagerCore.oilGenFactor);
+        double randMod = Math.min(0.2D, 0.05D * ConfigManagerCore.INSTANCE.oilGenFactor.get());
 
         if (biome.getDepth() >= 0.45F)
         {

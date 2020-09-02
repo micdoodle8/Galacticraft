@@ -29,7 +29,7 @@ import java.util.List;
 
 public class EntityTier1Rocket extends EntityTieredRocket
 {
-    public static final int FUEL_CAPACITY = 1000 * ConfigManagerCore.rocketFuelFactor;
+    public static final int FUEL_CAPACITY = 1000 * ConfigManagerCore.INSTANCE.rocketFuelFactor.get();
 
     public EntityTier1Rocket(EntityType<? extends EntityTier1Rocket> type, World worldIn)
     {
@@ -135,7 +135,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             i = 1;
         }
 
-        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.INSTANCE.disableSpaceshipParticles.get() && this.hasValidFuel())
         {
             if (this.world.isRemote)
             {

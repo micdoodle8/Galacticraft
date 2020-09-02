@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockThermalAir;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
@@ -490,7 +489,7 @@ public class OxygenUtil
             return adjacentConnections;
         }
 
-        boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+        boolean isMekLoaded = CompatibilityManager.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
         for (Direction direction : Direction.values())

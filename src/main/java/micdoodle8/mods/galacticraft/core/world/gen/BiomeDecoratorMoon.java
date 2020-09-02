@@ -65,19 +65,19 @@
 //    {
 //        MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.world, this.randomGenerator, chunkPos));
 //        this.genStandardOre(20, this.dirtGen, 0, 200);
-//        if (!ConfigManagerCore.disableCopperMoon)
+//        if (!ConfigManagerCore.INSTANCE.disableCopperMoon)
 //        {
 //            this.genStandardOre(26, this.copperGen, 0, 60);
 //        }
-//        if (!ConfigManagerCore.disableTinMoon)
+//        if (!ConfigManagerCore.INSTANCE.disableTinMoon)
 //        {
 //            this.genStandardOre(23, this.tinGen, 0, 60);
 //        }
-//        if (!ConfigManagerCore.disableCheeseMoon)
+//        if (!ConfigManagerCore.INSTANCE.disableCheeseMoon)
 //        {
 //            this.genStandardOre(14, this.cheeseGen, 0, 85);
 //        }
-//        if (!ConfigManagerCore.disableSapphireMoon)
+//        if (!ConfigManagerCore.INSTANCE.disableSapphireMoon)
 //        {
 //            int count = 3 + this.randomGenerator.nextInt(6);
 //            BlockState sapphire = GCBlocks.blockMoon.getDefaultState().with(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.ORE_SAPPHIRE);

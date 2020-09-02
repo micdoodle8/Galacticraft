@@ -838,10 +838,10 @@ public class GCPlayerHandler
                     {
                         if (stats.getDamageCounter() == 0)
                         {
-                            stats.setDamageCounter(ConfigManagerCore.suffocationCooldown);
+                            stats.setDamageCounter(ConfigManagerCore.INSTANCE.suffocationCooldown.get());
 
-                            player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage * (2 + stats.getIncrementalDamage()) / 2);
-                            if (ConfigManagerCore.hardMode)
+                            player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.INSTANCE.suffocationDamage.get() * (2 + stats.getIncrementalDamage()) / 2);
+                            if (ConfigManagerCore.INSTANCE.hardMode.get())
                             {
                                 stats.setIncrementalDamage(stats.getIncrementalDamage() + 1);
                             }
@@ -882,9 +882,9 @@ public class GCPlayerHandler
         World world = player.world;
         if (world.getDimension() instanceof IGalacticraftDimension && !world.isRemote)
         {
-            if (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod > 0.0)
+            if (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() > 0 && ConfigManagerCore.INSTANCE.meteorSpawnMod.get() > 0.0)
             {
-                final int f = (int) (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.meteorSpawnMod));
+                final int f = (int) (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.INSTANCE.meteorSpawnMod.get()));
 
                 if (world.rand.nextInt(f) == 0)
                 {
@@ -1254,7 +1254,7 @@ public class GCPlayerHandler
         //This will speed things up a little
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-//        if ((ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
+//        if ((ConfigManagerCore.INSTANCE.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
 //        {
 //            if (stats.getStartDimension().length() > 0)
 //            {
@@ -1315,7 +1315,7 @@ public class GCPlayerHandler
 
         if (tick >= 25)
         {
-            if (ConfigManagerCore.enableSpaceRaceManagerPopup && !stats.hasOpenedSpaceRaceManager())
+            if (ConfigManagerCore.INSTANCE.enableSpaceRaceManagerPopup.get() && !stats.hasOpenedSpaceRaceManager())
             {
                 SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(player));
 

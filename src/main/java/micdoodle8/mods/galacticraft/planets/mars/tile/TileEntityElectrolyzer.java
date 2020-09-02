@@ -66,7 +66,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public TileEntityElectrolyzer()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 120);
+        this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 150 : 120);
         this.setTierGC(2);
         this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }

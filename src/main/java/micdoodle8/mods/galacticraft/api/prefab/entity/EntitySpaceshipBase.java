@@ -477,7 +477,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             passenger.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
         }
 
-        if (!ConfigManagerCore.disableSpaceshipGrief)
+        if (!ConfigManagerCore.INSTANCE.disableSpaceshipGrief.get())
         {
             this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5, Explosion.Mode.NONE);
         }

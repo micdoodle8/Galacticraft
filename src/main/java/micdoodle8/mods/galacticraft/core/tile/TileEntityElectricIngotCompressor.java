@@ -42,7 +42,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             super(TYPE);
             this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE;
-            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
+            this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 90 : 75);
             this.setTierGC(2);
             inventory = NonNullList.withSize(3, ItemStack.EMPTY);
         }
@@ -59,7 +59,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
             this.processTimeRequired = processTimeRequiredBase;
             this.advanced = true;
-            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
+            this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 90 : 75);
             this.setTierGC(3);
             inventory = NonNullList.withSize(3, ItemStack.EMPTY);
         }
@@ -150,7 +150,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         int contents1 = this.getInventory().get(1).getCount();
         int contents2 = this.getInventory().get(2).getCount();
         int result = itemstack.getCount();
-        if (ConfigManagerCore.quickMode && itemstack.getItem().getTranslationKey(itemstack).contains("compressed"))
+        if (ConfigManagerCore.INSTANCE.quickMode.get() && itemstack.getItem().getTranslationKey(itemstack).contains("compressed"))
         {
             result += result;
         }
@@ -185,7 +185,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         if (this.canCompress())
         {
             ItemStack resultItemStack = this.producingStack.copy();
-            if (ConfigManagerCore.quickMode)
+            if (ConfigManagerCore.INSTANCE.quickMode.get())
             {
                 if (resultItemStack.getItem().getTranslationKey(resultItemStack).contains("compressed"))
                 {

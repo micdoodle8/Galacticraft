@@ -241,7 +241,7 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
     @Override
     public double getSolarEnergyMultiplier()
     {
-        return ConfigManagerCore.spaceStationEnergyScalar;
+        return ConfigManagerCore.INSTANCE.spaceStationEnergyScalar.get();
     }
 
     @Override

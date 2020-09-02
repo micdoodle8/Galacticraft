@@ -153,7 +153,7 @@ public class GalacticraftPlanets
 //    private void configSyncEnd(boolean load)
 //    {
 //        //Cleanup older GC config files
-////        ConfigManagerCore.cleanConfig(ConfigManagerPlanets.config, propOrder);
+////        ConfigManagerCore.INSTANCE.cleanConfig(ConfigManagerPlanets.config, propOrder);
 ////
 ////        //Always save - this is last to be called both at load time and at mid-game
 ////        if (ConfigManagerPlanets.config.hasChanged())

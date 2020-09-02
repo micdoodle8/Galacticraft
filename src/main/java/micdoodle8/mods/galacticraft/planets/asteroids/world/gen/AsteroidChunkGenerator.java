@@ -165,7 +165,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIron.getDefaultState(), 3, .2));
         }
-        if (ConfigManagerCore.enableSiliconOreGen)
+        if (ConfigManagerCore.INSTANCE.enableSiliconOreGen.get())
         {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.oreSilicon.getDefaultState(), 2, .15)); //TODO: Asteroids version of silicon ore
         }
@@ -575,7 +575,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
 ////        long time3 = System.nanoTime();
 //        this.generateSkylightMap(var4, par1, par2);
 ////        long time4 = System.nanoTime();
-////        if (ConfigManagerCore.enableDebug)
+////        if (ConfigManagerCore.INSTANCE.enableDebug)
 ////        {
 ////	        BlockVec3 vec = new BlockVec3(par1, par2, 0);
 ////	        if (chunksDone.contains(vec)) System.out.println("Done chunk already at "+par1+","+par2);
@@ -757,7 +757,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                 int asteroidSize = asteroidIndex.asteroidSizeArray;
                 boolean treesdone = false;
 
-                if (ConfigManagerCore.challengeAsteroidPopulation || world.getRandom().nextInt(AsteroidChunkGenerator.TREE_CHANCE) == 0)
+                if (ConfigManagerCore.INSTANCE.challengeAsteroidPopulation || world.getRandom().nextInt(AsteroidChunkGenerator.TREE_CHANCE) == 0)
                 {
                     int treeType = world.getRandom().nextInt(3);
                     if (treeType == 1)

@@ -127,7 +127,7 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
 //            this.dropItem(GCItems.oxygenConcentrator, 1);
 //            break;
 //        default:
-//            if (ConfigManagerCore.challengeMobDropsAndSpawning)
+//            if (ConfigManagerCore.INSTANCE.challengeMobDropsAndSpawning)
 //            {
 //                this.dropItem(Items.NETHER_WART, 1);
 //            }

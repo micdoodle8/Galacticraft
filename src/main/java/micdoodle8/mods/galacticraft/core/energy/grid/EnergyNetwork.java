@@ -5,9 +5,10 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
@@ -27,12 +28,10 @@ import java.util.*;
  */
 public class EnergyNetwork implements IElectricityNetwork
 {
-    private final boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded() && !EnergyConfigHandler.disableMekanismOutput;
-    private final boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput;
-    private final boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
-    private final boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
-    private final boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
-    private final boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
+    private final boolean isMekLoaded = CompatibilityManager.isMekanismLoaded() && !ConfigManagerCore.INSTANCE.disableMekanismOutput.get();
+    private final boolean isIC2Loaded = CompatibilityManager.isIc2Loaded() && !ConfigManagerCore.INSTANCE.disableIC2Output.get();
+    private final boolean isFELoaded = !ConfigManagerCore.INSTANCE.disableFEOutput.get();
+    private final boolean isBCLoaded = CompatibilityManager.isBCLoaded() && !ConfigManagerCore.INSTANCE.disableBuildCraftOutput.get();
 
     /* Re-written by radfast for better performance
      *
@@ -270,7 +269,7 @@ public class EnergyNetwork implements IElectricityNetwork
 //                        }
 //                        catch (Exception ex)
 //                        {
-//                            if (ConfigManagerCore.enableDebug)
+//                            if (ConfigManagerCore.INSTANCE.enableDebug)
 //                            {
 //                                ex.printStackTrace();
 //                            }
@@ -294,7 +293,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         net.minecraftforge.energy.IEnergyStorage forgeEnergy = (net.minecraftforge.energy.IEnergyStorage) acceptor;
                         if (forgeEnergy.canReceive())
                         {
-                            e = forgeEnergy.receiveEnergy(Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+                            e = forgeEnergy.receiveEnergy(Integer.MAX_VALUE, true) / ConfigManagerCore.INSTANCE.getToRfConversionRate();
                         }
                     }
 
@@ -411,7 +410,7 @@ public class EnergyNetwork implements IElectricityNetwork
 //                            }
 //                            catch (Exception ex)
 //                            {
-//                                if (ConfigManagerCore.enableDebug)
+//                                if (ConfigManagerCore.INSTANCE.enableDebug)
 //                                {
 //                                    ex.printStackTrace();
 //                                }
@@ -439,8 +438,8 @@ public class EnergyNetwork implements IElectricityNetwork
 //                    }
                     else if (isFELoaded && tileEntity instanceof net.minecraftforge.energy.IEnergyStorage)
                     {
-                        final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
-                        sentToAcceptor = ((net.minecraftforge.energy.IEnergyStorage) tileEntity).receiveEnergy(currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
+                        final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / ConfigManagerCore.INSTANCE.getToRfConversionRate()) ? Integer.MAX_VALUE : (int) (currentSending * ConfigManagerCore.INSTANCE.getToRfConversionRate());
+                        sentToAcceptor = ((net.minecraftforge.energy.IEnergyStorage) tileEntity).receiveEnergy(currentSendinginRF, false) / ConfigManagerCore.INSTANCE.getToRfConversionRate();
                     }
                     else
                     {

@@ -87,7 +87,7 @@
 //    @SubscribeEvent
 //    public void onConnectionReceived(PlayerEvent.PlayerLoggedInEvent event)
 //    {
-//        if (ConfigManagerCore.enableDebug)
+//        if (ConfigManagerCore.INSTANCE.enableDebug)
 //        {
 //            Integer[] idList = (Integer[]) WorldUtil.getPlanetList().get(0);
 //            String ids = "";
@@ -100,7 +100,7 @@
 //        NetworkManager networkManager = ((ServerPlayerEntity) event.getPlayer()).connection.netManager;
 ////        networkManager.sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
 ////        networkManager.sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
-////        networkManager.sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
+////        networkManager.sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.INSTANCE.getServerConfigOverride()));
 //    }
 //
 //    @SubscribeEvent
@@ -121,7 +121,7 @@
 //            ConnectionEvents.clientConnected = false;
 //            WorldUtil.unregisterPlanets();
 //            WorldUtil.unregisterSpaceStations();
-//            ConfigManagerCore.restoreClientConfigOverrideable();
+//            ConfigManagerCore.INSTANCE.restoreClientConfigOverrideable();
 //        }
 //    }
 //}

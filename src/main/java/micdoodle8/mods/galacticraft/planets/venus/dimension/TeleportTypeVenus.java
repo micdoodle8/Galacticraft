@@ -29,7 +29,7 @@ public class TeleportTypeVenus implements ITeleportType
             GCPlayerStats stats = GCPlayerStats.get(player);
             double x = stats.getCoordsTeleportedFromX();
             double z = stats.getCoordsTeleportedFromZ();
-            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            int limit = ConfigManagerCore.INSTANCE.otherPlanetWorldBorders.get() - 2;
             if (limit > 20)
             {
                 if (x > limit)

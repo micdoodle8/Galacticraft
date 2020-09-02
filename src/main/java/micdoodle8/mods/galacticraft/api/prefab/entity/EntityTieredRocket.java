@@ -118,7 +118,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 for (DimensionType dimID : toPreGen)
                 {
                     this.preGenList.add(new BlockVec3Dim(cx, 0, cz, dimID));
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.INSTANCE.enableDebug.get())
                     {
                         GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
                     }

@@ -258,18 +258,18 @@
 //    {
 //        HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
 //        input1.put(0, new PositionedStack(new ItemStack(Items.DIAMOND), 10, 22));
-//        int siliconCount = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).size();
+//        int siliconCount = OreDictionary.getOres(ConfigManagerCore.INSTANCE.otherModsSilicon).size();
 //        ItemStack[] silicons = new ItemStack[siliconCount];
 ////        silicons[0] = new ItemStack(GCItems.basicItem, 1, 2);  //This is now included in the oredict
 //        for (int j = 0; j < siliconCount; j++)
 //        {
-//        	silicons[j] = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon).get(j);
+//        	silicons[j] = OreDictionary.getOres(ConfigManagerCore.INSTANCE.otherModsSilicon).get(j);
 //        }
 //        input1.put(1, new PositionedStack(silicons, 69, 51));
 //        input1.put(2, new PositionedStack(silicons, 69, 69));
 //        input1.put(3, new PositionedStack(new ItemStack(Items.REDSTONE), 117, 51));
 //        input1.put(4, new PositionedStack(new ItemStack(Blocks.REDSTONE_TORCH), 140, 25));
-//        this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 5 : 3, 13), 147, 91));
+//        this.registerCircuitFabricatorRecipe(input1, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.INSTANCE.quickMode ? 5 : 3, 13), 147, 91));
 //
 //        HashMap<Integer, PositionedStack> input2 = new HashMap<Integer, PositionedStack>(input1);
 //        input2.put(4, new PositionedStack(new ItemStack(Items.DYE, 1, 4), 140, 25));
@@ -277,7 +277,7 @@
 //
 //        input2 = new HashMap<Integer, PositionedStack>(input1);
 //        input2.put(4, new PositionedStack(new ItemStack(Items.REPEATER), 140, 25));
-//        this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.quickMode ? 2 : 1, 14), 147, 91));
+//        this.registerCircuitFabricatorRecipe(input2, new PositionedStack(new ItemStack(GCItems.basicItem, ConfigManagerCore.INSTANCE.quickMode ? 2 : 1, 14), 147, 91));
 //    }
 //
 //    private void addIngotCompressorRecipes()
@@ -311,7 +311,7 @@
 //            }
 //
 //            ItemStack resultItemStack = rec.getRecipeOutput().copy();
-//            if (ConfigManagerCore.quickMode)
+//            if (ConfigManagerCore.INSTANCE.quickMode)
 //            {
 //                if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))
 //                {

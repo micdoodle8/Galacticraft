@@ -98,7 +98,7 @@ public class ThreadFindSeal
                 eachSealer.threadSeal = this;
             }
 
-//            if (ConfigManagerCore.enableSealerMultithreading)
+//            if (ConfigManagerCore.INSTANCE.enableSealerMultithreading)
 //            {
 //                new ThreadedFindSeal();
 //            }
@@ -266,7 +266,7 @@ public class ThreadFindSeal
                         // should take over as head
                         if (this.sealed)
                         {
-                            if (ConfigManagerCore.enableDebug)
+                            if (ConfigManagerCore.INSTANCE.enableDebug.get())
                             {
                                 GCLog.info("Oxygen Sealer replacing head at x" + this.head.x + " y" + (this.head.y - 1) + " z" + this.head.z);
                             }
@@ -362,7 +362,7 @@ public class ThreadFindSeal
         this.sealedFinal.set(this.sealed);
         this.looping.set(false);
 
-        if (ConfigManagerCore.enableDebug)
+        if (ConfigManagerCore.INSTANCE.enableDebug.get())
         {
             long time3 = System.nanoTime();
             float total = (time3 - time1) / 1000000.0F;

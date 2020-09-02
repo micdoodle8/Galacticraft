@@ -76,7 +76,7 @@ public class TickHandlerClient
         ClientProxyCore.flagRequestsSent.clear();
         TickHandlerClient.clearLiquidNetworks();
         ClientProxyCore.clientSpaceStationID.clear();
-        ConfigManagerCore.challengeModeUpdate();
+        ConfigManagerCore.INSTANCE.challengeModeUpdate();
 
         if (TickHandlerClient.missingRequirementThread == null)
         {
@@ -135,10 +135,10 @@ public class TickHandlerClient
     {
         ClientProxyCore.detectableBlocks.clear();
 
-        for (final String s : ConfigManagerCore.detectableIDs)
+        for (final String s : ConfigManagerCore.INSTANCE.detectableIDs.get())
         {
             // TODO Blockstate property parsing? To replace metadata
-            Block bt = ConfigManagerCore.stringToBlock(new ResourceLocation(s), "External Detectable IDs", logging);
+            Block bt = ConfigManagerCore.INSTANCE.stringToBlock(new ResourceLocation(s), "External Detectable IDs", logging);
             if (bt == null)
             {
                 continue;
@@ -254,7 +254,7 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.getThermalLevel() + 22;
-//                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
+//                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.INSTANCE.oxygenIndicatorLeft, !ConfigManagerCore.INSTANCE.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
                 // TODO Overlays
             }
 
@@ -361,7 +361,7 @@ public class TickHandlerClient
                     updateJEIhiding = false;
                     // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
                     // Update JEI to hide adventure mode recipes when not in adventure mode
-//                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes, !ConfigManagerCore.challengeRecipes); TODO JEI
+//                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.INSTANCE.hardMode && !ConfigManagerCore.INSTANCE.challengeRecipes, !ConfigManagerCore.INSTANCE.challengeRecipes); TODO JEI
                 }
 
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
@@ -451,7 +451,7 @@ public class TickHandlerClient
                 this.spawnLeakParticles();
             }
 
-            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
+            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.INSTANCE.enableSpaceRaceManagerPopup.get())
             {
 //                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ()); TODO Gui
                 TickHandlerClient.spaceRaceGuiScheduled = false;

@@ -275,7 +275,7 @@ public class WorldUtil
     {
         List<DimensionType> temp = new ArrayList<>();
 
-        if (!ConfigManagerCore.disableRocketsToOverworld)
+        if (!ConfigManagerCore.INSTANCE.disableRocketsToOverworld.get())
         {
             temp.add(DimensionType.OVERWORLD);
         }
@@ -308,7 +308,7 @@ public class WorldUtil
         {
             final SpaceStationWorldData data = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, element.getRegistryName(), null);
 
-            if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(PlayerUtil.getName(playerBase)) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
+            if (!ConfigManagerCore.INSTANCE.spaceStationsRequirePermission.get() || data.getAllowedAll() || data.getAllowedPlayers().contains(PlayerUtil.getName(playerBase)) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
             {
                 //Satellites always reachable from their own homeworld or from its other satellites
                 DimensionType currentWorld = playerBase.dimension;
@@ -573,7 +573,7 @@ public class WorldUtil
                         worldDataTemp.read(nbttagcompound.getCompound("data"));
 
                         // Search for id in server-defined statically loaded dimensions
-                        int index = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID.toString());
+                        int index = Arrays.binarySearch(ConfigManagerCore.INSTANCE.staticLoadDimensions.get().toArray(), registeredID.toString());
 
 //                        DimensionType providerID = index >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
                         boolean registrationOK = false;
@@ -628,18 +628,18 @@ public class WorldUtil
 
 //        for (Integer registeredID : WorldUtil.registeredSpaceStations)
 //        {
-//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
+//            int id = Arrays.binarySearch(ConfigManagerCore.INSTANCE.staticLoadDimensions, registeredID);
 //
 //            if (!DimensionManager.isDimensionRegistered(registeredID))
 //            {
 //	            if (id >= 0)
 //	            {
-//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.INSTANCE.idDimensionOverworldOrbitStatic);
 //	                theServer.getWorld(registeredID);
 //                }
 //	            else
 //	            {
-//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
+//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.INSTANCE.idDimensionOverworldOrbit);
 //	            }
 //            }
 //            else
@@ -773,12 +773,12 @@ public class WorldUtil
 //    {
 //        if (!DimensionManager.isDimensionRegistered(dimID))
 //        {
-//            if (ConfigManagerCore.keepLoadedNewSpaceStations)
+//            if (ConfigManagerCore.INSTANCE.keepLoadedNewSpaceStations)
 //            {
-//                ConfigManagerCore.setLoaded(dimID);
+//                ConfigManagerCore.INSTANCE.setLoaded(dimID);
 //            }
 //
-//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
+//            int id = Arrays.binarySearch(ConfigManagerCore.INSTANCE.staticLoadDimensions, dimID);
 //
 //	        if (id >= 0)
 //	        {
@@ -898,7 +898,7 @@ public class WorldUtil
 //                stats.setUsingPlanetSelectionGui(false);
 //
 //                player.dimension = dimID;
-//                if (ConfigManagerCore.enableDebug)
+//                if (ConfigManagerCore.INSTANCE.enableDebug)
 //                {
 //                    GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
 //                }
@@ -1192,7 +1192,7 @@ public class WorldUtil
 //        if (dimChange)
 //        {
 //            player.dimension = dimID;
-//            if (ConfigManagerCore.enableDebug)
+//            if (ConfigManagerCore.INSTANCE.enableDebug)
 //            {
 //                GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
 //            }
@@ -1269,7 +1269,7 @@ public class WorldUtil
 //    }
     public static ServerWorld getStartWorld(ServerWorld unchanged)
     {
-        if (ConfigManagerCore.challengeSpawnHandling)
+        if (ConfigManagerCore.INSTANCE.challengeSpawnHandling)
         {
 //            Dimension wp = WorldUtil.getProviderForNameServer("planet.asteroids"); TODO Planets
 //            ServerWorld worldNew = (wp == null) ? null : (ServerWorld) wp.getWorld();
@@ -1377,7 +1377,7 @@ public class WorldUtil
     {
 //        try
 //        {
-//            if (ConfigManagerCore.enableDebug)
+//            if (ConfigManagerCore.INSTANCE.enableDebug)
 //            {
 //                GCLog.info("GC connecting to server: received planets dimension ID list.");
 //            }
@@ -1418,7 +1418,7 @@ public class WorldUtil
 //                    }
 //                }
 //            }
-//            if (ConfigManagerCore.enableDebug)
+//            if (ConfigManagerCore.INSTANCE.enableDebug)
 //            {
 //                GCLog.debug("GC clientside planet dimensions registered: " + ids);
 //                Dimension dimMoon = WorldUtil.getProviderForNameClient("moon.moon");

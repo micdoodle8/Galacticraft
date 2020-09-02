@@ -411,7 +411,7 @@ public class GCItems
 //
 //        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
 //        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
-//        OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
+//        OreDictionary.registerOre(ConfigManagerCore.INSTANCE.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
 //    }
 
 

@@ -22,7 +22,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableIt
     public ItemFuelCanister(Item.Properties builder)
     {
         super(builder);
-//        this.setAllowedFluid(ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel");
+//        this.setAllowedFluid(ConfigManagerCore.INSTANCE.useOldFuelFluidID ? "fuelgc" : "fuel");
         this.setAllowedFluid(GCFluids.FUEL.getFluid().getRegistryName()); // TODO Other mods fuel
 //        this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }

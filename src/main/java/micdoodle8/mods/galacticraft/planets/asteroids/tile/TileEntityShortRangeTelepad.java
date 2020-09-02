@@ -83,7 +83,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public TileEntityShortRangeTelepad()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 115 : 50);
+        this.storage.setMaxExtract(ConfigManagerCore.INSTANCE.hardMode.get() ? 115 : 50);
         this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 

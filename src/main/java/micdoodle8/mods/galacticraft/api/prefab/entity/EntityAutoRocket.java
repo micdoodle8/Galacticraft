@@ -278,7 +278,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             return 0;
         }
 
-        return this.fuelTank.getFluidAmount() * scale / this.getFuelTankCapacity() / ConfigManagerCore.rocketFuelFactor;
+        return this.fuelTank.getFluidAmount() * scale / this.getFuelTankCapacity() / ConfigManagerCore.INSTANCE.rocketFuelFactor.get();
     }
 
     @Override
@@ -961,16 +961,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (!(this.world.getDimension().getType() == GalacticraftCore.planetOverworld.getDimensionID() || this.world.getDimension() instanceof IGalacticraftDimension))
         {
-            if (ConfigManagerCore.disableRocketLaunchAllNonGC)
+            if (ConfigManagerCore.INSTANCE.disableRocketLaunchAllNonGC)
             {
                 this.cancelLaunch();
                 return;
             }
 
             //No rocket flight in the Nether, the End etc
-            for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
+            for (int i = ConfigManagerCore.INSTANCE.disableRocketLaunchDimensions.get().size() - 1; i >= 0; i--)
             {
-                if (ConfigManagerCore.disableRocketLaunchDimensions[i].equals(this.world.getDimension().getType().getRegistryName().toString()))
+                if (ConfigManagerCore.INSTANCE.disableRocketLaunchDimensions.get().get(i).equals(this.world.getDimension().getType().getRegistryName().toString()))
                 {
                     this.cancelLaunch();
                     return;
@@ -1120,7 +1120,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public FluidStack removeFuel(int amount)
     {
-        return this.fuelTank.drain(amount * ConfigManagerCore.rocketFuelFactor, IFluidHandler.FluidAction.EXECUTE);
+        return this.fuelTank.drain(amount * ConfigManagerCore.INSTANCE.rocketFuelFactor.get(), IFluidHandler.FluidAction.EXECUTE);
     }
 
     @Override

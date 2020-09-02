@@ -225,7 +225,7 @@
 //        BufferBuilder worldRenderer = var2.getBuffer();
 //        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
 //
-//        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 35000 : 6000); ++var3)
+//        for (int var3 = 0; var3 < (ConfigManagerCore.INSTANCE.moreStars.get() ? 35000 : 6000); ++var3)
 //        {
 //            double var4 = var1.nextFloat() * 2.0F - 1.0F;
 //            double var6 = var1.nextFloat() * 2.0F - 1.0F;
@@ -239,9 +239,9 @@
 //                var4 *= var12;
 //                var6 *= var12;
 //                var8 *= var12;
-//                final double pX = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
-//                final double pY = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
-//                final double pZ = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
+//                final double pX = var4 * (ConfigManagerCore.INSTANCE.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
+//                final double pY = var6 * (ConfigManagerCore.INSTANCE.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
+//                final double pZ = var8 * (ConfigManagerCore.INSTANCE.moreStars ? var1.nextDouble() * 75D + 65D : 80.0D);
 //                final double var20 = Math.atan2(var4, var8);
 //                final double var22 = Math.sin(var20);
 //                final double var24 = Math.cos(var20);

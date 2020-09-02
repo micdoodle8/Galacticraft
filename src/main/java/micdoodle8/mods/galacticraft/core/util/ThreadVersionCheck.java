@@ -37,7 +37,7 @@ public class ThreadVersionCheck extends Thread
     {
         final LogicalSide sideToCheck = EffectiveSide.get();
 
-        if (sideToCheck == null || ConfigManagerCore.disableUpdateCheck)
+        if (sideToCheck == null || ConfigManagerCore.INSTANCE.disableUpdateCheck.get())
         {
             return;
         }

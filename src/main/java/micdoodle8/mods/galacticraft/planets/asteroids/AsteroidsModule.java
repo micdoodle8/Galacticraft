@@ -85,7 +85,7 @@ public class AsteroidsModule implements IPlanetsModule
 
         AsteroidsModule.planetAsteroids.setBiomeInfo(BiomeAsteroids.asteroid);
         //This enables Endermen on Asteroids in Asteroids Challenge mode
-        BiomeAsteroids.asteroid.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
+        BiomeAsteroids.asteroid.resetMonsterListByMode(ConfigManagerCore.INSTANCE.challengeMobDropsAndSpawning);
         //TODO: could also increase mob spawn frequency in Hard Mode on various dimensions e.g. Mars and Venus?
 
 //        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, 1000), new ItemStack(AsteroidsItems.methaneCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));

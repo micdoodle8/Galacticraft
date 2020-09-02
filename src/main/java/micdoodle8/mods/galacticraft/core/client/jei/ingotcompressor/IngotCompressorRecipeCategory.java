@@ -91,7 +91,7 @@
 //
 //        itemstacks.init(9, false, 119, 20);
 //
-//        if (ConfigManagerCore.quickMode)
+//        if (ConfigManagerCore.INSTANCE.quickMode)
 //        {
 //            List<ItemStack> output = ingredients.getOutputs(ItemStack.class).get(0);
 //            ItemStack stackOutput = output.get(0);

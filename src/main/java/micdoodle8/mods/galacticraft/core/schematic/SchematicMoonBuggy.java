@@ -19,7 +19,7 @@ public class SchematicMoonBuggy extends SchematicPage
     @Override
     public int getPageID()
     {
-        return ConfigManagerCore.idSchematicMoonBuggy;
+        return ConfigManagerCore.INSTANCE.idSchematicMoonBuggy.get();
     }
 
 //    @Override

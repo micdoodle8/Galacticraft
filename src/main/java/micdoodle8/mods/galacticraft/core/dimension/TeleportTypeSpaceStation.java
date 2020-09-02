@@ -42,7 +42,7 @@ public class TeleportTypeSpaceStation implements ITeleportType
     @Override
     public void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket)
     {
-        if (ConfigManagerCore.spaceStationsRequirePermission && !newWorld.isRemote)
+        if (ConfigManagerCore.INSTANCE.spaceStationsRequirePermission.get() && !newWorld.isRemote)
         {
             player.sendMessage(new StringTextComponent(EnumColor.YELLOW + GCCoreUtil.translate("gui.spacestation.type_command") + " " + EnumColor.AQUA + "/ssinvite " + GCCoreUtil.translate("gui.spacestation.playername") + " " + EnumColor.YELLOW + GCCoreUtil.translate("gui.spacestation.to_allow_entry")));
         }
