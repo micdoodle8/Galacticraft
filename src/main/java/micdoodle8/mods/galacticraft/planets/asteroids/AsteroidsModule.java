@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
@@ -94,8 +95,6 @@ public class AsteroidsModule implements IPlanetsModule
 //        AsteroidBlocks.oreDictRegistration();
 //        AsteroidsItems.oreDictRegistrations();
 
-        GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(AsteroidsItems.astroMiner)); // Set creative tab item to Astro Miner
-
 //        this.registerMicroBlocks();
         SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
         SchematicRegistry.registerSchematicRecipe(new SchematicAstroMiner());
@@ -129,6 +128,11 @@ public class AsteroidsModule implements IPlanetsModule
     {
 //        event.registerServerCommand(new CommandGCAstroMiner()); TODO Commands
         AsteroidChunkGenerator.reset();
+    }
+
+    @Override
+    public void enqueueIMC(InterModEnqueueEvent event) {
+        GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(AsteroidsItems.astroMiner)); // Set creative tab item to Astro Miner
     }
 
     @Override

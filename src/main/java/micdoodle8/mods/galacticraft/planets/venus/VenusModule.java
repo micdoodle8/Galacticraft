@@ -26,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
@@ -128,6 +129,11 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void serverStarting(FMLServerStartingEvent event)
     {
+    }
+
+    @Override
+    public void enqueueIMC(InterModEnqueueEvent event) {
+
     }
 
     @Override

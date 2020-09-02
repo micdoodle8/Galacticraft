@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
@@ -11,6 +12,8 @@ public interface IPlanetsModule
     void serverInit(FMLServerStartedEvent event);
 
     void serverStarting(FMLServerStartingEvent event);
+
+    void enqueueIMC(InterModEnqueueEvent event);
 
 //    public void getGuiIDs(List<Integer> idList);
 

@@ -4,11 +4,11 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.venus.tile.SolarModuleNetwork;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
-public class PlanetsProxy
-{
+public class PlanetsProxy {
     public void init(FMLCommonSetupEvent event)
     {
         for (IPlanetsModule module : GalacticraftPlanets.commonModules)
@@ -32,6 +32,14 @@ public class PlanetsProxy
             module.serverInit(event);
         }
     }
+
+    public void enqueueIMC(InterModEnqueueEvent event)
+    {
+        for (IPlanetsModule module : GalacticraftPlanets.commonModules) {
+            module.enqueueIMC(event);
+        }
+    }
+
 
 //    @Override
 //    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
