@@ -105,7 +105,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
 
     public static EntitySlimeling createEntitySlimeling(World worldIn, float r, float g, float b)
     {
-        EntitySlimeling slimeling = new EntitySlimeling(MarsEntities.SLIMELING.get(), worldIn);
+        EntitySlimeling slimeling = new EntitySlimeling(MarsEntities.SLIMELING, worldIn);
         slimeling.colorRed = r;
         slimeling.colorGreen = g;
         slimeling.colorBlue = b;

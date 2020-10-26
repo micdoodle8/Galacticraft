@@ -172,7 +172,7 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
 
                 if (movingObjPos.getType() == RayTraceResult.Type.ENTITY)
                 {
-                    ((EntityRayTraceResult) movingObjPos).getEntity().attackEntityFrom(EntityMeteor.causeMeteorDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12F : 6F);
+                    ((EntityRayTraceResult) movingObjPos).getEntity().attackEntityFrom(EntityMeteor.causeMeteorDamage(this, this.shootingEntity), ConfigManagerCore.hardMode.get() ? 12F : 6F);
                 }
             }
         }

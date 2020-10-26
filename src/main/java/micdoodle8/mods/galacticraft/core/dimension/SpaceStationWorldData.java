@@ -3,21 +3,14 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.DimensionManager;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -146,7 +139,7 @@ public class SpaceStationWorldData extends WorldSavedData
 //        else
 //        {
 //            GCLog.info("Static dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
-//            this.dimensionIdStatic = ConfigManagerCore.idDimensionOverworldOrbitStatic;
+//            this.dimensionIdStatic = ConfigManagerCore.idDimensionOverworldOrbitStatic.get();
 //        }
 //
 //        if (nbt.contains("dimensionIdDynamic"))
@@ -156,7 +149,7 @@ public class SpaceStationWorldData extends WorldSavedData
 //        else
 //        {
 //            GCLog.info("Dynamic dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
-//            this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit;
+//            this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit.get();
 //        }
 
         this.allowAllPlayers = nbt.getBoolean("allowedAll");
@@ -226,7 +219,7 @@ public class SpaceStationWorldData extends WorldSavedData
         // being called on an incorrect
         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
         {
-            if (satellite.getDimensionIdStatic() == providerType.getId() || satellite.getDimensionID() == providerType)
+            if (satellite.getDimensionIdStatic() == providerType.getId() || satellite.getDimensionType() == providerType)
             {
                 foundMatch = true;
                 break;

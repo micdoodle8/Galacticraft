@@ -16,14 +16,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_DECK;
-import static micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidFeatures.CBASE_START;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +40,8 @@ public class BaseDeck extends SizedPiece
     public enum EnumBaseType
     {
         HUMANOID(5, 3, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(Items.GHAST_TEAR, 3)),
-        AVIAN(4, 3, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(AsteroidsItems.strangeSeed2, 1)),
-        TUNNELER(4, 4, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(AsteroidsItems.strangeSeed1, 1));
+        AVIAN(4, 3, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(AsteroidsItems.strangeSeed1, 1)),
+        TUNNELER(4, 4, GCBlocks.decoBlock1.getDefaultState(), new ItemStack(AsteroidsItems.strangeSeed0, 1));
 
         public final int height;
         public final int width;
@@ -215,7 +212,7 @@ public class BaseDeck extends SizedPiece
         BlockState block1;
         BlockState blockWall = this.configuration.getWallBlock();
         BlockState blockGrid = AsteroidBlocks.blockWalkway.getDefaultState();
-        Block blockStair = GCBlocks.moonStoneStairs;
+//        Block blockStair = GCBlocks.moonStoneStairs; TODO Stairs
         BlockState blockAir = Blocks.AIR.getDefaultState();
         boolean directionNS = this.getDirection().getAxis() == Direction.Axis.Z;
         int ceilingSpacer = (directionNS ? this.sizeZ : this.sizeX) / this.roomsOnSide + 1;
@@ -283,18 +280,18 @@ public class BaseDeck extends SizedPiece
                             {
                                 //Some end windows at the ends of the corridors
                                 BlockState windowOrWall = blockWall;
-                                BlockState blockGlass;
+//                                BlockState blockGlass;
                                 switch (this.configuration.getDeckType())
                                 {
                                 case AVIAN:
-                                    blockGlass = GCBlocks.spaceGlassTinVanilla.getDefaultState();
+//                                    blockGlass = GCBlocks.spaceGlassTinVanilla.getDefaultState();
                                     break;
                                 case TUNNELER:
-                                    blockGlass = GCBlocks.spaceGlassTinStrong.getDefaultState();
+//                                    blockGlass = GCBlocks.spaceGlassTinStrong.getDefaultState();
                                     break;
                                 case HUMANOID:
                                 default:
-                                    blockGlass = GCBlocks.spaceGlassTinClear.getDefaultState();
+//                                    blockGlass = GCBlocks.spaceGlassTinClear.getDefaultState();
                                     break;
                                 }
 
@@ -316,7 +313,7 @@ public class BaseDeck extends SizedPiece
                                 {
                                     if (y == 2 && w == startW + 2)
                                     {
-                                        windowOrWall = blockGlass;
+//                                        windowOrWall = blockGlass;
                                     }
                                 }
                                 else
@@ -324,7 +321,7 @@ public class BaseDeck extends SizedPiece
                                     int edge = this.configuration.getDeckType() == EnumBaseType.TUNNELER ? 1 : 0;
                                     if ((y == 2 || y == 3) && w > startW + edge && w < endW - edge)
                                     {
-                                        windowOrWall = blockGlass;
+//                                        windowOrWall = blockGlass;
                                     }
                                 }
 
@@ -364,35 +361,35 @@ public class BaseDeck extends SizedPiece
                             if (x == startX + 1)
                             {
                                 int val = 0 ^ top;
-                                BlockState state = blockStair.getDefaultState();
-                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
-                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                BlockState state = blockStair.getDefaultState();
+//                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+//                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (x == endX - 1)
                             {
                                 int val = 1 ^ top;
-                                BlockState state = blockStair.getDefaultState();
-                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
-                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                BlockState state = blockStair.getDefaultState();
+//                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+//                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (this.configuration.getDeckType() == EnumBaseType.AVIAN)
                             {
                                 if (z == ceilingDeco && top >= 4)
                                 {
-                                    BlockState state = blockStair.getDefaultState();
-                                    state.with(StairsBlock.HALF, (top & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (top & 3)));
-                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                    BlockState state = blockStair.getDefaultState();
+//                                    state.with(StairsBlock.HALF, (top & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (top & 3)));
+//                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                 }
                                 else if (z == ceilingDeco + 1 && top >= 4)
                                 {
                                     int val = 2 ^ top;
-                                    BlockState state = blockStair.getDefaultState();
-                                    state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
-                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                    BlockState state = blockStair.getDefaultState();
+//                                    state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+//                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                     if (x >= endX - 2)
                                     {
                                         ceilingDeco += ceilingSpacer;
@@ -413,35 +410,35 @@ public class BaseDeck extends SizedPiece
                             if (z == startZ + 1)
                             {
                                 int val = 2 ^ top;
-                                BlockState state = blockStair.getDefaultState();
-                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
-                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                BlockState state = blockStair.getDefaultState();
+//                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+//                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (z == endZ - 1)
                             {
                                 int val = 3 ^ top;
-                                BlockState state = blockStair.getDefaultState();
-                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
-                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                BlockState state = blockStair.getDefaultState();
+//                                state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+//                                this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                             }
                             else if (this.configuration.getDeckType() == EnumBaseType.AVIAN)
                             {
                                 if (x == ceilingDeco && top == 4)
                                 {
                                     int val = 1 ^ top;
-                                    BlockState state = blockStair.getDefaultState();
-                                    state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
-                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                    BlockState state = blockStair.getDefaultState();
+//                                    state.with(StairsBlock.HALF, (val & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (val & 3)));
+//                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                 }
                                 else if (x == ceilingDeco + 1 && top == 4)
                                 {
-                                    BlockState state = blockStair.getDefaultState();
-                                    state.with(StairsBlock.HALF, (top & 4) > 0 ? Half.TOP : Half.BOTTOM);
-                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (top & 3)));
-                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
+//                                    BlockState state = blockStair.getDefaultState();
+//                                    state.with(StairsBlock.HALF, (top & 4) > 0 ? Half.TOP : Half.BOTTOM);
+//                                    state.with(StairsBlock.FACING, Direction.byIndex(5 - (top & 3)));
+//                                    this.setBlockState(worldIn, state, x, y, z, this.boundingBox);
                                     if (z >= endZ - 2)
                                     {
                                         ceilingDeco += ceilingSpacer;
@@ -523,18 +520,18 @@ public class BaseDeck extends SizedPiece
         //Special settings for Control Room
         if ((this.deckTier & 4) == 4)
         {
-            BlockState blockGlass;
+//            BlockState blockGlass;
             switch (this.configuration.getDeckType())
             {
             case AVIAN:
-                blockGlass = GCBlocks.spaceGlassTinVanilla.getDefaultState();
+//                blockGlass = GCBlocks.spaceGlassTinVanilla.getDefaultState();
                 break;
             case TUNNELER:
-                blockGlass = GCBlocks.spaceGlassTinStrong.getDefaultState();
+//                blockGlass = GCBlocks.spaceGlassTinStrong.getDefaultState();
                 break;
             case HUMANOID:
             default:
-                blockGlass = GCBlocks.spaceGlassTinClear.getDefaultState();
+//                blockGlass = GCBlocks.spaceGlassTinClear.getDefaultState();
                 break;
             }
             if (!directionNS)
@@ -547,7 +544,7 @@ public class BaseDeck extends SizedPiece
             {
                 for (int x = 2; x < endX - 1; x++)
                 {
-                    this.setBlockState(worldIn, blockGlass, x, y, endZ, this.boundingBox);
+//                    this.setBlockState(worldIn, blockGlass, x, y, endZ, this.boundingBox);
                 }
             }
 
@@ -721,7 +718,7 @@ public class BaseDeck extends SizedPiece
 //        System.out.println("Making doorway at " + x + "," + z + " NS:" + directionNS + " Tier " + this.deckTier);
         BlockState blockLintel = GCBlocks.airLockFrame.getDefaultState();
         BlockState blockAirlock = GCBlocks.airLockController.getDefaultState();
-        Block blockStair = GCBlocks.moonStoneStairs;
+//        Block blockStair = GCBlocks.moonStoneStairs;
         BlockState blockAir = Blocks.AIR.getDefaultState();
         int meta = directionNS ? 2 : 0;
 
@@ -764,9 +761,9 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockLintel, x, 3, z, chunkBounds);
             break;
         case AVIAN:
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, (meta & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - (meta & 3))), x, this.sizeY - 4, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, (meta & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - (meta & 3))), x, this.sizeY - 4, z, chunkBounds);
             this.setBlockState(worldIn, blockAir, x, this.sizeY - 3, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((4 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((4 + meta) & 3))), x, this.sizeY - 2, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((4 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((4 + meta) & 3))), x, this.sizeY - 2, z, chunkBounds);
             if (directionNS)
             {
                 z++;
@@ -775,9 +772,9 @@ public class BaseDeck extends SizedPiece
             {
                 x++;
             }
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((1 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((1 + meta) & 3))), x, this.sizeY - 4, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((1 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((1 + meta) & 3))), x, this.sizeY - 4, z, chunkBounds);
             this.setBlockState(worldIn, blockAir, x, this.sizeY - 3, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((5 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((5 + meta) & 3))), x, this.sizeY - 2, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((5 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((5 + meta) & 3))), x, this.sizeY - 2, z, chunkBounds);
             break;
         case TUNNELER:
             if (directionNS)
@@ -788,8 +785,8 @@ public class BaseDeck extends SizedPiece
             {
                 x--;
             }
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((1 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((1 + meta) & 3))), x, 2, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((5 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((5 + meta) & 3))), x, 3, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((1 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((1 + meta) & 3))), x, 2, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((5 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((5 + meta) & 3))), x, 3, z, chunkBounds);
             if (directionNS)
             {
                 z++;
@@ -808,8 +805,8 @@ public class BaseDeck extends SizedPiece
             {
                 x++;
             }
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((meta) & 3))), x, 2, z, chunkBounds);
-            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((4 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((4 + meta) & 3))), x, 3, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((meta) & 3))), x, 2, z, chunkBounds);
+//            this.setBlockState(worldIn, blockStair.getDefaultState().with(StairsBlock.HALF, ((4 + meta) & 4) > 0 ? Half.TOP : Half.BOTTOM).with(StairsBlock.FACING, Direction.byIndex(5 - ((4 + meta) & 3))), x, 3, z, chunkBounds);
             break;
         default:
         }

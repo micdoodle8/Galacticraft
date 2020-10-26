@@ -218,7 +218,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         if (this.canSmelt())
         {
             ItemStack resultItemStack = this.producingStack;
-            if (ConfigManagerCore.quickMode)
+            if (ConfigManagerCore.quickMode.get())
             {
                 if (resultItemStack.getItem().getTranslationKey(resultItemStack).contains("compressed"))
                 {

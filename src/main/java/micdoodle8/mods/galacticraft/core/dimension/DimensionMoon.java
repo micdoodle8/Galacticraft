@@ -24,6 +24,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProviderType;
+import net.minecraft.world.biome.provider.SingleBiomeProviderSettings;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -83,7 +84,8 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
     public ChunkGenerator createChunkGenerator()
     {
         MoonGenSettings settings = new MoonGenSettings();
-        return new MoonChunkGenerator(this.world, BiomeProviderType.FIXED.create(BiomeProviderType.FIXED.createSettings(this.world.getWorldInfo()).setBiome(BiomeMoon.moonBiome)), settings);
+        SingleBiomeProviderSettings singleBiomeSettings = BiomeProviderType.FIXED.createSettings(this.world.getWorldInfo());
+        return new MoonChunkGenerator(this.world, BiomeProviderType.FIXED.create(singleBiomeSettings.setBiome(BiomeMoon.moonBiome)), settings);
     }
 
 
@@ -248,14 +250,6 @@ public class DimensionMoon extends DimensionSpace implements IGalacticraftDimens
     public ResourceLocation getDungeonChestType()
     {
         return RoomTreasure.MOONCHEST;
-    }
-
-    @Override
-    public List<Block> getSurfaceBlocks()
-    {
-        List<Block> list = new LinkedList<>();
-        list.add(GCBlocks.moonTurf);
-        return list;
     }
 
     @Override

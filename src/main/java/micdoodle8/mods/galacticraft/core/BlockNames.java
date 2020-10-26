@@ -20,6 +20,9 @@ public class BlockNames
     public static final String fuelLoader = "fuel_loader";
     public static final String radioTelescope = "dishbase";
     public static final String unlitTorch = "unlit_torch";
+    public static final String unlitTorchLit = "unlit_torch_lit";
+    public static final String unlitTorchWall = "unlit_torch_wall";
+    public static final String unlitTorchWallLit = "unlit_torch_wall_lit";
     public static final String gratingWater = "grating1";
     public static final String crudeOil = "oil";
     //    public static final String basicBlock = "basic_block_core";
@@ -55,7 +58,6 @@ public class BlockNames
     public static final String oxygenCollector = "collector";
     public static final String cheeseBlock = "cheese";
     public static final String platform = "platform";
-    public static final String unlitTorchLit = "unlit_torch_lit";
     //    public static final String machineBase = "machine";
     public static final String coalGenerator = "coal_generator";
     public static final String ingotCompressor = "ingot_compressor";
@@ -81,6 +83,7 @@ public class BlockNames
     public static final String sealableBlock = "enclosed";
     public static final String moonBricksStairs = "moon_stairs_brick";
     public static final String glowstoneTorch = "glowstone_torch";
+    public static final String glowstoneTorchWall = "glowstone_torch_wall";
     public static final String grating = "grating";
     public static final String tinStairs2 = "tin_stairs_2";
     public static final String tinStairs1 = "tin_stairs_1";
@@ -98,7 +101,6 @@ public class BlockNames
     public static final String oreTin = "ore_tin_gc";
     public static final String oreAluminum = "ore_aluminum_gc";
     public static final String oreSilicon = "ore_silicon";
-    public static final String oreMeteoricIron = "block_meteoric_iron_gc";
     public static final String decoBlockCopper = "block_copper_gc";
     public static final String decoBlockTin = "block_tin_gc";
     public static final String decoBlockAluminum = "block_aluminum_gc";

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.EnumProperty;
@@ -28,6 +27,12 @@ public class BlockDeconstructor extends BlockMachineBase
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityDeconstructor();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

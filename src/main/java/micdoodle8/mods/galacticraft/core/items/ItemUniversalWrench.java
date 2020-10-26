@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class ItemUniversalWrench extends Item implements ISortableItem
+public class ItemUniversalWrench extends Item implements ISortable
 {
     public ItemUniversalWrench(Item.Properties properties)
     {
@@ -116,7 +116,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
 
         if (state.getBlock() instanceof BlockAdvanced)
         {
-            if (((BlockAdvanced) state.getBlock()).onUseWrench(context.getWorld(), context.getPos(), context.getPlayer(), context.getHand(), context.getItem(), new BlockRayTraceResult(context.getHitVec(), context.getFace(), context.getPos(), context.func_221533_k())))
+            if (((BlockAdvanced) state.getBlock()).onUseWrench(context.getWorld(), context.getPos(), context.getPlayer(), context.getHand(), context.getItem(), new BlockRayTraceResult(context.getHitVec(), context.getFace(), context.getPos(), context.isInside())) == ActionResultType.SUCCESS)
             {
                 return ActionResultType.SUCCESS;
             }
@@ -172,8 +172,8 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.TOOLS;
+        return EnumSortCategory.TOOLS;
     }
 }

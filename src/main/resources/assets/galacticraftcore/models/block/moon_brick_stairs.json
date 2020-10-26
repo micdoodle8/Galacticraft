@@ -3,6 +3,6 @@
     "textures": {
         "bottom": "galacticraftcore:blocks/brick",
         "top": "galacticraftcore:blocks/brick",
-        "LogicalSide": "galacticraftcore:blocks/brick"
+        "side": "galacticraftcore:blocks/brick"
     }
 }

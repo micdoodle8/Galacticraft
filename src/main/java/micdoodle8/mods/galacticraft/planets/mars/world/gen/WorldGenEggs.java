@@ -19,12 +19,9 @@ import java.util.function.Function;
 
 public class WorldGenEggs extends Feature<NoFeatureConfig>
 {
-    private final BlockState eggBlock;
-
-    public WorldGenEggs(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn, BlockState eggIn)
+    public WorldGenEggs(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn)
     {
         super(configFactoryIn);
-        this.eggBlock = eggIn;
     }
 
     @Override
@@ -45,7 +42,21 @@ public class WorldGenEggs extends Feature<NoFeatureConfig>
             BlockState below = worldIn.getBlockState(newPos.down());
             if (below.getBlock() == MarsBlocks.rockSurface)
             {
-                worldIn.setBlockState(newPos, this.eggBlock.with(BlockSlimelingEgg.EGG_COLOR, BlockSlimelingEgg.EnumEggColor.values()[rand.nextInt(3)]), 2);
+                Block block;
+                switch (rand.nextInt(3))
+                {
+                case 0:
+                    block = MarsBlocks.slimelingEggRed;
+                    break;
+                case 1:
+                    block = MarsBlocks.slimelingEggBlue;
+                    break;
+                default:
+                case 2:
+                    block = MarsBlocks.slimelingEggYellow;
+                    break;
+                }
+                worldIn.setBlockState(newPos, block.getDefaultState(), 2);
             }
         }
 

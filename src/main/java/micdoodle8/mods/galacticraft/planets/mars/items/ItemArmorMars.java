@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -13,7 +13,7 @@ import net.minecraft.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemArmorMars extends ArmorItem implements ISortableItem
+public class ItemArmorMars extends ArmorItem implements ISortable
 {
 //    private final ArmorMaterial material;
 
@@ -68,9 +68,9 @@ public class ItemArmorMars extends ArmorItem implements ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.ARMOR;
+        return EnumSortCategory.ARMOR;
     }
 
     @Override

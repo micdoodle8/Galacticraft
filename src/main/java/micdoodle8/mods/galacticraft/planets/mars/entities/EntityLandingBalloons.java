@@ -42,7 +42,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
 
     public static EntityLandingBalloons createEntityLandingBalloons(ServerPlayerEntity player)
     {
-        EntityLandingBalloons balloons = new EntityLandingBalloons(MarsEntities.LANDING_BALLOONS.get(), player.world);
+        EntityLandingBalloons balloons = new EntityLandingBalloons(MarsEntities.LANDING_BALLOONS, player.world);
 
         GCPlayerStats stats = GCPlayerStats.get(player);
         balloons.stacks = NonNullList.withSize(stats.getRocketStacks().size() + 1, ItemStack.EMPTY);

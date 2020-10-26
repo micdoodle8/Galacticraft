@@ -91,7 +91,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     private int selectionMinY;
     private int selectionMaxY;
 
-    private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
+    private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG, Minecraft.getInstance().world);
 //    private final ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;

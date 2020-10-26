@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
@@ -20,7 +22,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockCrashedProbe extends BlockTileGC
+public class BlockCrashedProbe extends BlockTileGC implements ISortable
 {
 //    public static final String CRASHED_PROBE = "crashedProbe";
 //    private static final List<WeightedRandomChestContent> CONTENTS = Lists.newArrayList(
@@ -47,11 +49,11 @@ public class BlockCrashedProbe extends BlockTileGC
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 
 
     @Nullable
@@ -59,6 +61,12 @@ public class BlockCrashedProbe extends BlockTileGC
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityCrashedProbe();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

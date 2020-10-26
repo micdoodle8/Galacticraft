@@ -282,7 +282,7 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 //        long l = this.rand.nextLong() / 2L * 2L + 1L;
 //        this.rand.setSeed((long) x * k + (long) z * l ^ this.world.getSeed());
 //
-//        if (!ConfigManagerCore.disableMoonVillageGen)
+//        if (!ConfigManagerCore.disableMoonVillageGen.get())
 //        {
 //            this.villageGenerator.generateStructure(this.world, this.rand, new ChunkPos(x, z));
 //        }
@@ -303,7 +303,7 @@ public class MoonChunkGenerator extends NoiseChunkGenerator<MoonGenSettings>
 //    @Override
 //    public void recreateStructures(Chunk chunk, int x, int z)
 //    {
-//        if (!ConfigManagerCore.disableMoonVillageGen)
+//        if (!ConfigManagerCore.disableMoonVillageGen.get())
 //        {
 //            this.villageGenerator.generate(this.world, x, z, null);
 //        }

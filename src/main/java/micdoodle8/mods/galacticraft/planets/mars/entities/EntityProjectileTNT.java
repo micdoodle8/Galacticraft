@@ -26,7 +26,7 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
 
     public static EntityProjectileTNT createEntityProjectileTNT(World world, LivingEntity entityShooting, double motX, double motY, double motZ)
     {
-        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(MarsEntities.PROJECTILE_TNT.get(), world);
+        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(MarsEntities.PROJECTILE_TNT, world);
 //        this.setSize(1.0F, 1.0F);
         projectileTNT.shootingEntity = entityShooting;
         projectileTNT.setLocationAndAngles(entityShooting.getPosX(), entityShooting.getPosY(), entityShooting.getPosZ(), entityShooting.rotationYaw, entityShooting.rotationPitch);

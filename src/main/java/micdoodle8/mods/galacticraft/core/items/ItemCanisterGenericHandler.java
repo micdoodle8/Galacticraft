@@ -46,7 +46,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (this.canFillFluidType(fluid))
         {
-            container.getItem().setDamage(container, ItemCanisterGeneric.EMPTY - fluid.getAmount());
+            container.getItem().setDamage(container, ItemCanisterGeneric.EMPTY_CAPACITY - fluid.getAmount());
         }
     }
 
@@ -66,14 +66,14 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     @Override
     public int getTankCapacity(int tank)
     {
-        return ItemCanisterGeneric.EMPTY - 1;
+        return ItemCanisterGeneric.EMPTY_CAPACITY - 1;
     }
 
     @Override
     public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
     {
         int capacityPlusOne = container.getDamage();
-        if (capacityPlusOne >= ItemCanisterGeneric.EMPTY)
+        if (capacityPlusOne >= ItemCanisterGeneric.EMPTY_CAPACITY)
         {
             for (ItemCanisterGeneric i : GCItems.canisterTypes)
             {
@@ -145,7 +145,7 @@ public class ItemCanisterGenericHandler implements IFluidHandlerItem, ICapabilit
     {
         if (container.getCount() > 0 && container.getItem() instanceof ItemCanisterGeneric)
         {
-            container.getItem().setDamage(container, ItemCanisterGeneric.EMPTY);
+            container.getItem().setDamage(container, ItemCanisterGeneric.EMPTY_CAPACITY);
         }
     }
 

@@ -50,7 +50,7 @@ public class TeleportTypeAsteroids implements ITeleportType
             GCPlayerStats stats = GCPlayerStats.get(player);
             int x = MathHelper.floor(stats.getCoordsTeleportedFromX());
             int z = MathHelper.floor(stats.getCoordsTeleportedFromZ());
-            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            int limit = ConfigManagerCore.otherPlanetWorldBorders.get() - 2;
             if (limit > 20)
             {
                 if (x > limit)
@@ -97,7 +97,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                         break;
                     }
 
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.enableDebug.get())
                     {
                         GCLog.info("Testing asteroid at x" + (bv3.x) + " y" + (bv3.y) + " z" + bv3.z);
                     }
@@ -126,7 +126,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                     }
 
                     //Failed to find an asteroid even though there should be one there
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.enableDebug.get())
                     {
                         GCLog.info("Removing drilled out asteroid at x" + (bv3.x) + " z" + (bv3.z));
                     }
@@ -176,7 +176,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                         world.removeBlock(new BlockPos(x - 1, y, z - 1), false);
                     }
                 }
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.enableDebug.get())
                 {
                     GCLog.info("Found asteroid at x" + (x) + " z" + (z));
                 }
@@ -278,7 +278,7 @@ public class TeleportTypeAsteroids implements ITeleportType
     @Override
     public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.getPosX(), ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.getPosZ());
+        return new Vector3D(entity.getPosX(), ConfigManagerCore.disableLander.get() ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override

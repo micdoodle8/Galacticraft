@@ -22,7 +22,7 @@ public class GCLog
 
     public static void debug(String message)
     {
-        if (ConfigManagerCore.enableDebug)
+        if (ConfigManagerCore.enableDebug.get())
         {
             log.debug(message);
         }

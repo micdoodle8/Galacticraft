@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.EnumProperty;
@@ -12,15 +13,16 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockAirLockWall extends Block implements IPartialSealableBlock
+public class BlockAirLockWall extends Block implements IPartialSealableBlock, ISortable
 {
     public static final EnumProperty<EnumAirLockSealConnection> CONNECTION_TYPE = EnumProperty.create("connection", EnumAirLockSealConnection.class);
-    protected static final VoxelShape AABB_X = Block.makeCuboidShape(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
-    protected static final VoxelShape AABB_Z = Block.makeCuboidShape(0.0, 0.0, 0.25, 1.0, 1.0, 0.75);
-    protected static final VoxelShape AABB_FLAT = Block.makeCuboidShape(0.0, 0.25, 0.0, 1.0, 0.75, 1.0);
+    protected static final VoxelShape AABB_X = VoxelShapes.create(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
+    protected static final VoxelShape AABB_Z = VoxelShapes.create(0.0, 0.0, 0.25, 1.0, 1.0, 0.75);
+    protected static final VoxelShape AABB_FLAT = VoxelShapes.create(0.0, 0.25, 0.0, 1.0, 0.75, 1.0);
 
     public enum EnumAirLockSealConnection implements IStringSerializable
     {
@@ -106,11 +108,11 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock
 //        return null;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
     public static EnumAirLockSealConnection getConnection(IBlockReader worldIn, BlockPos pos)
     {

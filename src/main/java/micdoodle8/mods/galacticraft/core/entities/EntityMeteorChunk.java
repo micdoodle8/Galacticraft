@@ -61,7 +61,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
     public EntityMeteorChunk(World world, LivingEntity par2EntityLivingBase, float speed)
     {
-        super(GCEntities.METEOR_CHUNK.get(), world);
+        super(GCEntities.METEOR_CHUNK, world);
         this.randPitchInc = rand.nextFloat() * 20 - 10;
         this.randYawInc = rand.nextFloat() * 20 - 10;
         this.shootingEntity = par2EntityLivingBase;
@@ -254,7 +254,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
             float f2;
             float f3;
-            double damage = ConfigManagerCore.hardMode ? 3.2D : 1.6D;
+            double damage = ConfigManagerCore.hardMode.get() ? 3.2D : 1.6D;
 
             if (castResult != null)
             {

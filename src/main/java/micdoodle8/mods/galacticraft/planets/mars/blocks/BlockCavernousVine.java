@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockCavernousVine extends Block implements IShearable, IShiftDescription
+public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortable
 {
     public static final EnumProperty<EnumVineType> VINE_TYPE = EnumProperty.create("vinetype", EnumVineType.class);
 
@@ -312,9 +314,9 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         builder.add(VINE_TYPE);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 }

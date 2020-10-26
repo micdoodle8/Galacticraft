@@ -25,6 +25,7 @@ import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -41,7 +42,19 @@ public class BiomeAdaptive extends BiomeGC
 
     public BiomeAdaptive(int i, Biome biomeInitial)
     {
-        super((new Builder().precipitation(RainType.NONE)));
+//        if (biomeBuilder.surfaceBuilder != null && biomeBuilder.precipitation != null && biomeBuilder.category != null &&
+//        biomeBuilder.depth != null && biomeBuilder.scale != null && biomeBuilder.temperature != null &&
+//        biomeBuilder.downfall != null && biomeBuilder.waterColor != null && biomeBuilder.waterFogColor != null) {
+
+            super((new Builder().surfaceBuilder(biomeInitial.getSurfaceBuilder())
+                    .precipitation(biomeInitial.getPrecipitation())
+                    .category(biomeInitial.getCategory())
+                    .depth(biomeInitial.getDepth())
+                    .scale(biomeInitial.getScale())
+                    .temperature(biomeInitial.getDefaultTemperature())
+                    .downfall(biomeInitial.getDownfall())
+                    .waterColor(biomeInitial.getWaterColor())
+                    .waterFogColor(biomeInitial.getWaterFogColor())));
 //        super(new BiomeProperties().setRainfall(0.0F));
         this.index = i;
         this.biomeTrue = biomeInitial;
@@ -65,12 +78,13 @@ public class BiomeAdaptive extends BiomeGC
         }
     }
 
-    public static BiomeGC register(int index, BiomeGC biome)
+    public static BiomeGC register(IForgeRegistry<Biome> registry, int index, BiomeGC biome)
     {
         if (index >= biomeList.size())
         {
             BiomeAdaptive newAdaptive = new BiomeAdaptive(index, biome);
-            Registry.register(Registry.BIOME, index, "Outer Space" + (index == 0 ? "" : " " + index), newAdaptive);
+//            Registry.register(Registry.BIOME, index, , newAdaptive);
+            registry.register(newAdaptive.setRegistryName("outer_space" + (index == 0 ? "" : " " + index)));
             biomeList.add(newAdaptive);
             return newAdaptive;
         }

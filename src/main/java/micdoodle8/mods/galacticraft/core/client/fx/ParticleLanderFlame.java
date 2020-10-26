@@ -42,6 +42,7 @@ public class ParticleLanderFlame extends SpriteTexturedParticle
         this.canCollide = true;
         this.ridingEntity = particleData.getEntityUUID();
         this.animatedSprite = animatedSprite;
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @Override

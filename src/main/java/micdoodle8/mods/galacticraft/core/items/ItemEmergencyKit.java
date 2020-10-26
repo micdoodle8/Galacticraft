@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-public class ItemEmergencyKit extends ItemDesc implements ISortableItem
+public class ItemEmergencyKit extends ItemDesc implements ISortable
 {
     private static final int SIZE = 9;
 
@@ -48,9 +48,9 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GEAR;
+        return EnumSortCategory.GEAR;
     }
 
     @Override

@@ -92,6 +92,7 @@ public class ParticleSmokeSmall extends SpriteTexturedParticle
         this.motionX *= 0.99D;
         this.motionY *= 0.99D;
         this.motionZ *= 0.99D;
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @OnlyIn(Dist.CLIENT)

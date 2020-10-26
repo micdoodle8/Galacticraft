@@ -98,7 +98,7 @@
 //        {
 //            this.setLayer(skullLayerIndex, new HeadLayer<>(this));
 //        }
-//        if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges)
+//        if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges.get())
 //        {
 //            this.setLayer(itemLayerIndex, new LayerHeldItemGC(this));
 //        }

@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,7 +23,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class BlockIceAsteroids extends BreakableBlock
+public class BlockIceAsteroids extends BreakableBlock implements ISortable
 {
     public BlockIceAsteroids(Properties builder)
     {
@@ -93,11 +95,11 @@ public class BlockIceAsteroids extends BreakableBlock
         return PushReaction.NORMAL;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 
 //    @Override
 //    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)

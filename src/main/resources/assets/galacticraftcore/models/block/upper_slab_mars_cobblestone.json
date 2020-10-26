@@ -3,6 +3,6 @@
     "textures": {
         "bottom": "galacticraftplanets:blocks/cobblestone",
         "top": "galacticraftplanets:blocks/cobblestone",
-        "LogicalSide": "galacticraftplanets:blocks/cobblestone"
+        "side": "galacticraftplanets:blocks/cobblestone"
     }
 }

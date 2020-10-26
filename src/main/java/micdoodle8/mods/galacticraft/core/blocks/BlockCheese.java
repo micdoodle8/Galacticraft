@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,20 +16,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockCheese extends Block implements IShiftDescription
+public class BlockCheese extends Block implements IShiftDescription, ISortable
 {
     public static final IntegerProperty BITES = IntegerProperty.create("bites", 0, 6);
     protected static final VoxelShape[] CHEESE_AABB = new VoxelShape[]{
-            Block.makeCuboidShape(0.0625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
-            Block.makeCuboidShape(0.1875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
-            Block.makeCuboidShape(0.3125, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
-            Block.makeCuboidShape(0.4375, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
-            Block.makeCuboidShape(0.5625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
-            Block.makeCuboidShape(0.6875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
-            Block.makeCuboidShape(0.8125, 0.0, 0.0625, 0.9375, 0.5, 0.9375)
+            VoxelShapes.create(0.0625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            VoxelShapes.create(0.1875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            VoxelShapes.create(0.3125, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            VoxelShapes.create(0.4375, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            VoxelShapes.create(0.5625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            VoxelShapes.create(0.6875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            VoxelShapes.create(0.8125, 0.0, 0.0625, 0.9375, 0.5, 0.9375)
     };
 
     public BlockCheese(Properties builder)
@@ -165,9 +168,9 @@ public class BlockCheese extends Block implements IShiftDescription
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 }

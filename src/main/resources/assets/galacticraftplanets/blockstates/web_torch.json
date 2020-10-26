@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "webtype=web_torch_0": { "model": "galacticraftplanets:web_torch_0" },
-        "webtype=web_torch_1": { "model": "galacticraftplanets:web_torch_1" }
-    }
-}

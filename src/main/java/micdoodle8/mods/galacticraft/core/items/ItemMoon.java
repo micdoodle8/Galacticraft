@@ -90,7 +90,7 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryItem getCategory(int meta)
+//    public EnumSortCategoryItem getCategory()
 //    {
 //        switch (meta)
 //        {

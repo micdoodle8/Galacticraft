@@ -10,7 +10,7 @@ public enum GenLayerVenusBiomes implements IAreaTransformer0
 {
     INSTANCE;
 
-    private static final Biome[] biomes = VenusModule.planetVenus.biomesToGenerate.toArray(new Biome[0]);
+    private static final Biome[] biomes = new Biome[] { BiomeVenus.venusFlat, BiomeVenus.venusValley, BiomeVenus.venusMountain };
 
     @Override
     public int apply(INoiseRandom noise, int x, int y)

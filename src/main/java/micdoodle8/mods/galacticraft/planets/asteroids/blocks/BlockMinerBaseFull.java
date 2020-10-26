@@ -62,6 +62,12 @@ public class BlockMinerBaseFull extends BlockTileGC
         return new TileEntityMinerBase();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
 //    @Override
 //    public BlockState getStateForPlacement(BlockItemUseContext context)
 //    {

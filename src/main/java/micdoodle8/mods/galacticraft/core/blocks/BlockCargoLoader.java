@@ -1,34 +1,40 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCrafting;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescription
+public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescription, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BlockCargoLoader(Properties builder)
     {
@@ -58,7 +64,8 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-//        playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ()); TODO
+        INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerCargoLoader(w, p, (TileEntityCargoLoader) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.cargo_loader.name"));
+        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
         return ActionResultType.SUCCESS;
     }
 
@@ -67,6 +74,12 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityCargoLoader();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override
@@ -94,9 +107,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         builder.add(FACING);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }

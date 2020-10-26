@@ -4,11 +4,11 @@ import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableItem
+public class ItemTier3Rocket extends Item implements IHoldableItem, ISortable
 {
     public ItemTier3Rocket(Item.Properties properties)
     {
@@ -194,9 +194,9 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.ROCKET;
+        return EnumSortCategory.ROCKET;
     }
 
     public static boolean placeRocketOnPad(ItemStack stack, World worldIn, TileEntity tile, float centerX, float centerY, float centerZ)

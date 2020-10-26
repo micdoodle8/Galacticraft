@@ -1,0 +1,12 @@
+{
+  "parent": "galacticraftcore:block/machine_tiered_br",
+  "textures": {
+    "particle": "galacticraftcore:blocks/machine",
+    "front": "galacticraftcore:blocks/oxygen_storage_module_full",
+    "rear": "galacticraftcore:blocks/oxygen_storage_module_full",
+    "side": "galacticraftcore:blocks/machine_side",
+    "el_in": "galacticraftcore:blocks/machine_oxygen_input",
+    "el_out": "galacticraftcore:blocks/machine_oxygen_output",
+    "top": "galacticraftcore:blocks/machine",
+    "base": "galacticraftcore:blocks/machine" }
+}

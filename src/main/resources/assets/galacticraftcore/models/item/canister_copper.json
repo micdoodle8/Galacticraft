@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/canister.copper"
+        "layer0": "galacticraftcore:items/canister_copper"
     },
     "display": {
         "thirdperson": {

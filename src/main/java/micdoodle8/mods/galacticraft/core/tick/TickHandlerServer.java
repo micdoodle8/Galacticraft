@@ -52,11 +52,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TickHandlerServer
 {
-    private static final Map<DimensionType, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
-    private static final Map<DimensionType, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
-    private static final Map<DimensionType, Set<BlockPos>> edgeChecks = new TreeMap<>();
+    private static final Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
+    private static final Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
+    private static final Map<Integer, Set<BlockPos>> edgeChecks = new TreeMap<>();
     private static final LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
-    public static Map<DimensionType, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<>();
+    public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<>();
     public static List<BlockVec3Dim> footprintBlockChanges = Lists.newArrayList();
     public static WorldDataSpaceRaces spaceRaceData = null;
     public static ArrayList<ServerPlayerEntity> playersRequestingMapData = Lists.newArrayList();
@@ -118,16 +118,16 @@ public class TickHandlerServer
         TileEntityPainter.loadedTilesForDim.clear();
     }
 
-    public static void addFootprint(long chunkKey, Footprint print, DimensionType dimID)
+    public static void addFootprint(long chunkKey, Footprint print, DimensionType type)
     {
-        Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(dimID);
+        Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(type.getId());
         List<Footprint> footprints;
 
         if (footprintMap == null)
         {
             footprintMap = new HashMap<Long, List<Footprint>>();
-            TickHandlerServer.serverFootprintMap.put(dimID, footprintMap);
-            footprints = new ArrayList<Footprint>();
+            TickHandlerServer.serverFootprintMap.put(type.getId(), footprintMap);
+            footprints = new ArrayList<>();
             footprintMap.put(chunkKey, footprints);
         }
         else
@@ -136,7 +136,7 @@ public class TickHandlerServer
 
             if (footprints == null)
             {
-                footprints = new ArrayList<Footprint>();
+                footprints = new ArrayList<>();
                 footprintMap.put(chunkKey, footprints);
             }
         }
@@ -146,7 +146,7 @@ public class TickHandlerServer
 
     public static void scheduleNewBlockChange(DimensionType dimID, ScheduledBlockChange change)
     {
-        CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
+        CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID.getId());
 
         if (changeList == null)
         {
@@ -154,7 +154,7 @@ public class TickHandlerServer
         }
 
         changeList.add(change);
-        TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
+        TickHandlerServer.scheduledBlockChanges.put(dimID.getId(), changeList);
     }
 
     /**
@@ -165,7 +165,7 @@ public class TickHandlerServer
      */
     public static void scheduleNewBlockChange(DimensionType dimID, List<ScheduledBlockChange> changeAdd)
     {
-        CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
+        CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID.getId());
 
         if (changeList == null)
         {
@@ -173,7 +173,7 @@ public class TickHandlerServer
         }
 
         changeList.addAll(changeAdd);
-        TickHandlerServer.scheduledBlockChanges.put(dimID, changeList);
+        TickHandlerServer.scheduledBlockChanges.put(dimID.getId(), changeList);
     }
 
     public static void scheduleNewDimensionChange(ScheduledDimensionChange change)
@@ -183,7 +183,7 @@ public class TickHandlerServer
 
     public static void scheduleNewTorchUpdate(DimensionType dimType, List<BlockVec3> torches)
     {
-        CopyOnWriteArrayList<BlockVec3> updateList = TickHandlerServer.scheduledTorchUpdates.get(dimType);
+        CopyOnWriteArrayList<BlockVec3> updateList = TickHandlerServer.scheduledTorchUpdates.get(dimType.getId());
 
         if (updateList == null)
         {
@@ -191,12 +191,12 @@ public class TickHandlerServer
         }
 
         updateList.addAll(torches);
-        TickHandlerServer.scheduledTorchUpdates.put(dimType, updateList);
+        TickHandlerServer.scheduledTorchUpdates.put(dimType.getId(), updateList);
     }
 
     public static void scheduleNewEdgeCheck(DimensionType dimType, BlockPos edgeBlock)
     {
-        Set<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimType);
+        Set<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimType.getId());
 
         if (updateList == null)
         {
@@ -204,12 +204,12 @@ public class TickHandlerServer
         }
 
         updateList.add(edgeBlock);
-        TickHandlerServer.edgeChecks.put(dimType, updateList);
+        TickHandlerServer.edgeChecks.put(dimType.getId(), updateList);
     }
 
     public static boolean scheduledForChange(DimensionType dimID, BlockPos test)
     {
-        CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID);
+        CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(dimID.getId());
 
         if (changeList != null)
         {
@@ -332,7 +332,7 @@ public class TickHandlerServer
                 {
                     ServerChunkProvider chunkProviderServer = world.getChunkProvider();
 
-                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionType(world));
+                    Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionType(world).getId());
 
                     if (footprintMap != null)
                     {
@@ -530,7 +530,7 @@ public class TickHandlerServer
         {
             final ServerWorld world = (ServerWorld) event.world;
 
-            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(GCCoreUtil.getDimensionType(world));
+            CopyOnWriteArrayList<ScheduledBlockChange> changeList = TickHandlerServer.scheduledBlockChanges.get(GCCoreUtil.getDimensionType(world).getId());
 
             if (changeList != null && !changeList.isEmpty())
             {
@@ -560,14 +560,14 @@ public class TickHandlerServer
                 }
 
                 changeList.clear();
-                TickHandlerServer.scheduledBlockChanges.remove(GCCoreUtil.getDimensionType(world));
+                TickHandlerServer.scheduledBlockChanges.remove(GCCoreUtil.getDimensionType(world).getId());
                 if (newList.size() > 0)
                 {
-                    TickHandlerServer.scheduledBlockChanges.put(GCCoreUtil.getDimensionType(world), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
+                    TickHandlerServer.scheduledBlockChanges.put(GCCoreUtil.getDimensionType(world).getId(), new CopyOnWriteArrayList<ScheduledBlockChange>(newList));
                 }
             }
 
-            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(GCCoreUtil.getDimensionType(world));
+            CopyOnWriteArrayList<BlockVec3> torchList = TickHandlerServer.scheduledTorchUpdates.get(GCCoreUtil.getDimensionType(world).getId());
 
             if (torchList != null && !torchList.isEmpty())
             {
@@ -586,7 +586,7 @@ public class TickHandlerServer
                 }
 
                 torchList.clear();
-                TickHandlerServer.scheduledTorchUpdates.remove(GCCoreUtil.getDimensionType(world));
+                TickHandlerServer.scheduledTorchUpdates.remove(GCCoreUtil.getDimensionType(world).getId());
             }
 
             if (world.getDimension() instanceof IOrbitDimension)
@@ -620,7 +620,7 @@ public class TickHandlerServer
 //            }
 
             DimensionType dimID = GCCoreUtil.getDimensionType(world);
-            Set<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID);
+            Set<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID.getId());
             final HashSet<BlockPos> checkedThisTick = new HashSet<>();
 
             if (edgesList != null && !edgesList.isEmpty())
@@ -641,7 +641,7 @@ public class TickHandlerServer
                     }
                 }
 
-                TickHandlerServer.edgeChecks.remove(GCCoreUtil.getDimensionType(world));
+                TickHandlerServer.edgeChecks.remove(GCCoreUtil.getDimensionType(world).getId());
             }
         }
     }

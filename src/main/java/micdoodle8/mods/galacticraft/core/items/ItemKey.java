@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemKey extends Item implements IKeyItem, ISortableItem
+public class ItemKey extends Item implements IKeyItem, ISortable
 {
     public ItemKey(Item.Properties properties)
     {
@@ -61,8 +61,8 @@ public class ItemKey extends Item implements IKeyItem, ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.KEYS;
+        return EnumSortCategory.KEYS;
     }
 }

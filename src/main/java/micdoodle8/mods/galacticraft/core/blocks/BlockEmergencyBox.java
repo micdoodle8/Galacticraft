@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEmergencyBox;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -20,7 +22,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, IPartialSealableBlock
+public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, IPartialSealableBlock, ISortable
 {
     public static final BooleanProperty KIT = BooleanProperty.create("kit");
 
@@ -100,6 +102,12 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
         return new TileEntityEmergencyBox();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -133,11 +141,11 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 
     @Override
     public boolean isSealed(World world, BlockPos pos, Direction direction)

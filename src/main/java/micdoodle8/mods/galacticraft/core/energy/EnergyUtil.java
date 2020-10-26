@@ -252,7 +252,7 @@ public class EnergyUtil
                 if (forgeEnergy.isPresent())
                 {
                     IEnergyStorage storage = forgeEnergy.orElse(null);
-                    if (storage.canReceive() && !EnergyConfigHandler.disableFEOutput || storage.canExtract() && !EnergyConfigHandler.disableFEInput)
+                    if (storage.canReceive() && !EnergyConfigHandler.disableFEOutput.get() || storage.canExtract() && !EnergyConfigHandler.disableFEInput.get())
                     {
                         adjacentConnections[direction.ordinal()] = tileEntity;
                     }
@@ -367,7 +367,7 @@ public class EnergyUtil
 //                continue;
 //            }
 
-            if (!EnergyConfigHandler.disableFEOutput)
+            if (!EnergyConfigHandler.disableFEOutput.get())
             {
                 if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
                 {
@@ -419,7 +419,7 @@ public class EnergyUtil
             }
             catch (Exception ex)
             {
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.enableDebug.get())
                 {
                     ex.printStackTrace();
                 }
@@ -447,7 +447,7 @@ public class EnergyUtil
                 }
                 catch (Exception ex)
                 {
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.enableDebug.get())
                     {
                         ex.printStackTrace();
                     }
@@ -474,7 +474,7 @@ public class EnergyUtil
             return sent;
         }
         else */
-        if (!EnergyConfigHandler.disableFEOutput)
+        if (!EnergyConfigHandler.disableFEOutput.get())
         {
             LazyOptional<IEnergyStorage> forgeEnergy = getCapability(tileAdj, CapabilityEnergy.ENERGY, inputAdj);
             if (forgeEnergy.isPresent())
@@ -502,7 +502,7 @@ public class EnergyUtil
             }
             catch (Exception ex)
             {
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.enableDebug.get())
                 {
                     ex.printStackTrace();
                 }
@@ -523,7 +523,7 @@ public class EnergyUtil
                 }
                 catch (Exception ex)
                 {
-                    if (ConfigManagerCore.enableDebug)
+                    if (ConfigManagerCore.enableDebug.get())
                     {
                         ex.printStackTrace();
                     }
@@ -548,7 +548,7 @@ public class EnergyUtil
             return sent;
         }
         else */
-        if (!EnergyConfigHandler.disableFEInput)
+        if (!EnergyConfigHandler.disableFEInput.get())
         {
             LazyOptional<IEnergyStorage> forgeEnergy = getCapability(tileAdj, CapabilityEnergy.ENERGY, inputAdj);
             if (forgeEnergy.isPresent())

@@ -113,7 +113,7 @@ public class BaseRoom extends SizedPiece
     public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         BlockState blockAir = Blocks.AIR.getDefaultState();
-        Block blockStair = GCBlocks.moonStoneStairs;
+//        Block blockStair = GCBlocks.moonStoneStairs;
 
         boolean axisEW = getDirection().getAxis() == Direction.Axis.X;
         int maxX = axisEW ? this.sizeZ : this.sizeX;
@@ -621,7 +621,7 @@ public class BaseRoom extends SizedPiece
                 //Apparently we have our North and our South reversed ?  So we don't want the opposite for North and South!
                 hangingDirection = hangingDirection.getOpposite();
             }
-            EntityHangingSchematic entityhanging = new EntityHangingSchematic(GCEntities.HANGING_SCHEMATIC.get(), (World) worldIn, blockpos, hangingDirection, x / 3 - 1);
+            EntityHangingSchematic entityhanging = new EntityHangingSchematic(GCEntities.HANGING_SCHEMATIC, (World) worldIn, blockpos, hangingDirection, x / 3 - 1);
             worldIn.addEntity(entityhanging);
             entityhanging.setSendToClient();
         }
@@ -637,7 +637,7 @@ public class BaseRoom extends SizedPiece
         MEDICAL(Blocks.IRON_TRAPDOOR.getDefaultState(), Blocks.IRON_TRAPDOOR.getDefaultState().with(TrapDoorBlock.HALF, Half.TOP), false),
         CREW(null, null, false),
         CRYO(AsteroidBlocks.asteroidDeco.getDefaultState(), AsteroidBlocks.asteroidDeco.getDefaultState(), true),
-        CONTROL(GCBlocks.slabGCHalf.getDefaultState() /* TODO Asteroids slab */, AsteroidBlocks.asteroidDeco.getDefaultState(), false);
+        CONTROL(AsteroidBlocks.asteroidDeco.getDefaultState()/* GCBlocks.slabGCHalf.getDefaultState() TODO Asteroids slab */, AsteroidBlocks.asteroidDeco.getDefaultState(), false);
 
         public final BlockState blockFloor;
         public final BlockState blockEntrance;

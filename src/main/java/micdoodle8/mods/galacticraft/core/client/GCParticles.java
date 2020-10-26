@@ -70,15 +70,5 @@ public class GCParticles
         register(r, new BasicParticleType(false), ParticleTypeNames.oilDrip);
         register(r, new BasicParticleType(false), ParticleTypeNames.oxygen);
         register(r, new ParticleType<>(false, EntityParticleData.DESERIALIZER), ParticleTypeNames.landerFlame);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE, ParticleSmokeUnlaunched.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED, ParticleSmokeLaunched.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE_LARGE, ParticleSmokeUnlaunchedLarge.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED_LARGE, ParticleSmokeLaunchedLarge.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_IDLE, ParticleLaunchFlameUnlaunched.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_LAUNCHED, ParticleLaunchFlame.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LAUNCH_SMOKE_TINY, ParticleSmokeSmall.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(OIL_DRIP, DripParticleGC.DrippingOilFactory::new);
-        Minecraft.getInstance().particles.registerFactory(OXYGEN, ParticleOxygen.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(LANDER_FLAME, ParticleLanderFlame.Factory::new);
     }
 }

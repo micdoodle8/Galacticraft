@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAirLockWall;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
@@ -11,15 +13,21 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.List;
 
-public class TileEntityAirLockController extends TileEntityAirLock
+public class TileEntityAirLockController extends TileEntityAdvanced
 {
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.airLockController)
+    public static TileEntityType<TileEntityAirLockController> TYPE;
+
     @NetworkedField(targetSide = LogicalSide.CLIENT)
     public boolean redstoneActivation;
     @NetworkedField(targetSide = LogicalSide.CLIENT)
@@ -48,6 +56,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
     public TileEntityAirLockController()
     {
+        super(TYPE);
         this.lastProtocol = this.protocol;
     }
 
@@ -468,4 +477,18 @@ public class TileEntityAirLockController extends TileEntityAirLock
     {
         return true;
     }
+
+    @Override
+    public int[] getSlotsForFace(Direction side)
+    {
+        return new int[0];
+    }
+
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+
 }

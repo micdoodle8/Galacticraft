@@ -107,7 +107,7 @@
 //                    playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 //                    if (!playerBase.abilities.isCreativeMode)
 //                    {
-//                        if (ConfigManagerCore.challengeMode || !(playerBase.world.getDimension() instanceof IGalacticraftWorldProvider) )
+//                        if (ConfigManagerCore.challengeMode.get() || !(playerBase.world.getDimension() instanceof IGalacticraftWorldProvider) )
 //                        {
 //                            CommandBase.notifyCommandListener(sender, this, "commands.gchouston.fail");
 //                            return;
@@ -140,7 +140,7 @@
 //
 //                if (playerBase != null)
 //                {
-//                    DimensionType dimID = ConfigManagerCore.idDimensionOverworld;
+//                    DimensionType dimID = ConfigManagerCore.idDimensionOverworld.get();
 //                    ServerWorld worldserver = server.getWorld(dimID);
 //                    if (worldserver == null)
 //                    {

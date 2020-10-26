@@ -32,7 +32,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
     public static EntityWebShot createEntityWebShot(World worldIn, double x, double y, double z)
     {
-        EntityWebShot webShot = new EntityWebShot(VenusEntities.WEB_SHOT.get(), worldIn);
+        EntityWebShot webShot = new EntityWebShot(VenusEntities.WEB_SHOT, worldIn);
 //        this.setSize(0.5F, 0.5F);
         webShot.setPosition(x, y, z);
         return webShot;
@@ -40,7 +40,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
     public static EntityWebShot createEntityWebShot(World worldIn, LivingEntity shooter, LivingEntity target, float p_i1755_4_, float p_i1755_5_)
     {
-        EntityWebShot webShot = new EntityWebShot(VenusEntities.WEB_SHOT.get(), worldIn);
+        EntityWebShot webShot = new EntityWebShot(VenusEntities.WEB_SHOT, worldIn);
         webShot.shootingEntity = shooter;
 
         if (shooter instanceof PlayerEntity)
@@ -70,7 +70,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
     public static EntityWebShot createEntityWebShot(World worldIn, LivingEntity shooter, float velocity)
     {
-        EntityWebShot webShot = new EntityWebShot(VenusEntities.WEB_SHOT.get(), worldIn);
+        EntityWebShot webShot = new EntityWebShot(VenusEntities.WEB_SHOT, worldIn);
         webShot.shootingEntity = shooter;
 
         if (shooter instanceof PlayerEntity)

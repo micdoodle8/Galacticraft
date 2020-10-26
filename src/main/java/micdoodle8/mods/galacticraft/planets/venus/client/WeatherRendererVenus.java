@@ -70,7 +70,7 @@
 //            GlStateManager.alphaFunc(516, 0.1F);
 //            double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
 //            double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-//            double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+//            double d2 = entity.lastTickPosZ + (entity.getPosZ() - entity.lastTickPosZ) * (double) partialTicks;
 //            int l = MathHelper.floor(d1);
 //
 //            int r = 4;
@@ -86,7 +86,7 @@
 //            BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 //            int px = MathHelper.floor(entity.posX);
 //            int py = MathHelper.floor(entity.posY);
-//            int pz = MathHelper.floor(entity.posZ);
+//            int pz = MathHelper.floor(entity.getPosZ());
 //
 //            for (int z = pz - r; z <= pz + r; ++z)
 //            {
@@ -137,7 +137,7 @@
 //                        double dy = -((double) (rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + (double) partialTicks) / 80.0D * (3.0D + this.random.nextDouble());
 //                        double yo = this.random.nextDouble() / 1.8D;
 //                        double xx = x + 0.5D - entity.posX;
-//                        double zz = z + 0.5D - entity.posZ;
+//                        double zz = z + 0.5D - entity.getPosZ();
 //                        float rr = MathHelper.sqrt(xx * xx + zz * zz) / r;
 //                        float alpha = ((1.0F - rr * rr) * 0.5F + 0.5F) * strength / 0.6F;  //0.6F is the max rainstrength on Venus
 //                        mutablePos.setPos(x, yBase, z);

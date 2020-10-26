@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortableItem
+public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortable
 {
     //    protected IIcon[] icons = new IIcon[7];
     private static final HashMap<ItemStack, Integer> craftingvalues = new HashMap<>();
@@ -75,9 +75,9 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (ItemCanisterGeneric.EMPTY - par1ItemStack.getDamage() > 0)
+        if (ItemCanisterGeneric.EMPTY_CAPACITY - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY - par1ItemStack.getDamage())));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY_CAPACITY - par1ItemStack.getDamage())));
         }
     }
 
@@ -92,14 +92,14 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
         Integer saved = ItemCanisterLiquidOxygen.craftingvalues.get(itemstack);
         if (saved != null)
         {
-            if (saved < ItemCanisterGeneric.EMPTY)
+            if (saved < ItemCanisterGeneric.EMPTY_CAPACITY)
             {
                 ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
                 itemstack.setDamage(saved);
                 return itemstack.copy();
             }
             ItemStack stack = new ItemStack(this.getContainerItem(), 1);
-            stack.setDamage(ItemCanisterGeneric.EMPTY);
+            stack.setDamage(ItemCanisterGeneric.EMPTY_CAPACITY);
             return stack;
         }
         if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
@@ -113,7 +113,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     public int discharge(ItemStack itemStack, int amount)
     {
         int damage = itemStack.getDamage();
-        int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY - damage);
+        int used = Math.min((int) (amount * Constants.LOX_GAS_RATIO), ItemCanisterGeneric.EMPTY_CAPACITY - damage);
         this.setNewDamage(itemStack, damage + used);
         return (int) Math.floor(used / Constants.LOX_GAS_RATIO);
     }
@@ -121,12 +121,12 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     @Override
     public int getOxygenStored(ItemStack par1ItemStack)
     {
-        return ItemCanisterGeneric.EMPTY - par1ItemStack.getDamage();
+        return ItemCanisterGeneric.EMPTY_CAPACITY - par1ItemStack.getDamage();
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.CANISTER;
+        return EnumSortCategory.CANISTER;
     }
 }

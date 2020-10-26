@@ -23,7 +23,7 @@ public class SchematicTier3Rocket implements ISchematicPage
     @Override
     public int getPageID()
     {
-        return ConfigManagerPlanets.idSchematicRocketT3;
+        return ConfigManagerPlanets.idSchematicRocketT3.get();
     }
 
 //    @Override

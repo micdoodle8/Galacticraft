@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.*;
@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
+public class ItemSchematic extends Item implements ISchematicItem, ISortable
 {
     public ItemSchematic(Item.Properties builder)
     {
@@ -90,9 +90,9 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.SCHEMATIC;
+        return EnumSortCategory.SCHEMATIC;
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortableItem
 
     private EntityHangingSchematic createEntity(World worldIn, BlockPos pos, Direction clickedSide, int index)
     {
-        return new EntityHangingSchematic(GCEntities.HANGING_SCHEMATIC.get(), worldIn, pos, clickedSide, index);
+        return new EntityHangingSchematic(GCEntities.HANGING_SCHEMATIC, worldIn, pos, clickedSide, index);
     }
 
     /**

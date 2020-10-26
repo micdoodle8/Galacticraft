@@ -10,9 +10,13 @@
 //import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 //import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+//import net.minecraft.entity.player.PlayerEntity;
 //import net.minecraft.network.INetHandler;
+//import net.minecraft.network.NetworkManager;
 //import net.minecraft.util.ResourceLocation;
 //import net.minecraft.world.World;
+//import net.minecraft.world.dimension.DimensionType;
+//import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.network.NetworkRegistry;
 //import net.minecraftforge.fml.network.simple.SimpleChannel;
 //
@@ -45,21 +49,21 @@
 //
 //    public void unload(World world)
 //    {
-//        LogicalSide LogicalSide = world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER;
+//        LogicalSide side = world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER;
 //        DimensionType dimID = GCCoreUtil.getDimensionID(world);
-//        Queue<PacketPlayerPair> queue = getQueue(LogicalSide, dimId);
+//        Queue<PacketPlayerPair> queue = getQueue(side, dimId);
 //        queue.clear();
 //    }
 //
 //    public void tick(World world)
 //    {
 //        PacketPlayerPair pair;
-//        LogicalSide LogicalSide = world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER;
-//        DimensionType dimID = GCCoreUtil.getDimensionID(world);
+//        LogicalSide side = world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER;
+//        DimensionType dimID = GCCoreUtil.getDimensionType(world);
 //        Queue<PacketPlayerPair> queue = getQueue(LogicalSide, dimID);
 //        while ((pair = queue.poll()) != null)
 //        {
-//            switch (LogicalSide)
+//            switch (side)
 //            {
 //            case CLIENT:
 //                pair.getPacket().handleClientSide(pair.getPlayer());
@@ -74,9 +78,7 @@
 //    @Override
 //    protected void channelRead0(ChannelHandlerContext ctx, IPacket msg) throws Exception
 //    {
-//        INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
-//        LogicalSide LogicalSide = ctx.channel().attr(NetworkRegistry.CHANNEL_SOURCE).get();
-//        EntityPlayer player = GalacticraftCore.proxy.getPlayerFromNetHandler(netHandler);
+//        PlayerEntity player = GalacticraftCore.proxy.getPlayerFromNetHandler(netHandler);
 //
 //        if (player == null)
 //        {
@@ -103,9 +105,9 @@
 //    private final class PacketPlayerPair
 //    {
 //        private IPacket packet;
-//        private EntityPlayer player;
+//        private PlayerEntity player;
 //
-//        public PacketPlayerPair(IPacket packet, EntityPlayer player)
+//        public PacketPlayerPair(IPacket packet, PlayerEntity player)
 //        {
 //            this.packet = packet;
 //            this.player = player;
@@ -121,12 +123,12 @@
 //            this.packet = packet;
 //        }
 //
-//        public EntityPlayer getPlayer()
+//        public PlayerEntity getPlayer()
 //        {
 //            return player;
 //        }
 //
-//        public void setPlayer(EntityPlayer player)
+//        public void setPlayer(PlayerEntity player)
 //        {
 //            this.player = player;
 //        }

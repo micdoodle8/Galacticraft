@@ -46,7 +46,7 @@ public class EntityFlag extends Entity
 
     public EntityFlag(World world, double x, double y, double z, int dir)
     {
-        this(GCEntities.FLAG.get(), world);
+        this(GCEntities.FLAG, world);
         this.setFacingAngle(dir);
         this.setPosition(x, y, z);
         this.xPosition = x;

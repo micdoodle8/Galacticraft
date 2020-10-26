@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.extensions.IForgeItem;
 
-public class ItemCarbonFragments extends Item implements ISortableItem, IForgeItem
+public class ItemCarbonFragments extends Item implements ISortable, IForgeItem
 {
     public ItemCarbonFragments(Item.Properties properties)
     {
@@ -34,9 +34,9 @@ public class ItemCarbonFragments extends Item implements ISortableItem, IForgeIt
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategory.GENERAL;
     }
 
     @Override

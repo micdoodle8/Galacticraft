@@ -27,12 +27,12 @@ import java.util.*;
  */
 public class EnergyNetwork implements IElectricityNetwork
 {
-    private final boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded() && !EnergyConfigHandler.disableMekanismOutput;
-    private final boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput;
-    private final boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
-    private final boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
-    private final boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
-    private final boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
+    private final boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded() && !EnergyConfigHandler.disableMekanismOutput.get();
+    private final boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput.get();
+    private final boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput.get();
+    private final boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output.get();
+    private final boolean isFELoaded = !EnergyConfigHandler.disableFEOutput.get();
+    private final boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput.get();
 
     /* Re-written by radfast for better performance
      *
@@ -270,7 +270,7 @@ public class EnergyNetwork implements IElectricityNetwork
 //                        }
 //                        catch (Exception ex)
 //                        {
-//                            if (ConfigManagerCore.enableDebug)
+//                            if (ConfigManagerCore.enableDebug.get())
 //                            {
 //                                ex.printStackTrace();
 //                            }
@@ -411,7 +411,7 @@ public class EnergyNetwork implements IElectricityNetwork
 //                            }
 //                            catch (Exception ex)
 //                            {
-//                                if (ConfigManagerCore.enableDebug)
+//                                if (ConfigManagerCore.enableDebug.get())
 //                                {
 //                                    ex.printStackTrace();
 //                                }

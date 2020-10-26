@@ -33,7 +33,7 @@ public class GCFluidRegistry
     public FluidRegistrationEntry<ForgeFlowingFluid.Source, ForgeFlowingFluid.Flowing, FlowingFluidBlock, BucketItem> register(String name, FluidAttributes.Builder builder, Material blockMaterial)
     {
         String flowingName = "flowing_" + name;
-        String bucketName = name + "_bucket";
+        String bucketName = "bucket_" + name;
         //Create the registry object with dummy entries that we can use as part of the supplier but that works as use in suppliers
         FluidRegistrationEntry<ForgeFlowingFluid.Source, ForgeFlowingFluid.Flowing, FlowingFluidBlock, BucketItem> fluidRegistryObject = new FluidRegistrationEntry<>(name);
         //Pass in suppliers that are wrapped instead of direct references to the registry objects, so that when we update the registry object to
@@ -75,8 +75,8 @@ public class GCFluidRegistry
 //        //NOTE: the way this operates will depend on the order in which different mods initialize (normally alphabetical order)
 //        //Galacticraft can handle things OK if another mod registers oil or fuel first.  The other mod may not be so happy if GC registers oil or fuel first.
 //
-//        String oilID = ConfigManagerCore.useOldOilFluidID ? "oilgc" : "oil";
-//        String fuelID = ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel";
+//        String oilID = ConfigManagerCore.useOldOilFluidID.get() ? "oilgc" : "oil";
+//        String fuelID = ConfigManagerCore.useOldFuelFluidID.get() ? "fuelgc" : "fuel";
 //
 //        // Oil:
 //        if (!FluidRegistry.isFluidRegistered(oilID))
@@ -168,11 +168,11 @@ public class GCFluidRegistry
 //    public static void registerLegacyFluids()
 //    {
 //        //If any other mod has registered "fuel" or "oil" and GC has not, then allow GC's appropriate canisters to be fillable with that one as well
-////        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
+////        if (ConfigManagerCore.useOldFuelFluidID.get() && FluidRegistry.isFluidRegistered("fuel"))
 ////        {
 ////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 ////        }
-////        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
+////        if (ConfigManagerCore.useOldOilFluidID.get() && FluidRegistry.isFluidRegistered("oil"))
 ////        {
 ////            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 //            //And allow Buildcraft oil buckets to be filled with oilgc

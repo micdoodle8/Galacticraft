@@ -102,7 +102,7 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
 //        case 13:
 //        case 14:
 //        case 15:
-//            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.MELON_SEEDS, 1);
+//            if (ConfigManagerCore.challengeMobDropsAndSpawning.get()) this.dropItem(Items.MELON_SEEDS, 1);
 //            break;
 //        }
 //    }
@@ -137,7 +137,7 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
 //        }
 //
 //        //Drop copper ingot as semi-rare drop if player hit and if dropping rotten flesh (50% chance)
-//        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) <= (lootingModifier + 1) / 2)
+//        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning.get()) && j > 0 && this.rand.nextInt(6) <= (lootingModifier + 1) / 2)
 //            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
 //
 //        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)

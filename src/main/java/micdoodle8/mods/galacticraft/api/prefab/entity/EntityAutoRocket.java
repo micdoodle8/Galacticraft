@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPadFull;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
@@ -227,16 +228,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                 BlockPos pos = new BlockPos(tile.getPos().add(x, 0, z));
                                 Block block = world.getBlockState(pos).getBlock();
 
-//                						if (block instanceof BlockLandingPadFull)
-//                						{
-//                							if (doSet)
-//                							{
-//                								this.targetVec = pos;
-//                							}
-//
-//                							targetSet = true;
-//                							break blockLoop;
-//                						} TODO Full landing pad
+                                if (block instanceof BlockPadFull)
+                                {
+                                    if (doSet)
+                                    {
+                                        this.targetVec = pos;
+                                    }
+
+                                    targetSet = true;
+                                    break blockLoop;
+                                }
                             }
                         }
 
@@ -278,7 +279,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             return 0;
         }
 
-        return this.fuelTank.getFluidAmount() * scale / this.getFuelTankCapacity() / ConfigManagerCore.rocketFuelFactor;
+        return this.fuelTank.getFluidAmount() * scale / this.getFuelTankCapacity() / ConfigManagerCore.rocketFuelFactor.get();
     }
 
     @Override
@@ -959,18 +960,18 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onLaunch()
     {
-        if (!(this.world.getDimension().getType() == GalacticraftCore.planetOverworld.getDimensionID() || this.world.getDimension() instanceof IGalacticraftDimension))
+        if (!(this.world.getDimension().getType() == GalacticraftCore.planetOverworld.getDimensionType() || this.world.getDimension() instanceof IGalacticraftDimension))
         {
-            if (ConfigManagerCore.disableRocketLaunchAllNonGC)
+            if (ConfigManagerCore.disableRocketLaunchAllNonGC.get())
             {
                 this.cancelLaunch();
                 return;
             }
 
             //No rocket flight in the Nether, the End etc
-            for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
+            for (int i = ConfigManagerCore.disableRocketLaunchDimensions.get().size() - 1; i >= 0; i--)
             {
-                if (ConfigManagerCore.disableRocketLaunchDimensions[i].equals(this.world.getDimension().getType().getRegistryName().toString()))
+                if (ConfigManagerCore.disableRocketLaunchDimensions.get().get(i).equals(this.world.getDimension().getType().getRegistryName().toString()))
                 {
                     this.cancelLaunch();
                     return;
@@ -1120,7 +1121,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public FluidStack removeFuel(int amount)
     {
-        return this.fuelTank.drain(amount * ConfigManagerCore.rocketFuelFactor, IFluidHandler.FluidAction.EXECUTE);
+        return this.fuelTank.drain(amount * ConfigManagerCore.rocketFuelFactor.get(), IFluidHandler.FluidAction.EXECUTE);
     }
 
     @Override

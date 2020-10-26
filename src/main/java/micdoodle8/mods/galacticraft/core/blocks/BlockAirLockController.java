@@ -1,58 +1,41 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.client.gui.container.GuiAirLockController;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockAirLockController extends BlockAdvancedTile implements IShiftDescription
+public class BlockAirLockController extends BlockAdvancedTile implements IShiftDescription, ISortable
 {
     public BlockAirLockController(Properties builder)
     {
         super(builder);
     }
-
-//    @Override
-//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-//    {
-//        list.add(new ItemStack(this, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
-//        list.add(new ItemStack(this, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));
-//    } TODO
-
-//    @Override
-//    public ItemGroup getCreativeTabToDisplayOn()
-//    {
-//        return GalacticraftCore.galacticraftBlocksTab;
-//    }
-
-//    @Override
-//    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-//    {
-//        return true;
-//    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
@@ -75,6 +58,12 @@ public class BlockAirLockController extends BlockAdvancedTile implements IShiftD
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
     {
         return true;
@@ -85,9 +74,10 @@ public class BlockAirLockController extends BlockAdvancedTile implements IShiftD
     {
         TileEntity tile = world.getTileEntity(pos);
 
-        if (tile instanceof TileEntityAirLockController)
+        if (tile instanceof TileEntityAirLockController && world.isRemote)
         {
-            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, world, pos), buf -> buf.writeBlockPos(pos));
+            Minecraft.getInstance().displayGuiScreen(new GuiAirLockController((TileEntityAirLockController) tile));
+//            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, world, pos), buf -> buf.writeBlockPos(pos));
 //            playerIn.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
             return ActionResultType.SUCCESS;
         }
@@ -116,8 +106,7 @@ public class BlockAirLockController extends BlockAdvancedTile implements IShiftD
     @Nullable
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
     {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
+        return null;
     }
 
     @Override
@@ -132,9 +121,9 @@ public class BlockAirLockController extends BlockAdvancedTile implements IShiftD
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }

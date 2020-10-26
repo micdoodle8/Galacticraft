@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.CommandBlockBlock;
@@ -31,7 +31,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, IShiftDescription
+public class ItemVolcanicPickaxe extends PickaxeItem implements ISortable, IShiftDescription
 {
     public ItemVolcanicPickaxe(Item.Properties builder)
     {
@@ -73,9 +73,9 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, I
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.TOOLS;
+        return EnumSortCategory.TOOLS;
     }
 
     @Override

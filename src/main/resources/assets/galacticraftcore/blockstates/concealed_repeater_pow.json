@@ -1,7 +1,7 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:deco_block_1_model" }],
-        "normal": { "model": "galacticraftcore:deco_block_1_model" }
+        "inventory": [{ "model": "galacticraftcore:block/deco_block_1_model" }],
+        "normal": { "model": "galacticraftcore:block/deco_block_1_model" }
     }
 }

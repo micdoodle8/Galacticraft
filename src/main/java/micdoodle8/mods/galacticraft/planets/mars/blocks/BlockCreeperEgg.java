@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
@@ -17,15 +19,16 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
+public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription, ISortable
 {
-    protected static final VoxelShape DRAGON_EGG_AABB = Block.makeCuboidShape(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+    protected static final VoxelShape DRAGON_EGG_AABB = VoxelShapes.create(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 
     public BlockCreeperEgg(Properties builder)
     {
@@ -86,7 +89,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     {
         if (!world.isRemote)
         {
-            EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(GCEntities.EVOLVED_CREEPER.get(), world);
+            EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(GCEntities.EVOLVED_CREEPER, world);
             creeper.setPosition(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
             creeper.setChild(true);
             world.addEntity(creeper);
@@ -136,9 +139,9 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.EGG;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.EGG;
+    }
 }

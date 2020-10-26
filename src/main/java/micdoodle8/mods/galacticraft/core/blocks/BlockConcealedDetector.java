@@ -1,15 +1,12 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlayerDetector;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -20,9 +17,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class BlockConcealedDetector extends Block
+public class BlockConcealedDetector extends Block implements ISortable
 {
     public static final IntegerProperty VARIANT = IntegerProperty.create("var", 0, 1);
     public static final IntegerProperty FACING = IntegerProperty.create("facing", 0, 3);
@@ -40,11 +36,11 @@ public class BlockConcealedDetector extends Block
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//         return EnumSortCategoryBlock.DECORATION;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+         return EnumSortCategory.DECORATION;
+    }
 
     @Nullable
     @Override
@@ -95,6 +91,12 @@ public class BlockConcealedDetector extends Block
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityPlayerDetector();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

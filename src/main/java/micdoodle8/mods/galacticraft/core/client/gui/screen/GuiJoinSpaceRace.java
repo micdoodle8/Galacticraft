@@ -42,7 +42,7 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
     private int buttonFlag_xPosition;
     private int buttonFlag_yPosition;
 
-    private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG.get(), Minecraft.getInstance().world);
+    private final EntityFlag dummyFlag = new EntityFlag(GCEntities.FLAG, Minecraft.getInstance().world);
 //    private final ModelFlag dummyModel = new ModelFlag();
 
     private final SpaceRace spaceRaceData;

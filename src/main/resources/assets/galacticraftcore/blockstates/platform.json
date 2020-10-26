@@ -1,10 +1,10 @@
 {
     "forge_marker": 1,
     "variants": {
-        "type=none": { "model": "galacticraftcore:platform_unset" },
-        "type=nw": { "model": "galacticraftcore:platform", "y": 270 },
-        "type=ne": { "model": "galacticraftcore:platform", "y": 180 },
-        "type=se": { "model": "galacticraftcore:platform", "y": 90 },
-        "type=sw": { "model": "galacticraftcore:platform" }
+        "type=none": { "model": "galacticraftcore:block/platform_unset" },
+        "type=nw": { "model": "galacticraftcore:block/platform", "y": 270 },
+        "type=ne": { "model": "galacticraftcore:block/platform", "y": 180 },
+        "type=se": { "model": "galacticraftcore:block/platform", "y": 90 },
+        "type=sw": { "model": "galacticraftcore:block/platform" }
     }
 }

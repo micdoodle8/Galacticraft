@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -13,19 +15,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class BlockWalkway extends BlockTransmitter implements IShiftDescription
+public class BlockWalkway extends BlockTransmitter implements IShiftDescription, ISortable
 {
     //    public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
 //    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
 //    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
-    protected static final VoxelShape AABB_UNCONNECTED = Block.makeCuboidShape(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
-    protected static final VoxelShape AABB_CONNECTED_DOWN = Block.makeCuboidShape(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+    protected static final VoxelShape AABB_UNCONNECTED = VoxelShapes.create(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
+    protected static final VoxelShape AABB_CONNECTED_DOWN = VoxelShapes.create(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 
 //    public enum EnumWalkwayType implements IStringSerializable
 //    {
@@ -137,6 +140,12 @@ public class BlockWalkway extends BlockTransmitter implements IShiftDescription
         }
 
         return null;
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override
@@ -374,9 +383,9 @@ public class BlockWalkway extends BlockTransmitter implements IShiftDescription
 //        return BlockRenderLayer.CUTOUT;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 }

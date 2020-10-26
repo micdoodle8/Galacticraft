@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -15,15 +17,16 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockPlatform extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription
+public class BlockPlatform extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortable
 {
     public static final EnumProperty<EnumCorner> CORNER = EnumProperty.create("type", EnumCorner.class);
     public static final float HEIGHT = 0.875F;
-    protected static final VoxelShape BOUNDING_BOX = Block.makeCuboidShape(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
-    protected static final VoxelShape BOUNDING_BOX_ZEROG = Block.makeCuboidShape(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final VoxelShape BOUNDING_BOX = VoxelShapes.create(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
+    protected static final VoxelShape BOUNDING_BOX_ZEROG = VoxelShapes.create(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);
     public static boolean ignoreCollisionTests;
 
     public enum EnumCorner implements IStringSerializable
@@ -164,6 +167,12 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final TileEntity var9 = worldIn.getTileEntity(pos);
@@ -212,11 +221,11 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         builder.add(CORNER);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.DECORATION;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.DECORATION;
+    }
 
 //    @Override
 //    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
@@ -253,9 +262,9 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 //            if (((TileEntityPlatform) te).noCollide())
 //            {
 //                if (bs.getBlock() == this && bs.get(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SE)
-//                    return Block.makeCuboidShape((double)pos.getX() + 9/16D, (double)pos.getY(), (double)pos.getZ() + 9/16D, (double)pos.getX() + 1.0D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 1.0D);
+//                    return VoxelShapes.create((double)pos.getX() + 9/16D, (double)pos.getY(), (double)pos.getZ() + 9/16D, (double)pos.getX() + 1.0D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 1.0D);
 //                else
-//                    return Block.makeCuboidShape((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), (double)pos.getX() + 7/16D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 7/16D);
+//                    return VoxelShapes.create((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), (double)pos.getX() + 7/16D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 7/16D);
 //            }
 //        }
 //        return super.getSelectedBoundingBox(bs, worldIn, pos);

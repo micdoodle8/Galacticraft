@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemBatteryInfinite extends ItemElectricBase implements ISortableItem
+public class ItemBatteryInfinite extends ItemElectricBase implements ISortable
 {
     public ItemBatteryInfinite(Item.Properties properties)
     {
@@ -100,8 +100,8 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
 //    }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategory.GENERAL;
     }
 }

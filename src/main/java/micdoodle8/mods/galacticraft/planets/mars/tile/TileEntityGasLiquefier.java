@@ -98,7 +98,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public TileEntityGasLiquefier()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode.get() ? 90 : 60);
         this.setTierGC(2);
         this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }
@@ -218,7 +218,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 }
                 else if (inputCanister.getItem() instanceof ItemCanisterGeneric)
                 {
-                    int amount = ItemCanisterGeneric.EMPTY - inputCanister.getDamage();
+                    int amount = ItemCanisterGeneric.EMPTY_CAPACITY - inputCanister.getDamage();
                     if (amount > 0)
                     {
                         Item canisterType = inputCanister.getItem();
@@ -248,13 +248,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                             if (used == amount)
                             {
                                 ItemStack stack = new ItemStack(GCItems.oilCanister, 1);
-                                stack.setDamage(ItemCanisterGeneric.EMPTY);
+                                stack.setDamage(ItemCanisterGeneric.EMPTY_CAPACITY);
                                 getInventory().set(1, stack);
                             }
                             else
                             {
                                 ItemStack stack = new ItemStack(GCItems.oilCanister, 1);
-                                stack.setDamage(ItemCanisterGeneric.EMPTY - amount + used);
+                                stack.setDamage(ItemCanisterGeneric.EMPTY_CAPACITY - amount + used);
                                 getInventory().set(1, stack);
                             }
                         }

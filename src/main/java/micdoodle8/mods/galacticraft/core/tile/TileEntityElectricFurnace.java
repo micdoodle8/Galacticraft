@@ -36,7 +36,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         public TileEntityElectricFurnaceT1()
         {
             super(TYPE);
-            this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 45);
+            this.storage.setMaxExtract(ConfigManagerCore.hardMode.get() ? 60 : 45);
         }
     }
 
@@ -84,7 +84,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     protected void setTier2()
     {
         this.storage.setCapacity(25000);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode.get() ? 90 : 60);
         this.processTimeRequired = 100;
         this.setTierGC(2);
     }

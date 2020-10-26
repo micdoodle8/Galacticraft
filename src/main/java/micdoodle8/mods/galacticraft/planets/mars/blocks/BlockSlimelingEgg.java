@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntitySlimelingEgg;
@@ -25,49 +27,22 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockSlimelingEgg extends Block implements IShiftDescription
+public class BlockSlimelingEgg extends Block implements IShiftDescription, ISortable
 {
     //    private IIcon[] icons;
-    public static final EnumProperty<EnumEggColor> EGG_COLOR = EnumProperty.create("eggcolor", EnumEggColor.class);
     public static final BooleanProperty BROKEN = BooleanProperty.create("broken");
-    protected static final VoxelShape AABB = Block.makeCuboidShape(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
-
-    public enum EnumEggColor implements IStringSerializable
-    {
-        RED(0, "red"),
-        BLUE(1, "blue"),
-        YELLOW(2, "yellow");
-
-        private final int meta;
-        private final String name;
-
-        EnumEggColor(int meta, String name)
-        {
-            this.meta = meta;
-            this.name = name;
-        }
-
-        public int getMeta()
-        {
-            return this.meta;
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-    }
+    protected static final VoxelShape AABB = VoxelShapes.create(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
 
     public BlockSlimelingEgg(Properties builder)
     {
         super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(EGG_COLOR, EnumEggColor.RED).with(BROKEN, false));
+        this.setDefaultState(stateContainer.getBaseState().with(BROKEN, false));
     }
 
     @Override
@@ -229,6 +204,12 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
 //        int metadata = state.getBlock().getMetaFromState(state);
@@ -270,12 +251,12 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(EGG_COLOR, BROKEN);
+        builder.add(BROKEN);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.EGG;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.EGG;
+    }
 }

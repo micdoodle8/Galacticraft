@@ -141,7 +141,7 @@ public class TickHandlerClient
     {
         ClientProxyCore.detectableBlocks.clear();
 
-        for (final String s : ConfigManagerCore.detectableIDs)
+        for (final String s : ConfigManagerCore.detectableIDs.get())
         {
             // TODO Blockstate property parsing? To replace metadata
             Block bt = ConfigManagerCore.stringToBlock(new ResourceLocation(s), "External Detectable IDs", logging);
@@ -187,7 +187,7 @@ public class TickHandlerClient
         final Minecraft minecraft = Minecraft.getInstance();
         final ClientPlayerEntity player = minecraft.player;
         final ClientPlayerEntity playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
-        if (player == null || playerBaseClient == null)
+        if (player == null || playerBaseClient == null || !player.isAlive())
         {
             return;
         }
@@ -237,10 +237,10 @@ public class TickHandlerClient
                 {
                 }
 
-                OverlayRocket.renderSpaceshipOverlay();
-                OverlayLander.renderLanderOverlay(TickHandlerClient.tickCount);
-                OverlayDockingRocket.renderDockingOverlay(TickHandlerClient.tickCount);
-                OverlayLaunchCountdown.renderCountdownOverlay();
+//                OverlayRocket.renderSpaceshipOverlay();
+//                OverlayLander.renderLanderOverlay(TickHandlerClient.tickCount);
+//                OverlayDockingRocket.renderDockingOverlay(TickHandlerClient.tickCount);
+//                OverlayLaunchCountdown.renderCountdownOverlay(); TODO Overlays
             }
 
             if (player.world.getDimension() instanceof IGalacticraftDimension && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.getDimension()) && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()) && !minecraft.gameSettings.showDebugInfo)
@@ -260,7 +260,7 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.getThermalLevel() + 22;
-//                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
+//                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft.get(), !ConfigManagerCore.oxygenIndicatorBottom.get(), Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
                 // TODO Overlays
             }
 
@@ -366,7 +366,7 @@ public class TickHandlerClient
                     updateJEIhiding = false;
                     // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
                     // Update JEI to hide adventure mode recipes when not in adventure mode
-//                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes, !ConfigManagerCore.challengeRecipes); TODO JEI
+//                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.hardMode.get() && !ConfigManagerCore.challengeRecipes.get(), !ConfigManagerCore.challengeRecipes.get()); TODO JEI
                 }
 
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
@@ -456,9 +456,9 @@ public class TickHandlerClient
                 this.spawnLeakParticles();
             }
 
-            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
+            if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup.get())
             {
-//                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.posX, (int) player.posY, (int) player.posZ); TODO Gui
+//                player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.getPosX(), (int) player.getPosY(), (int) player.getPosZ()); TODO Gui
                 TickHandlerClient.spaceRaceGuiScheduled = false;
             }
 
@@ -476,7 +476,7 @@ public class TickHandlerClient
                 if (rocket.prevRotationPitch != rocket.rotationPitch || rocket.prevRotationYaw != rocket.rotationYaw)
                 {
 //                    GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(player.getRidingEntity()));
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, rocket.dimension, new Object[]{rocket.rotationPitch, rocket.rotationYaw}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, rocket.dimension, new Object[]{rocket.getEntityId(), rocket.rotationPitch, rocket.rotationYaw}));
                 }
             }
 
@@ -489,7 +489,7 @@ public class TickHandlerClient
 //                    {
 //                        world.getDimension().setSkyRenderer(new SkyProviderOverworld());
 //                    }
-//                    else if (world.getDimension().getSkyRenderer() instanceof SkyProviderOverworld && player.posY <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+//                    else if (world.getDimension().getSkyRenderer() instanceof SkyProviderOverworld && player.getPosY() <= Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
 //                    {
 //                        world.getDimension().setSkyRenderer(null);
 //                    }  TODO Sky rendering
@@ -553,7 +553,7 @@ public class TickHandlerClient
                 if (hasChanged)
                 {
 //                    GalacticraftCore.packetPipeline.sendToServer(new PacketRotateRocket(ship));
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, ship.dimension, new Object[]{ship.rotationPitch, ship.rotationYaw}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ROTATE_ROCKET, ship.dimension, new Object[]{ship.getEntityId(), ship.rotationPitch, ship.rotationYaw}));
                 }
             }
 

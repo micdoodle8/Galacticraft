@@ -43,9 +43,9 @@
 //            return;
 //        }
 //
-//        double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-//        double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-//        double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+//        double interpPosX = player.lastTickPosX + (player.getPosX() - player.lastTickPosX) * partialTicks;
+//        double interpPosY = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * partialTicks;
+//        double interpPosZ = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * partialTicks;
 //
 //        Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 //

@@ -18,7 +18,7 @@ public class BiomeAsteroids extends BiomeGC
 
     private BiomeAsteroids()
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).parent(null), true);
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.NOPE, STONE_STONE_GRAVEL_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null), true);
         this.getSpawns(EntityClassification.MONSTER).clear();
         this.getSpawns(EntityClassification.WATER_CREATURE).clear();
         this.getSpawns(EntityClassification.CREATURE).clear();
@@ -36,13 +36,13 @@ public class BiomeAsteroids extends BiomeGC
 
     public void resetMonsterListByMode(boolean challengeMode)
     {
-        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE.get(), 3000, 1, 3));
-        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SPIDER.get(), 2000, 1, 2));
-        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SKELETON.get(), 1500, 1, 1));
-        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_CREEPER.get(), 2000, 1, 1));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE, 3000, 1, 3));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SPIDER, 2000, 1, 2));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_SKELETON, 1500, 1, 1));
+        this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_CREEPER, 2000, 1, 1));
         if (challengeMode)
         {
-            this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ENDERMAN.get(), 250, 1, 1));
+            this.addSpawn(EntityClassification.MONSTER, new SpawnListEntry(GCEntities.EVOLVED_ENDERMAN, 250, 1, 1));
         }
     }
 

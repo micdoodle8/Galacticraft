@@ -220,12 +220,4 @@ public class DimensionMars extends DimensionSpace implements IGalacticraftDimens
     {
         return RoomTreasureMars.MARSCHEST;
     }
-
-    @Override
-    public List<Block> getSurfaceBlocks()
-    {
-        List<Block> list = new LinkedList<>();
-        list.add(MarsBlocks.rockSurface);
-        return list;
-    }
 }

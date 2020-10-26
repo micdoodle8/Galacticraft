@@ -94,7 +94,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     protected void registerAttributes()
     {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod.get());
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05F);
     }
 
@@ -257,11 +257,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             {
                 for (ISchematicPage page : stats.getUnlockedSchematics())
                 {
-                    if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3)
+                    if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3.get())
                     {
                         hasT3Rocket = true;
                     }
-                    else if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3 + 1)
+                    else if (page.getPageID() == ConfigManagerPlanets.idSchematicRocketT3.get() + 1)
                     {
                         hasAstroMiner = true;
                     }

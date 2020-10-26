@@ -33,7 +33,7 @@ public class GalaxyRegistry
     {
         for (Planet planet : GalaxyRegistry.planets.values())
         {
-            if (planet.getDimensionID() == dimensionID)
+            if (planet.getDimensionType() == dimensionID)
             {
                 return planet;
             }
@@ -41,7 +41,7 @@ public class GalaxyRegistry
 
         for (Moon moon : GalaxyRegistry.moons.values())
         {
-            if (moon.getDimensionID() == dimensionID)
+            if (moon.getDimensionType() == dimensionID)
             {
                 return moon;
             }
@@ -49,7 +49,7 @@ public class GalaxyRegistry
 
         for (Satellite satellite : GalaxyRegistry.satellites.values())
         {
-            if (satellite.getDimensionID() == dimensionID)
+            if (satellite.getDimensionType() == dimensionID)
             {
                 return satellite;
             }

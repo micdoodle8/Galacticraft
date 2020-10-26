@@ -5,7 +5,7 @@
 //import micdoodle8.mods.galacticraft.core.GCBlocks;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 //import net.minecraft.block.Block;
@@ -39,7 +39,7 @@
 //import java.util.List;
 //import java.util.Random;
 //
-//public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock, IPaintable
+//public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortable, IPaintable
 //{
 //    public static final PropertyEnum MODEL = EnumProperty.create("modeltype", GlassModel.class);
 //    public static final EnumProperty<GlassRotation> ROTATION  = EnumProperty.create("rot", GlassRotation.class);
@@ -90,9 +90,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.DECORATION;
+//        return EnumSortCategory.DECORATION;
 //    }
 //
 //    @Override
@@ -307,7 +307,7 @@
 //        yMax += pos.getY();
 //        zMin += pos.getZ();
 //        zMax += pos.getZ();
-//        VoxelShape axisalignedbb = Block.makeCuboidShape(xMin, yMin, zMin, xMax, yMax, zMax);
+//        VoxelShape axisalignedbb = VoxelShapes.create(xMin, yMin, zMin, xMax, yMax, zMax);
 //        if (axisalignedbb != null && mask.intersects(axisalignedbb))
 //        {
 //            list.add(axisalignedbb);
@@ -410,38 +410,38 @@
 //    }
 //
 //    protected static final AxisAlignedBB[] BOUNDING_BOXES = {
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D), //Widen to the frame width, if frames on opposite sides
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D), //The glass width
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),     //0001
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),   //0001
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0010
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0010
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0011
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0011
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),   //0100
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D), //0100
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),     //0101
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),   //0101
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0110
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0110
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0111
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0111
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1000
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D), //1000
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1001
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),   //1001
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1010
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1010
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1011
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1011
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),   //1100
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D), //1100
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),     //1101
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),   //1101
-//        Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1110
-//        Block.makeCuboidShape(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),   //1110
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1111
-//        Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)   //1111
+//        VoxelShapes.create(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D), //Widen to the frame width, if frames on opposite sides
+//        VoxelShapes.create(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D), //The glass width
+//        VoxelShapes.create(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),     //0001
+//        VoxelShapes.create(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),   //0001
+//        VoxelShapes.create(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0010
+//        VoxelShapes.create(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0010
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0011
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0011
+//        VoxelShapes.create(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),   //0100
+//        VoxelShapes.create(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D), //0100
+//        VoxelShapes.create(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),     //0101
+//        VoxelShapes.create(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),   //0101
+//        VoxelShapes.create(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0110
+//        VoxelShapes.create(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0110
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0111
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0111
+//        VoxelShapes.create(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1000
+//        VoxelShapes.create(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D), //1000
+//        VoxelShapes.create(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1001
+//        VoxelShapes.create(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),   //1001
+//        VoxelShapes.create(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1010
+//        VoxelShapes.create(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1010
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1011
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1011
+//        VoxelShapes.create(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),   //1100
+//        VoxelShapes.create(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D), //1100
+//        VoxelShapes.create(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),     //1101
+//        VoxelShapes.create(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),   //1101
+//        VoxelShapes.create(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1110
+//        VoxelShapes.create(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),   //1110
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1111
+//        VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)   //1111
 //    };
 //
 //    @Override

@@ -33,19 +33,19 @@
 //    {
 //        this.generateOre(4, this.iceGen, 60, 120);
 //        this.generateOre(20, this.dirtGen, 0, 200);
-//        if (!ConfigManagerPlanets.disableDeshGenMars)
+//        if (!ConfigManagerPlanets.disableDeshGenMars.get())
 //        {
 //            this.generateOre(15, this.deshGen, 20, 64);
 //        }
-//        if (!ConfigManagerPlanets.disableCopperGenMars)
+//        if (!ConfigManagerPlanets.disableCopperGenMars.get())
 //        {
 //            this.generateOre(26, this.copperGen, 0, 60);
 //        }
-//        if (!ConfigManagerPlanets.disableTinGenMars)
+//        if (!ConfigManagerPlanets.disableTinGenMars.get())
 //        {
 //            this.generateOre(23, this.tinGen, 0, 60);
 //        }
-//        if (!ConfigManagerPlanets.disableIronGenMars)
+//        if (!ConfigManagerPlanets.disableIronGenMars.get())
 //        {
 //            this.generateOre(20, this.ironGen, 0, 64);
 //        }

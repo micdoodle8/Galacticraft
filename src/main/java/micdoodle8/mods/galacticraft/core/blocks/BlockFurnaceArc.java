@@ -2,14 +2,12 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
@@ -40,6 +38,12 @@ public class BlockFurnaceArc extends BlockMachineBase
 //        TileEntity tile = super.createTileEntity(state, world);
 //        tile.setWorld(world); TODO Needed?
         return new TileEntityElectricFurnace.TileEntityElectricFurnaceT2();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
 //    @Override

@@ -183,7 +183,7 @@ public class TransformerHooks
 //            return;
 //        }
 //
-//        if (!(world.getDimension() instanceof IGalacticraftWorldProvider) || ConfigManagerCore.enableOtherModsFeatures)
+//        if (!(world.getDimension() instanceof IGalacticraftWorldProvider) || ConfigManagerCore.enableOtherModsFeatures.get())
 //        {
 //            try {
 //                net.minecraftforge.fml.common.registry.GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
@@ -200,7 +200,7 @@ public class TransformerHooks
 //        {
 //            generatorsInitialised = true;
 //
-//            if (ConfigManagerCore.whitelistCoFHCoreGen)
+//            if (ConfigManagerCore.whitelistCoFHCoreGen.get())
 //            {
 //                addWorldGenForName("CoFHCore custom oregen", "cofh.cofhworld.init.WorldHandler");
 //            }
@@ -211,7 +211,7 @@ public class TransformerHooks
 //            try
 //            {
 //                Class genThaumCraft = Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator");
-//                if (genThaumCraft != null && ConfigManagerCore.enableThaumCraftNodes)
+//                if (genThaumCraft != null && ConfigManagerCore.enableThaumCraftNodes.get())
 //                {
 //                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
 //                    regField.setAccessible(true);
@@ -576,7 +576,7 @@ public class TransformerHooks
     @OnlyIn(Dist.CLIENT)
     public static double getCameraZoom(double previous)
     {
-        if (ConfigManagerCore.disableVehicleCameraChanges)
+        if (ConfigManagerCore.disableVehicleCameraChanges.get())
         {
             return previous;
         }

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemOxygenGear extends Item implements ISortableItem, IClickableItem
+public class ItemOxygenGear extends Item implements ISortable, IClickableItem
 {
     public ItemOxygenGear(Item.Properties properties)
     {
@@ -37,9 +37,9 @@ public class ItemOxygenGear extends Item implements ISortableItem, IClickableIte
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GEAR;
+        return EnumSortCategory.GEAR;
     }
 
     @Override

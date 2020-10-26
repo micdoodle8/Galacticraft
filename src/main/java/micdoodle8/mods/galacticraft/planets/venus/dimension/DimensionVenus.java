@@ -117,7 +117,7 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
     public ChunkGenerator createChunkGenerator()
     {
         VenusGenSettings settings = new VenusGenSettings();
-        BiomeProviderType<VenusBiomeProviderSettings, VenusBiomeProvider> type = VenusBiomeProviderTypes.VENUS.get();
+        BiomeProviderType<VenusBiomeProviderSettings, VenusBiomeProvider> type = VenusBiomeProviderTypes.VENUS_TYPE;
         VenusBiomeProviderSettings providerSettings = type.createSettings(world.getWorldInfo()).setGeneratorSettings(settings);
         return new VenusChunkGenerator(this.world, type.create(providerSettings), settings);
     }
@@ -299,14 +299,6 @@ public class DimensionVenus extends DimensionSpace implements IGalacticraftDimen
     public ResourceLocation getDungeonChestType()
     {
         return RoomTreasureVenus.VENUSCHEST;
-    }
-
-    @Override
-    public List<Block> getSurfaceBlocks()
-    {
-        List<Block> list = new LinkedList<>();
-        list.add(VenusBlocks.rockHard);
-        return list;
     }
 
     @Override

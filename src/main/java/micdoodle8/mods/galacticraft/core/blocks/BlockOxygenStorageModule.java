@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,6 +27,12 @@ public class BlockOxygenStorageModule extends BlockMachineBase
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityOxygenStorageModule();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

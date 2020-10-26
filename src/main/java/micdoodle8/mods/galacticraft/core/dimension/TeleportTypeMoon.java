@@ -20,7 +20,7 @@ public class TeleportTypeMoon implements ITeleportType
     @Override
     public boolean useParachute()
     {
-        return ConfigManagerCore.disableLander;
+        return ConfigManagerCore.disableLander.get();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class TeleportTypeMoon implements ITeleportType
             GCPlayerStats stats = GCPlayerStats.get(player);
             double x = stats.getCoordsTeleportedFromX();
             double z = stats.getCoordsTeleportedFromZ();
-            int limit = ConfigManagerCore.otherPlanetWorldBorders - 2;
+            int limit = ConfigManagerCore.otherPlanetWorldBorders.get() - 2;
             if (limit > 20)
             {
                 if (x > limit)
@@ -55,7 +55,7 @@ public class TeleportTypeMoon implements ITeleportType
                     z = -limit;
                 }
             }
-            return new Vector3D(x, ConfigManagerCore.disableLander ? 250.0 : 900.0, z);
+            return new Vector3D(x, ConfigManagerCore.disableLander.get() ? 250.0 : 900.0, z);
         }
 
         return null;
@@ -64,17 +64,17 @@ public class TeleportTypeMoon implements ITeleportType
     @Override
     public Vector3D getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
-        return new Vector3D(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
+        return new Vector3D(entity.getPosX(), ConfigManagerCore.disableLander.get() ? 250.0 : 900.0, entity.getPosZ());
     }
 
     @Override
     public Vector3D getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
-        if (ConfigManagerCore.disableLander)
+        if (ConfigManagerCore.disableLander.get())
         {
             final float x = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
             final float z = (rand.nextFloat() * 2 - 1.0F) * 4.0F;
-            return new Vector3D(player.posX + x, 220.0, player.posZ + z);
+            return new Vector3D(player.getPosX() + x, 220.0, player.getPosZ() + z);
         }
 
         return null;
@@ -84,7 +84,7 @@ public class TeleportTypeMoon implements ITeleportType
     public void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket)
     {
         GCPlayerStats stats = GCPlayerStats.get(player);
-        if (!ridingAutoRocket && !ConfigManagerCore.disableLander && stats.getTeleportCooldown() <= 0)
+        if (!ridingAutoRocket && !ConfigManagerCore.disableLander.get() && stats.getTeleportCooldown() <= 0)
         {
             if (player.abilities.isFlying)
             {
@@ -92,7 +92,7 @@ public class TeleportTypeMoon implements ITeleportType
             }
 
             EntityLander lander = new EntityLander(player);
-            lander.setPosition(player.posX, player.posY, player.posZ);
+            lander.setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
 
             if (!newWorld.isRemote)
             {
@@ -104,7 +104,7 @@ public class TeleportTypeMoon implements ITeleportType
                 ((ServerWorld) newWorld).chunkCheck(lander);
                 player.startRiding(lander);
                 CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
-                GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
+                GCLog.debug("Entering lander at : " + player.getPosX() + "," + player.getPosZ() + " lander spawn at: " + lander.getPosX() + "," + lander.getPosZ());
             }
 
             stats.setTeleportCooldown(10);

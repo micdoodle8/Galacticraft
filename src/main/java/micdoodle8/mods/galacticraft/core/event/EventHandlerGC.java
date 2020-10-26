@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -76,10 +77,14 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LifecycleEventProvider;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forgespi.language.ILifecycleEvent;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EventHandlerGC
 {
     public static Map<Block, Item> bucketList = new HashMap<Block, Item>(4, 1F);
@@ -108,7 +113,7 @@ public class EventHandlerGC
 //    {
 //        if (event.getModID().equals(Constants.MOD_ID_CORE))
 //        {
-////            ConfigManagerCore.syncConfig(false); TODO Config sync?
+////            ConfigManagerCore.syncConfig.get()(false); TODO Config sync?
 //        }
 //    }
 
@@ -179,7 +184,7 @@ public class EventHandlerGC
     public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
     {
         PlayerEntity p = event.getPlayer();
-        if (!p.onGround && p.world.getDimension() instanceof IZeroGDimension && !ConfigManagerCore.hardMode && event.getOriginalSpeed() < 5.0F)
+        if (!p.onGround && p.world.getDimension() instanceof IZeroGDimension && !ConfigManagerCore.hardMode.get() && event.getOriginalSpeed() < 5.0F)
         {
             event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
         }
@@ -324,7 +329,7 @@ public class EventHandlerGC
             return;
         }
 
-        if (entityLiving.ticksExisted % ConfigManagerCore.suffocationCooldown == 0)
+        if (entityLiving.ticksExisted % ConfigManagerCore.suffocationCooldown.get() == 0)
         {
             if (entityLiving.world.getDimension() instanceof IGalacticraftDimension)
             {
@@ -340,7 +345,7 @@ public class EventHandlerGC
                             return;
                         }
 
-                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, Math.max(ConfigManagerCore.suffocationDamage / 2, 1));
+                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, Math.max(ConfigManagerCore.suffocationDamage.get() / 2, 1));
 
                         GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
@@ -429,14 +434,14 @@ public class EventHandlerGC
     {
         boolean doGen2 = false;
 
-        for (Integer dim : ConfigManagerCore.externalOilGen)
-        {
-            if (dim == GCCoreUtil.getDimensionType(world).getId())
-            {
-                doGen2 = true;
-                break;
-            }
-        }
+//        for (Integer dim : ConfigManagerCore.externalOilGen.get()) TODO Disable oil gen config
+//        {
+//            if (dim == GCCoreUtil.getDimensionType(world).getId())
+//            {
+//                doGen2 = true;
+//                break;
+//            }
+//        }
 
         if (!doGen2)
         {
@@ -455,7 +460,7 @@ public class EventHandlerGC
         long j1 = rand.nextInt() / 2L * 2L + 1L;
         rand.setSeed(x * i1 + z * j1 ^ world.getSeed());
 
-        double randMod = Math.min(0.2D, 0.05D * ConfigManagerCore.oilGenFactor);
+        double randMod = Math.min(0.2D, 0.05D * ConfigManagerCore.oilGenFactor.get());
 
         if (biome.getDepth() >= 0.45F)
         {
@@ -509,7 +514,7 @@ public class EventHandlerGC
 
             final int r2 = r * r;
 
-            BlockState crudeOil = GCBlocks.crudeOil.getDefaultState();
+            BlockState crudeOil = GCFluids.OIL.getBlock().getDefaultState();
             for (int bx = -r; bx <= r; bx++)
             {
                 for (int by = -r + 2; by <= r - 2; by++)
@@ -590,7 +595,7 @@ public class EventHandlerGC
                             continue;
                         }
 
-                        if (world.getBlockState(new BlockPos(bx + x, by + cy, bz + z)).getBlock() == GCBlocks.crudeOil)
+                        if (world.getBlockState(new BlockPos(bx + x, by + cy, bz + z)).getBlock() == GCFluids.OIL.getBlock())
                         {
                             return true;
                         }
@@ -618,7 +623,7 @@ public class EventHandlerGC
         {
             return true;
         }
-        return /*b instanceof FlowingFluidBlock && */b != GCBlocks.crudeOil;
+        return /*b instanceof FlowingFluidBlock && */b != GCFluids.OIL.getBlock();
     }
 
     private static boolean checkBlockAbove(IWorld w, BlockPos pos)
@@ -651,7 +656,7 @@ public class EventHandlerGC
                     iArray[i] = page == null ? -2 : page.getPageID();
                 }
 
-                List<Object> objList = new ArrayList<Object>();
+                List<Object> objList = new ArrayList<>();
                 objList.add(iArray);
 
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SCHEMATIC_LIST, GCCoreUtil.getDimensionType(event.player.world), objList), event.player);
@@ -678,9 +683,9 @@ public class EventHandlerGC
         if (page != null)
         {
             Screen cs = event.currentGui;
-//            int benchX = (int) Minecraft.getInstance().player.posX;
-//            int benchY = (int) Minecraft.getInstance().player.posY;
-//            int benchZ = (int) Minecraft.getInstance().player.posZ;
+//            int benchX = (int) Minecraft.getInstance().player.getPosX();
+//            int benchY = (int) Minecraft.getInstance().player.getPosY();
+//            int benchZ = (int) Minecraft.getInstance().player.getPosZ();
 //            if (cs instanceof GuiPositionedContainer)
 //            {
 //                benchX = ((GuiPositionedContainer)cs).getX();
@@ -871,7 +876,7 @@ public class EventHandlerGC
     {
         if (event.getEntity() instanceof EntityEvolvedZombie)
         {
-            event.setCustomSummonedAid(new EntityEvolvedZombie(GCEntities.EVOLVED_ZOMBIE.get(), event.getWorld()));
+            event.setCustomSummonedAid(new EntityEvolvedZombie(GCEntities.EVOLVED_ZOMBIE, event.getWorld()));
 
             if (((LivingEntity) event.getEntity()).getRNG().nextFloat() < ((EntityEvolvedZombie) event.getEntity()).getAttribute(((EntityEvolvedZombie) event.getEntity()).getReinforcementsAttribute()).getValue())
             {

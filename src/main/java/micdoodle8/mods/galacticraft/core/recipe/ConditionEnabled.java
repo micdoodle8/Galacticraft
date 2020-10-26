@@ -22,11 +22,11 @@
 //            String data = JSONUtils.getString(json, "data");
 //            if (data.equals("can_default"))
 //            {
-//                return () -> !ConfigManagerCore.alternateCanisterRecipe;
+//                return () -> !ConfigManagerCore.alternateCanisterRecipe.get();
 //            }
 //            if (data.equals("can_alt"))
 //            {
-//                return () -> ConfigManagerCore.alternateCanisterRecipe;
+//                return () -> ConfigManagerCore.alternateCanisterRecipe.get();
 //            }
 //            if (data.equals("aa_loaded"))
 //            {

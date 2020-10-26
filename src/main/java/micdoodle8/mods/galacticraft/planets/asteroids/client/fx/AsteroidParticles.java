@@ -38,7 +38,5 @@ public class AsteroidParticles
 
         register(r, new ParticleType<>(false, BlockPosParticleData.DESERIALIZER), AsteroidParticleTypeNames.telepadDown);
         register(r, new ParticleType<>(false, BlockPosParticleData.DESERIALIZER), AsteroidParticleTypeNames.telepadUp);
-        Minecraft.getInstance().particles.registerFactory(TELEPAD_DOWN, ParticleTelepad.DownFactory::new);
-        Minecraft.getInstance().particles.registerFactory(TELEPAD_UP, ParticleTelepad.UpFactory::new);
     }
 }

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=north": { "model": "galacticraftcore:block/ingot_compressor_model" },
+        "facing=east":  { "model": "galacticraftcore:block/ingot_compressor_model", "y": 90 },
+        "facing=west":  { "model": "galacticraftcore:block/ingot_compressor_model", "y": 270 },
+        "facing=south": { "model": "galacticraftcore:block/ingot_compressor_model", "y": 180 },
+
+        "inventory": [{ "model": "galacticraftcore:block/coal_generator_model" }]
+    }
+}

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -117,16 +118,16 @@ public class RoomBossVenus extends SizedPieceVenus
                             int distFromFloor = randomIn.nextInt(5) + 2;
                             for (int j0 = j; j0 >= distFromFloor + 1; --j0)
                             {
-                                BlockTorchWeb.EnumWebType webType;
+                                Block block;
                                 if (j0 == distFromFloor + 1)
                                 {
-                                    webType = BlockTorchWeb.EnumWebType.WEB_1;
+                                    block = VenusBlocks.torchWebLight;
                                 }
                                 else
                                 {
-                                    webType = BlockTorchWeb.EnumWebType.WEB_0;
+                                    block = VenusBlocks.torchWebSupport;
                                 }
-                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().with(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, mutableBoundingBoxIn);
+                                this.setBlockState(worldIn, block.getDefaultState(), i, j0, k, mutableBoundingBoxIn);
                             }
                         }
 

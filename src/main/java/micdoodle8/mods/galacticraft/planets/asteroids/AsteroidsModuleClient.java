@@ -1,18 +1,35 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.FluidTexturesGC;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.ParticleTelepad;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.*;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandlerClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import static micdoodle8.mods.galacticraft.planets.asteroids.client.fx.AsteroidParticles.TELEPAD_DOWN;
+import static micdoodle8.mods.galacticraft.planets.asteroids.client.fx.AsteroidParticles.TELEPAD_UP;
+
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AsteroidsModuleClient implements IPlanetsModuleClient
 {
     @Override
@@ -30,6 +47,15 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         FluidTexturesGC.init();
 //        AsteroidsModuleClient.registerBlockRenderers();
 
+        RenderType cutout = RenderType.getCutout();
+        RenderTypeLookup.setRenderLayer(AsteroidBlocks.blockMinerBase, cutout);
+        RenderTypeLookup.setRenderLayer(AsteroidBlocks.minerBaseFull, cutout);
+        RenderTypeLookup.setRenderLayer(AsteroidBlocks.blockWalkway, cutout);
+        RenderTypeLookup.setRenderLayer(AsteroidBlocks.blockWalkwayWire, cutout);
+        RenderTypeLookup.setRenderLayer(AsteroidBlocks.blockWalkwayFluid, cutout);
+        RenderType transluscent = RenderType.getTranslucent();
+        RenderTypeLookup.setRenderLayer(AsteroidBlocks.blockDenseIce, transluscent);
+
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner());
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
@@ -40,6 +66,16 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 //        {
 //            CraftGuideIntegration.register();
 //        }
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThree.getRegistryName(), ItemModelRocketT3::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo1.getRegistryName(), ItemModelRocketT3::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo2.getRegistryName(), ItemModelRocketT3::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo3.getRegistryName(), ItemModelRocketT3::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCreative.getRegistryName(), ItemModelRocketT3::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.grapple.getRegistryName(), ItemModelGrapple::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.astroMiner.getRegistryName(), ItemModelAstroMiner::new);
+        ClientProxyCore.setCustomModel(AsteroidBlocks.shortRangeTelepad.getRegistryName(), ItemModelTelepad::new);
+        ClientProxyCore.setCustomModel(AsteroidBlocks.beamReceiver.getRegistryName(), ItemModelBeamReceiver::new);
+        ClientProxyCore.setCustomModel(AsteroidBlocks.beamReflector.getRegistryName(), ItemModelBeamReflector::new);
     }
 
 //    @Override
@@ -240,4 +276,10 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 //            }
 //        }
 //    }
+
+    @SubscribeEvent
+    public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+        Minecraft.getInstance().particles.registerFactory(TELEPAD_DOWN, ParticleTelepad.DownFactory::new);
+        Minecraft.getInstance().particles.registerFactory(TELEPAD_UP, ParticleTelepad.UpFactory::new);
+    }
 }

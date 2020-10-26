@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "custom": { "flip-v": true },
-    "model": "galacticraftcore:workbench.obj"
+    "model": "galacticraftcore:block/workbench.obj"
   },
   "variants": {
     "normal": [{}],

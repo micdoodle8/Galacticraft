@@ -39,7 +39,5 @@ public class MarsParticles
 
         register(r, new BasicParticleType(false), MarsParticleTypeNames.drip);
         register(r, new BasicParticleType(false), MarsParticleTypeNames.cryo);
-        Minecraft.getInstance().particles.registerFactory(DRIP, ParticleDrip.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(CRYO, EntityCryoFX.Factory::new);
     }
 }

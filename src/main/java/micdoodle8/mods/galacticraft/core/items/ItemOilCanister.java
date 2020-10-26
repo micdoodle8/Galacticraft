@@ -1,14 +1,16 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -16,15 +18,15 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemOilCanister extends ItemCanisterGeneric implements ISortableItem
+public class ItemOilCanister extends ItemCanisterGeneric implements ISortable
 {
 //    protected IIcon[] icons = new IIcon[7];
 
     public ItemOilCanister(Item.Properties builder)
     {
         super(builder);
-//        this.setAllowedFluid(ConfigManagerCore.useOldOilFluidID ? "oilgc" : "oil");
-        this.setAllowedFluid(GCFluids.OIL.getFluid().getRegistryName()); // TODO Other oil support
+//        this.setAllowedFluid(ConfigManagerCore.useOldOilFluidID.get() ? "oilgc" : "oil");
+        this.setAllowedFluid(new ResourceLocation(Constants.MOD_ID_CORE, "oil")); // TODO Other oil support
 //        this.setContainerItem(this);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
@@ -77,6 +79,17 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
         }
     }
 
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+    {
+        if (this.isInGroup(group))
+        {
+            items.add(createEmptyCanister(1));
+            items.add(new ItemStack(this));
+        }
+    }
+
+
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
 //    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
@@ -92,9 +105,9 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
-        if (ItemCanisterGeneric.EMPTY == stack.getDamage())
+        if (ItemCanisterGeneric.EMPTY_CAPACITY == stack.getDamage())
         {
-            stack.setTag(null);
+//            stack.setTag(null);
         }
         else if (stack.getDamage() <= 0)
         {
@@ -103,15 +116,15 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.CANISTER;
+        return EnumSortCategory.CANISTER;
     }
 
     public static ItemStack createEmptyCanister(int count)
     {
         ItemStack stack = new ItemStack(GCItems.oilCanister, count);
-        stack.setDamage(ItemCanisterGeneric.EMPTY);
+        stack.setDamage(ItemCanisterGeneric.EMPTY_CAPACITY);
         return stack;
     }
 }

@@ -58,8 +58,8 @@ public class VenusBiomeProvider extends BiomeProvider
 
     private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildVenusProcedure(final WorldType type, final VenusGenSettings settings, final LongFunction<C> context)
     {
-
-        IAreaFactory<T> mainLayer = GenLayerVenusBiomes.INSTANCE.apply(context.apply(1));
+        IExtendedNoiseRandom<T> r = context.apply(1);
+        IAreaFactory<T> mainLayer = GenLayerVenusBiomes.INSTANCE.apply(r);
         IAreaFactory<T> zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1000L), mainLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1001L), zoomLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1002L), zoomLayer);

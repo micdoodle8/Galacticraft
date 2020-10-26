@@ -43,7 +43,7 @@ public class TickHandlerClientVenus
     {
         final Minecraft minecraft = Minecraft.getInstance();
         final ClientPlayerEntity player = minecraft.player;
-        if (player != null && !ConfigManagerPlanets.disableAmbientLightning)
+        if (player != null && !ConfigManagerPlanets.disableAmbientLightning.get())
         {
             Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
             while (it.hasNext())
@@ -94,7 +94,7 @@ public class TickHandlerClientVenus
 
         if (player == event.player)
         {
-            if (!ConfigManagerPlanets.disableAmbientLightning)
+            if (!ConfigManagerPlanets.disableAmbientLightning.get())
             {
                 Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
                 while (it.hasNext())

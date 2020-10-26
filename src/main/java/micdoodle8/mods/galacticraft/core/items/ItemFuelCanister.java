@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -17,15 +17,15 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableItem
+public class ItemFuelCanister extends ItemCanisterGeneric implements ISortable
 {
 //    protected IIcon[] icons = new IIcon[7];
 
     public ItemFuelCanister(Item.Properties builder)
     {
         super(builder);
-//        this.setAllowedFluid(ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel");
-        this.setAllowedFluid(GCFluids.FUEL.getFluid().getRegistryName()); // TODO Other mods fuel
+//        this.setAllowedFluid(ConfigManagerCore.useOldFuelFluidID.get() ? "fuelgc" : "fuel");
+        this.setAllowedFluid(new ResourceLocation(Constants.MOD_ID_CORE, "fuel")); // TODO Other oil support
 //        this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
@@ -74,8 +74,8 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableIt
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.CANISTER;
+        return EnumSortCategory.CANISTER;
     }
 }

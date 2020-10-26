@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftcore:detector_model" }
+        "active=true": { "model": "galacticraftcore:block/detector_model" },
+        "active=false": { "model": "galacticraftcore:block/detector_model" }
     }
 }

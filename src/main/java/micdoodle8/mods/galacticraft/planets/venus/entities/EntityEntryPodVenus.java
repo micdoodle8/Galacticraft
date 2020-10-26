@@ -35,7 +35,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
 
     public static EntityEntryPodVenus createEntityEntryPodVenus(ServerPlayerEntity player)
     {
-        EntityEntryPodVenus pod = new EntityEntryPodVenus(VenusEntities.ENTRY_POD.get(), player.world);
+        EntityEntryPodVenus pod = new EntityEntryPodVenus(VenusEntities.ENTRY_POD, player.world);
 
         GCPlayerStats stats = GCPlayerStats.get(player);
         pod.stacks = NonNullList.withSize(stats.getRocketStacks().size() + 1, ItemStack.EMPTY);

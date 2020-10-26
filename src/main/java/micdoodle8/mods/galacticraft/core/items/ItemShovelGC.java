@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -9,7 +9,7 @@ import net.minecraft.item.ShovelItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemShovelGC extends ShovelItem implements ISortableItem
+public class ItemShovelGC extends ShovelItem implements ISortable
 {
     public ItemShovelGC(Item.Properties builder)
     {
@@ -32,8 +32,8 @@ public class ItemShovelGC extends ShovelItem implements ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.TOOLS;
+        return EnumSortCategory.TOOLS;
     }
 }

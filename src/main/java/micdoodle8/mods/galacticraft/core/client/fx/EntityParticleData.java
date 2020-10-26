@@ -46,7 +46,11 @@ public class EntityParticleData implements IParticleData
     @Override
     public void write(PacketBuffer buffer)
     {
-        buffer.writeUniqueId(this.entityUUID);
+        buffer.writeBoolean(this.entityUUID != null);
+        if (this.entityUUID != null)
+        {
+            buffer.writeUniqueId(this.entityUUID);
+        }
     }
 
     @Override

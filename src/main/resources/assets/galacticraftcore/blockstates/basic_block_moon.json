@@ -1,14 +1,14 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:basic_block_moon_model" }],
-        "basictypemoon=ore_copper_moon": { "model": "galacticraftcore:ore_copper_moon_model" },
-        "basictypemoon=ore_tin_moon": { "model": "galacticraftcore:ore_tin_moon_model" },
-        "basictypemoon=ore_cheese_moon": { "model": "galacticraftcore:ore_cheese_moon_model" },
-        "basictypemoon=moon_dirt_moon": { "model": "galacticraftcore:moon_dirt_moon_model" },
-        "basictypemoon=moon_stone": { "model": "galacticraftcore:moon_stone_model" },
-        "basictypemoon=moon_turf": { "model": "galacticraftcore:moon_turf_model" },
-        "basictypemoon=ore_sapphire_moon": { "model": "galacticraftcore:ore_sapphire_moon_model" },
-        "basictypemoon=moon_dungeon_brick": { "model": "galacticraftcore:moon_dungeon_brick_model" }
+        "inventory": [{ "model": "galacticraftcore:block/basic_block_moon_model" }],
+        "basictypemoon=ore_copper_moon": { "model": "galacticraftcore:block/ore_copper_moon_model" },
+        "basictypemoon=ore_tin_moon": { "model": "galacticraftcore:block/ore_tin_moon_model" },
+        "basictypemoon=ore_cheese_moon": { "model": "galacticraftcore:block/ore_cheese_moon_model" },
+        "basictypemoon=moon_dirt_moon": { "model": "galacticraftcore:block/moon_dirt_moon_model" },
+        "basictypemoon=moon_stone": { "model": "galacticraftcore:block/moon_stone_model" },
+        "basictypemoon=moon_turf": { "model": "galacticraftcore:block/moon_turf_model" },
+        "basictypemoon=ore_sapphire_moon": { "model": "galacticraftcore:block/ore_sapphire_moon_model" },
+        "basictypemoon=moon_dungeon_brick": { "model": "galacticraftcore:block/moon_dungeon_brick_model" }
     }
 }

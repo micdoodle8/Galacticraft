@@ -37,6 +37,7 @@ public class EntityCryoFX extends SpriteTexturedParticle
         this.maxAge = (int) ((float) this.maxAge * f);
         this.canCollide = false;
         this.animatedSprite = animatedSprite;
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @Override

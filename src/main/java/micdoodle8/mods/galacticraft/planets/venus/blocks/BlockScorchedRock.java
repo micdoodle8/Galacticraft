@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.ParticleTypes;
@@ -8,7 +10,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockScorchedRock extends Block
+public class BlockScorchedRock extends Block implements ISortable
 {
     public BlockScorchedRock(Properties builder)
     {
@@ -22,11 +24,11 @@ public class BlockScorchedRock extends Block
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)

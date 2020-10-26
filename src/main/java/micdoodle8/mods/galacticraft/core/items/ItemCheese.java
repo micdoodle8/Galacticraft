@@ -44,7 +44,7 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryItem getCategory(int meta)
+//    public EnumSortCategoryItem getCategory()
 //    {
 //        return EnumSortCategoryItem.GENERAL;
 //    }

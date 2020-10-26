@@ -3,6 +3,44 @@
     "textures": {
         "layer0": "galacticraftcore:items/oil_canister_partial_0"
     },
+    "overrides": [
+        {
+            "predicate": {
+                "galacticraftcore:fluid_level": 0.001
+            },
+            "model": "galacticraftcore:item/oil_canister_partial_1"
+        },
+        {
+            "predicate": {
+                "galacticraftcore:fluid_level": 0.333333333334
+            },
+            "model": "galacticraftcore:item/oil_canister_partial_2"
+        },
+        {
+            "predicate": {
+                "galacticraftcore:fluid_level": 0.5
+            },
+            "model": "galacticraftcore:item/oil_canister_partial_3"
+        },
+        {
+            "predicate": {
+                "galacticraftcore:fluid_level": 0.66666666666
+            },
+            "model": "galacticraftcore:item/oil_canister_partial_4"
+        },
+        {
+            "predicate": {
+                "galacticraftcore:fluid_level": 0.833333333333
+            },
+            "model": "galacticraftcore:item/oil_canister_partial_5"
+        },
+        {
+            "predicate": {
+                "galacticraftcore:fluid_level": 1.0
+            },
+            "model": "galacticraftcore:item/oil_canister_partial_6"
+        }
+    ],
     "display": {
         "thirdperson": {
             "rotation": [ -90, 0, 0 ],

@@ -3,20 +3,17 @@ package micdoodle8.mods.galacticraft.core.items;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,20 +26,33 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class ItemCanisterGeneric extends ItemFluidContainer
 {
-    public final static int EMPTY = 1001; // One more than bucket
+    public final static int VALID_CAPACITY = 1000;
+    public final static int EMPTY_CAPACITY = VALID_CAPACITY + 1; // One more than bucket
     private static final boolean isTELoaded = CompatibilityManager.isTELoaded();
 
     private ResourceLocation allowedFluid = null;
 
     public ItemCanisterGeneric(Item.Properties builder)
     {
-        super(builder, 1000);
+        super(builder, VALID_CAPACITY);
 //        this.setMaxDamage(ItemCanisterGeneric.EMPTY);
 //        this.setMaxStackSize(1);
 //        this.setNoRepair();
 //        this.setUnlocalizedName(assetName);
 //        this.setContainerItem(GCItems.oilCanister);
 //        this.setHasSubtypes(true);
+        this.addPropertyOverride(new ResourceLocation(Constants.MOD_ID_CORE, "fluid_level"), new IItemPropertyGetter() {
+            @Override
+            public float call(ItemStack stack, World world, LivingEntity entity) {
+                float damagePercentage;
+                if (stack.getDamage() == EMPTY_CAPACITY) {
+                    damagePercentage = 0.0F;
+                } else {
+                    damagePercentage = 1.0F - (stack.getDamage() - 1) / (float)VALID_CAPACITY;
+                }
+                return Math.min(Math.max(damagePercentage, 0.0F), 1.0F);
+            }
+        });
     }
 
     @Override
@@ -93,7 +103,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
         }
 
         ItemStack stack = new ItemStack(this.getContainerItem(), 1);
-        stack.setDamage(ItemCanisterGeneric.EMPTY);
+        stack.setDamage(ItemCanisterGeneric.EMPTY_CAPACITY);
         return stack;
     }
 
@@ -102,7 +112,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
 
-        if (ItemCanisterGeneric.EMPTY == stack.getDamage())
+        if (ItemCanisterGeneric.EMPTY_CAPACITY == stack.getDamage())
         {
             if (stack.getItem() != GCItems.oilCanister)
             {
@@ -144,7 +154,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             }
             return 0;
         }
-        if (capacityPlusOne >= ItemCanisterGeneric.EMPTY)
+        if (capacityPlusOne >= ItemCanisterGeneric.EMPTY_CAPACITY)
         {
             //Empty canister - find a new canister to match the fluid
             for (ItemCanisterGeneric i : GCItems.canisterTypes)
@@ -160,10 +170,10 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
                     break;
                 }
             }
-            if (capacityPlusOne > ItemCanisterGeneric.EMPTY)
+            if (capacityPlusOne > ItemCanisterGeneric.EMPTY_CAPACITY)
             {
                 //It shouldn't be possible, but just in case, set this to a proper empty item
-                capacityPlusOne = ItemCanisterGeneric.EMPTY;
+                capacityPlusOne = ItemCanisterGeneric.EMPTY_CAPACITY;
                 container.setDamage(capacityPlusOne);
             }
         }
@@ -183,7 +193,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 
     public FluidStack drain(ItemStack container, int maxDrain, IFluidHandler.FluidAction action)
     {
-        if (this.allowedFluid == null || container.getDamage() >= ItemCanisterGeneric.EMPTY)
+        if (this.allowedFluid == null || container.getDamage() >= ItemCanisterGeneric.EMPTY_CAPACITY)
         {
             return null;
         }
@@ -202,9 +212,9 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 
     protected void setNewDamage(ItemStack container, int newDamage)
     {
-        newDamage = Math.min(newDamage, ItemCanisterGeneric.EMPTY);
+        newDamage = Math.min(newDamage, ItemCanisterGeneric.EMPTY_CAPACITY);
         container.setDamage(newDamage);
-        if (newDamage == ItemCanisterGeneric.EMPTY)
+        if (newDamage == ItemCanisterGeneric.EMPTY_CAPACITY)
         {
             if (container.getItem() != GCItems.oilCanister)
             {
@@ -234,7 +244,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     public FluidStack getFluid(ItemStack container)
     {
         ResourceLocation fluidName = ((ItemCanisterGeneric) container.getItem()).allowedFluid;
-        if (fluidName == null || container.getDamage() >= ItemCanisterGeneric.EMPTY)
+        if (fluidName == null || container.getDamage() >= ItemCanisterGeneric.EMPTY_CAPACITY)
         {
             return null;
         }
@@ -245,6 +255,6 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
             return null;
         }
 
-        return new FluidStack(fluid, ItemCanisterGeneric.EMPTY - container.getDamage());
+        return new FluidStack(fluid, ItemCanisterGeneric.EMPTY_CAPACITY - container.getDamage());
     }
 }

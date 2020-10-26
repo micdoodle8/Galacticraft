@@ -1,15 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBase;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
 import static micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems.register;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class MarsItems
 {
     @ObjectHolder(MarsItemNames.deshPickaxe)
@@ -78,7 +83,7 @@ public class MarsItems
 
     public static Item.Properties defaultBuilder()
     {
-        return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
+        return new Item.Properties().group(GalacticraftCore.galacticraftItemsTab);
     }
 
 //    public static ArmorMaterial ARMORDESH = EnumHelper.addArmorMaterial("DESH", "", 42, new int[] { 4, 7, 9, 4 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0F);

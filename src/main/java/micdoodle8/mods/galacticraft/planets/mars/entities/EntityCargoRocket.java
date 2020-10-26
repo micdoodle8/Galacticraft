@@ -48,7 +48,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
     public static EntityCargoRocket createEntityCargoRocket(World world, double x, double y, double z, EnumRocketType rocketType)
     {
-        EntityCargoRocket rocket = new EntityCargoRocket(MarsEntities.CARGO_ROCKET.get(), world);
+        EntityCargoRocket rocket = new EntityCargoRocket(MarsEntities.CARGO_ROCKET, world);
         rocket.setPosition(x, y, z);
         rocket.prevPosX = x;
         rocket.prevPosY = y;
@@ -217,7 +217,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             i = 1;
         }
 
-        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles.get() && this.hasValidFuel())
         {
             if (this.world.isRemote)
             {

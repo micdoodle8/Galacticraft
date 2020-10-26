@@ -6,7 +6,7 @@
             "texture": "galacticraftcore:blocks/panel_light_off",
             "particle": "blocks/glass"
         },
-        "model": "galacticraftcore:panel_lighting"
+        "model": "galacticraftcore:block/panel_lighting"
     },
     "variants": {
         "normal": [{  }],

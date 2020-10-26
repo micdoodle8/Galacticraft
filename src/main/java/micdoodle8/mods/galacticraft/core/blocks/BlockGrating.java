@@ -14,7 +14,7 @@
 //import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 //import micdoodle8.mods.galacticraft.core.GCBlocks;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 //import micdoodle8.mods.galacticraft.core.util.PropertyObject;
 //import net.minecraft.block.*;
@@ -54,10 +54,10 @@
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //import net.minecraftforge.registries.IForgeRegistry;
 //
-//public class BlockGrating extends Block implements ISortableBlock, IPartialSealableBlock
+//public class BlockGrating extends Block implements ISortable, IPartialSealableBlock
 //{
 //    public static final PropertyObject<BlockState> BASE_STATE = new PropertyObject<>("held_state", BlockState.class);
-//    protected static final VoxelShape BOUNDING_BOX = Block.makeCuboidShape(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
+//    protected static final VoxelShape BOUNDING_BOX = VoxelShapes.create(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
 //    public static IBlockReader savedBlockAccess;
 //    public static BlockPos savedPos;
 //
@@ -170,9 +170,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.DECORATION;
+//        return EnumSortCategory.DECORATION;
 //    }
 //
 //    @Override

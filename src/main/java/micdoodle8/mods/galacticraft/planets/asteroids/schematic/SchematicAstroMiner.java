@@ -23,7 +23,7 @@ public class SchematicAstroMiner implements ISchematicPage
     @Override
     public int getPageID()
     {
-        return ConfigManagerPlanets.idSchematicRocketT3 + 1;
+        return ConfigManagerPlanets.idSchematicRocketT3.get() + 1;
     }
 
 //    @Override

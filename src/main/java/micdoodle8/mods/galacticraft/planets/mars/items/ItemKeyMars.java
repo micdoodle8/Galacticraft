@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyItem;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
+public class ItemKeyMars extends Item implements IKeyItem, ISortable
 {
     public ItemKeyMars(Item.Properties properties)
     {
@@ -62,8 +62,8 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.KEYS;
+        return EnumSortCategory.KEYS;
     }
 }

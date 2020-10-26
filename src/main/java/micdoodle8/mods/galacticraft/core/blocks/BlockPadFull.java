@@ -15,24 +15,20 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
     public static final EnumProperty<EnumLandingPadFullType> PAD_TYPE = EnumProperty.create("type", EnumLandingPadFullType.class);
-    private final VoxelShape AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D);
+    private final VoxelShape AABB = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D);
 
     public enum EnumLandingPadFullType implements IStringSerializable
     {
@@ -117,10 +113,10 @@ public class BlockPadFull extends BlockAdvancedTile implements IPartialSealableB
 ////        switch (getMetaFromState(blockState))
 ////        {
 ////        case 0:
-////            return Block.makeCuboidShape(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+////            return VoxelShapes.create(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
 ////                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ); TODO
 ////        case 2:
-////            return Block.makeCuboidShape(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
+////            return VoxelShapes.create(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
 ////                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
 ////        default:
 ////        }
@@ -145,17 +141,17 @@ public class BlockPadFull extends BlockAdvancedTile implements IPartialSealableB
 //        return true;
 //    }
 
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return this == GCBlocks.landingPadFull ? new TileEntityLandingPad() : new TileEntityBuggyFueler();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItemCustom;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.SoundType;
@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
+public class ItemFlag extends Item implements IHoldableItemCustom, ISortable
 {
     public int placeProgress;
 
@@ -184,8 +184,8 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategory.GENERAL;
     }
 }

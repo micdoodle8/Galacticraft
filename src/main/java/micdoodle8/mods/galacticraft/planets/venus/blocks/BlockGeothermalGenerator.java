@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGenerator;
 import net.minecraft.block.Block;
@@ -14,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -23,9 +26,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescription, IPartialSealableBlock
+public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public BlockGeothermalGenerator(Properties builder)
@@ -76,6 +79,12 @@ public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescr
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
@@ -99,11 +108,11 @@ public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescr
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
 //    @Override
 //    public BlockState getStateFromMeta(int meta)

@@ -7,7 +7,7 @@
 //import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 //import micdoodle8.mods.galacticraft.core.GCItems;
 //import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 //import net.minecraft.block.Block;
@@ -39,7 +39,7 @@
 //import java.util.Map;
 //import java.util.Random;
 //
-//public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
+//public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortable
 //{
 //    public static final EnumProperty<EnumBlockBasicMoon> BASIC_TYPE_MOON = EnumProperty.create("basictypemoon", EnumBlockBasicMoon.class);
 //
@@ -347,7 +347,7 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
 //        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) getStateFromMeta(meta).getValue(BASIC_TYPE_MOON));
 //        switch (type)
@@ -356,11 +356,11 @@
 //        case ORE_COPPER_MOON:
 //        case ORE_SAPPHIRE:
 //        case ORE_TIN_MOON:
-//            return EnumSortCategoryBlock.ORE;
+//            return EnumSortCategory.ORE;
 //        case MOON_DUNGEON_BRICK:
-//            return EnumSortCategoryBlock.BRICKS;
+//            return EnumSortCategory.BRICKS;
 //        }
-//        return EnumSortCategoryBlock.GENERAL;
+//        return EnumSortCategory.GENERAL;
 //    }
 //
 //    @Override

@@ -16,7 +16,7 @@
 //    {
 //        public CoreConfigGUI(Screen parent)
 //        {
-//            super(parent, ConfigManagerCore.getConfigElements(), Constants.MOD_ID_CORE, false, false, GCCoreUtil.translate("gc.configgui.title"));
+//            super(parent, ConfigManagerCore.getConfigElements.get()(), Constants.MOD_ID_CORE, false, false, GCCoreUtil.translate("gc.configgui.title"));
 //        }
 //    }
 //

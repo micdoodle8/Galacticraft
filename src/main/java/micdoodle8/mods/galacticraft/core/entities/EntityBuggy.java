@@ -157,15 +157,15 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             return BuggyType.NO_INVENTORY;
         }
-        if (item == GCItems.rocketTierOneCargo1)
+        if (item == GCItems.buggyInventory1)
         {
             return BuggyType.INVENTORY_1;
         }
-        if (item == GCItems.rocketTierOneCargo2)
+        if (item == GCItems.buggyInventory2)
         {
             return BuggyType.INVENTORY_2;
         }
-        if (item == GCItems.rocketTierOneCargo3)
+        if (item == GCItems.buggyInventory3)
         {
             return BuggyType.INVENTORY_3;
         }

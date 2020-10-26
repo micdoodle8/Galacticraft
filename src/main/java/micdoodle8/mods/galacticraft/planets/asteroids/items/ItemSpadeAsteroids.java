@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
@@ -10,7 +10,7 @@ import net.minecraft.item.ShovelItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemSpadeAsteroids extends ShovelItem implements ISortableItem
+public class ItemSpadeAsteroids extends ShovelItem implements ISortable
 {
     public ItemSpadeAsteroids(Item.Properties builder)
     {
@@ -33,8 +33,8 @@ public class ItemSpadeAsteroids extends ShovelItem implements ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.TOOLS;
+        return EnumSortCategory.TOOLS;
     }
 }

@@ -174,7 +174,7 @@
 //
 //        // HOME:
 //        var12 = 10.0F;
-//        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.player.posZ) * 0.01F;
+//        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.player.getPosZ()) * 0.01F;
 //        GL11.glScalef(0.6F, 0.6F, 0.6F);
 //        GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
 //        GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
@@ -261,7 +261,7 @@
 //        BufferBuilder worldRenderer = var2.getBuffer();
 //        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 //
-//        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
+//        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars.get() ? 20000 : 6000); ++var3)
 //        {
 //            double var4 = var1.nextFloat() * 2.0F - 1.0F;
 //            double var6 = var1.nextFloat() * 2.0F - 1.0F;
@@ -275,9 +275,9 @@
 //                var4 *= var12;
 //                var6 *= var12;
 //                var8 *= var12;
-//                final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-//                final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
-//                final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 100D + 150D : 100.0D);
+//                final double var14 = var4 * (ConfigManagerCore.moreStars.get() ? var1.nextDouble() * 100D + 150D : 100.0D);
+//                final double var16 = var6 * (ConfigManagerCore.moreStars.get() ? var1.nextDouble() * 100D + 150D : 100.0D);
+//                final double var18 = var8 * (ConfigManagerCore.moreStars.get() ? var1.nextDouble() * 100D + 150D : 100.0D);
 //                final double var20 = Math.atan2(var4, var8);
 //                final double var22 = Math.sin(var20);
 //                final double var24 = Math.cos(var20);

@@ -122,25 +122,25 @@ public class GCCoreUtil
 //        EntityRegistry.registerModEntity(registryName, var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
 //    }
 
-    public static void registerGalacticraftItem(String key, Item item)
-    {
-        registerGalacticraftItem(key, new ItemStack(item));
-    }
+//    public static void registerGalacticraftItem(String key, Item item)
+//    {
+//        registerGalacticraftItem(key, new ItemStack(item));
+//    }
 
 //    public static void registerGalacticraftItem(String key, Item item, int metadata)
 //    {
 //        registerGalacticraftItem(key, new ItemStack(item, 1, metadata));
 //    }
 
-    public static void registerGalacticraftItem(String key, ItemStack stack)
-    {
-        GalacticraftCore.itemList.add(stack);
-    }
+//    public static void registerGalacticraftItem(String key, ItemStack stack)
+//    {
+//        GalacticraftCore.itemList.add(stack);
+//    }
 
-    public static void registerGalacticraftBlock(String key, Block block)
-    {
-        GalacticraftCore.blocksList.add(block);
-    }
+//    public static void registerGalacticraftBlock(String key, Block block)
+//    {
+//        GalacticraftCore.blocksList.add(block);
+//    }
 
     public static String translate(String key)
     {

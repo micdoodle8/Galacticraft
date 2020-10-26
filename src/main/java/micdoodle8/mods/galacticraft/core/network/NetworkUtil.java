@@ -542,7 +542,7 @@ public class NetworkUtil
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            writeUTF8String(buffer, fluidTank.getFluid().getFluid().toString());
+            writeUTF8String(buffer, fluidTank.getFluid().getFluid().getRegistryName().toString());
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }

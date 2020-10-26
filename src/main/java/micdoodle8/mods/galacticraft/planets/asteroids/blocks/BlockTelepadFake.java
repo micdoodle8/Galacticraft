@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
@@ -31,8 +32,8 @@ public class BlockTelepadFake extends BlockAdvancedTile
 {
     public static final BooleanProperty TOP = BooleanProperty.create("top");
     public static final BooleanProperty CONNECTABLE = BooleanProperty.create("connectable");
-    protected static final VoxelShape AABB_TOP = Block.makeCuboidShape(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
-    protected static final VoxelShape AABB_BOTTOM = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+    protected static final VoxelShape AABB_TOP = VoxelShapes.create(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape AABB_BOTTOM = VoxelShapes.create(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 
     public BlockTelepadFake(Properties builder)
     {
@@ -179,6 +180,12 @@ public class BlockTelepadFake extends BlockAdvancedTile
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityTelepadFake();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

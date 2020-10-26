@@ -79,14 +79,14 @@ public class RoomSpawner extends RoomEmpty
         switch (rand.nextInt(4))
         {
         case 0:
-            return GCEntities.EVOLVED_SPIDER.get();
+            return GCEntities.EVOLVED_SPIDER;
         case 1:
-            return GCEntities.EVOLVED_CREEPER.get();
+            return GCEntities.EVOLVED_CREEPER;
         case 2:
-            return GCEntities.EVOLVED_SKELETON.get();
+            return GCEntities.EVOLVED_SKELETON;
         case 3:
         default:
-            return GCEntities.EVOLVED_ZOMBIE.get();
+            return GCEntities.EVOLVED_ZOMBIE;
         }
     }
 }

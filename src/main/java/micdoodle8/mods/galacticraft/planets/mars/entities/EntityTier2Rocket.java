@@ -38,7 +38,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
 
     public static EntityTier2Rocket createEntityTier2Rocket(World world, double x, double y, double z, EnumRocketType rocketType)
     {
-        EntityTier2Rocket rocket = new EntityTier2Rocket(MarsEntities.ROCKET_T2.get(), world);
+        EntityTier2Rocket rocket = new EntityTier2Rocket(MarsEntities.ROCKET_T2, world);
         rocket.setPosition(x, y, z);
         rocket.prevPosX = x;
         rocket.prevPosY = y;
@@ -156,7 +156,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
             i = 1;
         }
 
-        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles.get() && this.hasValidFuel())
         {
             if (this.world.isRemote)
             {

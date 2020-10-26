@@ -1,14 +1,14 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:basic_solar_model" }],
-        "facing=north,type=basic_solar": { "model": "galacticraftcore:basic_solar_model" },
-        "facing=east,type=basic_solar":  { "model": "galacticraftcore:basic_solar_model", "y": 90 },
-        "facing=west,type=basic_solar":  { "model": "galacticraftcore:basic_solar_model", "y": 270 },
-        "facing=south,type=basic_solar": { "model": "galacticraftcore:basic_solar_model", "y": 180 },
-        "facing=north,type=advanced_solar": { "model": "galacticraftcore:advanced_solar_model" },
-        "facing=east,type=advanced_solar":  { "model": "galacticraftcore:advanced_solar_model", "y": 90 },
-        "facing=west,type=advanced_solar":  { "model": "galacticraftcore:advanced_solar_model", "y": 270 },
-        "facing=south,type=advanced_solar": { "model": "galacticraftcore:advanced_solar_model", "y": 180 }
+        "inventory": [{ "model": "galacticraftcore:block/basic_solar_model" }],
+        "facing=north,type=basic_solar": { "model": "galacticraftcore:block/basic_solar_model" },
+        "facing=east,type=basic_solar":  { "model": "galacticraftcore:block/basic_solar_model", "y": 90 },
+        "facing=west,type=basic_solar":  { "model": "galacticraftcore:block/basic_solar_model", "y": 270 },
+        "facing=south,type=basic_solar": { "model": "galacticraftcore:block/basic_solar_model", "y": 180 },
+        "facing=north,type=advanced_solar": { "model": "galacticraftcore:block/advanced_solar_model" },
+        "facing=east,type=advanced_solar":  { "model": "galacticraftcore:block/advanced_solar_model", "y": 90 },
+        "facing=west,type=advanced_solar":  { "model": "galacticraftcore:block/advanced_solar_model", "y": 270 },
+        "facing=south,type=advanced_solar": { "model": "galacticraftcore:block/advanced_solar_model", "y": 180 }
     }
 }

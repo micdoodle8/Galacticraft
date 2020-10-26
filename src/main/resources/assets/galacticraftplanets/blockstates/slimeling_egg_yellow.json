@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"broken=false": {
+			"model": "galacticraftplanets:block/slimeling_egg_yellow"
+		},
+		"broken=true": {
+			"model": "galacticraftplanets:block/slimeling_egg_yellow_broken"
+		}
+	}
+}

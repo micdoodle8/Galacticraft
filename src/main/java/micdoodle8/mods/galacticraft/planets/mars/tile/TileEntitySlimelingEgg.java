@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockSlimelingEgg;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -39,24 +40,23 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickableTileE
             else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
             {
                 BlockState state = this.world.getBlockState(this.getPos());
-                BlockSlimelingEgg.EnumEggColor color = state.get(BlockSlimelingEgg.EGG_COLOR);
 
                 float colorRed = 0.0F;
                 float colorGreen = 0.0F;
                 float colorBlue = 0.0F;
 
-                switch (color)
+                if (state.getBlock() == MarsBlocks.slimelingEggRed)
                 {
-                case RED:
                     colorRed = 1.0F;
-                    break;
-                case BLUE:
+                }
+                else if (state.getBlock() == MarsBlocks.slimelingEggBlue)
+                {
                     colorBlue = 1.0F;
-                    break;
-                case YELLOW:
+                }
+                else if (state.getBlock() == MarsBlocks.slimelingEggYellow)
+                {
                     colorRed = 1.0F;
                     colorGreen = 1.0F;
-                    break;
                 }
 
                 EntitySlimeling slimeling = EntitySlimeling.createEntitySlimeling(this.world, colorRed, colorGreen, colorBlue);

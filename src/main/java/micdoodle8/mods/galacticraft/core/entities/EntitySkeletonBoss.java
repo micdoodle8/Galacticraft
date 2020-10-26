@@ -68,7 +68,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             difficulty = 1D;
             break;
         }
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod.get());
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D + 0.075 * difficulty);
     }
 
@@ -187,7 +187,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             }
         }
 
-        if (!this.world.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod / 2)
+        if (!this.world.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod.get() / 2)
         {
             this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
         }

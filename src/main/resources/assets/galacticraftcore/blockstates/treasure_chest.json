@@ -2,18 +2,18 @@
     "forge_marker": 1,
     "variants": {
         "facing=north": { 
-			"model": "galacticraftcore:treasure_chest"
+			"model": "galacticraftcore:block/treasure_chest"
 		},
         "facing=east":  { 
-			"model": "galacticraftcore:treasure_chest",
+			"model": "galacticraftcore:block/treasure_chest",
 			"y": 90
 		},
         "facing=south": { 
-			"model": "galacticraftcore:treasure_chest", 
+			"model": "galacticraftcore:block/treasure_chest",
 			"y": 180
 		},
         "facing=west":  { 
-			"model": "galacticraftcore:treasure_chest", 
+			"model": "galacticraftcore:block/treasure_chest",
 			"y": 270
 		}
     }

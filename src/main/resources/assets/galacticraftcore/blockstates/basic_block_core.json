@@ -1,17 +1,17 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:deco_block_0_model" }],
-        "basictype=deco_block_0": { "model": "galacticraftcore:deco_block_0_model" },
-        "basictype=deco_block_1": { "model": "galacticraftcore:deco_block_1_model" },
-        "basictype=ore_copper_gc": { "model": "galacticraftcore:ore_copper_gc_model" },
-        "basictype=ore_tin_gc": { "model": "galacticraftcore:ore_tin_gc_model" },
-        "basictype=ore_aluminum_gc": { "model": "galacticraftcore:ore_aluminum_gc_model" },
-        "basictype=ore_silicon": { "model": "galacticraftcore:ore_silicon_model" },
-        "basictype=block_copper_gc": { "model": "galacticraftcore:block_copper_gc_model" },
-        "basictype=block_tin_gc": { "model": "galacticraftcore:block_tin_gc_model" },
-        "basictype=block_aluminum_gc": { "model": "galacticraftcore:block_aluminum_gc_model" },
-        "basictype=block_meteoric_iron_gc": { "model": "galacticraftcore:block_meteoric_iron_gc_model" },
-        "basictype=block_silicon_gc": { "model": "galacticraftcore:block_silicon_gc_model" }
+        "inventory": [{ "model": "galacticraftcore:block/deco_block_0_model" }],
+        "basictype=deco_block_0": { "model": "galacticraftcore:block/deco_block_0_model" },
+        "basictype=deco_block_1": { "model": "galacticraftcore:block/deco_block_1_model" },
+        "basictype=ore_copper_gc": { "model": "galacticraftcore:block/ore_copper_gc_model" },
+        "basictype=ore_tin_gc": { "model": "galacticraftcore:block/ore_tin_gc_model" },
+        "basictype=ore_aluminum_gc": { "model": "galacticraftcore:block/ore_aluminum_gc_model" },
+        "basictype=ore_silicon": { "model": "galacticraftcore:block/ore_silicon_model" },
+        "basictype=block_copper_gc": { "model": "galacticraftcore:block/block_copper_gc_model" },
+        "basictype=block_tin_gc": { "model": "galacticraftcore:block/block_tin_gc_model" },
+        "basictype=block_aluminum_gc": { "model": "galacticraftcore:block/block_aluminum_gc_model" },
+        "basictype=block_meteoric_iron_gc": { "model": "galacticraftcore:block/block_meteoric_iron_gc_model" },
+        "basictype=block_silicon_gc": { "model": "galacticraftcore:block/block_silicon_gc_model" }
     }
 }

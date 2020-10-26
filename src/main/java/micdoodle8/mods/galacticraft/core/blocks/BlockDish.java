@@ -5,7 +5,7 @@
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockRenderType;
@@ -22,7 +22,7 @@
 //import net.minecraft.util.math.MathHelper;
 //import net.minecraft.world.World;
 //
-//public class BlockDish extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortableBlock
+//public class BlockDish extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortable
 //{
 //    public BlockDish(Properties builder)
 //    {
@@ -162,9 +162,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.GENERAL;
+//        return EnumSortCategory.GENERAL;
 //    }
 //
 //    @Override

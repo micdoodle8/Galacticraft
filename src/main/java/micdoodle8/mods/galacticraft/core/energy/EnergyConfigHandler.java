@@ -2,6 +2,10 @@ package micdoodle8.mods.galacticraft.core.energy;
 
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 import java.util.ArrayList;
 
@@ -17,9 +21,9 @@ public class EnergyConfigHandler
      * Ratio of Build craft(MJ) energy to Galacticraft energy(gJ).
      * Multiply BC3 energy by this to convert to gJ.
      */
-    public static float BC_RATIO = 16F;
+    public static DoubleValue BC_RATIO;
     public static float BC8_MICROJOULE_RATIO = 1000000F;
-    public static float BC8_INTERNAL_RATIO = BC_RATIO / BC8_MICROJOULE_RATIO;
+    public static float BC8_INTERNAL_RATIO;
 
     //Note on energy equivalence:
     //
@@ -40,39 +44,42 @@ public class EnergyConfigHandler
      * Ratio of RF energy to Galacticraft energy(gJ).
      * Multiply RF energy by this to convert to gJ.
      */
-    public static float RF_RATIO = EnergyConfigHandler.BC_RATIO / 10F;
+    public static DoubleValue RF_RATIO;
 
     /**
      * Ratio of IC2 energy (EU) to Galacticraft energy(gJ).
      * Multiply IC2 power by this to convert to gJ.
      */
-    public static float IC2_RATIO = EnergyConfigHandler.BC_RATIO / 2.44F;
+    public static DoubleValue IC2_RATIO;
 
-    public static float MEKANISM_RATIO = EnergyConfigHandler.IC2_RATIO / 10F;
+    public static DoubleValue MEKANISM_RATIO;
 
-    public static int conversionLossFactor = 100;
+    public static IntValue conversionLossFactor;
 
     /**
      * Convert gJ back to Buildcraft MJ (microJoules)
      */
-    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC_RATIO * BC8_MICROJOULE_RATIO;
+    public static float TO_BC_RATIO;
 
     /**
      * Convert gJ back to RF
      */
-    public static float TO_RF_RATIO = 1 / EnergyConfigHandler.RF_RATIO;
+    public static float TO_RF_RATIO;
 
     /**
      * Convert gJ back to IC2 EU
      */
-    public static float TO_IC2_RATIO = 1 / EnergyConfigHandler.IC2_RATIO;
+    public static float TO_IC2_RATIO;
 
-    public static float TO_MEKANISM_RATIO = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+    public static float TO_MEKANISM_RATIO;
 
-    public static float TO_BC_RATIOdisp = 1 / EnergyConfigHandler.BC_RATIO;
-    public static float TO_RF_RATIOdisp = 1 / EnergyConfigHandler.RF_RATIO;
-    public static float TO_IC2_RATIOdisp = 1 / EnergyConfigHandler.IC2_RATIO;
-    public static float TO_MEKANISM_RATIOdisp = 1 / EnergyConfigHandler.MEKANISM_RATIO;
+    public static float TO_BC_RATIOdisp;
+
+    public static float TO_RF_RATIOdisp;
+
+    public static float TO_IC2_RATIOdisp;
+
+    public static float TO_MEKANISM_RATIOdisp;
 
     /**
      * Oxygen gas used when Mekanism is loaded. Always null otherwise.
@@ -80,10 +87,10 @@ public class EnergyConfigHandler
     public static Object gasOxygen = null;
     public static Object gasHydrogen = null;
 
-    public static boolean displayEnergyUnitsBC = false;
-    public static boolean displayEnergyUnitsIC2 = false;
-    public static boolean displayEnergyUnitsMek = false;
-    public static boolean displayEnergyUnitsRF = false;
+    public static BooleanValue displayEnergyUnitsBC;
+    public static BooleanValue displayEnergyUnitsIC2;
+    public static BooleanValue displayEnergyUnitsMek;
+    public static BooleanValue displayEnergyUnitsRF;
 
     private static final boolean cachedBCLoaded = false;
     private static final boolean cachedBCLoadedValue = false;
@@ -95,18 +102,18 @@ public class EnergyConfigHandler
     private static boolean cachedRF1LoadedValue = false;
     private static boolean cachedRF2LoadedValue = false;
 
-    public static boolean disableMJinterface = false;
+    public static BooleanValue disableMJinterface;
 
-    public static boolean disableBuildCraftInput = false;
-    public static boolean disableBuildCraftOutput = false;
-    public static boolean disableRFInput = false;
-    public static boolean disableRFOutput = false;
-    public static boolean disableFEInput = false;
-    public static boolean disableFEOutput = false;
-    public static boolean disableIC2Input = false;
-    public static boolean disableIC2Output = false;
-    public static boolean disableMekanismInput = false;
-    public static boolean disableMekanismOutput = false;
+    public static BooleanValue disableBuildCraftInput;
+    public static BooleanValue disableBuildCraftOutput;
+    public static BooleanValue disableRFInput;
+    public static BooleanValue disableRFOutput;
+    public static BooleanValue disableFEInput;
+    public static BooleanValue disableFEOutput;
+    public static BooleanValue disableIC2Input;
+    public static BooleanValue disableIC2Output;
+    public static BooleanValue disableMekanismInput;
+    public static BooleanValue disableMekanismOutput;
 
     /**
      * You must call this function to enable the Universal Network module.
@@ -362,19 +369,19 @@ public class EnergyConfigHandler
 //            EnergyConfigHandler.MEKANISM_RATIO = 100F;
 //        } Handled by config itself now
 
-        float factor = conversionLossFactor / 100F;
-        TO_BC_RATIO = factor / EnergyConfigHandler.BC_RATIO * BC8_MICROJOULE_RATIO;
-        TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
-        TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
-        TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;
-        TO_BC_RATIOdisp = 1 / EnergyConfigHandler.BC_RATIO;
-        TO_RF_RATIOdisp = 1 / EnergyConfigHandler.RF_RATIO;
-        TO_IC2_RATIOdisp = 1 / EnergyConfigHandler.IC2_RATIO;
-        TO_MEKANISM_RATIOdisp = 1 / EnergyConfigHandler.MEKANISM_RATIO;
-        EnergyConfigHandler.BC_RATIO *= factor;
-        EnergyConfigHandler.RF_RATIO *= factor;
-        EnergyConfigHandler.IC2_RATIO *= factor;
-        EnergyConfigHandler.MEKANISM_RATIO *= factor;
+        float factor = conversionLossFactor.get() / 100F;
+        TO_BC_RATIO = (float) (factor / EnergyConfigHandler.BC_RATIO.get() * BC8_MICROJOULE_RATIO);
+        TO_RF_RATIO = (float) (factor / EnergyConfigHandler.RF_RATIO.get());
+        TO_IC2_RATIO = (float) (factor / EnergyConfigHandler.IC2_RATIO.get());
+        TO_MEKANISM_RATIO = (float) (factor / EnergyConfigHandler.MEKANISM_RATIO.get());
+        TO_BC_RATIOdisp = (float) (1 / EnergyConfigHandler.BC_RATIO.get());
+        TO_RF_RATIOdisp = (float) (1 / EnergyConfigHandler.RF_RATIO.get());
+        TO_IC2_RATIOdisp = (float) (1 / EnergyConfigHandler.IC2_RATIO.get());
+        TO_MEKANISM_RATIOdisp = (float) (1 / EnergyConfigHandler.MEKANISM_RATIO.get());
+        EnergyConfigHandler.BC_RATIO.set(EnergyConfigHandler.BC_RATIO.get() * factor);
+        EnergyConfigHandler.RF_RATIO.set(EnergyConfigHandler.RF_RATIO.get() * factor);
+        EnergyConfigHandler.IC2_RATIO.set(EnergyConfigHandler.IC2_RATIO.get() * factor);
+        EnergyConfigHandler.MEKANISM_RATIO.set(EnergyConfigHandler.MEKANISM_RATIO.get() * factor);
     }
 
     public static void serverConfigOverride(ArrayList<Object> returnList)
@@ -388,11 +395,11 @@ public class EnergyConfigHandler
 
     public static void setConfigOverride(float sBC3, float sRF, float sIC2, float sMEK, int sLossRatio)
     {
-        EnergyConfigHandler.BC_RATIO = sBC3;
-        EnergyConfigHandler.RF_RATIO = sRF;
-        EnergyConfigHandler.IC2_RATIO = sIC2;
-        EnergyConfigHandler.MEKANISM_RATIO = sMEK;
-        EnergyConfigHandler.conversionLossFactor = sLossRatio;
+        EnergyConfigHandler.BC_RATIO.set((double) sBC3);
+        EnergyConfigHandler.RF_RATIO.set((double) sRF);
+        EnergyConfigHandler.IC2_RATIO.set((double) sIC2);
+        EnergyConfigHandler.MEKANISM_RATIO.set((double) sMEK);
+        EnergyConfigHandler.conversionLossFactor.set(sLossRatio);
         updateRatios();
     }
 }

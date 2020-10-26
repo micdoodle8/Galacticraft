@@ -38,7 +38,5 @@ public class VenusParticles
 
         register(r, new BasicParticleType(false), VenusParticleTypeNames.acidExhaust);
         register(r, new BasicParticleType(false), VenusParticleTypeNames.acidVapor);
-        Minecraft.getInstance().particles.registerFactory(ACID_EXHAUST, ParticleAcidExhaust.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(ACID_VAPOR, ParticleAcidVapor.Factory::new);
     }
 }

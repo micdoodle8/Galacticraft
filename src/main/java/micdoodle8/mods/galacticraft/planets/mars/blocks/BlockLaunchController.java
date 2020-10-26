@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
@@ -14,6 +16,7 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -25,9 +28,9 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockLaunchController extends BlockTileGC implements IShiftDescription, IPartialSealableBlock
+public class BlockLaunchController extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BlockLaunchController(Properties builder)
     {
@@ -84,6 +87,12 @@ public class BlockLaunchController extends BlockTileGC implements IShiftDescript
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid)
     {
         WorldUtil.markAdjacentPadForUpdate(world, pos);
@@ -123,11 +132,11 @@ public class BlockLaunchController extends BlockTileGC implements IShiftDescript
         builder.add(FACING);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
     @Override
     public boolean isSealed(World world, BlockPos pos, Direction direction)

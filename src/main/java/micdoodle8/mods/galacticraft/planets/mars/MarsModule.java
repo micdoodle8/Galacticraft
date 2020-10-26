@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -8,27 +9,39 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
+import micdoodle8.mods.galacticraft.core.inventory.GCContainers;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.PlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.PlanetFluids;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.MarsContainers;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.schematic.SchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.biome.BiomeMars;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class MarsModule implements IPlanetsModule
 {
@@ -37,6 +50,12 @@ public class MarsModule implements IPlanetsModule
 //    public static Material sludgeMaterial = new MaterialLiquid(MapColor.FOLIAGE);
 
     public static Planet planetMars;
+
+    public MarsModule()
+    {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addGenericListener(ContainerType.class, MarsContainers::initContainers);
+    }
 
     @Override
     public void init(FMLCommonSetupEvent event)
@@ -79,8 +98,6 @@ public class MarsModule implements IPlanetsModule
 //            EventHandlerGC.bucketList.put(MarsBlocks.blockSludge, MarsItems.bucketSludge);
 //        }
 
-        MarsModule.planetMars.setBiomeInfo(BiomeMars.marsFlat);
-
         // ============================
 
         SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
@@ -89,15 +106,15 @@ public class MarsModule implements IPlanetsModule
 //        GalacticraftCore.packetPipeline.addDiscriminator(6, PacketSimpleMars.class);
 
         MarsModule.planetMars.setBodyIcon(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/mars.png"));
-        MarsModule.planetMars.setDimensionInfo(PlanetDimensions.MARS_DIMENSION, DimensionMars.class).setTierRequired(2);
         MarsModule.planetMars.setAtmosphere(new AtmosphereInfo(false, false, false, -1.0F, 0.3F, 0.1F));
         MarsModule.planetMars.atmosphereComponent(EnumAtmosphericGas.CO2).atmosphereComponent(EnumAtmosphericGas.ARGON).atmosphereComponent(EnumAtmosphericGas.NITROGEN);
-        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_ZOMBIE.get(), 8, 2, 3), EntityClassification.MONSTER);
-        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_SPIDER.get(), 8, 2, 3), EntityClassification.MONSTER);
-        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_SKELETON.get(), 8, 2, 3), EntityClassification.MONSTER);
-        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_CREEPER.get(), 8, 2, 3), EntityClassification.MONSTER);
-        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_ENDERMAN.get(), 10, 1, 4), EntityClassification.MONSTER);
+        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_ZOMBIE, 8, 2, 3), EntityClassification.MONSTER);
+        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_SPIDER, 8, 2, 3), EntityClassification.MONSTER);
+        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_SKELETON, 8, 2, 3), EntityClassification.MONSTER);
+        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_CREEPER, 8, 2, 3), EntityClassification.MONSTER);
+        MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(GCEntities.EVOLVED_ENDERMAN, 10, 1, 4), EntityClassification.MONSTER);
         MarsModule.planetMars.addChecklistKeys("equip_oxygen_suit", "thermal_padding");
+        MarsModule.planetMars.setSurfaceBlocks(Lists.newArrayList(MarsBlocks.rockSurface));
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
         GalacticraftRegistry.registerTeleportType(DimensionMars.class, new TeleportTypeMars());
@@ -106,13 +123,21 @@ public class MarsModule implements IPlanetsModule
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematicAstroMiner, 1));
         GalacticraftRegistry.addDungeonLoot(2, new ItemStack(MarsItems.schematicCargoRocket, 1));
 
-        GalacticraftCore.proxy.registerFluidTexture(PlanetFluids.LIQUID_BACTERIAL_SLUDGE.getFluid(), new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underbecterial.png"));
+//        GalacticraftCore.proxy.registerFluidTexture(PlanetFluids.LIQUID_BACTERIAL_SLUDGE.getFluid(), new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underbecterial.png"));
+        // TODO Fluid textures
 
         // ============================
 
 //        RecipeManagerMars.loadCompatibilityRecipes();
-//        GCPlanetDimensions.MARS = WorldUtil.getDimensionTypeById(ConfigManagerPlanets.dimensionIDMars);
+//        GCPlanetDimensions.MARS = WorldUtil.getDimensionTypeById(ConfigManagerPlanets.dimensionIDMars.get());
         ItemSchematicTier2.registerSchematicItems();
+    }
+
+    @SubscribeEvent
+    public void biomeRegisterEvent(RegistryEvent.Register<Biome> evt)
+    {
+        IForgeRegistry<Biome> r = evt.getRegistry();
+        MarsModule.planetMars.setBiomeInfo(r, BiomeMars.marsFlat);
     }
 
     @Override
@@ -218,12 +243,12 @@ public class MarsModule implements IPlanetsModule
 //    @Override
 //    public Configuration getConfiguration()
 //    {
-//        return ConfigManagerPlanets.config;
+//        return ConfigManagerPlanets.config.get();
 //    }
 //
 //    @Override
 //    public void syncConfig()
 //    {
-//        ConfigManagerPlanets.syncConfig(false, false);
+//        ConfigManagerPlanets.syncConfig.get()(false, false);
 //    }
 }

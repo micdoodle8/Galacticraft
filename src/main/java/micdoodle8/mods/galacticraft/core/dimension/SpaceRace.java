@@ -53,7 +53,7 @@ public class SpaceRace
     public void loadFromNBT(CompoundNBT nbt)
     {
         this.teamName = nbt.getString("TeamName");
-        if (ConfigManagerCore.enableDebug)
+        if (ConfigManagerCore.enableDebug.get())
         {
             GCLog.info("Loading spacerace data for team " + this.teamName);
         }
@@ -97,7 +97,7 @@ public class SpaceRace
             }
         }
 
-        if (ConfigManagerCore.enableDebug)
+        if (ConfigManagerCore.enableDebug.get())
         {
             GCLog.info("Loaded spacerace team data OK.");
         }
@@ -105,7 +105,7 @@ public class SpaceRace
 
     public void saveToNBT(CompoundNBT nbt)
     {
-        if (ConfigManagerCore.enableDebug)
+        if (ConfigManagerCore.enableDebug.get())
         {
             GCLog.info("Saving spacerace data for team " + this.teamName);
         }
@@ -157,7 +157,7 @@ public class SpaceRace
         }
         nbt.put("SchList", tagList);
 
-        if (ConfigManagerCore.enableDebug)
+        if (ConfigManagerCore.enableDebug.get())
         {
             GCLog.info("Saved spacerace team data OK.");
         }

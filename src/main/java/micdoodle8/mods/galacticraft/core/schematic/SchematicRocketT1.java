@@ -18,7 +18,7 @@ public class SchematicRocketT1 extends SchematicPage
     @Override
     public int getPageID()
     {
-        return ConfigManagerCore.idSchematicRocketT1;
+        return ConfigManagerCore.idSchematicRocketT1.get();
     }
 
 //    @Override

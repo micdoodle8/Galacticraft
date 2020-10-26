@@ -161,6 +161,4 @@ public interface IGalacticraftDimension
      * The ChestGenHooks identifier of the dungeon chests to generate in this world
      */
     ResourceLocation getDungeonChestType();
-
-    List<Block> getSurfaceBlocks();
 }

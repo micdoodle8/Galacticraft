@@ -34,6 +34,7 @@ public class ParticleSparks extends SpriteTexturedParticle
         this.maxAge = (int) (this.maxAge * 1.0F);
         this.canCollide = true;
         this.animatedSprite = animatedSprite;
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @Override

@@ -1,0 +1,34 @@
+{
+    "variants": {
+      "inventory": [{ "model": "galacticraftcore:block/electric_compressor_model" }],
+      "facing=north,msm=lr": { "model": "galacticraftcore:block/electric_compressor_lr" },
+      "facing=east,msm=lr": { "model": "galacticraftcore:block/electric_compressor_lr", "y": 90 },
+      "facing=south,msm=lr": { "model": "galacticraftcore:block/electric_compressor_lr", "y": 180 },
+      "facing=west,msm=lr": { "model": "galacticraftcore:block/electric_compressor_lr", "y": 270 },
+
+      "facing=north,msm=lb": { "model": "galacticraftcore:block/electric_compressor_lb" },
+      "facing=east,msm=lb": { "model": "galacticraftcore:block/electric_compressor_lb", "y": 90 },
+      "facing=south,msm=lb": { "model": "galacticraftcore:block/electric_compressor_lb", "y": 180 },
+      "facing=west,msm=lb": { "model": "galacticraftcore:block/electric_compressor_lb", "y": 270 },
+
+      "facing=north,msm=rl": { "model": "galacticraftcore:block/electric_compressor_rl" },
+      "facing=east,msm=rl": { "model": "galacticraftcore:block/electric_compressor_rl", "y": 90 },
+      "facing=south,msm=rl": { "model": "galacticraftcore:block/electric_compressor_rl", "y": 180 },
+      "facing=west,msm=rl": { "model": "galacticraftcore:block/electric_compressor_rl", "y": 270 },
+
+      "facing=north,msm=rb": { "model": "galacticraftcore:block/electric_compressor_rb" },
+      "facing=east,msm=rb": { "model": "galacticraftcore:block/electric_compressor_rb", "y": 90 },
+      "facing=south,msm=rb": { "model": "galacticraftcore:block/electric_compressor_rb", "y": 180 },
+      "facing=west,msm=rb": { "model": "galacticraftcore:block/electric_compressor_rb", "y": 270 },
+
+      "facing=north,msm=bl": { "model": "galacticraftcore:block/electric_compressor_bl" },
+      "facing=east,msm=bl": { "model": "galacticraftcore:block/electric_compressor_bl", "y": 90 },
+      "facing=south,msm=bl": { "model": "galacticraftcore:block/electric_compressor_bl", "y": 180 },
+      "facing=west,msm=bl": { "model": "galacticraftcore:block/electric_compressor_bl", "y": 270 },
+
+      "facing=north,msm=br": { "model": "galacticraftcore:block/electric_compressor_br" },
+      "facing=east,msm=br": { "model": "galacticraftcore:block/electric_compressor_br", "y": 90 },
+      "facing=south,msm=br": { "model": "galacticraftcore:block/electric_compressor_br", "y": 180 },
+      "facing=west,msm=br": { "model": "galacticraftcore:block/electric_compressor_br", "y": 270 }
+    }
+}

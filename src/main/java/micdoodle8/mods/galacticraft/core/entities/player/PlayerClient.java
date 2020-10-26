@@ -93,7 +93,7 @@ public class PlayerClient implements IPlayerClient
 //                stats.getFreefallHandler().preVanillaMotion(player);
 //                if (stats.getPlatformControlled())
 //                {
-//                    player.motionY = stats.getPlatformVelocity(player.posY);
+//                    player.motionY = stats.getPlatformVelocity(player.getPosY());
 //                    player.motionX = 0D;
 //                    player.motionZ = 0D;
 //                } TODO Freefall handler
@@ -185,7 +185,7 @@ public class PlayerClient implements IPlayerClient
 
         if (ridingThirdPersonEntity && !stats.isLastRidingCameraZoomEntity())
         {
-            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.disableVehicleCameraChanges.get())
             {
                 Minecraft.getInstance().gameSettings.thirdPersonView = 1;
             }
@@ -193,7 +193,7 @@ public class PlayerClient implements IPlayerClient
 
         if (player.getRidingEntity() instanceof ICameraZoomEntity)
         {
-            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.disableVehicleCameraChanges.get())
             {
                 stats.setLastZoomed(true);
                 TickHandlerClient.zoom(((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom());
@@ -201,7 +201,7 @@ public class PlayerClient implements IPlayerClient
         }
         else if (stats.isLastZoomed())
         {
-            if (!ConfigManagerCore.disableVehicleCameraChanges)
+            if (!ConfigManagerCore.disableVehicleCameraChanges.get())
             {
                 stats.setLastZoomed(false);
                 TickHandlerClient.zoom(4.0F);
@@ -308,7 +308,7 @@ public class PlayerClient implements IPlayerClient
 //                    {
 //                        Vector3 pos = new Vector3(player);
 //                        // Set the footprint position to the block below and add random number to stop z-fighting
-//                        pos.y = MathHelper.floor(player.posY) + player.getRNG().nextFloat() / 100.0F;
+//                        pos.y = MathHelper.floor(player.getPosY()) + player.getRNG().nextFloat() / 100.0F;
 //
 //                        // Adjust footprint to left or right depending on step count
 //                        switch (stats.getLastStep())

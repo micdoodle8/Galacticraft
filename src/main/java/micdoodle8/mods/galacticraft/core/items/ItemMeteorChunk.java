@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemMeteorChunk extends Item implements ISortableItem
+public class ItemMeteorChunk extends Item implements ISortable
 {
     public static final int METEOR_BURN_TIME = 45 * 20;
 
@@ -135,7 +135,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
             itemStack.shrink(1);
         }
 
-        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.random.nextFloat() * 0.1F));
+        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.random.nextFloat() * 0.1F));
 
         if (!world.isRemote)
         {
@@ -157,8 +157,8 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategory.GENERAL;
     }
 }

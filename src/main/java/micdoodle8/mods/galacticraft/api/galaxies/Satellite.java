@@ -27,7 +27,7 @@ public class Satellite extends CelestialBody implements IChildBody
 
     @Override
     @Deprecated
-    public CelestialBody setDimensionInfo(DimensionType providerId, Class<? extends Dimension> providerClass, boolean autoRegister)
+    public CelestialBody setDimensionInfo(DimensionType type, Class<? extends Dimension> providerClass, boolean autoRegister)
     {
         // Since satellites need a static ID, the subclass method will not work correctly.
         throw new UnsupportedOperationException("Satellite registered using an outdated method (setDimensionInfo)! Tell Galacticraft addon authors to update to the latest API.");
@@ -35,7 +35,7 @@ public class Satellite extends CelestialBody implements IChildBody
 
     public CelestialBody setDimensionInfo(DimensionType providerIdDynamic, int providerIdStatic, Class<? extends Dimension> providerClass)
     {
-        this.dimensionID = providerIdDynamic;
+        this.dimensionType = providerIdDynamic;
         this.dimensionIdStatic = providerIdStatic;
         this.providerClass = providerClass;
         this.autoRegisterDimension = false; // Addons need to register satellites manually

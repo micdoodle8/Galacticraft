@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.MapMaker;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import io.netty.buffer.Unpooled;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
@@ -21,8 +18,7 @@ import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
-import micdoodle8.mods.galacticraft.core.dimension.DimensionOverworldOrbit;
+import micdoodle8.mods.galacticraft.core.dimension.GCDimensions;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -59,10 +55,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
-import net.minecraftforge.event.world.RegisterDimensionsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -72,8 +64,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 //import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 
@@ -86,58 +76,58 @@ public class WorldUtil
     public static Map<ServerPlayerEntity, HashMap<String, DimensionType>> celestialMapCache = new MapMaker().weakKeys().makeMap();
     public static List<DimensionType> registeredPlanets;
 
-    public static DimensionType MOON_DIMENSION;
-    public static final RegistryObject<ModDimension> MOON_MOD_DIMENSION = register("moon", WorldUtil::moonFactory);
-    public static final RegistryObject<ModDimension> SPACE_STATION_MOD_DIMENSION = register("space_station_overworld", WorldUtil::spaceStationFactory);
+//    public static DimensionType MOON_DIMENSION;
+////    public static final RegistryObject<ModDimension> MOON_MOD_DIMENSION = register("moon", WorldUtil::moonFactory);
+////    public static final RegistryObject<ModDimension> SPACE_STATION_MOD_DIMENSION = register("space_station_overworld", WorldUtil::spaceStationFactory);
+//
+//    private static ModDimension moonFactory()
+//    {
+//        return new ModDimension()
+//        {
+//            @Override
+//            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+//            {
+//                return DimensionMoon::new;
+//            }
+//        };
+//    }
+//
+//    private static ModDimension spaceStationFactory()
+//    {
+//        return new ModDimension()
+//        {
+//            @Override
+//            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
+//            {
+//                return DimensionOverworldOrbit::new;
+//            }
+//        };
+//    }
+//
+//    private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup)
+//    {
+//        return DIMENSIONS.register(name, sup);
+//    }
 
-    private static ModDimension moonFactory()
-    {
-        return new ModDimension()
-        {
-            @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
-            {
-                return DimensionMoon::new;
-            }
-        };
-    }
-
-    private static ModDimension spaceStationFactory()
-    {
-        return new ModDimension()
-        {
-            @Override
-            public BiFunction<World, DimensionType, ? extends Dimension> getFactory()
-            {
-                return DimensionOverworldOrbit::new;
-            }
-        };
-    }
-
-    private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup)
-    {
-        return DIMENSIONS.register(name, sup);
-    }
-
-    @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
-    public static class EventDimensionType
-    {
-        @SubscribeEvent
-        public static void onModDimensionRegister(final RegisterDimensionsEvent event)
-        {
-            ResourceLocation id = new ResourceLocation(Constants.MOD_ID_CORE, "moon");
-            if (DimensionType.byName(id) == null)
-            {
-                MOON_DIMENSION = DimensionManager.registerDimension(id, MOON_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-                MOON_DIMENSION.setRegistryName(id);
-                DimensionManager.keepLoaded(MOON_DIMENSION, false);
-            }
-            else
-            {
-                MOON_DIMENSION = DimensionType.byName(id);
-            }
-        }
-    }
+//    @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
+//    public static class EventDimensionType
+//    {
+//        @SubscribeEvent
+//        public static void onModDimensionRegister(final RegisterDimensionsEvent event)
+//        {
+//            ResourceLocation id = new ResourceLocation(Constants.MOD_ID_CORE, "moon");
+//            if (DimensionType.byName(id) == null)
+//            {
+//                MOON_DIMENSION = DimensionManager.registerDimension(id, MOON_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
+//                MOON_DIMENSION.setRegistryName(id);
+//                DimensionManager.keepLoaded(MOON_DIMENSION, false);
+//            }
+//            else
+//            {
+//                MOON_DIMENSION = DimensionType.byName(id);
+//            }
+//        }
+//    }
 
     public static ResourceLocation getSpaceStationRes(PlayerEntity owner)
     {
@@ -161,7 +151,7 @@ public class WorldUtil
         ResourceLocation id = getSpaceStationRes(owner);
         if (DimensionType.byName(id) == null)
         {
-            type = DimensionManager.registerDimension(id, SPACE_STATION_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
+            type = DimensionManager.registerDimension(id, GCDimensions.SPACE_STATION_MOD_DIMENSION, new PacketBuffer(Unpooled.buffer()), true);
             type.setRegistryName(id);
             DimensionManager.keepLoaded(type, keepLoaded);
             WorldUtil.registeredSpaceStations.add(type);
@@ -276,7 +266,7 @@ public class WorldUtil
     {
         List<DimensionType> temp = new ArrayList<>();
 
-        if (!ConfigManagerCore.disableRocketsToOverworld)
+        if (!ConfigManagerCore.disableRocketsToOverworld.get())
         {
             temp.add(DimensionType.OVERWORLD);
         }
@@ -287,29 +277,36 @@ public class WorldUtil
             {
                 continue;
             }
-            Dimension dimension = WorldUtil.getProviderForDimensionServer(element);
 
-            if (dimension != null)
+            CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(element);
+            if (body != null && body.getReachable() && body.getTierRequirement() <= tier)
             {
-                if (dimension instanceof IGalacticraftDimension)
-                {
-                    if (((IGalacticraftDimension) dimension).canSpaceshipTierPass(tier))
-                    {
-                        temp.add(element);
-                    }
-                }
-                else
-                {
-                    temp.add(element);
-                }
+                temp.add(element);
             }
+
+//            Dimension dimension = WorldUtil.getProviderForDimensionServer(element);
+//
+//            if (dimension != null)
+//            {
+//                if (dimension instanceof IGalacticraftDimension)
+//                {
+//                    if (((IGalacticraftDimension) dimension).canSpaceshipTierPass(tier))
+//                    {
+//                        temp.add(element);
+//                    }
+//                }
+//                else
+//                {
+//                    temp.add(element);
+//                }
+//            }
         }
 
         for (DimensionType element : WorldUtil.registeredSpaceStations)
         {
             final SpaceStationWorldData data = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, element.getRegistryName(), null);
 
-            if (!ConfigManagerCore.spaceStationsRequirePermission || data.getAllowedAll() || data.getAllowedPlayers().contains(PlayerUtil.getName(playerBase)) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
+            if (!ConfigManagerCore.spaceStationsRequirePermission.get() || data.getAllowedAll() || data.getAllowedPlayers().contains(PlayerUtil.getName(playerBase)) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
             {
                 //Satellites always reachable from their own homeworld or from its other satellites
                 if (playerBase != null)
@@ -367,7 +364,7 @@ public class WorldUtil
         {
             if (cBody.getReachable())
             {
-                if (cBody.getDimensionID() == id)
+                if (cBody.getDimensionType() == id)
                 {
                     return cBody;
                 }
@@ -483,13 +480,13 @@ public class WorldUtil
                 }
                 else
                 {
-                    Dimension dimension = WorldUtil.getProviderForDimensionServer(id);
-                    if (celestialBody != null && dimension != null)
+//                    Dimension dimension = WorldUtil.getProviderForDimensionServer(id);
+                    if (celestialBody != null /*&& dimension != null*/)
                     {
-                        if (dimension instanceof IGalacticraftDimension && !(dimension instanceof IOrbitDimension) || GCCoreUtil.getDimensionType(dimension) == DimensionType.OVERWORLD)
-                        {
-                            map.put(celestialBody.getName(), GCCoreUtil.getDimensionType(dimension));
-                        }
+//                        if (dimension instanceof IGalacticraftDimension && !(dimension instanceof IOrbitDimension) || GCCoreUtil.getDimensionType(dimension) == DimensionType.OVERWORLD)
+//                        {
+                            map.put(celestialBody.getName(), celestialBody.getDimensionType() /*GCCoreUtil.getDimensionType(dimension)*/);
+//                        }
                     }
                 }
             }
@@ -503,7 +500,7 @@ public class WorldUtil
         {
             if (!body.getReachable())
             {
-                map.put(body.getLocalizedName() + "*", body.getDimensionID());
+                map.put(body.getLocalizedName() + "*", body.getDimensionType());
             }
         }
 
@@ -577,7 +574,7 @@ public class WorldUtil
                         worldDataTemp.read(nbttagcompound.getCompound("data"));
 
                         // Search for id in server-defined statically loaded dimensions
-                        int index = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID.toString());
+                        int index = Collections.binarySearch(ConfigManagerCore.staticLoadDimensions.get(), registeredID.toString());
 
 //                        DimensionType providerID = index >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
                         boolean registrationOK = false;
@@ -632,18 +629,18 @@ public class WorldUtil
 
 //        for (Integer registeredID : WorldUtil.registeredSpaceStations)
 //        {
-//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
+//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions.get(), registeredID);
 //
 //            if (!DimensionManager.isDimensionRegistered(registeredID))
 //            {
 //	            if (id >= 0)
 //	            {
-//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
+//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic.get());
 //	                theServer.getWorld(registeredID);
 //                }
 //	            else
 //	            {
-//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit);
+//	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbit.get());
 //	            }
 //            }
 //            else
@@ -666,46 +663,22 @@ public class WorldUtil
      * <p>
      * The defaultID should be 0, and the id should be both a dimension ID and a DimensionType id.
      */
-//    public static boolean registerPlanet(DimensionType id, boolean initialiseDimensionAtServerInit, int defaultID)
-//    {
-//        if (WorldUtil.registeredPlanets == null)
-//        {
-//            WorldUtil.registeredPlanets = new ArrayList<>();
-//        }
-//
-//        if (initialiseDimensionAtServerInit)
-//        {
-//            if (!DimensionManager.isDimensionRegistered(id))
-//            {
-//                DimensionManager.registerDimension(id, WorldUtil.getDimensionTypeById(id));
-//                GCLog.info("Registered Dimension: " + id);
-//                WorldUtil.registeredPlanets.add(id);
-//            }
-//            else
-//            {
-//                if (DimensionManager.getProviderType(id).getId() == id && GalacticraftRegistry.isDimensionTypeIDRegistered(id))
-//                {
-//                    GCLog.info("Re-registered dimension: " + id);
-//                    WorldUtil.registeredPlanets.add(id);
-//                }
-//                else
-//                {
-//                    GCLog.severe("Dimension already registered: unable to register planet dimension " + id);
-//                    //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
-//                    WorldUtil.registeredPlanets.add(defaultID);
-//                    return false;
-//                }
-//            }
-//            DimensionType dt = WorldUtil.getDimensionTypeById(id);
-//            Dimension wp = dt.createDimension();
-//            WorldUtil.dimNames.put(id, WorldUtil.getDimensionName(wp));
-//            return true;
-//        }
-//
-//        //Not to be initialised - still add to the registered planets list (for hotloading later?)
-//        WorldUtil.registeredPlanets.add(id);
-//        return true;
-//    } TODO Registration
+    public static boolean registerPlanet(DimensionType id)
+    {
+        if (WorldUtil.registeredPlanets == null)
+        {
+            WorldUtil.registeredPlanets = new ArrayList<>();
+        }
+
+        if (id == null)
+        {
+            throw new RuntimeException("Trying to register null dimension type as a planet!");
+        }
+
+        WorldUtil.registeredPlanets.add(id);
+        return true;
+    }
+
     public static void unregisterPlanets()
     {
         if (WorldUtil.registeredPlanets != null)
@@ -777,12 +750,12 @@ public class WorldUtil
 //    {
 //        if (!DimensionManager.isDimensionRegistered(dimID))
 //        {
-//            if (ConfigManagerCore.keepLoadedNewSpaceStations)
+//            if (ConfigManagerCore.keepLoadedNewSpaceStations.get())
 //            {
-//                ConfigManagerCore.setLoaded(dimID);
+//                ConfigManagerCore.setLoaded.get()(dimID);
 //            }
 //
-//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
+//            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions.get(), dimID);
 //
 //	        if (id >= 0)
 //	        {
@@ -911,7 +884,7 @@ public class WorldUtil
 //                stats.setUsingPlanetSelectionGui(false);
 //
 //                player.dimension = dimID;
-//                if (ConfigManagerCore.enableDebug)
+//                if (ConfigManagerCore.enableDebug.get())
 //                {
 //                    GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
 //                }
@@ -1087,7 +1060,7 @@ public class WorldUtil
 //            worldNew.updateEntityWithOptionalForce(ridingRocket, true);
 //            CompatibilityManager.forceLoadChunksEnd((ServerWorld) worldNew, previous);
 //            entity.startRiding(ridingRocket);
-//            GCLog.debug("Entering rocket at : " + entity.posX + "," + entity.posZ + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
+//            GCLog.debug("Entering rocket at : " + entity.posX + "," + entity.getPosZ() + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
 //        }
 //        else if (otherRiddenEntity != null)
 //        {
@@ -1101,7 +1074,7 @@ public class WorldUtil
 //                worldNew.addEntity(otherRiddenEntity);
 //                otherRiddenEntity.setWorld(worldNew);
 //            }
-//            otherRiddenEntity.setPositionAndRotation(entity.posX, entity.posY - 10, entity.posZ, otherRiddenEntity.rotationYaw, otherRiddenEntity.rotationPitch);
+//            otherRiddenEntity.setPositionAndRotation(entity.posX, entity.posY - 10, entity.getPosZ(), otherRiddenEntity.rotationYaw, otherRiddenEntity.rotationPitch);
 //            worldNew.updateEntityWithOptionalForce(otherRiddenEntity, true);
 //        }
 //
@@ -1205,7 +1178,7 @@ public class WorldUtil
 //        if (dimChange)
 //        {
 //            player.dimension = dimID;
-//            if (ConfigManagerCore.enableDebug)
+//            if (ConfigManagerCore.enableDebug.get())
 //            {
 //                GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
 //            }
@@ -1360,9 +1333,10 @@ public class WorldUtil
         return registeredPlanets;
     }
 
-    public static DimensionType[] getPlanetListInts()
+    public static List<DimensionType> getPlanetListInts()
     {
-        return WorldUtil.registeredPlanets.toArray(new DimensionType[registeredPlanets.size()]);
+        return WorldUtil.registeredPlanets;
+//        return WorldUtil.registeredPlanets.toArray(new DimensionType[registeredPlanets.size()]);
 //        DimensionType[] iArray = new DimensionType[WorldUtil.registeredPlanets.size()];
 //
 //        for (int i = 0; i < iArray.length; i++)
@@ -1388,52 +1362,54 @@ public class WorldUtil
      */
     public static void decodePlanetsListClient(List<Object> data)
     {
-//        try
-//        {
-//            if (ConfigManagerCore.enableDebug)
-//            {
-//                GCLog.info("GC connecting to server: received planets dimension ID list.");
-//            }
+        try
+        {
+            if (ConfigManagerCore.enableDebug.get())
+            {
+                GCLog.info("GC connecting to server: received planets dimension ID list.");
+            }
 //            if (WorldUtil.registeredPlanets != null)
 //            {
-//                for (Integer registeredID : WorldUtil.registeredPlanets)
+//                for (DimensionType registeredType : WorldUtil.registeredPlanets)
 //                {
-//                    if (DimensionType.isDimensionRegistered(registeredID))
+//                    if (DimensionType.isDimensionRegistered(registeredType))
 //                    {
-//                        DimensionManager.unregisterDimension(registeredID);
+//                        DimensionManager.unregisterDimension(registeredType);
 //                    }
 //                }
 //            }
-//            WorldUtil.registeredPlanets = new ArrayList<>();
-//
-//            String ids = "";
-//            if (data.size() > 0)
-//            {
-//                //Start the dimension index at offset 2 to skip the two Overworld Orbit dimensions
-//                //(this will be iterating through GalacticraftRegistry.worldProviderIDs)
-//                int providerIndex = GalaxyRegistry.getRegisteredSatellites().size() * 2;
-//                if (data.get(0) instanceof Integer)
-//                {
-//                    for (Object o : data)
-//                    {
+            WorldUtil.registeredPlanets = new ArrayList<>();
+
+            String ids = "";
+            if (data.size() > 0)
+            {
+                //Start the dimension index at offset 2 to skip the two Overworld Orbit dimensions
+                //(this will be iterating through GalacticraftRegistry.worldProviderIDs)
+                int providerIndex = GalaxyRegistry.getRegisteredSatellites().size() * 2;
+                if (data.get(0) instanceof Integer)
+                {
+                    for (Object o : data)
+                    {
+                        WorldUtil.registerPlanet(DimensionType.getById((Integer)o));
 //                        WorldUtil.registerPlanetClient((Integer) o, providerIndex);
-//                        providerIndex++;
-//                        ids += ((Integer) o).toString() + " ";
-//                    }
-//                }
-//                else if (data.get(0) instanceof Integer[])
-//                {
-//                    for (Object o : (Integer[]) data.get(0))
-//                    {
+                        providerIndex++;
+                        ids += ((Integer) o).toString() + " ";
+                    }
+                }
+                else if (data.get(0) instanceof Integer[])
+                {
+                    for (Object o : (Integer[]) data.get(0))
+                    {
+                        WorldUtil.registerPlanet(DimensionType.getById((Integer)o));
 //                        WorldUtil.registerPlanetClient((Integer) o, providerIndex);
-//                        providerIndex++;
-//                        ids += ((Integer) o).toString() + " ";
-//                    }
-//                }
-//            }
-//            if (ConfigManagerCore.enableDebug)
-//            {
-//                GCLog.debug("GC clientside planet dimensions registered: " + ids);
+                        providerIndex++;
+                        ids += ((Integer) o).toString() + " ";
+                    }
+                }
+            }
+            if (ConfigManagerCore.enableDebug.get())
+            {
+                GCLog.debug("GC clientside planet dimensions registered: " + ids);
 //                Dimension dimMoon = WorldUtil.getProviderForNameClient("moon.moon");
 //                if (dimMoon != null)
 //                {
@@ -1449,12 +1425,12 @@ public class WorldUtil
 //                {
 //                    GCLog.debug("Crosscheck: Asteroids is " + GCCoreUtil.getDimensionID(dimAst));
 //                }
-//            }
-//        }
-//        catch (final Exception e)
-//        {
-//            e.printStackTrace();
-//        } TODO Client syncing of dimensions?
+            }
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 //    public static List<Object> getSpaceStationList()
@@ -1464,9 +1440,9 @@ public class WorldUtil
 //        return objList;
 //    }
 //
-//    public static Integer[] getSpaceStationListInts()
-//    {
-//        DimensionType[] iArray = new DimensionType[WorldUtil.registeredSpaceStations.size() * 2];
+    public static Set<DimensionType> getSpaceStationListInts()
+    {
+//        DimensionType[] iArray = new DimensionType[.size() * 2];
 //
 //        int i = 0;
 //        for (DimensionType e : WorldUtil.registeredSpaceStations)
@@ -1480,9 +1456,8 @@ public class WorldUtil
 ////        {
 ////            iArray[i] = WorldUtil.registeredSpaceStations.get(i);
 ////        }
-//
-//        return iArray;
-//    }
+        return WorldUtil.registeredSpaceStations;
+    }
 
     public static void decodeSpaceStationListClient(List<Object> data)
     {

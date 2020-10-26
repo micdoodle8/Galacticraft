@@ -4,12 +4,26 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
+import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
+import micdoodle8.mods.galacticraft.core.client.fx.*;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
+import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemLiquidCanisterModel;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
 import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -25,8 +39,13 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.particle.IAnimatedSprite;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -34,6 +53,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.ServerPlayNetHandler;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.IResourceManagerReloadListener;
@@ -44,12 +64,15 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -60,6 +83,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
+import static micdoodle8.mods.galacticraft.core.client.GCParticles.*;
+
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientProxyCore extends CommonProxyCore implements IResourceManagerReloadListener
 {
     public static List<String> flagRequestsSent = new ArrayList<>();
@@ -96,9 +122,14 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     private static final ModelResourceLocation fuelLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "fuel", "fluid");
     private static final ModelResourceLocation oilLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "oil", "fluid");
     private static final List<PartialCanister> canisters = Lists.newArrayList();
+    private static final Map<ResourceLocation, ICustomModelFactory> customModels = new HashMap<>();
 
-    @Override
-    public void init()
+    public ClientProxyCore()
+    {
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
+    }
+
+    public static void clientInit()
     {
         ClientProxyCore.registerEntityRenderers();
 //        ModelLoaderRegistry.registerLoader(OBJLoaderGC.instance);
@@ -108,7 +139,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //        {
 //            ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
 //        } TODO PlayerAPI support?
-        MinecraftForge.EVENT_BUS.register(this);
+//        MinecraftForge.EVENT_BUS.register(this);
         ClientProxyCore.registerHandlers();
 
         // ===============
@@ -145,6 +176,19 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
         // ===============
 
+        RenderType cutout = RenderType.getCutout();
+        RenderTypeLookup.setRenderLayer(GCBlocks.fluidPipe, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.fluidPipePull, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.cheeseBlock, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.concealedRedstone, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.emergencyBox, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.glowstoneTorch, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.glowstoneTorchWall, cutout);
+//        RenderTypeLookup.setRenderLayer(GCBlocks.grating, cutout);
+//        RenderTypeLookup.setRenderLayer(GCBlocks.platform, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.unlitTorch, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.unlitTorchLit, cutout);
+
         ClientProxyCore.registerInventoryTabs();
         ItemSchematic.registerTextures();
 
@@ -171,8 +215,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             }
         }
 
-        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
-
         try
         {
             Field ftc = Minecraft.getInstance().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
@@ -182,6 +224,26 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+
+        setCustomModel(GCItems.rocketTierOne.getRegistryName(), ItemModelRocket::new);
+        setCustomModel(GCItems.rocketTierOneCargo1.getRegistryName(), ItemModelRocket::new);
+        setCustomModel(GCItems.rocketTierOneCargo2.getRegistryName(), ItemModelRocket::new);
+        setCustomModel(GCItems.rocketTierOneCargo3.getRegistryName(), ItemModelRocket::new);
+        setCustomModel(GCItems.rocketTierOneCreative.getRegistryName(), ItemModelRocket::new);
+        setCustomModel(GCItems.buggy.getRegistryName(), ItemModelBuggy::new);
+        setCustomModel(GCItems.buggyInventory1.getRegistryName(), ItemModelBuggy::new);
+        setCustomModel(GCItems.buggyInventory2.getRegistryName(), ItemModelBuggy::new);
+        setCustomModel(GCItems.buggyInventory3.getRegistryName(), ItemModelBuggy::new);
+        setCustomModel(GCItems.flag.getRegistryName(), ItemModelFlag::new);
+
+        for (PartialCanister container : ClientProxyCore.canisters)
+        {
+            for (int i = 0; i < container.getTextureCount(); ++i)
+            {
+                ModelResourceLocation modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_" + i, "inventory");
+                setCustomModel(modelResourceLocation, ItemLiquidCanisterModel::new);
+            }
         }
     }
 
@@ -376,9 +438,13 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     }
 
     @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public void onModelBakeEvent(ModelBakeEvent event)
+    public static void onModelBakeEvent(ModelBakeEvent event)
     {
+        event.getModelRegistry().replaceAll((r1, model) -> {
+            ICustomModelFactory factory = customModels.get(new ResourceLocation(r1.getNamespace(), r1.getPath()));
+            return factory == null ? model : factory.create(model);
+        });
+
         //Specified transformations only take effect on the "inventory" variant, not other variants.
 //        Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
 //        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()), "inventory", "normal");
@@ -486,7 +552,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     public static void registerEntityRenderers()
     {
-//        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.MOD_ID_CORE, "rocket_t1"));
+        RenderingRegistry.registerEntityRenderingHandler(GCEntities.ROCKET_T1, RenderTier1Rocket::new);
 //        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, RenderEvolvedSpider::new);
 //        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, RenderEvolvedZombie::new);
 //        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, RenderEvolvedCreeper::new);
@@ -818,7 +884,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         catch (IOException e)
         {
             GCLog.severe("Error getting capes list URL");
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -833,7 +899,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -850,7 +916,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -873,7 +939,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            if (ConfigManagerCore.enableDebug)
+            if (ConfigManagerCore.enableDebug.get())
             {
                 e.printStackTrace();
             }
@@ -886,7 +952,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             }
             catch (IOException e)
             {
-                if (ConfigManagerCore.enableDebug)
+                if (ConfigManagerCore.enableDebug.get())
                 {
                     e.printStackTrace();
                 }
@@ -896,18 +962,17 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     public static void registerInventoryTabs()
     {
-//        if (TabRegistry.getTabList().size() == 0)
-//        {
-//            TabRegistry.registerTab(new InventoryTabVanilla());
-//        }
-//
-//        TabRegistry.registerTab(new InventoryTabGalacticraft()); TODO Inv tabs
+        if (TabRegistry.getTabList().size() == 0)
+        {
+            TabRegistry.registerTab(new InventoryTabVanilla());
+        }
+
+        TabRegistry.registerTab(new InventoryTabGalacticraft());
     }
 
-    @Override
-    public void registerCanister(PartialCanister container)
+    public static void registerCanister(PartialCanister container)
     {
-        ClientProxyCore.canisters.add(container);
+        canisters.add(container);
     }
 
     @Override
@@ -943,5 +1008,29 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
 
         return gearData;
+    }
+
+    @SubscribeEvent
+    public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE, ParticleSmokeUnlaunched.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED, ParticleSmokeLaunched.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_IDLE_LARGE, ParticleSmokeUnlaunchedLarge.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(WHITE_SMOKE_LAUNCHED_LARGE, ParticleSmokeLaunchedLarge.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_IDLE, ParticleLaunchFlameUnlaunched.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(LAUNCH_FLAME_LAUNCHED, ParticleLaunchFlame.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(LAUNCH_SMOKE_TINY, ParticleSmokeSmall.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(OIL_DRIP, DripParticleGC.DrippingOilFactory::new);
+        Minecraft.getInstance().particles.registerFactory(OXYGEN, ParticleOxygen.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(LANDER_FLAME, ParticleLanderFlame.Factory::new);
+    }
+
+    public static void setCustomModel(ResourceLocation loc, ICustomModelFactory factory)
+    {
+        customModels.put(loc, factory);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public interface ICustomModelFactory {
+        IBakedModel create(IBakedModel model);
     }
 }

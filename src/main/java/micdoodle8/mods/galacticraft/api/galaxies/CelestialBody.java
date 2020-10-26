@@ -11,6 +11,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.*;
@@ -24,7 +25,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected ScalableDistance relativeDistanceFromCenter = new ScalableDistance(1.0F, 1.0F);
     protected float relativeOrbitTime = 1.0F;
     protected float phaseShift = 0.0F;
-    protected DimensionType dimensionID = null;
+    protected DimensionType dimensionType = null;
     protected Class<? extends Dimension> providerClass;
     protected String dimensionSuffix;
     protected boolean autoRegisterDimension = false;
@@ -45,6 +46,8 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected float ringColorB = 1.0F;
 
     protected ArrayList<String> checklistKeys = new ArrayList<>();
+
+    private List<Block> surfaceBlocks = null;
 
     public CelestialBody(String bodyName)
     {
@@ -172,14 +175,14 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this;
     }
 
-    public CelestialBody setDimensionInfo(DimensionType dimID, Class<? extends Dimension> providerClass)
+    public CelestialBody setDimensionInfo(DimensionType dimType, Class<? extends Dimension> providerClass)
     {
-        return this.setDimensionInfo(dimID, providerClass, true);
+        return this.setDimensionInfo(dimType, providerClass, true);
     }
 
-    public CelestialBody setDimensionInfo(DimensionType providerId, Class<? extends Dimension> providerClass, boolean autoRegister)
+    public CelestialBody setDimensionInfo(DimensionType type, Class<? extends Dimension> providerClass, boolean autoRegister)
     {
-        this.dimensionID = providerId;
+        this.dimensionType = type;
         this.providerClass = providerClass;
         this.autoRegisterDimension = autoRegister;
         this.isReachable = true;
@@ -191,9 +194,9 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this.autoRegisterDimension;
     }
 
-    public DimensionType getDimensionID()
+    public DimensionType getDimensionType()
     {
-        return this.dimensionID;
+        return this.dimensionType;
     }
 
     public Class<? extends Dimension> getWorldProvider()
@@ -324,7 +327,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         this.dimensionSuffix = dimensionSuffix;
     }
 
-    public void setBiomeInfo(Biome... biomes)
+    public void setBiomeInfo(IForgeRegistry<Biome> registry, Biome... biomes)
     {
         this.biomeInfo = new LinkedList<Biome>();
         this.biomesToGenerate = new LinkedList<Biome>();
@@ -335,7 +338,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
             this.biomeInfo.add(b);
             if (b instanceof BiomeGC && ((BiomeGC) b).isAdaptiveBiome)
             {
-                this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGC) b));
+                this.biomesToGenerate.add(BiomeAdaptive.register(registry, index++, (BiomeGC) b));
                 adaptiveBiomes.add((BiomeGC) b);
             }
             else
@@ -376,17 +379,11 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public List<Block> getSurfaceBlocks()
     {
-        if (this.providerClass != null && IGalacticraftDimension.class.isAssignableFrom(this.providerClass))
-        {
-            try
-            {
-                return ((IGalacticraftDimension) this.providerClass.newInstance()).getSurfaceBlocks();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return null;
+        return surfaceBlocks;
+    }
+
+    public void setSurfaceBlocks(List<Block> surfaceBlocks)
+    {
+        this.surfaceBlocks = surfaceBlocks;
     }
 }

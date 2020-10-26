@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySolarArrayController;
 import net.minecraft.block.Block;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -21,15 +24,16 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockSolarArrayController extends BlockTileGC implements IShiftDescription, IPartialSealableBlock
+public class BlockSolarArrayController extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0, 0.25, 0.0, 1.0, 0.78125, 1.0);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    protected static final VoxelShape AABB = VoxelShapes.create(0.0, 0.25, 0.0, 1.0, 0.78125, 1.0);
 
     public BlockSolarArrayController(Properties builder)
     {
@@ -70,6 +74,12 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
         return new TileEntitySolarArrayController();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
 //    @Override
 //    public boolean isFullCube(BlockState state)
 //    {
@@ -106,9 +116,9 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
         builder.add(FACING);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }

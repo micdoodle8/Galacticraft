@@ -4,8 +4,10 @@ import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -25,13 +27,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.Random;
 
-public class BlockFluidPipe extends BlockTransmitter implements IShiftDescription
+public class BlockFluidPipe extends BlockTransmitter implements IShiftDescription, ISortable
 {
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
 
@@ -43,73 +46,73 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
     private static final float MAX = 0.65F;
     protected static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[]{
 
-            Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, MAX),  // No connection                                  000000
-            Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, 1.0D), // South                                          000001
-            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, MAX, MAX), // West                                           000010
-            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, MAX, 1.0D), // South West                                    000011
-            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, MAX, MAX), // North                                          000100
-            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, MAX, 1.0D), // North South                                   000101
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, MAX, MAX), // North West                                    000110
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, MAX, 1.0D), // North South West                             000111
-            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, MAX, MAX), // East                                           001000
-            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, MAX, 1.0D), // East South                                    001001
-            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, MAX, MAX), // West East                                     001010
-            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, MAX, 1.0D), // South West East                              001011
-            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, MAX, MAX), // North East                                    001100
-            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East                             001101
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, MAX, MAX), // North East West                              001110
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East West                       001111
+            VoxelShapes.create(MIN, MIN, MIN, MAX, MAX, MAX),  // No connection                                  000000
+            VoxelShapes.create(MIN, MIN, MIN, MAX, MAX, 1.0D), // South                                          000001
+            VoxelShapes.create(0.0D, MIN, MIN, MAX, MAX, MAX), // West                                           000010
+            VoxelShapes.create(0.0D, MIN, MIN, MAX, MAX, 1.0D), // South West                                    000011
+            VoxelShapes.create(MIN, MIN, 0.0D, MAX, MAX, MAX), // North                                          000100
+            VoxelShapes.create(MIN, MIN, 0.0D, MAX, MAX, 1.0D), // North South                                   000101
+            VoxelShapes.create(0.0D, MIN, 0.0D, MAX, MAX, MAX), // North West                                    000110
+            VoxelShapes.create(0.0D, MIN, 0.0D, MAX, MAX, 1.0D), // North South West                             000111
+            VoxelShapes.create(MIN, MIN, MIN, 1.0D, MAX, MAX), // East                                           001000
+            VoxelShapes.create(MIN, MIN, MIN, 1.0D, MAX, 1.0D), // East South                                    001001
+            VoxelShapes.create(0.0D, MIN, MIN, 1.0D, MAX, MAX), // West East                                     001010
+            VoxelShapes.create(0.0D, MIN, MIN, 1.0D, MAX, 1.0D), // South West East                              001011
+            VoxelShapes.create(MIN, MIN, 0.0D, 1.0D, MAX, MAX), // North East                                    001100
+            VoxelShapes.create(MIN, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East                             001101
+            VoxelShapes.create(0.0D, MIN, 0.0D, 1.0D, MAX, MAX), // North East West                              001110
+            VoxelShapes.create(0.0D, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East West                       001111
 
-            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, MAX, MAX),  // Down                                          010000
-            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, MAX, 1.0D), // Down South                                    010001
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, MAX, MAX), // Down West                                     010010
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, MAX, 1.0D), // Down South West                              010011
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, MAX, MAX), // Down North                                    010100
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South                             010101
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, MAX, MAX), // Down North West                              010110
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South West                       010111
-            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, MAX, MAX), // Down East                                     011000
-            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down East South                              011001
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, MAX, MAX), // Down West East                               011010
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down South West East                        011011
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East                              011100
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East                       011101
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East West                        011110
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East West                 011111
+            VoxelShapes.create(MIN, 0.0D, MIN, MAX, MAX, MAX),  // Down                                          010000
+            VoxelShapes.create(MIN, 0.0D, MIN, MAX, MAX, 1.0D), // Down South                                    010001
+            VoxelShapes.create(0.0D, 0.0D, MIN, MAX, MAX, MAX), // Down West                                     010010
+            VoxelShapes.create(0.0D, 0.0D, MIN, MAX, MAX, 1.0D), // Down South West                              010011
+            VoxelShapes.create(MIN, 0.0D, 0.0D, MAX, MAX, MAX), // Down North                                    010100
+            VoxelShapes.create(MIN, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South                             010101
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, MAX, MAX, MAX), // Down North West                              010110
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South West                       010111
+            VoxelShapes.create(MIN, 0.0D, MIN, 1.0D, MAX, MAX), // Down East                                     011000
+            VoxelShapes.create(MIN, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down East South                              011001
+            VoxelShapes.create(0.0D, 0.0D, MIN, 1.0D, MAX, MAX), // Down West East                               011010
+            VoxelShapes.create(0.0D, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down South West East                        011011
+            VoxelShapes.create(MIN, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East                              011100
+            VoxelShapes.create(MIN, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East                       011101
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East West                        011110
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East West                 011111
 
-            Block.makeCuboidShape(MIN, MIN, MIN, MAX, 1.0D, MAX),  // Up                                            100000
-            Block.makeCuboidShape(MIN, MIN, MIN, MAX, 1.0D, 1.0D), // Up South                                      100001
-            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, 1.0D, MAX), // Up West                                       100010
-            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, 1.0D, 1.0D), // Up South West                                100011
-            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, 1.0D, MAX), // Up North                                      100100
-            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South                               100101
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, 1.0D, MAX), // Up North West                                100110
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South West                         100111
-            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, 1.0D, MAX), // Up East                                       101000
-            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up East South                                101001
-            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, 1.0D, MAX), // Up West East                                 101010
-            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up South West East                          101011
-            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East                                101100
-            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East                         101101
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East West                          101110
-            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East West                   101111
+            VoxelShapes.create(MIN, MIN, MIN, MAX, 1.0D, MAX),  // Up                                            100000
+            VoxelShapes.create(MIN, MIN, MIN, MAX, 1.0D, 1.0D), // Up South                                      100001
+            VoxelShapes.create(0.0D, MIN, MIN, MAX, 1.0D, MAX), // Up West                                       100010
+            VoxelShapes.create(0.0D, MIN, MIN, MAX, 1.0D, 1.0D), // Up South West                                100011
+            VoxelShapes.create(MIN, MIN, 0.0D, MAX, 1.0D, MAX), // Up North                                      100100
+            VoxelShapes.create(MIN, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South                               100101
+            VoxelShapes.create(0.0D, MIN, 0.0D, MAX, 1.0D, MAX), // Up North West                                100110
+            VoxelShapes.create(0.0D, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South West                         100111
+            VoxelShapes.create(MIN, MIN, MIN, 1.0D, 1.0D, MAX), // Up East                                       101000
+            VoxelShapes.create(MIN, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up East South                                101001
+            VoxelShapes.create(0.0D, MIN, MIN, 1.0D, 1.0D, MAX), // Up West East                                 101010
+            VoxelShapes.create(0.0D, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up South West East                          101011
+            VoxelShapes.create(MIN, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East                                101100
+            VoxelShapes.create(MIN, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East                         101101
+            VoxelShapes.create(0.0D, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East West                          101110
+            VoxelShapes.create(0.0D, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East West                   101111
 
-            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, 1.0D, MAX),  // Up Down                                      110000
-            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South                                110001
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, 1.0D, MAX), // Up Down West                                 110010
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South West                          110011
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North                                110100
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South                         110101
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North West                          110110
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South West                   110111
-            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down East                                 111000
-            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down East South                          111001
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down West East                           111010
-            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down South West East                    111011
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East                          111100
-            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                   111101
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East West                    111110
-            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)}; // Up Down North South East West            111111
+            VoxelShapes.create(MIN, 0.0D, MIN, MAX, 1.0D, MAX),  // Up Down                                      110000
+            VoxelShapes.create(MIN, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South                                110001
+            VoxelShapes.create(0.0D, 0.0D, MIN, MAX, 1.0D, MAX), // Up Down West                                 110010
+            VoxelShapes.create(0.0D, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South West                          110011
+            VoxelShapes.create(MIN, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North                                110100
+            VoxelShapes.create(MIN, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South                         110101
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North West                          110110
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South West                   110111
+            VoxelShapes.create(MIN, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down East                                 111000
+            VoxelShapes.create(MIN, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down East South                          111001
+            VoxelShapes.create(0.0D, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down West East                           111010
+            VoxelShapes.create(0.0D, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down South West East                    111011
+            VoxelShapes.create(MIN, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East                          111100
+            VoxelShapes.create(MIN, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                   111101
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East West                    111110
+            VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)}; // Up Down North South East West            111111
 
     public BlockFluidPipe(Properties builder, EnumPipeMode mode)
     {
@@ -316,6 +319,12 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
         return new TileEntityFluidPipe();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
 //    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
@@ -360,11 +369,11 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
 //        return this.getDefaultState().with(COLOR, DyeColor.byId(meta));
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.TRANSMITTER;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.TRANSMITTER;
+    }
 
     public EnumPipeMode getMode()
     {

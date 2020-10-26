@@ -42,7 +42,7 @@
 //            }
 //
 //            int range = 5;
-//            List<?> l = worldIn.getEntitiesWithinAABB(EntitySludgeling.class, Block.makeCuboidShape(pos.getX() - range, pos.getY() - range, pos.getZ() - range, pos.getX() + range, pos.getY() + range, pos.getZ() + range));
+//            List<?> l = worldIn.getEntitiesWithinAABB(EntitySludgeling.class, VoxelShapes.create(pos.getX() - range, pos.getY() - range, pos.getZ() - range, pos.getX() + range, pos.getY() + range, pos.getZ() + range));
 //
 //            if (l.size() < 3)
 //            {

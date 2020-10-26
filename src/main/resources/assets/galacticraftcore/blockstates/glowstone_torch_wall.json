@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=east": { "model": "galacticraftcore:block/glowstone_torch_wall_model" },
+        "facing=south": { "model": "galacticraftcore:block/glowstone_torch_wall_model", "y": 90 },
+        "facing=west": { "model": "galacticraftcore:block/glowstone_torch_wall_model", "y": 180 },
+        "facing=north": { "model": "galacticraftcore:block/glowstone_torch_wall_model", "y": 270 }
+    }
+}

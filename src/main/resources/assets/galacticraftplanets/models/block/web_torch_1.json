@@ -1,6 +1,0 @@
-{
-    "parent": "galacticraftplanets:block/vine_model",
-    "textures": {
-        "cross": "galacticraftplanets:blocks/web_torch_1"
-    }
-}

@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.TorchBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlock
+public class BlockUnlitTorch extends TorchBlock implements IOxygenReliantBlock
 {
 //    public static final DirectionProperty HORIZONTAL_FACING = HorizontalBlock.HORIZONTAL_FACING;
 
@@ -34,7 +35,6 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         super(builder);
         this.lit = lit;
-        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
     }
 
     public static void register(BlockUnlitTorch unlittorch, BlockUnlitTorch littorch, Block vanillatorch)
@@ -117,8 +117,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         }
         else
         {
-            Direction enumfacing = state.get(FACING);
-            world.setBlockState(pos, this.fallback.getDefaultState().with(FACING, enumfacing), 2);
+            world.setBlockState(pos, this.fallback.getDefaultState(), 2);
         }
     }
 
@@ -126,29 +125,14 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        Direction enumfacing = stateIn.get(FACING);
         double d0 = (double) pos.getX() + 0.5D;
         double d1 = (double) pos.getY() + 0.7D;
         double d2 = (double) pos.getZ() + 0.5D;
-        double d3 = 0.22D;
-        double d4 = 0.27D;
 
-        if (enumfacing.getAxis().isHorizontal())
+        worldIn.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+        if (this == GCBlocks.unlitTorchLit)
         {
-            Direction enumfacing1 = enumfacing.getOpposite();
-            worldIn.addParticle(ParticleTypes.SMOKE, d0 + d4 * (double) enumfacing1.getXOffset(), d1 + d3, d2 + d4 * (double) enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D);
-            if (this == GCBlocks.unlitTorchLit)
-            {
-                worldIn.addParticle(ParticleTypes.FLAME, d0 + d4 * (double) enumfacing1.getXOffset(), d1 + d3, d2 + d4 * (double) enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D);
-            }
-        }
-        else
-        {
-            worldIn.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-            if (this == GCBlocks.unlitTorchLit)
-            {
-                worldIn.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-            }
+            worldIn.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -157,8 +141,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         if (world.getDimension() instanceof IGalacticraftDimension)
         {
-            Direction enumfacing = state.get(FACING);
-            world.setBlockState(pos, this.unlitVersion.getDefaultState().with(FACING, enumfacing), 2);
+            world.setBlockState(pos, this.unlitVersion.getDefaultState(), 2);
         }
     }
 
@@ -167,8 +150,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         if (world.getDimension() instanceof IGalacticraftDimension)
         {
-            Direction enumfacing = state.get(FACING);
-            world.setBlockState(pos, this.litVersion.getDefaultState().with(FACING, enumfacing), 2);
+            world.setBlockState(pos, this.litVersion.getDefaultState(), 2);
         }
     }
 
@@ -176,12 +158,6 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
     {
         return this.litVersion.getDrops(state, builder);
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(FACING);
     }
 
 //    @Override

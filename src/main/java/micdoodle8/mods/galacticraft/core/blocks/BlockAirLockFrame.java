@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.BlockState;
@@ -18,31 +20,12 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescription
+public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescription, ISortable
 {
     public BlockAirLockFrame(Properties builder)
     {
         super(builder);
     }
-
-//    @Override
-//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-//    {
-//        list.add(new ItemStack(this, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
-//        list.add(new ItemStack(this, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));
-//    } TODO
-
-//    @Override
-//    public ItemGroup getCreativeTabToDisplayOn()
-//    {
-//        return GalacticraftCore.galacticraftBlocksTab;
-//    }
-
-//    @Override
-//    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-//    {
-//        return true;
-//    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
@@ -62,6 +45,12 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityAirLock();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override
@@ -106,11 +95,11 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
 //    @Override
 //    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)

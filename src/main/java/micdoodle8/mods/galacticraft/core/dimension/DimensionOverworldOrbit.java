@@ -249,7 +249,7 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
     @Override
     public double getSolarEnergyMultiplier()
     {
-        return ConfigManagerCore.spaceStationEnergyScalar;
+        return ConfigManagerCore.spaceStationEnergyScalar.get();
     }
 
     @Override
@@ -356,12 +356,6 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
     public ResourceLocation getDungeonChestType()
     {
         return RoomTreasure.MOONCHEST;
-    }
-
-    @Override
-    public List<Block> getSurfaceBlocks()
-    {
-        return null;
     }
 
     @Override

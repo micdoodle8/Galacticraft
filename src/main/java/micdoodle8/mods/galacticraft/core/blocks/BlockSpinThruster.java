@@ -4,7 +4,7 @@
 //import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 //import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockState;
@@ -28,15 +28,15 @@
 //
 //import java.util.Random;
 //
-//public class BlockSpinThruster extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
+//public class BlockSpinThruster extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortable
 //{
-//    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+//    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 //    public static final BooleanProperty ORIENTATION = BooleanProperty.create("rev");
 //
-//    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
-//    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
-//    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-//    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
+//    protected static final VoxelShape NORTH_AABB = VoxelShapes.create(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
+//    protected static final VoxelShape SOUTH_AABB = VoxelShapes.create(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
+//    protected static final VoxelShape WEST_AABB = VoxelShapes.create(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+//    protected static final VoxelShape EAST_AABB = VoxelShapes.create(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
 //
 //    public BlockSpinThruster(Properties builder)
 //    {
@@ -308,8 +308,8 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.MACHINE;
+//        return EnumSortCategory.MACHINE;
 //    }
 //}

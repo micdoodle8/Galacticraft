@@ -3,7 +3,7 @@
     "defaults": {
     },
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:painter_model" }],
+        "inventory": [{ "model": "galacticraftcore:block/painter_model" }],
         "facing":
         {
            "north": { },
@@ -14,7 +14,7 @@
         
         "type":
         {
-           "painter": {        "model": "galacticraftcore:painter_model"
+           "painter": {        "model": "galacticraftcore:block/painter_model"
            }
         }
     }

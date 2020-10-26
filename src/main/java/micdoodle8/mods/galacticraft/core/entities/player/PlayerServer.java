@@ -85,11 +85,11 @@ public class PlayerServer implements IPlayerServer
             {
 //                if (player.world.getDimension() instanceof WorldProviderAsteroids)
 //                {
-//                    if (player.posY > -120D)
+//                    if (player.getPosY() > -120D)
 //                    {
 //                        return -1F;
 //                    }
-//                    if (player.posY > -180D)
+//                    if (player.getPosY() > -180D)
 //                    {
 //                        par2 /= 2;
 //                    }

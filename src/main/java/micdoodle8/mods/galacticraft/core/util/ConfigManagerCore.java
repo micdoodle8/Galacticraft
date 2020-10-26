@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import com.google.common.primitives.Ints;
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -9,39 +9,52 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static net.minecraftforge.common.ForgeConfigSpec.*;
+
 public class ConfigManagerCore
 {
 //    static Configuration config;
 
-    ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+    public static final ConfigManagerCore INSTANCE;
+    public static final ForgeConfigSpec COMMON_SPEC;
+    static
+    {
+        final Pair<ConfigManagerCore, ForgeConfigSpec> specPair = new Builder().configure(ConfigManagerCore::new);
+        COMMON_SPEC = specPair.getRight();
+        INSTANCE = specPair.getLeft();
+    }
+    private final Builder COMMON_BUILDER;
 
     // GAME CONTROL
-    public static boolean forceOverworldRespawn;
-    public static boolean hardMode;
-    public static boolean quickMode;
-    public static boolean challengeMode;
-    private static int challengeFlags;
+    public static BooleanValue forceOverworldRespawn;
+    public static BooleanValue hardMode;
+    public static BooleanValue quickMode;
+    public static BooleanValue challengeMode;
+    private static IntValue challengeFlags;
     public static boolean challengeRecipes;
     public static boolean challengeMobDropsAndSpawning;
     public static boolean challengeSpawnHandling;
     public static boolean challengeAsteroidPopulation;
-    public static boolean disableRocketsToOverworld;
-    public static boolean disableSpaceStationCreation;
-    public static boolean spaceStationsRequirePermission;
-    public static boolean disableUpdateCheck;
-    public static boolean enableSpaceRaceManagerPopup;
-    public static boolean enableDebug;
-    public static boolean enableSealerEdgeChecks;
-    public static boolean disableLander;
-    public static boolean recipesRequireGCAdvancedMetals = true;
-    public static boolean allowLiquidGratings;
+    public static BooleanValue disableRocketsToOverworld;
+    public static BooleanValue disableSpaceStationCreation;
+    public static BooleanValue spaceStationsRequirePermission;
+    public static BooleanValue disableUpdateCheck;
+    public static BooleanValue enableSpaceRaceManagerPopup;
+    public static BooleanValue enableDebug;
+    public static BooleanValue enableSealerEdgeChecks;
+    public static BooleanValue disableLander;
+    public static BooleanValue recipesRequireGCAdvancedMetals;
+    public static BooleanValue allowLiquidGratings;
 //    public static int mapfactor;
 //    public static int mapsize;
 
@@ -50,75 +63,75 @@ public class ConfigManagerCore
 //    public static int idDimensionOverworldOrbit;
 //    public static int idDimensionOverworldOrbitStatic;
 //    public static int idDimensionMoon;
-    public static int biomeIDbase = 102;
-    public static boolean disableBiomeTypeRegistrations;
-    public static String[] staticLoadDimensions = {};
-    public static String[] disableRocketLaunchDimensions = {DimensionType.THE_NETHER.getRegistryName().toString(), DimensionType.THE_END.getRegistryName().toString()};
-    public static boolean disableRocketLaunchAllNonGC;
-    public static int otherPlanetWorldBorders = 0;
-    public static boolean keepLoadedNewSpaceStations;
+    public static IntValue biomeIDbase;
+    public static BooleanValue disableBiomeTypeRegistrations;
+    public static ConfigValue<List<String>> staticLoadDimensions;
+    public static ConfigValue<List<String>> disableRocketLaunchDimensions;
+    public static BooleanValue disableRocketLaunchAllNonGC;
+    public static IntValue otherPlanetWorldBorders;
+    public static BooleanValue keepLoadedNewSpaceStations;
 
     // SCHEMATICS
-    public static int idSchematicRocketT1;
-    public static int idSchematicMoonBuggy;
-    public static int idSchematicAddSchematic;
+    public static IntValue idSchematicRocketT1;
+    public static IntValue idSchematicMoonBuggy;
+    public static IntValue idSchematicAddSchematic;
 
     // ACHIEVEMENTS
-    public static int idAchievBase;
+    public static IntValue idAchievBase;
 
     // CLIENT / VISUAL FX
-    public static boolean moreStars;
-    public static boolean disableSpaceshipParticles;
-    public static boolean disableVehicleCameraChanges;
-    public static boolean oxygenIndicatorLeft;
-    public static boolean oxygenIndicatorBottom;
-    public static boolean overrideCapes;
+    public static BooleanValue moreStars;
+    public static BooleanValue disableSpaceshipParticles;
+    public static BooleanValue disableVehicleCameraChanges;
+    public static BooleanValue oxygenIndicatorLeft;
+    public static BooleanValue oxygenIndicatorBottom;
+    public static BooleanValue overrideCapes;
 
     //DIFFICULTY
-    public static double dungeonBossHealthMod;
-    public static int suffocationCooldown;
-    public static int suffocationDamage;
-    public static int rocketFuelFactor;
-    public static double meteorSpawnMod;
-    public static boolean meteorBlockDamageEnabled;
-    public static boolean disableSpaceshipGrief;
-    public static double spaceStationEnergyScalar;
+    public static DoubleValue dungeonBossHealthMod;
+    public static IntValue suffocationCooldown;
+    public static IntValue suffocationDamage;
+    public static IntValue rocketFuelFactor;
+    public static DoubleValue meteorSpawnMod;
+    public static BooleanValue meteorBlockDamageEnabled;
+    public static BooleanValue disableSpaceshipGrief;
+    public static DoubleValue spaceStationEnergyScalar;
 
     // WORLDGEN
-    public static boolean enableCopperOreGen;
-    public static boolean enableTinOreGen;
-    public static boolean enableAluminumOreGen;
-    public static boolean enableSiliconOreGen;
-    public static boolean disableCheeseMoon;
-    public static boolean disableTinMoon;
-    public static boolean disableCopperMoon;
-    public static boolean disableMoonVillageGen;
-    public static boolean disableSapphireMoon;
-    public static int[] externalOilGen;
-    public static double oilGenFactor;
-    public static boolean retrogenOil;
-    public static String[] oregenIDs = {};
-    public static boolean enableOtherModsFeatures;
-    public static boolean whitelistCoFHCoreGen;
-    public static boolean enableThaumCraftNodes;
+    public static BooleanValue enableCopperOreGen;
+    public static BooleanValue enableTinOreGen;
+    public static BooleanValue enableAluminumOreGen;
+    public static BooleanValue enableSiliconOreGen;
+    public static BooleanValue disableCheeseMoon;
+    public static BooleanValue disableTinMoon;
+    public static BooleanValue disableCopperMoon;
+    public static BooleanValue disableMoonVillageGen;
+    public static BooleanValue disableSapphireMoon;
+//    public static IntValue[] externalOilGen;
+    public static DoubleValue oilGenFactor;
+    public static BooleanValue retrogenOil;
+    public static ConfigValue<List<String>> oregenIDs;
+    public static BooleanValue enableOtherModsFeatures;
+    public static BooleanValue whitelistCoFHCoreGen;
+    public static BooleanValue enableThaumCraftNodes;
 
     //COMPATIBILITY
-    public static String[] sealableIDs = {};
-    public static String[] detectableIDs = {};
-    public static boolean alternateCanisterRecipe;
-    public static String otherModsSilicon;
-    public static boolean useOldOilFluidID;
-    public static boolean useOldFuelFluidID;
+    public static ConfigValue<List<String>> sealableIDs;
+    public static ConfigValue<List<String>> detectableIDs;
+    public static BooleanValue alternateCanisterRecipe;
+    public static ConfigValue<String> otherModsSilicon;
+    public static BooleanValue useOldOilFluidID;
+    public static BooleanValue useOldFuelFluidID;
 
     //KEYBOARD AND MOUSE
-    public static String keyOverrideMap;
-    public static String keyOverrideFuelLevel;
-    public static String keyOverrideToggleAdvGoggles;
-    public static int keyOverrideMapI;
-    public static int keyOverrideFuelLevelI;
-    public static int keyOverrideToggleAdvGogglesI;
-    public static float mapMouseScrollSensitivity;
-    public static boolean invertMapMouseScroll;
+    public static ConfigValue<String> keyOverrideMap;
+    public static ConfigValue<String> keyOverrideFuelLevel;
+    public static ConfigValue<String> keyOverrideToggleAdvGoggles;
+//    public static IntValue keyOverrideMapI;
+//    public static IntValue keyOverrideFuelLevelI;
+//    public static IntValue keyOverrideToggleAdvGogglesI;
+    public static DoubleValue mapMouseScrollSensitivity;
+    public static BooleanValue invertMapMouseScroll;
 
     public static ArrayList<Object> clientSave = null;
     //    private static Map<String, List<String>> propOrder = new TreeMap<>();
@@ -126,18 +139,19 @@ public class ConfigManagerCore
 
 //    public static void initialize(File file)
 //    {
-//        ConfigManagerCore.config = new Configuration(file);
-//        ConfigManagerCore.syncConfig(true);
+//        ConfigManagerCore.config.get() = new Configuration(file);
+//        ConfigManagerCore.syncConfig.get()(true);
 //    }
 
 //    public static void forceSave()
 //    {
-//        ConfigManagerCore.config.save();
+//        ConfigManagerCore.config.get().save();
 //    }
 
     //    public static void syncConfig(boolean load)
-    public ConfigManagerCore()
+    public ConfigManagerCore(Builder builder)
     {
+        COMMON_BUILDER = builder;
         try
         {
 //            propOrder.clear();
@@ -195,7 +209,7 @@ public class ConfigManagerCore
 //            }
 //            finishProp(prop);
 //
-//            prop = getConfig(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions);
+//            prop = getConfig(Constants.CONFIG_CATEGORY_DIMENSIONS, "Static Loaded Dimensions", ConfigManagerCore.staticLoadDimensions.get());
 //            prop.setComment("IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded");
 //            prop.setLanguageKey("gc.configgui.static_loaded_dimensions");
 //            staticLoadDimensions = prop.getIntList();
@@ -623,393 +637,367 @@ public class ConfigManagerCore
 //            enableSpaceRaceManagerPopup = prop.getBoolean(false);
 //            finishProp(prop);
 
-            COMMON_BUILDER.push("WORLDGEN");
+            builder.push("WORLDGEN");
 
-            oilGenFactor = COMMON_BUILDER.comment("Increasing this will increase amount of oil that will generate in each chunk.")
+            oilGenFactor = builder.comment("Increasing this will increase amount of oil that will generate in each chunk.")
                     .translation("gc.configgui.oil_gen_factor")
-                    .defineInRange("oil_generation_factor", 1.8, -Double.MAX_VALUE, Double.MAX_VALUE).get();
+                    .defineInRange("oil_generation_factor", 1.8, -Double.MAX_VALUE, Double.MAX_VALUE);
 
-            externalOilGen = COMMON_BUILDER.comment("List of non-galacticraft dimension IDs to generate oil in.")
-                    .translation("gc.configgui.external_oil_gen")
-                    .define("oil_gen_in_external_dimension", new int[]{0}).get();
+//            externalOilGen = builder.comment("List of non-galacticraft dimension IDs to generate oil in.")
+//                    .translation("gc.configgui.external_oil_gen")
+//                    .define("oil_gen_in_external_dimension", new IntValue[1]);
 
-            retrogenOil = COMMON_BUILDER.comment("If this is enabled, GC oil will be added to existing Overworld maps where possible.")
+            retrogenOil = builder.comment("If this is enabled, GC oil will be added to existing Overworld maps where possible.")
                     .translation("gc.configgui.enable_retrogen_oil")
-                    .define("retro_gen_of_gc_oil_in_existing_map_chunks", false).get();
+                    .define("retro_gen_of_gc_oil_in_existing_map_chunks", false);
 
-            enableCopperOreGen = COMMON_BUILDER.comment("If this is enabled, copper ore will generate on the overworld.")
+            enableCopperOreGen = builder.comment("If this is enabled, copper ore will generate on the overworld.")
                     .translation("gc.configgui.enable_copper_ore_gen")
-                    .define("enable_copper_ore_gen", true).get();
+                    .define("enable_copper_ore_gen", true);
 
-            enableTinOreGen = COMMON_BUILDER.comment("If this is enabled, tin ore will generate on the overworld.")
+            enableTinOreGen = builder.comment("If this is enabled, tin ore will generate on the overworld.")
                     .translation("gc.configgui.enable_tin_ore_gen")
-                    .define("enable_tin_ore_gen", true).get();
+                    .define("enable_tin_ore_gen", true);
 
-            enableAluminumOreGen = COMMON_BUILDER.comment("If this is enabled, aluminum ore will generate on the overworld.")
+            enableAluminumOreGen = builder.comment("If this is enabled, aluminum ore will generate on the overworld.")
                     .translation("gc.configgui.enable_aluminum_ore_gen")
-                    .define("enable_aluminum_ore_gen", true).get();
+                    .define("enable_aluminum_ore_gen", true);
 
-            enableSiliconOreGen = COMMON_BUILDER.comment("If this is enabled, silicon ore will generate on the overworld.")
+            enableSiliconOreGen = builder.comment("If this is enabled, silicon ore will generate on the overworld.")
                     .translation("gc.configgui.enable_silicon_ore_gen")
-                    .define("enable_silicon_ore_gen", true).get();
+                    .define("enable_silicon_ore_gen", true);
 
-            disableCheeseMoon = COMMON_BUILDER.comment("Disable Cheese Ore Gen on Moon.")
+            disableCheeseMoon = builder.comment("Disable Cheese Ore Gen on Moon.")
                     .translation("gc.configgui.disable_cheese_moon")
-                    .define("disable_cheese_ore_gen_on_moon", false).get();
+                    .define("disable_cheese_ore_gen_on_moon", false);
 
-            disableTinMoon = COMMON_BUILDER.comment("Disable Tin Ore Gen on Moon.")
+            disableTinMoon = builder.comment("Disable Tin Ore Gen on Moon.")
                     .translation("gc.configgui.disable_tin_moon")
-                    .define("disable_tin_ore_gen_on_moon", false).get();
+                    .define("disable_tin_ore_gen_on_moon", false);
 
-            disableCopperMoon = COMMON_BUILDER.comment("Disable Copper Ore Gen on Moon.")
+            disableCopperMoon = builder.comment("Disable Copper Ore Gen on Moon.")
                     .translation("gc.configgui.disable_copper_moon")
-                    .define("disable_copper_ore_gen_on_moon", false).get();
+                    .define("disable_copper_ore_gen_on_moon", false);
 
-            disableSapphireMoon = COMMON_BUILDER.comment("Disable Sapphire Ore Gen on Moon.")
+            disableSapphireMoon = builder.comment("Disable Sapphire Ore Gen on Moon.")
                     .translation("gc.configgui.disable_sapphire_moon")
-                    .define("disable_sapphire_ore_gen_on_moon", false).get();
+                    .define("disable_sapphire_ore_gen_on_moon", false);
 
-            disableMoonVillageGen = COMMON_BUILDER.comment("If true, moon villages will not generate.")
+            disableMoonVillageGen = builder.comment("If true, moon villages will not generate.")
                     .translation("gc.configgui.disable_moon_village_gen")
-                    .define("disable_moon_village_gen", false).get();
+                    .define("disable_moon_village_gen", false);
 
-            enableOtherModsFeatures = COMMON_BUILDER.comment("If this is enabled, other mods' standard ores and all other features (eg. plants) can generate on the Moon and planets. Apart from looking wrong, this make cause 'Already Decorating!' type crashes.  NOT RECOMMENDED!  See Wiki.")
+            enableOtherModsFeatures = builder.comment("If this is enabled, other mods' standard ores and all other features (eg. plants) can generate on the Moon and planets. Apart from looking wrong, this make cause 'Already Decorating!' type crashes.  NOT RECOMMENDED!  See Wiki.")
                     .translation("gc.configgui.enable_other_mods_features")
-                    .define("generate_all_other_mods_features_on_planets", false).get();
+                    .define("generate_all_other_mods_features_on_planets", false);
 
-            whitelistCoFHCoreGen = COMMON_BUILDER.comment("If generate other mods features is disabled as recommended, this setting can whitelist CoFHCore custom worldgen on planets.")
+            whitelistCoFHCoreGen = builder.comment("If generate other mods features is disabled as recommended, this setting can whitelist CoFHCore custom worldgen on planets.")
                     .translation("gc.configgui.whitelist_co_f_h_core_gen")
-                    .define("whitelist_cofhcore_worldgen_to_generate_its_ores_and_lakes_on_planets", false).get();
+                    .define("whitelist_cofhcore_worldgen_to_generate_its_ores_and_lakes_on_planets", false);
 
-            enableThaumCraftNodes = COMMON_BUILDER.comment("If ThaumCraft is installed, ThaumCraft wild nodes can generate on the Moon and planets.")
+            enableThaumCraftNodes = builder.comment("If ThaumCraft is installed, ThaumCraft wild nodes can generate on the Moon and planets.")
                     .translation("gc.configgui.enable_thaum_craft_nodes")
-                    .define("generate_thaumcraft_wild_nodes_on_planetary_surfaces", true).get();
+                    .define("generate_thaumcraft_wild_nodes_on_planetary_surfaces", true);
 
-            oregenIDs = COMMON_BUILDER.comment("Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  /ONLYMOON or /ONLYMARS if wanted on one planet only.  If nothing specified, defaults are /COMMON, /BOTH and /STANDARD.  Repeat lines to generate a huge quantity of ores.")
+            oregenIDs = builder.comment("Enter IDs of other mods' ores here for Galacticraft to generate them on the Moon and other planets. Format is BlockName or BlockName:metadata. Use optional parameters at end of each line: /RARE /UNCOMMON or /COMMON for rarity in a chunk; /DEEP /SHALLOW or /BOTH for height; /SINGLE /STANDARD or /LARGE for clump size; /XTRARANDOM for ores sometimes there sometimes not at all.  /ONLYMOON or /ONLYMARS if wanted on one planet only.  If nothing specified, defaults are /COMMON, /BOTH and /STANDARD.  Repeat lines to generate a huge quantity of ores.")
                     .translation("gc.configgui.other_mod_ore_gen_i_ds")
-                    .define("Other_mods_ores_for_gc_to_generate_on_the_moon_and_planets", new String[]{}).get();
+                    .define("Other_mods_ores_for_gc_to_generate_on_the_moon_and_planets", Lists.newArrayList());
 
-            disableBiomeTypeRegistrations = COMMON_BUILDER.comment("Biome Types will not be registered in the BiomeDictionary if this is set to true.")
+            disableBiomeTypeRegistrations = builder.comment("Biome Types will not be registered in the BiomeDictionary if this is set to true.")
                     .translation("gc.configgui.disable_biome_type_registrations")
-                    .define("disable_biome_type_registrations", false).get();
+                    .define("disable_biome_type_registrations", false);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("DIMENSIONS");
+            builder.push("DIMENSIONS");
 
-//            idDimensionOverworld = COMMON_BUILDER.comment("Dimension ID for the Overworld (as seen in the Celestial Map)")
+//            idDimensionOverworld = builder.comment("Dimension ID for the Overworld (as seen in the Celestial Map)")
 //                    .translation("gc.configgui.id_dimension_overworld")
-//                    .defineInRange("iddimensionoverworld", 0, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//                    .defineInRange("iddimensionoverworld", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 //
-//            idDimensionMoon = COMMON_BUILDER.comment("Dimension ID for the Moon")
+//            idDimensionMoon = builder.comment("Dimension ID for the Moon")
 //                    .translation("gc.configgui.id_dimension_moon")
-//                    .defineInRange("iddimensionmoon", -28, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//                    .defineInRange("iddimensionmoon", -28, Integer.MIN_VALUE, Integer.MAX_VALUE);
 //
-//            idDimensionOverworldOrbit = COMMON_BUILDER.comment("WorldProvider ID for Overworld Space Stations (advanced: do not change unless you have conflicts)")
+//            idDimensionOverworldOrbit = builder.comment("WorldProvider ID for Overworld Space Stations (advanced: do not change unless you have conflicts)")
 //                    .translation("gc.configgui.id_dimension_overworld_orbit")
-//                    .defineInRange("iddimensionoverworldorbit", -27, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//                    .defineInRange("iddimensionoverworldorbit", -27, Integer.MIN_VALUE, Integer.MAX_VALUE);
 //
-//            idDimensionOverworldOrbitStatic = COMMON_BUILDER.comment("WorldProvider ID for Static Space Stations (advanced: do not change unless you have conflicts)")
+//            idDimensionOverworldOrbitStatic = builder.comment("WorldProvider ID for Static Space Stations (advanced: do not change unless you have conflicts)")
 //                    .translation("gc.configgui.id_dimension_overworld_orbit_static")
-//                    .defineInRange("iddimensionoverworldorbitstatic", -26, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//                    .defineInRange("iddimensionoverworldorbitstatic", -26, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            biomeIDbase = COMMON_BUILDER.comment("Biome ID base. GC will use biome IDs from this to this + 3, or more with addons. Allowed 40-250. Default 102.")
+            biomeIDbase = builder.comment("Biome ID base. GC will use biome IDs from this to this + 3, or more with addons. Allowed 40-250. Default 102.")
                     .translation("gc.configgui.biome_id_base")
-                    .defineInRange("biomeidbase", 102, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("biomeidbase", 102, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            staticLoadDimensions = COMMON_BUILDER.comment("IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded")
+            staticLoadDimensions = builder.comment("IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded")
                     .translation("gc.configgui.static_loaded_dimensions")
-                    .define("static_loaded_dimensions", ConfigManagerCore.staticLoadDimensions).get();
+                    .define("static_loaded_dimensions", Lists.newArrayList(""));
 
-            keepLoadedNewSpaceStations = COMMON_BUILDER.comment("Set this to true to have an automatic /gckeeploaded for any new Space Station created.")
+            keepLoadedNewSpaceStations = builder.comment("Set this to true to have an automatic /gckeeploaded for any new Space Station created.")
                     .translation("gc.configgui.static_loaded_new_ss")
-                    .define("set_new_space_stations_to_be_static_loaded", true).get();
+                    .define("set_new_space_stations_to_be_static_loaded", true);
 
-            disableRocketLaunchDimensions = COMMON_BUILDER.comment("IDs of dimensions where rockets should not launch - this should always include the Nether.")
+            disableRocketLaunchDimensions = builder.comment("IDs of dimensions where rockets should not launch - this should always include the Nether.")
                     .translation("gc.configgui.rocket_disabled_dimensions")
-                    .define("dimensions_where_rockets_cannot_launch", disableRocketLaunchDimensions).get();
+                    .define("dimensions_where_rockets_cannot_launch", Lists.newArrayList(DimensionType.THE_NETHER.getRegistryName().toString(), DimensionType.THE_END.getRegistryName().toString()));
 
-            disableRocketsToOverworld = COMMON_BUILDER.comment("If true, rockets will be unable to reach the Overworld (only use this in special modpacks!)")
+            disableRocketsToOverworld = builder.comment("If true, rockets will be unable to reach the Overworld (only use this in special modpacks!)")
                     .translation("gc.configgui.rocket_disable_overworld_return")
-                    .define("disable_rockets_from_returning_to_overworld", false).get();
+                    .define("disable_rockets_from_returning_to_overworld", false);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("ACHIEVEMENTS");
+            builder.push("ACHIEVEMENTS");
 
-            idAchievBase = COMMON_BUILDER.comment("Base Achievement ID. All achievement IDs will start at this number.")
+            idAchievBase = builder.comment("Base Achievement ID. All achievement IDs will start at this number.")
                     .translation("gc.configgui.id_achiev_base")
-                    .defineInRange("idachievbase", 1784, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("idachievbase", 1784, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("SCHEMATIC");
+            builder.push("SCHEMATIC");
 
-            idSchematicRocketT1 = COMMON_BUILDER.comment("Schematic ID for Tier 1 Rocket, must be unique.")
+            idSchematicRocketT1 = builder.comment("Schematic ID for Tier 1 Rocket, must be unique.")
                     .translation("gc.configgui.id_schematic_rocket_t1")
-                    .defineInRange("idschematicrockett1", 0, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("idschematicrockett1", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            idSchematicMoonBuggy = COMMON_BUILDER.comment("Schematic ID for Moon Buggy, must be unique.")
+            idSchematicMoonBuggy = builder.comment("Schematic ID for Moon Buggy, must be unique.")
                     .translation("gc.configgui.id_schematic_moon_buggy")
-                    .defineInRange("idschematicmoonbuggy", 1, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("idschematicmoonbuggy", 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            idSchematicAddSchematic = COMMON_BUILDER.comment("Schematic ID for \"Add Schematic\" Page, must be unique")
+            idSchematicAddSchematic = builder.comment("Schematic ID for \"Add Schematic\" Page, must be unique")
                     .translation("gc.configgui.id_schematic_add_schematic")
-                    .define("idschematicmoonbuggy", Integer.MAX_VALUE).get();
+                    .defineInRange("idschematicmoonbuggy", Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("SERVER");
+            builder.push("SERVER");
 
-            otherPlanetWorldBorders = COMMON_BUILDER.comment("Set this to 0 for no borders (default).  If set to e.g. 2000, players will land on the Moon inside the x,z range -2000 to 2000.)")
+            otherPlanetWorldBorders = builder.comment("Set this to 0 for no borders (default).  If set to e.g. 2000, players will land on the Moon inside the x,z range -2000 to 2000.)")
                     .translation("gc.configgui.planet_worldborders")
-                    .defineInRange("world_border_for_landing_location_on_other_planets_(moon,_mars,_etc)", 0, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("world_border_for_landing_location_on_other_planets_(moon,_mars,_etc)", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            spaceStationsRequirePermission = COMMON_BUILDER.comment("While true, space stations require you to invite other players using /ssinvite <playername>")
+            spaceStationsRequirePermission = builder.comment("While true, space stations require you to invite other players using /ssinvite <playername>")
                     .translation("gc.configgui.space_stations_require_permission")
-                    .define("space_stations_require_permission", true).get();
+                    .define("space_stations_require_permission", true);
 
-            disableSpaceStationCreation = COMMON_BUILDER.comment("If set to true on a server, players will be completely unable to create space stations.")
+            disableSpaceStationCreation = builder.comment("If set to true on a server, players will be completely unable to create space stations.")
                     .translation("gc.configgui.disable_space_station_creation")
-                    .define("disable_space_station_creation", false).get();
+                    .define("disable_space_station_creation", false);
 
-            enableSealerEdgeChecks = COMMON_BUILDER.comment("If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status, but can be disabled on servers for performance reasons.")
+            enableSealerEdgeChecks = builder.comment("If this is enabled, areas sealed by Oxygen Sealers will run a seal check when the player breaks or places a block (or on block updates).  This should be enabled for a 100% accurate sealed status, but can be disabled on servers for performance reasons.")
                     .translation("gc.configgui.enable_sealer_edge_checks")
-                    .define("enable_sealed_edge_checks", true).get();
+                    .define("enable_sealed_edge_checks", true);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("KEYS");
+            builder.push("KEYS");
 
-            keyOverrideMap = COMMON_BUILDER.comment("Default Map key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.")
+            keyOverrideMap = builder.comment("Default Map key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.")
                     .translation("gc.configgui.override_map")
-                    .define("open_galaxy_map", "KEY_M").get();
+                    .define("open_galaxy_map", "KEY_M");
 
-            keyOverrideFuelLevel = COMMON_BUILDER.comment("Default Rocket/Fuel key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.")
+            keyOverrideFuelLevel = builder.comment("Default Rocket/Fuel key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.")
                     .translation("gc.configgui.key_override_fuel_level")
-                    .define("open_rocket_gui", "KEY_G").get();
+                    .define("open_rocket_gui", "KEY_G");
 
-            keyOverrideToggleAdvGoggles = COMMON_BUILDER.comment("Default Goggles key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.")
+            keyOverrideToggleAdvGoggles = builder.comment("Default Goggles key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.")
                     .translation("gc.configgui.key_override_toggle_adv_goggles")
-                    .define("toggle_advanced_goggles", "KEY_K").get();
+                    .define("toggle_advanced_goggles", "KEY_K");
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("COMPATIBILITY");
+            builder.push("COMPATIBILITY");
 
-            useOldOilFluidID = COMMON_BUILDER.comment("Set to true to make Galacticraft oil register as oilgc, for backwards compatibility with previously generated worlds.")
+            useOldOilFluidID = builder.comment("Set to true to make Galacticraft oil register as oilgc, for backwards compatibility with previously generated worlds.")
                     .translation("gc.configgui.use_old_oil_fluid_i_d")
-                    .define("use_legacy_oilgc_fluid_registration", false).get();
+                    .define("use_legacy_oilgc_fluid_registration", false);
 
-            useOldFuelFluidID = COMMON_BUILDER.comment("Set to true to make Galacticraft fuel register as fuelgc, for backwards compatibility with previously generated worlds.")
+            useOldFuelFluidID = builder.comment("Set to true to make Galacticraft fuel register as fuelgc, for backwards compatibility with previously generated worlds.")
                     .translation("gc.configgui.use_old_fuel_fluid_i_d")
-                    .define("use_legacy_fuelgc_fluid_registration", false).get();
+                    .define("use_legacy_fuelgc_fluid_registration", false);
 
-            sealableIDs = COMMON_BUILDER.comment("List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata")
+            sealableIDs = builder.comment("List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata")
                     .translation("gc.configgui.sealable_i_ds")
-                    .define("external_sealable_ids", new String[]{Blocks.GLASS_PANE.getRegistryName().toString()}).get();
+                    .define("external_sealable_ids", Lists.newArrayList(Blocks.GLASS_PANE.getRegistryName().toString()));
 
-            detectableIDs = COMMON_BUILDER.comment("List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.")
+            detectableIDs = builder.comment("List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.")
                     .translation("gc.configgui.detectable_i_ds")
-                    .define("external_detectable_ids", new String[]{
+                    .define("external_detectable_ids", Lists.newArrayList(
                             Blocks.COAL_ORE.getRegistryName().getPath(),
                             Blocks.DIAMOND_ORE.getRegistryName().getPath(),
                             Blocks.GOLD_ORE.getRegistryName().getPath(),
                             Blocks.IRON_ORE.getRegistryName().getPath(),
                             Blocks.LAPIS_ORE.getRegistryName().getPath(),
-                            Blocks.REDSTONE_ORE.getRegistryName().getPath()}).get();
+                            Blocks.REDSTONE_ORE.getRegistryName().getPath()));
 
-            alternateCanisterRecipe = COMMON_BUILDER.comment("Enable this if the standard canister recipe causes a conflict.")
+            alternateCanisterRecipe = builder.comment("Enable this if the standard canister recipe causes a conflict.")
                     .translation("gc.configgui.alternate_canister_recipe")
-                    .define("alternate_recipe_for_canisters", false).get();
+                    .define("alternate_recipe_for_canisters", false);
 
-            otherModsSilicon = COMMON_BUILDER.comment("This needs to match the OreDictionary name used in the other mod. Set a nonsense name to disable.")
+            otherModsSilicon = builder.comment("This needs to match the OreDictionary name used in the other mod. Set a nonsense name to disable.")
                     .translation("gc.configgui.ore_dict_silicon")
-                    .define("oredict_name_of_other_mod's_silicon", "itemSilicon").get();
+                    .define("oredict_name_of_other_mod's_silicon", "itemSilicon");
 
-            recipesRequireGCAdvancedMetals = COMMON_BUILDER.comment("Should normally be true. If you set this to false, in a modpack with other mods with the same metals, players may be able to craft advanced GC items without travelling to Moon, Mars, Asteroids etc.")
+            recipesRequireGCAdvancedMetals = builder.comment("Should normally be true. If you set this to false, in a modpack with other mods with the same metals, players may be able to craft advanced GC items without travelling to Moon, Mars, Asteroids etc.")
                     .translation("gc.configgui.disable_ore_dict_space_metals")
-                    .define("must_use_gc's_own_space_metals_in_recipes", true).get();
+                    .define("must_use_gc's_own_space_metals_in_recipes", true);
 
-            rocketFuelFactor = COMMON_BUILDER.comment("The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.")
+            rocketFuelFactor = builder.comment("The normal factor is 1.  Increase this to 2 - 5 if other mods with a lot of oil (e.g. BuildCraft) are installed to increase GC rocket fuel requirement.")
                     .translation("gc.configgui.rocket_fuel_factor")
-                    .defineInRange("rocket_fuel_factor", 1, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("rocket_fuel_factor", 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("ENERGY_COMPATIBILITY");
+            builder.push("ENERGY_COMPATIBILITY");
 
-            EnergyConfigHandler.IC2_RATIO = COMMON_BUILDER.comment("IndustrialCraft2 Conversion Ratio").defineInRange("ic2_conv_ratio", EnergyConfigHandler.IC2_RATIO, 0.01F, 1000F).get().floatValue();
-            EnergyConfigHandler.RF_RATIO = COMMON_BUILDER.comment("Redstone Flux Conversion Ratio").defineInRange("rf_conv_ratio", EnergyConfigHandler.RF_RATIO, 0.001F, 100.0F).get().floatValue();
-            EnergyConfigHandler.BC_RATIO = COMMON_BUILDER.comment("Buildcraft Conversion Ratio").defineInRange("bc_conv_ratio", EnergyConfigHandler.BC_RATIO, 0.01F, 1000.0F).get().floatValue();
-            EnergyConfigHandler.MEKANISM_RATIO = COMMON_BUILDER.comment("Mekanism Conversion Ratio").defineInRange("mek_conv_ratio", EnergyConfigHandler.MEKANISM_RATIO, 0.001F, 100.0F).get().floatValue();
-            EnergyConfigHandler.conversionLossFactor = COMMON_BUILDER.comment("Loss factor when converting energy as a percentage (100 = no loss, 90 = 10% loss ...)").defineInRange("conv_loss_factor", 100, 5, 100).get();
+            EnergyConfigHandler.BC_RATIO = builder.comment("Buildcraft Conversion Ratio").defineInRange("bc_conv_ratio", 16F, 0.01F, 1000.0F);
+            EnergyConfigHandler.IC2_RATIO = builder.comment("IndustrialCraft2 Conversion Ratio").defineInRange("ic2_conv_ratio", 6.557377049F, 0.01F, 1000F);
+            EnergyConfigHandler.RF_RATIO = builder.comment("Redstone Flux Conversion Ratio").defineInRange("rf_conv_ratio", 1.6F, 0.001F, 100.0F);
+            EnergyConfigHandler.MEKANISM_RATIO = builder.comment("Mekanism Conversion Ratio").defineInRange("mek_conv_ratio", 0.6557377049F, 0.001F, 100.0F);
+            EnergyConfigHandler.conversionLossFactor = builder.comment("Loss factor when converting energy as a percentage (100 = no loss, 90 = 10% loss ...)").defineInRange("conv_loss_factor", 100, 5, 100);
 
-            EnergyConfigHandler.updateRatios();
+            EnergyConfigHandler.displayEnergyUnitsBC = builder.comment("If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?").define("display_energy_bc", false);
+            EnergyConfigHandler.displayEnergyUnitsIC2 = builder.comment("If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?").define("display_energy_ic2", false);
+            EnergyConfigHandler.displayEnergyUnitsMek = builder.comment("If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?").define("display_energy_mek", false);
+            EnergyConfigHandler.displayEnergyUnitsRF = builder.comment("Show Galacticraft machines energy in RF instead of gJ?").define("display_energy_rf", false);
 
-            EnergyConfigHandler.displayEnergyUnitsBC = COMMON_BUILDER.comment("If BuildCraft is loaded, show Galacticraft machines energy as MJ instead of gJ?").define("display_energy_bc", false).get();
-            EnergyConfigHandler.displayEnergyUnitsIC2 = COMMON_BUILDER.comment("If IndustrialCraft2 is loaded, show Galacticraft machines energy as EU instead of gJ?").define("display_energy_ic2", false).get();
-            EnergyConfigHandler.displayEnergyUnitsMek = COMMON_BUILDER.comment("If Mekanism is loaded, show Galacticraft machines energy as Joules (J) instead of gJ?").define("display_energy_mek", false).get();
-            EnergyConfigHandler.displayEnergyUnitsRF = COMMON_BUILDER.comment("Show Galacticraft machines energy in RF instead of gJ?").define("display_energy_rf", false).get();
+            EnergyConfigHandler.disableMJinterface = builder.comment("Disable old Buildcraft API (MJ) interfacing completely?").define("disable_mj_interface", false);
 
-            EnergyConfigHandler.disableMJinterface = COMMON_BUILDER.comment("Disable old Buildcraft API (MJ) interfacing completely?").define("disable_mj_interface", false).get();
+            EnergyConfigHandler.disableBuildCraftInput = builder.comment("Disable INPUT of BuildCraft energy").define("disable_input_bc", false);
+            EnergyConfigHandler.disableBuildCraftOutput = builder.comment("Disable OUTPUT of BuildCraft energy").define("disable_output_bc", false);
+            EnergyConfigHandler.disableRFInput = builder.comment("Disable INPUT of RF energy").define("disable_input_rf", false);
+            EnergyConfigHandler.disableRFOutput = builder.comment("Disable OUTPUT of RF energy").define("disable_output_rf", false);
+            EnergyConfigHandler.disableFEInput = builder.comment("Disable INPUT of Forge Energy to GC machines").define("disable_input_forge", false);
+            EnergyConfigHandler.disableFEOutput = builder.comment("Disable OUTPUT of Forge Energy from GC machines").define("disable_output_forge", false);
+            EnergyConfigHandler.disableIC2Input = builder.comment("Disable INPUT of IC2 energy").define("disable_input_ic2", false);
+            EnergyConfigHandler.disableIC2Output = builder.comment("Disable OUTPUT of IC2 energy").define("disable_output_ic2", false);
+            EnergyConfigHandler.disableMekanismInput = builder.comment("Disable INPUT of Mekanism energy").define("disable_input_mek", false);
+            EnergyConfigHandler.disableMekanismOutput = builder.comment("Disable OUTPUT of Mekanism energy").define("disable_output_mek", false);
 
-            EnergyConfigHandler.disableBuildCraftInput = COMMON_BUILDER.comment("Disable INPUT of BuildCraft energy").define("disable_input_bc", false).get();
-            EnergyConfigHandler.disableBuildCraftOutput = COMMON_BUILDER.comment("Disable OUTPUT of BuildCraft energy").define("disable_output_bc", false).get();
-            EnergyConfigHandler.disableRFInput = COMMON_BUILDER.comment("Disable INPUT of RF energy").define("disable_input_rf", false).get();
-            EnergyConfigHandler.disableRFOutput = COMMON_BUILDER.comment("Disable OUTPUT of RF energy").define("disable_output_rf", false).get();
-            EnergyConfigHandler.disableFEInput = COMMON_BUILDER.comment("Disable INPUT of Forge Energy to GC machines").define("disable_input_forge", false).get();
-            EnergyConfigHandler.disableFEOutput = COMMON_BUILDER.comment("Disable OUTPUT of Forge Energy from GC machines").define("disable_output_forge", false).get();
-            EnergyConfigHandler.disableIC2Input = COMMON_BUILDER.comment("Disable INPUT of IC2 energy").define("disable_input_ic2", false).get();
-            EnergyConfigHandler.disableIC2Output = COMMON_BUILDER.comment("Disable OUTPUT of IC2 energy").define("disable_output_ic2", false).get();
-            EnergyConfigHandler.disableMekanismInput = COMMON_BUILDER.comment("Disable INPUT of Mekanism energy").define("disable_input_mek", false).get();
-            EnergyConfigHandler.disableMekanismOutput = COMMON_BUILDER.comment("Disable OUTPUT of Mekanism energy").define("disable_output_mek", false).get();
+            builder.pop();
 
-            if (!EnergyConfigHandler.isIndustrialCraft2Loaded())
-            {
-                EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-            }
-            if (!EnergyConfigHandler.isMekanismLoaded())
-            {
-                EnergyConfigHandler.displayEnergyUnitsMek = false;
-            }
-            if (EnergyConfigHandler.displayEnergyUnitsIC2)
-            {
-                EnergyConfigHandler.displayEnergyUnitsBC = false;
-            }
-            if (EnergyConfigHandler.displayEnergyUnitsMek)
-            {
-                EnergyConfigHandler.displayEnergyUnitsBC = false;
-                EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-            }
-            if (EnergyConfigHandler.displayEnergyUnitsRF)
-            {
-                EnergyConfigHandler.displayEnergyUnitsBC = false;
-                EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-                EnergyConfigHandler.displayEnergyUnitsMek = false;
-            }
+            builder.push("GENERAL");
 
-            COMMON_BUILDER.pop();
-
-            COMMON_BUILDER.push("GENERAL");
-
-            enableDebug = COMMON_BUILDER.comment("If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.")
+            enableDebug = builder.comment("If this is enabled, debug messages will appear in the console. This is useful for finding bugs in the mod.")
                     .translation("gc.configgui.enable_debug")
-                    .define("enable_debug_messages", false).get();
+                    .define("enable_debug_messages", false);
 
-            forceOverworldRespawn = COMMON_BUILDER.comment("By default, you will respawn on Galacticraft dimensions if you die. If you are dying over and over on a planet, set this to true, and you will respawn back on the Overworld.")
+            forceOverworldRespawn = builder.comment("By default, you will respawn on Galacticraft dimensions if you die. If you are dying over and over on a planet, set this to true, and you will respawn back on the Overworld.")
                     .translation("gc.configgui.force_overworld_respawn")
-                    .define("force_overworld_spawn", false).get();
+                    .define("force_overworld_spawn", false);
 
-            disableLander = COMMON_BUILDER.comment("If this is true, the player will parachute onto the Moon instead - use only in debug situations.")
+            disableLander = builder.comment("If this is true, the player will parachute onto the Moon instead - use only in debug situations.")
                     .translation("gc.configgui.disable_lander")
-                    .define("disable_lander_on_moon_and_other_planets", false).get();
+                    .define("disable_lander_on_moon_and_other_planets", false);
 
-//            mapfactor = COMMON_BUILDER.comment("null") .translation("gc.configgui.mapFactor").defineInRange("map_factor", 1, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//            mapfactor = builder.comment("null") .translation("gc.configgui.mapFactor").defineInRange("map_factor", 1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-//            mapsize = COMMON_BUILDER.comment("null").translation("gc.configgui.mapSize").defineInRange("map_size", 400, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+//            mapsize = builder.comment("null").translation("gc.configgui.mapSize").defineInRange("map_size", 400, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            disableUpdateCheck = COMMON_BUILDER.comment("Update check will not run if this is set to true.")
+            disableUpdateCheck = builder.comment("Update check will not run if this is set to true.")
                     .translation("gc.configgui.disable_update_check")
-                    .define("disable_update_check", false).get();
+                    .define("disable_update_check", false);
 
-            allowLiquidGratings = COMMON_BUILDER.comment("Liquids will not flow into Grating block if this is set to false.")
+            allowLiquidGratings = builder.comment("Liquids will not flow into Grating block if this is set to false.")
                     .translation("gc.configgui.allow_liquids_grating")
-                    .define("allow_liquids_into_gratings", true).get();
+                    .define("allow_liquids_into_gratings", true);
 
-            enableSpaceRaceManagerPopup = COMMON_BUILDER.comment("Space Race Manager will show on-screen after login, if enabled.")
+            enableSpaceRaceManagerPopup = builder.comment("Space Race Manager will show on-screen after login, if enabled.")
                     .translation("gc.configgui.enable_space_race_manager_popup")
-                    .define("enable_space_race_manager_popup", false).get();
+                    .define("enable_space_race_manager_popup", false);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("CONTROLS");
+            builder.push("CONTROLS");
 
-            mapMouseScrollSensitivity = COMMON_BUILDER.comment("Increase to make the mouse drag scroll more sensitive, decrease to lower sensitivity.")
+            mapMouseScrollSensitivity = builder.comment("Increase to make the mouse drag scroll more sensitive, decrease to lower sensitivity.")
                     .translation("gc.configgui.map_scroll_sensitivity")
-                    .defineInRange("map_scroll_mouse_sensitivity", 1.0, 0.0, Float.MAX_VALUE).get().floatValue();
+                    .defineInRange("map_scroll_mouse_sensitivity", 1.0, 0.0, Float.MAX_VALUE);
 
-            invertMapMouseScroll = COMMON_BUILDER.comment("Set to true to invert the mouse scroll feature on the galaxy map.")
+            invertMapMouseScroll = builder.comment("Set to true to invert the mouse scroll feature on the galaxy map.")
                     .translation("gc.configgui.map_scroll_invert")
-                    .define("map_scroll_mouse_invert", false).get();
+                    .define("map_scroll_mouse_invert", false);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("CLIENT");
+            builder.push("CLIENT");
 
-            moreStars = COMMON_BUILDER.comment("Setting this to false will revert night skies back to default minecraft star count")
+            moreStars = builder.comment("Setting this to false will revert night skies back to default minecraft star count")
                     .translation("gc.configgui.more_stars")
-                    .define("more_stars", true).get();
+                    .define("more_stars", true);
 
-            disableSpaceshipParticles = COMMON_BUILDER.comment("If you have FPS problems, setting this to true will help if rocket particles are in your sights")
+            disableSpaceshipParticles = builder.comment("If you have FPS problems, setting this to true will help if rocket particles are in your sights")
                     .translation("gc.configgui.disable_spaceship_particles")
-                    .define("disable_spaceship_particles", false).get();
+                    .define("disable_spaceship_particles", false);
 
-            disableVehicleCameraChanges = COMMON_BUILDER.comment("If you're using this mod in virtual reality, or if you don't want the camera changes when entering a Galacticraft vehicle, set this to true.")
+            disableVehicleCameraChanges = builder.comment("If you're using this mod in virtual reality, or if you don't want the camera changes when entering a Galacticraft vehicle, set this to true.")
                     .translation("gc.configgui.disable_vehicle_camera_changes")
-                    .define("disable_vehicle_third-person_and_zoom", false).get();
+                    .define("disable_vehicle_third-person_and_zoom", false);
 
-            oxygenIndicatorLeft = COMMON_BUILDER.comment("If true, this will move the Oxygen Indicator to the left LogicalSide. You can combine this with \"Minimap Bottom\"")
+            oxygenIndicatorLeft = builder.comment("If true, this will move the Oxygen Indicator to the left LogicalSide. You can combine this with \"Minimap Bottom\"")
                     .translation("gc.configgui.oxygen_indicator_left")
-                    .define("minimap_left", false).get();
+                    .define("minimap_left", false);
 
-            oxygenIndicatorBottom = COMMON_BUILDER.comment("If true, this will move the Oxygen Indicator to the bottom. You can combine this with \"Minimap Left\"")
+            oxygenIndicatorBottom = builder.comment("If true, this will move the Oxygen Indicator to the bottom. You can combine this with \"Minimap Left\"")
                     .translation("gc.configgui.oxygen_indicator_bottom")
-                    .define("minimap_bottom", false).get();
+                    .define("minimap_bottom", false);
 
-            overrideCapes = COMMON_BUILDER.comment("By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.")
+            overrideCapes = builder.comment("By default, Galacticraft will override capes with the mod's donor cape. Set to false to disable.")
                     .translation("gc.configgui.override_capes")
-                    .define("override_capes", true).get();
+                    .define("override_capes", true);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
-            COMMON_BUILDER.push("DIFFICULTY");
+            builder.push("DIFFICULTY");
 
-            disableSpaceshipGrief = COMMON_BUILDER.comment("Spaceships will not explode on contact if set to true.")
+            disableSpaceshipGrief = builder.comment("Spaceships will not explode on contact if set to true.")
                     .translation("gc.configgui.disable_spaceship_grief")
-                    .define("disable_spaceship_explosion", false).get();
+                    .define("disable_spaceship_explosion", false);
 
-            spaceStationEnergyScalar = COMMON_BUILDER.comment("Solar panels will work (default 2x) more effective on space stations.")
+            spaceStationEnergyScalar = builder.comment("Solar panels will work (default 2x) more effective on space stations.")
                     .translation("gc.configgui.space_station_energy_scalar")
-                    .defineInRange("space_station_solar_energy_multiplier", 2.0, -Double.MAX_VALUE, Double.MAX_VALUE).get();
+                    .defineInRange("space_station_solar_energy_multiplier", 2.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 
-            quickMode = COMMON_BUILDER.comment("Set this to true for less metal use in Galacticraft recipes (makes the game easier).")
+            quickMode = builder.comment("Set this to true for less metal use in Galacticraft recipes (makes the game easier).")
                     .translation("gc.configgui.quick_mode")
-                    .define("quick_game_mode", false).get();
+                    .define("quick_game_mode", false);
 
-            hardMode = COMMON_BUILDER.comment("Set this to true for increased difficulty in modpacks (see forum for more info).")
+            hardMode = builder.comment("Set this to true for increased difficulty in modpacks (see forum for more info).")
                     .translation("gc.configgui.hard_mode")
-                    .define("harder_difficulty", false).get();
+                    .define("harder_difficulty", false);
 
-            challengeMode = COMMON_BUILDER.comment("Set this to true for a challenging adventure where the player starts the game stranded in the Asteroids dimension with low resources (only effective if Galacticraft Planets installed).")
+            challengeMode = builder.comment("Set this to true for a challenging adventure where the player starts the game stranded in the Asteroids dimension with low resources (only effective if Galacticraft Planets installed).")
                     .translation("gc.configgui.asteroids_start")
-                    .define("adventure_game_mode", false).get();
+                    .define("adventure_game_mode", false);
 
-            challengeFlags = COMMON_BUILDER.comment("Add together flags 8, 4, 2, 1 to enable the four elements of adventure game mode. Default 15.  1 = extended compressor recipes.  2 = mob drops and spawning.  4 = more trees in hollow asteroids.  8 = start stranded in Asteroids.")
+            challengeFlags = builder.comment("Add together flags 8, 4, 2, 1 to enable the four elements of adventure game mode. Default 15.  1 = extended compressor recipes.  2 = mob drops and spawning.  4 = more trees in hollow asteroids.  8 = start stranded in Asteroids.")
                     .translation("gc.configgui.asteroids_flags")
-                    .defineInRange("adventure_game_mode_flags", 15, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("adventure_game_mode_flags", 15, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            suffocationCooldown = COMMON_BUILDER.comment("Lower/Raise this value to change time between suffocation damage ticks (allowed range 50-250)")
+            suffocationCooldown = builder.comment("Lower/Raise this value to change time between suffocation damage ticks (allowed range 50-250)")
                     .translation("gc.configgui.suffocation_cooldown")
-                    .defineInRange("suffocation_cooldown", 100, 50, 250).get();
+                    .defineInRange("suffocation_cooldown", 100, 50, 250);
 
-            suffocationDamage = COMMON_BUILDER.comment("Change this value to modify the damage taken per suffocation tick")
+            suffocationDamage = builder.comment("Change this value to modify the damage taken per suffocation tick")
                     .translation("gc.configgui.suffocation_damage")
-                    .defineInRange("suffocation_damage", 2, Integer.MIN_VALUE, Integer.MAX_VALUE).get();
+                    .defineInRange("suffocation_damage", 2, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-            dungeonBossHealthMod = COMMON_BUILDER.comment("Change this if you wish to balance the mod (if you have more powerful weapon mods).")
+            dungeonBossHealthMod = builder.comment("Change this if you wish to balance the mod (if you have more powerful weapon mods).")
                     .translation("gc.configgui.dungeon_boss_health_mod")
-                    .defineInRange("dungeon_boss_health_modifier", 1.0, -Double.MAX_VALUE, Double.MAX_VALUE).get();
+                    .defineInRange("dungeon_boss_health_modifier", 1.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 
-            meteorSpawnMod = COMMON_BUILDER.comment("Set to a value between 0.0 and 1.0 to decrease meteor spawn chance (all dimensions).")
+            meteorSpawnMod = builder.comment("Set to a value between 0.0 and 1.0 to decrease meteor spawn chance (all dimensions).")
                     .translation("gc.configgui.meteor_spawn_mod")
-                    .defineInRange("meteor_spawn_modifier", 1.0, -Double.MAX_VALUE, Double.MAX_VALUE).get();
+                    .defineInRange("meteor_spawn_modifier", 1.0, -Double.MAX_VALUE, Double.MAX_VALUE);
 
-            meteorBlockDamageEnabled = COMMON_BUILDER.comment("Set to false to stop meteors from breaking blocks on contact.")
+            meteorBlockDamageEnabled = builder.comment("Set to false to stop meteors from breaking blocks on contact.")
                     .translation("gc.configgui.meteor_block_damage")
-                    .define("meteor_block_damage_enabled", true).get();
+                    .define("meteor_block_damage_enabled", true);
 
-            COMMON_BUILDER.pop();
+            builder.pop();
 
             challengeModeUpdate();
         }
@@ -1020,11 +1008,49 @@ public class ConfigManagerCore
         }
     }
 
+    public static void onConfigEvent()
+    {
+        EnergyConfigHandler.BC8_INTERNAL_RATIO = (float) (EnergyConfigHandler.BC_RATIO.get() / EnergyConfigHandler.BC8_MICROJOULE_RATIO);
+        EnergyConfigHandler.TO_BC_RATIO = (float) (1 / EnergyConfigHandler.BC_RATIO.get() * EnergyConfigHandler.BC8_MICROJOULE_RATIO);
+        EnergyConfigHandler.TO_RF_RATIO = (float) (1 / EnergyConfigHandler.RF_RATIO.get());
+        EnergyConfigHandler.TO_IC2_RATIO = (float) (1 / EnergyConfigHandler.IC2_RATIO.get());
+        EnergyConfigHandler.TO_MEKANISM_RATIO = (float) (1 / EnergyConfigHandler.MEKANISM_RATIO.get());
+        EnergyConfigHandler.TO_BC_RATIOdisp = (float) (1 / EnergyConfigHandler.BC_RATIO.get());
+        EnergyConfigHandler.TO_RF_RATIOdisp = (float) (1 / EnergyConfigHandler.RF_RATIO.get());
+        EnergyConfigHandler.TO_IC2_RATIOdisp = (float) (1 / EnergyConfigHandler.IC2_RATIO.get());
+        EnergyConfigHandler.TO_MEKANISM_RATIOdisp = (float) (1 / EnergyConfigHandler.MEKANISM_RATIO.get());
+        EnergyConfigHandler.updateRatios();
+
+        if (!EnergyConfigHandler.isIndustrialCraft2Loaded())
+        {
+            EnergyConfigHandler.displayEnergyUnitsIC2.set(false);
+        }
+        if (!EnergyConfigHandler.isMekanismLoaded())
+        {
+            EnergyConfigHandler.displayEnergyUnitsMek.set(false);
+        }
+        if (EnergyConfigHandler.displayEnergyUnitsIC2.get())
+        {
+            EnergyConfigHandler.displayEnergyUnitsBC.set(false);
+        }
+        if (EnergyConfigHandler.displayEnergyUnitsMek.get())
+        {
+            EnergyConfigHandler.displayEnergyUnitsBC.set(false);
+            EnergyConfigHandler.displayEnergyUnitsIC2.set(false);
+        }
+        if (EnergyConfigHandler.displayEnergyUnitsRF.get())
+        {
+            EnergyConfigHandler.displayEnergyUnitsBC.set(false);
+            EnergyConfigHandler.displayEnergyUnitsIC2.set(false);
+            EnergyConfigHandler.displayEnergyUnitsMek.set(false);
+        }
+    }
+
     public boolean setLoaded(DimensionType newID)
     {
         boolean found = false;
 
-        for (String staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+        for (String staticLoadDimension : ConfigManagerCore.staticLoadDimensions.get())
         {
             if (staticLoadDimension.equals(newID.getRegistryName().toString()))
             {
@@ -1035,16 +1061,12 @@ public class ConfigManagerCore
 
         if (!found)
         {
-            String[] oldIDs = ConfigManagerCore.staticLoadDimensions;
-            ConfigManagerCore.staticLoadDimensions = new String[ConfigManagerCore.staticLoadDimensions.length + 1];
-            System.arraycopy(oldIDs, 0, staticLoadDimensions, 0, oldIDs.length);
-
-            ConfigManagerCore.staticLoadDimensions[ConfigManagerCore.staticLoadDimensions.length - 1] = newID.getRegistryName().toString();
-            Arrays.sort(ConfigManagerCore.staticLoadDimensions);
+            ConfigManagerCore.staticLoadDimensions.get().add(newID.getRegistryName().toString());
+            Collections.sort(ConfigManagerCore.staticLoadDimensions.get());
 
             COMMON_BUILDER.comment("IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded")
                     .translation("gc.configgui.static_loaded_dimensions")
-                    .define("static_loaded_dimensions", ConfigManagerCore.staticLoadDimensions).set(ConfigManagerCore.staticLoadDimensions);
+                    .define("static_loaded_dimensions", ConfigManagerCore.staticLoadDimensions.get()).set(ConfigManagerCore.staticLoadDimensions.get());
         }
 
         return !found;
@@ -1054,7 +1076,7 @@ public class ConfigManagerCore
     {
         int foundCount = 0;
 
-        for (String staticLoadDimension : ConfigManagerCore.staticLoadDimensions)
+        for (String staticLoadDimension : ConfigManagerCore.staticLoadDimensions.get())
         {
             if (staticLoadDimension.equals(idToRemove.getRegistryName().toString()))
             {
@@ -1064,21 +1086,12 @@ public class ConfigManagerCore
 
         if (foundCount > 0)
         {
-            List<String> idArray = Arrays.asList(ConfigManagerCore.staticLoadDimensions);
-            idArray.remove(idToRemove);
-
-            ConfigManagerCore.staticLoadDimensions = new String[idArray.size()];
-
-            for (int i = 0; i < idArray.size(); i++)
-            {
-                ConfigManagerCore.staticLoadDimensions[i] = idArray.get(i);
-            }
-
-            Arrays.sort(ConfigManagerCore.staticLoadDimensions);
+            ConfigManagerCore.staticLoadDimensions.get().remove(idToRemove.getRegistryName().toString());
+            Collections.sort(ConfigManagerCore.staticLoadDimensions.get());
 
             COMMON_BUILDER.comment("IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded")
                     .translation("gc.configgui.static_loaded_dimensions")
-                    .define("static_loaded_dimensions", ConfigManagerCore.staticLoadDimensions).set(ConfigManagerCore.staticLoadDimensions);
+                    .define("static_loaded_dimensions", ConfigManagerCore.staticLoadDimensions.get()).set(ConfigManagerCore.staticLoadDimensions.get());
         }
 
         return foundCount > 0;
@@ -1086,12 +1099,12 @@ public class ConfigManagerCore
 
     public static void challengeModeUpdate()
     {
-        if (challengeMode)
+        if (challengeMode.get())
         {
-            challengeRecipes = (challengeFlags & 1) > 0;
-            challengeMobDropsAndSpawning = (challengeFlags & 2) > 0;
-            challengeAsteroidPopulation = (challengeFlags & 4) > 0;
-            challengeSpawnHandling = (challengeFlags & 8) > 0;
+            challengeRecipes = (challengeFlags.get() & 1) > 0;
+            challengeMobDropsAndSpawning = (challengeFlags.get() & 2) > 0;
+            challengeAsteroidPopulation = (challengeFlags.get() & 4) > 0;
+            challengeSpawnHandling = (challengeFlags.get() & 8) > 0;
         }
         else
         {
@@ -1170,23 +1183,23 @@ public class ConfigManagerCore
 //    public static List<Object> getServerConfigOverride()
 //    {
 //    	ArrayList<Object> returnList = new ArrayList<>();
-//    	int modeFlags = ConfigManagerCore.hardMode ? 1 : 0;
-//    	modeFlags += ConfigManagerCore.quickMode ? 2 : 0;
-//    	modeFlags += ConfigManagerCore.challengeMode ? 4 : 0;
-//    	modeFlags += ConfigManagerCore.disableSpaceStationCreation ? 8 : 0;
-//    	modeFlags += ConfigManagerCore.recipesRequireGCAdvancedMetals ? 16 : 0;
-//    	modeFlags += ConfigManagerCore.challengeRecipes ? 32 : 0;
-//        modeFlags += ConfigManagerCore.allowLiquidGratings ? 64 : 0;
+//    	int modeFlags = ConfigManagerCore.hardMode.get() ? 1 : 0;
+//    	modeFlags += ConfigManagerCore.quickMode.get() ? 2 : 0;
+//    	modeFlags += ConfigManagerCore.challengeMode.get() ? 4 : 0;
+//    	modeFlags += ConfigManagerCore.disableSpaceStationCreation.get() ? 8 : 0;
+//    	modeFlags += ConfigManagerCore.recipesRequireGCAdvancedMetals.get() ? 16 : 0;
+//    	modeFlags += ConfigManagerCore.challengeRecipes.get() ? 32 : 0;
+//        modeFlags += ConfigManagerCore.allowLiquidGratings.get() ? 64 : 0;
 //    	returnList.add(modeFlags);
-//    	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
-//    	returnList.add(ConfigManagerCore.suffocationDamage);
-//    	returnList.add(ConfigManagerCore.suffocationCooldown);
-//    	returnList.add(ConfigManagerCore.rocketFuelFactor);
-//    	returnList.add(ConfigManagerCore.otherModsSilicon);
+//    	returnList.add(ConfigManagerCore.dungeonBossHealthMod.get());
+//    	returnList.add(ConfigManagerCore.suffocationDamage.get());
+//    	returnList.add(ConfigManagerCore.suffocationCooldown.get());
+//    	returnList.add(ConfigManagerCore.rocketFuelFactor.get());
+//    	returnList.add(ConfigManagerCore.otherModsSilicon.get());
 //    	//If changing this, update definition of EnumSimplePacket.C_UPDATE_CONFIGS - see comment in setConfigOverride() below
 //    	EnergyConfigHandler.serverConfigOverride(returnList);
 //
-//    	returnList.add(ConfigManagerCore.detectableIDs.clone());
+//    	returnList.add(ConfigManagerCore.detectableIDs.get().clone());
 //    	//TODO Should this include any other client-LogicalSide configurables too?
 //    	return returnList;
 //    }
@@ -1196,18 +1209,18 @@ public class ConfigManagerCore
 //    {
 //        int dataCount = 0;
 //    	int modeFlag = (Integer) configs.get(dataCount++);
-//    	ConfigManagerCore.hardMode = (modeFlag & 1) != 0;
-//    	ConfigManagerCore.quickMode = (modeFlag & 2) != 0;
-//    	ConfigManagerCore.challengeMode = (modeFlag & 4) != 0;
-//    	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
-//    	ConfigManagerCore.recipesRequireGCAdvancedMetals = (modeFlag & 16) != 0;
-//    	ConfigManagerCore.challengeRecipes = (modeFlag & 32) != 0;
-//        ConfigManagerCore.allowLiquidGratings = (modeFlag & 64) != 0;
-//    	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(dataCount++);
-//    	ConfigManagerCore.suffocationDamage = (Integer) configs.get(dataCount++);
-//    	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(dataCount++);
-//    	ConfigManagerCore.rocketFuelFactor = (Integer) configs.get(dataCount++);
-//    	ConfigManagerCore.otherModsSilicon = (String) configs.get(dataCount++);
+//    	ConfigManagerCore.hardMode.get() = (modeFlag & 1) != 0;
+//    	ConfigManagerCore.quickMode.get() = (modeFlag & 2) != 0;
+//    	ConfigManagerCore.challengeMode.get() = (modeFlag & 4) != 0;
+//    	ConfigManagerCore.disableSpaceStationCreation.get() = (modeFlag & 8) != 0;
+//    	ConfigManagerCore.recipesRequireGCAdvancedMetals.get() = (modeFlag & 16) != 0;
+//    	ConfigManagerCore.challengeRecipes.get() = (modeFlag & 32) != 0;
+//        ConfigManagerCore.allowLiquidGratings.get() = (modeFlag & 64) != 0;
+//    	ConfigManagerCore.dungeonBossHealthMod.get() = (Double) configs.get(dataCount++);
+//    	ConfigManagerCore.suffocationDamage.get() = (Integer) configs.get(dataCount++);
+//    	ConfigManagerCore.suffocationCooldown.get() = (Integer) configs.get(dataCount++);
+//    	ConfigManagerCore.rocketFuelFactor.get() = (Integer) configs.get(dataCount++);
+//    	ConfigManagerCore.otherModsSilicon.get() = (String) configs.get(dataCount++);
 //    	//If adding any additional data objects here, also remember to update the packet definition of EnumSimplePacket.C_UPDATE_CONFIGS in PacketSimple
 //    	//Current working packet definition: Integer.class, Double.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Integer.class, String[].class
 //
@@ -1219,13 +1232,13 @@ public class ConfigManagerCore
 //    	    Object dataLast = configs.get(dataCount);
 //    		if (dataLast instanceof String)
 //    		{
-//    			ConfigManagerCore.detectableIDs = new String[sizeIDs];
+//    			ConfigManagerCore.detectableIDs.get() = new String[sizeIDs];
 //		    	for (int j = 0; j < sizeIDs; j++)
-//		    	ConfigManagerCore.detectableIDs[j] = new String((String) configs.get(dataCount++));
+//		    	ConfigManagerCore.detectableIDs.get()[j] = new String((String) configs.get(dataCount++));
 //    		}
 //    		else if (dataLast instanceof String[])
 //    		{
-//    			ConfigManagerCore.detectableIDs = ((String[])dataLast);
+//    			ConfigManagerCore.detectableIDs.get() = ((String[])dataLast);
 //    		}
 //        	TickHandlerClient.registerDetectableBlocks(false);
 //    	}
@@ -1236,17 +1249,17 @@ public class ConfigManagerCore
 
 //    public static void saveClientConfigOverrideable()
 //    {
-//        if (ConfigManagerCore.clientSave == null)
+//        if (ConfigManagerCore.clientSave.get() == null)
 //        {
-//            ConfigManagerCore.clientSave = (ArrayList<Object>) ConfigManagerCore.getServerConfigOverride();
+//            ConfigManagerCore.clientSave.get() = (ArrayList<Object>) ConfigManagerCore.getServerConfigOverride.get()();
 //        }
 //    }
 //
 //    public static void restoreClientConfigOverrideable()
 //    {
-//        if (ConfigManagerCore.clientSave != null)
+//        if (ConfigManagerCore.clientSave.get() != null)
 //        {
-//            ConfigManagerCore.setConfigOverride(clientSave);
+//            ConfigManagerCore.setConfigOverride.get()(clientSave);
 //        }
 //    }
 

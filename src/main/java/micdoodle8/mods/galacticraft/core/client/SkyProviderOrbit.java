@@ -91,11 +91,11 @@
 //    @Override
 //    public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc)
 //    {
-//        final float var20 = 400.0F + (float) this.minecraft.player.posY / 2F;
+//        final float var20 = 400.0F + (float) this.minecraft.player.getPosY() / 2F;
 //
 //        // if (this.minecraft.player.getRidingEntity() != null)
 //        {
-//            // var20 = (float) (this.minecraft.player.posY - 200.0F);
+//            // var20 = (float) (this.minecraft.player.getPosY() - 200.0F);
 //        }
 //
 //        GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -311,7 +311,7 @@
 //
 //		// if (this.minecraft.player.getRidingEntity() != null)
 //		{
-//			var25 = this.minecraft.player.posY - 64;
+//			var25 = this.minecraft.player.getPosY() - 64;
 //
 //			if (var25 < 0.0D)
 //			{
@@ -376,7 +376,7 @@
 //        final Tessellator var2 = Tessellator.getInstance();
 //        var2.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 //
-//        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
+//        for (int var3 = 0; var3 < (ConfigManagerCore.moreStars.get() ? 20000 : 6000); ++var3)
 //        {
 //            double var4 = var1.nextFloat() * 2.0F - 1.0F;
 //            double var6 = var1.nextFloat() * 2.0F - 1.0F;
@@ -390,9 +390,9 @@
 //                var4 *= var12;
 //                var6 *= var12;
 //                var8 *= var12;
-//                final double var14 = var4 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 50D + 75D : 50.0D);
-//                final double var16 = var6 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 50D + 75D : 50.0D);
-//                final double var18 = var8 * (ConfigManagerCore.moreStars ? var1.nextDouble() * 50D + 75D : 50.0D);
+//                final double var14 = var4 * (ConfigManagerCore.moreStars.get() ? var1.nextDouble() * 50D + 75D : 50.0D);
+//                final double var16 = var6 * (ConfigManagerCore.moreStars.get() ? var1.nextDouble() * 50D + 75D : 50.0D);
+//                final double var18 = var8 * (ConfigManagerCore.moreStars.get() ? var1.nextDouble() * 50D + 75D : 50.0D);
 //                final double var20 = Math.atan2(var4, var8);
 //                final double var22 = Math.sin(var20);
 //                final double var24 = Math.cos(var20);

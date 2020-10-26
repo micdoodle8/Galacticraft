@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +19,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -28,6 +30,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -35,10 +38,10 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTier1TreasureChest extends Block implements IShiftDescription
+public class BlockTier1TreasureChest extends Block implements IShiftDescription, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    protected static final VoxelShape AABB = VoxelShapes.create(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375);
 
     public BlockTier1TreasureChest(Properties builder)
     {
@@ -255,6 +258,12 @@ public class BlockTier1TreasureChest extends Block implements IShiftDescription
         return new TileEntityTreasureChest();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
     public int isProvidingWeakPower(IBlockReader worldIn, BlockPos pos, BlockState state, Direction side)
     {
         if (!this.canProvidePower(state))
@@ -350,11 +359,11 @@ public class BlockTier1TreasureChest extends Block implements IShiftDescription
 //        return false;
 //    }
 //
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.TREASURE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.TREASURE;
+    }
 
     @Override
     public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param)

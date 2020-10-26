@@ -4,7 +4,8 @@ import com.google.common.base.Predicate;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 
-public class BlockOreVenus extends Block implements IDetectableResource, IPlantableBlock
+public class BlockOreVenus extends Block implements IDetectableResource, IPlantableBlock, ISortable
 {
     public BlockOreVenus(Properties builder)
     {
@@ -85,9 +86,9 @@ public class BlockOreVenus extends Block implements IDetectableResource, IPlanta
         return false;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
+    @Override
+    public EnumSortCategory getCategory()
+    {
 //        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) getStateFromMeta(meta).getValue(BASIC_TYPE_VENUS));
 //        switch (type)
 //        {
@@ -98,14 +99,14 @@ public class BlockOreVenus extends Block implements IDetectableResource, IPlanta
 //        case ORE_SILICON:
 //        case ORE_TIN:
 //        case ORE_SOLAR_DUST:
-//            return EnumSortCategoryBlock.ORE;
+            return EnumSortCategory.ORE;
 //        case DUNGEON_BRICK_1:
 //        case DUNGEON_BRICK_2:
-//            return EnumSortCategoryBlock.BRICKS;
+//            return EnumSortCategory.BRICKS;
 //        case LEAD_BLOCK:
-//            return EnumSortCategoryBlock.INGOT_BLOCK;
+//            return EnumSortCategory.INGOT_BLOCK;
 //        default:
-//            return EnumSortCategoryBlock.GENERAL;
+//            return EnumSortCategory.GENERAL;
 //        }
-//    }
+    }
 }

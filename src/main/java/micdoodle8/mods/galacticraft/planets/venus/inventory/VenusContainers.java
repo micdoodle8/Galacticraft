@@ -27,24 +27,24 @@ public class VenusContainers
     @SubscribeEvent
     public static void initContainers(RegistryEvent.Register<ContainerType<?>> evt)
     {
-        IForgeRegistry<ContainerType<?>> r = evt.getRegistry();
-
-        ContainerType<ContainerCrashedProbe> crashedProbe = IForgeContainerType.create((windowId, inv, data) -> new ContainerCrashedProbe(windowId, inv, (TileEntityCrashedProbe) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-        ContainerType<ContainerGeothermal> geothermal = IForgeContainerType.create((windowId, inv, data) -> new ContainerGeothermal(windowId, inv, (TileEntityGeothermalGenerator) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-        ContainerType<ContainerLaserTurret> laserTurret = IForgeContainerType.create((windowId, inv, data) -> new ContainerLaserTurret(windowId, inv, (TileEntityLaserTurret) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-        ContainerType<ContainerSolarArrayController> solarArrayController = IForgeContainerType.create((windowId, inv, data) -> new ContainerSolarArrayController(windowId, inv, (TileEntitySolarArrayController) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-
-        register(r, crashedProbe, VenusContainerNames.CRASHED_PROBE);
-        register(r, geothermal, VenusContainerNames.GEOTHERMAL);
-        register(r, laserTurret, VenusContainerNames.LASER_TURRET);
-        register(r, solarArrayController, VenusContainerNames.SOLAR_ARRAY_CONTROLLER);
-
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
-        {
-            ScreenManager.registerFactory(crashedProbe, GuiCrashedProbe::new);
-            ScreenManager.registerFactory(geothermal, GuiGeothermal::new);
-            ScreenManager.registerFactory(laserTurret, GuiLaserTurret::new);
-            ScreenManager.registerFactory(solarArrayController, GuiSolarArrayController::new);
-        });
+//        IForgeRegistry<ContainerType<?>> r = evt.getRegistry();
+//
+//        ContainerType<ContainerCrashedProbe> crashedProbe = IForgeContainerType.create((windowId, inv, data) -> new ContainerCrashedProbe(windowId, inv, (TileEntityCrashedProbe) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+//        ContainerType<ContainerGeothermal> geothermal = IForgeContainerType.create((windowId, inv, data) -> new ContainerGeothermal(windowId, inv, (TileEntityGeothermalGenerator) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+//        ContainerType<ContainerLaserTurret> laserTurret = IForgeContainerType.create((windowId, inv, data) -> new ContainerLaserTurret(windowId, inv, (TileEntityLaserTurret) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+//        ContainerType<ContainerSolarArrayController> solarArrayController = IForgeContainerType.create((windowId, inv, data) -> new ContainerSolarArrayController(windowId, inv, (TileEntitySolarArrayController) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+//
+//        register(r, crashedProbe, VenusContainerNames.CRASHED_PROBE);
+//        register(r, geothermal, VenusContainerNames.GEOTHERMAL);
+//        register(r, laserTurret, VenusContainerNames.LASER_TURRET);
+//        register(r, solarArrayController, VenusContainerNames.SOLAR_ARRAY_CONTROLLER);
+//
+//        DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
+//        {
+//            ScreenManager.registerFactory(crashedProbe, GuiCrashedProbe::new);
+//            ScreenManager.registerFactory(geothermal, GuiGeothermal::new);
+//            ScreenManager.registerFactory(laserTurret, GuiLaserTurret::new);
+//            ScreenManager.registerFactory(solarArrayController, GuiSolarArrayController::new);
+//        });
     }
 }

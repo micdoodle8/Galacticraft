@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftcore:emergency_box" },
-        "kit=true": { "model": "galacticraftcore:emergency_box" },
-        "kit=false": { "model": "galacticraftcore:emergency_box" }
+        "normal": { "model": "galacticraftcore:block/emergency_box" },
+        "kit=true": { "model": "galacticraftcore:block/emergency_box" },
+        "kit=false": { "model": "galacticraftcore:block/emergency_box" }
     }
 }

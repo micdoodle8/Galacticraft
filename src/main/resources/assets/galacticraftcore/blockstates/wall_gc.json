@@ -6,7 +6,7 @@
 			"wall_bot": "galacticraftcore:blocks/deco_block_up",
 			"wall_top": "galacticraftcore:blocks/deco_block"
 		},
-		"model": "galacticraftcore:wall_post",
+		"model": "galacticraftcore:block/wall_post",
 		"uvlock": true
 	},
 	"variants": {
@@ -14,7 +14,7 @@
 		"north": {
 			"true": {
 				"submodel": {
-					"north": { "model": "galacticraftcore:wall_side" }
+					"north": { "model": "galacticraftcore:block/wall_side" }
 				}
 			},
 			"false": {
@@ -24,7 +24,7 @@
 		"east": {
 			"true": {
 				"submodel": {
-					"east": { "model": "galacticraftcore:wall_side", "y": 90, "uvlock": true }
+					"east": { "model": "galacticraftcore:block/wall_side", "y": 90, "uvlock": true }
 				}
 			},
 			"false": {
@@ -34,7 +34,7 @@
 		"south": {
 			"true": {
 				"submodel": {
-					"south": { "model": "galacticraftcore:wall_side", "y": 180, "uvlock": true }
+					"south": { "model": "galacticraftcore:block/wall_side", "y": 180, "uvlock": true }
 				}
 			},
 			"false": {
@@ -44,7 +44,7 @@
 		"west": {
 			"true": {
 				"submodel": {
-					"west": { "model": "galacticraftcore:wall_side", "y": 270, "uvlock": true }
+					"west": { "model": "galacticraftcore:block/wall_side", "y": 270, "uvlock": true }
 				}
 			},
 			"false": {
@@ -54,7 +54,7 @@
 		"up": {
 			"true": {
 				"submodel": {
-					"up": { "model": "galacticraftcore:wall_post" }
+					"up": { "model": "galacticraftcore:block/wall_post" }
 				}
 			},
 			"false": {

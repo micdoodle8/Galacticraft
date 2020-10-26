@@ -2,10 +2,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
@@ -16,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -24,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -32,15 +36,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
+public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
-    protected static final VoxelShape UP_AABB = Block.makeCuboidShape(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
-    protected static final VoxelShape DOWN_AABB = Block.makeCuboidShape(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
-    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
-    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
-    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    protected static final VoxelShape UP_AABB = VoxelShapes.create(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final VoxelShape DOWN_AABB = VoxelShapes.create(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+    protected static final VoxelShape EAST_AABB = VoxelShapes.create(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+    protected static final VoxelShape WEST_AABB = VoxelShapes.create(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+    protected static final VoxelShape NORTH_AABB = VoxelShapes.create(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+    protected static final VoxelShape SOUTH_AABB = VoxelShapes.create(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
 
     public BlockBeamReceiver(Properties builder)
     {
@@ -269,6 +273,12 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
         return new TileEntityBeamReceiver();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
 //    @Override
 //    @OnlyIn(Dist.CLIENT)
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
@@ -314,9 +324,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription
         builder.add(FACING);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }

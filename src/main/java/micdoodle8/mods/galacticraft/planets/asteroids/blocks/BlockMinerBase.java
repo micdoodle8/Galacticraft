@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
 import net.minecraft.block.BlockState;
@@ -15,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class BlockMinerBase extends BlockTileGC implements IShiftDescription
+public class BlockMinerBase extends BlockTileGC implements IShiftDescription, ISortable
 {
     public BlockMinerBase(Properties builder)
     {
@@ -67,6 +69,12 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription
         return new TileEntityMinerBaseSingle();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
 //    @Override
 //    public BlockState getStateForPlacement(BlockItemUseContext context)
 //    {
@@ -98,9 +106,9 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription
 //        return BlockRenderLayer.CUTOUT;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 }

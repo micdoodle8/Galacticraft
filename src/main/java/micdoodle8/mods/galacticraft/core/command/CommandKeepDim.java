@@ -65,13 +65,13 @@
 //                        }
 //                    }
 //
-//                    if (ConfigManagerCore.setLoaded(dimID))
+//                    if (ConfigManagerCore.setLoaded.get()(dimID))
 //                    {
 //                        playerBase.sendMessage(new StringTextComponent("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
 //                    }
 //                    else
 //                    {
-//                        if (ConfigManagerCore.setUnloaded(dimID))
+//                        if (ConfigManagerCore.setUnloaded.get()(dimID))
 //                        {
 //                            playerBase.sendMessage(new StringTextComponent("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
 //                        }

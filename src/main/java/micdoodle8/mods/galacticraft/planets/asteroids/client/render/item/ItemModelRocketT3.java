@@ -1,24 +1,43 @@
-//package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
-//
-//import micdoodle8.mods.galacticraft.core.Constants;
-//import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-//import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
-//import net.minecraft.client.renderer.model.IBakedModel;
-//import net.minecraft.client.renderer.model.ItemCameraTransforms;
-//import net.minecraftforge.common.model.TRSRTransformation;
-//
-//import javax.vecmath.Matrix4f;
-//import javax.vecmath.Quat4f;
-//import javax.vecmath.Vector3f;
-//
-//public class ItemModelRocketT3 extends ModelTransformWrapper
-//{
-//    public ItemModelRocketT3(IBakedModel modelToWrap)
-//    {
-//        super(modelToWrap);
-//    }
-//
-//    @Override
+package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+
+public class ItemModelRocketT3 extends ModelTransformWrapper
+{
+    public ItemModelRocketT3(IBakedModel modelToWrap)
+    {
+        super(modelToWrap);
+    }
+
+    @Override
+    protected boolean getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat)
+    {
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        {
+            mat.push();
+            mat.translate(-0.1F, -0.1F, 0.0F);
+            mat.rotate(new Quaternion(55.0F, 225.0F, 0.0F, true));
+            mat.scale(0.61F, 0.61F, 0.61F);
+            mat.translate(-0.25F, -0.35F, 0.0F);
+            mat.rotate(new Quaternion(0.0F, Constants.halfPI, 0.0F, false));
+            mat.rotate(new Quaternion(Constants.halfPI / 4.0F, 0.0F, 0.0F, false));
+            mat.translate(-0.15F, 0.0F, -0.15F);
+            mat.rotate(new Quaternion(0.0F, ClientUtil.getClientTimeTotal() / 1000.0F, 0.0F, false));
+            mat.translate(0.15F, 0.0F, 0.15F);
+            mat.scale(0.3F, 0.3F, 0.3F);
+            return true;
+        }
+
+        return false;
+    }
+
+    //    @Override
 //    protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType)
 //    {
 //        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
@@ -148,4 +167,4 @@
 //
 //        return null;
 //    }
-//}
+}

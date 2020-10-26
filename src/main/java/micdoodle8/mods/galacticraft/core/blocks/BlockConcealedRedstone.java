@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.block.*;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.IntegerProperty;
@@ -23,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class BlockConcealedRedstone extends Block
+public class BlockConcealedRedstone extends Block implements ISortable
 {
     public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
     private final Set<BlockPos> blocksNeedingUpdate = Sets.newHashSet();
@@ -403,6 +405,12 @@ public class BlockConcealedRedstone extends Block
 //    {
 //        return BlockRenderLayer.CUTOUT;
 //    }
+
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.DECORATION;
+    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)

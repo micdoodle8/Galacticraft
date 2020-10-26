@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus;
 
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -9,25 +10,40 @@ import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.GCDimensions;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.PlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.PlanetFluids;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.MarsContainers;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.TeleportTypeVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.DimensionVenus;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.VenusContainers;
 import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.BiomeVenus;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class VenusModule implements IPlanetsModule
 {
@@ -35,11 +51,20 @@ public class VenusModule implements IPlanetsModule
 //    public static Fluid sulphuricAcid;
 //    public static Fluid sulphuricAcidGC;
 
+    public VenusModule()
+    {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addGenericListener(ContainerType.class, VenusContainers::initContainers);
+
+        VenusModule.planetVenus = (Planet) new Planet("venus").setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
+    }
+
     @Override
     public void init(FMLCommonSetupEvent event)
     {
-        VenusModule.planetVenus = (Planet) new Planet("venus").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
         MinecraftForge.EVENT_BUS.register(new EventHandlerVenus());
+
+        VenusModule.planetVenus.setParentSolarSystem(GalacticraftCore.solarSystemSol);
 
 //        if (!FluidRegistry.isFluidRegistered("sulphuricacid"))
 //        {
@@ -78,8 +103,6 @@ public class VenusModule implements IPlanetsModule
 //        VenusBlocks.initBlocks();
 //        VenusItems.initItems();
 
-        VenusModule.planetVenus.setBiomeInfo(BiomeVenus.venusFlat, BiomeVenus.venusMountain, BiomeVenus.venusValley);
-
         // ========================================
 
 //        VenusBlocks.oreDictRegistration();
@@ -92,15 +115,15 @@ public class VenusModule implements IPlanetsModule
 //        this.registerOtherEntities();
 
         VenusModule.planetVenus.setBodyIcon(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/venus.png"));
-        VenusModule.planetVenus.setDimensionInfo(PlanetDimensions.VENUS_DIMENSION, DimensionVenus.class).setTierRequired(3);
         VenusModule.planetVenus.setAtmosphere(new AtmosphereInfo(false, true, true, 5.0F, 0.3F, 54.0F));
         VenusModule.planetVenus.atmosphereComponent(EnumAtmosphericGas.CO2).atmosphereComponent(EnumAtmosphericGas.NITROGEN);
-        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE.get(), 8, 2, 3), EntityClassification.MONSTER);
-        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_SPIDER.get(), 8, 2, 3), EntityClassification.MONSTER);
-        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_SKELETON.get(), 8, 2, 3), EntityClassification.MONSTER);
-        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_CREEPER.get(), 8, 2, 3), EntityClassification.MONSTER);
-        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_ENDERMAN.get(), 10, 1, 4), EntityClassification.MONSTER);
+        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_ZOMBIE, 8, 2, 3), EntityClassification.MONSTER);
+        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_SPIDER, 8, 2, 3), EntityClassification.MONSTER);
+        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_SKELETON, 8, 2, 3), EntityClassification.MONSTER);
+        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_CREEPER, 8, 2, 3), EntityClassification.MONSTER);
+        VenusModule.planetVenus.addMobInfo(new SpawnListEntry(GCEntities.EVOLVED_ENDERMAN, 10, 1, 4), EntityClassification.MONSTER);
         VenusModule.planetVenus.addChecklistKeys("equip_oxygen_suit", "equip_shield_controller", "thermal_padding_t2");
+        VenusModule.planetVenus.setSurfaceBlocks(Lists.newArrayList(VenusBlocks.rockHard));
 
         GalaxyRegistry.registerPlanet(VenusModule.planetVenus);
         GalacticraftRegistry.registerTeleportType(DimensionVenus.class, new TeleportTypeVenus());
@@ -114,7 +137,8 @@ public class VenusModule implements IPlanetsModule
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(VenusItems.thermal_leggings_t2));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermal_boots_t2));
 
-        GalacticraftCore.proxy.registerFluidTexture(PlanetFluids.LIQUID_SULPHURIC_ACID.getFluid(), new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underacid.png"));
+//        GalacticraftCore.proxy.registerFluidTexture(PlanetFluids.LIQUID_SULPHURIC_ACID.getFluid(), new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underacid.png"));
+        // TODO Fluid textures
 
         MinecraftForge.EVENT_BUS.register(new VenusTickHandlerServer());
 
@@ -122,7 +146,14 @@ public class VenusModule implements IPlanetsModule
 
 //        RecipeManagerVenus.loadCompatibilityRecipes();
 
-//        GCPlanetDimensions.VENUS = WorldUtil.getDimensionTypeById(ConfigManagerPlanets.dimensionIDVenus);
+//        GCPlanetDimensions.VENUS = WorldUtil.getDimensionTypeById(ConfigManagerPlanets.dimensionIDVenus.get());
+    }
+
+    @SubscribeEvent
+    public void biomeRegisterEvent(RegistryEvent.Register<Biome> evt)
+    {
+        IForgeRegistry<Biome> r = evt.getRegistry();
+        VenusModule.planetVenus.setBiomeInfo(r, BiomeVenus.venusFlat, BiomeVenus.venusMountain, BiomeVenus.venusValley);
     }
 
     @Override

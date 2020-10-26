@@ -28,7 +28,6 @@ public class GuiCircuitFabricator extends GuiContainerGC<ContainerCircuitFabrica
     public GuiCircuitFabricator(ContainerCircuitFabricator container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerCircuitFabricator(playerInv, fabricator), playerInv, new TranslationTextComponent("tile.machine2.5.name")); // TODO Rename these translation keys
         this.fabricator = container.getFabricator();
         this.ySize = 192;
     }

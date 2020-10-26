@@ -159,7 +159,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             if (isFirstTick)
             {
                 isFirstTick = false;
-                if (!ConfigManagerPlanets.launchControllerChunkLoad)
+                if (!ConfigManagerPlanets.launchControllerChunkLoad.get())
                 {
                     //If we just loaded but are not actually able to operate
                     // release any tickets we have assigned to us that we loaded with
@@ -172,7 +172,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 releaseChunkTickets(prevWorld);
             }
 
-            if (hasRegistered && !ConfigManagerPlanets.launchControllerChunkLoad)
+            if (hasRegistered && !ConfigManagerPlanets.launchControllerChunkLoad.get())
             {
                 releaseChunkTickets(world);
             }
@@ -213,7 +213,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 //    @Override
 //    public void onTicketLoaded(Ticket ticket, boolean placed)
 //    {
-//        if (!this.world.isRemote && ConfigManagerPlanets.launchControllerChunkLoad)
+//        if (!this.world.isRemote && ConfigManagerPlanets.launchControllerChunkLoad.get())
 //        {
 //            if (ticket == null)
 //            {

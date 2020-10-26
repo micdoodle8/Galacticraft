@@ -23,7 +23,7 @@ public class SchematicCargoRocket implements ISchematicPage
     @Override
     public int getPageID()
     {
-        return ConfigManagerPlanets.idSchematicCargoRocket;
+        return ConfigManagerPlanets.idSchematicCargoRocket.get();
     }
 
 //    @Override

@@ -4,10 +4,10 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.core.client.gui.container.*;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.gui.screen.inventory.ChestScreen;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
@@ -38,8 +38,7 @@ public class GCContainers
         ContainerType<ContainerEnergyStorageModule> energyStorageModule = IForgeContainerType.create((windowId, inv, data) -> new ContainerEnergyStorageModule(windowId, inv, (TileEntityEnergyStorageModule) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerExtendedInventory> extendedInventory = IForgeContainerType.create((windowId, inv, data) ->
         {
-            GCPlayerStats stats = GCPlayerStats.get(inv.player);
-            return new ContainerExtendedInventory(windowId, inv, stats.getExtendedInventory());
+            return new ContainerExtendedInventory(windowId, inv, ClientProxyCore.dummyInventory);
         });
         ContainerType<ContainerFuelLoader> fuelLoader = IForgeContainerType.create((windowId, inv, data) -> new ContainerFuelLoader(windowId, inv, (TileEntityFuelLoader) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerIngotCompressor> ingotCompressor = IForgeContainerType.create((windowId, inv, data) -> new ContainerIngotCompressor(windowId, inv, (TileEntityIngotCompressor) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
@@ -51,7 +50,7 @@ public class GCContainers
         ContainerType<ContainerOxygenStorageModule> oxygenStorageModule = IForgeContainerType.create((windowId, inv, data) -> new ContainerOxygenStorageModule(windowId, inv, (TileEntityOxygenStorageModule) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerPainter> painter = IForgeContainerType.create((windowId, inv, data) -> new ContainerPainter(windowId, inv, (TileEntityPainter) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
         ContainerType<ContainerParaChest> parachest = IForgeContainerType.create((windowId, inv, data) -> new ContainerParaChest(windowId, inv, (TileEntityParaChest) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
-        ContainerType<ContainerRefinery> refinery = IForgeContainerType.create((windowId, inv, data) -> new ContainerRefinery(windowId, inv, (TileEntityRefinery) inv.player.world.getTileEntity(new BlockPos(data.readInt(), data.readInt(), data.readInt()))));
+        ContainerType<ContainerRefinery> refinery = IForgeContainerType.create((windowId, inv, data) -> new ContainerRefinery(windowId, inv, (TileEntityRefinery) inv.player.world.getTileEntity(data.readBlockPos())));
         ContainerType<ContainerRocketInventory> rocketInventory = IForgeContainerType.create((windowId, inv, data) -> new ContainerRocketInventory(windowId, inv, (EntityTieredRocket) inv.player.getRidingEntity()));
         ContainerType<ContainerSchematic> schematic = IForgeContainerType.create((windowId, inv, data) -> new ContainerSchematic(windowId, inv));
         ContainerType<ContainerSchematicTier1Rocket> schematicT1Rocket = IForgeContainerType.create((windowId, inv, data) -> new ContainerSchematicTier1Rocket(windowId, inv));

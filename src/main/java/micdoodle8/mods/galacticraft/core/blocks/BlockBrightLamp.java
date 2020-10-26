@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
@@ -13,6 +14,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -21,20 +23,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
+public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
 //    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    protected static final VoxelShape DOWN_AABB = Block.makeCuboidShape(0.2F, 0.0F, 0.2F, 0.8F, 0.6F, 0.8F);
-    protected static final VoxelShape UP_AABB = Block.makeCuboidShape(0.2F, 0.4F, 0.2F, 0.8F, 1.0F, 0.8F);
-    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
-    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
-    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
-    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+    protected static final VoxelShape DOWN_AABB = VoxelShapes.create(0.2F, 0.0F, 0.2F, 0.8F, 0.6F, 0.8F);
+    protected static final VoxelShape UP_AABB = VoxelShapes.create(0.2F, 0.4F, 0.2F, 0.8F, 1.0F, 0.8F);
+    protected static final VoxelShape NORTH_AABB = VoxelShapes.create(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
+    protected static final VoxelShape SOUTH_AABB = VoxelShapes.create(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
+    protected static final VoxelShape WEST_AABB = VoxelShapes.create(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
+    protected static final VoxelShape EAST_AABB = VoxelShapes.create(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
 
     //Metadata: bits 0-2 are the LogicalSide of the base plate using standard LogicalSide convention (0-5)
 
@@ -96,7 +99,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 //    {
 //        double boundsMin = 0.2D;
 //        double boundsMax = 0.8D;
-//        return Block.makeCuboidShape(pos.getX() + boundsMin, pos.getY() + boundsMin, pos.getZ() + boundsMin, pos.getX() + boundsMax, pos.getY() + boundsMax, pos.getZ() + boundsMax);
+//        return VoxelShapes.create(pos.getX() + boundsMin, pos.getY() + boundsMin, pos.getZ() + boundsMin, pos.getX() + boundsMax, pos.getY() + boundsMax, pos.getZ() + boundsMax);
 //    }
 
 //    @Override
@@ -214,6 +217,12 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
         return new TileEntityArclamp();
     }
 
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
     //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -251,11 +260,11 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription
 //        return state.with(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
 //    }
 //
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)

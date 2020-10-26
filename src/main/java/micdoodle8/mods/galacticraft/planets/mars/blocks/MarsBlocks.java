@@ -1,16 +1,17 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.*;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,8 +26,12 @@ public class MarsBlocks
     //    @ObjectHolder(MarsBlockNames.blockSludge) public static Block blockSludge; TODO liquids
     @ObjectHolder(MarsBlockNames.vine)
     public static Block vine;
-    @ObjectHolder(MarsBlockNames.slimelingEgg)
-    public static Block slimelingEgg;
+    @ObjectHolder(MarsBlockNames.slimelingEggRed)
+    public static Block slimelingEggRed;
+    @ObjectHolder(MarsBlockNames.slimelingEggBlue)
+    public static Block slimelingEggBlue;
+    @ObjectHolder(MarsBlockNames.slimelingEggYellow)
+    public static Block slimelingEggYellow;
     @ObjectHolder(MarsBlockNames.treasureChestTier2)
     public static Block treasureChestTier2;
     @ObjectHolder(MarsBlockNames.cryoChamber)
@@ -95,12 +100,14 @@ public class MarsBlocks
         register(r, new BlockCavernousVine(builder), MarsBlockNames.vine);
 
         builder = Block.Properties.create(Material.ROCK);
-        register(r, new BlockSlimelingEgg(builder), MarsBlockNames.slimelingEgg);
+        register(r, new BlockSlimelingEgg(builder), MarsBlockNames.slimelingEggRed);
+        register(r, new BlockSlimelingEgg(builder), MarsBlockNames.slimelingEggBlue);
+        register(r, new BlockSlimelingEgg(builder), MarsBlockNames.slimelingEggYellow);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(100000.0F).sound(SoundType.STONE).lightValue(13);
         register(r, new BlockTier2TreasureChest(builder), MarsBlockNames.treasureChestTier2);
 
-        builder = Block.Properties.create(GCBlocks.machine).sound(SoundType.METAL);
+        builder = Block.Properties.create(Material.IRON).sound(SoundType.METAL);
         register(r, new BlockCryoChamber(builder), MarsBlockNames.cryoChamber);
         register(r, new BlockLaunchController(builder), MarsBlockNames.launchController);
         register(r, new BlockTerraformer(builder), MarsBlockNames.terraformer);
@@ -134,14 +141,44 @@ public class MarsBlocks
 //        MarsBlocks.setHarvestLevels();
     }
 
-    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
-    {
-        reg.register(thing.setRegistryName(name));
-    }
-
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, String name)
     {
-        register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+        GCBlocks.register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+    }
+
+    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, ResourceLocation name, IForgeRegistryEntry<V> thing)
+    {
+        GCBlocks.register(reg, name, thing);
+    }
+
+    @SubscribeEvent
+    public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
+    {
+        IForgeRegistry<Item> r = evt.getRegistry();
+        Item.Properties props = GCItems.defaultBuilder().group(GalacticraftCore.galacticraftBlocksTab);
+        register(r, Registry.BLOCK.getKey(oreCopper), new BlockItem(oreCopper, props));
+        register(r, Registry.BLOCK.getKey(oreTin), new BlockItem(oreTin, props));
+        register(r, Registry.BLOCK.getKey(oreDesh), new BlockItem(oreDesh, props));
+        register(r, Registry.BLOCK.getKey(oreIron), new BlockItem(oreIron, props));
+        register(r, Registry.BLOCK.getKey(cobblestone), new BlockItem(cobblestone, props));
+        register(r, Registry.BLOCK.getKey(rockSurface), new BlockItem(rockSurface, props));
+        register(r, Registry.BLOCK.getKey(rockMiddle), new BlockItem(rockMiddle, props));
+        register(r, Registry.BLOCK.getKey(stone), new BlockItem(stone, props));
+        register(r, Registry.BLOCK.getKey(deshBlock), new BlockItem(deshBlock, props));
+        register(r, Registry.BLOCK.getKey(dungeonBrick), new BlockItem(dungeonBrick, props));
+        register(r, Registry.BLOCK.getKey(vine), new BlockItem(vine, props));
+        register(r, Registry.BLOCK.getKey(slimelingEggRed), new BlockItem(slimelingEggRed, props));
+        register(r, Registry.BLOCK.getKey(slimelingEggBlue), new BlockItem(slimelingEggBlue, props));
+        register(r, Registry.BLOCK.getKey(slimelingEggYellow), new BlockItem(slimelingEggYellow, props));
+        register(r, Registry.BLOCK.getKey(treasureChestTier2), new BlockItem(treasureChestTier2, props));
+        register(r, Registry.BLOCK.getKey(cryoChamber), new BlockItem(cryoChamber, props));
+        register(r, Registry.BLOCK.getKey(launchController), new BlockItem(launchController, props));
+        register(r, Registry.BLOCK.getKey(terraformer), new BlockItem(terraformer, props));
+        register(r, Registry.BLOCK.getKey(methaneSynthesizer), new BlockItem(methaneSynthesizer, props));
+        register(r, Registry.BLOCK.getKey(gasLiquefier), new BlockItem(gasLiquefier, props));
+        register(r, Registry.BLOCK.getKey(electrolyzer), new BlockItem(electrolyzer, props));
+        register(r, Registry.BLOCK.getKey(creeperEgg), new BlockItem(creeperEgg, props));
+        register(r, Registry.BLOCK.getKey(bossSpawner), new BlockItem(bossSpawner, props.group(null)));
     }
 
 //    public static void setHarvestLevels()
@@ -195,7 +232,7 @@ public class MarsBlocks
         register(r, TileEntityType.Builder.create(TileEntityGasLiquefier::new, gasLiquefier).build(null), MarsBlockNames.gasLiquefier);
         register(r, TileEntityType.Builder.create(TileEntityLaunchController::new, launchController).build(null), MarsBlockNames.launchController);
         register(r, TileEntityType.Builder.create(TileEntityMethaneSynthesizer::new, methaneSynthesizer).build(null), MarsBlockNames.methaneSynthesizer);
-        register(r, TileEntityType.Builder.create(TileEntitySlimelingEgg::new, slimelingEgg).build(null), MarsBlockNames.slimelingEgg);
+        register(r, TileEntityType.Builder.create(TileEntitySlimelingEgg::new, slimelingEggRed, slimelingEggBlue, slimelingEggYellow).build(null), MarsBlockNames.slimelingEgg);
         register(r, TileEntityType.Builder.create(TileEntityTerraformer::new, terraformer).build(null), MarsBlockNames.terraformer);
         register(r, TileEntityType.Builder.create(TileEntityTreasureChestMars::new, treasureChestTier2).build(null), MarsBlockNames.treasureChestTier2);
     }

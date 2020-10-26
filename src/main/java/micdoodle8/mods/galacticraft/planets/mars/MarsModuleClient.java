@@ -1,27 +1,45 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
+import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityCryoFX;
+import micdoodle8.mods.galacticraft.planets.mars.client.fx.ParticleDrip;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingFeed;
+import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import static micdoodle8.mods.galacticraft.planets.mars.client.fx.MarsParticles.CRYO;
+import static micdoodle8.mods.galacticraft.planets.mars.client.fx.MarsParticles.DRIP;
+
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MarsModuleClient implements IPlanetsModuleClient
 {
     private static final ModelResourceLocation sludgeLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge", "fluid");
@@ -99,6 +117,9 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
         // ==============================
 
+        RenderType cutout = RenderType.getCutout();
+        RenderTypeLookup.setRenderLayer(MarsBlocks.vine, cutout);
+
 //            IModelCustom chamberModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/chamber.obj"));
 //            IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/cargoRocket.obj"));
 //
@@ -113,6 +134,16 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //        RenderingRegistry.addNewArmourRendererPrefix("desh");
 
         ItemSchematicTier2.registerTextures();
+
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwo.getRegistryName(), ItemModelRocketT2::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo1.getRegistryName(), ItemModelRocketT2::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo2.getRegistryName(), ItemModelRocketT2::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo3.getRegistryName(), ItemModelRocketT2::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCreative.getRegistryName(), ItemModelRocketT2::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargo1.getRegistryName(), ItemModelCargoRocket::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargo2.getRegistryName(), ItemModelCargoRocket::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargo3.getRegistryName(), ItemModelCargoRocket::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargoCreative.getRegistryName(), ItemModelCargoRocket::new);
     }
 
     @SubscribeEvent
@@ -137,6 +168,12 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //        replaceModelDefault(event, "rocket_cargo", "cargo_rocket.obj", ImmutableList.of("Rocket"), ItemModelCargoRocket.class, TRSRTransformation.identity());
 
 //        RenderLandingBalloons.updateModels(event.getModelLoader());
+    }
+
+    @SubscribeEvent
+    public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+        Minecraft.getInstance().particles.registerFactory(DRIP, ParticleDrip.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(CRYO, EntityCryoFX.Factory::new);
     }
 
 //    private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)

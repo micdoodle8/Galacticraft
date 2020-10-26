@@ -161,7 +161,7 @@
 ////            }
 ////        } TODO Orient camera
 //
-//        float theta = MathHelper.sqrt(((float) (mc.player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
+//        float theta = MathHelper.sqrt(((float) (mc.player.getPosY()) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
 //        final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 //
 //        GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -188,7 +188,7 @@
 //        GL11.glDepthMask(false);
 //        GL11.glEnable(GL11.GL_FOG);
 //        GL11.glColor3f(i, x, var5);
-//        if (mc.player.posY < 214)
+//        if (mc.player.getPosY() < 214)
 //        {
 //            GL11.glCallList(this.glSkyList);
 //        }
@@ -259,7 +259,7 @@
 //        GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 //
 //        GL11.glRotatef(this.minecraft.world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-//        double playerHeight = this.minecraft.player.posY;
+//        double playerHeight = this.minecraft.player.getPosY();
 //
 //        //Draw stars
 //        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -354,7 +354,7 @@
 //            float scale = 850 * (0.25F - theta / 10000.0F);
 //            scale = Math.max(scale, 0.2F);
 //            GL11.glScalef(scale, 1.0F, scale);
-//            GL11.glTranslatef(0.0F, -(float) mc.player.posY, 0.0F);
+//            GL11.glTranslatef(0.0F, -(float) mc.player.getPosY(), 0.0F);
 ////	        if (ClientProxyCore.overworldTextureLocal != null)
 ////	        {
 ////	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
@@ -421,7 +421,7 @@
 //    {
 //        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 //
-//        for (int i = 0; i < (ConfigManagerCore.moreStars ? 4000 : 1200); ++i)
+//        for (int i = 0; i < (ConfigManagerCore.moreStars.get() ? 4000 : 1200); ++i)
 //        {
 //            double x = rand.nextFloat() * 2.0F - 1.0F;
 //            double y = rand.nextFloat() * 2.0F - 1.0F;
@@ -435,13 +435,13 @@
 //                x *= r;
 //                y *= r;
 //                z *= r;
-//                final double xx = x * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
-//                final double zz = z * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+//                final double xx = x * (ConfigManagerCore.moreStars.get() ? rand.nextDouble() * 100D + 150D : 100.0D);
+//                final double zz = z * (ConfigManagerCore.moreStars.get() ? rand.nextDouble() * 100D + 150D : 100.0D);
 //                if (Math.abs(xx) < 29D && Math.abs(zz) < 29D)
 //                {
 //                    continue;
 //                }
-//                final double yy = y * (ConfigManagerCore.moreStars ? rand.nextDouble() * 100D + 150D : 100.0D);
+//                final double yy = y * (ConfigManagerCore.moreStars.get() ? rand.nextDouble() * 100D + 150D : 100.0D);
 //                final double theta = Math.atan2(x, z);
 //                final double sinth = Math.sin(theta);
 //                final double costh = Math.cos(theta);

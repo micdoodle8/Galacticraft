@@ -39,7 +39,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
     public EntityLander(ServerPlayerEntity player)
     {
-        super(GCEntities.LANDER.get(), player);
+        super(GCEntities.LANDER, player);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.AsteroidParticles;
@@ -24,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -32,9 +35,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription
+public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription, ISortable
 {
-    protected static final VoxelShape AABB_TELEPAD = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
+    protected static final VoxelShape AABB_TELEPAD = VoxelShapes.create(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
 
     protected BlockShortRangeTelepad(Properties builder)
     {
@@ -76,6 +79,12 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityShortRangeTelepad();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override
@@ -230,9 +239,9 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }

@@ -1,8 +1,8 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "galacticraftplanets:items/atmospheric_valve"
-    },
+    "parent": "forge:item/default",
+    "loader": "forge:obj",
+    "model": "galacticraftplanets:models/astro_miner_inv.obj",
+    "flip-v": true,
     "display": {
         "thirdperson": {
             "rotation": [ -90, 0, 0 ],

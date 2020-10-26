@@ -81,7 +81,7 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
 
         if (this.world.rand.nextInt(100) == 0)
         {
-            EntityEvolvedSkeleton entityskeleton = new EntityEvolvedSkeleton(GCEntities.EVOLVED_SKELETON.get(), world);
+            EntityEvolvedSkeleton entityskeleton = new EntityEvolvedSkeleton(GCEntities.EVOLVED_SKELETON, world);
             entityskeleton.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
             entityskeleton.onInitialSpawn(worldIn, difficultyIn, reason, null, null);
             this.world.addEntity(entityskeleton);
@@ -137,7 +137,7 @@ public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathab
 //            this.dropItem(GCItems.oxygenConcentrator, 1);
 //            break;
 //        default:
-//            if (ConfigManagerCore.challengeMobDropsAndSpawning)
+//            if (ConfigManagerCore.challengeMobDropsAndSpawning.get())
 //            {
 //                this.dropItem(Items.NETHER_WART, 1);
 //            }

@@ -138,7 +138,7 @@ public class EventHandlerMars
     {
         if (this.eggGenerator == null)
         {
-            this.eggGenerator = new WorldGenEggs(NoFeatureConfig::deserialize, MarsBlocks.slimelingEgg.getDefaultState());
+            this.eggGenerator = new WorldGenEggs(NoFeatureConfig::deserialize);
         }
 
         if (event.world.getDimension() instanceof DimensionMars)

@@ -36,6 +36,7 @@ public class ParticleAcidVapor extends SpriteTexturedParticle
         this.maxAge = (int) ((float) this.maxAge * 2.5F);
         this.canCollide = true;
         this.animatedSprite = animatedSprite;
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Collections;
 import java.util.Comparator;
 
 public class CreativeTabGC extends ItemGroup
@@ -15,9 +16,9 @@ public class CreativeTabGC extends ItemGroup
     private ItemStack itemForTab;
     private Comparator<ItemStack> tabSorter;
 
-    public CreativeTabGC(int par1, String par2Str, ItemStack itemForTab, Comparator<ItemStack> tabSorter)
+    public CreativeTabGC(String name, ItemStack itemForTab, Comparator<ItemStack> tabSorter)
     {
-        super(par1, par2Str);
+        super(name);
         this.itemForTab = itemForTab;
         this.tabSorter = tabSorter;
     }
@@ -37,7 +38,7 @@ public class CreativeTabGC extends ItemGroup
     @OnlyIn(Dist.CLIENT)
     public String getTranslationKey()
     {
-        return "itemGroup." + this.getTabLabel();
+        return "item_group." + this.getTabLabel();
     }
 
     @Override
@@ -47,6 +48,18 @@ public class CreativeTabGC extends ItemGroup
         for (Item item : Registry.ITEM)
         {
             item.fillItemGroup(this, items);
+        }
+
+        if (tabSorter != null)
+        {
+            try
+            {
+                Collections.sort(items, tabSorter);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 

@@ -27,7 +27,7 @@ public class BlockBossSpawner extends Block
 //    @Override
 //    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 //    {
-//        return Block.makeCuboidShape(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+//        return VoxelShapes.create(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 //    }
 
     @Override
@@ -47,6 +47,12 @@ public class BlockBossSpawner extends Block
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityDungeonSpawner<>(EntitySkeletonBoss.class);
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override

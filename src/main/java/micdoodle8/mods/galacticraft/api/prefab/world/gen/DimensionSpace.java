@@ -322,7 +322,7 @@ public abstract class DimensionSpace extends Dimension implements IGalacticraftD
      */
     public boolean shouldForceRespawn()
     {
-        return !ConfigManagerCore.forceOverworldRespawn;
+        return !ConfigManagerCore.forceOverworldRespawn.get();
     }
 
     /**

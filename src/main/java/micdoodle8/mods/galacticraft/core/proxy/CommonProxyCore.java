@@ -31,14 +31,6 @@ public class CommonProxyCore
 
     }
 
-    public void init()
-    {
-    }
-
-    public void registerCanister(PartialCanister container)
-    {
-    }
-
     public void registerFluidTexture(Fluid fluid, ResourceLocation submergedTexture)
     {
     }

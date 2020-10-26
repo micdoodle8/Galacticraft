@@ -11,14 +11,10 @@ public class BiomeMars extends BiomeGC
 {
     public static final BiomeMars marsFlat = new BiomeMars();
     //    public static final Biome moonFlat = new BiomeFlatMoon(new BiomeProperties("Moon").setBaseHeight(1.5F).setHeightVariation(0.4F).setRainfall(0.0F));
-    public static final BlockState SURFACE = MarsBlocks.rockSurface.getDefaultState();
-    //    public static final BlockState STONE = GCBlocks.moonStone.getDefaultState();
-    public static final BlockState MIDDLE = MarsBlocks.rockMiddle.getDefaultState();
-    public static final SurfaceBuilderConfig MARS_CONFIG = new SurfaceBuilderConfig(SURFACE, MIDDLE, MIDDLE);
 
     BiomeMars()
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, MARS_CONFIG).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(2.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).parent(null), true);
+        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(MarsBlocks.rockSurface.getDefaultState(), MarsBlocks.rockMiddle.getDefaultState(), MarsBlocks.rockMiddle.getDefaultState())).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(2.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null), true);
     }
 
 //    @Override

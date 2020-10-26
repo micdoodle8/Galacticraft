@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "galacticraftcore:refinery_model" },
-        "facing=east":  { "model": "galacticraftcore:refinery_model", "y": 90 },
-        "facing=west":  { "model": "galacticraftcore:refinery_model", "y": 270 },
-        "facing=south": { "model": "galacticraftcore:refinery_model", "y": 180 }
+        "facing=north": { "model": "galacticraftcore:block/refinery_model" },
+        "facing=east":  { "model": "galacticraftcore:block/refinery_model", "y": 90 },
+        "facing=west":  { "model": "galacticraftcore:block/refinery_model", "y": 270 },
+        "facing=south": { "model": "galacticraftcore:block/refinery_model", "y": 180 }
     }
 }

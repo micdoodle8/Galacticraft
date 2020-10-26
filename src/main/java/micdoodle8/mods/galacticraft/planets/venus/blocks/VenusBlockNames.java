@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
 public class VenusBlockNames
 {
-    public static final String torchWeb = "web_torch";
+    public static final String torchWebSupport = "web_torch_support";
+    public static final String torchWebLight = "web_torch_light";
     public static final String scorchedRock = "venus_rock_scorched";
     //    public static final String venusBlock = "venus";
     public static final String geothermalGenerator = "geothermal_generator";

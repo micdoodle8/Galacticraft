@@ -8,17 +8,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class StackSorted
 {
     private final Item item;
-    private final int meta;
+//    private final int meta;
 
-    public StackSorted(Block block, int meta)
+    public StackSorted(Block block)
     {
-        this(Item.getItemFromBlock(block), meta);
+        this(Item.getItemFromBlock(block));
     }
 
-    public StackSorted(Item item, int meta)
+    public StackSorted(Item item)
     {
         this.item = item;
-        this.meta = meta;
+//        this.meta = meta;
     }
 
     public Item getItem()
@@ -26,10 +26,10 @@ public class StackSorted
         return item;
     }
 
-    public int getMeta()
-    {
-        return meta;
-    }
+//    public int getMeta()
+//    {
+//        return meta;
+//    }
 
     @Override
     public boolean equals(Object obj)
@@ -46,7 +46,7 @@ public class StackSorted
         StackSorted other = (StackSorted) obj;
         return new EqualsBuilder()
                 .append(item, other.item)
-                .append(meta, other.meta)
+//                .append(meta, other.meta)
                 .isEquals();
     }
 
@@ -55,13 +55,13 @@ public class StackSorted
     {
         return new HashCodeBuilder()
                 .append(item)
-                .append(meta)
+//                .append(meta)
                 .toHashCode();
     }
 
     @Override
     public String toString()
     {
-        return "Item:(" + item + "),Meta:(" + meta + ")";
+        return "Item:(" + item + ")";
     }
 }

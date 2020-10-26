@@ -61,8 +61,8 @@
 //            
 //        //Test whether feet are on a block, also stops the login glitch
 //        int playerFeetOnY = (int) (player.getBoundingBox().minY - 0.01D);
-//        int xx = MathHelper.floor(player.posX);
-//        int zz = MathHelper.floor(player.posZ);
+//        int xx = MathHelper.floor(player.getPosX());
+//        int zz = MathHelper.floor(player.getPosZ());
 //        BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
 //        BlockState state = player.world.getBlockState(pos);
 //        Block b = state.getBlock();
@@ -78,7 +78,7 @@
 //                player.onGround = true;
 //                if (player.getBoundingBox().minY - blockYmax > 0D)
 //                {
-//                    player.posY -= player.getBoundingBox().minY - blockYmax;
+//                    player.getPosY() -= player.getBoundingBox().minY - blockYmax;
 //                    player.setBoundingBox(player.getBoundingBox().offset(0, blockYmax - player.getBoundingBox().minY, 0));
 //                }
 //                else if (b.canCollideCheck(player.world.getBlockState(new BlockPos(xx, playerFeetOnY, zz)), false))
@@ -87,7 +87,7 @@
 //                    AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.world.getBlockState(offsetPos), player.world, offsetPos);
 //                    if (collisionBox != null && collisionBox.intersects(player.getBoundingBox()))
 //                    {
-//                        player.posY -= player.getBoundingBox().minY - blockYmax;
+//                        player.getPosY() -= player.getBoundingBox().minY - blockYmax;
 //                        player.setBoundingBox(player.getBoundingBox().offset(0, blockYmax - player.getBoundingBox().minY, 0));
 //                    }
 //                }
@@ -327,8 +327,8 @@
 //
 //        if (p.movementInput.moveForward != 0)
 //        {
-//            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode ? 600F : 200F);
-//            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode ? 600F : 200F);
+//            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode.get() ? 600F : 200F);
+//            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode.get() ? 600F : 200F);
 //        }
 //
 //        if (jetpackBoost != 0)
@@ -344,7 +344,7 @@
 ////              posOffsetY += 0.0268;
 //                sneakLast = true;
 //            }
-//            p.motionY -= ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
+//            p.motionY -= ConfigManagerCore.hardMode.get() ? 0.002D : 0.0032D;
 //        }
 //        else if (sneakLast)
 //        {
@@ -354,10 +354,10 @@
 //
 //        if (!jetpackUsed && p.movementInput.jump)
 //        {
-//            p.motionY += ConfigManagerCore.hardMode ? 0.002D : 0.0032D;
+//            p.motionY += ConfigManagerCore.hardMode.get() ? 0.002D : 0.0032D;
 //        }
 //
-//        float speedLimit = ConfigManagerCore.hardMode ? 0.9F : 0.7F;
+//        float speedLimit = ConfigManagerCore.hardMode.get() ? 0.9F : 0.7F;
 //
 //        if (p.motionX > speedLimit)
 //        {

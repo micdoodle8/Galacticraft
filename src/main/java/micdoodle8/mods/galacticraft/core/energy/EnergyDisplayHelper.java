@@ -16,19 +16,19 @@ public class EnergyDisplayHelper
 
     public static String getEnergyDisplayS(float energyVal)
     {
-        if (EnergyConfigHandler.displayEnergyUnitsIC2)
+        if (EnergyConfigHandler.displayEnergyUnitsIC2.get())
         {
             return getEnergyDisplayIC2(energyVal * EnergyConfigHandler.TO_IC2_RATIOdisp);
         }
-        else if (EnergyConfigHandler.displayEnergyUnitsBC)
+        else if (EnergyConfigHandler.displayEnergyUnitsBC.get())
         {
             return getEnergyDisplayBC(energyVal * EnergyConfigHandler.TO_BC_RATIOdisp);
         }
-        else if (EnergyConfigHandler.displayEnergyUnitsMek)
+        else if (EnergyConfigHandler.displayEnergyUnitsMek.get())
         {
             return getEnergyDisplayMek(energyVal * EnergyConfigHandler.TO_MEKANISM_RATIOdisp);
         }
-        else if (EnergyConfigHandler.displayEnergyUnitsRF)
+        else if (EnergyConfigHandler.displayEnergyUnitsRF.get())
         {
             return getEnergyDisplayRF(energyVal * EnergyConfigHandler.TO_RF_RATIOdisp);
         }

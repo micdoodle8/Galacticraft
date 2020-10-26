@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.dimension.GCDimensions;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -9,15 +11,20 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import micdoodle8.mods.galacticraft.planets.venus.dimension.VenusBiomeProviderTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,6 +50,21 @@ public class GalacticraftPlanets
     public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
 
     public static PlanetsProxy proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> () -> new PlanetsProxy());
+
+    public GalacticraftPlanets()
+    {
+        GalacticraftCore.isPlanetsLoaded = true;
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManagerPlanets.COMMON_SPEC);
+
+        MinecraftForge.EVENT_BUS.addListener(PlanetDimensions::onModDimensionRegister);
+
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener(this::commonSetup);
+
+        GalacticraftPlanets.commonModules.add(new MarsModule());
+        GalacticraftPlanets.commonModules.add(new AsteroidsModule());
+        GalacticraftPlanets.commonModules.add(new VenusModule());
+    }
 
     @OnlyIn(Dist.CLIENT)
     private static Supplier<PlanetsProxy> getClientProxy()
@@ -74,9 +96,6 @@ public class GalacticraftPlanets
 //        new ConfigManagerVenus(new File(event.getModConfigurationDirectory(), "Galacticraft/venus.conf"));
 //        this.configSyncEnd(true);
 
-        GalacticraftPlanets.commonModules.add(new MarsModule());
-        GalacticraftPlanets.commonModules.add(new AsteroidsModule());
-        GalacticraftPlanets.commonModules.add(new VenusModule());
 
         // =============================
 
@@ -147,7 +166,7 @@ public class GalacticraftPlanets
 //    private void configSyncEnd(boolean load)
 //    {
 //        //Cleanup older GC config files
-////        ConfigManagerCore.cleanConfig(ConfigManagerPlanets.config, propOrder);
+////        ConfigManagerCore.cleanConfig.get()(ConfigManagerPlanets.config, propOrder);
 ////
 ////        //Always save - this is last to be called both at load time and at mid-game
 ////        if (ConfigManagerPlanets.config.hasChanged())

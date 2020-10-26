@@ -1,483 +1,384 @@
 package micdoodle8.mods.galacticraft.core;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import micdoodle8.mods.galacticraft.core.blocks.*;
 import micdoodle8.mods.galacticraft.core.tile.*;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.IItemProvider;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
 @ObjectHolder(Constants.MOD_ID_CORE)
 public class GCBlocks
 {
-    @ObjectHolder(BlockNames.breatheableAir)
-    public static Block breatheableAir;
-    @ObjectHolder(BlockNames.brightAir)
-    public static Block brightAir;
-    @ObjectHolder(BlockNames.brightBreatheableAir)
-    public static Block brightBreatheableAir;
-    @ObjectHolder(BlockNames.arcLamp)
-    public static Block arcLamp;
-    @ObjectHolder(BlockNames.treasureChestTier1)
-    public static Block treasureChestTier1;
-    @ObjectHolder(BlockNames.landingPad)
-    public static Block landingPad;
-    @ObjectHolder(BlockNames.landingPadFull)
-    public static Block landingPadFull;
-    @ObjectHolder(BlockNames.buggyPad)
-    public static Block buggyPad;
-    @ObjectHolder(BlockNames.buggyPadFull)
-    public static Block buggyPadFull;
-    @ObjectHolder(BlockNames.unlitTorch)
-    public static Block unlitTorch;
-    @ObjectHolder(BlockNames.unlitTorchLit)
-    public static Block unlitTorchLit;
-    @ObjectHolder(BlockNames.oxygenDistributor)
-    public static Block oxygenDistributor;
-    @ObjectHolder(BlockNames.fluidPipe)
-    public static Block fluidPipe;
-    @ObjectHolder(BlockNames.fluidPipePull)
-    public static Block fluidPipePull;
-    @ObjectHolder(BlockNames.oxygenCollector)
-    public static Block oxygenCollector;
-    @ObjectHolder(BlockNames.oxygenCompressor)
-    public static Block oxygenCompressor;
-    @ObjectHolder(BlockNames.oxygenDecompressor)
-    public static Block oxygenDecompressor;
-    @ObjectHolder(BlockNames.oxygenSealer)
-    public static Block oxygenSealer;
-    @ObjectHolder(BlockNames.oxygenDetector)
-    public static Block oxygenDetector;
-    @ObjectHolder(BlockNames.nasaWorkbench)
-    public static Block nasaWorkbench;
-    @ObjectHolder(BlockNames.fallenMeteor)
-    public static Block fallenMeteor;
-    //    @ObjectHolder(BlockNames.basicBlock) public static Block basicBlock;
-    @ObjectHolder(BlockNames.airLockFrame)
-    public static Block airLockFrame;
-    @ObjectHolder(BlockNames.airLockController)
-    public static Block airLockController;
-    @ObjectHolder(BlockNames.airLockSeal)
-    public static Block airLockSeal;
-    @ObjectHolder(BlockNames.spaceGlassClear)
-    public static Block spaceGlassClear;
-    @ObjectHolder(BlockNames.spaceGlassVanilla)
-    public static Block spaceGlassVanilla;
-    @ObjectHolder(BlockNames.spaceGlassStrong)
-    public static Block spaceGlassStrong;
-    @ObjectHolder(BlockNames.spaceGlassTinClear)
-    public static Block spaceGlassTinClear;
-    @ObjectHolder(BlockNames.spaceGlassTinVanilla)
-    public static Block spaceGlassTinVanilla;
-    @ObjectHolder(BlockNames.spaceGlassTinStrong)
-    public static Block spaceGlassTinStrong;
-    @ObjectHolder(BlockNames.crafting)
-    public static Block crafting;
-    @ObjectHolder(BlockNames.crudeOil)
-    public static Block crudeOil;
-    @ObjectHolder(BlockNames.fuel)
-    public static Block fuel;
-    @ObjectHolder(BlockNames.refinery)
-    public static Block refinery;
-    @ObjectHolder(BlockNames.fuelLoader)
-    public static Block fuelLoader;
-    @ObjectHolder(BlockNames.spaceStationBase)
-    public static Block spaceStationBase;
-    @ObjectHolder(BlockNames.fakeBlock)
-    public static Block fakeBlock;
-    @ObjectHolder(BlockNames.sealableBlock)
-    public static Block sealableBlock;
-    @ObjectHolder(BlockNames.cargoLoader)
-    public static Block cargoLoader;
-    @ObjectHolder(BlockNames.cargoUnloader)
-    public static Block cargoUnloader;
-    @ObjectHolder(BlockNames.parachest)
-    public static Block parachest;
-    @ObjectHolder(BlockNames.solarPanel)
-    public static Block solarPanel;
-    @ObjectHolder(BlockNames.solarPanelAdvanced)
-    public static Block solarPanelAdvanced;
-    @ObjectHolder(BlockNames.radioTelescope)
-    public static Block radioTelescope;
-    //    @ObjectHolder(BlockNames.machineBase) public static Block machineBase;
-    @ObjectHolder(BlockNames.ingotCompressor)
-    public static Block ingotCompressor;
-    @ObjectHolder(BlockNames.ingotCompressorElectric)
-    public static Block ingotCompressorElectric;
-    @ObjectHolder(BlockNames.ingotCompressorElectricAdvanced)
-    public static Block ingotCompressorElectricAdvanced;
-    @ObjectHolder(BlockNames.coalGenerator)
-    public static Block coalGenerator;
-    @ObjectHolder(BlockNames.circuitFabricator)
-    public static Block circuitFabricator;
-    @ObjectHolder(BlockNames.oxygenStorageModule)
-    public static Block oxygenStorageModule;
-    @ObjectHolder(BlockNames.deconstructor)
-    public static Block deconstructor;
-    @ObjectHolder(BlockNames.painter)
-    public static Block painter;
-    @ObjectHolder(BlockNames.storageModule)
-    public static Block storageModule;
-    @ObjectHolder(BlockNames.storageCluster)
-    public static Block storageCluster;
-    @ObjectHolder(BlockNames.furnaceElectric)
-    public static Block furnaceElectric;
-    @ObjectHolder(BlockNames.furanceArc)
-    public static Block furanceArc;
-    @ObjectHolder(BlockNames.aluminumWire)
-    public static Block aluminumWire;
-    @ObjectHolder(BlockNames.aluminumWireHeavy)
-    public static Block aluminumWireHeavy;
-    @ObjectHolder(BlockNames.aluminumWireSwitchable)
-    public static Block aluminumWireSwitchable;
-    @ObjectHolder(BlockNames.aluminumWireSwitchableHeavy)
-    public static Block aluminumWireSwitchableHeavy;
-    //    @ObjectHolder(BlockNames.panelLighting) public static Block panelLighting;
-    @ObjectHolder(BlockNames.glowstoneTorch)
-    public static Block glowstoneTorch;
-    //    @ObjectHolder(BlockNames.blockMoon) public static Block blockMoon;
-    @ObjectHolder(BlockNames.cheeseBlock)
-    public static Block cheeseBlock;
-    @ObjectHolder(BlockNames.spinThruster)
-    public static Block spinThruster;
-    @ObjectHolder(BlockNames.screen)
-    public static Block screen;
-    @ObjectHolder(BlockNames.telemetry)
-    public static Block telemetry;
-    @ObjectHolder(BlockNames.fluidTank)
-    public static Block fluidTank;
-    @ObjectHolder(BlockNames.bossSpawner)
-    public static Block bossSpawner;
-    @ObjectHolder(BlockNames.slabGCHalf)
-    public static Block slabGCHalf;
-    @ObjectHolder(BlockNames.slabGCDouble)
-    public static Block slabGCDouble;
-    @ObjectHolder(BlockNames.tinStairs1)
-    public static Block tinStairs1;
-    @ObjectHolder(BlockNames.tinStairs2)
-    public static Block tinStairs2;
-    @ObjectHolder(BlockNames.moonStoneStairs)
-    public static Block moonStoneStairs;
-    @ObjectHolder(BlockNames.moonBricksStairs)
-    public static Block moonBricksStairs;
-    @ObjectHolder(BlockNames.wallGC)
-    public static Block wallGC;
-    @ObjectHolder(BlockNames.concealedRedstone)
-    public static Block concealedRedstone;
-    @ObjectHolder(BlockNames.concealedRepeater)
-    public static Block concealedRepeater;
-    @ObjectHolder(BlockNames.concealedDetector)
-    public static Block concealedDetector;
-    @ObjectHolder(BlockNames.platform)
-    public static Block platform;
-    @ObjectHolder(BlockNames.emergencyBox)
-    public static Block emergencyBox;
-    @ObjectHolder(BlockNames.grating)
-    public static Block grating;
-    @ObjectHolder(BlockNames.gratingWater)
-    public static Block gratingWater;
-    @ObjectHolder(BlockNames.gratingLava)
-    public static Block gratingLava;
-    @ObjectHolder(BlockNames.decoBlock0)
-    public static Block decoBlock0;
-    @ObjectHolder(BlockNames.decoBlock1)
-    public static Block decoBlock1;
-    @ObjectHolder(BlockNames.oreCopper)
-    public static Block oreCopper;
-    @ObjectHolder(BlockNames.oreTin)
-    public static Block oreTin;
-    @ObjectHolder(BlockNames.oreAluminum)
-    public static Block oreAluminum;
-    @ObjectHolder(BlockNames.oreSilicon)
-    public static Block oreSilicon;
-    @ObjectHolder(BlockNames.oreMeteoricIron)
-    public static Block oreMeteoricIron;
-    @ObjectHolder(BlockNames.decoBlockCopper)
-    public static Block decoBlockCopper;
-    @ObjectHolder(BlockNames.decoBlockTin)
-    public static Block decoBlockTin;
-    @ObjectHolder(BlockNames.decoBlockAluminum)
-    public static Block decoBlockAluminum;
-    @ObjectHolder(BlockNames.decoBlockMeteorIron)
-    public static Block decoBlockMeteorIron;
-    @ObjectHolder(BlockNames.decoBlockSilicon)
-    public static Block decoBlockSilicon;
-    @ObjectHolder(BlockNames.moonDirt)
-    public static Block moonDirt;
-    @ObjectHolder(BlockNames.moonStone)
-    public static Block moonStone;
-    @ObjectHolder(BlockNames.moonTurf)
-    public static Block moonTurf;
-    @ObjectHolder(BlockNames.moonDungeonBrick)
-    public static Block moonDungeonBrick;
+    public static final Block breatheableAir = new BlockBreathableAir(Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops().hardnessAndResistance(0.0F, 10000.0F));
+    public static final Block brightAir = new BlockBrightAir(Block.Properties.from(breatheableAir).lightValue(15));
+    public static final Block brightBreatheableAir = new BlockBrightBreathableAir(Block.Properties.from(brightAir));
 
-//    public static Block breatheableAir;
-//    public static Block brightAir;
-//    public static Block brightBreatheableAir;
-//    public static Block brightLamp;
-//    public static Block treasureChestTier1;
-//    public static Block landingPad;
-//    public static Block unlitTorch;
-//    public static Block unlitTorchLit;
-//    public static Block oxygenDistributor;
-//    public static Block oxygenPipe;
-//    public static Block oxygenPipePull;
-//    public static Block oxygenCollector;
-//    public static Block oxygenCompressor;
-//    public static Block oxygenSealer;
-//    public static Block oxygenDetector;
-//    public static Block nasaWorkbench;
-//    public static Block fallenMeteor;
-//    public static Block basicBlock;
-//    public static Block airLockFrame;
-//    public static Block airLockSeal;
+    public static final Block arcLamp = new BlockBrightLamp(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.1F).sound(SoundType.METAL).lightValue(13));
+
+    public static final Block treasureChestTier1 = new BlockTier1TreasureChest(Block.Properties.create(Material.ROCK).hardnessAndResistance(100000.0F).sound(SoundType.STONE).lightValue(13));
+
+    public static final Block landingPad = new BlockPad(Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL));
+    public static final Block buggyPad = new BlockPad(Block.Properties.from(landingPad));
+    public static final Block landingPadFull = new BlockPadFull(Block.Properties.from(landingPad));
+    public static final Block buggyPadFull = new BlockPadFull(Block.Properties.from(landingPad));
+
+    public static final Block unlitTorch = new BlockUnlitTorch(false, Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.0F).lightValue(3).sound(SoundType.WOOD));
+    public static final Block unlitTorchWall = new BlockUnlitTorchWall(false, Block.Properties.from(unlitTorch));
+    public static final Block unlitTorchLit = new BlockUnlitTorch(true, Block.Properties.from(unlitTorch).lightValue(14));
+    public static final Block unlitTorchWallLit = new BlockUnlitTorchWall(true, Block.Properties.from(unlitTorch).lightValue(14));
+    public static final Block glowstoneTorch = new BlockGlowstoneTorch(Block.Properties.from(unlitTorch).lightValue(12));
+    public static final Block glowstoneTorchWall = new BlockGlowstoneTorchWall(Block.Properties.from(unlitTorch).lightValue(12));
+
+    public static final Block oxygenDistributor = new BlockOxygenDistributor(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.METAL));
+    public static final Block oxygenCollector = new BlockOxygenCollector(Block.Properties.from(oxygenDistributor));
+    public static final Block nasaWorkbench = new BlockNasaWorkbench(Block.Properties.from(oxygenDistributor));
+    public static final Block airLockFrame = new BlockAirLockFrame(Block.Properties.from(oxygenDistributor));
+    public static final Block airLockController = new BlockAirLockController(Block.Properties.from(oxygenDistributor));
+    public static final Block ingotCompressor = new BlockIngotCompressor(Block.Properties.from(oxygenDistributor));
+    public static final Block ingotCompressorElectric = new BlockIngotCompressorElectric(Block.Properties.from(oxygenDistributor));
+    public static final Block ingotCompressorElectricAdvanced = new BlockIngotCompressorElectricAdvanced(Block.Properties.from(oxygenDistributor));
+    public static final Block coalGenerator = new BlockCoalGenerator(Block.Properties.from(oxygenDistributor));
+    public static final Block circuitFabricator = new BlockCircuitFabricator(Block.Properties.from(oxygenDistributor));
+    public static final Block oxygenStorageModule = new BlockOxygenStorageModule(Block.Properties.from(oxygenDistributor));
+    public static final Block deconstructor = new BlockDeconstructor(Block.Properties.from(oxygenDistributor));
+    public static final Block painter = new BlockPainter(Block.Properties.from(oxygenDistributor));
+    public static final Block crafting = new BlockCrafting(Block.Properties.from(oxygenDistributor));
+    public static final Block refinery = new BlockRefinery(Block.Properties.from(oxygenDistributor));
+    public static final Block fuelLoader = new BlockFuelLoader(Block.Properties.from(oxygenDistributor));
+    public static final Block oxygenCompressor = new BlockOxygenCompressor(Block.Properties.from(oxygenDistributor));
+    public static final Block oxygenDecompressor = new BlockOxygenCompressor(Block.Properties.from(oxygenDistributor));
+    public static final Block oxygenSealer = new BlockOxygenSealer(Block.Properties.from(oxygenDistributor));
+    public static final Block oxygenDetector = new BlockOxygenDetector(Block.Properties.from(oxygenDistributor));
+    public static final Block cargoLoader = new BlockCargoLoader(Block.Properties.from(oxygenDistributor));
+    public static final Block cargoUnloader = new BlockCargoUnloader(Block.Properties.from(oxygenDistributor));
+    public static final Block solarPanel = new BlockSolar(Block.Properties.from(oxygenDistributor));
+    public static final Block solarPanelAdvanced = new BlockSolar(Block.Properties.from(oxygenDistributor));
+//    public static final Block radioTelescope = new BlockDish(Block.Properties.from(oxygenDistributor));
+    public static final Block storageModule = new BlockEnergyStorageModule(Block.Properties.from(oxygenDistributor));
+    public static final Block storageCluster = new BlockEnergyStorageCluster(Block.Properties.from(oxygenDistributor));
+    public static final Block furnaceElectric = new BlockFurnaceElectric(Block.Properties.from(oxygenDistributor));
+    public static final Block furanceArc = new BlockFurnaceArc(Block.Properties.from(oxygenDistributor));
+//    public static final Block panelLighting = new BlockPanelLighting(Block.Properties.from(oxygenDistributor));
+//    public static final Block spinThruster = new BlockSpinThruster(Block.Properties.from(oxygenDistributor));
+    public static final Block telemetry = new BlockTelemetry(Block.Properties.from(oxygenDistributor));
+    public static final Block concealedRedstone = new BlockConcealedRedstone(Block.Properties.from(oxygenDistributor));
+    public static final Block concealedRepeater = new BlockConcealedRepeater(Block.Properties.from(oxygenDistributor));
+    public static final Block concealedDetector = new BlockConcealedDetector(Block.Properties.from(oxygenDistributor));
+
+    public static final Block airLockSeal = new BlockAirLockWall(Block.Properties.from(oxygenDistributor).hardnessAndResistance(1000.0F).tickRandomly());
+
+    public static final Block fluidPipe = new BlockFluidPipe(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS), BlockFluidPipe.EnumPipeMode.NORMAL);
+    public static final Block fluidPipePull = new BlockFluidPipe(Block.Properties.from(fluidPipe), BlockFluidPipe.EnumPipeMode.PULL);
+
+    public static final Block fallenMeteor = new BlockFallenMeteor(Block.Properties.create(Material.ROCK).hardnessAndResistance(40.0F).sound(SoundType.STONE));
+//    public static final Block spaceGlassVanilla = new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.PLAIN, null);
+//    public static final Block spaceGlassClear = new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.PLAIN, null);
+//    public static final Block spaceGlassTinVanilla = new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla);
+//    public static final Block spaceGlassTinClear = new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear);
+//    public static final Block spaceGlassStrong = new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.PLAIN, null);
+//    public static final Block spaceGlassTinStrong = new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong);
+
+    public static final Block spaceStationBase = new BlockSpaceStationBase(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops());
+
+    public static final Block fakeBlock = new BlockMulti(Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 3600000.0F).sound(SoundType.METAL));
+
+//    public static final Block sealableBlock = new BlockEnclosed(builder);
+
+    public static final Block parachest = new BlockParaChest(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F).sound(SoundType.WOOD));
+
+    public static final Block aluminumWire = new BlockAluminumWire(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH));
+    public static final Block aluminumWireHeavy = new BlockAluminumWire(Block.Properties.from(aluminumWire));
+    public static final Block aluminumWireSwitchable = new BlockAluminumWire(Block.Properties.from(aluminumWire));
+    public static final Block aluminumWireSwitchableHeavy = new BlockAluminumWire(Block.Properties.from(aluminumWire));
+//    public static final Block blockMoon = new BlockBasicMoon(builder);
+
+    public static final Block cheeseBlock = new BlockCheese(Block.Properties.create(Material.CAKE).hardnessAndResistance(0.5F).sound(SoundType.CLOTH));
+
+    public static final Block screen = new BlockScreen(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F).sound(SoundType.STONE));
+
+    public static final Block fluidTank = new BlockFluidTank(Block.Properties.create(Material.GLASS).hardnessAndResistance(3.0F, 8.0F).sound(SoundType.GLASS));
+
+    public static final Block bossSpawner = new BlockBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(1000000.0F).noDrops());
+
+//    public static final Block slabGCHalf = new BlockSlabGC(builder);
+//    public static final Block slabGCDouble = new BlockDoubleSlabGC(builder);
+
+//    public static final Block tinStairs1 = new BlockStairsGC(builder);
+//    public static final Block tinStairs2 = new BlockStairsGC(builder);
+//    public static final Block moonStoneStairs = new BlockStairsGC(builder);
+//    public static final Block moonBricksStairs = new BlockStairsGC(builder);
+
+//    public static final Block wallGC = new BlockWallGC(builder);
+
+    public static final Block platform = new BlockPlatform(Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL));
+
+    public static final Block emergencyBox = new BlockEmergencyBox(Block.Properties.create(Material.IRON).hardnessAndResistance(4.0F, 70.0F).lightValue(15).sound(SoundType.METAL));
+
+    public static final Block oreCopper = new OreBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE));
+    public static final Block oreTin = new OreBlock(Block.Properties.from(oreCopper));
+    public static final Block oreAluminum = new OreBlock(Block.Properties.from(oreCopper));
+    public static final Block oreSilicon = new OreBlock(Block.Properties.from(oreCopper));
+    public static final Block oreCopperMoon = new OreBlock(Block.Properties.from(oreCopper));
+    public static final Block oreTinMoon = new OreBlock(Block.Properties.from(oreCopper));
+    public static final Block oreCheeseMoon = new OreBlock(Block.Properties.from(oreCopper));
+    public static final Block oreSapphire = new OreBlock(Block.Properties.from(oreCopper));
+//    public static final Block oreMeteoricIron = new OreBlock(Block.Properties.from(oreCopper));
+
+    public static final Block moonDirt = new OreBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE));
+    public static final Block moonStone = new OreBlock(Block.Properties.from(moonDirt));
+    public static final Block moonTurf = new OreBlock(Block.Properties.from(moonDirt));
+    public static final Block moonDungeonBrick = new OreBlock(Block.Properties.from(moonDirt));
+
+    public static final Block decoBlock0 = new DecoBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE));
+    public static final Block decoBlock1 = new DecoBlock(Block.Properties.from(decoBlock0));
+    public static final Block decoBlockCopper = new DecoBlock(Block.Properties.from(decoBlock0));
+    public static final Block decoBlockTin = new DecoBlock(Block.Properties.from(decoBlock0));
+    public static final Block decoBlockAluminum = new DecoBlock(Block.Properties.from(decoBlock0));
+    public static final Block decoBlockMeteorIron = new DecoBlock(Block.Properties.from(decoBlock0));
+    public static final Block decoBlockSilicon = new DecoBlock(Block.Properties.from(decoBlock0));
+//    public static final Block grating = new BlockGrating(builder);
+//    public static final Block gratingWater = new BlockGrating(builder);
+//    public static final Block gratingLava = new BlockGrating(builder);
+
+//    public static final Block breatheableAir = null;
+//    public static final Block brightAir = null;
+//    public static final Block brightBreatheableAir = null;
+//    public static final Block brightLamp = null;
+//    public static final Block treasureChestTier1 = null;
+//    public static final Block landingPad = null;
+//    public static final Block unlitTorch = null;
+//    public static final Block unlitTorchLit = null;
+//    public static final Block oxygenDistributor = null;
+//    public static final Block oxygenPipe = null;
+//    public static final Block oxygenPipePull = null;
+//    public static final Block oxygenCollector = null;
+//    public static final Block oxygenCompressor = null;
+//    public static final Block oxygenSealer = null;
+//    public static final Block oxygenDetector = null;
+//    public static final Block nasaWorkbench = null;
+//    public static final Block fallenMeteor = null;
+//    public static final Block basicBlock = null;
+//    public static final Block airLockFrame = null;
+//    public static final Block airLockSeal = null;
 //    public static BlockSpaceGlass spaceGlassClear;
 //    public static BlockSpaceGlass spaceGlassVanilla;
 //    public static BlockSpaceGlass spaceGlassStrong;
 //    public static BlockSpaceGlass spaceGlassTinClear;
 //    public static BlockSpaceGlass spaceGlassTinVanilla;
 //    public static BlockSpaceGlass spaceGlassTinStrong;
-//    public static Block crafting;
-//    public static Block crudeOil;
-//    public static Block fuel;
-//    public static Block refinery;
-//    public static Block fuelLoader;
-//    public static Block landingPadFull;
-//    public static Block spaceStationBase;
-//    public static Block fakeBlock;
-//    public static Block sealableBlock;
-//    public static Block cargoLoader;
-//    public static Block parachest;
-//    public static Block solarPanel;
-//    public static Block radioTelescope;
-//    public static Block machineBase;
-//    public static Block machineBase2;
-//    public static Block machineBase3;
-//    public static Block machineBase4;
-//    public static Block machineTiered;
-//    public static Block aluminumWire;
-//    public static Block panelLighting;
-//    public static Block glowstoneTorch;
-//    public static Block blockMoon;
-//    public static Block cheeseBlock;
-//    public static Block spinThruster;
-//    public static Block screen;
-//    public static Block telemetry;
-//    public static Block fluidTank;
-//    public static Block bossSpawner;
-//    public static Block slabGCHalf;
-//    public static Block slabGCDouble;
-//    public static Block tinStairs1;
-//    public static Block tinStairs2;
-//    public static Block moonStoneStairs;
-//    public static Block moonBricksStairs;
-//    public static Block wallGC;
-//    public static Block concealedRedstone;
-//    public static Block concealedRepeater_Powered;
-//    public static Block concealedRepeater_Unpowered;
-//    public static Block concealedDetector;
-//    public static Block platform;
-//    public static Block emergencyBox;
-//    public static Block grating;
-//    public static Block gratingWater;
-//    public static Block gratingLava;
+//    public static final Block crafting = null;
+//    public static final Block crudeOil = null;
+//    public static final Block fuel = null;
+//    public static final Block refinery = null;
+//    public static final Block fuelLoader = null;
+//    public static final Block landingPadFull = null;
+//    public static final Block spaceStationBase = null;
+//    public static final Block fakeBlock = null;
+//    public static final Block sealableBlock = null;
+//    public static final Block cargoLoader = null;
+//    public static final Block parachest = null;
+//    public static final Block solarPanel = null;
+//    public static final Block radioTelescope = null;
+//    public static final Block machineBase = null;
+//    public static final Block machineBase2 = null;
+//    public static final Block machineBase3 = null;
+//    public static final Block machineBase4 = null;
+//    public static final Block machineTiered = null;
+//    public static final Block aluminumWire = null;
+//    public static final Block panelLighting = null;
+//    public static final Block glowstoneTorch = null;
+//    public static final Block blockMoon = null;
+//    public static final Block cheeseBlock = null;
+//    public static final Block spinThruster = null;
+//    public static final Block screen = null;
+//    public static final Block telemetry = null;
+//    public static final Block fluidTank = null;
+//    public static final Block bossSpawner = null;
+//    public static final Block slabGCHalf = null;
+//    public static final Block slabGCDouble = null;
+//    public static final Block tinStairs1 = null;
+//    public static final Block tinStairs2 = null;
+//    public static final Block moonStoneStairs = null;
+//    public static final Block moonBricksStairs = null;
+//    public static final Block wallGC = null;
+//    public static final Block concealedRedstone = null;
+//    public static final Block concealedRepeater_Powered = null;
+//    public static final Block concealedRepeater_Unpowered = null;
+//    public static final Block concealedDetector = null;
+//    public static final Block platform = null;
+//    public static final Block emergencyBox = null;
+//    public static final Block grating = null;
+//    public static final Block gratingWater = null;
+//    public static final Block gratingLava = null;
 
-    public static final Material machine = new Material.Builder(MaterialColor.IRON).build();
+//    public static final Material machine = new Material.Builder(MaterialColor.IRON).build();
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
     public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
     public static ArrayList<Block> otherModTorchesUnlit = new ArrayList<Block>();
 
-    public static Map<EnumSortCategoryBlock, List<StackSorted>> sortMapBlocks = Maps.newHashMap();
     public static HashMap<Block, Block> itemChanges = new HashMap<>(4, 1.0F);
 
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
     {
         reg.register(thing.setRegistryName(name));
+        if (thing instanceof BlockItem)
+        {
+            GalacticraftCore.blocksList.add(name);
+        }
+        else if (thing instanceof Item)
+        {
+            GalacticraftCore.itemList.add(name);
+        }
     }
 
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, String name)
     {
-        register(reg, thing, new ResourceLocation(Constants.MOD_ID_CORE, name));
+        ResourceLocation location = new ResourceLocation(Constants.MOD_ID_CORE, name);
+        register(reg, thing, location);
+    }
+
+    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, String name, IForgeRegistryEntry<V> thing) {
+        ResourceLocation location = new ResourceLocation(Constants.MOD_ID_CORE, name);
+        register(reg, thing, location);
+    }
+
+    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, ResourceLocation name, IForgeRegistryEntry<V> thing) {
+        register(reg, thing, name);
     }
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)
     {
         IForgeRegistry<Block> r = evt.getRegistry();
-
-        Block.Properties builder = Block.Properties.create(Material.AIR).doesNotBlockMovement().noDrops().hardnessAndResistance(0.0F, 10000.0F);
-        register(r, new BlockBreathableAir(builder), BlockNames.breatheableAir);
-
-        builder = builder.lightValue(15);
-        register(r, new BlockBrightAir(builder), BlockNames.brightAir);
-        register(r, new BlockBrightBreathableAir(builder), BlockNames.brightBreatheableAir);
-
-        builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(0.1F).sound(SoundType.METAL).lightValue(13);
-        register(r, new BlockBrightLamp(builder), BlockNames.arcLamp);
-
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(100000.0F).sound(SoundType.STONE).lightValue(13);
-        register(r, new BlockTier1TreasureChest(builder), BlockNames.treasureChestTier1);
-
-        builder = Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL);
-        register(r, new BlockPad(builder), BlockNames.landingPad);
-        register(r, new BlockPad(builder), BlockNames.buggyPad);
-        register(r, new BlockPadFull(builder), BlockNames.landingPadFull);
-        register(r, new BlockPadFull(builder), BlockNames.buggyPadFull);
-
-        builder = Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.0F).lightValue(3).sound(SoundType.WOOD);
-        register(r, new BlockUnlitTorch(false, builder), BlockNames.unlitTorch);
-        register(r, new BlockUnlitTorch(true, builder.lightValue(14)), BlockNames.unlitTorchLit);
-        register(r, new BlockGlowstoneTorch(builder.lightValue(12)), BlockNames.glowstoneTorch);
-
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.METAL);
-        register(r, new BlockOxygenDistributor(builder), BlockNames.oxygenDistributor);
-        register(r, new BlockOxygenCollector(builder), BlockNames.oxygenCollector);
-        register(r, new BlockNasaWorkbench(builder), BlockNames.nasaWorkbench);
-        register(r, new BlockAirLockFrame(builder), BlockNames.airLockFrame);
-        register(r, new BlockAirLockController(builder), BlockNames.airLockController);
-        register(r, new BlockIngotCompressor(builder), BlockNames.ingotCompressor);
-        register(r, new BlockIngotCompressorElectric(builder), BlockNames.ingotCompressorElectric);
-        register(r, new BlockIngotCompressorElectricAdvanced(builder), BlockNames.ingotCompressorElectricAdvanced);
-        register(r, new BlockCoalGenerator(builder), BlockNames.coalGenerator);
-        register(r, new BlockCircuitFabricator(builder), BlockNames.circuitFabricator);
-        register(r, new BlockOxygenStorageModule(builder), BlockNames.oxygenStorageModule);
-        register(r, new BlockDeconstructor(builder), BlockNames.deconstructor);
-        register(r, new BlockPainter(builder), BlockNames.painter);
-        register(r, new BlockCrafting(builder), BlockNames.crafting);
-        register(r, new BlockRefinery(builder), BlockNames.refinery);
-        register(r, new BlockFuelLoader(builder), BlockNames.fuelLoader);
-        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenCompressor);
-        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenDecompressor);
-        register(r, new BlockOxygenSealer(builder), BlockNames.oxygenSealer);
-        register(r, new BlockOxygenDetector(builder), BlockNames.oxygenDetector);
-        register(r, new BlockCargoLoader(builder), BlockNames.cargoLoader);
-        register(r, new BlockCargoUnloader(builder), BlockNames.cargoUnloader);
-        register(r, new BlockSolar(builder), BlockNames.solarPanel);
-        register(r, new BlockSolar(builder), BlockNames.solarPanelAdvanced);
-//        register(r, new BlockDish(builder), BlockNames.radioTelescope);
-        register(r, new BlockEnergyStorageModule(builder), BlockNames.storageModule);
-        register(r, new BlockEnergyStorageCluster(builder), BlockNames.storageCluster);
-        register(r, new BlockFurnaceElectric(builder), BlockNames.furnaceElectric);
-        register(r, new BlockFurnaceArc(builder), BlockNames.furanceArc);
-//        register(r, new BlockPanelLighting(builder), BlockNames.panelLighting);
-//        register(r, new BlockSpinThruster(builder), BlockNames.spinThruster);
-        register(r, new BlockTelemetry(builder), BlockNames.telemetry);
-        register(r, new BlockConcealedRedstone(builder), BlockNames.concealedRedstone);
-        register(r, new BlockConcealedRepeater(builder), BlockNames.concealedRepeater);
-        register(r, new BlockConcealedDetector(builder), BlockNames.concealedDetector);
-        register(r, new BlockCoalGenerator(builder.tickRandomly()), BlockNames.coalGenerator);
-
-        builder = builder.hardnessAndResistance(1000.0F).tickRandomly();
-        register(r, new BlockAirLockWall(builder), BlockNames.airLockSeal);
-
-        builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS);
-        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.NORMAL), BlockNames.fluidPipe);
-        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.PULL), BlockNames.fluidPipePull);
-
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(40.0F).sound(SoundType.STONE);
-        register(r, new BlockFallenMeteor(builder), BlockNames.fallenMeteor);
-//
-//        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.STONE);
-//        register(r, new BlockBasic(builder), BlockNames.basicBlock);
-
-        //These glass types have to be registered as 6 separate blocks, (a) to allow different coloring of each one and (b) because the Forge MultiLayer custom model does not allow for different textures to be set for different variants
-        builder = Block.Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(0.3F, 3.0F);
-//        register(r, new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.PLAIN, null), BlockNames.spaceGlassVanilla);
-//        register(r, new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.PLAIN, null), BlockNames.spaceGlassClear);
-//        register(r, new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla), BlockNames.spaceGlassTinVanilla);
-//        register(r, new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear), BlockNames.spaceGlassTinClear);
-
-        builder = builder.hardnessAndResistance(4.0F, 35.0F);
-//        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.PLAIN, null), BlockNames.spaceGlassStrong);
-//        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong), BlockNames.spaceGlassTinStrong);
-
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops();
-        register(r, new BlockSpaceStationBase(builder), BlockNames.spaceStationBase);
-
-        builder = Block.Properties.create(machine).hardnessAndResistance(1.0F, 3600000.0F).sound(SoundType.METAL);
-        register(r, new BlockMulti(builder), BlockNames.fakeBlock);
-
-        builder = Block.Properties.create(Material.CLAY).hardnessAndResistance(0.4F).sound(SoundType.STONE);
-//        register(r, new BlockEnclosed(builder), BlockNames.sealableBlock);
-
-        builder = Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F).sound(SoundType.WOOD);
-        register(r, new BlockParaChest(builder), BlockNames.parachest);
-
-        builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH);
-        register(r, new BlockAluminumWire(builder), BlockNames.aluminumWire);
-
-//        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 2.5F).sound(SoundType.STONE);
-//        register(r, new BlockBasicMoon(builder), BlockNames.blockMoon);
-
-        builder = Block.Properties.create(Material.CAKE).hardnessAndResistance(0.5F).sound(SoundType.CLOTH);
-        register(r, new BlockCheese(builder), BlockNames.cheeseBlock);
-
-        builder = Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F).sound(SoundType.STONE);
-        register(r, new BlockScreen(builder), BlockNames.screen);
-
-        builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(3.0F, 8.0F).sound(SoundType.GLASS);
-//        register(r, new BlockFluidTank(builder), BlockNames.fluidTank);
-
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1000000.0F).noDrops();
-        register(r, new BlockBossSpawner(builder), BlockNames.bossSpawner);
-
-//        register(r, new BlockSlabGC(builder), BlockNames.slabGCHalf); TODO
-//        register(r, new BlockDoubleSlabGC(builder), BlockNames.slabGCDouble);
-//        register(r, new BlockStairsGC(builder), BlockNames.tinStairs1);
-//        register(r, new BlockStairsGC(builder), BlockNames.tinStairs2);
-//        register(r, new BlockStairsGC(builder), BlockNames.moonStoneStairs);
-//        register(r, new BlockStairsGC(builder), BlockNames.moonBricksStairs);
-//        register(r, new BlockWallGC(builder), BlockNames.wallGC);
-
-        builder = Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL);
-//        register(r, new BlockPlatform(builder), BlockNames.platform);
-
-        builder = Block.Properties.create(Material.IRON).hardnessAndResistance(4.0F, 70.0F).lightValue(15).sound(SoundType.METAL);
-        register(r, new BlockEmergencyBox(builder), BlockNames.emergencyBox);
-
-        builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
-        register(r, new OreBlock(builder), BlockNames.oreCopper);
-        register(r, new OreBlock(builder), BlockNames.oreTin);
-        register(r, new OreBlock(builder), BlockNames.oreAluminum);
-        register(r, new OreBlock(builder), BlockNames.oreSilicon);
-        register(r, new OreBlock(builder), BlockNames.oreCopperMoon);
-        register(r, new OreBlock(builder), BlockNames.oreTinMoon);
-        register(r, new OreBlock(builder), BlockNames.oreCheeseMoon);
-        register(r, new OreBlock(builder), BlockNames.oreSapphire);
-        register(r, new OreBlock(builder), BlockNames.oreMeteoricIron);
-
-        builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
-        register(r, new OreBlock(builder), BlockNames.moonDirt);
-        register(r, new OreBlock(builder), BlockNames.moonStone);
-        register(r, new OreBlock(builder), BlockNames.moonTurf);
-        register(r, new OreBlock(builder), BlockNames.moonDungeonBrick);
-
-        builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
-        register(r, new DecoBlock(builder), BlockNames.decoBlock0);
-        register(r, new DecoBlock(builder), BlockNames.decoBlock1);
-        register(r, new DecoBlock(builder), BlockNames.decoBlockCopper);
-        register(r, new DecoBlock(builder), BlockNames.decoBlockTin);
-        register(r, new DecoBlock(builder), BlockNames.decoBlockAluminum);
-        register(r, new DecoBlock(builder), BlockNames.decoBlockMeteorIron);
-        register(r, new DecoBlock(builder), BlockNames.decoBlockSilicon);
+        register(r, BlockNames.breatheableAir, breatheableAir);
+        register(r, BlockNames.brightAir, brightAir);
+        register(r, BlockNames.brightBreatheableAir, brightBreatheableAir);
+        register(r, BlockNames.arcLamp, arcLamp);
+        register(r, BlockNames.treasureChestTier1, treasureChestTier1);
+        register(r, BlockNames.landingPad, landingPad);
+        register(r, BlockNames.buggyPad, buggyPad);
+        register(r, BlockNames.landingPadFull, landingPadFull);
+        register(r, BlockNames.buggyPadFull, buggyPadFull);
+        register(r, BlockNames.unlitTorch, unlitTorch);
+        register(r, BlockNames.unlitTorchWall, unlitTorchWall);
+        register(r, BlockNames.unlitTorchLit, unlitTorchLit);
+        register(r, BlockNames.unlitTorchWallLit, unlitTorchWallLit);
+        register(r, BlockNames.glowstoneTorch, glowstoneTorch);
+        register(r, BlockNames.glowstoneTorchWall, glowstoneTorchWall);
+        register(r, BlockNames.oxygenDistributor, oxygenDistributor);
+        register(r, BlockNames.oxygenCollector, oxygenCollector);
+        register(r, BlockNames.nasaWorkbench, nasaWorkbench);
+        register(r, BlockNames.airLockFrame, airLockFrame);
+        register(r, BlockNames.airLockController, airLockController);
+        register(r, BlockNames.ingotCompressor, ingotCompressor);
+        register(r, BlockNames.ingotCompressorElectric, ingotCompressorElectric);
+        register(r, BlockNames.ingotCompressorElectricAdvanced, ingotCompressorElectricAdvanced);
+        register(r, BlockNames.coalGenerator, coalGenerator);
+        register(r, BlockNames.circuitFabricator, circuitFabricator);
+        register(r, BlockNames.oxygenStorageModule, oxygenStorageModule);
+        register(r, BlockNames.deconstructor, deconstructor);
+        register(r, BlockNames.painter, painter);
+        register(r, BlockNames.crafting, crafting);
+        register(r, BlockNames.refinery, refinery);
+        register(r, BlockNames.fuelLoader, fuelLoader);
+        register(r, BlockNames.oxygenCompressor, oxygenCompressor);
+        register(r, BlockNames.oxygenDecompressor, oxygenDecompressor);
+        register(r, BlockNames.oxygenSealer, oxygenSealer);
+        register(r, BlockNames.oxygenDetector, oxygenDetector);
+        register(r, BlockNames.cargoLoader, cargoLoader);
+        register(r, BlockNames.cargoUnloader, cargoUnloader);
+        register(r, BlockNames.solarPanel, solarPanel);
+        register(r, BlockNames.solarPanelAdvanced, solarPanelAdvanced);
+//        register(r, BlockNames.radioTelescope, radioTelescope);
+        register(r, BlockNames.storageModule, storageModule);
+        register(r, BlockNames.storageCluster, storageCluster);
+        register(r, BlockNames.furnaceElectric, furnaceElectric);
+        register(r, BlockNames.furanceArc, furanceArc);
+//        register(r, BlockNames.panelLighting, panelLighting);
+//        register(r, BlockNames.spinThruster, spinThruster);
+        register(r, BlockNames.telemetry, telemetry);
+        register(r, BlockNames.concealedRedstone, concealedRedstone);
+        register(r, BlockNames.concealedRepeater, concealedRepeater);
+        register(r, BlockNames.concealedDetector, concealedDetector);
+        register(r, BlockNames.airLockSeal, airLockSeal);
+        register(r, BlockNames.fluidPipe, fluidPipe);
+        register(r, BlockNames.fluidPipePull, fluidPipePull);
+        register(r, BlockNames.fallenMeteor, fallenMeteor);
+//        register(r, BlockNames.spaceGlassVanilla, spaceGlassVanilla);
+//        register(r, BlockNames.spaceGlassClear, spaceGlassClear);
+//        register(r, BlockNames.spaceGlassTinVanilla, spaceGlassTinVanilla);
+//        register(r, BlockNames.spaceGlassTinClear, spaceGlassTinClear);
+//        register(r, BlockNames.spaceGlassStrong, spaceGlassStrong);
+//        register(r, BlockNames.spaceGlassTinStrong, spaceGlassTinStrong);
+        register(r, BlockNames.spaceStationBase, spaceStationBase);
+        register(r, BlockNames.fakeBlock, fakeBlock);
+//        register(r, BlockNames.sealableBlock, sealableBlock);
+        register(r, BlockNames.parachest, parachest);
+        register(r, BlockNames.aluminumWire, aluminumWire);
+        register(r, BlockNames.aluminumWireHeavy, aluminumWireHeavy);
+        register(r, BlockNames.aluminumWireSwitchable, aluminumWireSwitchable);
+        register(r, BlockNames.aluminumWireSwitchableHeavy, aluminumWireSwitchableHeavy);
+        register(r, BlockNames.cheeseBlock, cheeseBlock);
+        register(r, BlockNames.screen, screen);
+        register(r, BlockNames.fluidTank, fluidTank);
+        register(r, BlockNames.bossSpawner, bossSpawner);
+//        register(r, BlockNames.slabGCHalf, slabGCHalf);
+//        register(r, BlockNames.slabGCDouble, slabGCDouble);
+//        register(r, BlockNames.tinStairs1, tinStairs1);
+//        register(r, BlockNames.tinStairs2, tinStairs2);
+//        register(r, BlockNames.moonStoneStairs, moonStoneStairs);
+//        register(r, BlockNames.moonBricksStairs, moonBricksStairs);
+//        register(r, BlockNames.wallGC, wallGC);
+        register(r, BlockNames.platform, platform);
+        register(r, BlockNames.emergencyBox, emergencyBox);
+        register(r, BlockNames.oreCopper, oreCopper);
+        register(r, BlockNames.oreTin, oreTin);
+        register(r, BlockNames.oreAluminum, oreAluminum);
+        register(r, BlockNames.oreSilicon, oreSilicon);
+        register(r, BlockNames.oreCopperMoon, oreCopperMoon);
+        register(r, BlockNames.oreTinMoon, oreTinMoon);
+        register(r, BlockNames.oreCheeseMoon, oreCheeseMoon);
+        register(r, BlockNames.oreSapphire, oreSapphire);
+//        register(r, BlockNames.oreMeteoricIron, oreMeteoricIron);
+        register(r, BlockNames.moonDirt, moonDirt);
+        register(r, BlockNames.moonStone, moonStone);
+        register(r, BlockNames.moonTurf, moonTurf);
+        register(r, BlockNames.moonDungeonBrick, moonDungeonBrick);
+        register(r, BlockNames.decoBlock0, decoBlock0);
+        register(r, BlockNames.decoBlock1, decoBlock1);
+        register(r, BlockNames.decoBlockCopper, decoBlockCopper);
+        register(r, BlockNames.decoBlockTin, decoBlockTin);
+        register(r, BlockNames.decoBlockAluminum, decoBlockAluminum);
+        register(r, BlockNames.decoBlockMeteorIron, decoBlockMeteorIron);
+        register(r, BlockNames.decoBlockSilicon, decoBlockSilicon);
+//        register(r, BlockNames.grating, grating);
+//        register(r, BlockNames.gratingWater, gratingWater);
+//        register(r, BlockNames.gratingLava, gratingLava);
 
 //        register(r, new BlockGrating(builder), BlockNames.grating); TODO
 //        register(r, new BlockGrating(builder), BlockNames.gratingWater);
@@ -549,7 +450,7 @@ public class GCBlocks
 //        GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
 //        GCBlocks.platform = new BlockPlatform("platform");
 //        GCBlocks.emergencyBox = new BlockEmergencyBox("emergency_box");
-//        GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.allowLiquidGratings ? Material.CARPET : Material.IRON);
+//        GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.allowLiquidGratings.get() ? Material.CARPET : Material.IRON);
 //        GCBlocks.gratingWater = new BlockGrating("grating1", Material.WATER);
 //        GCBlocks.gratingLava = new BlockGrating("grating2", Material.LAVA).setLightLevel(1.0F);
 
@@ -561,11 +462,88 @@ public class GCBlocks
         GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
         GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
         GCBlocks.hiddenBlocks.add(GCBlocks.bossSpawner);
-        GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);
+//        GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);
 
         // Register blocks before register ores, so that the ItemStack picks up the correct item
 //        GCBlocks.registerBlocks();
 //        GCBlocks.setHarvestLevels();
+    }
+
+    @SubscribeEvent
+    public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
+    {
+        IForgeRegistry<Item> r = evt.getRegistry();
+        Item.Properties props = GCItems.defaultBuilder().group(GalacticraftCore.galacticraftBlocksTab);
+        register(r, Registry.BLOCK.getKey(arcLamp), new BlockItem(arcLamp, props));
+        register(r, Registry.BLOCK.getKey(treasureChestTier1), new BlockItem(treasureChestTier1, props));
+        register(r, Registry.BLOCK.getKey(landingPad), new BlockItem(landingPad, props));
+        register(r, Registry.BLOCK.getKey(buggyPad), new BlockItem(buggyPad, props));
+        register(r, Registry.BLOCK.getKey(glowstoneTorch), new WallOrFloorItem(glowstoneTorch, glowstoneTorchWall, props));
+        register(r, Registry.BLOCK.getKey(oxygenDistributor), new BlockItem(oxygenDistributor, props));
+        register(r, Registry.BLOCK.getKey(oxygenCollector), new BlockItem(oxygenCollector, props));
+        register(r, Registry.BLOCK.getKey(nasaWorkbench), new BlockItem(nasaWorkbench, props));
+        register(r, Registry.BLOCK.getKey(airLockFrame), new BlockItem(airLockFrame, props));
+        register(r, Registry.BLOCK.getKey(airLockController), new BlockItem(airLockController, props));
+        register(r, Registry.BLOCK.getKey(ingotCompressor), new BlockItem(ingotCompressor, props));
+        register(r, Registry.BLOCK.getKey(ingotCompressorElectric), new BlockItem(ingotCompressorElectric, props));
+        register(r, Registry.BLOCK.getKey(ingotCompressorElectricAdvanced), new BlockItem(ingotCompressorElectricAdvanced, props));
+        register(r, Registry.BLOCK.getKey(coalGenerator), new BlockItem(coalGenerator, props));
+        register(r, Registry.BLOCK.getKey(circuitFabricator), new BlockItem(circuitFabricator, props));
+        register(r, Registry.BLOCK.getKey(oxygenStorageModule), new BlockItem(oxygenStorageModule, props));
+        register(r, Registry.BLOCK.getKey(deconstructor), new BlockItem(deconstructor, props));
+        register(r, Registry.BLOCK.getKey(painter), new BlockItem(painter, props));
+        register(r, Registry.BLOCK.getKey(crafting), new BlockItem(crafting, props));
+        register(r, Registry.BLOCK.getKey(refinery), new BlockItem(refinery, props));
+        register(r, Registry.BLOCK.getKey(fuelLoader), new BlockItem(fuelLoader, props));
+        register(r, Registry.BLOCK.getKey(oxygenCompressor), new BlockItem(oxygenCompressor, props));
+        register(r, Registry.BLOCK.getKey(oxygenDecompressor), new BlockItem(oxygenDecompressor, props));
+        register(r, Registry.BLOCK.getKey(oxygenSealer), new BlockItem(oxygenSealer, props));
+        register(r, Registry.BLOCK.getKey(oxygenDetector), new BlockItem(oxygenDetector, props));
+        register(r, Registry.BLOCK.getKey(cargoLoader), new BlockItem(cargoLoader, props));
+        register(r, Registry.BLOCK.getKey(cargoUnloader), new BlockItem(cargoUnloader, props));
+        register(r, Registry.BLOCK.getKey(solarPanel), new BlockItem(solarPanel, props));
+        register(r, Registry.BLOCK.getKey(solarPanelAdvanced), new BlockItem(solarPanelAdvanced, props));
+        register(r, Registry.BLOCK.getKey(storageModule), new BlockItem(storageModule, props));
+        register(r, Registry.BLOCK.getKey(storageCluster), new BlockItem(storageCluster, props));
+        register(r, Registry.BLOCK.getKey(furnaceElectric), new BlockItem(furnaceElectric, props));
+        register(r, Registry.BLOCK.getKey(furanceArc), new BlockItem(furanceArc, props));
+        register(r, Registry.BLOCK.getKey(telemetry), new BlockItem(telemetry, props));
+        register(r, Registry.BLOCK.getKey(concealedRedstone), new BlockItem(concealedRedstone, props));
+        register(r, Registry.BLOCK.getKey(concealedRepeater), new BlockItem(concealedRepeater, props));
+        register(r, Registry.BLOCK.getKey(concealedDetector), new BlockItem(concealedDetector, props));
+        register(r, Registry.BLOCK.getKey(airLockSeal), new BlockItem(airLockSeal, props));
+        register(r, Registry.BLOCK.getKey(fluidPipe), new BlockItem(fluidPipe, props));
+        register(r, Registry.BLOCK.getKey(fluidPipePull), new BlockItem(fluidPipePull, props));
+        register(r, Registry.BLOCK.getKey(fallenMeteor), new BlockItem(fallenMeteor, props));
+        register(r, Registry.BLOCK.getKey(parachest), new BlockItem(parachest, props));
+        register(r, Registry.BLOCK.getKey(aluminumWire), new BlockItem(aluminumWire, props));
+        register(r, Registry.BLOCK.getKey(aluminumWireHeavy), new BlockItem(aluminumWireHeavy, props));
+        register(r, Registry.BLOCK.getKey(aluminumWireSwitchable), new BlockItem(aluminumWireSwitchable, props));
+        register(r, Registry.BLOCK.getKey(aluminumWireSwitchableHeavy), new BlockItem(aluminumWireSwitchableHeavy, props));
+        register(r, Registry.BLOCK.getKey(cheeseBlock), new BlockItem(cheeseBlock, props));
+        register(r, Registry.BLOCK.getKey(screen), new BlockItem(screen, props));
+        register(r, Registry.BLOCK.getKey(fluidTank), new BlockItem(fluidTank, props));
+        register(r, Registry.BLOCK.getKey(emergencyBox), new BlockItem(emergencyBox, props));
+        register(r, Registry.BLOCK.getKey(oreCopper), new BlockItem(oreCopper, props));
+        register(r, Registry.BLOCK.getKey(oreTin), new BlockItem(oreTin, props));
+        register(r, Registry.BLOCK.getKey(oreAluminum), new BlockItem(oreAluminum, props));
+        register(r, Registry.BLOCK.getKey(oreSilicon), new BlockItem(oreSilicon, props));
+        register(r, Registry.BLOCK.getKey(oreCopperMoon), new BlockItem(oreCopperMoon, props));
+        register(r, Registry.BLOCK.getKey(oreTinMoon), new BlockItem(oreTinMoon, props));
+        register(r, Registry.BLOCK.getKey(oreCheeseMoon), new BlockItem(oreCheeseMoon, props));
+        register(r, Registry.BLOCK.getKey(oreSapphire), new BlockItem(oreSapphire, props));
+        register(r, Registry.BLOCK.getKey(moonDirt), new BlockItem(moonDirt, props));
+        register(r, Registry.BLOCK.getKey(moonStone), new BlockItem(moonStone, props));
+        register(r, Registry.BLOCK.getKey(moonTurf), new BlockItem(moonTurf, props));
+        register(r, Registry.BLOCK.getKey(moonDungeonBrick), new BlockItem(moonDungeonBrick, props));
+        register(r, Registry.BLOCK.getKey(decoBlock0), new BlockItem(decoBlock0, props));
+        register(r, Registry.BLOCK.getKey(decoBlock1), new BlockItem(decoBlock1, props));
+        register(r, Registry.BLOCK.getKey(decoBlockCopper), new BlockItem(decoBlockCopper, props));
+        register(r, Registry.BLOCK.getKey(decoBlockTin), new BlockItem(decoBlockTin, props));
+        register(r, Registry.BLOCK.getKey(decoBlockAluminum), new BlockItem(decoBlockAluminum, props));
+        register(r, Registry.BLOCK.getKey(decoBlockMeteorIron), new BlockItem(decoBlockMeteorIron, props));
+        register(r, Registry.BLOCK.getKey(decoBlockSilicon), new BlockItem(decoBlockSilicon, props));
+        register(r, Registry.BLOCK.getKey(platform), new BlockItem(platform, props));
     }
 
     public static void oreDictRegistrations()
@@ -589,27 +567,6 @@ public class GCBlocks
 //
 //        OreDictionary.registerOre("turfMoon", new ItemStack(GCBlocks.blockMoon, 1, EnumBlockBasicMoon.MOON_TURF.getMeta()));
     }
-
-//    public static void finalizeSort()
-//    {
-//        List<StackSorted> itemOrderListBlocks = Lists.newArrayList();
-//        for (EnumSortCategoryBlock type : EnumSortCategoryBlock.values())
-//        {
-//            if (!GalacticraftCore.isPlanetsLoaded && type == EnumSortCategoryBlock.EGG)
-//                continue;
-//            List<StackSorted> stackSorteds = sortMapBlocks.get(type);
-//            if (stackSorteds != null)
-//            {
-//                itemOrderListBlocks.addAll(stackSorteds);
-//            }
-//            else
-//            {
-//                System.out.println("ERROR: null sort stack: " + type.toString());
-//            }
-//        }
-//        Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(input -> new StackSorted(input.getItem(), input.getDamage()));
-//        GalacticraftCore.galacticraftBlocksTab.setTabSorter(tabSorterBlocks);
-//    }
 
 //    private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
 //    {
@@ -865,8 +822,8 @@ public class GCBlocks
         register(r, TileEntityType.Builder.create(TileEntityOxygenSealer::new, oxygenSealer).build(null), BlockNames.oxygenSealer);
         register(r, TileEntityType.Builder.create(TileEntityDungeonSpawner::new, bossSpawner).build(null), BlockNames.bossSpawner);
         register(r, TileEntityType.Builder.create(TileEntityOxygenDetector::new, oxygenDetector).build(null), BlockNames.oxygenDetector);
-        register(r, TileEntityType.Builder.create(TileEntityBuggyFueler::new, buggyPadFull).build(null), BlockNames.buggyPad);
-        register(r, TileEntityType.Builder.create(TileEntityBuggyFuelerSingle::new, buggyPad).build(null), BlockNames.buggyPadFull);
+        register(r, TileEntityType.Builder.create(TileEntityBuggyFueler::new, buggyPadFull).build(null), BlockNames.buggyPadFull);
+        register(r, TileEntityType.Builder.create(TileEntityBuggyFuelerSingle::new, buggyPad).build(null), BlockNames.buggyPad);
         register(r, TileEntityType.Builder.create(TileEntityCargoLoader::new, cargoLoader).build(null), BlockNames.cargoLoader);
         register(r, TileEntityType.Builder.create(TileEntityCargoUnloader::new, cargoUnloader).build(null), BlockNames.cargoUnloader);
         register(r, TileEntityType.Builder.create(TileEntityParaChest::new, parachest).build(null), BlockNames.parachest);
@@ -891,7 +848,7 @@ public class GCBlocks
         register(r, TileEntityType.Builder.create(TileEntityCircuitFabricator::new, circuitFabricator).build(null), BlockNames.circuitFabricator);
         register(r, TileEntityType.Builder.create(TileEntityAirLockController::new, airLockController).build(null), BlockNames.airLockController);
         register(r, TileEntityType.Builder.create(TileEntityOxygenStorageModule::new, oxygenStorageModule).build(null), BlockNames.oxygenStorageModule);
-        register(r, TileEntityType.Builder.create(TileEntityThruster::new, spinThruster).build(null), BlockNames.spinThruster);
+//        register(r, TileEntityType.Builder.create(TileEntityThruster::new, spinThruster).build(null), BlockNames.spinThruster);
         register(r, TileEntityType.Builder.create(TileEntityArclamp::new, arcLamp).build(null), BlockNames.arcLamp);
         register(r, TileEntityType.Builder.create(TileEntityScreen::new, screen).build(null), BlockNames.screen);
 //        register(r, TileEntityType.Builder.create(TileEntityPanelLight::new, panelLighting).build(null), BlockNames.panelLighting);
@@ -899,7 +856,7 @@ public class GCBlocks
 //        register(r, TileEntityType.Builder.create(TileEntityPainter::new, "GC Painter").build(null));
         register(r, TileEntityType.Builder.create(TileEntityFluidTank::new, fluidTank).build(null), BlockNames.fluidTank);
         register(r, TileEntityType.Builder.create(TileEntityPlayerDetector::new, concealedDetector).build(null), BlockNames.concealedDetector);
-        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform);
+//        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform);
         register(r, TileEntityType.Builder.create(TileEntityEmergencyBox::new, emergencyBox).build(null), BlockNames.emergencyBox);
 //        register(r, TileEntityType.Builder.create(TileEntityNull::new, "GC Null Tile").build(null));
     }

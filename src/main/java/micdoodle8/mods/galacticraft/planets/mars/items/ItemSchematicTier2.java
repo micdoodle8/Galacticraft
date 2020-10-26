@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem, ISortableItem
+public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem, ISortable
 {
     private static int indexOffset = 0;
 
@@ -65,9 +65,9 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.SCHEMATIC;
+        return EnumSortCategory.SCHEMATIC;
     }
 
     /**

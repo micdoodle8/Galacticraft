@@ -4,10 +4,12 @@ import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.client.GCParticles;
 import micdoodle8.mods.galacticraft.core.client.fx.BlockPosParticleData;
 import micdoodle8.mods.galacticraft.core.client.fx.EntityParticleData;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.fx.MarsParticles;
 import net.minecraft.block.Block;
@@ -31,7 +33,7 @@ import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 
-public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock
+public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortable
 {
 //    public enum EnumBlockBasic implements IStringSerializable
 //    {
@@ -276,23 +278,23 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 //        builder.add(BASIC_TYPE);
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        switch (meta)
-//        {
-//        case 0:
-//        case 1:
-//        case 2:
-//        case 3:
-//            return EnumSortCategoryBlock.ORE;
-//        case 7:
-//            return EnumSortCategoryBlock.BRICKS;
-//        case 8:
-//            return EnumSortCategoryBlock.INGOT_BLOCK;
-//        }
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        if (this == MarsBlocks.oreDesh || this == MarsBlocks.oreTin || this == MarsBlocks.oreIron || this == MarsBlocks.oreCopper)
+        {
+            return EnumSortCategory.ORE;
+        }
+        else if (this == MarsBlocks.dungeonBrick)
+        {
+            return EnumSortCategory.BRICKS;
+        }
+        else if (this == MarsBlocks.deshBlock)
+        {
+            return EnumSortCategory.INGOT_BLOCK;
+        }
+        return EnumSortCategory.GENERAL;
+    }
 
 
     @Override

@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.block.Block;
@@ -13,6 +15,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -25,13 +28,13 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockTerraformer extends BlockTileGC implements IShiftDescription
+public class BlockTerraformer extends BlockTileGC implements IShiftDescription, ISortable
 {
     //    public static final int TERRAFORMER_METADATA = 0;
 //    public static final int CRYOGENIC_CHAMBER_METADATA = 4;
 //    public static final int LAUNCH_CONTROLLER_METADATA = 8;
 //
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 //    public static final EnumProperty<EnumMachineType> TYPE = EnumProperty.create("type", EnumMachineType.class);
 //
 //    public enum EnumMachineType implements IStringSerializable
@@ -133,6 +136,12 @@ public class BlockTerraformer extends BlockTileGC implements IShiftDescription
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate("tile.terraformer.description");
@@ -157,11 +166,11 @@ public class BlockTerraformer extends BlockTileGC implements IShiftDescription
         builder.add(FACING);
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
 //    @Override
 //    public boolean isSealed(World world, BlockPos pos, Direction direction)

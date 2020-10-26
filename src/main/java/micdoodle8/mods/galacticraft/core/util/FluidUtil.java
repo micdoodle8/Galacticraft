@@ -264,7 +264,7 @@ public class FluidUtil
 
         if (slotItem.getItem() instanceof ItemCanisterGeneric)
         {
-            if (slotItem.getCount() != 1 || slotItem.getItem() != canisterType && slotItem.getDamage() != ItemCanisterGeneric.EMPTY)
+            if (slotItem.getCount() != 1 || slotItem.getItem() != canisterType && slotItem.getDamage() != ItemCanisterGeneric.EMPTY_CAPACITY)
             {
                 return;
             }
@@ -370,11 +370,11 @@ public class FluidUtil
         if (slotItem.getItem() instanceof ItemCanisterGeneric)
         {
             int originalDamage = slotItem.getDamage();
-            int used = tank.fill(new FluidStack(desiredLiquid, ItemCanisterGeneric.EMPTY - originalDamage), IFluidHandler.FluidAction.EXECUTE);
-            if (originalDamage + used >= ItemCanisterGeneric.EMPTY)
+            int used = tank.fill(new FluidStack(desiredLiquid, ItemCanisterGeneric.EMPTY_CAPACITY - originalDamage), IFluidHandler.FluidAction.EXECUTE);
+            if (originalDamage + used >= ItemCanisterGeneric.EMPTY_CAPACITY)
             {
                 ItemStack item = new ItemStack(GCItems.oilCanister, 1);
-                item.setDamage(ItemCanisterGeneric.EMPTY);
+                item.setDamage(ItemCanisterGeneric.EMPTY_CAPACITY);
                 stacks.set(slot, item);
             }
             else
@@ -449,7 +449,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getDamage() == ItemCanisterGeneric.EMPTY || (var4.getItem() == canisterType && var4.getDamage() > 1);
+            return var4.getDamage() == ItemCanisterGeneric.EMPTY_CAPACITY || (var4.getItem() == canisterType && var4.getDamage() > 1);
         }
 
         LazyOptional<IFluidHandlerItem> handlerHolder = net.minecraftforge.fluids.FluidUtil.getFluidHandler(var4);
@@ -484,7 +484,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            if (var4.getDamage() == ItemCanisterGeneric.EMPTY)
+            if (var4.getDamage() == ItemCanisterGeneric.EMPTY_CAPACITY)
             {
                 return true;
             }
@@ -611,7 +611,7 @@ public class FluidUtil
     {
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getDamage() == ItemCanisterGeneric.EMPTY;
+            return var4.getDamage() == ItemCanisterGeneric.EMPTY_CAPACITY;
         }
 
         if (var4.getItem() == Items.BUCKET)
@@ -651,7 +651,7 @@ public class FluidUtil
         }
         if (var4.getItem() instanceof ItemCanisterGeneric)
         {
-            return var4.getDamage() < ItemCanisterGeneric.EMPTY;
+            return var4.getDamage() < ItemCanisterGeneric.EMPTY_CAPACITY;
         }
         return net.minecraftforge.fluids.FluidUtil.getFluidContained(var4) != null;
     }
@@ -881,7 +881,7 @@ public class FluidUtil
 
     private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
-        int currContents = ItemCanisterGeneric.EMPTY - canister.getDamage();
+        int currContents = ItemCanisterGeneric.EMPTY_CAPACITY - canister.getDamage();
         if (currContents <= 0)
         {
             return ItemStack.EMPTY;

@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
 # File Created: 04.05.2015 00:08:39
 
-mtllib astroMiner.mtl
+#mtllib astro_miner.mtl
 
 #
 # object Hoverpad_Heavy_Left

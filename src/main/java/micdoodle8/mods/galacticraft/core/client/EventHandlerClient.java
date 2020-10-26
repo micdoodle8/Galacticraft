@@ -28,7 +28,7 @@ public class EventHandlerClient
     {
         GL11.glPushMatrix();
 
-        final PlayerEntity player = event.getEntityPlayer();
+        final PlayerEntity player = event.getPlayer();
 
         if (player.getRidingEntity() instanceof ICameraZoomEntity && player == Minecraft.getInstance().player
                 && Minecraft.getInstance().gameSettings.thirdPersonView == 0)
@@ -61,7 +61,7 @@ public class EventHandlerClient
     {
         GL11.glPopMatrix();
 
-        if (event.getEntityPlayer() instanceof ClientPlayerEntity)
+        if (event.getPlayer() instanceof ClientPlayerEntity)
         {
             sneakRenderOverride = false;
         }

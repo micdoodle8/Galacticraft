@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -19,7 +20,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockOxygenDetector extends Block implements IShiftDescription
+public class BlockOxygenDetector extends Block implements IShiftDescription, ISortable
 {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
@@ -44,6 +45,12 @@ public class BlockOxygenDetector extends Block implements IShiftDescription
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityOxygenDetector();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
 //    public void updateOxygenState(World worldIn, BlockPos pos, boolean valid)
@@ -99,12 +106,12 @@ public class BlockOxygenDetector extends Block implements IShiftDescription
 //    {
 //        return true;
 //    }
-//
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
     @Override
     public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param)

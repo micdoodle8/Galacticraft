@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.core.blocks;
 //
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockState;
 //import net.minecraft.block.FenceGateBlock;
@@ -23,27 +23,27 @@
 //import net.minecraftforge.fml.LogicalSide;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
-//public class BlockWallGC extends Block /* Do not extend BlockWall */ implements ISortableBlock
+//public class BlockWallGC extends Block /* Do not extend BlockWall */ implements ISortable
 //{
-//    protected static final AxisAlignedBB[] AABB_BY_INDEX = Block.makeCuboidShape[] {
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.3125D, 0.0D, 0.0D, 0.6875D, 0.875D, 1.0D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.3125D, 1.0D, 0.875D, 0.6875D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
-//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
+//    protected static final AxisAlignedBB[] AABB_BY_INDEX = VoxelShapes.create[] {
+//            VoxelShapes.create(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
+//            VoxelShapes.create(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.3125D, 0.0D, 0.0D, 0.6875D, 0.875D, 1.0D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),
+//            VoxelShapes.create(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.3125D, 1.0D, 0.875D, 0.6875D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
+//            VoxelShapes.create(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
+//            VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
 //    };
-//    protected static final AxisAlignedBB[] CLIP_AABB_BY_INDEX = Block.makeCuboidShape[] {
+//    protected static final AxisAlignedBB[] CLIP_AABB_BY_INDEX = VoxelShapes.create[] {
 //            AABB_BY_INDEX[0].setMaxY(1.5D),
 //            AABB_BY_INDEX[1].setMaxY(1.5D),
 //            AABB_BY_INDEX[2].setMaxY(1.5D),
@@ -267,9 +267,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.WALLS;
+//        return EnumSortCategory.WALLS;
 //    }
 //
 //    public enum BlockType implements IStringSerializable

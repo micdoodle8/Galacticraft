@@ -1,18 +1,15 @@
 package micdoodle8.mods.galacticraft.core;
 
-import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.items.*;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import micdoodle8.mods.galacticraft.core.util.StackSorted;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
@@ -243,12 +240,11 @@ public class GCItems
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
     public static LinkedList<ItemCanisterGeneric> canisterTypes = new LinkedList<ItemCanisterGeneric>();
-    public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
     public static HashMap<ItemStack, ItemStack> itemChanges = new HashMap<>(4, 1.0F);
 
     public static Item.Properties defaultBuilder()
     {
-        return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
+        return new Item.Properties().group(GalacticraftCore.galacticraftItemsTab);
     }
 
     @SubscribeEvent
@@ -290,8 +286,8 @@ public class GCItems
         register(r, new ItemFlag(defaultBuilder().maxDamage(0)), ItemNames.flag);
         register(r, new ItemOxygenGear(defaultBuilder()), ItemNames.oxygenGear);
         register(r, new ItemBase(defaultBuilder()), ItemNames.canvas);
-        register(r, new ItemOilCanister(defaultBuilder()), ItemNames.oilCanister);
-        register(r, new ItemFuelCanister(defaultBuilder()), ItemNames.fuelCanister);
+        register(r, new ItemOilCanister(defaultBuilder().maxDamage(ItemCanisterGeneric.EMPTY_CAPACITY)), ItemNames.oilCanister);
+        register(r, new ItemFuelCanister(defaultBuilder().maxDamage(ItemCanisterGeneric.EMPTY_CAPACITY)), ItemNames.fuelCanister);
         register(r, new ItemCanisterOxygenInfinite(defaultBuilder()), ItemNames.oxygenCanisterInfinite);
         register(r, new ItemBase(defaultBuilder()), ItemNames.flagPole);
         register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicBuggy);
@@ -302,8 +298,8 @@ public class GCItems
         register(r, new ItemBatteryInfinite(defaultBuilder()), ItemNames.infiniteBatery);
         register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunk);
         register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunkHot);
-        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256).maxStackSize(1)), ItemNames.wrench);
-        register(r, new Item(defaultBuilder().food((new Food.Builder()).hunger(1).saturation(0.1F).fastToEat().build())), ItemNames.cheeseCurd);
+        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256)), ItemNames.wrench);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(1).saturation(0.1F).fastToEat().build())), ItemNames.cheeseCurd);
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         register(r, new ItemBase(defaultBuilder()), ItemNames.meteoricIronRaw);
         register(r, new ItemPreLaunchChecklist(defaultBuilder()), ItemNames.prelaunchChecklist);
@@ -362,8 +358,6 @@ public class GCItems
         register(r, new ItemParaChute(DyeColor.RED, parachuteProps), ItemNames.parachuteRed);
         register(r, new ItemParaChute(DyeColor.CYAN, parachuteProps), ItemNames.parachuteTeal);
         register(r, new ItemParaChute(DyeColor.YELLOW, parachuteProps), ItemNames.parachuteYellow);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketEngineT1);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketBoosterT1);
 
 //        GCItems.registerHarvestLevels();
 //
@@ -373,8 +367,11 @@ public class GCItems
 //        GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 17), new ItemStack(GCItems.foodItem, 1, 2));
 //        GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 18), new ItemStack(GCItems.foodItem, 1, 3));
 
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
+        {
+            ClientProxyCore.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
+            ClientProxyCore.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
+        });
 
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.fuelCanister);
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.oilCanister);
@@ -413,7 +410,7 @@ public class GCItems
 //
 //        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
 //        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
-//        OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
+//        OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon.get(), new ItemStack(GCItems.basicItem, 1, 2));
 //    }
 
 
@@ -449,26 +446,6 @@ public class GCItems
 //        }
 //    }
 
-//    public static void finalizeSort()
-//    {
-//        List<StackSorted> itemOrderListItems = Lists.newArrayList();
-//        for (EnumSortCategoryItem type : EnumSortCategoryItem.values())
-//        {
-//            List stackSorteds = sortMapItems.get(type);
-//            if (stackSorteds != null)
-//            {
-//                itemOrderListItems.addAll(stackSorteds);
-//            }
-//            else
-//            {
-//                System.out.println("ERROR: null sort stack: " + type.toString());
-//            }
-//        }
-//
-//        Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getDamage()));
-//
-//        GalacticraftCore.galacticraftItemsTab.setTabSorter(tabSorterItems);
-//    }
 //
 //    public static void registerHarvestLevels()
 //    {
@@ -476,29 +453,6 @@ public class GCItems
 //        GCItems.steelAxe.setHarvestLevel("axe", 4);
 //        GCItems.steelSpade.setHarvestLevel("shovel", 4);
 //    } TODO
-
-//    public static void registerSorted(Item item)
-//    {
-//        if (item instanceof ISortableItem)
-//        {
-//            ISortableItem sortableItem = (ISortableItem) item;
-//            NonNullList<ItemStack> items = NonNullList.create();
-//            item.getSubItems(GalacticraftCore.galacticraftItemsTab, items);
-//            for (ItemStack stack : items)
-//            {
-//                EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getDamage());
-//                if (!sortMapItems.containsKey(categoryItem))
-//                {
-//                    sortMapItems.put(categoryItem, new ArrayList<>());
-//                }
-//                sortMapItems.get(categoryItem).add(new StackSorted(stack.getItem(), stack.getDamage()));
-//            }
-//        }
-//        else if (item.getCreativeTab() == GalacticraftCore.galacticraftItemsTab)
-//        {
-//            throw new RuntimeException(item.getClass() + " must inherit " + ISortableItem.class.getSimpleName() + "!");
-//        }
-//    }
 
 //    public static void registerItems()
 //    {

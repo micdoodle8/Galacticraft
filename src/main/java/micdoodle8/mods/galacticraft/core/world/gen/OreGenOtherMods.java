@@ -37,7 +37,7 @@
 //
 //    static
 //    {
-//        for (final String str : ConfigManagerCore.oregenIDs)
+//        for (final String str : ConfigManagerCore.oregenIDs.get())
 //        {
 //            try
 //            {
@@ -100,7 +100,7 @@
 //                    s = str;
 //                }
 //
-//                BlockTuple bt = ConfigManagerCore.stringToBlock(s, "Other mod ore generate IDs", true);
+//                BlockTuple bt = ConfigManagerCore.stringToBlock.get()(s, "Other mod ore generate IDs", true);
 //                if (bt == null)
 //                {
 //                    continue;

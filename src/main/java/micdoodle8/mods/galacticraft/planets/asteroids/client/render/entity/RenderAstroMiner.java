@@ -418,7 +418,7 @@
 //
 //        mainLaserX += entity.posX - blockLaser.x;
 //        mainLaserY += entity.posY - blockLaser.y;
-//        mainLaserZ += entity.posZ - blockLaser.z;
+//        mainLaserZ += entity.getPosZ() - blockLaser.z;
 //
 //        float xD = mainLaserX - 0.5F;
 //        float yD = mainLaserY - 0.5F;

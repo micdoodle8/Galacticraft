@@ -1,24 +1,42 @@
-//package micdoodle8.mods.galacticraft.core.client.render.item;
-//
-//import micdoodle8.mods.galacticraft.core.Constants;
-//import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
-//import net.minecraft.client.renderer.model.IBakedModel;
-//import net.minecraftforge.common.model.TRSRTransformation;
-//
-//import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
-//
-//import javax.vecmath.Matrix4f;
-//import javax.vecmath.Quat4f;
-//import javax.vecmath.Vector3f;
-//
-//public class ItemModelBuggy extends ModelTransformWrapper
-//{
-//    public ItemModelBuggy(IBakedModel modelToWrap)
-//    {
-//        super(modelToWrap);
-//    }
-//
-//    @Override
+package micdoodle8.mods.galacticraft.core.client.render.item;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+
+import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
+
+public class ItemModelBuggy extends ModelTransformWrapper
+{
+    public ItemModelBuggy(IBakedModel modelToWrap)
+    {
+        super(modelToWrap);
+    }
+
+    @Override
+    protected boolean getTransformForPerspective(TransformType cameraTransformType, MatrixStack mat)
+    {
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        {
+            mat.push();
+            mat.translate(-0.15F, 0.0F, -0.15F);
+            mat.rotate(new Quaternion(30.0F, 225.0F, 0.0F, true));
+            mat.scale(0.1085F, 0.1085F, 0.1085F);
+            mat.translate(-0.5F, -0.6F, 0.0F);
+            mat.rotate(new Quaternion(Constants.halfPI / 4.0F, 0.0F, 0.0F, false));
+            mat.translate(0.2F, 0.0F, 0.0F);
+            mat.rotate(new Quaternion(0.0F, -0.3F, 0.0F, false));
+            return true;
+        }
+
+        return false;
+    }
+
+    //    @Override
 //    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
 //    {
 //        if (cameraTransformType == TransformType.GUI)
@@ -120,4 +138,4 @@
 //
 //        return null;
 //    }
-//}
+}

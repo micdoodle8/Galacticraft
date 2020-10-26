@@ -188,7 +188,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                             {
                                 if (this.juicersSpawned.size() < 6)
                                 {
-                                    EntityJuicer juicer = new EntityJuicer(VenusEntities.JUICER.get(), this.world);
+                                    EntityJuicer juicer = new EntityJuicer(VenusEntities.JUICER, this.world);
                                     double angle = Math.random() * 2 * Math.PI;
                                     double dist = 3.0F;
                                     juicer.setPosition(this.getPosX() + dist * Math.sin(angle), this.getPosY() + 0.2F, this.getPosZ() + dist * Math.cos(angle));
@@ -247,7 +247,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     protected void registerAttributes()
     {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod.get());
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.250000001192092896D);
     }
 

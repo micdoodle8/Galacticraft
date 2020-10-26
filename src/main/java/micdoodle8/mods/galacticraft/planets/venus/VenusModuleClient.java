@@ -1,18 +1,32 @@
 package micdoodle8.mods.galacticraft.planets.venus;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidExhaust;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidVapor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import static micdoodle8.mods.galacticraft.planets.venus.client.fx.VenusParticles.ACID_EXHAUST;
+import static micdoodle8.mods.galacticraft.planets.venus.client.fx.VenusParticles.ACID_VAPOR;
+
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class VenusModuleClient implements IPlanetsModuleClient
 {
     private static final ModelResourceLocation sulphuricAcidLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid", "fluid");
@@ -28,6 +42,10 @@ public class VenusModuleClient implements IPlanetsModuleClient
 
         MinecraftForge.EVENT_BUS.register(new TickHandlerClientVenus());
 //        VenusModuleClient.registerBlockRenderers();
+
+        RenderType cutout = RenderType.getCutout();
+        RenderTypeLookup.setRenderLayer(VenusBlocks.torchWebLight, cutout);
+        RenderTypeLookup.setRenderLayer(VenusBlocks.torchWebSupport, cutout);
 
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestVenus.class, new TileEntityTreasureChestRenderer());
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserTurret.class, new TileEntityLaserTurretRenderer());
@@ -204,4 +222,10 @@ public class VenusModuleClient implements IPlanetsModuleClient
 //    {
 //        idList.add(GuiIdsPlanets.MACHINE_VENUS);
 //    }
+
+    @SubscribeEvent
+    public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+        Minecraft.getInstance().particles.registerFactory(ACID_EXHAUST, ParticleAcidExhaust.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(ACID_VAPOR, ParticleAcidVapor.Factory::new);
+    }
 }

@@ -23,7 +23,7 @@ public abstract class CelestialBodyRenderEvent extends Event
         }
 
         @Cancelable
-        public static class Pre extends CelestialBodyRenderEvent
+        public static class Pre extends CelestialRingRenderEvent
         {
             public final Vector3 parentOffset;
 

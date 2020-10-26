@@ -2,21 +2,31 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.DecoBlock;
+import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class AsteroidBlocks
 {
     @ObjectHolder(AsteroidBlockNames.blockWalkway)
@@ -86,7 +96,7 @@ public class AsteroidBlocks
         builder = Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(3.0F);
         register(r, new BlockShortRangeTelepad(builder), AsteroidBlockNames.shortRangeTelepad);
 
-        builder = Block.Properties.create(GCBlocks.machine).sound(SoundType.METAL).hardnessAndResistance(100000.0F);
+        builder = Block.Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(100000.0F);
         register(r, new BlockTelepadFake(builder), AsteroidBlockNames.fakeTelepad);
 
         builder = Block.Properties.create(Material.ICE).sound(SoundType.GLASS).hardnessAndResistance(0.5F).slipperiness(0.98F);
@@ -101,14 +111,43 @@ public class AsteroidBlocks
         register(r, new BlockSpaceWart(builder), AsteroidBlockNames.spaceWart);
     }
 
-    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
-    {
-        reg.register(thing.setRegistryName(name));
-    }
-
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, String name)
     {
-        register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+        GCBlocks.register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+    }
+
+    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, ResourceLocation name, IForgeRegistryEntry<V> thing)
+    {
+        if (Registry.BLOCK.getValue(name).get() instanceof IShiftDescription && !(thing instanceof ItemBlockDesc)) {
+            System.err.println("IShiftDescription block needs ItemBlockDesc registration!");
+        }
+        GCBlocks.register(reg, name, thing);
+    }
+
+    @SubscribeEvent
+    public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
+    {
+        IForgeRegistry<Item> r = evt.getRegistry();
+        Item.Properties props = GCItems.defaultBuilder().group(GalacticraftCore.galacticraftBlocksTab);
+        register(r, Registry.BLOCK.getKey(blockWalkway), new ItemBlockDesc(blockWalkway, props));
+        register(r, Registry.BLOCK.getKey(blockWalkwayFluid), new ItemBlockDesc(blockWalkwayFluid, props));
+        register(r, Registry.BLOCK.getKey(blockWalkwayWire), new ItemBlockDesc(blockWalkwayWire, props));
+        register(r, Registry.BLOCK.getKey(rock0), new BlockItem(rock0, props));
+        register(r, Registry.BLOCK.getKey(rock1), new BlockItem(rock1, props));
+        register(r, Registry.BLOCK.getKey(rock2), new BlockItem(rock2, props));
+        register(r, Registry.BLOCK.getKey(oreAluminum), new BlockItem(oreAluminum, props));
+        register(r, Registry.BLOCK.getKey(oreIlmenite), new BlockItem(oreIlmenite, props));
+        register(r, Registry.BLOCK.getKey(oreIron), new BlockItem(oreIron, props));
+        register(r, Registry.BLOCK.getKey(asteroidDeco), new BlockItem(asteroidDeco, props));
+        register(r, Registry.BLOCK.getKey(titaniumBlock), new BlockItem(titaniumBlock, props));
+        register(r, Registry.BLOCK.getKey(beamReflector), new ItemBlockDesc(beamReflector, props));
+        register(r, Registry.BLOCK.getKey(beamReceiver), new ItemBlockDesc(beamReceiver, props));
+        register(r, Registry.BLOCK.getKey(shortRangeTelepad), new ItemBlockDesc(shortRangeTelepad, props));
+        register(r, Registry.BLOCK.getKey(fakeTelepad), new BlockItem(fakeTelepad, props.group(null)));
+        register(r, Registry.BLOCK.getKey(blockDenseIce), new BlockItem(blockDenseIce, props));
+        register(r, Registry.BLOCK.getKey(blockMinerBase), new ItemBlockDesc(blockMinerBase, props));
+        register(r, Registry.BLOCK.getKey(minerBaseFull), new BlockItem(minerBaseFull, props));
+        register(r, Registry.BLOCK.getKey(spaceWart), new BlockItem(spaceWart, props));
     }
 
 //    public static void registerBlocks()

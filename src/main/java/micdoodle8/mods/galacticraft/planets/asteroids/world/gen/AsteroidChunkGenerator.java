@@ -154,24 +154,24 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_1, 7, .3));
         this.coreHandler.addBlock(new SpecialAsteroidBlock(this.ASTEROID_STONE_0, 11, .25));
 
-        if (!ConfigManagerPlanets.disableAluminumGenAsteroids)
+        if (!ConfigManagerPlanets.disableAluminumGenAsteroids.get())
         {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreAluminum.getDefaultState(), 5, .2));
         }
-        if (!ConfigManagerPlanets.disableIlmeniteGenAsteroids)
+        if (!ConfigManagerPlanets.disableIlmeniteGenAsteroids.get())
         {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIlmenite.getDefaultState(), 4, .15));
         }
-        if (!ConfigManagerPlanets.disableIronGenAsteroids)
+        if (!ConfigManagerPlanets.disableIronGenAsteroids.get())
         {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(AsteroidBlocks.oreIron.getDefaultState(), 3, .2));
         }
-        if (ConfigManagerCore.enableSiliconOreGen)
+        if (ConfigManagerCore.enableSiliconOreGen.get())
         {
             this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.oreSilicon.getDefaultState(), 2, .15)); //TODO: Asteroids version of silicon ore
         }
         //Solid Meteoric Iron - has no config to disable
-        this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.oreMeteoricIron.getDefaultState(), 2, .13));
+        this.coreHandler.addBlock(new SpecialAsteroidBlock(GCBlocks.decoBlockMeteorIron.getDefaultState(), 2, .13));
         //Diamond ore - has no config to disable
         this.coreHandler.addBlock(new SpecialAsteroidBlock(Blocks.DIAMOND_ORE.getDefaultState(), 1, .1));  //TODO: Asteroids version of diamond ore
 
@@ -576,7 +576,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
 ////        long time3 = System.nanoTime();
 //        this.generateSkylightMap(var4, par1, par2);
 ////        long time4 = System.nanoTime();
-////        if (ConfigManagerCore.enableDebug)
+////        if (ConfigManagerCore.enableDebug.get())
 ////        {
 ////	        BlockVec3 vec = new BlockVec3(par1, par2, 0);
 ////	        if (chunksDone.contains(vec)) System.out.println("Done chunk already at "+par1+","+par2);
@@ -686,7 +686,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                     {
                         state = AsteroidBlocks.oreIlmenite.getDefaultState();
 
-                        if (ConfigManagerPlanets.disableIlmeniteGenAsteroids)
+                        if (ConfigManagerPlanets.disableIlmeniteGenAsteroids.get())
                         {
                             continue;
                         }
@@ -695,7 +695,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                     {
                         state = AsteroidBlocks.oreIron.getDefaultState();
 
-                        if (ConfigManagerPlanets.disableIronGenAsteroids)
+                        if (ConfigManagerPlanets.disableIronGenAsteroids.get())
                         {
                             continue;
                         }
@@ -704,7 +704,7 @@ public class AsteroidChunkGenerator extends ChunkGenerator<AsteroidGenSettings>
                     {
                         state = AsteroidBlocks.oreAluminum.getDefaultState();
 
-                        if (ConfigManagerPlanets.disableAluminumGenAsteroids)
+                        if (ConfigManagerPlanets.disableAluminumGenAsteroids.get())
                         {
                             continue;
                         }

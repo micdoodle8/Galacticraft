@@ -1,18 +1,25 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.ItemBase;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class AsteroidsItems
 {
     @ObjectHolder(AsteroidItemNames.grapple)
@@ -43,8 +50,8 @@ public class AsteroidsItems
     public static Item canisterLOX;
     @ObjectHolder(AsteroidItemNames.canisterLN2)
     public static Item canisterLN2;
-    @ObjectHolder(AsteroidItemNames.canisterLAr)
-    public static Item canisterLAr;
+//    @ObjectHolder(AsteroidItemNames.canisterLAr)
+//    public static Item canisterLAr;
     @ObjectHolder(AsteroidItemNames.atmosphericValve)
     public static Item atmosphericValve;
     @ObjectHolder(AsteroidItemNames.heavyNoseCone)
@@ -69,10 +76,10 @@ public class AsteroidsItems
     public static Item titaniumHoe;
     @ObjectHolder(AsteroidItemNames.titaniumSword)
     public static Item titaniumSword;
+    @ObjectHolder(AsteroidItemNames.strangeSeed0)
+    public static Item strangeSeed0;
     @ObjectHolder(AsteroidItemNames.strangeSeed1)
     public static Item strangeSeed1;
-    @ObjectHolder(AsteroidItemNames.strangeSeed2)
-    public static Item strangeSeed2;
     @ObjectHolder(AsteroidItemNames.ingotTitanium)
     public static Item ingotTitanium;
     @ObjectHolder(AsteroidItemNames.engineT2)
@@ -97,19 +104,14 @@ public class AsteroidsItems
 //    public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 4, 760, 14.0F, 4.0F, 16);
 //    public static ArmorItem.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 7, 10, 5 }, 20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
 
-    public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, ResourceLocation name)
-    {
-        reg.register(thing.setRegistryName(name));
-    }
-
     public static <V extends IForgeRegistryEntry<V>> void register(IForgeRegistry<V> reg, IForgeRegistryEntry<V> thing, String name)
     {
-        register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
+        GCBlocks.register(reg, thing, new ResourceLocation(Constants.MOD_ID_PLANETS, name));
     }
 
     public static Item.Properties defaultBuilder()
     {
-        return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
+        return new Item.Properties().group(GalacticraftCore.galacticraftItemsTab);
     }
 
     @SubscribeEvent
@@ -140,26 +142,28 @@ public class AsteroidsItems
         register(r, new ItemCanisterMethane(defaultBuilder()), AsteroidItemNames.methaneCanister);
         register(r, new ItemCanisterLiquidOxygen(defaultBuilder()), AsteroidItemNames.canisterLOX);
         register(r, new ItemCanisterLiquidNitrogen(defaultBuilder()), AsteroidItemNames.canisterLN2);
-        register(r, new ItemCanisterLiquidArgon(defaultBuilder()), AsteroidItemNames.canisterLAr);
+//        register(r, new ItemCanisterLiquidArgon(defaultBuilder()), AsteroidItemNames.canisterLAr);
         register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.atmosphericValve);
         register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.heavyNoseCone);
         register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.orionDrive);
-        register(r, new ItemBase(defaultBuilder()), AsteroidItemNames.orionDrive);
-        register(r, new ItemArmorAsteroids(EquipmentSlotType.HEAD, defaultBuilder()), AsteroidItemNames.thermalHelm);
-        register(r, new ItemArmorAsteroids(EquipmentSlotType.CHEST, defaultBuilder()), AsteroidItemNames.thermalChestplate);
-        register(r, new ItemArmorAsteroids(EquipmentSlotType.LEGS, defaultBuilder()), AsteroidItemNames.thermalLeggings);
-        register(r, new ItemArmorAsteroids(EquipmentSlotType.FEET, defaultBuilder()), AsteroidItemNames.thermalBoots);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.HEAD, defaultBuilder()), AsteroidItemNames.titaniumHelmet);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.CHEST, defaultBuilder()), AsteroidItemNames.titaniumChestplate);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.LEGS, defaultBuilder()), AsteroidItemNames.titaniumLeggings);
+        register(r, new ItemArmorAsteroids(EquipmentSlotType.FEET, defaultBuilder()), AsteroidItemNames.titaniumBoots);
         register(r, new ItemAxeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumAxe);
         register(r, new ItemPickaxeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumPickaxe);
         register(r, new ItemSpadeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumSpade);
         register(r, new ItemHoeAsteroids(defaultBuilder()), AsteroidItemNames.titaniumHoe);
         register(r, new ItemSwordAsteroids(defaultBuilder()), AsteroidItemNames.titaniumSword);
+        register(r, new ItemStrangeSeed(defaultBuilder()), AsteroidItemNames.strangeSeed0);
         register(r, new ItemStrangeSeed(defaultBuilder()), AsteroidItemNames.strangeSeed1);
-        register(r, new ItemStrangeSeed(defaultBuilder()), AsteroidItemNames.strangeSeed2);
 
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(AsteroidsItems.methaneCanister, Constants.MOD_ID_PLANETS, "methane_canister_partial", 7));
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(AsteroidsItems.canisterLOX, Constants.MOD_ID_PLANETS, "canister_partial_lox", 7));
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(AsteroidsItems.canisterLN2, Constants.MOD_ID_PLANETS, "canister_partial_ln2", 7));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
+        {
+            ClientProxyCore.registerCanister(new PartialCanister(AsteroidsItems.methaneCanister, Constants.MOD_ID_PLANETS, "methane_canister_partial", 7));
+            ClientProxyCore.registerCanister(new PartialCanister(AsteroidsItems.canisterLOX, Constants.MOD_ID_PLANETS, "canister_partial_lox", 7));
+            ClientProxyCore.registerCanister(new PartialCanister(AsteroidsItems.canisterLN2, Constants.MOD_ID_PLANETS, "canister_partial_ln2", 7));
+        });
     }
 
 //    public static void oreDictRegistrations()

@@ -69,7 +69,7 @@ public class SoundUpdaterRocket extends TickableSound
 
             if (this.theRocket.launchPhase >= EnumLaunchPhase.IGNITED.ordinal())
             {
-                if (this.theRocket.posY > 1000)
+                if (this.theRocket.getPosY() > 1000)
                 {
                     this.volume = 0F;
                     if (this.theRocket.launchPhase != EnumLaunchPhase.LANDING.ordinal())
@@ -77,9 +77,9 @@ public class SoundUpdaterRocket extends TickableSound
                         this.donePlaying = true;
                     }
                 }
-                else if (this.theRocket.posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
+                else if (this.theRocket.getPosY() > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
                 {
-                    this.volume = 1.0F - (float) ((this.theRocket.posY - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / (1000.0 - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT));
+                    this.volume = 1.0F - (float) ((this.theRocket.getPosY() - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / (1000.0 - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT));
                 }
                 else
                 {
@@ -103,8 +103,8 @@ public class SoundUpdaterRocket extends TickableSound
 
     public void updateSoundLocation(Entity e)
     {
-        this.x = (float) e.posX;
-        this.y = (float) e.posY;
-        this.z = (float) e.posZ;
+        this.x = (float) e.getPosX();
+        this.y = (float) e.getPosY();
+        this.z = (float) e.getPosZ();
     }
 }

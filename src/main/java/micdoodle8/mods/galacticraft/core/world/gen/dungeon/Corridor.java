@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.WallTorchBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
@@ -58,12 +59,12 @@ public class Corridor extends SizedPiece
                         {
                             if (this.getDirection().getAxis() == Direction.Axis.Z && (k + 1) % 4 == 0 && (i == 1 || i == this.boundingBox.getXSize() - 2))
                             {
-                                this.setBlockState(worldIn, GCBlocks.unlitTorch.getDefaultState().with(BlockUnlitTorch.FACING, i == 1 ? Direction.WEST.getOpposite() : Direction.EAST.getOpposite()), i, j, k, this.boundingBox);
+                                this.setBlockState(worldIn, GCBlocks.unlitTorchWall.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, i == 1 ? Direction.WEST.getOpposite() : Direction.EAST.getOpposite()), i, j, k, this.boundingBox);
                                 continue;
                             }
                             else if (this.getDirection().getAxis() == Direction.Axis.X && (i + 1) % 4 == 0 && (k == 1 || k == this.boundingBox.getZSize() - 2))
                             {
-                                this.setBlockState(worldIn, GCBlocks.unlitTorch.getDefaultState().with(BlockUnlitTorch.FACING, k == 1 ? Direction.NORTH.getOpposite() : Direction.SOUTH.getOpposite()), i, j, k, this.boundingBox);
+                                this.setBlockState(worldIn, GCBlocks.unlitTorchWall.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, k == 1 ? Direction.NORTH.getOpposite() : Direction.SOUTH.getOpposite()), i, j, k, this.boundingBox);
                                 continue;
                             }
                         }

@@ -38,7 +38,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
     public EntityCelestialFake(World var1, double var2, double var4, double var6)
     {
-        this(GCEntities.CELESTIAL_FAKE.get(), var1);
+        this(GCEntities.CELESTIAL_FAKE, var1);
         this.setPosition(var2, var4, var6);
     }
 

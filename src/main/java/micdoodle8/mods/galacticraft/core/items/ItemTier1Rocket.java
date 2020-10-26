@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -33,7 +33,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableItem
+public class ItemTier1Rocket extends Item implements IHoldableItem, ISortable
 {
     public ItemTier1Rocket(Item.Properties properties)
     {
@@ -62,7 +62,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
         if (context.getWorld().isRemote && context.getPlayer() instanceof ClientPlayerEntity)
         {
             ClientProxyCore.playerClientHandler.onBuild(8, (ClientPlayerEntity) context.getPlayer());
-            return ActionResultType.PASS;
+            return ActionResultType.SUCCESS;
         }
         else
         {
@@ -131,11 +131,11 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
             return false;
         }
 
-        final EntityTier1Rocket spaceship = GCEntities.ROCKET_T1.get().create(worldIn);
+        final EntityTier1Rocket spaceship = GCEntities.ROCKET_T1.create(worldIn);
         spaceship.setPosition(centerX, centerY, centerZ);
         spaceship.rocketType = EntityTier1Rocket.getTypeFromItem(stack.getItem());
 
-        spaceship.setPosition(spaceship.posX, spaceship.posY + spaceship.getOnPadYOffset(), spaceship.posZ);
+        spaceship.setPosition(spaceship.getPosX(), spaceship.getPosY() + spaceship.getOnPadYOffset(), spaceship.getPosZ());
         worldIn.addEntity(spaceship);
 
         if (spaceship.rocketType.getPreFueled())
@@ -209,8 +209,8 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.ROCKET;
+        return EnumSortCategory.ROCKET;
     }
 }

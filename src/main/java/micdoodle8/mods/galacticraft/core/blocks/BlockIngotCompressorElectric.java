@@ -30,6 +30,12 @@ public class BlockIngotCompressorElectric extends BlockMachineBase
     }
 
     @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
         builder.add(FACING, SIDES);

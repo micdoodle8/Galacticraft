@@ -1,18 +1,20 @@
 package micdoodle8.mods.galacticraft.planets.venus.items;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.ItemNames;
 import micdoodle8.mods.galacticraft.core.items.ItemBase;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.venus.items.*;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
-import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
+import static micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems.register;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_PLANETS, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Constants.MOD_ID_PLANETS)
 public class VenusItems
 {
     @ObjectHolder(VenusItemNames.shieldController)
@@ -46,7 +48,7 @@ public class VenusItems
 
     public static Item.Properties defaultBuilder()
     {
-        return new Item.Properties()/*.group(GalacticraftCreativeTab.INSTANCE)*/;
+        return new Item.Properties().group(GalacticraftCore.galacticraftItemsTab);
     }
 
     @SubscribeEvent

@@ -2,7 +2,7 @@
 //
 //import micdoodle8.mods.galacticraft.core.GCBlocks;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockState;
 //import net.minecraft.block.SlabBlock;
@@ -24,7 +24,7 @@
 //
 //import java.util.Random;
 //
-//public class BlockSlabGC extends SlabBlock implements ISortableBlock
+//public class BlockSlabGC extends SlabBlock implements ISortable
 //{
 //    public final static EnumProperty<BlockType> VARIANT = EnumProperty.create("variant", BlockType.class);
 //
@@ -157,9 +157,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.SLABS;
+//        return EnumSortCategory.SLABS;
 //    }
 //
 //    public enum BlockType implements IStringSerializable

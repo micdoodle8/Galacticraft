@@ -24,12 +24,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
 public class EntityTier1Rocket extends EntityTieredRocket
 {
-    public static int FUEL_CAPACITY = 1000 * ConfigManagerCore.rocketFuelFactor;
+    public static int FUEL_CAPACITY = 1000 * ConfigManagerCore.rocketFuelFactor.get();
 
     public EntityTier1Rocket(EntityType<? extends EntityTier1Rocket> type, World worldIn)
     {
@@ -46,7 +47,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public IPacket<?> createSpawnPacket()
     {
-        return new SSpawnObjectPacket(this);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     //    public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
@@ -135,7 +136,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             i = 1;
         }
 
-        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
+        if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles.get() && this.hasValidFuel())
         {
             if (this.world.isRemote)
             {
@@ -251,7 +252,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             {
 //                Vector3 motionVec = new Vector3((float)x1, (float)y1, (float)z1);
 //                Object[] rider = new Object[] { riddenByEntity };
-                EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity.getUniqueID());
+                EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity == null ? null : riddenByEntity.getUniqueID());
                 this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, x1, y1, z1);
                 this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, x1, y1, z1);
                 this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D, x1, y1, z1);
@@ -264,9 +265,8 @@ public class EntityTier1Rocket extends EntityTieredRocket
             }
             else if (this.ticksExisted % 2 == 0)
             {
-                Object[] rider = new Object[]{riddenByEntity};
                 y += 0.6D;
-                EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity.getUniqueID());
+                EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity == null ? null : riddenByEntity.getUniqueID());
                 this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);
                 this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);
                 this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);

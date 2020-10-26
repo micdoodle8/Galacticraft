@@ -1,27 +1,25 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.TorchBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescription
+public class BlockGlowstoneTorch extends TorchBlock implements IShiftDescription, ISortable
 {
-
     public BlockGlowstoneTorch(Properties builder)
     {
         super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
     }
 
 //    @Override
@@ -144,12 +142,6 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
 //    }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(FACING);
-    }
-
-    @Override
     public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
@@ -161,9 +153,9 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 }

@@ -523,7 +523,7 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
         if (this.solarMultiplier < 0D)
         {
             double s = this.getSolarSize();
-            this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar;
+            this.solarMultiplier = s * s * s * ConfigManagerCore.spaceStationEnergyScalar.get();
         }
         return this.solarMultiplier;
     }
@@ -642,11 +642,5 @@ public class DimensionAsteroids extends DimensionSpace implements ISolarLevel
     public boolean hasSkyLight()
     {
         return false;
-    }
-
-    @Override
-    public List<Block> getSurfaceBlocks()
-    {
-        return null;
     }
 }

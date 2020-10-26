@@ -37,7 +37,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public TileEntityCircuitFabricator()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 40 : 20);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode.get() ? 40 : 20);
         this.inventory = NonNullList.withSize(7, ItemStack.EMPTY);
     }
 

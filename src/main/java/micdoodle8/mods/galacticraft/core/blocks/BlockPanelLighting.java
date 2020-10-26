@@ -31,7 +31,7 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription, IPaintable
+//public class BlockPanelLighting extends BlockAdvancedTile implements ISortable, IShiftDescription, IPaintable
 //{
 //    public static final EnumProperty<PanelType> TYPE = EnumProperty.create("type", PanelType.class);
 //    public static final PropertyObject<BlockState> BASE_STATE = new PropertyObject<>("held_state", BlockState.class);
@@ -190,9 +190,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.DECORATION;
+//        return EnumSortCategory.DECORATION;
 //    }
 //
 //    @Override

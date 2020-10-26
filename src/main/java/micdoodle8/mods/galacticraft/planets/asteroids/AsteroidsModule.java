@@ -22,12 +22,18 @@ import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Ro
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidChunkGenerator;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.dimension.biome.BiomeMars;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class AsteroidsModule implements IPlanetsModule
 {
@@ -83,9 +89,7 @@ public class AsteroidsModule implements IPlanetsModule
 
 //        AsteroidsItems.initItems();
 
-        AsteroidsModule.planetAsteroids.setBiomeInfo(BiomeAsteroids.asteroid);
         //This enables Endermen on Asteroids in Asteroids Challenge mode
-        BiomeAsteroids.asteroid.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
         //TODO: could also increase mob spawn frequency in Hard Mode on various dimensions e.g. Mars and Venus?
 
 //        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidMethaneGas, 1000), new ItemStack(AsteroidsItems.methaneCanister, 1, 1), ItemOilCanister.createEmptyCanister(1)));
@@ -93,8 +97,6 @@ public class AsteroidsModule implements IPlanetsModule
 //        FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(AsteroidsModule.fluidLiquidNitrogen, 1000), new ItemStack(AsteroidsItems.canisterLN2, 1, 1), ItemOilCanister.createEmptyCanister(1)));
 //        AsteroidBlocks.oreDictRegistration();
 //        AsteroidsItems.oreDictRegistrations();
-
-        GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(AsteroidsItems.astroMiner)); // Set creative tab item to Astro Miner
 
 //        this.registerMicroBlocks();
         SchematicRegistry.registerSchematicRecipe(new SchematicTier3Rocket());
@@ -109,7 +111,6 @@ public class AsteroidsModule implements IPlanetsModule
 
 //        RecipeManagerAsteroids.loadCompatibilityRecipes();
 
-        AsteroidsModule.planetAsteroids.setDimensionInfo(PlanetDimensions.ASTEROIDS_DIMENSION, DimensionAsteroids.class).setTierRequired(3);
         AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.375F, 1.375F)).setRelativeOrbitTime(45.0F).setPhaseShift((float) (Math.random() * (2 * Math.PI)));
         AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/asteroid.png"));
         AsteroidsModule.planetAsteroids.setAtmosphere(new AtmosphereInfo(false, false, false, -1.5F, 0.05F, 0.0F));
@@ -122,6 +123,14 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(AsteroidsItems.thermalChestplate, 1));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_LEGGINGS, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(AsteroidsItems.thermalLeggings, 1));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(AsteroidsItems.thermalBoots, 1));
+    }
+
+    @SubscribeEvent
+    public void biomeRegisterEvent(RegistryEvent.Register<Biome> evt)
+    {
+        IForgeRegistry<Biome> r = evt.getRegistry();
+        AsteroidsModule.planetAsteroids.setBiomeInfo(r, BiomeAsteroids.asteroid);
+//        BiomeAsteroids.asteroid.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning); TODO Needed?
     }
 
     @Override

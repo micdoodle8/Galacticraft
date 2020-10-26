@@ -19,10 +19,10 @@ public class Overlay
     {
         if (player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityTier1Rocket)
         {
-            return (int) Math.floor(((EntityTier1Rocket) player.getRidingEntity()).posY);
+            return (int) Math.floor(((EntityTier1Rocket) player.getRidingEntity()).getPosY());
         }
 
-        return (int) Math.floor(player.posY);
+        return (int) Math.floor(player.getPosY());
     }
 
     /**
@@ -60,15 +60,15 @@ public class Overlay
      */
     protected static void drawCenteringRectangle(double var1, double var3, double var5, double var7, double var9)
     {
-        var7 *= 0.5D;
-        var9 *= 0.5D;
-        final Tessellator tess = Tessellator.getInstance();
-        BufferBuilder worldRenderer = tess.getBuffer();
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(var1 - var7, var3 + var9, var5).tex(0.0D, 1.0D).endVertex();
-        worldRenderer.pos(var1 + var7, var3 + var9, var5).tex(1.0D, 1.0D).endVertex();
-        worldRenderer.pos(var1 + var7, var3 - var9, var5).tex(1.0D, 0.0D).endVertex();
-        worldRenderer.pos(var1 - var7, var3 - var9, var5).tex(0.0D, 0.0D).endVertex();
-        tess.draw();
+//        var7 *= 0.5D;
+//        var9 *= 0.5D;
+//        final Tessellator tess = Tessellator.getInstance();
+//        BufferBuilder worldRenderer = tess.getBuffer();
+//        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//        worldRenderer.pos(var1 - var7, var3 + var9, var5).tex(0.0D, 1.0D).endVertex();
+//        worldRenderer.pos(var1 + var7, var3 + var9, var5).tex(1.0D, 1.0D).endVertex();
+//        worldRenderer.pos(var1 + var7, var3 - var9, var5).tex(1.0D, 0.0D).endVertex();
+//        worldRenderer.pos(var1 - var7, var3 - var9, var5).tex(0.0D, 0.0D).endVertex();
+//        tess.draw(); TODO Drawing
     }
 }

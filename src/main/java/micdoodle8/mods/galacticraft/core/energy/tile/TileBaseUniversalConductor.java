@@ -212,21 +212,21 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate)
     {
-        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput)
+        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput.get())
         {
             return 0;
         }
 
-        float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
+        float receiveGC = (float) (maxReceive * EnergyConfigHandler.RF_RATIO.get());
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
-        return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO.get());
     }
 
     //ForgeEnergy OR BuildCraft (method name clash!)
     @Override
     public boolean canReceive()
     {
-        return !EnergyConfigHandler.disableBuildCraftInput || !EnergyConfigHandler.disableFEInput;
+        return !EnergyConfigHandler.disableBuildCraftInput.get() || !EnergyConfigHandler.disableFEInput.get();
     }
 
     //ForgeEnergy
@@ -240,12 +240,12 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int getMaxEnergyStored()
     {
-        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput)
+        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput.get())
         {
             return 0;
         }
 
-        return MathHelper.floor(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO.get());
     }
 
     //ForgeEnergy

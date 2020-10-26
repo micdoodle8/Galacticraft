@@ -1,19 +1,19 @@
 {
     "variants": {
         "connection=x": { 
-			"model": "galacticraftcore:air_lock_seal_model",
+			"model": "galacticraftcore:block/air_lock_seal_model",
 			"textures": {
 				"all": "galacticraftcore:blocks/air_lock_seal"
 			}
 		},
         "connection=z": { 
-			"model": "galacticraftcore:air_lock_seal_model", "y": 90,
+			"model": "galacticraftcore:block/air_lock_seal_model", "y": 90,
 			"textures": {
 				"all": "galacticraftcore:blocks/air_lock_seal"
 			}
 		},
         "connection=flat": { 
-			"model": "galacticraftcore:air_lock_seal_flat_model",
+			"model": "galacticraftcore:block/air_lock_seal_flat_model",
 			"textures": {
 				"all": "galacticraftcore:blocks/air_lock_seal"
 			}

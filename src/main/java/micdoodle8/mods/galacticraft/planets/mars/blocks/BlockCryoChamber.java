@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft.planets.mars.blocks;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import net.minecraft.block.Block;
@@ -16,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -34,9 +37,9 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Random;
 
-public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, IPartialSealableBlock
+public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BlockCryoChamber(Properties builder)
     {
@@ -106,6 +109,12 @@ public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, 
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityCryogenicChamber();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override
@@ -184,11 +193,11 @@ public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, 
         // TODO Particles
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
     @Override
     public boolean isSealed(World world, BlockPos pos, Direction direction)

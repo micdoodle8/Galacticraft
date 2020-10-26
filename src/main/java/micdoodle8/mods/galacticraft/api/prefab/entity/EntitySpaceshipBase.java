@@ -248,7 +248,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             e.fallDistance = 0.0F;
         }
 
-        if (this.getPosY() > (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) && this.launchPhase != EnumLaunchPhase.LANDING.ordinal())
+        if (this.getPosY() > (this.world.getDimension().getType() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension().getType()).getYCoordinateToTeleport() : 500) && this.launchPhase != EnumLaunchPhase.LANDING.ordinal())
         {
             this.onReachAtmosphere();
 //            if (this.world.isRemote)
@@ -479,7 +479,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             passenger.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
         }
 
-        if (!ConfigManagerCore.disableSpaceshipGrief)
+        if (!ConfigManagerCore.disableSpaceshipGrief.get())
         {
             this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5, Explosion.Mode.NONE);
         }

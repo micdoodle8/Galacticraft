@@ -1,24 +1,38 @@
-//package micdoodle8.mods.galacticraft.core.client.render.item;
-//
-//import micdoodle8.mods.galacticraft.core.Constants;
-//import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
-//import net.minecraft.client.Minecraft;
-//import net.minecraft.client.renderer.model.IBakedModel;
-//import net.minecraft.entity.LivingEntity;
-//
-//import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
-//
-//import javax.vecmath.Matrix4f;
-//import javax.vecmath.Vector3f;
-//
-//public class ItemModelFlag extends ModelTransformWrapper
-//{
-//    public ItemModelFlag(IBakedModel modelToWrap)
-//    {
-//        super(modelToWrap);
-//    }
-//
-//    @Override
+package micdoodle8.mods.galacticraft.core.client.render.item;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+
+import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
+
+public class ItemModelFlag extends ModelTransformWrapper
+{
+    public ItemModelFlag(IBakedModel modelToWrap)
+    {
+        super(modelToWrap);
+    }
+
+    @Override
+    protected boolean getTransformForPerspective(TransformType cameraTransformType, MatrixStack mat)
+    {
+        if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
+        {
+            mat.push();
+            mat.scale(0.25F, 0.25F, 0.25F);
+            mat.translate(-0.22F, -1.6F, 0.0F);
+            mat.rotate(new Quaternion(0.5F, 0.0F, 0.0F, false));
+            mat.rotate(new Quaternion(0.0F, -Constants.halfPI / 2.0F, 0.0F, false));
+            return true;
+        }
+
+        return false;
+    }
+
+    //    @Override
 //    protected Matrix4f getTransformForPerspective(TransformType cameraTransformType)
 //    {
 //        if (cameraTransformType == TransformType.GUI)
@@ -136,4 +150,4 @@
 //
 //        return null;
 //    }
-//}
+}

@@ -22,4 +22,10 @@ public class BlockBossSpawnerVenus extends BlockBossSpawner
     {
         return new TileEntityDungeonSpawnerVenus();
     }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
 }

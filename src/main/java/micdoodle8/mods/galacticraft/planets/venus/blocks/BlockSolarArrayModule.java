@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySolarArrayModule;
 import net.minecraft.block.Block;
@@ -14,12 +16,13 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock
+public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0, 0.375, 0.0, 1.0, 0.625, 1.0);
+    protected static final VoxelShape AABB = VoxelShapes.create(0.0, 0.375, 0.0, 1.0, 0.625, 1.0);
 
     public BlockSolarArrayModule(Properties builder)
     {
@@ -49,6 +52,12 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntitySolarArrayModule();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
     @Override
@@ -117,11 +126,11 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
         return direction.getAxis() == Direction.Axis.Y;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 
 //    @Override
 //    public boolean isOpaqueCube(BlockState state)

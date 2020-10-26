@@ -351,23 +351,23 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         @Override
         public int getEnergyStored()
         {
-            if (EnergyConfigHandler.disableFEOutput)
+            if (EnergyConfigHandler.disableFEOutput.get())
             {
                 return 0;
             }
 
-            return MathHelper.floor(tile.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+            return MathHelper.floor(tile.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO.get());
         }
 
         @Override
         public int getMaxEnergyStored()
         {
-            if (EnergyConfigHandler.disableFEOutput)
+            if (EnergyConfigHandler.disableFEOutput.get())
             {
                 return 0;
             }
 
-            return MathHelper.floor(tile.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+            return MathHelper.floor(tile.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO.get());
         }
 
         @Override
@@ -384,7 +384,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         @Override
         public boolean canExtract()
         {
-            return !EnergyConfigHandler.disableFEOutput;
+            return !EnergyConfigHandler.disableFEOutput.get();
         }
     }
 }

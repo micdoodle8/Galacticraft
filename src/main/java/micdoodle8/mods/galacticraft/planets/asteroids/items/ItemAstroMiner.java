@@ -4,10 +4,10 @@ import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
+public class ItemAstroMiner extends Item implements IHoldableItem, ISortable
 {
     public ItemAstroMiner(Item.Properties properties)
     {
@@ -115,7 +115,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 GCPlayerStats stats = GCPlayerStats.get(playerIn);
 
                 int astroCount = stats.getAstroMinerCount();
-                if (astroCount >= ConfigManagerPlanets.astroMinerMax && (!playerIn.abilities.isCreativeMode))
+                if (astroCount >= ConfigManagerPlanets.astroMinerMax.get() && (!playerIn.abilities.isCreativeMode))
                 {
                     playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
                     return ActionResultType.FAIL;
@@ -164,8 +164,8 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategory.GENERAL;
     }
 }

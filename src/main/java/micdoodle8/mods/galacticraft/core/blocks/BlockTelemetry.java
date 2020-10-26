@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -23,9 +26,9 @@ import net.minecraft.world.World;
 
 import java.util.UUID;
 
-public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescription
+public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescription, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     //Metadata: 0-3 = orientation;  bits 2,3 = reserved for future use
     public BlockTelemetry(Properties builder)
@@ -96,6 +99,12 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityTelemetry();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
 //    @Override
@@ -170,9 +179,9 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
         return true;
     }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }

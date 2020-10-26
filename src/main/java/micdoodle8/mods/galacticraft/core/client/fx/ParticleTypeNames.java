@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.entity.LivingEntity;
-
 public class ParticleTypeNames
 {
     public static final String whiteSmoke = "white_smoke_idle";

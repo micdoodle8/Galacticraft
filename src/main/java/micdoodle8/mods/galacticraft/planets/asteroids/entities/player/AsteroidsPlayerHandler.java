@@ -47,7 +47,7 @@ public class AsteroidsPlayerHandler
 
     public void onPlayerUpdate(ServerPlayerEntity player)
     {
-        if (!ConfigManagerPlanets.disableSmallAsteroids)
+        if (!ConfigManagerPlanets.disableSmallAsteroids.get())
         {
             if (!player.world.isRemote && player.world.getDimension() instanceof DimensionAsteroids)
             {

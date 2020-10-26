@@ -5,17 +5,15 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.*;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.*;
@@ -23,6 +21,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,44 +30,10 @@ import net.minecraftforge.common.IShearable;
 
 import javax.annotation.Nonnull;
 
-public class BlockTorchWeb extends Block implements IShearable, IShiftDescription
+public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortable
 {
-    public static final EnumProperty<EnumWebType> WEB_TYPE = EnumProperty.create("webtype", EnumWebType.class);
-    protected static final VoxelShape AABB_WEB = Block.makeCuboidShape(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
-    protected static final VoxelShape AABB_WEB_TORCH = Block.makeCuboidShape(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
-
-    public enum EnumWebType implements IStringSerializable
-    {
-        WEB_0(0, "web_torch_0"),
-        WEB_1(1, "web_torch_1");
-
-        private final int meta;
-        private final String name;
-
-        EnumWebType(int meta, String name)
-        {
-            this.meta = meta;
-            this.name = name;
-        }
-
-        public int getMeta()
-        {
-            return this.meta;
-        }
-
-        private final static EnumWebType[] values = values();
-
-        public static EnumWebType byMetadata(int meta)
-        {
-            return values[meta % values.length];
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-    }
+    protected static final VoxelShape AABB_WEB = VoxelShapes.create(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
+    protected static final VoxelShape AABB_WEB_TORCH = VoxelShapes.create(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
 
     public BlockTorchWeb(Properties builder)
     {
@@ -85,7 +50,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
+        if (state.getBlock() == VenusBlocks.torchWebLight)
         {
             return AABB_WEB_TORCH;
         }
@@ -96,7 +61,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
     {
-        if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
+        if (state.getBlock() == VenusBlocks.torchWebLight)
         {
             return 15;
         }
@@ -150,7 +115,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     private boolean canBlockStay(World world, BlockPos pos)
     {
         BlockState blockUp = world.getBlockState(pos.up());
-        return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.get(WEB_TYPE) == EnumWebType.WEB_0;
+        return blockUp.getMaterial().isSolid() || blockUp.getBlock() == VenusBlocks.torchWebSupport;
     }
 
     @Override
@@ -209,7 +174,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public boolean showDescription(ItemStack stack)
     {
-        return true;
+        return BlockItem.BLOCK_TO_ITEM.get(VenusBlocks.torchWebLight) == stack.getItem();
     }
 
 //    @Override
@@ -226,14 +191,8 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 //    }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+    public EnumSortCategory getCategory()
     {
-        builder.add(WEB_TYPE);
+        return EnumSortCategory.GENERAL;
     }
-
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
 }

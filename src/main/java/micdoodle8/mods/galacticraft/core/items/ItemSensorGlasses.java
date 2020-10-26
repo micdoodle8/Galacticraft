@@ -2,9 +2,8 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.ISensorGlassesArmor;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -15,7 +14,7 @@ import net.minecraft.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISensorGlassesArmor
+public class ItemSensorGlasses extends ArmorItem implements ISortable, ISensorGlassesArmor
 {
     public ItemSensorGlasses(Item.Properties builder)
     {
@@ -52,8 +51,8 @@ public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISens
     @Override
     public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, int width, int height, float partialTicks)
     {
-        OverlaySensorGlasses.renderSensorGlassesMain(stack, player, partialTicks);
-        OverlaySensorGlasses.renderSensorGlassesValueableBlocks(stack, player, partialTicks);
+//        OverlaySensorGlasses.renderSensorGlassesMain(stack, player, partialTicks);
+//        OverlaySensorGlasses.renderSensorGlassesValueableBlocks(stack, player, partialTicks); TODO Overlays
     }
 
     //    @Override
@@ -65,8 +64,8 @@ public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISens
 //    }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GEAR;
+        return EnumSortCategory.GEAR;
     }
 }

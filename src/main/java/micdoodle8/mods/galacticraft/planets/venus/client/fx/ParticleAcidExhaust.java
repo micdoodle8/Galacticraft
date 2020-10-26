@@ -87,6 +87,8 @@ public class ParticleAcidExhaust extends SpriteTexturedParticle
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }
+
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @OnlyIn(Dist.CLIENT)

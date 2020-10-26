@@ -1,23 +1,23 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:enclosed_aluminum_wire_model" }],
+        "inventory": [{ "model": "galacticraftcore:block/enclosed_aluminum_wire_model" }],
 
-        "type=enclosed_hv_cable": { "model": "galacticraftcore:enclosed_hv_cable_model" },
-        "type=enclosed_fluid_pipe": { "model": "galacticraftcore:enclosed_fluid_pipe_model" },
-        "type=enclosed_copper_cable": { "model": "galacticraftcore:enclosed_copper_cable_model" },
-        "type=enclosed_gold_cable": { "model": "galacticraftcore:enclosed_gold_cable_model" },
-        "type=enclosed_te_conduit": { "model": "galacticraftcore:enclosed_te_conduit_model" },
-        "type=enclosed_glass_fibre_cable": { "model": "galacticraftcore:enclosed_glass_fibre_cable_model" },
-        "type=enclosed_lv_cable": { "model": "galacticraftcore:enclosed_lv_cable_model" },
-        "type=enclosed_pipe_items_stone": { "model": "galacticraftcore:enclosed_pipe_items_stone_model" },
-        "type=enclosed_pipe_items_cobblestone": { "model": "galacticraftcore:enclosed_pipe_items_cobblestone_model" },
-        "type=enclosed_pipe_fluids_stone": { "model": "galacticraftcore:enclosed_pipe_fluids_stone_model" },
-        "type=enclosed_pipe_fluids_cobblestone": { "model": "galacticraftcore:enclosed_pipe_fluids_cobblestone_model" },
-        "type=enclosed_pipe_power_stone": { "model": "galacticraftcore:enclosed_pipe_power_stone_model" },
-        "type=enclosed_pipe_power_gold": { "model": "galacticraftcore:enclosed_pipe_power_gold_model" },
-        "type=enclosed_me_cable": { "model": "galacticraftcore:enclosed_me_cable_model" },
-        "type=enclosed_aluminum_wire": { "model": "galacticraftcore:enclosed_aluminum_wire_model" },
-        "type=enclosed_heavy_aluminum_wire": { "model": "galacticraftcore:enclosed_heavy_aluminum_wire_model" }
+        "type=enclosed_hv_cable": { "model": "galacticraftcore:block/enclosed_hv_cable_model" },
+        "type=enclosed_fluid_pipe": { "model": "galacticraftcore:block/enclosed_fluid_pipe_model" },
+        "type=enclosed_copper_cable": { "model": "galacticraftcore:block/enclosed_copper_cable_model" },
+        "type=enclosed_gold_cable": { "model": "galacticraftcore:block/enclosed_gold_cable_model" },
+        "type=enclosed_te_conduit": { "model": "galacticraftcore:block/enclosed_te_conduit_model" },
+        "type=enclosed_glass_fibre_cable": { "model": "galacticraftcore:block/enclosed_glass_fibre_cable_model" },
+        "type=enclosed_lv_cable": { "model": "galacticraftcore:block/enclosed_lv_cable_model" },
+        "type=enclosed_pipe_items_stone": { "model": "galacticraftcore:block/enclosed_pipe_items_stone_model" },
+        "type=enclosed_pipe_items_cobblestone": { "model": "galacticraftcore:block/enclosed_pipe_items_cobblestone_model" },
+        "type=enclosed_pipe_fluids_stone": { "model": "galacticraftcore:block/enclosed_pipe_fluids_stone_model" },
+        "type=enclosed_pipe_fluids_cobblestone": { "model": "galacticraftcore:block/enclosed_pipe_fluids_cobblestone_model" },
+        "type=enclosed_pipe_power_stone": { "model": "galacticraftcore:block/enclosed_pipe_power_stone_model" },
+        "type=enclosed_pipe_power_gold": { "model": "galacticraftcore:block/enclosed_pipe_power_gold_model" },
+        "type=enclosed_me_cable": { "model": "galacticraftcore:block/enclosed_me_cable_model" },
+        "type=enclosed_aluminum_wire": { "model": "galacticraftcore:block/enclosed_aluminum_wire_model" },
+        "type=enclosed_heavy_aluminum_wire": { "model": "galacticraftcore:block/enclosed_heavy_aluminum_wire_model" }
     }
 }

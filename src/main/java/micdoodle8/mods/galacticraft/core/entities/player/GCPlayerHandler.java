@@ -838,10 +838,10 @@ public class GCPlayerHandler
                     {
                         if (stats.getDamageCounter() == 0)
                         {
-                            stats.setDamageCounter(ConfigManagerCore.suffocationCooldown);
+                            stats.setDamageCounter(ConfigManagerCore.suffocationCooldown.get());
 
-                            player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage * (2 + stats.getIncrementalDamage()) / 2);
-                            if (ConfigManagerCore.hardMode)
+                            player.attackEntityFrom(DamageSourceGC.oxygenSuffocation, ConfigManagerCore.suffocationDamage.get() * (2 + stats.getIncrementalDamage()) / 2);
+                            if (ConfigManagerCore.hardMode.get())
                             {
                                 stats.setIncrementalDamage(stats.getIncrementalDamage() + 1);
                             }
@@ -882,9 +882,9 @@ public class GCPlayerHandler
         World world = player.world;
         if (world.getDimension() instanceof IGalacticraftDimension && !world.isRemote)
         {
-            if (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod > 0.0)
+            if (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod.get() > 0.0)
             {
-                final int f = (int) (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.meteorSpawnMod));
+                final int f = (int) (((IGalacticraftDimension) world.getDimension()).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.meteorSpawnMod.get()));
 
                 if (world.rand.nextInt(f) == 0)
                 {
@@ -905,7 +905,7 @@ public class GCPlayerHandler
                             x = ((px >> 4) + r << 4) - 1 - px;
                         }
 
-                        EntityMeteor meteor = GCEntities.METEOR.get().create(world);
+                        EntityMeteor meteor = GCEntities.METEOR.create(world);
                         meteor.setPositionAndRotation(player.getPosX() + x, 355D, player.getPosZ() + z, meteor.rotationYaw, meteor.rotationPitch);
                         meteor.setMotion(motX, 0, motZ);
 
@@ -932,7 +932,7 @@ public class GCPlayerHandler
                             x = ((px >> 4) + r << 4) - 1 - px;
                         }
 
-                        EntityMeteor meteor = GCEntities.METEOR_HUGE.get().create(world);
+                        EntityMeteor meteor = GCEntities.METEOR_HUGE.create(world);
                         meteor.setPositionAndRotation(player.getPosX() + x, 355D, player.getPosZ() + z, meteor.rotationYaw, meteor.rotationPitch);
                         meteor.setMotion(motX, 0, motZ);
 
@@ -1094,7 +1094,7 @@ public class GCPlayerHandler
 //                    {
 //                        Vector3 pos = new Vector3(player);
 //                        // Set the footprint position to the block below and add random number to stop z-fighting
-//                        pos.y = MathHelper.floor(player.posY - 1D) + player.world.rand.nextFloat() / 100.0F;
+//                        pos.y = MathHelper.floor(player.getPosY() - 1D) + player.world.rand.nextFloat() / 100.0F;
 //
 //                        // Adjust footprint to left or right depending on step count
 //                        switch (stats.getLastStep())
@@ -1254,7 +1254,7 @@ public class GCPlayerHandler
         //This will speed things up a little
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-//        if ((ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
+//        if ((ConfigManagerCore.challengeSpawnHandling.get()) && stats.getUnlockedSchematics().size() == 0)
 //        {
 //            if (stats.getStartDimension().length() > 0)
 //            {
@@ -1315,7 +1315,7 @@ public class GCPlayerHandler
 
         if (tick >= 25)
         {
-            if (ConfigManagerCore.enableSpaceRaceManagerPopup && !stats.hasOpenedSpaceRaceManager())
+            if (ConfigManagerCore.enableSpaceRaceManagerPopup.get() && !stats.hasOpenedSpaceRaceManager())
             {
                 SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(player));
 

@@ -19,4 +19,10 @@ public class BlockBossSpawnerMars extends BlockBossSpawner
     {
         return new TileEntityDungeonSpawnerMars();
     }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
+    }
 }

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.items;
 
-import micdoodle8.mods.galacticraft.core.items.ISortableItem;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,7 +30,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements ISortableItem
+public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements ISortable
 {
 //    protected IIcon[] icons = new IIcon[7];
 
@@ -157,8 +157,8 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.CANISTER;
+        return EnumSortCategory.CANISTER;
     }
 }

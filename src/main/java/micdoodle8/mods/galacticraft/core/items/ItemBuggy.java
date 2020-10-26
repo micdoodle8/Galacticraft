@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
+public class ItemBuggy extends Item implements IHoldableItem, ISortable
 {
     public ItemBuggy(Item.Properties properties)
     {
@@ -68,9 +68,9 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final float var4 = 1.0F;
         final float var5 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * var4;
         final float var6 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * var4;
-        final double var7 = playerIn.prevPosX + (playerIn.posX - playerIn.prevPosX) * var4;
-        final double var9 = playerIn.prevPosY + (playerIn.posY - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
-        final double var11 = playerIn.prevPosZ + (playerIn.posZ - playerIn.prevPosZ) * var4;
+        final double var7 = playerIn.prevPosX + (playerIn.getPosX() - playerIn.prevPosX) * var4;
+        final double var9 = playerIn.prevPosY + (playerIn.getPosY() - playerIn.prevPosY) * var4 + 1.62D - playerIn.getYOffset();
+        final double var11 = playerIn.prevPosZ + (playerIn.getPosZ() - playerIn.prevPosZ) * var4;
         final Vec3d var13 = new Vec3d(var7, var9, var11);
         final float var14 = MathHelper.cos(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
         final float var15 = MathHelper.sin(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
@@ -127,7 +127,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
                         --y;
                     }
 
-                    final EntityBuggy var35 = GCEntities.BUGGY.get().create(worldIn);
+                    final EntityBuggy var35 = GCEntities.BUGGY.create(worldIn);
                     var35.setBuggyType(EntityBuggy.getTypeFromItem(itemstack.getItem()));
                     var35.setPosition(x + 0.5F, y + 1.0F, z + 0.5F);
 
@@ -191,8 +191,8 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public EnumSortCategoryItem getCategory(int meta)
+    public EnumSortCategory getCategory()
     {
-        return EnumSortCategoryItem.GENERAL;
+        return EnumSortCategory.GENERAL;
     }
 }

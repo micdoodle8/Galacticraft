@@ -47,6 +47,7 @@ public class ParticleLaunchSmoke extends LaunchParticle
         }
 
         this.canCollide = true;
+        this.selectSpriteWithAge(animatedSprite);
     }
 
     @Override

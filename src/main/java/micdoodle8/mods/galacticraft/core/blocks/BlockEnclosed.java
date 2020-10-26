@@ -14,7 +14,7 @@
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 //import micdoodle8.mods.galacticraft.core.tile.TileEntityNull;
 //import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import net.minecraft.block.Block;
 //import net.minecraft.block.BlockState;
@@ -41,7 +41,7 @@
 //import java.lang.reflect.Field;
 //import java.lang.reflect.Method;
 //
-//public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, IShiftDescription, ISortableBlock
+//public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, IShiftDescription, ISortable
 //{
 //    public static Item[] pipeItemsBC = new Item[6];
 //    public static Block blockPipeBC = null;
@@ -495,9 +495,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.TRANSMITTER;
+//        return EnumSortCategory.TRANSMITTER;
 //    }
 //
 //    @Override

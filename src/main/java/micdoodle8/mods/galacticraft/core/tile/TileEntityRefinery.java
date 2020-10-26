@@ -55,7 +55,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public TileEntityRefinery()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode.get() ? 90 : 60);
         this.oilTank.setFluid(new FluidStack(GCFluids.OIL.getFluid(), 0));
         this.fuelTank.setFluid(new FluidStack(GCFluids.FUEL.getFluid(), 0));
         this.inventory = NonNullList.withSize(3, ItemStack.EMPTY);
@@ -145,7 +145,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             final int amountToDrain = Math.min(Math.min(oilAmount, fuelSpace), TileEntityRefinery.OUTPUT_PER_SECOND);
 
             this.oilTank.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE);
-            this.fuelTank.fill(new FluidStack(GCFluids.FUEL.getFluid(), amountToDrain)/*FluidRegistry.getFluidStack(ConfigManagerCore.useOldFuelFluidID ? "fuelgc" : "fuel", amountToDrain)*/, IFluidHandler.FluidAction.EXECUTE);
+            this.fuelTank.fill(new FluidStack(GCFluids.FUEL.getFluid(), amountToDrain)/*FluidRegistry.getFluidStack(ConfigManagerCore.useOldFuelFluidID.get() ? "fuelgc" : "fuel", amountToDrain)*/, IFluidHandler.FluidAction.EXECUTE);
         }
     }
 

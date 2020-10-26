@@ -1,0 +1,43 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+                        "textures": {
+                        "particle": "galacticraftcore:blocks/machine",
+                        "front": "galacticraftcore:blocks/electric_furnace",
+                        "rear": "galacticraftcore:blocks/machine_side",
+                        "side": "galacticraftcore:blocks/machine_side",
+                        "el_in": "galacticraftcore:blocks/machine_input",
+                        "el_out": "galacticraftcore:blocks/machine_side",
+                        "top": "galacticraftcore:blocks/machine",
+                        "base": "galacticraftcore:blocks/machine"  }
+    },
+    "variants": {
+        "inventory": [{ "model": "galacticraftcore:block/electric_furnace_model" }],
+
+        "facing" : {
+           "north": { },
+           "east":  { "y": 90 },
+           "west":  { "y": 270 },
+           "south": { "y": 180 }
+        },
+        
+        "msm" : {
+            "lr": { "model": "galacticraftcore:block/machine_tiered_lr" },
+            "lb": { "model": "galacticraftcore:block/machine_tiered_lb" },
+            "rl": { "model": "galacticraftcore:block/machine_tiered_rl" },
+            "rb": { "model": "galacticraftcore:block/machine_tiered_rb" },
+            "bl": { "model": "galacticraftcore:block/machine_tiered_bl" },
+            "br": { "model": "galacticraftcore:block/machine_tiered_br" }
+        },
+
+        "textures": {
+          "particle": "galacticraftcore:blocks/machine",
+          "front": "galacticraftcore:blocks/electric_furnace",
+          "rear": "galacticraftcore:blocks/machine_side",
+          "side": "galacticraftcore:blocks/machine_side",
+          "el_in": "galacticraftcore:blocks/machine_input",
+          "el_out": "galacticraftcore:blocks/machine_side",
+          "top": "galacticraftcore:blocks/machine",
+          "base": "galacticraftcore:blocks/machine"  }
+   }
+}

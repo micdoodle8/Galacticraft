@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,7 +11,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
-public class BlockSpout extends Block
+public class BlockSpout extends Block implements ISortable
 {
     public BlockSpout(Properties builder)
     {
@@ -24,16 +25,22 @@ public class BlockSpout extends Block
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.GENERAL;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.GENERAL;
+    }
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntitySpout();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
 //    @Override

@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFake;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockCryoChamber;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.*;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
@@ -31,6 +33,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
@@ -38,18 +41,21 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
 {
     public static final EnumProperty<EnumBlockMultiType> MULTI_TYPE = EnumProperty.create("type", EnumBlockMultiType.class);
     public static final IntegerProperty RENDER_TYPE = IntegerProperty.create("rendertype", 0, 7);
 
-    protected static final VoxelShape FULL_BLOCK_AABB = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-    protected static final VoxelShape AABB_PAD = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
-    protected static final VoxelShape AABB_SOLAR = Block.makeCuboidShape(0.0F, 0.2F, 0.0F, 1.0F, 0.8F, 1.0F);
-    protected static final VoxelShape AABB_SOLAR_POLE = Block.makeCuboidShape(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F);
-    protected static final VoxelShape AABB_TURRET = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape FULL_BLOCK_AABB = VoxelShapes.create(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape AABB_PAD = VoxelShapes.create(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
+    protected static final VoxelShape AABB_SOLAR = VoxelShapes.create(0.0F, 0.2F, 0.0F, 1.0F, 0.8F, 1.0F);
+    protected static final VoxelShape AABB_SOLAR_POLE = VoxelShapes.create(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final VoxelShape AABB_TURRET = VoxelShapes.create(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
     public enum EnumBlockMultiType implements IStringSerializable
     {
@@ -404,10 +410,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         BlockPos mainBlockPosition = ((TileEntityFake) tileEntity).mainBlockPosition;
         BlockState cryoChamber = worldIn.getBlockState(mainBlockPosition);
         Direction enumfacing = Direction.NORTH;
-//        if (GalacticraftCore.isPlanetsLoaded && cryoChamber.getBlock() == MarsBlocks.machine)
-//        {
-//            enumfacing = cryoChamber.get(BlockMachineMars.FACING);
-//        } TODO Planets
+        if (GalacticraftCore.isPlanetsLoaded && cryoChamber.getBlock() == MarsBlocks.cryoChamber)
+        {
+            enumfacing = cryoChamber.get(BlockCryoChamber.FACING);
+        }
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();

@@ -101,7 +101,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     public TileEntityDeconstructor()
     {
         super(TYPE);
-        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode.get() ? 90 : 75);
         this.setTierGC(2);
         this.inventory = NonNullList.withSize(11, ItemStack.EMPTY);
     }

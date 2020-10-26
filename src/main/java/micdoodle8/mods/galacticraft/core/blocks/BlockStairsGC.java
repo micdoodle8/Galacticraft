@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.core.blocks;
 //
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-//import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+//import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 //import net.minecraft.block.BlockState;
 //import net.minecraft.block.StairsBlock;
 //import net.minecraft.item.ItemGroup;
@@ -11,7 +11,7 @@
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.world.IBlockReader;
 //
-//public class BlockStairsGC extends StairsBlock implements ISortableBlock
+//public class BlockStairsGC extends StairsBlock implements ISortable
 //{
 //    public BlockStairsGC(String name, BlockState state)
 //    {
@@ -27,9 +27,9 @@
 //    }
 //
 //    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
+//    public EnumSortCategory getCategory()
 //    {
-//        return EnumSortCategoryBlock.STAIRS;
+//        return EnumSortCategory.STAIRS;
 //    }
 //
 //    //Override the interaction with StructuredComponent to do nothing here, otherwise messes up our Abandoned Base generation code merged from 1.8.9

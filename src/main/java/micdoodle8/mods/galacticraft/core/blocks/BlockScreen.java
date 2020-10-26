@@ -2,7 +2,9 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -20,12 +23,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock
+public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
     public static final BooleanProperty RIGHT = BooleanProperty.create("right");
     public static final BooleanProperty UP = BooleanProperty.create("up");
@@ -33,12 +37,12 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
 
     protected static final float boundsFront = 0.094F;
     protected static final float boundsBack = 1.0F - boundsFront;
-    protected static final VoxelShape DOWN_AABB = Block.makeCuboidShape(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
-    protected static final VoxelShape UP_AABB = Block.makeCuboidShape(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
-    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
-    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
-    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
-    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
+    protected static final VoxelShape DOWN_AABB = VoxelShapes.create(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
+    protected static final VoxelShape UP_AABB = VoxelShapes.create(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape NORTH_AABB = VoxelShapes.create(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape SOUTH_AABB = VoxelShapes.create(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
+    protected static final VoxelShape WEST_AABB = VoxelShapes.create(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape EAST_AABB = VoxelShapes.create(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
 
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
     public BlockScreen(Properties builder)
@@ -97,6 +101,12 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityScreen();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state)
+    {
+        return true;
     }
 
 //    @Override
@@ -189,9 +199,9 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
 //                .with(DOWN, screen.connectedDown);
 //    }
 
-//    @Override
-//    public EnumSortCategoryBlock getCategory(int meta)
-//    {
-//        return EnumSortCategoryBlock.MACHINE;
-//    }
+    @Override
+    public EnumSortCategory getCategory()
+    {
+        return EnumSortCategory.MACHINE;
+    }
 }
