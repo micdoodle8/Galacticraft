@@ -58,7 +58,7 @@ public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescripti
 //            break;
 //        }
 
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+//        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
     }
 
     @Override

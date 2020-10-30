@@ -72,7 +72,7 @@ public class ItemCanisterMethane extends ItemCanisterGeneric implements ISortabl
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.gas.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.gas") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
         }
     }
 

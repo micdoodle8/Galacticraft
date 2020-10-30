@@ -11,13 +11,19 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +31,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -39,7 +47,7 @@ import net.minecraftforge.registries.ObjectHolder;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable, IMachineSides
+public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable, IMachineSides, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fuelLoader)
     public static TileEntityType<TileEntityFuelLoader> TYPE;
@@ -427,4 +435,16 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerFuelLoader(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.fuel_loader");
+    }
 }

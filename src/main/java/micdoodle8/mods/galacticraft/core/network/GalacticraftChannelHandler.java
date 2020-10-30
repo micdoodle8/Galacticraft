@@ -2,6 +2,9 @@ package micdoodle8.mods.galacticraft.core.network;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
+import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +46,16 @@ public class GalacticraftChannelHandler
         INSTANCE.registerMessage(getUniqueId(), PacketFluidNetworkUpdate.class, PacketFluidNetworkUpdate::encode, PacketFluidNetworkUpdate::decode, PacketFluidNetworkUpdate::handle);
         INSTANCE.registerMessage(getUniqueId(), PacketEntityUpdate.class, PacketEntityUpdate::encode, PacketEntityUpdate::decode, PacketEntityUpdate::handle);
         INSTANCE.registerMessage(getUniqueId(), PacketDynamicInventory.class, PacketDynamicInventory::encode, PacketDynamicInventory::decode, PacketDynamicInventory::handle);
+    }
+
+    public static void registerPlanetsPackets()
+    {
+        if (GalacticraftCore.isPlanetsLoaded)
+        {
+            INSTANCE.registerMessage(getUniqueId(), PacketSimpleMars.class, PacketSimpleMars::encode, PacketSimpleMars::decode, PacketSimpleMars::handle);
+            INSTANCE.registerMessage(getUniqueId(), PacketSimpleAsteroids.class, PacketSimpleAsteroids::encode, PacketSimpleAsteroids::decode, PacketSimpleAsteroids::handle);
+            INSTANCE.registerMessage(getUniqueId(), PacketSimpleVenus.class, PacketSimpleVenus::encode, PacketSimpleVenus::decode, PacketSimpleVenus::handle);
+        }
     }
 
     /**

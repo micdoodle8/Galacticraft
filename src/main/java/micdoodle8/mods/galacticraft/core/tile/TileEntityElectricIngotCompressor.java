@@ -9,12 +9,17 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -26,6 +31,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -34,7 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
+public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides, INamedContainerProvider
 {
     public static class TileEntityElectricIngotCompressorT1 extends TileEntityElectricIngotCompressor
     {
@@ -664,6 +671,18 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     public ItemStack getBatteryInSlot()
     {
         return this.getStackInSlot(0);
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerElectricIngotCompressor(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.compressor_electric");
     }
 
     //------------------

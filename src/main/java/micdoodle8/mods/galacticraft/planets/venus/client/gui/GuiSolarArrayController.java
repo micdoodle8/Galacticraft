@@ -56,9 +56,9 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 90, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> sunGenDesc = new ArrayList<String>();
         float sunVisible = Math.round((this.solarController.getActualArraySize() / (float) this.solarController.getPossibleArraySize()) * 1000) / 10.0F;
-        sunGenDesc.add(sunVisible > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
+        sunGenDesc.add(sunVisible > 0 ? GCCoreUtil.translate("gui.status.sun_visible") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
-        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.solarController.getPos(), 0}));
         }));
@@ -69,17 +69,17 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
     {
         int offsetY = 35;
         this.buttonEnableSolar.active = this.solarController.disableCooldown == 0;
-        this.buttonEnableSolar.setMessage(!this.solarController.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name"));
+        this.buttonEnableSolar.setMessage(!this.solarController.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable") : GCCoreUtil.translate("gui.button.enable"));
         String displayString = this.getTitle().getFormattedText();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 7, 4210752);
-        displayString = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
+        displayString = GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
-        displayString = GCCoreUtil.translate("gui.message.generating.name") + ": " + (this.solarController.generateWatts > 0 ? EnergyDisplayHelper.getEnergyDisplayS(this.solarController.generateWatts) + "/t" : GCCoreUtil.translate("gui.status.not_generating.name"));
+        displayString = GCCoreUtil.translate("gui.message.generating") + ": " + (this.solarController.generateWatts > 0 ? EnergyDisplayHelper.getEnergyDisplayS(this.solarController.generateWatts) + "/t" : GCCoreUtil.translate("gui.status.not_generating"));
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 34 + 23 - 46 + offsetY, 4210752);
         float boost = Math.round((this.solarController.getSolarBoost() - 1) * 1000) / 10.0F;
-        displayString = GCCoreUtil.translate("gui.message.environment.name") + ": " + boost + "%";
+        displayString = GCCoreUtil.translate("gui.message.environment") + ": " + boost + "%";
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
-        displayString = GCCoreUtil.translateWithFormat("gui.message.connected_solar_controller.name", this.solarController.getActualArraySize());
+        displayString = GCCoreUtil.translateWithFormat("gui.message.connected_solar_controller", this.solarController.getActualArraySize());
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 67 + 23 - 46 + offsetY, 4210752);
         //		displayString = ElectricityDisplay.getDisplay(this.solarController.getVoltage(), ElectricUnit.VOLTAGE);
         //		this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
@@ -90,37 +90,37 @@ public class GuiSolarArrayController extends GuiContainerGC<ContainerSolarArrayC
     {
         if (this.solarController.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
         if (!this.solarController.getWorld().isDaytime())
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedfully.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedfully");
         }
 
         if (this.solarController.getWorld().isRaining() || this.solarController.getWorld().isThundering())
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.raining.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.raining");
         }
 
         float sunVisible = (float) Math.floor(this.solarController.getActualArraySize() / (float) this.solarController.getPossibleArraySize());
 
         if (sunVisible == 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedfully.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedfully");
         }
 
         if (sunVisible < 1.0F)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedpartial.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.blockedpartial");
         }
 
         if (this.solarController.generateWatts > 0)
         {
-            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.collectingenergy.name");
+            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.collectingenergy");
         }
 
-        return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.unknown.name");
+        return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.unknown");
     }
 
     @Override

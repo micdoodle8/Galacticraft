@@ -61,7 +61,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
     public long ticksAlive;
     public int age = 0;
     public final int MAX_AGE = 100000;
-    public String slimelingName = GCCoreUtil.translate("gui.message.unnamed.name");
+    public String slimelingName = GCCoreUtil.translate("gui.message.unnamed");
     public int favFoodID = 1;
     public float attackDamage = 0.05F;
     public int kills;
@@ -233,7 +233,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
         this.dataManager.register(FAV_FOOD_ID, this.favFoodID);
         this.dataManager.register(ATTACK_DAMAGE, this.attackDamage);
         this.dataManager.register(KILLS, this.kills);
-        this.setSlimelingName(GCCoreUtil.translate("gui.message.unnamed.name"));
+        this.setSlimelingName(GCCoreUtil.translate("gui.message.unnamed"));
     }
 
     @Override

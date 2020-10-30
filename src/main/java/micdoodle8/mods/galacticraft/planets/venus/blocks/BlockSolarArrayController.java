@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -52,12 +53,18 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 
+//    @Override
+//    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+//    {
+//        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+//        Direction change = Direction.byHorizontalIndex(angle).getOpposite();
+//        worldIn.setBlockState(pos, state.with(FACING, change), 3);
+//    }
+
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        Direction change = Direction.byHorizontalIndex(angle).getOpposite();
-        worldIn.setBlockState(pos, state.with(FACING, change), 3);
+        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     @Override

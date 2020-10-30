@@ -28,7 +28,7 @@
 //    public CircuitFabricatorRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(circuitFabTex, 3, 4, 168, 101);
-//        this.localizedName = GCCoreUtil.translate("tile.machine2.5.name");
+//        this.localizedName = GCCoreUtil.translate("tile.machine2.5");
 //
 //        IDrawableStatic progressBarDrawable = guiHelper.createDrawable(circuitFabTex, 176, 17, 51, 10);
 //        this.progressBar = guiHelper.createAnimatedDrawable(progressBarDrawable, 70, IDrawableAnimated.StartDirection.LEFT, false);

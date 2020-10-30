@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockBrightLamp;
+import micdoodle8.mods.galacticraft.core.blocks.BlockArcLamp;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -119,7 +119,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
             if (this.thisAABB == null)
             {
                 initialLight = true;
-                Direction facing = this.getBlockState().get(BlockBrightLamp.FACING);
+                Direction facing = this.getBlockState().get(BlockArcLamp.FACING);
                 this.sideRear = facing;
                 switch (facing)
                 {
@@ -296,11 +296,11 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
 
     public void lightArea()
     {
+
         if (this.usingBuckets.getAndSet(true) || this.usingLightList.getAndSet(true))
         {
             return;
         }
-//        long time1 = System.nanoTime();
         int index = 0;
 //        Block air = Blocks.AIR;
         Block breatheableAirID = GCBlocks.breatheableAir;
@@ -523,10 +523,6 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
             this.markDirty();
             this.checkLightPartB(LightType.BLOCK, index);
         }
-
-//        long time3 = System.nanoTime();
-//        float total = (time3 - time1) / 1000000.0F;
-//        GCLog.info("   Total Time taken: " + String.format("%.2f", total) + "ms");
 
         this.usingBuckets.set(false);
         this.usingLightList.set(false);
@@ -889,10 +885,9 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
             if (rawLight != savedLight)
             {
                 this.setLightFor_preChecked(lightType, blockpos, rawLight);   //<-------the light setting
-//                if (world.isRemote) world.notifyLightSet(blockpos); TODO tick to new lighting manager system
                 if (world.isRemote)
                 {
-                    world.getChunkProvider().getLightManager().checkBlock(blockpos);
+                    this.world.getChunkProvider().getLightManager().func_215567_a(pos, false);
                 }
 
                 if (rawLight > savedLight)
@@ -914,8 +909,7 @@ public class TileEntityArclamp extends TileEntity implements ITickableTileEntity
             }
             else if (world.isRemote && savedLight != ((value >> 21) & 15))
             {
-//                world.notifyLightSet(blockpos); TODO tick to new lighting manager system
-                world.getChunkProvider().getLightManager().checkBlock(blockpos);
+                this.world.getChunkProvider().getLightManager().func_215567_a(pos, false);
             }
         }
         return true;

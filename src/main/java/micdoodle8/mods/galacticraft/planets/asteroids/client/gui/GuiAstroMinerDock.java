@@ -58,7 +58,7 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
                 this.recallButton.active = false;
             }
         }
-        this.recallButton.setMessage(GCCoreUtil.translate("gui.button.recall.name"));
+        this.recallButton.setMessage(GCCoreUtil.translate("gui.button.recall"));
         super.render(mouseX, mouseY, partialTicks);
     }
 
@@ -81,7 +81,7 @@ public class GuiAstroMinerDock extends GuiContainerGC<ContainerAstroMinerDock>
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(xPos + 230, yPos + 108, 18, 18, batterySlotDesc, this.width, this.height, this));
-        this.buttons.add(this.recallButton = new Button(xPos + 173, yPos + 195, 76, 20, GCCoreUtil.translate("gui.button.recall.name"), (button) ->
+        this.buttons.add(this.recallButton = new Button(xPos + 173, yPos + 195, 76, 20, GCCoreUtil.translate("gui.button.recall"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.minerBase.getPos(), 0}));
         }));

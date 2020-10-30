@@ -27,13 +27,18 @@ import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockLaserTurret;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerLaserTurret;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerSolarArrayController;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -41,6 +46,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -54,7 +61,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.*;
 
-public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory implements IMultiBlock, ISidedInventory, IMachineSides
+public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory implements IMultiBlock, ISidedInventory, IMachineSides, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.laserTurret)
     public static TileEntityType<TileEntityLaserTurret> TYPE;
@@ -856,5 +863,17 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         {
             this.distance = distance;
         }
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerLaserTurret(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.laser_turret");
     }
 }

@@ -17,13 +17,13 @@ public class ContainerSolar extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.SOLAR)
     public static ContainerType<ContainerSolar> TYPE;
 
-    private final TileEntitySolar solar;
+    private final TileEntitySolar solarTile;
 
-    public ContainerSolar(int containerId, PlayerInventory playerInv, TileEntitySolar solar)
+    public ContainerSolar(int containerId, PlayerInventory playerInv, TileEntitySolar solarTile)
     {
         super(TYPE, containerId);
-        this.solar = solar;
-        this.addSlot(new SlotSpecific(solar, 0, 152, 83, IItemElectric.class));
+        this.solarTile = solarTile;
+        this.addSlot(new SlotSpecific(solarTile, 0, 152, 83, IItemElectric.class));
 
         int var6;
         int var7;
@@ -44,15 +44,15 @@ public class ContainerSolar extends Container
         }
     }
 
-    public TileEntitySolar getSolar()
+    public TileEntitySolar getSolarTile()
     {
-        return solar;
+        return solarTile;
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity var1)
     {
-        return this.solar.isUsableByPlayer(var1);
+        return this.solarTile.isUsableByPlayer(var1);
     }
 
     @Override

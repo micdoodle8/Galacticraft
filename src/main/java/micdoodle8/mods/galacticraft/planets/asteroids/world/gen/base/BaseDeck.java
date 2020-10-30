@@ -548,24 +548,8 @@ public class BaseDeck extends SizedPiece
                 }
             }
 
-            //Create two levers
-            int facing = 0;
-            switch (this.direction)
-            {
-            case NORTH:
-                break;
-            case SOUTH:
-                facing = 2;
-                break;
-            case EAST:
-                facing = 1;
-                break;
-            case WEST:
-                facing = 3;
-            }
-
 //            BlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
-            BlockState lever = GCBlocks.concealedDetector.getDefaultState().with(BlockConcealedDetector.DETECTED, true).with(BlockConcealedDetector.FACING, facing).with(BlockConcealedDetector.VARIANT, this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4);
+            BlockState lever = GCBlocks.concealedDetector.getDefaultState().with(BlockConcealedDetector.DETECTED, true).with(BlockConcealedDetector.FACING, this.direction).with(BlockConcealedDetector.VARIANT, this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4);
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ, this.boundingBox);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ, this.boundingBox);
             lever = Blocks.LEVER.getDefaultState().with(LeverBlock.FACE, AttachFace.WALL).with(LeverBlock.HORIZONTAL_FACING, this.direction.getAxis() == Direction.Axis.Z ? Direction.NORTH : Direction.SOUTH);

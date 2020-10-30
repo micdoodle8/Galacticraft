@@ -5,18 +5,26 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
-public class TileEntityOxygenCompressor extends TileEntityOxygen
+public class TileEntityOxygenCompressor extends TileEntityOxygen implements INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenCompressor)
     public static TileEntityType<TileEntityOxygenCompressor> TYPE;
@@ -182,5 +190,17 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen
     public EnumSet<Direction> getOxygenOutputDirections()
     {
         return EnumSet.noneOf(Direction.class);
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerOxygenCompressor(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.oxygen_compressor");
     }
 }

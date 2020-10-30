@@ -39,8 +39,8 @@ public class OverlayDockingRocket extends Overlay
                 double dMY = Math.floor((targetMotionY - currentMotionY) * 300);
                 int dMotionY = (int) Math.max(1, Math.min(255, dMY));
                 int dMotionYN = (int) Math.max(1, Math.min(255, -dMY));
-                String targetMotionYStr = GCCoreUtil.translate("gui.docking_rocket.target_vel.name") + ": " + String.format("%.2f", targetMotionY);
-                String currentMotionYStr = GCCoreUtil.translate("gui.docking_rocket.current_vel.name") + ": " + String.format("%.2f", currentMotionY);
+                String targetMotionYStr = GCCoreUtil.translate("gui.docking_rocket.target_vel") + ": " + String.format("%.2f", targetMotionY);
+                String currentMotionYStr = GCCoreUtil.translate("gui.docking_rocket.current_vel") + ": " + String.format("%.2f", currentMotionY);
 
                 int red = ColorUtil.to32BitColor(dMY > 0 ? 0 : dMotionYN, 255, 255, 255);
                 int green = ColorUtil.to32BitColor(dMY < 0 ? 0 : dMotionY, 255, 255, 255);
@@ -60,7 +60,7 @@ public class OverlayDockingRocket extends Overlay
                 mc.fontRenderer.drawString(targetMotionYStr, width - mc.fontRenderer.getStringWidth(targetMotionYStr) - 50, height / 3.0F + 50, grey);
                 mc.fontRenderer.drawString(currentMotionYStr, width - mc.fontRenderer.getStringWidth(currentMotionYStr) - 50, height / 3.0F + 35, grey);
 
-                mc.fontRenderer.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from.name"), 50, height / 3.0F + 15, grey);
+                mc.fontRenderer.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from"), 50, height / 3.0F + 15, grey);
                 mc.fontRenderer.drawString("X: " + dXStr, 50, height / 3.0F + 35, Math.abs(dX) > 15 ? red : grey);
                 mc.fontRenderer.drawString("Y: " + dYStr, 50, height / 3.0F + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : ticks / 10 % 2 == 0 ? red : grey);
                 mc.fontRenderer.drawString("Z: " + dZStr, 50, height / 3.0F + 55, Math.abs(dZ) > 15 ? red : grey);

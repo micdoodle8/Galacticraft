@@ -18,8 +18,14 @@ import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSolarArrayControll
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.DimensionVenus;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerSolarArrayController;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -28,13 +34,15 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-public class TileEntitySolarArrayController extends TileBaseUniversalElectricalSource implements IDisableableMachine, IInventoryDefaults, ISidedInventory, IConnector
+public class TileEntitySolarArrayController extends TileBaseUniversalElectricalSource implements IDisableableMachine, IInventoryDefaults, ISidedInventory, IConnector, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.solarArrayController)
     public static TileEntityType<TileEntitySolarArrayController> TYPE;
@@ -359,5 +367,17 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     public int getActualArraySize()
     {
         return (connectedInfo >> 16) & 0xFFFF;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerSolarArrayController(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.solar_array_controller");
     }
 }

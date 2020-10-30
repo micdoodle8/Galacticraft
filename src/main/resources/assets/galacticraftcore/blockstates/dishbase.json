@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftcore:block/dishbase_model" }
+        "": { "model": "galacticraftcore:block/dishbase_model" }
     }
 }

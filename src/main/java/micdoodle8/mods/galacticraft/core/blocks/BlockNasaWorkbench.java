@@ -154,8 +154,11 @@ public class BlockNasaWorkbench extends Block implements IShiftDescription, IPar
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
-        SimpleNamedContainerProvider container = SchematicRegistry.getMatchingRecipeForID(0).getContainerProvider(playerIn);
-        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+        if (!worldIn.isRemote)
+        {
+            SimpleNamedContainerProvider container = SchematicRegistry.getMatchingRecipeForID(0).getContainerProvider(playerIn);
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, container, buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
     }
 
@@ -213,13 +216,5 @@ public class BlockNasaWorkbench extends Block implements IShiftDescription, IPar
         super.eventReceived(state, worldIn, pos, id, param);
         TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(id, param);
-    }
-
-    @Override
-    @Nullable
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 }

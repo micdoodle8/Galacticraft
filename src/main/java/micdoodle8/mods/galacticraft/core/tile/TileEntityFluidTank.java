@@ -113,7 +113,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         TileEntityFluidTank toFill = getLastTank();
 
         FluidStack fluid = toFill.fluidTank.getFluid();
-        if (fluid != null && fluid.getAmount() > 0 && !fluid.isFluidEqual(copy))
+        if (!fluid.isEmpty() && fluid.getAmount() > 0 && !fluid.isFluidEqual(copy))
         {
             return 0;
         }
@@ -153,7 +153,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     {
         TileEntityFluidTank last = getLastTank();
         FluidStack stack = last.fluidTank.drain(maxDrain, action);
-        if (action.execute() && stack != null && stack.getAmount() > 0)
+        if (action.execute() && !stack.isEmpty() && stack.getAmount() > 0)
         {
             last.updateClient = true;
         }
@@ -363,6 +363,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         {
             nbt.put("fuelTank", this.fluidTank.writeToNBT(new CompoundNBT()));
         }
+
         return nbt;
     }
 
@@ -449,7 +450,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
 
             if (fluidName.equals(""))
             {
-                fluidTank.setFluid(null);
+                fluidTank.setFluid(FluidStack.EMPTY);
             }
             else
             {

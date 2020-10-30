@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
@@ -11,8 +10,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -62,14 +59,14 @@ public class GuiCircuitFabricator extends GuiContainerGC<ContainerCircuitFabrica
 
         if (this.fabricator.processTicks > 0)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running");
         }
         else
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle");
         }
 
-        String str = GCCoreUtil.translate("gui.message.status.name") + ":";
+        String str = GCCoreUtil.translate("gui.message.status") + ":";
         this.font.drawString(str, 115 - this.font.getStringWidth(str) / 2, 80, 4210752);
         displayText = this.fabricator.getGUIstatus(displayText, null, true);
         this.font.drawString(displayText, 115 - this.font.getStringWidth(displayText) / 2, 90, 4210752);

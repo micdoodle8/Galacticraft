@@ -27,7 +27,7 @@ public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implem
     public GuiSchematicInput(ContainerSchematic container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerSchematic(playerInv, pos), playerInv, new TranslationTextComponent("gui.message.addnewsch.name"), pos);
+//        super(new ContainerSchematic(playerInv, pos), playerInv, new TranslationTextComponent("gui.message.addnewsch"), pos);
     }
 
     @Override
@@ -41,15 +41,15 @@ public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implem
         schematicSlotDesc.add(GCCoreUtil.translate("gui.new_schematic.slot.desc.2"));
         schematicSlotDesc.add(GCCoreUtil.translate("gui.new_schematic.slot.desc.3"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 79, (this.height - this.ySize) / 2, 18, 18, schematicSlotDesc, this.width, this.height, this));
-        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back"), (button) ->
         {
             SchematicRegistry.flipToPrevPage(this, this.pageIndex);
         }));
-        this.buttons.add(nextButton = new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
+        this.buttons.add(nextButton = new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next"), (button) ->
         {
             SchematicRegistry.flipToNextPage(this, this.pageIndex);
         }));
-        this.buttons.add(new Button(this.width / 2 - 92 / 2, this.height / 2 - 52, 92, 20, GCCoreUtil.translate("gui.button.unlockschematic.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 92 / 2, this.height / 2 - 52, 92, 20, GCCoreUtil.translate("gui.button.unlockschematic"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UNLOCK_NEW_SCHEMATIC, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{}));
         }));
@@ -59,7 +59,7 @@ public class GuiSchematicInput extends GuiContainerGC<ContainerSchematic> implem
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(GCCoreUtil.translate("gui.message.addnewsch.name"), 7, -22, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.addnewsch"), 7, -22, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, 56, 4210752);
     }
 

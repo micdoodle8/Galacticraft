@@ -8,9 +8,14 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
@@ -19,6 +24,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
@@ -26,7 +33,7 @@ import net.minecraftforge.registries.ObjectHolder;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMachineSides
+public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMachineSides, INamedContainerProvider
 {
     public static class TileEntityElectricFurnaceT1 extends TileEntityElectricFurnace
     {
@@ -453,4 +460,16 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerElectricFurnace(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.electric_furnace");
+    }
 }

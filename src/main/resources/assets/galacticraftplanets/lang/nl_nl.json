@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Astroïde Lander",
-  "container.launchcontroller": "Lanceer Controleur",
+  "container.launch_controller": "Lanceer Controleur",
   "container.mars_lander": "Landing Balonnen",
   "container.short_range_telepad": "Klein Bereik Teleporter",
   "container.tile_terraformer": "Terraformer",
@@ -279,12 +279,12 @@
   "block.galacticraftplanets.treasure_t2": "Tier 2 Schatkist",
   "block.galacticraftplanets.treasure_t3.description": "Tier 3 Schatkisten zijn op dit moment ongebruikt.",
   "block.galacticraftplanets.treasure_t3": "Tier 3 Schatkist",
-  "block.galacticraftplanets.walkway.walkway.description": "Loopbruggen worden gebruikt voor decoratieve doeleinden, je kan het gebruiken om blokken te verbinden.",
-  "block.galacticraftplanets.walkway.walkway": "Passage",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Zuurstof bepijpte loopbruggen worden gebruikt om pijpen onder een volledig solide oppervlakte te hebben.",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Passage",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Aluminium bedrade Loopbruggen worden gebruikt om draden onder een volledig solide oppervlakte te hebben.",
-  "block.galacticraftplanets.walkway.walkway_wire": "Passage",
+  "block.galacticraftplanets.walkway.description": "Loopbruggen worden gebruikt voor decoratieve doeleinden, je kan het gebruiken om blokken te verbinden.",
+  "block.galacticraftplanets.walkway": "Passage",
+  "block.galacticraftplanets.walkway_fluid.description": "Zuurstof bepijpte loopbruggen worden gebruikt om pijpen onder een volledig solide oppervlakte te hebben.",
+  "block.galacticraftplanets.walkway_fluid": "Passage",
+  "block.galacticraftplanets.walkway_wire.description": "Aluminium bedrade Loopbruggen worden gebruikt om draden onder een volledig solide oppervlakte te hebben.",
+  "block.galacticraftplanets.walkway_wire": "Passage",
   "block.galacticraftplanets.wall_gc.mars": "Mars Keistenen Muur",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Mars Kerker Steen"
 }

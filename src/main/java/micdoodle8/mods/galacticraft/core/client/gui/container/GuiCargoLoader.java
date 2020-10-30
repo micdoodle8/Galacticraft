@@ -4,7 +4,8 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
@@ -52,7 +53,7 @@ public class GuiCargoLoader extends GuiContainerGC<ContainerCargoLoader>
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 9, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
-        this.buttons.add(this.buttonLoadItems = new Button(this.width / 2 - 1, this.height / 2 - 23, 76, 20, GCCoreUtil.translate("gui.button.loaditems.name"), (button) ->
+        this.buttons.add(this.buttonLoadItems = new Button(this.width / 2 - 1, this.height / 2 - 23, 76, 20, GCCoreUtil.translate("gui.button.loaditems"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.cargoLoader.getWorld()), new Object[]{this.cargoLoader.getPos(), 0}));
         }));
@@ -65,8 +66,8 @@ public class GuiCargoLoader extends GuiContainerGC<ContainerCargoLoader>
         int offsetY = 45;
         this.font.drawString(this.title.getFormattedText(), 60, 12, 4210752);
         this.buttonLoadItems.active = this.cargoLoader.disableCooldown == 0;
-        this.buttonLoadItems.setMessage(!this.cargoLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading.name") : GCCoreUtil.translate("gui.button.loaditems.name"));
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+        this.buttonLoadItems.setMessage(!this.cargoLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading") : GCCoreUtil.translate("gui.button.loaditems"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
         //this.font.drawString("" + this.cargoLoader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
     }
@@ -75,22 +76,22 @@ public class GuiCargoLoader extends GuiContainerGC<ContainerCargoLoader>
     {
         if (this.cargoLoader.outOfItems)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noitems.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noitems");
         }
 
         if (this.cargoLoader.noTarget)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.notargetload.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.notargetload");
         }
 
         if (this.cargoLoader.targetNoInventory)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noinvtarget.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.noinvtarget");
         }
 
         if (this.cargoLoader.targetFull)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.targetfull.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.targetfull");
         }
 
         return this.cargoLoader.getGUIstatus();

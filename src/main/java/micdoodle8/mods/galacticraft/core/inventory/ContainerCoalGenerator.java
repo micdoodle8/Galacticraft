@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,18 +20,18 @@ public class ContainerCoalGenerator extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.COAL_GENERATOR)
     public static ContainerType<ContainerCoalGenerator> TYPE;
 
-    private final IInventory inventory;
+    private final TileEntityCoalGenerator generator;
 
-    public ContainerCoalGenerator(int containerId, PlayerInventory playerInv)
-    {
-        this(containerId, playerInv, new Inventory(1));
-    }
+//    public ContainerCoalGenerator(int containerId, PlayerInventory playerInv)
+//    {
+//        this(containerId, playerInv, new Inventory(1));
+//    }
 
-    public ContainerCoalGenerator(int containerId, PlayerInventory playerInv, IInventory inventory)
+    public ContainerCoalGenerator(int containerId, PlayerInventory playerInv, TileEntityCoalGenerator generator)
     {
         super(TYPE, containerId);
-        this.inventory = inventory;
-        this.addSlot(new SlotSpecific(inventory, 0, 33, 34, new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK))));
+        this.generator = generator;
+        this.addSlot(new SlotSpecific(generator, 0, 33, 34, new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK))));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -47,6 +48,11 @@ public class ContainerCoalGenerator extends Container
         }
     }
 
+    public TileEntityCoalGenerator getGenerator()
+    {
+        return generator;
+    }
+
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
@@ -56,7 +62,7 @@ public class ContainerCoalGenerator extends Container
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.inventory.isUsableByPlayer(par1EntityPlayer);
+        return this.generator.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

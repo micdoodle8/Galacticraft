@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class EnergyUtil
 {
@@ -65,17 +66,25 @@ public class EnergyUtil
 
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
+        return getAdjacentPowerConnections(new BlockVec3(tile), tile.getWorld(), (dir) -> !(tile instanceof IConductor) || ((IConductor) tile).canConnect(dir, NetworkType.POWER));
+    }
+
+    public static TileEntity[] getAdjacentPowerConnections(BlockVec3 pos, World world, Predicate<Direction> canConnect)
+    {
         final TileEntity[] adjacentConnections = new TileEntity[6];
 
-        BlockVec3 thisVec = new BlockVec3(tile);
         for (Direction direction : Direction.values())
         {
-            if (tile instanceof IConductor && !((IConductor) tile).canConnect(direction, NetworkType.POWER))
+            if (!canConnect.test(direction))
             {
                 continue;
             }
+//            if (tile instanceof IConductor && !((IConductor) tile).canConnect(direction, NetworkType.POWER))
+//            {
+//                continue;
+//            }
 
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+            TileEntity tileEntity = pos.getTileEntityOnSide(world, direction);
 
             if (tileEntity == null)
             {

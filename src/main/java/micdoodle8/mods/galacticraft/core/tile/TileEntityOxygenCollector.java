@@ -8,14 +8,22 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
@@ -25,7 +33,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
-public class TileEntityOxygenCollector extends TileEntityOxygen
+public class TileEntityOxygenCollector extends TileEntityOxygen implements INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenCollector)
     public static TileEntityType<TileEntityOxygenCollector> TYPE;
@@ -292,5 +300,17 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
     public int getOxygenProvide(Direction direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerOxygenCollector(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.oxygen_collector");
     }
 }

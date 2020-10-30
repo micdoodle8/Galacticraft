@@ -73,7 +73,7 @@ public class ItemOxygenTank extends Item implements ISortable, IClickableItem
     @Override
     public EnumSortCategory getCategory()
     {
-        return EnumSortCategory.GEAR;
+        return EnumSortCategory.TANKS;
     }
 
     @Override

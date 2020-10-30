@@ -35,7 +35,7 @@ public class GuiOxygenDistributor extends GuiContainerGC<ContainerOxygenDistribu
     public GuiOxygenDistributor(ContainerOxygenDistributor container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerOxygenDistributor(playerInv, distributor), playerInv, new TranslationTextComponent("container.oxygendistributor.name"));
+//        super(new ContainerOxygenDistributor(playerInv, distributor), playerInv, new TranslationTextComponent("container.oxygen_distributor"));
         this.distributor = container.getDistributor();
         this.ySize = 180;
     }
@@ -72,7 +72,7 @@ public class GuiOxygenDistributor extends GuiContainerGC<ContainerOxygenDistribu
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.checkboxRenderBubble = new GuiElementCheckbox(this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubble_visible.name"));
+        this.checkboxRenderBubble = new GuiElementCheckbox(this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubble_visible"));
         this.buttons.add(this.checkboxRenderBubble);
     }
 
@@ -80,9 +80,9 @@ public class GuiOxygenDistributor extends GuiContainerGC<ContainerOxygenDistribu
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
-        String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 26, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 38, 4210752, this.font);
+        String status = GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus();
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + this.distributor.oxygenPerTick * 20 + GCCoreUtil.translate("gui.per_second");
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 60, 4210752);
@@ -97,7 +97,7 @@ public class GuiOxygenDistributor extends GuiContainerGC<ContainerOxygenDistribu
     {
         if (this.distributor.getOxygenStored() < this.distributor.oxygenPerTick)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen");
         }
 
         return this.distributor.getGUIstatus();

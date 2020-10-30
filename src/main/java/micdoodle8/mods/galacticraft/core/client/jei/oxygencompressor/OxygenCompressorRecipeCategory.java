@@ -29,7 +29,7 @@
 //    public OxygenCompressorRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(compressorTexture, 3, 4, 168, 80);
-//        this.localizedName = GCCoreUtil.translate("tile.oxygen_compressor.0.name");
+//        this.localizedName = GCCoreUtil.translate("tile.oxygen_compressor.0");
 //
 //        IDrawableStatic progressBarDrawableO2 = guiHelper.createDrawable(compressorTexture, 197, 7, 54, 7);
 //        this.oxygenBar = guiHelper.createAnimatedDrawable(progressBarDrawableO2, 70, IDrawableAnimated.StartDirection.RIGHT, true);

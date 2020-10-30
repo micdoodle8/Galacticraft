@@ -321,7 +321,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
 //    @Override
 //    public String getName()
 //    {
-//        return GCCoreUtil.translate("entity.astro_miner.name");
+//        return GCCoreUtil.translate("entity.astro_miner");
 //    }
 
     @Override
@@ -2414,7 +2414,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
         switch (data[4])
         {
         case EntityAstroMiner.AISTATE_STUCK:
-            str[0] = GCCoreUtil.translate("gui.message.no_energy.name");
+            str[0] = GCCoreUtil.translate("gui.message.no_energy");
             break;
         case EntityAstroMiner.AISTATE_ATBASE:
             str[0] = GCCoreUtil.translate("gui.miner.docked");

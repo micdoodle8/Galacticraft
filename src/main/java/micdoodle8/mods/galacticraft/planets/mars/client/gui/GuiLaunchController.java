@@ -74,8 +74,8 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
             this.hideDestinationFrequency.active = isOwner;
         }
 
-        this.enableControllerButton.setMessage(this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name"));
-        this.hideDestinationFrequency.setMessage(!this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhide_dest.name") : GCCoreUtil.translate("gui.button.hide_dest.name"));
+        this.enableControllerButton.setMessage(this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable") : GCCoreUtil.translate("gui.button.disable"));
+        this.hideDestinationFrequency.setMessage(!this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhide_dest") : GCCoreUtil.translate("gui.button.hide_dest"));
         // Hacky way of rendering buttons properly, possibly bugs here:
         List<Widget> buttonList = new ArrayList<>(this.buttons);
 //        List<GuiLabel> labelList = new ArrayList<>(this.labelList);
@@ -184,7 +184,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         this.buttons.clear();
         final int xLeft = (this.width - this.xSize) / 2;
         final int yTop = (this.height - this.ySize) / 2;
-        this.enableControllerButton = new Button(xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        this.enableControllerButton = new Button(xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable"), (button) ->
         {
             if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
             {
@@ -195,7 +195,7 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         });
         this.frequency = new GuiElementTextBox(this, xLeft + 66, yTop + 16, 48, 20, "", true, 6, false);
         this.destinationFrequency = new GuiElementTextBox(this, xLeft + 45, yTop + 16 + 22, 48, 20, "", true, 6, false);
-        this.hideDestinationFrequency = new Button(xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"), (button) ->
+        this.hideDestinationFrequency = new Button(xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest"), (button) ->
         {
             if (!PlayerUtil.getName(this.minecraft.player).equals(this.launchController.getOwnerUUID()))
             {
@@ -264,8 +264,8 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
         //		this.font.drawString(displayString, this.xSize - 26 - this.font.getStringWidth(displayString), 94, 4210752);
         //		displayString = ElectricityDisplay.getDisplay(this.launchController.getVoltage(), ElectricUnit.VOLTAGE);
         //		this.font.drawString(displayString, this.xSize - 26 - this.font.getStringWidth(displayString), 104, 4210752);
-        this.font.drawString(GCCoreUtil.translate("gui.message.frequency.name") + ":", 7, 22, 4210752);
-        this.font.drawString(GCCoreUtil.translate("gui.message.dest_frequency.name") + ":", 7, 44, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.frequency") + ":", 7, 22, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.dest_frequency") + ":", 7, 44, 4210752);
 
     }
 
@@ -273,20 +273,20 @@ public class GuiLaunchController extends GuiContainerGC<ContainerLaunchControlle
     {
         if (!this.launchController.frequencyValid)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_freq.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_freq");
         }
 
         if (this.launchController.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy");
         }
 
         if (this.launchController.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.active");
     }
 
     @Override

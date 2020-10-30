@@ -21,24 +21,24 @@ public class ContainerElectricFurnace extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ELECTRIC_FURNACE)
     public static ContainerType<ContainerElectricFurnace> TYPE;
 
-    private final TileEntityElectricFurnace tile;
+    private final TileEntityElectricFurnace furnace;
 
-    public ContainerElectricFurnace(int containerId, PlayerInventory playerInv, TileEntityElectricFurnace tile)
+    public ContainerElectricFurnace(int containerId, PlayerInventory playerInv, TileEntityElectricFurnace furnace)
     {
         super(TYPE, containerId);
-        this.tile = tile;
+        this.furnace = furnace;
 
         // Electric Input Slot
-        this.addSlot(new SlotSpecific(tile, 0, 8, 49, IItemElectric.class));
+        this.addSlot(new SlotSpecific(furnace, 0, 8, 49, IItemElectric.class));
 
         // To be smelted
-        this.addSlot(new Slot(tile, 1, 56, 25));
+        this.addSlot(new Slot(furnace, 1, 56, 25));
 
         // Smelting result
-        this.addSlot(new FurnaceResultSlot(playerInv.player, tile, 2, 109, 25));
-        if (tile.getSizeInventory() > 2)
+        this.addSlot(new FurnaceResultSlot(playerInv.player, furnace, 2, 109, 25));
+        if (furnace.getSizeInventory() > 2)
         {
-            this.addSlot(new FurnaceResultSlot(playerInv.player, tile, 3, 127, 25));
+            this.addSlot(new FurnaceResultSlot(playerInv.player, furnace, 3, 127, 25));
         }
         int var3;
 
@@ -55,22 +55,27 @@ public class ContainerElectricFurnace extends Container
             this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 142));
         }
 
-        tile.openInventory(playerInv.player);
+        furnace.openInventory(playerInv.player);
 //        inventory.playersUsing.add(playerInv.player);
+    }
+
+    public TileEntityElectricFurnace getFurnace()
+    {
+        return furnace;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity player)
     {
         super.onContainerClosed(player);
-        tile.closeInventory(player);
+        furnace.closeInventory(player);
 //        this.inventory.playersUsing.remove(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tile.isUsableByPlayer(par1EntityPlayer);
+        return this.furnace.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -82,7 +87,7 @@ public class ContainerElectricFurnace extends Container
     {
         ItemStack var2 = ItemStack.EMPTY;
         Slot var3 = this.inventorySlots.get(par1);
-        int off = this.tile.getSizeInventory() > 2 ? 1 : 0;
+        int off = this.furnace.getSizeInventory() > 2 ? 1 : 0;
 
         if (var3 != null && var3.getHasStack())
         {

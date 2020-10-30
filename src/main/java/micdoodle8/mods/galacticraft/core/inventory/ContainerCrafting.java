@@ -111,7 +111,7 @@ public class ContainerCrafting extends Container
     {
         World world = tileCrafting.getWorld();
         Optional<ICraftingRecipe> optional = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING, this.craftMatrix, world);
-        this.craftResult.setInventorySlotContents(0, optional.get().getCraftingResult(this.craftMatrix));
+        this.craftResult.setInventorySlotContents(0, optional.isPresent() ? optional.get().getCraftingResult(this.craftMatrix) : ItemStack.EMPTY);
     }
 
     /**

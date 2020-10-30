@@ -49,7 +49,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
     {
         this.enableControllerButton.active = this.telepad.disableCooldown <= 0;
 
-        this.enableControllerButton.setMessage(this.telepad.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name"));
+        this.enableControllerButton.setMessage(this.telepad.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable") : GCCoreUtil.translate("gui.button.disable"));
 
         super.render(mouseX, mouseY, partialTicks);
     }
@@ -80,7 +80,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableControllerButton = new Button(var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        this.enableControllerButton = new Button(var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.telepad.getPos(), 0}));
         });
@@ -120,8 +120,8 @@ public class GuiShortRangeTelepad extends GuiContainerGC<ContainerShortRangeTele
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 5, 4210752);
 
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
-        this.font.drawString(GCCoreUtil.translate("gui.message.address.name") + ":", 7, 22, 4210752);
-        this.font.drawString(GCCoreUtil.translate("gui.message.dest_address.name") + ":", 7, 44, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.address") + ":", 7, 22, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.dest_address") + ":", 7, 44, 4210752);
         this.font.drawString(this.telepad.getReceivingStatus(), 7, 66, 4210752);
         if (!this.telepad.getReceivingStatus().equals(this.telepad.getSendingStatus()))
         {

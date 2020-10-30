@@ -8,6 +8,8 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerDeconstructor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerPainter;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
@@ -16,7 +18,10 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
@@ -26,6 +31,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.registries.ObjectHolder;
@@ -34,7 +41,7 @@ import java.util.*;
 
 //import net.minecraft.item.EnumDyeColor;
 
-public class TileEntityPainter extends TileEntityInventory implements IDisableableMachine, IPacketReceiver
+public class TileEntityPainter extends TileEntityInventory implements IDisableableMachine, IPacketReceiver, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.painter)
     public static TileEntityType<TileEntityPainter> TYPE;
@@ -367,5 +374,17 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
 //        } TODO Biomes o plenty support
 
         return -1;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerPainter(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.painter");
     }
 }

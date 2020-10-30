@@ -27,8 +27,8 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
     public GuiIngotCompressor(ContainerIngotCompressor container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent("tile.machine.3.name"));
-        this.compressor = compressor;
+//        super(new ContainerIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent("tile.machine.3"));
+        this.compressor = container.getCompressor();
         this.ySize = 192;
     }
 
@@ -52,20 +52,20 @@ public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.font.drawString(this.title.getFormattedText(), 10, 6, 4210752);
-        String displayText = GCCoreUtil.translate("gui.message.fuel.name") + ":";
+        String displayText = GCCoreUtil.translate("gui.message.fuel") + ":";
         this.font.drawString(displayText, 50 - this.font.getStringWidth(displayText), 79, 4210752);
 
         if (this.compressor.processTicks > 0)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.compressing.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.compressing");
         }
         else
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle");
         }
 
-        String str = GCCoreUtil.translate("gui.message.status.name") + ":";
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 120 - this.font.getStringWidth(str) / 2, 70, 4210752);
+        String str = GCCoreUtil.translate("gui.message.status") + ":";
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ":", 120 - this.font.getStringWidth(str) / 2, 70, 4210752);
         str = displayText;
         this.font.drawString(displayText, 120 - this.font.getStringWidth(str) / 2, 80, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);

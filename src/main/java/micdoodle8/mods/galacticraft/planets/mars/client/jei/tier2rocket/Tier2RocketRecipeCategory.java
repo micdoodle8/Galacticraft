@@ -26,7 +26,7 @@
 //    public Tier2RocketRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(rocketGuiTexture, 0, 0, 168, 126);
-//        this.localizedName = GCCoreUtil.translate("tile.rocket_workbench.name");
+//        this.localizedName = GCCoreUtil.translate("tile.rocket_workbench");
 //
 //    }
 //

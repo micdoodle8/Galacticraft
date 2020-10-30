@@ -31,11 +31,11 @@
 //    {
 //        if (itemStack.getDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_WIRE.getMeta())
 //        {
-//            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate("tile.aluminum_wire.alu_wire.name"));
+//            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate("tile.aluminum_wire.alu_wire"));
 //        }
 //        else if (itemStack.getDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_PIPE.getMeta())
 //        {
-//            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate(GCBlocks.fluidPipe.getUnlocalizedName() + ".name"));
+//            tooltip.add(EnumColor.AQUA + GCCoreUtil.translate(GCBlocks.fluidPipe.getUnlocalizedName() + ""));
 //        }
 //
 //        super.addInformation(itemStack, worldIn, tooltip, flagIn);

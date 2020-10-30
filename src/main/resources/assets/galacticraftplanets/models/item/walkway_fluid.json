@@ -1,5 +1,5 @@
 {
-    "parent":"galacticraftplanets:block/walkway_oxygen_neswd",
+    "parent":"galacticraftplanets:block/walkway_oxygen_inventory",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

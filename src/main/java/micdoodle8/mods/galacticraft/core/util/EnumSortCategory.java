@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.util;
 
 public enum EnumSortCategory
 {
+    TANKS,
     GEAR,
     ROCKET,
     CANISTER,

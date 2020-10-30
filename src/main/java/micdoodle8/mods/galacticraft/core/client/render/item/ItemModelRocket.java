@@ -22,110 +22,58 @@ public class ItemModelRocket extends ModelTransformWrapper
     {
         if (cameraTransformType == TransformType.GUI)
         {
+            float scale = 0.1525F;
             mat.push();
-            mat.translate(-0.1F, -0.1F, 0.0F);
-            mat.rotate(new Quaternion(55.0F, 225.0F, 0.0F, true));
-            mat.scale(0.61F, 0.61F, 0.61F);
-            mat.translate(-0.25F, -0.35F, 0.0F);
-            mat.rotate(new Quaternion(0.0F, Constants.halfPI, 0.0F, false));
-            mat.rotate(new Quaternion(Constants.halfPI / 4.0F, 0.0F, 0.0F, false));
-            mat.translate(-0.15F, 0.0F, -0.15F);
+            mat.translate(0.275F, -0.15F, 0.0F);
+            mat.rotate(new Quaternion(0.0F, -45.0F, 0.0F, true));
+            mat.rotate(new Quaternion(65.0F, 0.0F, 0.0F, true));
             mat.rotate(new Quaternion(0.0F, ClientUtil.getClientTimeTotal() / 1000.0F, 0.0F, false));
-            mat.translate(0.15F, 0.0F, 0.15F);
-            mat.scale(0.3F, 0.3F, 0.3F);
-            return false;
+            mat.scale(scale, scale, scale);
+            mat.translate(0.5D, 0.5D, 0.5D);
+            return true;
         }
 
         if (cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND)
         {
-//            Vector3f trans = new Vector3f(0.5F, -3.2F, -2.6F);
-//            Matrix4f ret = new Matrix4f();
-//            ret.setIdentity();
-//            Matrix4f mul = new Matrix4f();
-//            mul.setIdentity();
-//            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(0, 45, 0));
-//            mul.setRotation(rot);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.setScale(0.5F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotX(Constants.halfPI);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotZ(-0.65F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.setTranslation(trans);
-//            ret.mul(mul);
-//            return ret;
+            mat.push();
+            mat.rotate(new Quaternion(0.0F, 45.0F, 0.0F, true));
+            mat.scale(0.5F, 0.5F, 0.5F);
+            mat.rotate(new Quaternion(Constants.halfPI, 0.0F, 0.0F, false));
+            mat.rotate(new Quaternion(0.0F, 0.0F, -0.65F, false));
+            mat.translate(0.5F, -3.2F, -2.6F);
+            return true;
         }
 
         if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
-//            Vector3f trans = new Vector3f(0.4F, -2.8F, 1.2F);
-//            Matrix4f ret = new Matrix4f();
-//            ret.setIdentity();
-//            Matrix4f mul = new Matrix4f();
-//            mul.setIdentity();
-//            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(75, 0, 0));
-//            mul.setRotation(rot);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.setScale(0.5F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotZ(-Constants.halfPI);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotY(Constants.halfPI);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotX(0.2F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotZ(0.5F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotZ(-0.65F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.setTranslation(trans);
-//            ret.mul(mul);
-//            return ret;
+            mat.push();
+            mat.rotate(new Quaternion(75.0F, 0.0F, 0.0F, true));
+            mat.scale(0.5F, 0.5F, 0.5F);
+            mat.rotate(new Quaternion(0.0F, 0.0F, -Constants.halfPI, false));
+            mat.rotate(new Quaternion(0.0F, Constants.halfPI, 0.0F, false));
+            mat.rotate(new Quaternion(0.2F, 0.0F, 0.0F, false));
+            mat.rotate(new Quaternion(0.0F, 0.0F, 0.5F, false));
+            mat.rotate(new Quaternion(0.0F, 0.0F, -0.65F, false));
+            mat.translate(0.4F, -2.8F, 1.2F);
+            return true;
         }
 
         if (cameraTransformType == TransformType.GROUND)
         {
-//            Matrix4f ret = new Matrix4f();
-//            ret.setIdentity();
-//            Matrix4f mul = new Matrix4f();
-//            mul.setIdentity();
-//            mul.setScale(0.1F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.setTranslation(new Vector3f(0.5F, 0.0F, 0.5F));
-//            ret.mul(mul);
-//            return ret;
+            mat.push();
+            mat.scale(0.1F, 0.1F, 0.1F);
+            mat.translate(0.5F, 0.0F, 0.5F);
+            return true;
         }
+
         if (cameraTransformType == TransformType.FIXED)
         {
-//            Matrix4f ret = new Matrix4f();
-//            ret.setIdentity();
-//            Matrix4f mul = new Matrix4f();
-//            mul.setIdentity();
-//            mul.setScale(0.135F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.rotY(0.0F);
-//            ret.mul(mul);
-//            mul.setIdentity();
-//            mul.setTranslation(new Vector3f(0.5F, -2.75F, 0.5F));
-//            ret.mul(mul);
-//            return ret;
+            mat.push();
+            mat.scale(0.135F, 0.135F, 0.135F);
+            mat.translate(0.5F, -2.75F, 0.5F);
+            return true;
         }
 
         return false;
-//        return null;
     }
 }

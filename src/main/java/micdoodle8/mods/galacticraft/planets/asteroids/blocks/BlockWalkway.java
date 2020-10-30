@@ -2,21 +2,28 @@ package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTransmitter;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -308,7 +315,60 @@ public class BlockWalkway extends BlockTransmitter implements IShiftDescription,
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(NORTH, EAST, SOUTH, WEST, DOWN);
+        builder.add(NORTH, EAST, SOUTH, WEST, DOWN, UP);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return getDefaultState().with(UP, true).with(DOWN, false).with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false);
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        Object[] connectable = new Object[Direction.values().length];
+
+        TileEntity tileEntity = null;
+
+        if (stateIn.getBlock() != AsteroidBlocks.blockWalkway) // pipe or wire
+        {
+            tileEntity = worldIn.getTileEntity(currentPos);
+        }
+
+        for (Direction direction : Direction.values())
+        {
+            if (direction == Direction.UP || (direction == Direction.DOWN && tileEntity == null))
+            {
+                continue;
+            }
+
+            if (stateIn.getBlock() == AsteroidBlocks.blockWalkway)
+            {
+                BlockPos neighbour = currentPos.offset(direction);
+                BlockState neighbourState = worldIn.getBlockState(neighbour);
+
+                boolean sideSolid = neighbourState.isSolidSide(worldIn, neighbour, direction.getOpposite());
+                if (neighbourState.getBlock() == this || sideSolid)
+                {
+                    connectable[direction.ordinal()] = neighbourState.getBlock();
+                }
+            }
+            else if (tileEntity != null && stateIn.getBlock() == AsteroidBlocks.blockWalkwayFluid)
+            {
+                connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
+            }
+            else if (tileEntity != null && stateIn.getBlock() == AsteroidBlocks.blockWalkwayWire)
+            {
+                connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+            }
+        }
+
+        return stateIn.with(NORTH, connectable[Direction.NORTH.ordinal()] != null)
+                .with(EAST, connectable[Direction.EAST.ordinal()] != null)
+                .with(SOUTH, connectable[Direction.SOUTH.ordinal()] != null)
+                .with(WEST, connectable[Direction.WEST.ordinal()] != null)
+                .with(DOWN, connectable[Direction.DOWN.ordinal()] != null);
     }
 
 //    @Override

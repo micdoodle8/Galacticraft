@@ -28,8 +28,8 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
     public GuiElectricIngotCompressor(ContainerElectricIngotCompressor container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerElectricIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent(compressor.getTierGC() == 2 ? "tile.machine2.4.name" : "tile.machine4.11.name"));
-        this.compressor = compressor;
+//        super(new ContainerElectricIngotCompressor(playerInv, compressor), playerInv, new TranslationTextComponent(compressor.getTierGC() == 2 ? "tile.machine2.4" : "tile.machine4.11"));
+        this.compressor = container.getCompressor();
         this.ySize = 199;
     }
 
@@ -63,14 +63,14 @@ public class GuiElectricIngotCompressor extends GuiContainerGC<ContainerElectric
 
         if (this.compressor.processTicks > 0)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running");
         }
         else
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle");
         }
 
-        String str = GCCoreUtil.translate("gui.message.status.name") + ": " + this.compressor.getGUIstatus(displayText, null, true);
+        String str = GCCoreUtil.translate("gui.message.status") + ": " + this.compressor.getGUIstatus(displayText, null, true);
         this.font.drawString(str, 120 - this.font.getStringWidth(str) / 2, 75, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 //		str = "" + this.tileEntity.storage.getMaxExtract();

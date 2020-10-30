@@ -1,0 +1,12 @@
+{
+  "parent": "galacticraftcore:block/machine_tiered_rb",
+  "textures": {
+    "particle": "galacticraftcore:blocks/advanced/machine",
+    "front": "galacticraftcore:blocks/advanced/energy_storage_module_0",
+    "rear": "galacticraftcore:blocks/advanced/energy_storage_module_0",
+    "side": "galacticraftcore:blocks/advanced/machine",
+    "el_in": "galacticraftcore:blocks/advanced/machine_input",
+    "el_out": "galacticraftcore:blocks/advanced/machine_output",
+    "top": "galacticraftcore:blocks/advanced/machine",
+    "base": "galacticraftcore:blocks/advanced/machine" }
+}

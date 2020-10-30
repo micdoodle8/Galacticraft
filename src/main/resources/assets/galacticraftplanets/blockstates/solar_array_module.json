@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftplanets:solar_array_module" }
+        "": { "model": "galacticraftplanets:block/solar_array_module" }
     }
 }

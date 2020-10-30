@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Entry Pod",
-  "container.launchcontroller": "Controllore del lancio",
+  "container.launch_controller": "Controllore del lancio",
   "container.mars_lander": "Palloni da Atterraggio",
   "container.short_range_telepad": "Teletrasportatore a corto raggio",
   "container.tile_terraformer": "Terraformer",
@@ -279,12 +279,12 @@
   "block.galacticraftplanets.treasure_t2": "Cassa Del Tesoro Di Livello 2",
   "block.galacticraftplanets.treasure_t3.description": "Tier 3 Treasure Chests are currently unused.",
   "block.galacticraftplanets.treasure_t3": "Cassa Del Tesoro di Livello 3",
-  "block.galacticraftplanets.walkway.walkway.description": "Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.",
-  "block.galacticraftplanets.walkway.walkway": "Strada",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Oxygen Pipe Walkways are used for running pipes underneath a fully walkable surface.",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Strada",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Aluminum Wire Walkways are used for running wire underneath a fully walkable surface.",
-  "block.galacticraftplanets.walkway.walkway_wire": "Strada",
+  "block.galacticraftplanets.walkway.description": "Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme.",
+  "block.galacticraftplanets.walkway": "Strada",
+  "block.galacticraftplanets.walkway_fluid.description": "Oxygen Pipe Walkways are used for running pipes underneath a fully walkable surface.",
+  "block.galacticraftplanets.walkway_fluid": "Strada",
+  "block.galacticraftplanets.walkway_wire.description": "Aluminum Wire Walkways are used for running wire underneath a fully walkable surface.",
+  "block.galacticraftplanets.walkway_wire": "Strada",
   "block.galacticraftplanets.wall_gc.mars": "Muro In Pietrisco Di Marte",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Muro In Mattone Delle Segrete Di Marte"
 }

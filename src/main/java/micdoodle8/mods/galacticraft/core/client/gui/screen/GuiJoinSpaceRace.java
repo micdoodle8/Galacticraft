@@ -83,12 +83,12 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
             this.buttonFlag_xPosition = this.width / 2 - buttonFlag_width / 2;
             this.buttonFlag_yPosition = this.height / 2 - this.height / 3 + 10;
 
-            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close.name"), (button) ->
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - this.width / 3 + 15, this.height / 2 - this.height / 4 - 15, 50, 15, GCCoreUtil.translate("gui.space_race.create.close"), (button) ->
             {
                 this.thePlayer.closeScreen();
             }));
             int width = (int) (var5 / 1.0F);
-            this.buttons.add(new GuiElementGradientButton(this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join.name", this.spaceRaceData.getTeamName()), (button) ->
+            this.buttons.add(new GuiElementGradientButton(this.width / 2 - width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 60, width, 20, GCCoreUtil.translateWithFormat("gui.space_race.join", this.spaceRaceData.getTeamName()), (button) ->
             {
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID()}));
                 this.thePlayer.closeScreen();
@@ -114,10 +114,10 @@ public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, IText
 
         if (this.initialized)
         {
-            this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.join.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+            this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.join.title"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
             this.drawFlagButton(par1, par2);
-            this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.join.owner.name") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 25, ColorUtil.to32BitColor(255, 150, 150, 150));
-            this.drawCenteredString(this.font, GCCoreUtil.translateWithFormat("gui.space_race.join.member_count.name", this.spaceRaceData.getPlayerNames().size()), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 40, ColorUtil.to32BitColor(255, 150, 150, 150));
+            this.drawCenteredString(this.font, GCCoreUtil.translate("gui.space_race.join.owner") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 25, ColorUtil.to32BitColor(255, 150, 150, 150));
+            this.drawCenteredString(this.font, GCCoreUtil.translateWithFormat("gui.space_race.join.member_count", this.spaceRaceData.getPlayerNames().size()), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 40, ColorUtil.to32BitColor(255, 150, 150, 150));
             GL11.glPushMatrix();
             GL11.glTranslatef(this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 5 + Minecraft.getInstance().fontRenderer.FONT_HEIGHT / 2, 0);
             GL11.glScalef(1.5F, 1.5F, 1.0F);

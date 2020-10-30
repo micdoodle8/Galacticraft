@@ -30,7 +30,7 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
     public GuiOxygenCollector(ContainerOxygenCollector container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerOxygenCollector(playerInv, collector), playerInv, new TranslationTextComponent("container.oxygencollector.name"));
+//        super(new ContainerOxygenCollector(playerInv, collector), playerInv, new TranslationTextComponent("container.oxygen_collector"));
         this.collector = container.getCollector();
         this.ySize = 180;
     }
@@ -59,10 +59,10 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.out.name") + ":", 99, 25, 4210752, this.font);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 37, 4210752, this.font);
-        GCCoreUtil.drawStringCentered(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), this.xSize / 2, 50, 4210752, this.font);
-        String status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) (0.5F + Math.min(this.collector.lastOxygenCollected * 20F, TileEntityOxygenCollector.OUTPUT_PER_TICK * 20F)) + GCCoreUtil.translate("gui.per_second");
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.out") + ":", 99, 25, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 37, 4210752, this.font);
+        GCCoreUtil.drawStringCentered(GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus(), this.xSize / 2, 50, 4210752, this.font);
+        String status = GCCoreUtil.translate("gui.status.collecting") + ": " + (int) (0.5F + Math.min(this.collector.lastOxygenCollected * 20F, TileEntityOxygenCollector.OUTPUT_PER_TICK * 20F)) + GCCoreUtil.translate("gui.per_second");
         GCCoreUtil.drawStringCentered(status, this.xSize / 2, 60, 4210752, this.font);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
     }
@@ -71,9 +71,9 @@ public class GuiOxygenCollector extends GuiContainerGC<ContainerOxygenCollector>
     {
         String returnValue = this.collector.getGUIstatus();
 
-        if (returnValue.equals(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name")) && this.collector.lastOxygenCollected <= 0.0F)
+        if (returnValue.equals(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active")) && this.collector.lastOxygenCollected <= 0.0F)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingleaves.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingleaves");
         }
 
         return returnValue;

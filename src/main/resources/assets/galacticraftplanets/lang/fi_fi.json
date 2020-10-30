@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Entry Pod ##NEEDS TRANSLATE##",
-  "container.launchcontroller": "Launch Controller ##NEEDS TRANSLATE##",
+  "container.launch_controller": "Launch Controller ##NEEDS TRANSLATE##",
   "container.mars_lander": "Landing Balloons ##NEEDS TRANSLATE##",
   "container.short_range_telepad": "Short Range Telepad ##NEEDS TRANSLATE##",
   "container.tile_terraformer": "Terraformer ##NEEDS TRANSLATE##",
@@ -279,12 +279,12 @@
   "block.galacticraftplanets.treasure_t2": "Tier 2 Treasure Chest ##NEEDS TRANSLATE##",
   "block.galacticraftplanets.treasure_t3.description": "Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##",
   "block.galacticraftplanets.treasure_t3": "Tier 3 Treasure Chest ##NEEDS TRANSLATE##",
-  "block.galacticraftplanets.walkway.walkway.description": "Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##",
-  "block.galacticraftplanets.walkway.walkway": "Walkway ##NEEDS TRANSLATE##",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Walkway ##NEEDS TRANSLATE##",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##",
-  "block.galacticraftplanets.walkway.walkway_wire": "Walkway ##NEEDS TRANSLATE##",
+  "block.galacticraftplanets.walkway.description": "Walkways are used for decorative purposes, used for connecting blocks while maintaining a space theme. ##NEEDS TRANSLATE##",
+  "block.galacticraftplanets.walkway": "Walkway ##NEEDS TRANSLATE##",
+  "block.galacticraftplanets.walkway_fluid.description": "Oxygen Pipe Walkways are used for running pipes underneath a fully solid walkable surface. ##NEEDS TRANSLATE##",
+  "block.galacticraftplanets.walkway_fluid": "Walkway ##NEEDS TRANSLATE##",
+  "block.galacticraftplanets.walkway_wire.description": "Aluminum Wire Walkways are used for running wire underneath a fully solid walkable surface. ##NEEDS TRANSLATE##",
+  "block.galacticraftplanets.walkway_wire": "Walkway ##NEEDS TRANSLATE##",
   "block.galacticraftplanets.wall_gc.mars": "Mars Cobblestone Wall ##NEEDS TRANSLATE##",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Mars Dungeon Brick Wall ##NEEDS TRANSLATE##"
 }

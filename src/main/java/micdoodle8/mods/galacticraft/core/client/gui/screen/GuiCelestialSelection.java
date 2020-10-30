@@ -1513,7 +1513,7 @@ public class GuiCelestialSelection extends Screen
             this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
             GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
             this.blit(width / 2 - 43, TOP, 86, 15, 266, 0, 172, 29, false, false);
-            String str = GCCoreUtil.translate("gui.message.catalog.name").toUpperCase();
+            String str = GCCoreUtil.translate("gui.message.catalog").toUpperCase();
             this.font.drawString(str, width / 2 - this.font.getStringWidth(str) / 2, TOP + this.font.FONT_HEIGHT / 2, WHITE);
 
             if (this.selectedBody != null)
@@ -1530,7 +1530,7 @@ public class GuiCelestialSelection extends Screen
                 }
 
                 this.blit(LHS, TOP, 88, 13, 0, 392, 148, 22, false, false);
-                str = GCCoreUtil.translate("gui.message.back.name").toUpperCase();
+                str = GCCoreUtil.translate("gui.message.back").toUpperCase();
                 this.font.drawString(str, LHS + 45 - this.font.getStringWidth(str) / 2, TOP + this.font.FONT_HEIGHT / 2 - 2, WHITE);
 
                 this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
@@ -1557,51 +1557,51 @@ public class GuiCelestialSelection extends Screen
 //			str = this.selectedBody.getLocalizedName();
 //			this.font.drawString(str, posX + 20, fontPosY, GCCoreUtil.to32BitColor(255, 255, 255, 255));
 
-                str = GCCoreUtil.translate("gui.message.daynightcycle.name") + ":";
+                str = GCCoreUtil.translate("gui.message.daynightcycle") + ":";
                 this.font.drawString(str, posX + 5, fontPosY + 14, CYAN);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".daynightcycle.0.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".daynightcycle.0");
                 this.font.drawString(str, posX + 10, fontPosY + 25, WHITE);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".daynightcycle.1.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".daynightcycle.1");
                 if (!str.isEmpty())
                 {
                     this.font.drawString(str, posX + 10, fontPosY + 36, WHITE);
                 }
 
-                str = GCCoreUtil.translate("gui.message.surfacegravity.name") + ":";
+                str = GCCoreUtil.translate("gui.message.surfacegravity") + ":";
                 this.font.drawString(str, posX + 5, fontPosY + 50, CYAN);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacegravity.0.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacegravity.0");
                 this.font.drawString(str, posX + 10, fontPosY + 61, WHITE);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacegravity.1.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacegravity.1");
                 if (!str.isEmpty())
                 {
                     this.font.drawString(str, posX + 10, fontPosY + 72, WHITE);
                 }
 
-                str = GCCoreUtil.translate("gui.message.surfacecomposition.name") + ":";
+                str = GCCoreUtil.translate("gui.message.surfacecomposition") + ":";
                 this.font.drawString(str, posX + 5, fontPosY + 88, CYAN);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacecomposition.0.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacecomposition.0");
                 this.font.drawString(str, posX + 10, fontPosY + 99, WHITE);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacecomposition.1.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".surfacecomposition.1");
                 if (!str.isEmpty())
                 {
                     this.font.drawString(str, posX + 10, fontPosY + 110, WHITE);
                 }
 
-                str = GCCoreUtil.translate("gui.message.atmosphere.name") + ":";
+                str = GCCoreUtil.translate("gui.message.atmosphere") + ":";
                 this.font.drawString(str, posX + 5, fontPosY + 126, CYAN);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".atmosphere.0.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".atmosphere.0");
                 this.font.drawString(str, posX + 10, fontPosY + 137, WHITE);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".atmosphere.1.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".atmosphere.1");
                 if (!str.isEmpty())
                 {
                     this.font.drawString(str, posX + 10, fontPosY + 148, WHITE);
                 }
 
-                str = GCCoreUtil.translate("gui.message.meansurfacetemp.name") + ":";
+                str = GCCoreUtil.translate("gui.message.meansurfacetemp") + ":";
                 this.font.drawString(str, posX + 5, fontPosY + 165, CYAN);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".meansurfacetemp.0.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".meansurfacetemp.0");
                 this.font.drawString(str, posX + 10, fontPosY + 176, WHITE);
-                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".meansurfacetemp.1.name");
+                str = GCCoreUtil.translate("gui.message." + this.selectedBody.getName() + ".meansurfacetemp.1");
                 if (!str.isEmpty())
                 {
                     this.font.drawString(str, posX + 10, fontPosY + 187, WHITE);
@@ -1620,7 +1620,7 @@ public class GuiCelestialSelection extends Screen
             this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
             GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
             this.blit(LHS, TOP, 74, 11, 0, 392, 148, 22, false, false);
-            str = GCCoreUtil.translate("gui.message.catalog.name").toUpperCase();
+            str = GCCoreUtil.translate("gui.message.catalog").toUpperCase();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.font.drawString(str, LHS + 40 - font.getStringWidth(str) / 2, TOP + 1, WHITE);
 
@@ -1653,7 +1653,7 @@ public class GuiCelestialSelection extends Screen
                 GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
                 this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
                 this.blit(RHS - 74, TOP, 74, 11, 0, 392, 148, 22, true, false);
-                str = GCCoreUtil.translate("gui.message.exit.name").toUpperCase();
+                str = GCCoreUtil.translate("gui.message.exit").toUpperCase();
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 this.font.drawString(str, RHS - 40 - font.getStringWidth(str) / 2, TOP + 1, WHITE);
             }
@@ -1694,12 +1694,12 @@ public class GuiCelestialSelection extends Screen
 
                     if (this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(this.selectedStationOwner) == null)
                     {
-                        str = GCCoreUtil.translate("gui.message.select_ss.name");
+                        str = GCCoreUtil.translate("gui.message.select_ss");
                         this.drawSplitString(str, RHS - 47, TOP + 20, 91, WHITE, false, false);
                     }
                     else
                     {
-                        str = GCCoreUtil.translate("gui.message.ss_owner.name");
+                        str = GCCoreUtil.translate("gui.message.ss_owner");
                         this.font.drawString(str, RHS - 85, TOP + 18, WHITE);
                         str = this.selectedStationOwner;
                         this.font.drawString(str, RHS - 47 - this.font.getStringWidth(str) / 2, TOP + 30, WHITE);
@@ -1752,7 +1752,7 @@ public class GuiCelestialSelection extends Screen
                 {
                     GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
                     this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain1);
-                    int canCreateLength = Math.max(0, this.drawSplitString(GCCoreUtil.translate("gui.message.can_create_space_station.name"), 0, 0, 91, 0, true, true) - 2);
+                    int canCreateLength = Math.max(0, this.drawSplitString(GCCoreUtil.translate("gui.message.can_create_space_station"), 0, 0, 91, 0, true, true) - 2);
                     canCreateOffset = canCreateLength * this.font.FONT_HEIGHT;
 
                     this.blit(RHS - 95, TOP + 134, 93, 4, 159, 102, 93, 4, false, false);
@@ -1946,16 +1946,16 @@ public class GuiCelestialSelection extends Screen
                         this.blit(RHS - 95, TOP + 182 + canCreateOffset, 93, 12, 0, 174, 93, 12, false, false);
 
                         int color = (int) ((Math.sin(this.ticksSinceMenuOpenF / 5.0) * 0.5 + 0.5) * 255);
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.can_create_space_station.name"), RHS - 48, TOP + 137, 91, ColorUtil.to32BitColor(255, color, 255, color), true, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.can_create_space_station"), RHS - 48, TOP + 137, 91, ColorUtil.to32BitColor(255, color, 255, color), true, false);
 
                         if (!mapMode)
                         {
-                            this.drawSplitString(GCCoreUtil.translate("gui.message.create_ss.name").toUpperCase(), RHS - 48, TOP + 185 + canCreateOffset, 91, WHITE, false, false);
+                            this.drawSplitString(GCCoreUtil.translate("gui.message.create_ss").toUpperCase(), RHS - 48, TOP + 185 + canCreateOffset, 91, WHITE, false, false);
                         }
                     }
                     else
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.cannot_create_space_station.name"), RHS - 48, TOP + 138, 91, WHITE, true, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.cannot_create_space_station"), RHS - 48, TOP + 138, 91, WHITE, true, false);
                     }
                 }
 
@@ -1963,7 +1963,7 @@ public class GuiCelestialSelection extends Screen
                 this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.3F - Math.min(0.3F, this.ticksSinceSelectionF / 50.0F));
                 this.blit(LHS, TOP, 74, 11, 0, 392, 148, 22, false, false);
-                str = GCCoreUtil.translate("gui.message.catalog.name").toUpperCase();
+                str = GCCoreUtil.translate("gui.message.catalog").toUpperCase();
                 this.font.drawString(str, LHS + 40 - font.getStringWidth(str) / 2, TOP + 1, WHITE);
 
                 // Top bar title:
@@ -2000,7 +2000,7 @@ public class GuiCelestialSelection extends Screen
                     }
                     this.blit(width / 2 - 30, TOP + 11, 30, 11, 0, 414, 60, 22, false, false);
                     this.blit(width / 2, TOP + 11, 30, 11, 128, 414, 60, 22, false, false);
-                    str = GCCoreUtil.translateWithFormat("gui.message.tier.name", this.selectedBody.getTierRequirement() == 0 ? "?" : this.selectedBody.getTierRequirement());
+                    str = GCCoreUtil.translateWithFormat("gui.message.tier", this.selectedBody.getTierRequirement() == 0 ? "?" : this.selectedBody.getTierRequirement());
                     this.font.drawString(str, width / 2 - this.font.getStringWidth(str) / 2, TOP + 13, canReach ? GREY4 : RED3);
                 }
 
@@ -2008,7 +2008,7 @@ public class GuiCelestialSelection extends Screen
 
                 if (this.selectedBody instanceof Satellite)
                 {
-                    str = GCCoreUtil.translate("gui.message.rename.name").toUpperCase();
+                    str = GCCoreUtil.translate("gui.message.r").toUpperCase();
                 }
 
                 this.font.drawString(str, width / 2 - this.font.getStringWidth(str) / 2, TOP + 2, WHITE);
@@ -2031,7 +2031,7 @@ public class GuiCelestialSelection extends Screen
 
                     this.minecraft.textureManager.bindTexture(GuiCelestialSelection.guiMain0);
                     this.blit(RHS - 74, TOP, 74, 11, 0, 392, 148, 22, true, false);
-                    str = GCCoreUtil.translate("gui.message.launch.name").toUpperCase();
+                    str = GCCoreUtil.translate("gui.message.launch").toUpperCase();
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                     this.font.drawString(str, RHS - 40 - font.getStringWidth(str) / 2, TOP + 2, WHITE);
                 }
@@ -2055,19 +2055,19 @@ public class GuiCelestialSelection extends Screen
                     boolean flag1 = this.selectedBody instanceof Planet && GalaxyRegistry.getMoonsForPlanet((Planet) this.selectedBody).size() > 0;
                     if (flag0 && flag1)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.0.name"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 2 - sliderPos, 79, GREY5, false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.0"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 2 - sliderPos, 79, GREY5, false, false);
                     }
                     else if (!flag0 && flag1)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.1.name"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 6 - sliderPos, 79, GREY5, false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.1"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 6 - sliderPos, 79, GREY5, false, false);
                     }
                     else if (flag0)
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.2.name"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 6 - sliderPos, 79, GREY5, false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.2"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 6 - sliderPos, 79, GREY5, false, false);
                     }
                     else
                     {
-                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.3.name"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 11 - sliderPos, 79, GREY5, false, false);
+                        this.drawSplitString(GCCoreUtil.translate("gui.message.click_again.3"), RHS - 182 + 41, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE + 11 - sliderPos, 79, GREY5, false, false);
                     }
 
                 }
@@ -2082,11 +2082,11 @@ public class GuiCelestialSelection extends Screen
                     this.blit(width / 2 - 90 + 8, this.height / 2 - 38 + 18, 161, 13, 159, 67, 161, 13, false, false);
                     this.blit(width / 2 - 90 + 17, this.height / 2 - 38 + 59, 72, 12, 159, 80, 72, 12, true, false);
                     this.blit(width / 2, this.height / 2 - 38 + 59, 72, 12, 159, 80, 72, 12, false, false);
-                    str = GCCoreUtil.translate("gui.message.assign_name.name");
+                    str = GCCoreUtil.translate("gui.message.assign");
                     this.font.drawString(str, width / 2 - this.font.getStringWidth(str) / 2, this.height / 2 - 35, WHITE);
-                    str = GCCoreUtil.translate("gui.message.apply.name");
+                    str = GCCoreUtil.translate("gui.message.apply");
                     this.font.drawString(str, width / 2 - this.font.getStringWidth(str) / 2 - 36, this.height / 2 + 23, WHITE);
-                    str = GCCoreUtil.translate("gui.message.cancel.name");
+                    str = GCCoreUtil.translate("gui.message.cancel");
                     this.font.drawString(str, width / 2 + 36 - this.font.getStringWidth(str) / 2, this.height / 2 + 23, WHITE);
 
                     if (this.renamingString == null)

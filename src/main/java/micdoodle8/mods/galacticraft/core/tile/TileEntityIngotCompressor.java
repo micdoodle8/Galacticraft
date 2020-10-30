@@ -5,12 +5,17 @@ import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
@@ -21,6 +26,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
@@ -30,7 +37,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventoryDefaults, ISidedInventory
+public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventoryDefaults, ISidedInventory, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.ingotCompressor)
     public static TileEntityType<TileEntityIngotCompressor> TYPE;
@@ -580,5 +587,17 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     public boolean isNetworkedTile()
     {
         return true;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerIngotCompressor(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.compressor");
     }
 }

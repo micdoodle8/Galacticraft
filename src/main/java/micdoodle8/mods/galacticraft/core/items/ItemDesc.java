@@ -35,7 +35,7 @@ public abstract class ItemDesc extends Item implements IShiftDescription
             }
             else
             {
-                tooltip.add(new StringTextComponent(GCCoreUtil.translateWithFormat("item_desc.shift.name", Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName())));
+                tooltip.add(new StringTextComponent(GCCoreUtil.translateWithFormat("item_desc.shift", Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName())));
             }
         }
     }

@@ -227,7 +227,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortable
                 rocket = EntityCargoRocket.createEntityCargoRocket(Minecraft.getInstance().world, 0, 0, 0, EnumRocketType.values()[par1ItemStack.getDamage() - 10]);
             }
 
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTag().getInt("RocketFuel") + " / " + rocket.fuelTank.getCapacity()));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel") + ": " + par1ItemStack.getTag().getInt("RocketFuel") + " / " + rocket.fuelTank.getCapacity()));
         }
 
         if (par1ItemStack.getDamage() >= 10)

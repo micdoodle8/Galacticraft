@@ -101,7 +101,7 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     @Override
     public EnumSortCategory getCategory()
     {
-        return EnumSortCategory.GEAR;
+        return EnumSortCategory.TANKS;
     }
 
     @Override

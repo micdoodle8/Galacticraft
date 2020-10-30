@@ -110,7 +110,7 @@ public class BlockNames
     public static final String oreTinMoon = "ore_tin_moon";
     public static final String oreCheeseMoon = "ore_cheese_moon";
     public static final String oreSapphire = "ore_sapphire_moon";
-    public static final String moonDirt = "moon_dirt_moon";
+    public static final String moonDirt = "moon_dirt";
     public static final String moonStone = "moon_stone";
     public static final String moonTurf = "moon_turf";
     public static final String moonDungeonBrick = "moon_dungeon_brick";

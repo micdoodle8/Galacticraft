@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftcore:block/fallen_meteor_model" }
+        "": { "model": "galacticraftcore:block/fallen_meteor_model" }
     }
 }

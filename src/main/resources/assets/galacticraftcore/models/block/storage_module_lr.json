@@ -1,0 +1,12 @@
+{
+  "parent": "galacticraftcore:block/machine_tiered_lr",
+  "textures": {
+    "particle": "galacticraftcore:blocks/machine",
+    "front": "galacticraftcore:blocks/energy_storage_module_0",
+    "rear": "galacticraftcore:blocks/energy_storage_module_0",
+    "side": "galacticraftcore:blocks/machine",
+    "el_in": "galacticraftcore:blocks/machine_input",
+    "el_out": "galacticraftcore:blocks/machine_output",
+    "top": "galacticraftcore:blocks/machine",
+    "base": "galacticraftcore:blocks/machine" }
+}

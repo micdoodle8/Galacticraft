@@ -12,6 +12,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -56,11 +57,9 @@ public class BlockGeothermalGenerator extends BlockTileGC implements IShiftDescr
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-//        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-//        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
-        worldIn.setBlockState(pos, this.getDefaultState().with(FACING, placer.getHorizontalFacing()), 3);
+        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     @Override

@@ -120,7 +120,6 @@ public class VenusBlocks
 //    @ObjectHolder(VenusBlockNames.oreSolarDust)
 //    public static Block oreSolarDust;
 
-    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)
     {
         IForgeRegistry<Block> r = evt.getRegistry();
@@ -183,7 +182,6 @@ public class VenusBlocks
 //        reg.register(thing.setRegistryName(name));
 //    }
 
-    @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();

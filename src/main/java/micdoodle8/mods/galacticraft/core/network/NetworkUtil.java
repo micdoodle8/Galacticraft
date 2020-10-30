@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -72,6 +73,10 @@ public class NetworkUtil
             else if (dataValue instanceof Long)
             {
                 buffer.writeLong((Long) dataValue);
+            }
+            else if (dataValue instanceof DimensionType)
+            {
+                writeUTF8String(buffer, ((DimensionType) dataValue).getRegistryName().toString());
             }
             else if (dataValue instanceof EnergyStorage)
             {
@@ -196,10 +201,10 @@ public class NetworkUtil
                 buffer.writeInt(pos.getY());
                 buffer.writeInt(pos.getZ());
             }
-//            else if (dataValue instanceof DyeColor)
-//            {
-//                buffer.writeInt(((DyeColor) dataValue).getDyeDamage());
-//            }
+            else if (dataValue instanceof DyeColor)
+            {
+                buffer.writeInt(((DyeColor) dataValue).getId());
+            }
             else
             {
                 if (dataValue == null)
@@ -248,6 +253,10 @@ public class NetworkUtil
             else if (clazz.equals(Long.class))
             {
                 objList.add(buffer.readLong());
+            }
+            else if (clazz.equals(DimensionType.class))
+            {
+                objList.add(DimensionType.byName(new ResourceLocation(readUTF8String(buffer))));
             }
             else if (clazz.equals(byte[].class))
             {
@@ -385,6 +394,10 @@ public class NetworkUtil
         {
             return buffer.readLong();
         }
+        else if (dataValue.equals(DimensionType.class))
+        {
+            return DimensionType.byName(new ResourceLocation(readUTF8String(buffer)));
+        }
         else if (dataValue.equals(CompoundNBT.class))
         {
             return NetworkUtil.readNBTTagCompound(buffer);
@@ -439,10 +452,10 @@ public class NetworkUtil
         {
             return new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         }
-//        else if (dataValue.equals(DyeColor.class))
-//        {
-//            return DyeColor.byDyeDamage(buffer.readInt());
-//        }
+        else if (dataValue.equals(DyeColor.class))
+        {
+            return DyeColor.byId(buffer.readInt());
+        }
         else
         {
             Class<?> c = dataValue;

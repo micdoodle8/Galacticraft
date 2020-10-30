@@ -29,7 +29,7 @@ public class GuiParaChest extends GuiContainerGC<ContainerParaChest>
     public GuiParaChest(ContainerParaChest container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerParaChest(playerInv, parachest, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.parachest.name"));
+//        super(new ContainerParaChest(playerInv, parachest, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.para_chest"));
         this.playerInv = playerInv;
         this.parachest = container.getParaChest();
         this.passEvents = false;

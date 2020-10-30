@@ -4,16 +4,23 @@ import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ObjectHolder;
@@ -22,7 +29,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IMachineSides
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IMachineSides, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenStorageModule)
     public static TileEntityType<TileEntityOxygenStorageModule> TYPE;
@@ -374,4 +381,16 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerOxygenStorageModule(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.oxygen_storage");
+    }
 }

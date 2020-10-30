@@ -15,6 +15,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -311,12 +312,11 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         return true;
     }
 
-//    @Override
-//    public BlockState getStateFromMeta(int meta)
-//    {
-//        Direction enumfacing = Direction.byIndex(meta);
-//        return this.getDefaultState().with(FACING, enumfacing);
-//    }
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
+    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)

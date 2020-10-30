@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -71,11 +72,17 @@ public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, 
     {
 //        int metadata = getMetaFromState(state);
 
-        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
+//        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+//        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
 
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 3);
+//        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 3);
         BlockMulti.onPlacement(worldIn, pos, placer, this);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override

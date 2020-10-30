@@ -669,10 +669,10 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         {
             if (this.getPassengers().isEmpty())
             {
-                player.sendMessage(new StringTextComponent(KeyHandlerClient.leftKey.getLocalizedName() + " / " + KeyHandlerClient.rightKey.getLocalizedName() + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
-                player.sendMessage(new StringTextComponent(KeyHandlerClient.accelerateKey.getLocalizedName() + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
-                player.sendMessage(new StringTextComponent(KeyHandlerClient.decelerateKey.getLocalizedName() + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
-                player.sendMessage(new StringTextComponent(KeyHandlerClient.openFuelGui.getLocalizedName() + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
+                player.sendMessage(new StringTextComponent(KeyHandlerClient.leftKey.getLocalizedName() + " / " + KeyHandlerClient.rightKey.getLocalizedName() + "  - " + GCCoreUtil.translate("gui.buggy.turn")));
+                player.sendMessage(new StringTextComponent(KeyHandlerClient.accelerateKey.getLocalizedName() + "       - " + GCCoreUtil.translate("gui.buggy.accel")));
+                player.sendMessage(new StringTextComponent(KeyHandlerClient.decelerateKey.getLocalizedName() + "       - " + GCCoreUtil.translate("gui.buggy.decel")));
+                player.sendMessage(new StringTextComponent(KeyHandlerClient.openFuelGui.getLocalizedName() + "       - " + GCCoreUtil.translate("gui.buggy.inv")));
             }
 
             return true;

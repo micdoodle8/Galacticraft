@@ -109,8 +109,8 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC<ContainerLaunchC
         this.buttons.clear();
         final int xLeft = (this.width - this.xSize) / 2;
         final int yTop = (this.height - this.ySize) / 2;
-        this.enablePadRemovalButton = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
-        this.launchWhenCheckbox = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
+        this.enablePadRemovalButton = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad"));
+        this.launchWhenCheckbox = new GuiElementCheckbox(this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when") + ": ");
         this.dropdownTest = new GuiElementDropdown(this, xLeft + 52, yTop + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
         this.closeAdvancedConfig = new Button(xLeft + 5, yTop + 5, 20, 20, "<", (button) ->
         {

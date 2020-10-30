@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.DirectionProperty;
@@ -85,10 +86,16 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
     {
         if (!world.isRemote)
         {
-            INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerRefinery(w, p, (TileEntityRefinery) world.getTileEntity(pos)), new TranslationTextComponent("container.refinery.name"));
-            NetworkHooks.openGui((ServerPlayerEntity) entityPlayer, container, buf -> buf.writeBlockPos(pos));
+            NetworkHooks.openGui((ServerPlayerEntity) entityPlayer, getContainer(state, world, pos), buf -> buf.writeBlockPos(pos));
         }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
     @Nullable
@@ -104,12 +111,18 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
         return true;
     }
 
+//    @Override
+//    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+//    {
+////        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+////        worldIn.setBlockState(pos, getStateFromMeta(Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex()), 3);
+//        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+//    }
+
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-//        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-//        worldIn.setBlockState(pos, getStateFromMeta(Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex()), 3);
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override

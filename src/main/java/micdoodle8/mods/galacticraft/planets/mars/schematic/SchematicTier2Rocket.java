@@ -46,7 +46,7 @@ public class SchematicTier2Rocket implements ISchematicPage
     @Override
     public SimpleNamedContainerProvider getContainerProvider(PlayerEntity player)
     {
-        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicTier2Rocket(w, p), new TranslationTextComponent("container.schematic_tier2_rocket.name"));
+        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicTier2Rocket(w, p), new TranslationTextComponent("container.schematic_tier2_rocket"));
     }
 
     @Override

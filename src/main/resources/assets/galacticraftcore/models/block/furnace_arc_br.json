@@ -1,0 +1,12 @@
+{
+  "parent": "galacticraftcore:block/machine_tiered_br",
+  "textures": {
+    "particle": "galacticraftcore:blocks/advanced/machine",
+    "front": "galacticraftcore:blocks/advanced/electric_furnace",
+    "rear": "galacticraftcore:blocks/advanced/machine_side",
+    "side": "galacticraftcore:blocks/advanced/machine_side",
+    "el_in": "galacticraftcore:blocks/advanced/machine_input",
+    "el_out": "galacticraftcore:blocks/advanced/machine_side",
+    "top": "galacticraftcore:blocks/advanced/machine",
+    "base": "galacticraftcore:blocks/advanced/machine" }
+}

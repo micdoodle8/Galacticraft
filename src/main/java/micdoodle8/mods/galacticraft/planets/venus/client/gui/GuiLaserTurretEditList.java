@@ -62,22 +62,22 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             this.ySize = 144;
             this.xSize = 222;
             yTop = (this.height - this.ySize) / 2;
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name"), (button) ->
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player"), (button) ->
             {
                 mode = EnumMode.ADD_PLAYER;
                 init();
             }));
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name"), (button) ->
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity"), (button) ->
             {
                 mode = EnumMode.ADD_ENTITY;
                 init();
             }));
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name"), (button) ->
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected"), (button) ->
             {
                 GuiElementGradientList.ListElement selected = entityListElement.getSelectedElement();
                 if (selected != null)
                 {
-                    boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player.name") + ": ");
+                    boolean isPlayer = selected.value.contains(GCCoreUtil.translate("gui.message.player") + ": ");
                     String toSend = isPlayer ? selected.value.substring(8) : selected.value;
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_MODIFY_LASER_TARGET, GCCoreUtil.getDimensionType(laserTurret.getWorld()), new Object[]{isPlayer ? 2 : 3, laserTurret.getPos(), toSend}));
                     if (isPlayer)
@@ -103,7 +103,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             {
                 if (laserTurret.getPlayers().contains(alphabeticalList.get(i)))
                 {
-                    alphabeticalList.set(i, GCCoreUtil.translate("gui.message.player.name") + ": " + alphabeticalList.get(i));
+                    alphabeticalList.set(i, GCCoreUtil.translate("gui.message.player") + ": " + alphabeticalList.get(i));
                 }
             }
             List<GuiElementGradientList.ListElement> list = Lists.newArrayList();
@@ -112,7 +112,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                 list.add(new GuiElementGradientList.ListElement(str, ColorUtil.to32BitColor(255, 240, 240, 240)));
             }
             this.entityListElement.updateListContents(list);
-            this.neverAttackSpaceRace = new GuiElementCheckbox(this, this.width / 2 - 106, yTop + 126, GCCoreUtil.translate("gui.button.never_fire_team.name"), 4210752);
+            this.neverAttackSpaceRace = new GuiElementCheckbox(this, this.width / 2 - 106, yTop + 126, GCCoreUtil.translate("gui.button.never_fire_team"), 4210752);
             this.buttons.add(this.neverAttackSpaceRace);
             break;
         case ADD_PLAYER:
@@ -123,7 +123,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
             this.name = new GuiElementTextBox(this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
             this.name.resetOnClick = false;
             this.addButton(this.name);
-            this.buttons.add(new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name"), (button) ->
+            this.buttons.add(new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist" : "gui.button.add_whitelist"), (button) ->
             {
                 if (mode == EnumMode.ADD_ENTITY)
                 {
@@ -210,12 +210,12 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
         }
         else if (this.mode == EnumMode.ADD_PLAYER)
         {
-            String displayString = GCCoreUtil.translate("gui.message.enter_player.name");
+            String displayString = GCCoreUtil.translate("gui.message.enter_player");
             this.font.drawString(displayString, var5 + this.xSize / 2 - this.font.getStringWidth(displayString) / 2, var6 + 5, 4210752);
         }
         else if (this.mode == EnumMode.ADD_ENTITY)
         {
-            String displayString = GCCoreUtil.translate("gui.message.enter_entity.name");
+            String displayString = GCCoreUtil.translate("gui.message.enter_entity");
             this.font.drawString(displayString, var5 + this.xSize / 2 - this.font.getStringWidth(displayString) / 2, var6 + 5, 4210752);
         }
     }
@@ -257,7 +257,7 @@ public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.
                 EntityType<?> entry = ForgeRegistries.ENTITIES.getValue(loc);
                 if (entry != null)
                 {
-                    if (this.name.text.equalsIgnoreCase(LanguageMap.getInstance().translateKey("entity." + entry.getName() + ".name")))
+                    if (this.name.text.equalsIgnoreCase(LanguageMap.getInstance().translateKey("entity." + entry.getName() + "")))
                     {
                         return entry;
                     }

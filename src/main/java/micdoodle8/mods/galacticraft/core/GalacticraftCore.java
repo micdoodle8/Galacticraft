@@ -511,10 +511,24 @@ public class GalacticraftCore
             List<StackSorted> stackSorteds = sortMap.get(type);
             if (stackSorteds != null)
             {
-                itemOrderList.addAll(stackSorteds);
+                List<StackSorted> core = Lists.newArrayList();
+                List<StackSorted> planets = Lists.newArrayList();
+                for (StackSorted singleStack : stackSorteds)
+                {
+                    if (singleStack.getItem().getRegistryName().getNamespace().equals(Constants.MOD_ID_CORE))
+                    {
+                        core.add(singleStack);
+                    }
+                    else
+                    {
+                        planets.add(singleStack);
+                    }
+                }
+                itemOrderList.addAll(core);
+                itemOrderList.addAll(planets);
             }
         }
-        
+
         Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderList).onResultOf(input -> new StackSorted(input.getItem()));
         creativeTab.setTabSorter(tabSorterBlocks);
     }

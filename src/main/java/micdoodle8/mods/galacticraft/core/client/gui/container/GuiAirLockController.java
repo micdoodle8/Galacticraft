@@ -38,7 +38,7 @@ public class GuiAirLockController extends Screen implements ICheckBoxCallback, I
 
     public GuiAirLockController(TileEntityAirLockController controller)
     {
-        super(new TranslationTextComponent("gui.title.air_lock.name"));
+        super(new TranslationTextComponent("gui.title.air_lock"));
         this.controller = controller;
         this.ySize = 139;
         this.xSize = 181;
@@ -51,14 +51,14 @@ public class GuiAirLockController extends Screen implements ICheckBoxCallback, I
         this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.checkboxRedstoneSignal = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 18, GCCoreUtil.translate("gui.checkbox.redstone_signal.name"));
-        this.checkboxPlayerDistance = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 33, GCCoreUtil.translate("gui.checkbox.player_within.name") + ": ");
+        this.checkboxRedstoneSignal = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 18, GCCoreUtil.translate("gui.checkbox.redstone_signal"));
+        this.checkboxPlayerDistance = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 33, GCCoreUtil.translate("gui.checkbox.player_within") + ": ");
         String[] dropboxStrings = {GCCoreUtil.translate("gui.dropbox.player_distance.name.0"), GCCoreUtil.translate("gui.dropbox.player_distance.name.1"), GCCoreUtil.translate("gui.dropbox.player_distance.name.2"), GCCoreUtil.translate("gui.dropbox.player_distance.name.3")};
         this.dropdownPlayerDistance = new GuiElementDropdown(this, var5 + 99, var6 + 32, dropboxStrings);
-        this.checkboxOpenForPlayer = new GuiElementCheckbox(this, this.width / 2 - 68, var6 + 49, GCCoreUtil.translate("gui.checkbox.player_name.name") + ": ");
+        this.checkboxOpenForPlayer = new GuiElementCheckbox(this, this.width / 2 - 68, var6 + 49, GCCoreUtil.translate("gui.checkbox.player") + ": ");
         this.textBoxPlayerToOpenFor = new GuiElementTextBox(this, this.width / 2 - 61, var6 + 64, 110, 15, "", false, 16, false);
-        this.checkboxInvertSelection = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 80, GCCoreUtil.translate("gui.checkbox.invert.name"));
-        this.checkboxHorizontalMode = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 96, GCCoreUtil.translate("gui.checkbox.horizontal.name"));
+        this.checkboxInvertSelection = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 80, GCCoreUtil.translate("gui.checkbox.invert"));
+        this.checkboxHorizontalMode = new GuiElementCheckbox(this, this.width / 2 - 84, var6 + 96, GCCoreUtil.translate("gui.checkbox.horizontal"));
         this.buttons.add(this.checkboxRedstoneSignal);
         this.buttons.add(this.checkboxPlayerDistance);
         this.buttons.add(this.dropdownPlayerDistance);
@@ -113,7 +113,7 @@ public class GuiAirLockController extends Screen implements ICheckBoxCallback, I
 
         this.blit(var5 + 11, var6 + 51, 181, 0, 7, 9);
 
-        String message = GCCoreUtil.translateWithFormat("gui.title.air_lock.name", this.controller.ownerName);
+        String message = GCCoreUtil.translateWithFormat("gui.title.air_lock", this.controller.ownerName);
         this.font.drawString(message, this.width / 2 - this.font.getStringWidth(message) / 2, this.height / 2 - 65, 4210752);
 
         if (this.cannotEditTimer > 0)
@@ -122,13 +122,13 @@ public class GuiAirLockController extends Screen implements ICheckBoxCallback, I
             this.cannotEditTimer--;
         }
 
-        message = GCCoreUtil.translate("gui.message.status.name") + ":";
+        message = GCCoreUtil.translate("gui.message.status") + ":";
         this.font.drawString(message, this.width / 2 - this.font.getStringWidth(message) / 2, this.height / 2 + 45, 4210752);
-        message = EnumColor.RED + GCCoreUtil.translate("gui.status.air_lock_closed.name");
+        message = EnumColor.RED + GCCoreUtil.translate("gui.status.air_lock_closed");
 
         if (!this.controller.active)
         {
-            message = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.air_lock_open.name");
+            message = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.air_lock_open");
         }
 
         this.font.drawString(message, this.width / 2 - this.font.getStringWidth(message) / 2, this.height / 2 + 55, 4210752);

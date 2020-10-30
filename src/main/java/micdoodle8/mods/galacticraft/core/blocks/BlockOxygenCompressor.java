@@ -84,9 +84,18 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     @Override
     public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerOxygenCompressor(w, p, (TileEntityOxygenCompressor) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.oxygen_compressor.name"));
-        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
     @Nullable

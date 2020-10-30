@@ -29,9 +29,9 @@ public class KeyHandlerClient extends KeyHandler
 
     static
     {
-        galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map.name"), GLFW.GLFW_KEY_M, Constants.MOD_NAME_SIMPLE);
-        openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv.name"), GLFW.GLFW_KEY_F, Constants.MOD_NAME_SIMPLE);
-        toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle.name"), GLFW.GLFW_KEY_K, Constants.MOD_NAME_SIMPLE);
+        galaxyMap = new KeyBinding(GCCoreUtil.translate("keybind.map"), GLFW.GLFW_KEY_M, Constants.MOD_NAME_SIMPLE);
+        openFuelGui = new KeyBinding(GCCoreUtil.translate("keybind.spaceshipinv"), GLFW.GLFW_KEY_F, Constants.MOD_NAME_SIMPLE);
+        toggleAdvGoggles = new KeyBinding(GCCoreUtil.translate("keybind.sensortoggle"), GLFW.GLFW_KEY_K, Constants.MOD_NAME_SIMPLE);
         // See ConfigManagerCore.class.get() for actual defaults. These do nothing
     }
 

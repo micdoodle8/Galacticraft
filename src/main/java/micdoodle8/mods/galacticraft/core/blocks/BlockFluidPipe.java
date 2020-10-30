@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ISortable;
@@ -9,13 +11,16 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -29,6 +34,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -36,6 +42,7 @@ import java.util.Random;
 
 public class BlockFluidPipe extends BlockTransmitter implements IShiftDescription, ISortable
 {
+    public static final BooleanProperty MIDDLE = BooleanProperty.create("middle");
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
 
     public static boolean ignoreDrop = false;
@@ -347,7 +354,7 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        builder.add(COLOR, UP, DOWN, NORTH, EAST, SOUTH, WEST, MIDDLE);
     }
 
     @Override
@@ -368,6 +375,40 @@ public class BlockFluidPipe extends BlockTransmitter implements IShiftDescriptio
 //    {
 //        return this.getDefaultState().with(COLOR, DyeColor.byId(meta));
 //    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        TileEntity[] connectable = OxygenUtil.getAdjacentFluidConnections(new BlockVec3(context.getPos()), context.getWorld(), false);
+
+        return getDefaultState().with(COLOR, DyeColor.WHITE)
+                .with(DOWN, connectable[Direction.DOWN.ordinal()] != null)
+                .with(UP, connectable[Direction.UP.ordinal()] != null)
+                .with(NORTH, connectable[Direction.NORTH.ordinal()] != null)
+                .with(EAST, connectable[Direction.EAST.ordinal()] != null)
+                .with(SOUTH, connectable[Direction.SOUTH.ordinal()] != null)
+                .with(WEST, connectable[Direction.WEST.ordinal()] != null);
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        TileEntity tileEntity = worldIn.getTileEntity(currentPos);
+
+        if (tileEntity instanceof ITransmitter)
+        {
+            TileEntity[] connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
+
+            return stateIn.with(DOWN, connectable[Direction.DOWN.ordinal()] != null)
+                    .with(UP, connectable[Direction.UP.ordinal()] != null)
+                    .with(NORTH, connectable[Direction.NORTH.ordinal()] != null)
+                    .with(EAST, connectable[Direction.EAST.ordinal()] != null)
+                    .with(SOUTH, connectable[Direction.SOUTH.ordinal()] != null)
+                    .with(WEST, connectable[Direction.WEST.ordinal()] != null);
+        }
+
+        return stateIn;
+    }
 
     @Override
     public EnumSortCategory getCategory()

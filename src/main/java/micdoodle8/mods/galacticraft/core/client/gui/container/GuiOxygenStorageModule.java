@@ -25,7 +25,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
     public GuiOxygenStorageModule(ContainerOxygenStorageModule container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerOxygenStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent("tile.machine2.6.name"));
+//        super(new ContainerOxygenStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent("tile.machine2.6"));
         this.tileEntity = container.getStorageModule();
     }
 
@@ -46,9 +46,9 @@ public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorag
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String guiTitle = GCCoreUtil.translate("tile.machine2.6.name");
+        String guiTitle = GCCoreUtil.translate("tile.machine2.6");
         this.font.drawString(guiTitle, this.xSize / 2 - this.font.getStringWidth(guiTitle) / 2, 6, 4210752);
-        String displayJoules = (int) (this.tileEntity.getOxygenStored() + 0.5F) + " " + GCCoreUtil.translate("gui.message.of.name");
+        String displayJoules = (int) (this.tileEntity.getOxygenStored() + 0.5F) + " " + GCCoreUtil.translate("gui.message.of");
         String displayMaxJoules = "" + this.tileEntity.getMaxOxygenStored();
         String maxOutputLabel = GCCoreUtil.translate("gui.max_output.desc") + ": " + TileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20 + GCCoreUtil.translate("gui.per_second");
 

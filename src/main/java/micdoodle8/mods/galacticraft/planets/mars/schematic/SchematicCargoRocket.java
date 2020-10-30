@@ -48,7 +48,7 @@ public class SchematicCargoRocket implements ISchematicPage
     @Override
     public SimpleNamedContainerProvider getContainerProvider(PlayerEntity player)
     {
-        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicCargoRocket(w, p), new TranslationTextComponent("container.schematic_cargo_rocket.name"));
+        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicCargoRocket(w, p), new TranslationTextComponent("container.schematic_cargo_rocket"));
     }
 
     @Override

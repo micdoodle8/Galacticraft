@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "inventory": { "model": "galacticraftplanets:block/terraformer_model" },
+        "facing=north": { "model": "galacticraftplanets:block/terraformer_model" },
+        "facing=south": { "model": "galacticraftplanets:block/terraformer_model", "y": 180 },
+        "facing=west": { "model": "galacticraftplanets:block/terraformer_model", "y": 270 },
+        "facing=east": { "model": "galacticraftplanets:block/terraformer_model", "y": 90 }
+    }
+}

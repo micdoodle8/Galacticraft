@@ -118,8 +118,7 @@ public class BlockParaChest extends Block implements IShiftDescription, ISortabl
 
             if (iinventory != null && playerIn instanceof ServerPlayerEntity)
             {
-                INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerParaChest(w, p, (TileEntityParaChest) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.para_chest.name"));
-                NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+                NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
                 return ActionResultType.SUCCESS;
             }
 

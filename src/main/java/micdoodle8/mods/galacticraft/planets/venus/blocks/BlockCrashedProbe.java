@@ -9,6 +9,8 @@ import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -80,8 +83,18 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortable
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
-//        playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, worldIn, pos.getX(), pos.getY(), pos.getZ()); TODO gui
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
     @Override

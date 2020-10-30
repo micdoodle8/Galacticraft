@@ -1,29 +1,39 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWireSwitch;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 
 import javax.annotation.Nullable;
 
 public class BlockAluminumWire extends BlockTransmitter implements IShiftDescription, ISortable
 {
+    public static final BooleanProperty MIDDLE = BooleanProperty.create("middle");
 //    public static final EnumProperty<EnumWireType> WIRE_TYPE = EnumProperty.create("wiretype", EnumWireType.class);
     private static final float MIN = 0.38F;
     private static final float MINH = 0.3F;
@@ -257,6 +267,39 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
         return i;
     }
 
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        TileEntity[] connectable = EnergyUtil.getAdjacentPowerConnections(new BlockVec3(context.getPos()), context.getWorld(), (dir) -> true);
+
+        return getDefaultState().with(DOWN, connectable[Direction.DOWN.ordinal()] != null)
+                .with(UP, connectable[Direction.UP.ordinal()] != null)
+                .with(NORTH, connectable[Direction.NORTH.ordinal()] != null)
+                .with(EAST, connectable[Direction.EAST.ordinal()] != null)
+                .with(SOUTH, connectable[Direction.SOUTH.ordinal()] != null)
+                .with(WEST, connectable[Direction.WEST.ordinal()] != null);
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        TileEntity tileEntity = worldIn.getTileEntity(currentPos);
+
+        if (tileEntity instanceof ITransmitter)
+        {
+            TileEntity[] connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
+
+            return stateIn.with(DOWN, connectable[Direction.DOWN.ordinal()] != null)
+                    .with(UP, connectable[Direction.UP.ordinal()] != null)
+                    .with(NORTH, connectable[Direction.NORTH.ordinal()] != null)
+                    .with(EAST, connectable[Direction.EAST.ordinal()] != null)
+                    .with(SOUTH, connectable[Direction.SOUTH.ordinal()] != null)
+                    .with(WEST, connectable[Direction.WEST.ordinal()] != null);
+        }
+
+        return stateIn;
+    }
+
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -340,7 +383,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST, MIDDLE);
     }
 
     @Override

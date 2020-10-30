@@ -39,6 +39,8 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -101,6 +103,37 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     public BlockMulti(Properties builder)
     {
         super(builder);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type)
+    {
+        return false;
     }
 
     @Override

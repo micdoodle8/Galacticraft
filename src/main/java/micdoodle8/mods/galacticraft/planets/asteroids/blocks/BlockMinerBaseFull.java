@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -29,6 +32,37 @@ public class BlockMinerBaseFull extends BlockTileGC
     public BlockRenderType getRenderType(BlockState state)
     {
         return BlockRenderType.INVISIBLE;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type)
+    {
+        return false;
     }
 
 //    @Override

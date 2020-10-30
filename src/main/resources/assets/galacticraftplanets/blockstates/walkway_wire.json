@@ -1,0 +1,22 @@
+{
+    "multipart": [
+        {   "when": { "up": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_wire" }
+        },
+        {   "when": { "north": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_wire_n" }
+        },
+        {   "when": { "east": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_wire_n", "y": 90 }
+        },
+        {   "when": { "south": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_wire_n", "y": 180 }
+        },
+        {   "when": { "west": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_wire_n", "y": 270 }
+        },
+        {   "when": { "down": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_wire_d" }
+        }
+    ]
+}

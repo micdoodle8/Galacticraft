@@ -45,7 +45,7 @@ public class ChunkPowerHandler
 
                         if (tile instanceof INetworkConnection)
                         {
-                            ((INetworkConnection) tile).refresh();
+//                            ((INetworkConnection) tile).refresh(); TODO
                         }
                     }
                 }

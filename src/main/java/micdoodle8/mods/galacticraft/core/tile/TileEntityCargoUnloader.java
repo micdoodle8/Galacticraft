@@ -10,20 +10,27 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase.ContainerCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILandingPadAttachable
+public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILandingPadAttachable, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.cargoUnloader)
     public static TileEntityType<TileEntityCargoUnloader> TYPE;
@@ -271,5 +278,17 @@ public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILan
     public Direction getElectricInputDirection()
     {
         return getFront().rotateY();
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerCargoUnloader(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.cargo_unloader");
     }
 }

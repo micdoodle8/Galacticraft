@@ -4,7 +4,9 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
+import micdoodle8.mods.galacticraft.core.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -19,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.mars.dimension.DimensionMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -33,6 +36,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -124,6 +128,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
 //            IModelCustom cargoRocketModel = AdvancedModelLoader.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "models/cargoRocket.obj"));
 //
 //        // Tile Entity Renderers
+        ClientRegistry.bindTileEntityRenderer(TileEntityTreasureChestMars.TYPE, rendererDispatcherIn -> new TileEntityTreasureChestRenderer(rendererDispatcherIn, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/treasure.png")));
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChestMars.class, new TileEntityTreasureChestRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCryogenicChamber.class, new TileEntityCryogenicChamberRenderer(chamberModel));
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTerraformer.class, new TileEntityBubbleProviderRenderer<>(0.25F, 1.0F, 0.25F));
@@ -135,27 +140,27 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
         ItemSchematicTier2.registerTextures();
 
-        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwo.getRegistryName(), ItemModelRocketT2::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo1.getRegistryName(), ItemModelRocketT2::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo2.getRegistryName(), ItemModelRocketT2::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo3.getRegistryName(), ItemModelRocketT2::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCreative.getRegistryName(), ItemModelRocketT2::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketCargo1.getRegistryName(), ItemModelCargoRocket::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketCargo2.getRegistryName(), ItemModelCargoRocket::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketCargo3.getRegistryName(), ItemModelCargoRocket::new);
-        ClientProxyCore.setCustomModel(MarsItems.rocketCargoCreative.getRegistryName(), ItemModelCargoRocket::new);
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwo.getRegistryName(), modelToWrap -> new ItemModelRocketT2(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo1.getRegistryName(), modelToWrap -> new ItemModelRocketT2(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo2.getRegistryName(), modelToWrap -> new ItemModelRocketT2(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCargo3.getRegistryName(), modelToWrap -> new ItemModelRocketT2(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketTierTwoCreative.getRegistryName(), modelToWrap -> new ItemModelRocketT2(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargo1.getRegistryName(), modelToWrap -> new ItemModelCargoRocket(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargo2.getRegistryName(), modelToWrap -> new ItemModelCargoRocket(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargo3.getRegistryName(), modelToWrap -> new ItemModelCargoRocket(modelToWrap));
+        ClientProxyCore.setCustomModel(MarsItems.rocketCargoCreative.getRegistryName(), modelToWrap -> new ItemModelCargoRocket(modelToWrap));
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void loadTextures(TextureStitchEvent.Pre event)
+    public static void loadTextures(TextureStitchEvent.Pre event)
     {
         registerTexture(event, "rocket_t2");
         registerTexture(event, "cargo_rocket");
         registerTexture(event, "landing_balloon");
     }
 
-    private void registerTexture(TextureStitchEvent.Pre event, String texture)
+    private static void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
         event.addSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }

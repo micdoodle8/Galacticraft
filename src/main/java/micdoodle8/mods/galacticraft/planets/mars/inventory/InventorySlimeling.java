@@ -39,7 +39,7 @@ public class InventorySlimeling implements IInventory
 //    @Override
 //    public String getName()
 //    {
-//        return GCCoreUtil.translate("container.slimeling_inventory.name");
+//        return GCCoreUtil.translate("container.slimeling_inventory");
 //    }
 
     @Override

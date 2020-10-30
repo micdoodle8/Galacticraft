@@ -39,7 +39,7 @@
 //    public MethaneSynthRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(refineryGuiTex, 3, 4, 168, 66);
-//        this.localizedName = GCCoreUtil.translate("tile.mars_machine.5.name");
+//        this.localizedName = GCCoreUtil.translate("tile.mars_machine.5");
 //
 //        IDrawableStatic hydrogenBar = guiHelper.createDrawable(gasesTex, 35, 0, 16, 38);
 //        this.hydrogenBarInput = guiHelper.createAnimatedDrawable(hydrogenBar, 70, IDrawableAnimated.StartDirection.TOP, true);

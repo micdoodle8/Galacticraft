@@ -88,7 +88,7 @@
 //    {
 //        if (par1ItemStack.getDamage() < 4)
 //        {
-//            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.basic_item." + ItemFood.names[par1ItemStack.getDamage()] + ".name"));
+//            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.basic_item." + ItemFood.names[par1ItemStack.getDamage()] + ""));
 //        }
 //        else if (par1ItemStack.getDamage() == 8)
 //        {

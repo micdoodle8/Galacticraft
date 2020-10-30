@@ -86,7 +86,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.liquid_nitrogen.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.liquid_nitrogen") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
         }
     }
 

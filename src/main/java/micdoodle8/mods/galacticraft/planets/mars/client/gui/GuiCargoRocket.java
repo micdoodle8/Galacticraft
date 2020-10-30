@@ -57,7 +57,7 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
         super.init();
         final int var6 = (this.height - this.ySize) / 2;
         final int var7 = (this.width - this.xSize) / 2;
-        this.launchButton = new Button(var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"), (button) ->
+        this.launchButton = new Button(var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.rocket.getEntityId(), 0}));
         });
@@ -81,13 +81,13 @@ public class GuiCargoRocket extends GuiContainerGC<ContainerRocketInventory>
             this.font.drawString(title, 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
 
-        String str = GCCoreUtil.translate("gui.message.fuel.name") + ":";
+        String str = GCCoreUtil.translate("gui.message.fuel") + ":";
         this.font.drawString(str, 140 - this.font.getStringWidth(str) / 2, 5, 4210752);
         final double percentage = this.rocket.getScaledFuelLevel(100);
         String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.getCode() : percentage > 40.0D ? EnumColor.ORANGE.getCode() : EnumColor.RED.getCode();
-        str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
+        str = percentage + "% " + GCCoreUtil.translate("gui.message.full");
         this.font.drawString(color + str, 140 - this.font.getStringWidth(str) / 2, 15, 4210752);
-        str = GCCoreUtil.translate("gui.message.status.name") + ":";
+        str = GCCoreUtil.translate("gui.message.status") + ":";
         this.font.drawString(str, 40 - this.font.getStringWidth(str) / 2, 9, 4210752);
 
         String[] spltString = {""};

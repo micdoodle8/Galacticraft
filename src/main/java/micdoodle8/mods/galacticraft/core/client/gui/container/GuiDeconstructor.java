@@ -29,8 +29,8 @@ public class GuiDeconstructor extends GuiContainerGC<ContainerDeconstructor>
     public GuiDeconstructor(ContainerDeconstructor container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerDeconstructor(playerInv, deconstructor), playerInv, new TranslationTextComponent("tile.machine2.10.name"));
-        this.deconstructor = deconstructor;
+//        super(new ContainerDeconstructor(playerInv, deconstructor), playerInv, new TranslationTextComponent("tile.machine2.10"));
+        this.deconstructor = container.getDeconstructor();
         this.ySize = 199;
     }
 
@@ -64,14 +64,14 @@ public class GuiDeconstructor extends GuiContainerGC<ContainerDeconstructor>
 
         if (this.deconstructor.processTicks > 0)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running");
         }
         else
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle");
         }
 
-        String str = GCCoreUtil.translate("gui.message.status.name") + ": " + displayText;
+        String str = GCCoreUtil.translate("gui.message.status") + ": " + displayText;
         this.font.drawString(str, 120 - this.font.getStringWidth(str) / 2, 75, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 //		str = "" + this.tileEntity.storage.getMaxExtract();

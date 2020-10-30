@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "inventory": { "model": "galacticraftplanets:block/cryo_0" },
+        "facing=north": { "model": "galacticraftplanets:block/cryo_0" },
+        "facing=south": { "model": "galacticraftplanets:block/cryo_0", "y": 180 },
+        "facing=west": { "model": "galacticraftplanets:block/cryo_0", "y": 270 },
+        "facing=east": { "model": "galacticraftplanets:block/cryo_0", "y": 90 }
+    }
+}

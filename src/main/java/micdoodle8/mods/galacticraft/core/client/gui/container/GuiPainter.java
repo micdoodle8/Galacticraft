@@ -26,7 +26,7 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
     public GuiPainter(ContainerPainter container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerPainter(playerInv, painter), playerInv, new TranslationTextComponent("tile.machine3.9.name"));
+//        super(new ContainerPainter(playerInv, painter), playerInv, new TranslationTextComponent("tile.machine3.9"));
         this.painter = container.getPainter();
         this.ySize = 186;
     }
@@ -35,17 +35,17 @@ public class GuiPainter extends GuiContainerGC<ContainerPainter>
     protected void init()
     {
         super.init();
-        this.buttons.add(new Button(this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.painter.getPos(), 0}));
             painter.buttonPressed(0, this.minecraft.player);
         }));
-        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.painter.getPos(), 1}));
             painter.buttonPressed(1, this.minecraft.player);
         }));
-        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.painter.getPos(), 2}));
             painter.buttonPressed(2, this.minecraft.player);

@@ -82,10 +82,10 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
 
         super.render(mouseX, mouseY, partialTicks);
 
-        this.font.drawString(GCCoreUtil.translate("gui.message.priority_low.name"), var5 + 6, var6 + 8, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.font.drawString(GCCoreUtil.translate("gui.message.priority_closest.name"), this.priorityClosest.x + 35, this.priorityClosest.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.font.drawString(GCCoreUtil.translate("gui.message.priority_health_low.name"), this.priorityLowestHealth.x + 35, this.priorityLowestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.font.drawString(GCCoreUtil.translate("gui.message.priority_health_high.name"), this.priorityHighestHealth.x + 35, this.priorityHighestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_low"), var5 + 6, var6 + 8, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_closest"), this.priorityClosest.x + 35, this.priorityClosest.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_health_low"), this.priorityLowestHealth.x + 35, this.priorityLowestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.font.drawString(GCCoreUtil.translate("gui.message.priority_health_high"), this.priorityHighestHealth.x + 35, this.priorityHighestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
     }
 
     @Override

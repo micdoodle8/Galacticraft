@@ -200,7 +200,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
 //    @Override
 //    public String getName()
 //    {
-//        return GCCoreUtil.translate("container.entry_pod.name");
+//        return GCCoreUtil.translate("container.entry_pod");
 //    }
 
 //    @Override

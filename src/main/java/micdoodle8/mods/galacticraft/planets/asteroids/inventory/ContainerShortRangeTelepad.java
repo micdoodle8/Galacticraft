@@ -15,7 +15,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerShortRangeTelepad extends Container
 {
-    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SHORT_RANGE_TELEPAD)
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidsContainerNames.SHORT_RANGE_TELEPAD)
     public static ContainerType<ContainerShortRangeTelepad> TYPE;
 
     private final TileEntityShortRangeTelepad telepad;

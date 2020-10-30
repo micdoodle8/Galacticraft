@@ -16,11 +16,10 @@ import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.client.fx.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.client.obj.GCModelCache;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemLiquidCanisterModel;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
-import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
+import micdoodle8.mods.galacticraft.core.client.render.item.*;
+import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.entities.GCEntities;
@@ -32,9 +31,11 @@ import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -188,6 +189,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //        RenderTypeLookup.setRenderLayer(GCBlocks.platform, cutout);
         RenderTypeLookup.setRenderLayer(GCBlocks.unlitTorch, cutout);
         RenderTypeLookup.setRenderLayer(GCBlocks.unlitTorchLit, cutout);
+        RenderTypeLookup.setRenderLayer(GCBlocks.fluidTank, cutout);
 
         ClientProxyCore.registerInventoryTabs();
         ItemSchematic.registerTextures();
@@ -226,23 +228,24 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             e.printStackTrace();
         }
 
-        setCustomModel(GCItems.rocketTierOne.getRegistryName(), ItemModelRocket::new);
-        setCustomModel(GCItems.rocketTierOneCargo1.getRegistryName(), ItemModelRocket::new);
-        setCustomModel(GCItems.rocketTierOneCargo2.getRegistryName(), ItemModelRocket::new);
-        setCustomModel(GCItems.rocketTierOneCargo3.getRegistryName(), ItemModelRocket::new);
-        setCustomModel(GCItems.rocketTierOneCreative.getRegistryName(), ItemModelRocket::new);
-        setCustomModel(GCItems.buggy.getRegistryName(), ItemModelBuggy::new);
-        setCustomModel(GCItems.buggyInventory1.getRegistryName(), ItemModelBuggy::new);
-        setCustomModel(GCItems.buggyInventory2.getRegistryName(), ItemModelBuggy::new);
-        setCustomModel(GCItems.buggyInventory3.getRegistryName(), ItemModelBuggy::new);
-        setCustomModel(GCItems.flag.getRegistryName(), ItemModelFlag::new);
+        setCustomModel(GCItems.rocketTierOne.getRegistryName(), modelToWrap -> new ItemModelRocket(modelToWrap));
+        setCustomModel(GCItems.rocketTierOneCargo1.getRegistryName(), modelToWrap -> new ItemModelRocket(modelToWrap));
+        setCustomModel(GCItems.rocketTierOneCargo2.getRegistryName(), modelToWrap -> new ItemModelRocket(modelToWrap));
+        setCustomModel(GCItems.rocketTierOneCargo3.getRegistryName(), modelToWrap -> new ItemModelRocket(modelToWrap));
+        setCustomModel(GCItems.rocketTierOneCreative.getRegistryName(), modelToWrap -> new ItemModelRocket(modelToWrap));
+        setCustomModel(GCItems.buggy.getRegistryName(), modelToWrap -> new ItemModelBuggy(modelToWrap));
+        setCustomModel(GCItems.buggyInventory1.getRegistryName(), modelToWrap -> new ItemModelBuggy(modelToWrap));
+        setCustomModel(GCItems.buggyInventory2.getRegistryName(), modelToWrap -> new ItemModelBuggy(modelToWrap));
+        setCustomModel(GCItems.buggyInventory3.getRegistryName(), modelToWrap -> new ItemModelBuggy(modelToWrap));
+        setCustomModel(GCItems.flag.getRegistryName(), modelToWrap -> new ItemModelFlag(modelToWrap));
+        setCustomModel(GCBlocks.nasaWorkbench.getRegistryName(), modelToWrap -> new ItemModelWorkbench(modelToWrap));
 
         for (PartialCanister container : ClientProxyCore.canisters)
         {
             for (int i = 0; i < container.getTextureCount(); ++i)
             {
                 ModelResourceLocation modelResourceLocation = new ModelResourceLocation(container.getModID() + ":" + container.getBaseName() + "_" + i, "inventory");
-                setCustomModel(modelResourceLocation, ItemLiquidCanisterModel::new);
+                setCustomModel(modelResourceLocation, i_modelToWrap -> new ItemLiquidCanisterModel(i_modelToWrap));
             }
         }
     }
@@ -422,7 +425,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     }
 
     @SubscribeEvent
-    public void onTextureStitchedPre(TextureStitchEvent.Pre event)
+    public static void onTextureStitchedPre(TextureStitchEvent.Pre event)
     {
 //        event.getMap().loadTexture(new ResourceLocation("galacticraftcore:blocks/assembly"));
 //        event.getMap().loadTexture(new ResourceLocation("galacticraftcore:model/rocket_t1"));
@@ -435,14 +438,30 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 //        event.getMap().loadTexture(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
 //        event.getMap().loadTexture(new ResourceLocation("galacticraftcore:blocks/bubble")); TODO Item/Block models
 //        new TextureDungeonFinder("galacticraftcore:items/dungeonfinder").registedistanceSmoker(event);
+        registerTexture(event, "model/arc_lamp");
+    }
+
+    private static void registerTexture(TextureStitchEvent.Pre event, String texture)
+    {
+        event.addSprite(new ResourceLocation(Constants.MOD_ID_CORE, texture));
     }
 
     @SubscribeEvent
     public static void onModelBakeEvent(ModelBakeEvent event)
     {
+        GCModelCache.INSTANCE.onBake(event);
+
         event.getModelRegistry().replaceAll((r1, model) -> {
-            ICustomModelFactory factory = customModels.get(new ResourceLocation(r1.getNamespace(), r1.getPath()));
-            return factory == null ? model : factory.create(model);
+            try
+            {
+                ICustomModelFactory factory = customModels.get(new ResourceLocation(r1.getNamespace(), r1.getPath()));
+                return factory == null ? model : factory.create(model);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return model;
+            }
         });
 
         //Specified transformations only take effect on the "inventory" variant, not other variants.
@@ -584,18 +603,19 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     private static void registerTileEntityRenderers()
     {
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTreasureChest.class, new TileEntityTreasureChestRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolar.class, new TileEntitySolarPanelRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileEntityTreasureChest.TYPE, rendererDispatcherIn -> new TileEntityTreasureChestRenderer(rendererDispatcherIn, new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/treasure.png")));
+        ClientRegistry.bindTileEntityRenderer(TileEntitySolar.TileEntitySolarT1.TYPE, TileEntitySolarPanelRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TileEntitySolar.TileEntitySolarT2.TYPE, TileEntitySolarPanelRenderer::new);
 ////        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenDistributor.class, new TileEntityBubbleProviderRenderer<>(0.25F, 0.25F, 1.0F));
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityScreen.class, new TileEntityScreenRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new TileEntityFluidTankRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileEntityFluidTank.TYPE, TileEntityFluidTankRenderer::new);
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityFluidPipeRenderer());
 ////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDish.class, new TileEntityDishRenderer());
 ////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThruster.class, new TileEntityThrusterRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileEntityArclamp.TYPE, TileEntityArclampRenderer::new);
 ////        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPanelLight.class, new TileEntityPanelLightRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlatform.class, new TileEntityPlatformRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEmergencyBox.class, new TileEntityEmergencyBoxRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileEntityPlatform.TYPE, TileEntityPlatformRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TileEntityEmergencyBox.TYPE, TileEntityEmergencyBoxRenderer::new);
 ////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
 ////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
 ////            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());

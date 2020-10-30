@@ -169,7 +169,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return GCCoreUtil.translate("tile.refinery.name");
+//        return GCCoreUtil.translate("tile.refinery");
 //    }
 //
 //    @Override

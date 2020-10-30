@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -53,16 +54,24 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     @Override
     public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerOxygenSealer(w, p, (TileEntityOxygenSealer) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.oxygen_compressor.name"));
-        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
     {
-        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        worldIn.setBlockState(pos, this.getDefaultState().with(FACING, Direction.byHorizontalIndex(angle).getOpposite()), 3);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     @Nullable

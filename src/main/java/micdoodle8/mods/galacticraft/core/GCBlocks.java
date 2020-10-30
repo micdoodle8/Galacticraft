@@ -1,27 +1,17 @@
 package micdoodle8.mods.galacticraft.core;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 import micdoodle8.mods.galacticraft.core.blocks.*;
 import micdoodle8.mods.galacticraft.core.tile.*;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.StackSorted;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockDungeonBrick;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -37,7 +27,7 @@ public class GCBlocks
     public static final Block brightAir = new BlockBrightAir(Block.Properties.from(breatheableAir).lightValue(15));
     public static final Block brightBreatheableAir = new BlockBrightBreathableAir(Block.Properties.from(brightAir));
 
-    public static final Block arcLamp = new BlockBrightLamp(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.1F).sound(SoundType.METAL).lightValue(13));
+    public static final Block arcLamp = new BlockArcLamp(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.1F).sound(SoundType.METAL).lightValue(13));
 
     public static final Block treasureChestTier1 = new BlockTier1TreasureChest(Block.Properties.create(Material.ROCK).hardnessAndResistance(100000.0F).sound(SoundType.STONE).lightValue(13));
 
@@ -76,7 +66,7 @@ public class GCBlocks
     public static final Block cargoLoader = new BlockCargoLoader(Block.Properties.from(oxygenDistributor));
     public static final Block cargoUnloader = new BlockCargoUnloader(Block.Properties.from(oxygenDistributor));
     public static final Block solarPanel = new BlockSolar(Block.Properties.from(oxygenDistributor));
-    public static final Block solarPanelAdvanced = new BlockSolar(Block.Properties.from(oxygenDistributor));
+    public static final Block solarPanelAdvanced = new BlockSolarAdvanced(Block.Properties.from(oxygenDistributor));
 //    public static final Block radioTelescope = new BlockDish(Block.Properties.from(oxygenDistributor));
     public static final Block storageModule = new BlockEnergyStorageModule(Block.Properties.from(oxygenDistributor));
     public static final Block storageCluster = new BlockEnergyStorageCluster(Block.Properties.from(oxygenDistributor));
@@ -104,7 +94,7 @@ public class GCBlocks
 
     public static final Block spaceStationBase = new BlockSpaceStationBase(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops());
 
-    public static final Block fakeBlock = new BlockMulti(Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 3600000.0F).sound(SoundType.METAL));
+    public static final Block fakeBlock = new BlockMulti(Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 3600000.0F).sound(SoundType.METAL).notSolid());
 
 //    public static final Block sealableBlock = new BlockEnclosed(builder);
 
@@ -148,10 +138,10 @@ public class GCBlocks
     public static final Block oreSapphire = new OreBlock(Block.Properties.from(oreCopper));
 //    public static final Block oreMeteoricIron = new OreBlock(Block.Properties.from(oreCopper));
 
-    public static final Block moonDirt = new OreBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE));
-    public static final Block moonStone = new OreBlock(Block.Properties.from(moonDirt));
-    public static final Block moonTurf = new OreBlock(Block.Properties.from(moonDirt));
-    public static final Block moonDungeonBrick = new OreBlock(Block.Properties.from(moonDirt));
+    public static final Block moonDirt = new BlockSimple(Block.Properties.create(Material.ROCK).sound(SoundType.STONE));
+    public static final Block moonStone = new BlockSimple(Block.Properties.from(moonDirt));
+    public static final Block moonTurf = new BlockSimple(Block.Properties.from(moonDirt));
+    public static final Block moonDungeonBrick = new BlockDungeonBrick(Block.Properties.from(moonDirt));
 
     public static final Block decoBlock0 = new DecoBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE));
     public static final Block decoBlock1 = new DecoBlock(Block.Properties.from(decoBlock0));
@@ -853,10 +843,10 @@ public class GCBlocks
         register(r, TileEntityType.Builder.create(TileEntityScreen::new, screen).build(null), BlockNames.screen);
 //        register(r, TileEntityType.Builder.create(TileEntityPanelLight::new, panelLighting).build(null), BlockNames.panelLighting);
         register(r, TileEntityType.Builder.create(TileEntityTelemetry::new, telemetry).build(null), BlockNames.telemetry);
-//        register(r, TileEntityType.Builder.create(TileEntityPainter::new, "GC Painter").build(null));
+        register(r, TileEntityType.Builder.create(TileEntityPainter::new, painter).build(null), BlockNames.painter);
         register(r, TileEntityType.Builder.create(TileEntityFluidTank::new, fluidTank).build(null), BlockNames.fluidTank);
         register(r, TileEntityType.Builder.create(TileEntityPlayerDetector::new, concealedDetector).build(null), BlockNames.concealedDetector);
-//        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform);
+        register(r, TileEntityType.Builder.create(TileEntityPlatform::new, platform).build(null), BlockNames.platform);
         register(r, TileEntityType.Builder.create(TileEntityEmergencyBox::new, emergencyBox).build(null), BlockNames.emergencyBox);
 //        register(r, TileEntityType.Builder.create(TileEntityNull::new, "GC Null Tile").build(null));
     }

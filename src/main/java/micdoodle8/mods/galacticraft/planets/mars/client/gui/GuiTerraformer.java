@@ -56,8 +56,8 @@ public class GuiTerraformer extends GuiContainerGC<ContainerTerraformer> impleme
             this.enableGrassButton.active = true;
         }
 
-        this.enableTreesButton.setMessage(GCCoreUtil.translate(this.terraformer.treesDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.trees.name"));
-        this.enableGrassButton.setMessage(GCCoreUtil.translate(this.terraformer.grassDisabled ? "gui.button.enable.name" : "gui.button.disable.name") + " " + GCCoreUtil.translate("gui.message.grass.name"));
+        this.enableTreesButton.setMessage(GCCoreUtil.translate(this.terraformer.treesDisabled ? "gui.button.enable" : "gui.button.disable") + " " + GCCoreUtil.translate("gui.message.trees"));
+        this.enableGrassButton.setMessage(GCCoreUtil.translate(this.terraformer.grassDisabled ? "gui.button.enable" : "gui.button.disable") + " " + GCCoreUtil.translate("gui.message.grass"));
 
         super.render(mouseX, mouseY, partialTicks);
     }
@@ -88,17 +88,17 @@ public class GuiTerraformer extends GuiContainerGC<ContainerTerraformer> impleme
         this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableTreesButton = new Button(var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"), (button) ->
+        this.enableTreesButton = new Button(var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.terraformer.getPos(), 0}));
         });
-        this.enableGrassButton = new Button(var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"), (button) ->
+        this.enableGrassButton = new Button(var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{this.terraformer.getPos(), 1}));
         });
         this.buttons.add(this.enableTreesButton);
         this.buttons.add(this.enableGrassButton);
-        this.checkboxRenderBubble = new GuiElementCheckbox(this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
+        this.checkboxRenderBubble = new GuiElementCheckbox(this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible"));
         this.buttons.add(this.checkboxRenderBubble);
     }
 
@@ -117,54 +117,54 @@ public class GuiTerraformer extends GuiContainerGC<ContainerTerraformer> impleme
     {
         if (RedstoneUtil.isBlockReceivingRedstone(this.terraformer.getWorld(), this.terraformer.getPos()))
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.status.off");
         }
 
         if (this.terraformer.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy");
         }
 
         if (this.terraformer.grassDisabled && this.terraformer.treesDisabled)
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
         if (this.terraformer.waterTank.getFluid() == FluidStack.EMPTY || this.terraformer.waterTank.getFluid().getAmount() <= 0)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_water.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_water");
         }
 
         if (this.terraformer.getFirstBonemealStack().isEmpty())
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_bonemeal.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_bonemeal");
         }
 
         if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack().isEmpty())
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_seeds.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_seeds");
         }
 
         if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack().isEmpty())
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_saplings.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_saplings");
         }
 
         if (this.terraformer.getBubbleSize() < this.terraformer.MAX_SIZE - 0.5)
         {
-            return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubble_exp.name");
+            return EnumColor.YELLOW + GCCoreUtil.translate("gui.message.bubble_exp");
         }
 
         if (!this.terraformer.treesDisabled && this.terraformer.grassBlocksListSize <= 0)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.trees.name") + ": " + GCCoreUtil.translate("gui.message.no_valid_blocks.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.trees") + ": " + GCCoreUtil.translate("gui.message.no_valid_blocks");
         }
         else if (!this.terraformer.grassDisabled && this.terraformer.terraformableBlocksListSize <= 0)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.grass.name") + ": " + GCCoreUtil.translate("gui.message.no_valid_blocks.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.grass") + ": " + GCCoreUtil.translate("gui.message.no_valid_blocks");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.terraforming.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.terraforming");
     }
 
     @Override

@@ -6,9 +6,15 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -17,12 +23,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
-public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource implements IInventoryDefaults, ISidedInventory, IConnector
+public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource implements IInventoryDefaults, ISidedInventory, IConnector, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.coalGenerator)
     public static TileEntityType<TileEntityCoalGenerator> TYPE;
@@ -210,5 +218,17 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
         }
 
         return direction == this.getElectricOutputDirection();
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerCoalGenerator(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.coal_generator");
     }
 }

@@ -15,7 +15,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
+import static micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks.*;
 
 public class MarsContainers
 {

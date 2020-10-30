@@ -110,7 +110,7 @@ public class ThreadVersionCheck extends Thread
             {
                 try
                 {
-                    GCLog.severe(GCCoreUtil.translate("newversion.failed.name"));
+                    GCLog.severe(GCCoreUtil.translate("newversion.failed"));
                     Thread.sleep(15000);
                 }
                 catch (final InterruptedException e)
@@ -119,7 +119,7 @@ public class ThreadVersionCheck extends Thread
             }
             else
             {
-                GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer);
+                GCLog.info(GCCoreUtil.translate("newversion.success") + " " + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer);
             }
 
             this.count++;

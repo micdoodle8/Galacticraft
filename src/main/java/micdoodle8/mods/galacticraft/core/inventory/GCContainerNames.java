@@ -4,6 +4,7 @@ public class GCContainerNames
 {
     public static final String BUGGY = "buggy";
     public static final String CARGO_LOADER = "cargo_loader";
+    public static final String CARGO_UNLOADER = "cargo_unloader";
     public static final String CIRCUIT_FABRICATOR = "circuit_fabricator";
     public static final String COAL_GENERATOR = "coal_generator";
     public static final String CRAFTING = "crafting";

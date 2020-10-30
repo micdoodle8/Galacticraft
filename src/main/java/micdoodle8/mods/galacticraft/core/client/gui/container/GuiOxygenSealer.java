@@ -39,7 +39,7 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
     public GuiOxygenSealer(ContainerOxygenSealer container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerOxygenSealer(playerInv, sealer), playerInv, new TranslationTextComponent("container.oxygensealer.name"));
+//        super(new ContainerOxygenSealer(playerInv, sealer), playerInv, new TranslationTextComponent("container.oxygen_sealer"));
         this.sealer = container.getSealer();
         this.ySize = 200;
     }
@@ -79,7 +79,7 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, GCCoreUtil.translate("gui.button.enableseal.name"), (button) ->
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, GCCoreUtil.translate("gui.button.enableseal"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.sealer.getPos(), 0}));
         }));
@@ -89,11 +89,11 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
-        String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 26, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 38, 4210752, this.font);
+        String status = GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus();
         this.buttonDisable.active = this.sealer.disableCooldown == 0;
-        this.buttonDisable.setMessage(this.sealer.disabled ? GCCoreUtil.translate("gui.button.enableseal.name") : GCCoreUtil.translate("gui.button.disableseal.name"));
+        this.buttonDisable.setMessage(this.sealer.disabled ? GCCoreUtil.translate("gui.button.enableseal") : GCCoreUtil.translate("gui.button.disableseal"));
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 50, 4210752);
         int adjustedOxygenPerTick = this.sealer.oxygenPerTick * 20;
         if (this.sealer.disabled || this.sealer.getEnergyStoredGC() < this.sealer.storage.getMaxExtract())
@@ -102,7 +102,7 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
         }
         status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + adjustedOxygenPerTick + GCCoreUtil.translate("gui.per_second");
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 60, 4210752);
-        status = GCCoreUtil.translate("gui.message.thermal_status.name") + ": " + this.getThermalStatus();
+        status = GCCoreUtil.translate("gui.message.thermal_status") + ": " + this.getThermalStatus();
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 70, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
         //		this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 70, 4210752);
@@ -119,16 +119,16 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
         {
             if (stateAbove.get(BlockThermalAir.THERMAL))
             {
-                return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.on.name");
+                return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.on");
             }
         }
 
         if (this.sealer.thermalControlEnabled())
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.not_available.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.not_available");
         }
 
-        return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+        return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off");
     }
 
     private String getStatus()
@@ -139,37 +139,37 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
 
         if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), state, blockPosAbove, Direction.UP))
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked");
         }
 
 //        if (RedstoneUtil.isBlockReceivingRedstone(this.sealer.getWorldObj(), this.sealer.getPos()))
 //        {
-//            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+//            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off");
 //        }
 
         if (this.sealer.disabled)
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
         if (this.sealer.getEnergyStoredGC() == 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower");
         }
 
         if (this.sealer.getEnergyStoredGC() < this.sealer.storage.getMaxExtract())
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower");
         }
 
         if (this.sealer.getOxygenStored() < 1)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen");
         }
 
         if (this.sealer.calculatingSealed)
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.checking_seal.name") + "...";
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.checking_seal") + "...";
         }
 
         int threadCooldown = this.sealer.getScaledThreadCooldown(25);
@@ -184,22 +184,22 @@ public class GuiOxygenSealer extends GuiContainerGC<ContainerOxygenSealer>
                     elipsis += ".";
                 }
 
-                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.check_starting.name") + elipsis;
+                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.check_starting") + elipsis;
             }
             else
             {
-                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.check_pending.name");
+                return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.check_pending");
             }
         }
         else
         {
             if (!this.sealer.sealed)
             {
-                return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.unsealed.name");
+                return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.unsealed");
             }
             else
             {
-                return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.sealed.name");
+                return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.sealed");
             }
         }
     }

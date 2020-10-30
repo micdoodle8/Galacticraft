@@ -4,20 +4,28 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 
-public class TileEntityOxygenDecompressor extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory
+public class TileEntityOxygenDecompressor extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDecompressor)
     public static TileEntityType<TileEntityOxygenDecompressor> TYPE;
@@ -186,5 +194,17 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     public int getOxygenProvide(Direction direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenDecompressor.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerOxygenDecompressor(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.oxygen_decompressor");
     }
 }

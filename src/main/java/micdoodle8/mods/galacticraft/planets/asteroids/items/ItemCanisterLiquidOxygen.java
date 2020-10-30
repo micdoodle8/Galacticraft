@@ -77,7 +77,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     {
         if (ItemCanisterGeneric.EMPTY_CAPACITY - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.lox.name") + ": " + (ItemCanisterGeneric.EMPTY_CAPACITY - par1ItemStack.getDamage())));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.lox") + ": " + (ItemCanisterGeneric.EMPTY_CAPACITY - par1ItemStack.getDamage())));
         }
     }
 

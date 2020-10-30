@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketBase;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
@@ -11,21 +13,27 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class PacketSimpleMars extends PacketBase
 {
@@ -86,6 +94,63 @@ public class PacketSimpleMars extends PacketBase
 
         this.type = packetType;
         this.data = data;
+    }
+
+    public static void encode(final PacketSimpleMars message, final PacketBuffer buf)
+    {
+        buf.writeInt(message.type.ordinal());
+        NetworkUtil.writeUTF8String(buf, message.getDimensionID().getRegistryName().toString());
+
+        try
+        {
+            NetworkUtil.encodeData(buf, message.data);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static PacketSimpleMars decode(PacketBuffer buf)
+    {
+        PacketSimpleMars.EnumSimplePacketMars type = PacketSimpleMars.EnumSimplePacketMars.values()[buf.readInt()];
+        DimensionType dim = DimensionType.byName(new ResourceLocation(NetworkUtil.readUTF8String(buf)));
+        ArrayList<Object> data = null;
+
+        try
+        {
+            if (type.getDecodeClasses().length > 0)
+            {
+                data = NetworkUtil.decodeData(type.getDecodeClasses(), buf);
+            }
+            if (buf.readableBytes() > 0 && buf.writerIndex() < 0xfff00)
+            {
+                GCLog.severe("Galacticraft packet length problem for packet type " + type.toString());
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println("[Galacticraft] Error handling simple packet type: " + type.toString() + " " + buf.toString());
+            e.printStackTrace();
+            throw e;
+        }
+        return new PacketSimpleMars(type, dim, data);
+    }
+
+    public static void handle(final PacketSimpleMars message, Supplier<NetworkEvent.Context> ctx)
+    {
+        ctx.get().enqueueWork(() ->
+        {
+            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
+            {
+                message.handleClientSide(Minecraft.getInstance().player);
+            }
+            else
+            {
+                message.handleServerSide(ctx.get().getSender());
+            }
+        });
+        ctx.get().setPacketHandled(true);
     }
 
     @Override

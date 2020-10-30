@@ -19,28 +19,28 @@ public class ContainerElectricIngotCompressor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ELECTRIC_INGOT_COMPRESSOR)
     public static ContainerType<ContainerElectricIngotCompressor> TYPE;
 
-    private final TileEntityElectricIngotCompressor tileEntity;
+    private final TileEntityElectricIngotCompressor compressor;
 
-    public ContainerElectricIngotCompressor(int containerId, PlayerInventory playerInv, TileEntityElectricIngotCompressor tileEntity)
+    public ContainerElectricIngotCompressor(int containerId, PlayerInventory playerInv, TileEntityElectricIngotCompressor compressor)
     {
         super(TYPE, containerId);
-        this.tileEntity = tileEntity;
-        tileEntity.compressingCraftMatrix.eventHandler = this;
+        this.compressor = compressor;
+        compressor.compressingCraftMatrix.eventHandler = this;
 
         for (int x = 0; x < 3; x++)
         {
             for (int y = 0; y < 3; y++)
             {
-                this.addSlot(new Slot(tileEntity.compressingCraftMatrix, y + x * 3, 19 + y * 18, 18 + x * 18));
+                this.addSlot(new Slot(compressor.compressingCraftMatrix, y + x * 3, 19 + y * 18, 18 + x * 18));
             }
         }
 
         // Battery Slot
-        this.addSlot(new SlotSpecific(tileEntity, 0, 55, 75, IItemElectric.class));
+        this.addSlot(new SlotSpecific(compressor, 0, 55, 75, IItemElectric.class));
 
         // Smelting result
-        this.addSlot(new FurnaceResultSlot(playerInv.player, tileEntity, 1, 138, 30));
-        this.addSlot(new FurnaceResultSlot(playerInv.player, tileEntity, 2, 138, 48));
+        this.addSlot(new FurnaceResultSlot(playerInv.player, compressor, 1, 138, 30));
+        this.addSlot(new FurnaceResultSlot(playerInv.player, compressor, 2, 138, 48));
 
         int var3;
 
@@ -58,6 +58,11 @@ public class ContainerElectricIngotCompressor extends Container
         }
     }
 
+    public TileEntityElectricIngotCompressor getCompressor()
+    {
+        return compressor;
+    }
+
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
@@ -67,14 +72,14 @@ public class ContainerElectricIngotCompressor extends Container
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.compressor.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         super.onCraftMatrixChanged(par1IInventory);
-        this.tileEntity.updateInput();
+        this.compressor.updateInput();
     }
 
     /**

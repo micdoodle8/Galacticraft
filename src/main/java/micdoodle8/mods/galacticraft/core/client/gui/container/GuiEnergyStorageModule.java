@@ -22,8 +22,8 @@ public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorag
     public GuiEnergyStorageModule(ContainerEnergyStorageModule container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerEnergyStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent(storageModule.getTierGC() == 1 ? "tile.machine.1.name" : "tile.machine.8.name"));
-        this.storageModule = storageModule;
+//        super(new ContainerEnergyStorageModule(playerInv, storageModule), playerInv, new TranslationTextComponent(storageModule.getTierGC() == 1 ? "tile.machine.1" : "tile.machine.8"));
+        this.storageModule = container.getStorageModule();
     }
 
     /**
@@ -41,7 +41,7 @@ public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorag
         }
         String displayStr = EnergyDisplayHelper.getEnergyDisplayS(energy);
         this.font.drawString(displayStr, 122 - this.font.getStringWidth(displayStr) / 2, 25, 4210752);
-        displayStr = GCCoreUtil.translate("gui.message.of.name") + " " + EnergyDisplayHelper.getEnergyDisplayS(this.storageModule.getMaxEnergyStoredGC());
+        displayStr = GCCoreUtil.translate("gui.message.of") + " " + EnergyDisplayHelper.getEnergyDisplayS(this.storageModule.getMaxEnergyStoredGC());
         this.font.drawString(displayStr, 122 - this.font.getStringWidth(displayStr) / 2, 34, 4210752);
         displayStr = GCCoreUtil.translate("gui.max_output.desc") + ": " + EnergyDisplayHelper.getEnergyDisplayS(this.storageModule.storage.getMaxExtract()) + "/t";
         this.font.drawString(displayStr, 114 - this.font.getStringWidth(displayStr) / 2, 64, 4210752);

@@ -95,10 +95,10 @@
 //
 //        if (this.fillAtmos)
 //        {
-//            String gasname = GCCoreUtil.translate("gas.carbondioxide.name");
-//            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
+//            String gasname = GCCoreUtil.translate("gas.carbondioxide");
+//            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0");
 //            String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
-//            String text3 = GCCoreUtil.translate("gui.message.with_atmosphere1.name");
+//            String text3 = GCCoreUtil.translate("gui.message.with_atmosphere1");
 //            this.font.drawString(text1, 4, 85, 4210752);
 //            this.font.drawString(text2, 18, 95, 4210752);
 //            this.font.drawString(text3, 18, 105, 4210752);
@@ -242,7 +242,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return GCCoreUtil.translate("tile.mars_machine.5.name");
+//        return GCCoreUtil.translate("tile.mars_machine.5");
 //    }
 //
 //    @Override
@@ -277,7 +277,7 @@
 //        }
 //        else if (mousePos.x < 44 && mousePos.x > 27 && mousePos.y < 60 && mousePos.y > 39)
 //        {
-//            currenttip.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+//            currenttip.add(GCCoreUtil.translate("gas.carbondioxide"));
 //        }
 //
 //        return currenttip;

@@ -168,7 +168,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortable
 
         if (item.hasTag() && item.getTag().contains("BuggyFuel"))
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + item.getTag().getInt("BuggyFuel") + " / " + EntityBuggy.tankCapacity));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel") + ": " + item.getTag().getInt("BuggyFuel") + " / " + EntityBuggy.tankCapacity));
         }
     }
 

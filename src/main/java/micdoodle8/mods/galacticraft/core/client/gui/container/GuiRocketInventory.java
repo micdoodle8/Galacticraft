@@ -28,14 +28,12 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
         }
     }
 
-    private final PlayerInventory playerInv;
     private final EntityAutoRocket rocket;
 
     public GuiRocketInventory(ContainerRocketInventory container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
 //        super(new ContainerRocketInventory(playerInv, rocket, rocketType, Minecraft.getInstance().player), playerInv, rocket.getName());
-        this.playerInv = playerInv;
         this.passEvents = false;
         this.rocket = container.getRocket();
         this.ySize = rocket.getSizeInventory() <= 3 ? 132 : 145 + rocket.getSizeInventory() * 2;
@@ -54,16 +52,16 @@ public class GuiRocketInventory extends GuiContainerGC<ContainerRocketInventory>
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.fuel"), 8, 2 + 3, 4210752);
 
         this.font.drawString(this.title.getFormattedText(), 8, 34 + 2 + 3, 4210752);
 
         if (this.minecraft.player != null && this.minecraft.player.getRidingEntity() != null && this.minecraft.player.getRidingEntity() instanceof EntitySpaceshipBase)
         {
-            this.font.drawString(GCCoreUtil.translate("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
+            this.font.drawString(GCCoreUtil.translate("gui.message.fuel") + ":", 125, 15 + 3, 4210752);
             final double percentage = ((EntitySpaceshipBase) this.minecraft.player.getRidingEntity()).getScaledFuelLevel(100);
             final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.getCode() : percentage > 40.0D ? EnumColor.ORANGE.getCode() : EnumColor.RED.getCode();
-            final String str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
+            final String str = percentage + "% " + GCCoreUtil.translate("gui.message.full");
             this.font.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
         }
     }

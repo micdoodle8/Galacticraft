@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "galacticraftcore:block/block_silicon_gc_model" }
+    }
+}

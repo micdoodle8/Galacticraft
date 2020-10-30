@@ -6,15 +6,20 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCrafting;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ICraftingRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -25,11 +30,13 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory, IInventorySettable
+public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory, IInventorySettable, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.crafting)
     public static TileEntityType<TileEntityCrafting> TYPE;
@@ -299,7 +306,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 //    @Override
 //    public String getName()
 //    {
-//        return GCCoreUtil.translate("container.magneticcrafting.name");
+//        return GCCoreUtil.translate("container.magneticcrafting");
 //    }
 //
 //    @Override
@@ -629,5 +636,17 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     public void setSizeInventory(int size)
     {
         //Intentionally no operation
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerCrafting(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.crafting");
     }
 }

@@ -175,7 +175,7 @@ public class GuiSlimeling extends Screen
         int height = 15;
         AbstractGui.fill(startX, startY, startX + width, startY + height, 0xffA0A0A0);
         AbstractGui.fill(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
-        this.font.drawString(GCCoreUtil.translate("gui.slimeling.name") + ": ", dX + i + 55, dY + j - 6, 0x404040);
+        this.font.drawString(GCCoreUtil.translate("gui.slimeling") + ": ", dX + i + 55, dY + j - 6, 0x404040);
 //        this.font.drawString(GCCoreUtil.translate("gui.slimeling.owner") + ": " + this.slimeling.getOwnerUsername(), dX + i + 55, dY + j + 7, 0x404040);
         // TODO Owner username?
         this.font.drawString(GCCoreUtil.translate("gui.slimeling.kills") + ": " + this.slimeling.getKillCount(), dX + i + 55, dY + j + 20, 0x404040);

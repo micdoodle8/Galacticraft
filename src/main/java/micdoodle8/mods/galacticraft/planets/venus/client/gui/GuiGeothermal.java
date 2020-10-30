@@ -56,9 +56,9 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 82, 18, 18, batterySlotDesc, this.width, this.height, this));
 //        List<String> sunGenDesc = new ArrayList<String>();
 //        float sunVisible = Math.round(this.geothermalGenerator.solarStrength / 9.0F * 1000) / 10.0F;
-//        sunGenDesc.add(this.geothermalGenerator.solarStrength > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
+//        sunGenDesc.add(this.geothermalGenerator.solarStrength > 0 ? GCCoreUtil.translate("gui.status.sun_visible") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully"));
 //        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
-        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 19, 72, 20, GCCoreUtil.translate("gui.button.enable.name"), (button) ->
+        this.buttons.add(this.buttonEnableSolar = new Button(this.width / 2 - 36, this.height / 2 - 19, 72, 20, GCCoreUtil.translate("gui.button.enable"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.geothermalGenerator.getPos(), 0}));
         }));
@@ -69,17 +69,17 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
     {
         int offsetY = 35;
         this.buttonEnableSolar.active = this.geothermalGenerator.disableCooldown == 0;
-        this.buttonEnableSolar.setMessage(!this.geothermalGenerator.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name"));
+        this.buttonEnableSolar.setMessage(!this.geothermalGenerator.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable") : GCCoreUtil.translate("gui.button.enable"));
         String displayString = this.getTitle().getFormattedText();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 7, 4210752);
-        displayString = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
+        displayString = GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
         displayString = this.getStatus2();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
-        displayString = GCCoreUtil.translate("gui.message.generating.name") + ": " + (this.geothermalGenerator.generateWatts > 0 ? EnergyDisplayHelper.getEnergyDisplayS(this.geothermalGenerator.generateWatts) + "/t" : GCCoreUtil.translate("gui.status.not_generating.name"));
+        displayString = GCCoreUtil.translate("gui.message.generating") + ": " + (this.geothermalGenerator.generateWatts > 0 ? EnergyDisplayHelper.getEnergyDisplayS(this.geothermalGenerator.generateWatts) + "/t" : GCCoreUtil.translate("gui.status.not_generating"));
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 34 + 23 - 46 + offsetY, 4210752);
 //        float boost = Math.round((this.geothermalGenerator.getSolarBoost() - 1) * 1000) / 10.0F;
-//        displayString = GCCoreUtil.translate("gui.message.environment.name") + ": " + boost + "%";
+//        displayString = GCCoreUtil.translate("gui.message.environment") + ": " + boost + "%";
 //        this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
         //		displayString = ElectricityDisplay.getDisplay(this.geothermalGenerator.getVoltage(), ElectricUnit.VOLTAGE);
         //		this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
@@ -90,20 +90,20 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
     {
         if (this.geothermalGenerator.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
         if (this.geothermalGenerator.generateWatts > 0)
         {
-            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.collectingenergy.name");
+            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.collectingenergy");
         }
 
         if (!this.geothermalGenerator.hasValidSpout())
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.status.invalid_spout_1.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.status.invalid_spout_1");
         }
 
-        return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.unknown.name");
+        return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.unknown");
     }
 
     private String getStatus2()
@@ -115,7 +115,7 @@ public class GuiGeothermal extends GuiContainerGC<ContainerGeothermal>
 
         if (!this.geothermalGenerator.hasValidSpout())
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.status.invalid_spout_2.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.status.invalid_spout_2");
         }
 
         return "";

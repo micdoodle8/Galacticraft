@@ -483,19 +483,23 @@ public class OxygenUtil
 
     public static TileEntity[] getAdjacentFluidConnections(TileEntity tile, boolean ignoreConnect)
     {
-        TileEntity[] adjacentConnections = new TileEntity[Direction.values().length];
-
         if (tile == null)
         {
-            return adjacentConnections;
+            return new TileEntity[Direction.values().length];
         }
+
+        return getAdjacentFluidConnections(new BlockVec3(tile), tile.getWorld(), ignoreConnect);
+    }
+
+    public static TileEntity[] getAdjacentFluidConnections(BlockVec3 pos, World world, boolean ignoreConnect)
+    {
+        TileEntity[] adjacentConnections = new TileEntity[Direction.values().length];
 
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
-        BlockVec3 thisVec = new BlockVec3(tile);
         for (Direction direction : Direction.values())
         {
-            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+            TileEntity tileEntity = pos.getTileEntityOnSide(world, direction);
 
             boolean connectable = false;
             if (tileEntity instanceof IConnector)

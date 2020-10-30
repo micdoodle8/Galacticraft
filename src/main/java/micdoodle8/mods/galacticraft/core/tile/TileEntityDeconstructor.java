@@ -10,11 +10,17 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerDeconstructor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -23,6 +29,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -31,7 +39,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileEntityDeconstructor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
+public class TileEntityDeconstructor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.deconstructor)
     public static TileEntityType<TileEntityDeconstructor> TYPE;
@@ -576,4 +584,16 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerDeconstructor(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.deconstructor");
+    }
 }

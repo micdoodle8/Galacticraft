@@ -1,5 +1,8 @@
 {
-    "parent": "block/cube_all",
+    "parent": "forge:item/default",
+    "loader": "forge:obj",
+    "model": "galacticraftcore:models/block/workbench.obj",
+    "flip-v": true,
     "textures": {
         "all": "galacticraftcore:blocks/rocket_workbench",
 		"particle": "galacticraftcore:blocks/rocket_workbench"

@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -64,11 +65,17 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
 
         if (!worldIn.isRemote)
         {
-            INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerCrafting(w, p, (TileEntityCrafting) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.magneticcrafting.name"));
-            NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
         }
 
         return ActionResultType.PASS;
+    }
+
+    @Override
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
     @Override
@@ -131,9 +138,9 @@ public class BlockCrafting extends BlockAdvancedTile implements IShiftDescriptio
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        worldIn.setBlockState(pos, state.with(FACING, getFacingFromEntity(worldIn, pos, placer)), 2);
+        return this.getDefaultState().with(FACING, getFacingFromEntity(context.getWorld(), context.getPos(), context.getPlayer()));
     }
 
     public static Direction getFacingFromEntity(World worldIn, BlockPos clickedBlock, LivingEntity entityIn)

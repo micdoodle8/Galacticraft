@@ -186,7 +186,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortable
 
         if (stack.hasTag() && stack.getTag().contains("RocketFuel"))
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + stack.getTag().getInt("RocketFuel") + " / " + EntityTier1Rocket.FUEL_CAPACITY));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel") + ": " + stack.getTag().getInt("RocketFuel") + " / " + EntityTier1Rocket.FUEL_CAPACITY));
         }
     }
 

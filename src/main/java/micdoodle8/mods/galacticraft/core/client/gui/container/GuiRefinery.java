@@ -35,7 +35,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
     public GuiRefinery(ContainerRefinery container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerRefinery(playerInv, refinery, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.refinery.name"));
+//        super(new ContainerRefinery(playerInv, refinery, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.refinery"));
         this.refinery = container.getRefinery();
         this.ySize = 168;
     }
@@ -49,7 +49,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         oilTankDesc.add(GCCoreUtil.translate("gui.oil_tank.desc.1"));
         int oilLevel = this.refinery.oilTank != null && this.refinery.oilTank.getFluid() != FluidStack.EMPTY ? this.refinery.oilTank.getFluid().getAmount() : 0;
         int oilCapacity = this.refinery.oilTank != null ? this.refinery.oilTank.getCapacity() : 0;
-        oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil.name") + ": " + oilLevel + " / " + oilCapacity);
+        oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil") + ": " + oilLevel + " / " + oilCapacity);
         this.oilTankRegion.tooltipStrings = oilTankDesc;
         this.oilTankRegion.xPosition = (this.width - this.xSize) / 2 + 7;
         this.oilTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
@@ -64,7 +64,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.4"));
         int fuelLevel = this.refinery.fuelTank != null && this.refinery.fuelTank.getFluid() != FluidStack.EMPTY ? this.refinery.fuelTank.getFluid().getAmount() : 0;
         int fuelCapacity = this.refinery.fuelTank != null ? this.refinery.fuelTank.getCapacity() : 0;
-        fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
+        fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel") + ": " + fuelLevel + " / " + fuelCapacity);
         this.fuelTankRegion.tooltipStrings = fuelTankDesc;
         this.fuelTankRegion.xPosition = (this.width - this.xSize) / 2 + 153;
         this.fuelTankRegion.yPosition = (this.height - this.ySize) / 2 + 28;
@@ -85,7 +85,7 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 39, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.refine.name"), (button) ->
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 39, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.refine"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.minecraft.world), new Object[]{this.refinery.getPos(), 0}));
         }));
@@ -101,14 +101,14 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         String missingInput = null;
         if (this.refinery.oilTank.getFluid() == FluidStack.EMPTY || this.refinery.oilTank.getFluidAmount() == 0)
         {
-            missingInput = EnumColor.RED + GCCoreUtil.translate("gui.status.nooil.name");
+            missingInput = EnumColor.RED + GCCoreUtil.translate("gui.status.nooil");
         }
-        String activeString = this.refinery.canProcess() ? EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.refining.name") : null;
+        String activeString = this.refinery.canProcess() ? EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.refining") : null;
         displayText = this.refinery.getGUIstatus(missingInput, activeString, false);
 
         this.buttonDisable.active = this.refinery.disableCooldown == 0;
-        this.buttonDisable.setMessage(this.refinery.processTicks == 0 ? GCCoreUtil.translate("gui.button.refine.name") : GCCoreUtil.translate("gui.button.stoprefine.name"));
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 60, 45 + 23 + yOffset, 4210752);
+        this.buttonDisable.setMessage(this.refinery.processTicks == 0 ? GCCoreUtil.translate("gui.button.refine") : GCCoreUtil.translate("gui.button.stoprefine"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ": ", 60, 45 + 23 + yOffset, 4210752);
         this.font.drawString(displayText, 60, 45 + 34 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
@@ -136,14 +136,14 @@ public class GuiRefinery extends GuiContainerGC<ContainerRefinery>
         oilTankDesc.add(GCCoreUtil.translate("gui.oil_tank.desc.1"));
         int oilLevel = this.refinery.oilTank != null && this.refinery.oilTank.getFluid() != FluidStack.EMPTY ? this.refinery.oilTank.getFluid().getAmount() : 0;
         int oilCapacity = this.refinery.oilTank != null ? this.refinery.oilTank.getCapacity() : 0;
-        oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil.name") + ": " + oilLevel + " / " + oilCapacity);
+        oilTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.oil") + ": " + oilLevel + " / " + oilCapacity);
         this.oilTankRegion.tooltipStrings = oilTankDesc;
 
         List<String> fuelTankDesc = new ArrayList<String>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.4"));
         int fuelLevel = this.refinery.fuelTank != null && this.refinery.fuelTank.getFluid() != FluidStack.EMPTY ? this.refinery.fuelTank.getFluid().getAmount() : 0;
         int fuelCapacity = this.refinery.fuelTank != null ? this.refinery.fuelTank.getCapacity() : 0;
-        fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel.name") + ": " + fuelLevel + " / " + fuelCapacity);
+        fuelTankDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.message.fuel") + ": " + fuelLevel + " / " + fuelCapacity);
         this.fuelTankRegion.tooltipStrings = fuelTankDesc;
 
         List<String> electricityDesc = new ArrayList<String>();

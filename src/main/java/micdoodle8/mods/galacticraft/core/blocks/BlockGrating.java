@@ -160,7 +160,7 @@
 //    @Override
 //    public String getLocalizedName()
 //    {
-//        return LanguageMap.getInstance().translateKey("tile.grating.name");
+//        return LanguageMap.getInstance().translateKey("tile.grating");
 //    }
 //
 //    @Override

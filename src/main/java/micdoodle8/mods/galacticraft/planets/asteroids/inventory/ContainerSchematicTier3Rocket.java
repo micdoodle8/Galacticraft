@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerSchematicTier3Rocket extends Container
 {
-    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SCHEMATIC_TIER_3_ROCKET)
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidsContainerNames.SCHEMATIC_TIER_3_ROCKET)
     public static ContainerType<ContainerSchematicTier3Rocket> TYPE;
 
     public InventorySchematicTier3Rocket craftMatrix = new InventorySchematicTier3Rocket(this);

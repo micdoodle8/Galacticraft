@@ -22,26 +22,26 @@ public class GuiCoalGenerator extends GuiContainerGC<ContainerCoalGenerator>
     public GuiCoalGenerator(ContainerCoalGenerator container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerCoalGenerator(playerInv, coalGenerator), playerInv, new TranslationTextComponent("tile.machine.0.name"));
-        this.coalGenerator = coalGenerator;
+//        super(new ContainerCoalGenerator(playerInv, coalGenerator), playerInv, new TranslationTextComponent("tile.machine.0"));
+        this.coalGenerator = container.getGenerator();
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         this.font.drawString(this.title.getFormattedText(), 55, 6, 4210752);
-        String displayText = GCCoreUtil.translate("gui.status.generating.name");
+        String displayText = GCCoreUtil.translate("gui.status.generating");
 
         if (this.coalGenerator.heatGJperTick <= 0 || this.coalGenerator.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
         {
-            displayText = GCCoreUtil.translate("gui.status.not_generating.name");
+            displayText = GCCoreUtil.translate("gui.status.not_generating");
         }
 
         this.font.drawString(displayText, 122 - this.font.getStringWidth(displayText) / 2, 33, 4210752);
 
         if (this.coalGenerator.heatGJperTick < TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK)
         {
-            displayText = GCCoreUtil.translate("gui.status.hull_heat.name") + ": " + (int) (this.coalGenerator.heatGJperTick / TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK * 100) + "%";
+            displayText = GCCoreUtil.translate("gui.status.hull_heat") + ": " + (int) (this.coalGenerator.heatGJperTick / TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK * 100) + "%";
         }
         else
         {

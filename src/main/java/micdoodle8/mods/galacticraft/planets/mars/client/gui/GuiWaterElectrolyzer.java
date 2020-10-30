@@ -90,7 +90,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
 
         this.addToolTips();
 
-        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) ->
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.tileEntity.getWorld()), new Object[]{this.tileEntity.getPos(), 0}));
         }));
@@ -105,36 +105,36 @@ public class GuiWaterElectrolyzer extends GuiContainerGC<ContainerElectrolyzer>
 
         if (RedstoneUtil.isBlockReceivingRedstone(this.tileEntity.getWorld(), this.tileEntity.getPos()))
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off");
         }
         else if (!this.tileEntity.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy");
         }
         else if (this.tileEntity.waterTank.getFluid() == FluidStack.EMPTY || this.tileEntity.waterTank.getFluidAmount() == 0)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.zero_water.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.zero_water");
         }
         else if (this.tileEntity.waterTank.getFluidAmount() > 0 && this.tileEntity.disabled)
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready");
         }
         else if (this.tileEntity.canProcess())
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running");
         }
         else if (this.tileEntity.liquidTank.getFluidAmount() == this.tileEntity.liquidTank.getCapacity() && this.tileEntity.liquidTank2.getFluidAmount() == this.tileEntity.liquidTank2.getCapacity())
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tanksfull.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tanksfull");
         }
         else
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown");
         }
 
         this.buttonDisable.active = this.tileEntity.disableCooldown == 0;
-        this.buttonDisable.setMessage(this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefy_stop.name"));
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 56, 45 + 23 + yOffset, 4210752);
+        this.buttonDisable.setMessage(this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.liquefy") : GCCoreUtil.translate("gui.button.liquefy_stop"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ":", 56, 45 + 23 + yOffset, 4210752);
         this.font.drawString(displayText, 62, 45 + 33 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);

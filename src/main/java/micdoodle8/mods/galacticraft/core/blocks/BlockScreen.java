@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -82,12 +83,18 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
 //        return face.ordinal() == getMetaFromState(state) ? BlockFaceShape.UNDEFINED : BlockFaceShape.BOWL;
 //    }
 
+//    @Override
+//    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+//    {
+////        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+////        int change = Direction.byHorizontalIndex(angle).getOpposite().getIndex();
+//        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+//    }
+
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-//        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-//        int change = Direction.byHorizontalIndex(angle).getOpposite().getIndex();
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override

@@ -12,18 +12,26 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
@@ -33,7 +41,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileClientUpdates
+public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileClientUpdates, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenSealer)
     public static TileEntityType<TileEntityOxygenSealer> TYPE;
@@ -63,7 +71,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
 
     public TileEntityOxygenSealer()
     {
-        super(TYPE/*"container.oxygensealer.name"*/, 10000, UNSEALED_OXYGENPERTICK);
+        super(TYPE/*"container.oxygen_sealer"*/, 10000, UNSEALED_OXYGENPERTICK);
         this.noRedstoneControl = true;
         this.storage.setMaxExtract(5.0F);  //Half of a standard machine's power draw
         this.storage.setMaxReceive(25.0F);
@@ -446,5 +454,17 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     {
         this.clientOnLoad();
         return this.leaksClient;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerOxygenSealer(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.oxygen_sealer");
     }
 }

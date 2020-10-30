@@ -7,9 +7,11 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,6 +24,37 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     public BlockMinerBase(Properties builder)
     {
         super(builder);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean causesSuffocation(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canEntitySpawn(BlockState state, IBlockReader worldIn, BlockPos pos, EntityType<?> type)
+    {
+        return false;
     }
 
 //    @OnlyIn(Dist.CLIENT)
@@ -60,7 +93,6 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
-
 
     @Nullable
     @Override

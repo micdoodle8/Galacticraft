@@ -51,7 +51,6 @@ public class VenusItems
         return new Item.Properties().group(GalacticraftCore.galacticraftItemsTab);
     }
 
-    @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();

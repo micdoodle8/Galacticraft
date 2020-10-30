@@ -70,7 +70,7 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage() > 0)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.liquid_argon.name") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.canister.liquid_argon") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getDamage())));
         }
     }
 }

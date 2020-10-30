@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Giriş Bölmesi",
-  "container.launchcontroller": "Fırlatma Kontrollü",
+  "container.launch_controller": "Fırlatma Kontrollü",
   "container.mars_lander": "Landing Balonları",
   "container.short_range_telepad": "Kısa Menzilli Telepad",
   "container.tile_terraformer": "Terraformer",
@@ -279,12 +279,12 @@
   "block.galacticraftplanets.treasure_t2": "Tier 2 Hazine Sandığı",
   "block.galacticraftplanets.treasure_t3.description": "Tier 3 Hazine Sandığı şu anlık kullanılmıyor.",
   "block.galacticraftplanets.treasure_t3": "Tier 3 Hazine Sandığı",
-  "block.galacticraftplanets.walkway.walkway.description": "Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.",
-  "block.galacticraftplanets.walkway.walkway": "Yürüme Bloğu",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Oksijen Borusu Yürüme Bloğu boruların altan geçerek, güvenli bir yürüyüş sağlar.",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Yürüme Bloğu",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Alüminyum Tel Yürüme Bloğu kabloların altan geçerek, güvenli bir yürüyüş sağlar.",
-  "block.galacticraftplanets.walkway.walkway_wire": "Yürüme Bloğu",
+  "block.galacticraftplanets.walkway.description": "Yürüme Bloğu dekoratif amaçlıdır, diğer bloklara bağlanarak uzay teması oluşur.",
+  "block.galacticraftplanets.walkway": "Yürüme Bloğu",
+  "block.galacticraftplanets.walkway_fluid.description": "Oksijen Borusu Yürüme Bloğu boruların altan geçerek, güvenli bir yürüyüş sağlar.",
+  "block.galacticraftplanets.walkway_fluid": "Yürüme Bloğu",
+  "block.galacticraftplanets.walkway_wire.description": "Alüminyum Tel Yürüme Bloğu kabloların altan geçerek, güvenli bir yürüyüş sağlar.",
+  "block.galacticraftplanets.walkway_wire": "Yürüme Bloğu",
   "block.galacticraftplanets.wall_gc.mars": "Mars Kırık Taş Duvarı",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Mars Zindan Tuğla Duvarı"
 }

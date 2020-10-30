@@ -48,7 +48,7 @@ public class SchematicAstroMiner implements ISchematicPage
     @Override
     public SimpleNamedContainerProvider getContainerProvider(PlayerEntity player)
     {
-        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicAstroMiner(w, p), new TranslationTextComponent("container.schematic_astro_miner.name"));
+        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicAstroMiner(w, p), new TranslationTextComponent("container.schematic_astro_miner"));
     }
 
     @Override

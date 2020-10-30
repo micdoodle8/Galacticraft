@@ -21,10 +21,16 @@ import micdoodle8.mods.galacticraft.planets.PlanetFluids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockGasLiquefier;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerGasLiquefier;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerMethaneSynthesizer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,6 +38,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -47,7 +55,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper, IOxygenReceiver
+public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper, IOxygenReceiver, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.gasLiquefier)
     public static TileEntityType<TileEntityGasLiquefier> TYPE;
@@ -990,4 +998,16 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 //    {
 //        return side.equals(this.getGasInputDirection());
 //    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerGasLiquefier(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.gas_liquefier");
+    }
 }

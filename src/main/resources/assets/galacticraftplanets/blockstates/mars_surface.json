@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "galacticraftplanets:block/mars_surface_model" }
+    }
+}

@@ -101,9 +101,9 @@
 //
 //        if (this.fillAtmos)
 //        {
-//            String gasname = this.outputGas == 3 ? GCCoreUtil.translate("gas.oxygen.name") : GCCoreUtil.translate("gas.nitrogen.name");
-//            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
-//            String text2 = GCCoreUtil.lowerCaseNoun(gasname) + " " + GCCoreUtil.translate("gui.message.with_atmosphere1.name");
+//            String gasname = this.outputGas == 3 ? GCCoreUtil.translate("gas.oxygen") : GCCoreUtil.translate("gas.nitrogen");
+//            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0");
+//            String text2 = GCCoreUtil.lowerCaseNoun(gasname) + " " + GCCoreUtil.translate("gui.message.with_atmosphere1");
 //            this.font.drawString(text1, 4, 83, 4210752);
 //            this.font.drawString(text2, 4, 93, 4210752);
 //        }
@@ -258,7 +258,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return GCCoreUtil.translate("tile.mars_machine.4.name");
+//        return GCCoreUtil.translate("tile.mars_machine.4");
 //    }
 //
 //    @Override

@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Přistávací modul",
-  "container.launchcontroller": "Odpalovací zarízení",
+  "container.launch_controller": "Odpalovací zarízení",
   "container.mars_lander": "Přistávací balóny",
   "container.short_range_telepad": "Transportér krátkého dosahu",
   "container.tile_terraformer": "Terraformer",
@@ -294,12 +294,12 @@
   "block.galacticraftplanets.venus_rock_1": "Venušin tvrdý kámen",
   "block.galacticraftplanets.venus_rock_2": "Venušin vulkanický kámen",
   "block.galacticraftplanets.venus_rock_3": "Pemza",
-  "block.galacticraftplanets.walkway.walkway.description": "Lávky slouží k dekorativním účelům, propojují bloky při zachování patřičného vzhledu",
-  "block.galacticraftplanets.walkway.walkway": "Lávka",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Lávka s trubkou slouží k transportu kapalin pod lávkou",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Lávka s trubkou",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Lávka s kabelem slouží k přenosu energie pod lávkou",
-  "block.galacticraftplanets.walkway.walkway_wire": "Lávka s kabelem",
+  "block.galacticraftplanets.walkway.description": "Lávky slouží k dekorativním účelům, propojují bloky při zachování patřičného vzhledu",
+  "block.galacticraftplanets.walkway": "Lávka",
+  "block.galacticraftplanets.walkway_fluid.description": "Lávka s trubkou slouží k transportu kapalin pod lávkou",
+  "block.galacticraftplanets.walkway_fluid": "Lávka s trubkou",
+  "block.galacticraftplanets.walkway_wire.description": "Lávka s kabelem slouží k přenosu energie pod lávkou",
+  "block.galacticraftplanets.walkway_wire": "Lávka s kabelem",
   "block.galacticraftplanets.wall_gc.mars": "Stěna z dlažebního kamene",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Zděná stěna (dungeon)"
 }

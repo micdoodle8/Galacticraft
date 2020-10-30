@@ -8,8 +8,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -21,13 +23,13 @@ import javax.annotation.Nullable;
 public class BlockConcealedDetector extends Block implements ISortable
 {
     public static final IntegerProperty VARIANT = IntegerProperty.create("var", 0, 1);
-    public static final IntegerProperty FACING = IntegerProperty.create("facing", 0, 3);
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty DETECTED = BooleanProperty.create("det");
 
     public BlockConcealedDetector(Properties builder)
     {
         super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(FACING, 0).with(VARIANT, 0).with(DETECTED, false));
+        this.setDefaultState(stateContainer.getBaseState().with(VARIANT, 0).with(DETECTED, false));
     }
 
 //    @Override
@@ -46,7 +48,7 @@ public class BlockConcealedDetector extends Block implements ISortable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getHorizontalIndex());
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing());
     }
 
 //    @Override

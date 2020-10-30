@@ -1,20 +1,24 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.GCDimensions;
-import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
+import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
-import micdoodle8.mods.galacticraft.planets.venus.dimension.VenusBiomeProviderTypes;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.items.VenusItems;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -26,9 +30,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,17 +55,40 @@ public class GalacticraftPlanets
 
     public GalacticraftPlanets()
     {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addGenericListener(Block.class, GalacticraftPlanets::registerBlocks);
+        modBus.addGenericListener(Item.class, GalacticraftPlanets::registerItems);
+        modBus.addListener(this::commonSetup);
+
         GalacticraftCore.isPlanetsLoaded = true;
+        GalacticraftChannelHandler.registerPlanetsPackets();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManagerPlanets.COMMON_SPEC);
 
         MinecraftForge.EVENT_BUS.addListener(PlanetDimensions::onModDimensionRegister);
 
-        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modBus.addListener(this::commonSetup);
-
         GalacticraftPlanets.commonModules.add(new MarsModule());
         GalacticraftPlanets.commonModules.add(new AsteroidsModule());
         GalacticraftPlanets.commonModules.add(new VenusModule());
+    }
+
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> evt)
+    {
+        MarsBlocks.registerBlocks(evt);
+        AsteroidBlocks.registerBlocks(evt);
+        VenusBlocks.registerBlocks(evt);
+    }
+
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> evt)
+    {
+        MarsBlocks.registerItemBlocks(evt);
+        AsteroidBlocks.registerItemBlocks(evt);
+        VenusBlocks.registerItemBlocks(evt);
+
+        MarsItems.registerItems(evt);
+        AsteroidsItems.registerItems(evt);
+        VenusItems.registerItems(evt);
     }
 
     @OnlyIn(Dist.CLIENT)

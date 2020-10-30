@@ -20,17 +20,13 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
     {
         if (cameraTransformType == ItemCameraTransforms.TransformType.GUI)
         {
+            float scale = 0.25F;
             mat.push();
-            mat.translate(0.2F, -0.1F, 0.0F);
-            mat.rotate(new Quaternion(30.0F, 225.0F, 0.0F, true));
-            mat.scale(0.85F, 0.85F, 0.85F);
-            mat.translate(0.36F, 0.3F, 0.0F);
-            mat.rotate(new Quaternion(0.0F, Constants.halfPI, 0.0F, false));
-            mat.rotate(new Quaternion(Constants.halfPI / 4.0F, 0.0F, 0.0F, false));
-            mat.translate(-0.15F, 0.0F, -0.15F);
+            mat.translate(0.0F, -0.05F, 0.0F);
+            mat.rotate(new Quaternion(25.0F, 0.0F, 0.0F, true));
             mat.rotate(new Quaternion(0.0F, ClientUtil.getClientTimeTotal() / 1000.0F, 0.0F, false));
-            mat.translate(0.15F, 0.0F, 0.15F);
-            mat.scale(0.3F, 0.3F, 0.3F);
+            mat.scale(scale, scale, scale);
+            mat.translate(0.5D, 0.5D, 0.5D);
             return true;
         }
 

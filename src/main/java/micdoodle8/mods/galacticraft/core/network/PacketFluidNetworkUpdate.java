@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketBuffer;
@@ -65,7 +66,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
         {
             if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
             {
-                message.handleClientSide(ctx.get().getSender());
+                message.handleClientSide(Minecraft.getInstance().player);
             }
             else
             {

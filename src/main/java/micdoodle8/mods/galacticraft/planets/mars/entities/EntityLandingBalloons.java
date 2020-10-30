@@ -131,7 +131,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
 //    @Override
 //    public String getName()
 //    {
-//        return GCCoreUtil.translate("container.mars_lander.name");
+//        return GCCoreUtil.translate("container.mars_lander");
 //    }
 
 //    @Override

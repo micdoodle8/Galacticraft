@@ -20,10 +20,16 @@ import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockElectrolyzer;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerElectrolyzer;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerGasLiquefier;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -32,6 +38,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
@@ -45,7 +53,7 @@ import net.minecraftforge.registries.ObjectHolder;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper, IOxygenStorage, IOxygenReceiver
+public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper, IOxygenStorage, IOxygenReceiver, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.electrolyzer)
     public static TileEntityType<TileEntityElectrolyzer> TYPE;
@@ -832,5 +840,17 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 //    		return state.get(BlockMachineMarsT2.FACING);
 //    	}
         return state.get(BlockElectrolyzer.FACING);
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerElectrolyzer(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.electrolyzer");
     }
 }

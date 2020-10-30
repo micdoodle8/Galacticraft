@@ -39,7 +39,7 @@
 //    {
 //        this.background = guiHelper.createDrawable(compressorTex, 18, 17, 137, 78);
 //        this.backgroundBlank = guiHelper.createDrawable(compressorTexBlank, 18, 17, 137, 78);
-//        this.localizedName = GCCoreUtil.translate("tile.machine.3.name");
+//        this.localizedName = GCCoreUtil.translate("tile.machine.3");
 //
 //        IDrawableStatic progressBarDrawable = guiHelper.createDrawable(compressorTex, 176, 13, 52, 17);
 //        this.progressBar = guiHelper.createAnimatedDrawable(progressBarDrawable, 70, IDrawableAnimated.StartDirection.LEFT, false);

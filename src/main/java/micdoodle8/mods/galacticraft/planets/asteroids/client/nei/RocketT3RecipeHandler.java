@@ -125,7 +125,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return GCCoreUtil.translate("tile.rocket_workbench.name");
+//        return GCCoreUtil.translate("tile.rocket_workbench");
 //    }
 //
 //    @Override

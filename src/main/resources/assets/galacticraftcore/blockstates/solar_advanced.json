@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "inventory": [{ "model": "galacticraftcore:block/advanced_solar_model" }],
+        "facing=north": { "model": "galacticraftcore:block/advanced_solar_model" },
+        "facing=east":  { "model": "galacticraftcore:block/advanced_solar_model", "y": 90 },
+        "facing=west":  { "model": "galacticraftcore:block/advanced_solar_model", "y": 270 },
+        "facing=south": { "model": "galacticraftcore:block/advanced_solar_model", "y": 180 }
+    }
+}

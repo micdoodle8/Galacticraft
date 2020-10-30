@@ -238,25 +238,25 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     {
         if (!this.noRedstoneControl && RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos()))
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off");
         }
 
         if (this.getEnergyStoredGC() == 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower");
         }
 
         if (this.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready");
         }
 
         if (this.getEnergyStoredGC() < this.storage.getMaxExtract())
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.missingpower");
         }
 
-        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active.name");
+        return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.active");
     }
 
     /**
@@ -268,12 +268,12 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     {
         if (!this.noRedstoneControl && RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos()))
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.off");
         }
 
         if (this.getEnergyStoredGC() == 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate(shorten ? "gui.status.missingpower.short.name" : "gui.status.missingpower.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate(shorten ? "gui.status.missingpower.short" : "gui.status.missingpower");
         }
 
         if (missingInput != null)
@@ -283,12 +283,12 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
         if (this.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready");
         }
 
         if (this.getEnergyStoredGC() < this.storage.getMaxExtract())
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate(shorten ? "gui.status.missingpower.short.name" : "gui.status.missingpower.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate(shorten ? "gui.status.missingpower.short" : "gui.status.missingpower");
         }
 
         if (activeString != null)
@@ -296,6 +296,6 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
             return activeString;
         }
 
-        return EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");
+        return EnumColor.RED + GCCoreUtil.translate("gui.status.unknown");
     }
 }

@@ -32,7 +32,7 @@ public class GuiFuelLoader extends GuiContainerGC<ContainerFuelLoader>
     public GuiFuelLoader(ContainerFuelLoader container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerFuelLoader(playerInv, fuelLoader), playerInv, new TranslationTextComponent("container.fuelloader.name"));
+//        super(new ContainerFuelLoader(playerInv, fuelLoader), playerInv, new TranslationTextComponent("container.fuel_loader"));
         this.fuelLoader = container.getFuelLoader();
         this.ySize = 180;
     }
@@ -58,7 +58,7 @@ public class GuiFuelLoader extends GuiContainerGC<ContainerFuelLoader>
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttons.add(this.buttonLoadFuel = new Button(this.width / 2 + 2, this.height / 2 - 49, 76, 20, GCCoreUtil.translate("gui.button.loadfuel.name"), (button) ->
+        this.buttons.add(this.buttonLoadFuel = new Button(this.width / 2 + 2, this.height / 2 - 49, 76, 20, GCCoreUtil.translate("gui.button.loadfuel"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.fuelLoader.getWorld()), new Object[]{this.fuelLoader.getPos(), 0}));
         }));
@@ -69,8 +69,8 @@ public class GuiFuelLoader extends GuiContainerGC<ContainerFuelLoader>
     {
         this.font.drawString(this.title.getFormattedText(), 60, 10, 4210752);
         this.buttonLoadFuel.active = this.fuelLoader.disableCooldown == 0 && this.fuelLoader.fuelTank.getFluid() != FluidStack.EMPTY && this.fuelLoader.fuelTank.getFluid().getAmount() > 0;
-        this.buttonLoadFuel.setMessage(!this.fuelLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading.name") : GCCoreUtil.translate("gui.button.loadfuel.name"));
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
+        this.buttonLoadFuel.setMessage(!this.fuelLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading") : GCCoreUtil.translate("gui.button.loadfuel"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus(), 28, 45 + 23 - 46, 4210752);
         //this.font.drawString("" + this.fuelLoader.storage.getMaxExtract(), 28, 56 + 23 - 46, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.fuelLoader.getVoltage(), ElectricUnit.VOLTAGE), 28, 68 + 23 - 46, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 11, 4210752);
@@ -80,7 +80,7 @@ public class GuiFuelLoader extends GuiContainerGC<ContainerFuelLoader>
     {
         if (this.fuelLoader.fuelTank.getFluid() == FluidStack.EMPTY || this.fuelLoader.fuelTank.getFluid().getAmount() == 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.nofuel.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.nofuel");
         }
 
         return this.fuelLoader.getGUIstatus();

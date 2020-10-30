@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
@@ -9,8 +11,20 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientUtil
@@ -172,42 +186,35 @@ public class ClientUtil
 //        return (OBJModel) model.bake(loader, textureGetter, new BasicState(new OBJModel.OBJState(visibleGroups, false, parentState), false), DefaultVertexFormats.ITEM);
 //    }
 
-//    public static void drawBakedModel(IBakedModel model)
-//    {
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder worldrenderer = tessellator.getBuffer();
-//        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-//        Random random = new Random();
-//        random.setSeed(42);
-//
-//        for (BakedQuad bakedquad : model.getQuads(null, null, random))
-//        {
-//            worldrenderer.addVertexData(bakedquad.getVertexData());
-//        }
-//
-//        tessellator.draw();
-//    }
-//
-//    public static void drawBakedModelColored(IBakedModel model, int color)
-//    {
-//        Tessellator tessellator = Tessellator.getInstance();
-//        BufferBuilder worldrenderer = tessellator.getBuffer();
-//        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-//        Random random = new Random();
-//        random.setSeed(42);
-//
-//        for (BakedQuad bakedquad : model.getQuads(null, null, random))
-//        {
-//            int[] data = bakedquad.getVertexData();
-//            data[3] = color;
-//            data[10] = color;
-//            data[17] = color;
-//            data[24] = color;
-//            worldrenderer.addVertexData(data);
-//        }
-//
-//        tessellator.draw();
-//    }
+    public static void drawBakedModel(IBakedModel model, IRenderTypeBuffer buffer, MatrixStack mat, int light)
+    {
+        RenderType renderType = RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        IVertexBuilder builder = buffer.getBuffer(renderType);
+        Random random = new Random();
+        random.setSeed(42);
+
+        MatrixStack.Entry last = mat.getLast();
+        for (BakedQuad bakedquad : model.getQuads(null, null, random))
+        {
+            builder.addVertexData(last, bakedquad, 1.0F, 1.0F, 1.0F, 1.0F, light, OverlayTexture.NO_OVERLAY);
+        }
+        ((IRenderTypeBuffer.Impl) buffer).finish(renderType);
+    }
+
+    public static void drawBakedModelColored(IBakedModel model, IRenderTypeBuffer buffer, MatrixStack mat, int light, float r, float g, float b, float a)
+    {
+        RenderType renderType = RenderType.getEntityTranslucent(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        IVertexBuilder builder = buffer.getBuffer(renderType);
+        Random random = new Random();
+        random.setSeed(42);
+
+        MatrixStack.Entry last = mat.getLast();
+        for (BakedQuad bakedquad : model.getQuads(null, null, random))
+        {
+            builder.addVertexData(last, bakedquad, 1.0F, 1.0F, 1.0F, 1.0F, light, OverlayTexture.NO_OVERLAY);
+        }
+        ((IRenderTypeBuffer.Impl) buffer).finish(renderType);
+    }
 //
 //    public static void copyModelAngles(ModelRenderer source, ModelRenderer dest)
 //    {

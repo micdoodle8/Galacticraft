@@ -67,7 +67,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 81, (this.height - this.ySize) / 2 + 92, 18, 18, batterySlotDesc, this.width, this.height, this));
-        String enableString = !this.laserTurret.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name");
+        String enableString = !this.laserTurret.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable") : GCCoreUtil.translate("gui.button.enable");
         this.buttons.add(this.buttonEnable = new Button((this.width - this.xSize) / 2 + 7, this.height / 2 - 9, 72, 20, enableString, (button) ->
         {
             if (!this.minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
@@ -79,9 +79,9 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
             laserTurret.setDisabled(0, !laserTurret.getDisabled(0));
             init();
         }));
-        this.blacklistMode = new GuiElementCheckbox(this, this.width / 2 - 81, yTop + 26, GCCoreUtil.translate("gui.message.blacklist_mode.name"), ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.targetMeteors = new GuiElementCheckbox(this, this.width / 2 - 81, yTop + 40, GCCoreUtil.translate("gui.message.target_meteors.name"), ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.buttons.add(this.buttonEditList = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 55, 82, 20, GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ".name"), (button) ->
+        this.blacklistMode = new GuiElementCheckbox(this, this.width / 2 - 81, yTop + 26, GCCoreUtil.translate("gui.message.blacklist_mode"), ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.targetMeteors = new GuiElementCheckbox(this, this.width / 2 - 81, yTop + 40, GCCoreUtil.translate("gui.message.target_meteors"), ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.buttons.add(this.buttonEditList = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 55, 82, 20, GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ""), (button) ->
         {
             if (!this.minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
             {
@@ -90,7 +90,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
             }
             Minecraft.getInstance().displayGuiScreen(new GuiLaserTurretEditList(laserTurret));
         }));
-        this.buttons.add(this.buttonEditPriority = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 78, 82, 20, GCCoreUtil.translate("gui.button.edit_priority.name"), (button) ->
+        this.buttons.add(this.buttonEditPriority = new Button((this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 78, 82, 20, GCCoreUtil.translate("gui.button.edit_priority"), (button) ->
         {
             if (!this.minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
             {
@@ -111,7 +111,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
         this.buttonEnable.active = this.laserTurret.disableCooldown == 0;
         String displayString = this.getTitle().getFormattedText();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 7, ColorUtil.to32BitColor(255, 75, 75, 75));
-        displayString = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
+        displayString = GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus();
         this.font.drawString(displayString, this.xSize / 2 - this.font.getStringWidth(displayString) / 2, 18, ColorUtil.to32BitColor(255, 75, 75, 75));
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 94, ColorUtil.to32BitColor(255, 75, 75, 75));
     }
@@ -120,12 +120,12 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
     {
         if (this.laserTurret.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
         if (this.laserTurret.getEnergyStoredGC() < 1000)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingpower");
         }
 
         return this.laserTurret.getGUIstatus();
@@ -166,7 +166,7 @@ public class GuiLaserTurret extends GuiContainerGC<ContainerLaserTurret> impleme
 
         this.blacklistMode.isSelected = laserTurret.blacklistMode;
         this.targetMeteors.isSelected = laserTurret.targetMeteors;
-        this.buttonEditList.setMessage(GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ".name"));
+        this.buttonEditList.setMessage(GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ""));
 
         if (!minecraft.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
         {

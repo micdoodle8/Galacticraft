@@ -1,7 +1,7 @@
 {
     "parent": "forge:item/default",
     "loader": "forge:obj",
-    "model": "galacticraftplanets:models/block/telepad_short.obj",
+    "model": "galacticraftplanets:models/telepad_short.obj",
     "flip-v": true,
     "display": {
         "thirdperson": {

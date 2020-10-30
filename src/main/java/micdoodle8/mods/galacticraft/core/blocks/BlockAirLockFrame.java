@@ -27,19 +27,6 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
         super(builder);
     }
 
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-    {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-
-        TileEntity tile = worldIn.getTileEntity(pos);
-
-        if (tile instanceof TileEntityAirLockController && placer instanceof PlayerEntity)
-        {
-            ((TileEntityAirLockController) tile).ownerName = PlayerUtil.getName(((PlayerEntity) placer));
-        }
-    }
-
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
@@ -57,30 +44,6 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
     public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
     {
         return true;
-    }
-
-    @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
-    {
-        if (state.getBlock() != newState.getBlock())
-        {
-            TileEntity tile = worldIn.getTileEntity(pos);
-
-            if (tile instanceof TileEntityAirLockController)
-            {
-                ((TileEntityAirLockController) tile).unsealAirLock();
-            }
-
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
-        }
-    }
-
-    @Override
-    @Nullable
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 
     @Override

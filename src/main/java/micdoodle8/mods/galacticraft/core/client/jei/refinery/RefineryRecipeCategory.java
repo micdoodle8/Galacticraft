@@ -30,7 +30,7 @@
 //    public RefineryRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(refineryGuiTex, 3, 4, 168, 64);
-//        this.localizedName = GCCoreUtil.translate("tile.refinery.name");
+//        this.localizedName = GCCoreUtil.translate("tile.refinery");
 //
 //        IDrawableStatic progressBarDrawableOil = guiHelper.createDrawable(refineryGuiTex, 176, 0, 16, 38);
 //        this.oilBar = guiHelper.createAnimatedDrawable(progressBarDrawableOil, 70, IDrawableAnimated.StartDirection.TOP, true);

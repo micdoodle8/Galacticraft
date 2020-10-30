@@ -14,6 +14,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -99,7 +101,15 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
         builder.add(UP, DOWN);
     }
 
-//    @Override
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    {
+        BlockState stateAbove = worldIn.getBlockState(currentPos.up());
+        BlockState stateBelow = worldIn.getBlockState(currentPos.down());
+        return stateIn.with(UP, stateAbove.getBlock() == this).with(DOWN, stateBelow.getBlock() == this);
+    }
+
+    //    @Override
 //    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState stateAbove = worldIn.getBlockState(pos.up());

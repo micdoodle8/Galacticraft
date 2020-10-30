@@ -15,7 +15,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerAstroMinerDock extends Container
 {
-    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.ASTRO_MINER_DOCK)
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidsContainerNames.ASTRO_MINER_DOCK)
     public static ContainerType<ContainerAstroMinerDock> TYPE;
 
     private final TileEntityMinerBase minerBase;

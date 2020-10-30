@@ -9,8 +9,16 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.FluidTexturesGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.fx.ParticleTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.*;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReceiverRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityBeamReflectorRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityMinerBaseRenderer;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile.TileEntityShortRangeTelepadRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandlerClient;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
+import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -23,6 +31,7 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -57,25 +66,25 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         RenderTypeLookup.setRenderLayer(AsteroidBlocks.blockDenseIce, transluscent);
 
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMinerBase.class, new TileEntityMinerBaseRenderer());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShortRangeTelepad.class, new TileEntityShortRangeTelepadRenderer());
+        ClientRegistry.bindTileEntityRenderer(TileEntityBeamReflector.TYPE, TileEntityBeamReflectorRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TileEntityBeamReceiver.TYPE, TileEntityBeamReceiverRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TileEntityMinerBase.TYPE, TileEntityMinerBaseRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TileEntityShortRangeTelepad.TYPE, TileEntityShortRangeTelepadRenderer::new);
 
 //        if (ModList.get().isLoaded("craftguide"))
 //        {
 //            CraftGuideIntegration.register();
 //        }
-        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThree.getRegistryName(), ItemModelRocketT3::new);
-        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo1.getRegistryName(), ItemModelRocketT3::new);
-        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo2.getRegistryName(), ItemModelRocketT3::new);
-        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo3.getRegistryName(), ItemModelRocketT3::new);
-        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCreative.getRegistryName(), ItemModelRocketT3::new);
-        ClientProxyCore.setCustomModel(AsteroidsItems.grapple.getRegistryName(), ItemModelGrapple::new);
-        ClientProxyCore.setCustomModel(AsteroidsItems.astroMiner.getRegistryName(), ItemModelAstroMiner::new);
-        ClientProxyCore.setCustomModel(AsteroidBlocks.shortRangeTelepad.getRegistryName(), ItemModelTelepad::new);
-        ClientProxyCore.setCustomModel(AsteroidBlocks.beamReceiver.getRegistryName(), ItemModelBeamReceiver::new);
-        ClientProxyCore.setCustomModel(AsteroidBlocks.beamReflector.getRegistryName(), ItemModelBeamReflector::new);
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThree.getRegistryName(), modelToWrap -> new ItemModelRocketT3(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo1.getRegistryName(), modelToWrap -> new ItemModelRocketT3(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo2.getRegistryName(), modelToWrap -> new ItemModelRocketT3(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCargo3.getRegistryName(), modelToWrap -> new ItemModelRocketT3(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidsItems.rocketTierThreeCreative.getRegistryName(), modelToWrap -> new ItemModelRocketT3(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidsItems.grapple.getRegistryName(), modelToWrap -> new ItemModelGrapple(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidsItems.astroMiner.getRegistryName(), modelToWrap -> new ItemModelAstroMiner(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidBlocks.shortRangeTelepad.getRegistryName(), modelToWrap -> new ItemModelTelepad(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidBlocks.beamReceiver.getRegistryName(), modelToWrap -> new ItemModelBeamReceiver(modelToWrap));
+        ClientProxyCore.setCustomModel(AsteroidBlocks.beamReflector.getRegistryName(), modelToWrap -> new ItemModelBeamReflector(modelToWrap));
     }
 
 //    @Override
@@ -114,7 +123,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onModelBakeEvent(ModelBakeEvent event)
+    public static void onModelBakeEvent(ModelBakeEvent event)
     {
 //        replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, TRSRTransformation.identity(), "inventory", "facing=up", "facing=down", "facing=north", "facing=west", "facing=east", "facing=south");
 //        replaceModelDefault(event, "beam_reflector", "block/reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, TRSRTransformation.identity(), "inventory", "normal");
@@ -128,6 +137,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 //        RenderGrapple.updateModel();
 //        RenderTier3Rocket.updateModels(event.getModelLoader());
 //        TileEntityBeamReflectorRenderer.updateModels(event.getModelLoader());
+//        TileEntityBeamReceiverRenderer.updateModels();
 //        TileEntityMinerBaseRenderer.updateModels(event.getModelLoader());
 //        TileEntityShortRangeTelepadRenderer.updateModels(event.getModelLoader());
     }
@@ -139,7 +149,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void loadTextures(TextureStitchEvent.Pre event)
+    public static void loadTextures(TextureStitchEvent.Pre event)
     {
         registerTexture(event, "minerbase");
         registerTexture(event, "beam_reflector");
@@ -164,7 +174,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         registerTexture(event, "fluids/nitrogen");
     }
 
-    private void registerTexture(TextureStitchEvent.Pre event, String texture)
+    private static void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
         event.addSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }

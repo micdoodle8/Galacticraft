@@ -12,10 +12,16 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerLaserTurret;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
@@ -25,6 +31,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,7 +43,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBubbleProviderColored
+public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBubbleProviderColored, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDistributor)
     public static TileEntityType<TileEntityOxygenDistributor> TYPE;
@@ -487,5 +495,17 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     public Vector3 getColor()
     {
         return new Vector3(0.125F, 0.125F, 0.5F);
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerOxygenDistributor(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.oxygen_distributor");
     }
 }

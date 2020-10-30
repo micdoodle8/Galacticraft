@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.DimensionAsteroi
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.TeleportTypeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.player.AsteroidsPlayerHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.event.AsteroidsEventHandler;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.AsteroidsContainers;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
@@ -24,15 +25,19 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.AsteroidChunkGen
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.biome.BiomeMars;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.VenusContainers;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class AsteroidsModule implements IPlanetsModule
@@ -49,6 +54,13 @@ public class AsteroidsModule implements IPlanetsModule
 //    public static Fluid fluidLiquidArgon;
 //    public static Fluid fluidAtmosphericGases;
     //public static Fluid fluidCO2Gas;
+
+
+    public AsteroidsModule()
+    {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addGenericListener(ContainerType.class, AsteroidsContainers::initContainers);
+    }
 
     @Override
     public void init(FMLCommonSetupEvent event)

@@ -8,6 +8,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -19,6 +22,9 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+
+import javax.annotation.Nullable;
 
 public abstract class BlockMachineBase extends BlockTileGC implements IShiftDescription, ISortable
 {
@@ -43,24 +49,27 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
 //    }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-//        int metadata = getMetaFromState(state);
-//
-//        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-//        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
-//
-//        worldIn.setBlockState(pos, this.getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 3);
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
-    /**
-     * Called when the block is right clicked by the player
-     */
     @Override
-    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    @Nullable
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider) tileentity : null;
     }
 
     @Override

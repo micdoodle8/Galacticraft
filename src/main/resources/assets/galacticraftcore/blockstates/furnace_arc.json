@@ -1,43 +1,34 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-                        "textures": {
-                        "particle": "galacticraftcore:blocks/machine",
-                        "front": "galacticraftcore:blocks/electric_furnace",
-                        "rear": "galacticraftcore:blocks/machine_side",
-                        "side": "galacticraftcore:blocks/machine_side",
-                        "el_in": "galacticraftcore:blocks/machine_input",
-                        "el_out": "galacticraftcore:blocks/machine_side",
-                        "top": "galacticraftcore:blocks/machine",
-                        "base": "galacticraftcore:blocks/machine"  }
-    },
-    "variants": {
-        "inventory": [{ "model": "galacticraftcore:block/electric_furnace_model" }],
+  "variants": {
+    "inventory": [{ "model": "galacticraftcore:block/furnace_arc_model" }],
+    "facing=north,msm=lr": { "model": "galacticraftcore:block/furnace_arc_lr" },
+    "facing=east,msm=lr": { "model": "galacticraftcore:block/furnace_arc_lr", "y": 90 },
+    "facing=south,msm=lr": { "model": "galacticraftcore:block/furnace_arc_lr", "y": 180 },
+    "facing=west,msm=lr": { "model": "galacticraftcore:block/furnace_arc_lr", "y": 270 },
 
-        "facing" : {
-           "north": { },
-           "east":  { "y": 90 },
-           "west":  { "y": 270 },
-           "south": { "y": 180 }
-        },
-        
-        "msm" : {
-            "lr": { "model": "galacticraftcore:block/machine_tiered_lr" },
-            "lb": { "model": "galacticraftcore:block/machine_tiered_lb" },
-            "rl": { "model": "galacticraftcore:block/machine_tiered_rl" },
-            "rb": { "model": "galacticraftcore:block/machine_tiered_rb" },
-            "bl": { "model": "galacticraftcore:block/machine_tiered_bl" },
-            "br": { "model": "galacticraftcore:block/machine_tiered_br" }
-        },
+    "facing=north,msm=lb": { "model": "galacticraftcore:block/furnace_arc_lb" },
+    "facing=east,msm=lb": { "model": "galacticraftcore:block/furnace_arc_lb", "y": 90 },
+    "facing=south,msm=lb": { "model": "galacticraftcore:block/furnace_arc_lb", "y": 180 },
+    "facing=west,msm=lb": { "model": "galacticraftcore:block/furnace_arc_lb", "y": 270 },
 
-        "textures": {
-          "particle": "galacticraftcore:blocks/advanced/machine",
-          "front": "galacticraftcore:blocks/advanced/electric_furnace",
-          "rear": "galacticraftcore:blocks/advanced/machine_side",
-          "side": "galacticraftcore:blocks/advanced/machine_side",
-          "el_in": "galacticraftcore:blocks/advanced/machine_input",
-          "el_out": "galacticraftcore:blocks/advanced/machine_side",
-          "top": "galacticraftcore:blocks/advanced/machine",
-          "base": "galacticraftcore:blocks/advanced/machine" }
-   }
+    "facing=north,msm=rl": { "model": "galacticraftcore:block/furnace_arc_rl" },
+    "facing=east,msm=rl": { "model": "galacticraftcore:block/furnace_arc_rl", "y": 90 },
+    "facing=south,msm=rl": { "model": "galacticraftcore:block/furnace_arc_rl", "y": 180 },
+    "facing=west,msm=rl": { "model": "galacticraftcore:block/furnace_arc_rl", "y": 270 },
+
+    "facing=north,msm=rb": { "model": "galacticraftcore:block/furnace_arc_rb" },
+    "facing=east,msm=rb": { "model": "galacticraftcore:block/furnace_arc_rb", "y": 90 },
+    "facing=south,msm=rb": { "model": "galacticraftcore:block/furnace_arc_rb", "y": 180 },
+    "facing=west,msm=rb": { "model": "galacticraftcore:block/furnace_arc_rb", "y": 270 },
+
+    "facing=north,msm=bl": { "model": "galacticraftcore:block/furnace_arc_bl" },
+    "facing=east,msm=bl": { "model": "galacticraftcore:block/furnace_arc_bl", "y": 90 },
+    "facing=south,msm=bl": { "model": "galacticraftcore:block/furnace_arc_bl", "y": 180 },
+    "facing=west,msm=bl": { "model": "galacticraftcore:block/furnace_arc_bl", "y": 270 },
+
+    "facing=north,msm=br": { "model": "galacticraftcore:block/furnace_arc_br" },
+    "facing=east,msm=br": { "model": "galacticraftcore:block/furnace_arc_br", "y": 90 },
+    "facing=south,msm=br": { "model": "galacticraftcore:block/furnace_arc_br", "y": 180 },
+    "facing=west,msm=br": { "model": "galacticraftcore:block/furnace_arc_br", "y": 270 }
+  }
 }

@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.inventory;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
-import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,13 +11,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class ContainerSchematicAstroMiner extends Container
 {
-    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidContainerNames.SCHEMATIC_ASTRO_MINER)
+    @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + AsteroidsContainerNames.SCHEMATIC_ASTRO_MINER)
     public static ContainerType<ContainerSchematicAstroMiner> TYPE;
 
     public InventorySchematicAstroMiner craftMatrix = new InventorySchematicAstroMiner(this);

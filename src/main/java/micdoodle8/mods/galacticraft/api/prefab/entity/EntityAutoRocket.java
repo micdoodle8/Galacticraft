@@ -125,13 +125,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 if (!this.setFrequency())
                 {
                     this.destinationFrequency = -1;
-                    this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.frequency.name") + "#" + LanguageMap.getInstance().translateKey("gui.message.not_set.name");
+                    this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.frequency") + "#" + LanguageMap.getInstance().translateKey("gui.message.not_set");
                     this.statusColour = "\u00a7c";
                     return false;
                 }
                 else
                 {
-                    this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.success.name");
+                    this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.success");
                     this.statusColour = "\u00a7a";
                     return true;
                 }
@@ -140,7 +140,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         else
         {
             this.destinationFrequency = -1;
-            this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.not_enough.name") + "#" + LanguageMap.getInstance().translateKey("gui.message.fuel.name");
+            this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.not_enough") + "#" + LanguageMap.getInstance().translateKey("gui.message.fuel");
             this.statusColour = "\u00a7c";
             return false;
         }
@@ -1448,7 +1448,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
         public String getTitle()
         {
-            return GCCoreUtil.translate("gui.message." + this.title + ".name");
+            return GCCoreUtil.translate("gui.message." + this.title + "");
         }
     }
 

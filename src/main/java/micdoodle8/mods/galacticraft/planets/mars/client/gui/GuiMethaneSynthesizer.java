@@ -93,16 +93,16 @@ public class GuiMethaneSynthesizer extends GuiContainerGC<ContainerMethaneSynthe
         fuelSlotDesc = new ArrayList<String>();
         fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogen_input.desc.0"));
         fuelSlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.hydrogen_input.desc.1"));
-        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0.name"));
+        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0"));
         fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("fluid.hydrogen"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1.name") + ")");
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1") + ")");
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 6, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         fuelSlotDesc = new ArrayList<String>();
-        fuelSlotDesc.add(GCCoreUtil.translate("item.atmospheric_valve.name"));
-        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0.name"));
-        fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("gas.carbondioxide.name"));
-        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1.name") + ")");
+        fuelSlotDesc.add(GCCoreUtil.translate("item.atmospheric_valve"));
+        fuelSlotDesc.add("(" + GCCoreUtil.translate("gui.message.with_atmosphere0"));
+        fuelSlotDesc.add(GCCoreUtil.lowerCaseNoun("gas.carbondioxide"));
+        fuelSlotDesc.add(GCCoreUtil.translate("gui.message.with_atmosphere1") + ")");
         this.infoRegions.add(new GuiElementInfoRegion(edgeLeft + 27, edgeTop + 6, 18, 18, fuelSlotDesc, this.width, this.height, this));
 
         this.electricInfoRegion.xPosition = edgeLeft + 66;
@@ -113,7 +113,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC<ContainerMethaneSynthe
 
         this.addToolTips();
 
-        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 28, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) ->
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 28, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.synthesizer.getWorld()), new Object[]{this.synthesizer.getPos(), 0}));
         }));
@@ -128,36 +128,36 @@ public class GuiMethaneSynthesizer extends GuiContainerGC<ContainerMethaneSynthe
 
         if (RedstoneUtil.isBlockReceivingRedstone(this.synthesizer.getWorld(), this.synthesizer.getPos()))
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off");
         }
         else if (!this.synthesizer.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy");
         }
         else if ((this.synthesizer.processTicks > -8 || this.synthesizer.canProcess()))
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.processing.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.processing");
         }
         else if (this.synthesizer.gasTank.getFluid() == FluidStack.EMPTY || this.synthesizer.gasTank.getFluidAmount() == 0)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas");
         }
         else if (this.synthesizer.gasTank.getFluidAmount() > 0 && this.synthesizer.disabled)
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready");
         }
         else if (this.synthesizer.liquidTank.getFluidAmount() == this.synthesizer.liquidTank.getCapacity())
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tankfull.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tankfull");
         }
         else
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.needs_carbon.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.needs_carbon");
         }
 
         this.buttonDisable.active = this.synthesizer.disableCooldown == 0;
-        this.buttonDisable.setMessage(this.synthesizer.processTicks <= -8 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefy_stop.name"));
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 72, 45 + 23 + yOffset, 4210752);
+        this.buttonDisable.setMessage(this.synthesizer.processTicks <= -8 ? GCCoreUtil.translate("gui.button.liquefy") : GCCoreUtil.translate("gui.button.liquefy_stop"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ":", 72, 45 + 23 + yOffset, 4210752);
         this.font.drawString(displayText, 75, 45 + 33 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
@@ -218,7 +218,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC<ContainerMethaneSynthe
         this.gasTankRegion.tooltipStrings = gasTankDesc;
 
         gasTankDesc = new ArrayList<String>();
-        gasTankDesc.add(GCCoreUtil.translate("gas.carbondioxide.name"));
+        gasTankDesc.add(GCCoreUtil.translate("gas.carbondioxide"));
         gasTankDesc.add(GCCoreUtil.translate("gui.gas_tank.desc.0"));
         gasTankContents = this.synthesizer.gasTank2 != null ? this.synthesizer.gasTank2.getFluid() : null;
         if (gasTankContents != null)

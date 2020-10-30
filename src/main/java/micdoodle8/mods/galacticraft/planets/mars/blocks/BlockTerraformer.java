@@ -97,7 +97,10 @@ public class BlockTerraformer extends BlockTileGC implements IShiftDescription, 
     @Override
     public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
     }
 

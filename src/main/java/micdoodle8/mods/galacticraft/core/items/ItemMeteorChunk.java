@@ -109,7 +109,7 @@ public class ItemMeteorChunk extends Item implements ISortable
                 burnTime = 45.0F;
             }
 
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds")));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.hot_description") + " " + burnTime + GCCoreUtil.translate("gui.seconds")));
         }
     }
 

@@ -44,6 +44,6 @@ public class SchematicMoonBuggy extends SchematicPage
     @Override
     public SimpleNamedContainerProvider getContainerProvider(PlayerEntity player)
     {
-        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicBuggy(w, p), new TranslationTextComponent("container.buggy.name"));
+        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicBuggy(w, p), new TranslationTextComponent("container.buggy"));
     }
 }

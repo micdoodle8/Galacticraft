@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -16,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -177,9 +180,12 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     {
         final TileEntity var9 = worldIn.getTileEntity(pos);
 
-        if (var9 instanceof TileEntityPlatform)
+        if (state.getBlock() != this || newState.getBlock() != this)
         {
-            ((TileEntityPlatform) var9).onDestroy(var9);
+            if (var9 instanceof TileEntityPlatform)
+            {
+                ((TileEntityPlatform) var9).onDestroy(var9);
+            }
         }
 
         super.onReplaced(state, worldIn, pos, newState, isMoving);
@@ -251,6 +257,18 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 ////            return BOUNDING_BOX_ZEROG;
 ////        return BOUNDING_BOX;
 ////    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        if (worldIn instanceof World && ((World) worldIn).dimension instanceof IZeroGDimension)
+        {
+            return BOUNDING_BOX_ZEROG;
+        }
+
+        return BOUNDING_BOX;
+    }
+
 //
 //    @Override
 //    @OnlyIn(Dist.CLIENT)

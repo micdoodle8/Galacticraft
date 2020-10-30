@@ -52,15 +52,15 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     {
         if (this == MarsItems.schematicRocketT3)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.rocket_t3.name")));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.rocket_t3")));
         }
         else if (this == MarsItems.schematicAstroMiner)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.astro_miner.name")));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.astro_miner")));
         }
         else
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.cargo_rocket.name")));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.cargo_rocket")));
         }
     }
 

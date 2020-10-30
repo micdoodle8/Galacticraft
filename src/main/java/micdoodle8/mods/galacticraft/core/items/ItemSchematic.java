@@ -76,11 +76,11 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortable
     {
         if (stack.getItem() == GCItems.schematicBuggy)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.moonbuggy.name")));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.moonbuggy")));
         }
         else if (stack.getItem() == GCItems.schematicRocketT2)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.rocket_t2.name")));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("schematic.rocket_t2")));
 
             if (!GalacticraftCore.isPlanetsLoaded)
             {

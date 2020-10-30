@@ -166,7 +166,7 @@
 //    @Override
 //    public String getRecipeName()
 //    {
-//        return GCCoreUtil.translate("tile.machine2.5.name");
+//        return GCCoreUtil.translate("tile.machine2.5");
 //    }
 //
 //    @Override

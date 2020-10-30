@@ -15,34 +15,44 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerSolar;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 //import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.BeaconContainer;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource implements IMultiBlock, IDisableableMachine, IInventoryDefaults, ISidedInventory, IConnector
+public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource implements IMultiBlock, IDisableableMachine, IInventoryDefaults, ISidedInventory, IConnector, INamedContainerProvider
 {
     public static class TileEntitySolarT1 extends TileEntitySolar
     {
@@ -57,6 +67,12 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
             this.setTierGC(1);
 //            this.initialised = true;
             this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
+        }
+
+        @Override
+        public ITextComponent getDisplayName()
+        {
+            return new TranslationTextComponent("container.solar_basic");
         }
     }
 
@@ -74,6 +90,12 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
             this.setTierGC(2);
 //            this.initialised = true;
             this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
+        }
+
+        @Override
+        public ITextComponent getDisplayName()
+        {
+            return new TranslationTextComponent("container.solar_advanced");
         }
     }
 
@@ -547,5 +569,11 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
         }
 
         return direction == this.getElectricOutputDirection();
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerSolar(containerId, playerInv, this);
     }
 }

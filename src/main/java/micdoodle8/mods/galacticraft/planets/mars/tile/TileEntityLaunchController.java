@@ -15,11 +15,17 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.ConfigManagerPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -31,6 +37,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.*;
@@ -46,7 +54,7 @@ import java.util.*;
 // import java.util.HashMap;
 // import java.util.Map;
 
-public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
+public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.launchController)
     public static TileEntityType<TileEntityLaunchController> TYPE;
@@ -613,5 +621,17 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             registerChunkTickets(Objects.requireNonNull(world.getWorld()));
         }
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerLaunchController(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.launch_controller");
     }
 }

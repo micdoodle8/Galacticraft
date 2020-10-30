@@ -1,9 +1,10 @@
 {
-    "forge_marker": 1,
-    "variants": {
-        "inventory": [{ "model": "galacticraftcore:block/deco_block_1_model" }],
-        "normal": { "model": "galacticraftcore:block/deco_block_1_model" },
-        "var=0": { "model": "galacticraftcore:block/deco_block_1_model" },
-        "var=1": { "model": "galacticraftcore:block/moon_stone_model" }
-    }
+    "multipart": [
+        {	"when": { "var":  "0" },
+            "apply": { "model": "galacticraftcore:block/deco_block_1_model" }
+        },
+        {	"when": { "var":  "1" },
+            "apply": { "model": "galacticraftcore:block/moon_stone_model" }
+        }
+    ]
 }

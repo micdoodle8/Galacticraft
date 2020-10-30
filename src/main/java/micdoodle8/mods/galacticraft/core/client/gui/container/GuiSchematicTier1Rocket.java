@@ -20,7 +20,7 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC<ContainerSchematicTi
     public GuiSchematicTier1Rocket(ContainerSchematicTier1Rocket container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerSchematicTier1Rocket(playerInv, pos), playerInv, new TranslationTextComponent("schematic.rocket_t1.name"), pos);
+//        super(new ContainerSchematicTier1Rocket(playerInv, pos), playerInv, new TranslationTextComponent("schematic.rocket_t1"), pos);
         this.ySize = 221;
     }
 
@@ -29,11 +29,11 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC<ContainerSchematicTi
     {
         super.init();
         Button backButton;
-        this.buttons.add(backButton = new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
+        this.buttons.add(backButton = new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back"), (button) ->
         {
             SchematicRegistry.flipToPrevPage(this, this.pageIndex);
         }));
-        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next"), (button) ->
         {
             SchematicRegistry.flipToNextPage(this, this.pageIndex);
         }));
@@ -43,7 +43,7 @@ public class GuiSchematicTier1Rocket extends GuiContainerGC<ContainerSchematicTi
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(GCCoreUtil.translate("schematic.rocket_t1.name"), 7, -20 + 27, 4210752);
+        this.font.drawString(GCCoreUtil.translate("schematic.rocket_t1"), 7, -20 + 27, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 

@@ -43,6 +43,6 @@ public class SchematicRocketT1 extends SchematicPage
     @Override
     public SimpleNamedContainerProvider getContainerProvider(PlayerEntity player)
     {
-        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicTier1Rocket(w, p), new TranslationTextComponent("container.schematic_add.name"));
+        return new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSchematicTier1Rocket(w, p), new TranslationTextComponent("container.schematic_add"));
     }
 }

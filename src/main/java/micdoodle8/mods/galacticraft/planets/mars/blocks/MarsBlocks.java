@@ -75,7 +75,6 @@ public class MarsBlocks
     @ObjectHolder(MarsBlockNames.stone)
     public static Block stone;
 
-    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)
     {
         IForgeRegistry<Block> r = evt.getRegistry();
@@ -151,7 +150,6 @@ public class MarsBlocks
         GCBlocks.register(reg, name, thing);
     }
 
-    @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();

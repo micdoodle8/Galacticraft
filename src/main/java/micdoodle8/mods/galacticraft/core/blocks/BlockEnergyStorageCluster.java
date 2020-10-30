@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -46,13 +47,11 @@ public class BlockEnergyStorageCluster extends BlockMachineBase
         return true;
     }
 
-//    @Override
-//    public BlockState getStateFromMeta(int meta)
-//    {
-//        Direction enumfacing = Direction.byHorizontalIndex(meta % 4);
-//        EnumTieredMachineType type = (EnumTieredMachineType) typeBase.fromMetadata(meta);
-//        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
-//    }
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
+    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)

@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -95,9 +96,14 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
 //    }
 
     @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+    }
+
+    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
         BlockMulti.onPlacement(worldIn, pos, placer, this);
     }
 
@@ -115,11 +121,20 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public ActionResultType onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
+    public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerSolar(w, p, (TileEntitySolar) world.getTileEntity(pos)), new TranslationTextComponent("container.refinery.name"));
-        NetworkHooks.openGui((ServerPlayerEntity) entityPlayer, container);
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
 //    @Override

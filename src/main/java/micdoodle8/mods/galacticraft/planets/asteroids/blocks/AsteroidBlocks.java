@@ -69,7 +69,6 @@ public class AsteroidBlocks
     @ObjectHolder(AsteroidBlockNames.titaniumBlock)
     public static Block titaniumBlock;
 
-    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> evt)
     {
         IForgeRegistry<Block> r = evt.getRegistry();
@@ -102,7 +101,7 @@ public class AsteroidBlocks
         builder = Block.Properties.create(Material.ICE).sound(SoundType.GLASS).hardnessAndResistance(0.5F).slipperiness(0.98F);
         register(r, new BlockIceAsteroids(builder), AsteroidBlockNames.blockDenseIce);
 
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F).sound(SoundType.METAL);
+        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F).sound(SoundType.METAL).notSolid();
         register(r, new BlockMinerBase(builder), AsteroidBlockNames.blockMinerBase);
         builder = builder.hardnessAndResistance(3.0F, 35.0F);
         register(r, new BlockMinerBaseFull(builder), AsteroidBlockNames.minerBaseFull);
@@ -124,11 +123,14 @@ public class AsteroidBlocks
         GCBlocks.register(reg, name, thing);
     }
 
-    @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();
-        Item.Properties props = GCItems.defaultBuilder().group(GalacticraftCore.galacticraftBlocksTab);
+        Item.Properties props = GCItems.defaultBuilder().group(null);
+        register(r, Registry.BLOCK.getKey(fakeTelepad), new BlockItem(fakeTelepad, props));
+        register(r, Registry.BLOCK.getKey(minerBaseFull), new BlockItem(minerBaseFull, props));
+        register(r, Registry.BLOCK.getKey(spaceWart), new BlockItem(spaceWart, props));
+        props = GCItems.defaultBuilder().group(GalacticraftCore.galacticraftBlocksTab);
         register(r, Registry.BLOCK.getKey(blockWalkway), new ItemBlockDesc(blockWalkway, props));
         register(r, Registry.BLOCK.getKey(blockWalkwayFluid), new ItemBlockDesc(blockWalkwayFluid, props));
         register(r, Registry.BLOCK.getKey(blockWalkwayWire), new ItemBlockDesc(blockWalkwayWire, props));
@@ -143,11 +145,8 @@ public class AsteroidBlocks
         register(r, Registry.BLOCK.getKey(beamReflector), new ItemBlockDesc(beamReflector, props));
         register(r, Registry.BLOCK.getKey(beamReceiver), new ItemBlockDesc(beamReceiver, props));
         register(r, Registry.BLOCK.getKey(shortRangeTelepad), new ItemBlockDesc(shortRangeTelepad, props));
-        register(r, Registry.BLOCK.getKey(fakeTelepad), new BlockItem(fakeTelepad, props.group(null)));
         register(r, Registry.BLOCK.getKey(blockDenseIce), new BlockItem(blockDenseIce, props));
         register(r, Registry.BLOCK.getKey(blockMinerBase), new ItemBlockDesc(blockMinerBase, props));
-        register(r, Registry.BLOCK.getKey(minerBaseFull), new BlockItem(minerBaseFull, props));
-        register(r, Registry.BLOCK.getKey(spaceWart), new BlockItem(spaceWart, props));
     }
 
 //    public static void registerBlocks()

@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
@@ -18,30 +18,30 @@ public class ContainerDeconstructor extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.DECONSTRUCTOR)
     public static ContainerType<ContainerDeconstructor> TYPE;
 
-    private final IInventory inventory;
+    private final TileEntityDeconstructor deconstructor;
 
-    public ContainerDeconstructor(int containerId, PlayerInventory playerInv)
-    {
-        this(containerId, playerInv, new Inventory(11));
-    }
+//    public ContainerDeconstructor(int containerId, PlayerInventory playerInv)
+//    {
+//        this(containerId, playerInv, new Inventory(11));
+//    }
 
-    public ContainerDeconstructor(int containerId, PlayerInventory playerInv, IInventory inventory)
+    public ContainerDeconstructor(int containerId, PlayerInventory playerInv, TileEntityDeconstructor deconstructor)
     {
         super(TYPE, containerId);
-        this.inventory = inventory;
+        this.deconstructor = deconstructor;
 
         // Battery Slot
-        this.addSlot(new SlotSpecific(inventory, 0, 55, 75, IItemElectric.class));
+        this.addSlot(new SlotSpecific(deconstructor, 0, 55, 75, IItemElectric.class));
 
         // Input slot
-        this.addSlot(new Slot(inventory, 1, 26, 36));
+        this.addSlot(new Slot(deconstructor, 1, 26, 36));
 
         int count = 2;
         for (int x = 0; x < 3; x++)
         {
             for (int y = 0; y < 3; y++)
             {
-                this.addSlot(new Slot(inventory, count++, 112 + y * 18, 18 + x * 18));
+                this.addSlot(new Slot(deconstructor, count++, 112 + y * 18, 18 + x * 18));
             }
         }
 
@@ -61,6 +61,11 @@ public class ContainerDeconstructor extends Container
         }
     }
 
+    public TileEntityDeconstructor getDeconstructor()
+    {
+        return deconstructor;
+    }
+
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
@@ -70,7 +75,7 @@ public class ContainerDeconstructor extends Container
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.inventory.isUsableByPlayer(par1EntityPlayer);
+        return this.deconstructor.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

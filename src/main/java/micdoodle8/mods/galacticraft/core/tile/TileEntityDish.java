@@ -45,7 +45,7 @@
 //
 //    public TileEntityDish()
 //    {
-//        super("tile.satellitedish.name");
+//        super("tile.satellitedish");
 //        this.storage.setMaxExtract(100);
 //        this.setTierGC(1);
 //        inventory = NonNullList.withSize(1, ItemStack.EMPTY);

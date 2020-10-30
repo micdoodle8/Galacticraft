@@ -55,7 +55,7 @@ public class ItemBatteryAtomic extends ItemElectricBase implements ISortable
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(new StringTextComponent(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc")));
-        tooltip.add(new StringTextComponent(EnumColor.ORANGE + GCCoreUtil.translate("gui.message.low_energy_output.name")));
+        tooltip.add(new StringTextComponent(EnumColor.ORANGE + GCCoreUtil.translate("gui.message.low_energy_output")));
     }
 
     @Override

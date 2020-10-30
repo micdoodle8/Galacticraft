@@ -26,7 +26,7 @@
 //    public AstroMinerRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(astroMinerGuiTexture, 3, 39, 168, 91);
-//        this.localizedName = GCCoreUtil.translate("tile.rocket_workbench.name");
+//        this.localizedName = GCCoreUtil.translate("tile.rocket_workbench");
 //
 //    }
 //

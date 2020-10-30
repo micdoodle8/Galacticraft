@@ -32,7 +32,7 @@ public class GuiOxygenCompressor extends GuiContainerGC<ContainerOxygenCompresso
     public GuiOxygenCompressor(ContainerOxygenCompressor container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerOxygenCompressor(playerInv, compressor, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.oxygencompressor.name"));
+//        super(new ContainerOxygenCompressor(playerInv, compressor, Minecraft.getInstance().player), playerInv, new TranslationTextComponent("container.oxygen_compressor"));
         this.compressor = container.getCompressor();
         this.ySize = 180;
     }
@@ -77,9 +77,9 @@ public class GuiOxygenCompressor extends GuiContainerGC<ContainerOxygenCompresso
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.font.drawString(this.title.getFormattedText(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
-        String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 26, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in") + ":", 99, 38, 4210752, this.font);
+        String status = GCCoreUtil.translate("gui.message.status") + ": " + this.getStatus();
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + TileEntityOxygenCompressor.TANK_TRANSFER_SPEED * 20 + GCCoreUtil.translate("gui.per_second");
         this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 60, 4210752);
@@ -94,17 +94,17 @@ public class GuiOxygenCompressor extends GuiContainerGC<ContainerOxygenCompresso
     {
         if (this.compressor.getStackInSlot(0) == null || !(this.compressor.getStackInSlot(0).getItem() instanceof ItemOxygenTank))
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingtank.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingtank");
         }
 
         if (this.compressor.getStackInSlot(0) != null && this.compressor.getStackInSlot(0).getDamage() == 0)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.fulltank.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.fulltank");
         }
 
         if (this.compressor.getOxygenStored() < 1.0D)
         {
-            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen.name");
+            return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.missingoxygen");
         }
 
         return this.compressor.getGUIstatus();

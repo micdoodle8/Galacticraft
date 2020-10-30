@@ -54,7 +54,7 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortable, IShif
             }
             else
             {
-                tooltip.add(new StringTextComponent(GCCoreUtil.translateWithFormat("item_desc.shift.name", Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName())));
+                tooltip.add(new StringTextComponent(GCCoreUtil.translateWithFormat("item_desc.shift", Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName())));
             }
         }
     }

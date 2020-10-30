@@ -71,5 +71,7 @@ public class Constants
     public static final float twoPI = (float) Math.PI * 2F;
     public static final float halfPI = (float) Math.PI / 2F;
 
+    public static final int PACKED_LIGHT_FULL_BRIGHT = 15728880;
+
     public static final String PERMISSION_CREATE_STATION = "galacticraft.station.create";
 }

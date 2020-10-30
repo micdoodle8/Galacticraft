@@ -17,16 +17,16 @@ public class ContainerEnergyStorageModule extends Container
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCContainerNames.ENERGY_STORAGE_MODULE)
     public static ContainerType<ContainerEnergyStorageModule> TYPE;
 
-    private final TileEntityEnergyStorageModule tileEntity;
+    private final TileEntityEnergyStorageModule storageModule;
 
-    public ContainerEnergyStorageModule(int containerId, PlayerInventory playerInv, TileEntityEnergyStorageModule batteryBox)
+    public ContainerEnergyStorageModule(int containerId, PlayerInventory playerInv, TileEntityEnergyStorageModule storageModule)
     {
         super(TYPE, containerId);
-        this.tileEntity = batteryBox;
+        this.storageModule = storageModule;
         // Top slot for battery output
-        this.addSlot(new SlotSpecific(batteryBox, 0, 33, 24, IItemElectric.class));
+        this.addSlot(new SlotSpecific(storageModule, 0, 33, 24, IItemElectric.class));
         // Bottom slot for batter input
-        this.addSlot(new SlotSpecific(batteryBox, 1, 33, 48, IItemElectric.class));
+        this.addSlot(new SlotSpecific(storageModule, 1, 33, 48, IItemElectric.class));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -42,20 +42,25 @@ public class ContainerEnergyStorageModule extends Container
             this.addSlot(new Slot(playerInv, var3, 8 + var3 * 18, 142));
         }
 
-        this.tileEntity.playersUsing.add(playerInv.player);
+        this.storageModule.playersUsing.add(playerInv.player);
+    }
+
+    public TileEntityEnergyStorageModule getStorageModule()
+    {
+        return storageModule;
     }
 
     @Override
     public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
-        this.tileEntity.playersUsing.remove(entityplayer);
+        this.storageModule.playersUsing.remove(entityplayer);
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
-        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
+        return this.storageModule.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**

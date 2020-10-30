@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -45,7 +46,7 @@ public class BlockLaunchController extends BlockTileGC implements IShiftDescript
 //        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 //        int change = Direction.byHorizontalIndex(angle).getOpposite().getHorizontalIndex();
 
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 3);
+//        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 3);
 
         WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
         TileEntity var8 = worldIn.getTileEntity(pos);
@@ -58,6 +59,13 @@ public class BlockLaunchController extends BlockTileGC implements IShiftDescript
 //        {
 //            ((TileEntityLaunchController) var8).setOwnerName(placer.getName());
 //        }
+        ((TileEntityLaunchController) var8).setOwnerUUID(placer.getUniqueID());
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override

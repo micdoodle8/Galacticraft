@@ -30,11 +30,11 @@ public class GuiSchematicCargoRocket extends GuiContainerGC<ContainerSchematicCa
     {
         super.init();
         this.buttons.clear();
-        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back"), (button) ->
         {
             SchematicRegistry.flipToPrevPage(this, this.pageIndex);
         }));
-        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name"), (button) ->
+        this.buttons.add(new Button(this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next"), (button) ->
         {
             SchematicRegistry.flipToNextPage(this, this.pageIndex);
         }));
@@ -43,7 +43,7 @@ public class GuiSchematicCargoRocket extends GuiContainerGC<ContainerSchematicCa
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.font.drawString(GCCoreUtil.translate("item.rocket_t2.cargo_rocket.name"), 7, -20 + 27, 4210752);
+        this.font.drawString(GCCoreUtil.translate("item.rocket_t2.cargo_rocket"), 7, -20 + 27, 4210752);
         this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 9, 4210752);
     }
 

@@ -47,7 +47,7 @@
 //    public GasLiquefierRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(refineryGuiTex, 3, 4, 168, 64);
-//        this.localizedName = GCCoreUtil.translate("tile.mars_machine.4.name");
+//        this.localizedName = GCCoreUtil.translate("tile.mars_machine.4");
 //
 //        IDrawableStatic methaneBar = guiHelper.createDrawable(gasesTex, 1, 0, 16, 38);
 //        this.methaneBarInput = guiHelper.createAnimatedDrawable(methaneBar, 70, IDrawableAnimated.StartDirection.TOP, true);

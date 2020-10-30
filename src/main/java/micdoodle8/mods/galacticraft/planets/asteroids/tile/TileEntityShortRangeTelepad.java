@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -19,13 +20,17 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTelepadFake;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
+import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -35,11 +40,14 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
@@ -47,7 +55,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventoryDefaults, ISidedInventory
+public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventoryDefaults, ISidedInventory, INamedContainerProvider
 {
     public enum EnumTelepadSearchResult
     {
@@ -207,7 +215,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof PlayerEntity)
                                         {
-                                            e.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            e.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.target_no_energy")));
                                         }
                                     }
                                     break;
@@ -280,7 +288,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public ActionResultType onActivated(PlayerEntity entityPlayer)
     {
-//        entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()); TODO guis
+        if (!world.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) entityPlayer, this, buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
     }
 
@@ -561,25 +572,25 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         if (!this.addressValid)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_address.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_address");
         }
 
         if (this.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy");
         }
 
         if (this.getEnergyStoredGC() <= ENERGY_USE_ON_TELEPORT)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.not_enough_energy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.not_enough_energy");
         }
 
         if (this.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.receiving_active.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.receiving_active");
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -587,45 +598,45 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         if (!this.addressValid)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_target_address.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_target_address");
         }
 
         if (this.targetAddressResult == EnumTelepadSearchResult.TOO_FAR)
         {
-            return EnumColor.RED + GCCoreUtil.translateWithFormat("gui.message.telepad_too_far.name", TELEPORTER_RANGE);
+            return EnumColor.RED + GCCoreUtil.translateWithFormat("gui.message.telepad_too_far", TELEPORTER_RANGE);
         }
 
         if (this.targetAddressResult == EnumTelepadSearchResult.WRONG_DIM)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_wrong_dim.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_wrong_dim");
         }
 
         if (this.targetAddressResult == EnumTelepadSearchResult.NOT_FOUND)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_not_found.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_not_found");
         }
 
         if (this.targetAddressResult == EnumTelepadSearchResult.TARGET_DISABLED)
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.message.telepad_target_disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.message.telepad_target_disabled");
         }
 
         if (this.getEnergyStoredGC() <= 0.0F)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.no_energy");
         }
 
         if (this.getEnergyStoredGC() <= ENERGY_USE_ON_TELEPORT)
         {
-            return EnumColor.RED + GCCoreUtil.translate("gui.message.not_enough_energy.name");
+            return EnumColor.RED + GCCoreUtil.translate("gui.message.not_enough_energy");
         }
 
         if (this.getDisabled(0))
         {
-            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled.name");
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.status.disabled");
         }
 
-        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.sending_active.name");
+        return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.sending_active");
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -661,5 +672,17 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public Direction getFront()
     {
         return Direction.NORTH;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerShortRangeTelepad(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.short_range_telepad");
     }
 }

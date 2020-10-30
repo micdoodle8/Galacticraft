@@ -8,21 +8,27 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements ISidedInventory, IInventoryDefaults, IConnector, IMachineSides
+public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSource implements ISidedInventory, IInventoryDefaults, IConnector, IMachineSides, INamedContainerProvider
 {
     public static class TileEntityEnergyStorageModuleT1 extends TileEntityEnergyStorageModule
     {
@@ -334,4 +340,16 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
         return IMachineSidesProperties.TWOFACES_HORIZ;
     }
     //------------------END OF IMachineSides implementation
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerEnergyStorageModule(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.storage_module");
+    }
 }

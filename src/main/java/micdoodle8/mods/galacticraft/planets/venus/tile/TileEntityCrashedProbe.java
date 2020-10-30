@@ -1,16 +1,23 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityInventory;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
@@ -18,7 +25,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.Random;
 
-public class TileEntityCrashedProbe extends TileEntityInventory
+public class TileEntityCrashedProbe extends TileEntityInventory implements INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + VenusBlockNames.crashedProbe)
     public static TileEntityType<TileEntityCrashedProbe> TYPE;
@@ -193,5 +200,17 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     {
         this.lootTable = lootTable;
         this.lootTableSeed = lootTableSeed;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerCrashedProbe(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.crashed_probe");
     }
 }

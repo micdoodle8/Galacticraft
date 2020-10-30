@@ -27,7 +27,7 @@
 //    public BuggyRecipeCategory(IGuiHelper guiHelper)
 //    {
 //        this.background = guiHelper.createDrawable(buggyGuiTexture, 3, 4, 168, 130);
-//        this.localizedName = GCCoreUtil.translate("tile.rocket_workbench.name");
+//        this.localizedName = GCCoreUtil.translate("tile.rocket_workbench");
 //
 //    }
 //

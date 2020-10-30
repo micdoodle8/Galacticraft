@@ -1,0 +1,22 @@
+{
+    "multipart": [
+        {   "when": { "up": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_oxygen" }
+        },
+        {   "when": { "north": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_oxygen_n" }
+        },
+        {   "when": { "east": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_oxygen_n", "y": 90 }
+        },
+        {   "when": { "south": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_oxygen_n", "y": 180 }
+        },
+        {   "when": { "west": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_oxygen_n", "y": 270 }
+        },
+        {   "when": { "down": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_oxygen_d" }
+        }
+    ]
+}

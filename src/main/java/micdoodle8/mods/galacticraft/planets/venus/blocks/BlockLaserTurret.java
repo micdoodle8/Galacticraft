@@ -16,6 +16,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
@@ -69,10 +70,16 @@ public class BlockLaserTurret extends BlockTileGC implements IShiftDescription, 
             ((TileEntityLaserTurret) tile).setOwnerUUID(placer.getUniqueID());
             ((TileEntityLaserTurret) tile).addPlayer(placer.getName().getFormattedText());
         }
-        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        Direction change = Direction.byHorizontalIndex(angle).getOpposite();
-        worldIn.setBlockState(pos, state.with(FACING, change), 3);
+//        int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+//        Direction change = Direction.byHorizontalIndex(angle).getOpposite();
+//        worldIn.setBlockState(pos, state.with(FACING, change), 3);
         BlockMulti.onPlacement(worldIn, pos, placer, this);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context)
+    {
+        return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     @Override

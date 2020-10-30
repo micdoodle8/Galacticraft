@@ -165,7 +165,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortable
         if (stack.hasTag() && stack.getTag().contains("RocketFuel"))
         {
             EntityTier3Rocket rocket = EntityTier3Rocket.createEntityTier3Rocket(Minecraft.getInstance().world, 0, 0, 0, EntityTier3Rocket.getTypeFromItem(stack.getItem()));
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + stack.getTag().getInt("RocketFuel") + " / " + rocket.fuelTank.getCapacity()));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel") + ": " + stack.getTag().getInt("RocketFuel") + " / " + rocket.fuelTank.getCapacity()));
         }
     }
 

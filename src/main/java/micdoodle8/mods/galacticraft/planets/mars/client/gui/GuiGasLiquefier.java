@@ -95,7 +95,7 @@ public class GuiGasLiquefier extends GuiContainerGC<ContainerGasLiquefier>
 
         this.addToolTips();
 
-        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name"), (button) ->
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy"), (button) ->
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionType(this.gasLiquefier.getWorld()), new Object[]{this.gasLiquefier.getPos(), 0}));
         }));
@@ -110,36 +110,36 @@ public class GuiGasLiquefier extends GuiContainerGC<ContainerGasLiquefier>
 
         if (RedstoneUtil.isBlockReceivingRedstone(this.gasLiquefier.getWorld(), this.gasLiquefier.getPos()))
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.off");
         }
         else if (!this.gasLiquefier.hasEnoughEnergyToRun)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.message.low_energy");
         }
         else if ((this.gasLiquefier.processTicks > -10 || this.gasLiquefier.canProcess()))
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.liquefying");
         }
         else if (this.gasLiquefier.gasTank.getFluid() == FluidStack.EMPTY || this.gasLiquefier.gasTank.getFluidAmount() <= 0)
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.nogas");
         }
         else if (this.gasLiquefier.gasTank.getFluidAmount() > 0 && this.gasLiquefier.disabled)
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.ready");
         }
         else if (this.gasLiquefier.liquidTank.getFluidAmount() == this.gasLiquefier.liquidTank.getCapacity() && this.gasLiquefier.liquidTank2.getFluidAmount() == this.gasLiquefier.liquidTank2.getCapacity())
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tanksfull.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.tanksfull");
         }
         else
         {
-            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");
+            displayText = EnumColor.RED + GCCoreUtil.translate("gui.status.unknown");
         }
 
         this.buttonDisable.active = this.gasLiquefier.disableCooldown == 0;
-        this.buttonDisable.setMessage(this.gasLiquefier.processTicks <= -10 ? GCCoreUtil.translate("gui.button.liquefy.name") : GCCoreUtil.translate("gui.button.liquefy_stop.name"));
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 56, 45 + 23 + yOffset, 4210752);
+        this.buttonDisable.setMessage(this.gasLiquefier.processTicks <= -10 ? GCCoreUtil.translate("gui.button.liquefy") : GCCoreUtil.translate("gui.button.liquefy_stop"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ":", 56, 45 + 23 + yOffset, 4210752);
         this.font.drawString(displayText, 62, 45 + 33 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
         //		this.font.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);

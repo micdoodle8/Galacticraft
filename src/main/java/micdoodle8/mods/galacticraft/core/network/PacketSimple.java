@@ -40,7 +40,6 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematic;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
@@ -662,10 +661,10 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             stats.setThermalLevelNormalising((Boolean) this.data.get(1));
             break;
         case C_DISPLAY_ROCKET_CONTROLS:
-//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch.name")));
-//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeymessage(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.turn.name")));
-//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.accelerateKey.getKeyCode()) + " / " + GameSettings.getKeymessage(KeyHandlerClient.decelerateKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.updown.name")));
-//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.rocket.inv.name"))); TODO
+//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.spaceKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.launch")));
+//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeymessage(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.turn")));
+//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.accelerateKey.getKeyCode()) + " / " + GameSettings.getKeymessage(KeyHandlerClient.decelerateKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.rocket.updown")));
+//            player.sendMessage(new StringTextComponent(GameSettings.getKeymessage(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.rocket.inv"))); TODO
             break;
         case C_GET_CELESTIAL_BODY_LIST:
             String str = "";
@@ -843,7 +842,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
         case S_OPEN_FUEL_GUI:
             if (player.getRidingEntity() instanceof EntityBuggy)
             {
-                INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerBuggy(w, p, ((EntityBuggy) player.getRidingEntity()).getBuggyType()), new TranslationTextComponent("container.buggy.name"));
+                INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerBuggy(w, p, ((EntityBuggy) player.getRidingEntity()).getBuggyType()), new TranslationTextComponent("container.buggy"));
                 NetworkHooks.openGui((ServerPlayerEntity) player, container);
             }
             else if (player.getRidingEntity() instanceof EntitySpaceshipBase)
@@ -948,7 +947,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
 //            } TODO
             break;
         case S_OPEN_EXTENDED_INVENTORY:
-            INamedContainerProvider containerExtended = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerExtendedInventory(w, p, stats.getExtendedInventory()), new TranslationTextComponent("container.cargo_loader.name"));
+            INamedContainerProvider containerExtended = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerExtendedInventory(w, p, stats.getExtendedInventory()), new TranslationTextComponent("container.cargo_loader"));
             NetworkHooks.openGui((ServerPlayerEntity) player, containerExtended);
             break;
         case S_ON_ADVANCED_GUI_CLICKED_INT:
@@ -1282,16 +1281,13 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             break;
         case S_REQUEST_DATA:
             ServerWorld worldServer = server.getWorld((DimensionType) this.data.get(0));
-            if (worldServer != null)
+            TileEntity requestedTile = worldServer.getTileEntity((BlockPos) this.data.get(1));
+            if (requestedTile instanceof INetworkProvider)
             {
-                TileEntity requestedTile = worldServer.getTileEntity((BlockPos) this.data.get(1));
-                if (requestedTile instanceof INetworkProvider)
+                if (((INetworkProvider) requestedTile).getNetwork() instanceof FluidNetwork)
                 {
-                    if (((INetworkProvider) requestedTile).getNetwork() instanceof FluidNetwork)
-                    {
-                        FluidNetwork network = (FluidNetwork) ((INetworkProvider) requestedTile).getNetwork();
-                        network.addUpdate(playerBase);
-                    }
+                    FluidNetwork network = (FluidNetwork) ((INetworkProvider) requestedTile).getNetwork();
+                    network.addUpdate(playerBase);
                 }
             }
             break;

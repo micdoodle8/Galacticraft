@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3D;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -62,7 +63,7 @@ public class PacketEntityUpdate extends PacketBase
         {
             if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
             {
-                message.handleClientSide(ctx.get().getSender());
+                message.handleClientSide(Minecraft.getInstance().player);
             }
             else
             {

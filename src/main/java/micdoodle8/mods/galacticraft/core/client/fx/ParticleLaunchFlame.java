@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.GCParticles;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -135,7 +136,7 @@ public class ParticleLaunchFlame extends SpriteTexturedParticle
     @Override
     public int getBrightnessForRender(float par1)
     {
-        return 15728880;
+        return Constants.PACKED_LIGHT_FULL_BRIGHT;
     }
 
 //    @Override

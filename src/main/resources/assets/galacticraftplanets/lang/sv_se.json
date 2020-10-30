@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Inträdeskapsel",
-  "container.launchcontroller": "Raketfjärrstyrare",
+  "container.launch_controller": "Raketfjärrstyrare",
   "container.mars_lander": "Landningskudde",
   "container.short_range_telepad": "Kortdistansteleporterare",
   "container.tile_terraformer": "Terraformare",
@@ -279,12 +279,12 @@
   "block.galacticraftplanets.treasure_t2": "Marsiansk skattkista",
   "block.galacticraftplanets.treasure_t3.description": "Asteroidskattkistor har inte riktigt intförts än.",
   "block.galacticraftplanets.treasure_t3": "Asteroidskattkista",
-  "block.galacticraftplanets.walkway.walkway.description": "Gångbroar är dekorativa block som anluter till andra intilliggande block.",
-  "block.galacticraftplanets.walkway.walkway": "Gångbro",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Syrgasledning inbyggd i en gångbro bildar en promenadvänlig yta.",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Gångbro (syrgasledning)",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Aluminiumledning inbyggd i en gångbro bildar en promenadvänlig yta.",
-  "block.galacticraftplanets.walkway.walkway_wire": "Gångbro (elledning)",
+  "block.galacticraftplanets.walkway.description": "Gångbroar är dekorativa block som anluter till andra intilliggande block.",
+  "block.galacticraftplanets.walkway": "Gångbro",
+  "block.galacticraftplanets.walkway_fluid.description": "Syrgasledning inbyggd i en gångbro bildar en promenadvänlig yta.",
+  "block.galacticraftplanets.walkway_fluid": "Gångbro (syrgasledning)",
+  "block.galacticraftplanets.walkway_wire.description": "Aluminiumledning inbyggd i en gångbro bildar en promenadvänlig yta.",
+  "block.galacticraftplanets.walkway_wire": "Gångbro (elledning)",
   "block.galacticraftplanets.wall_gc.mars": "Marsstenvägg",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Marsiansk hålevägg"
 }

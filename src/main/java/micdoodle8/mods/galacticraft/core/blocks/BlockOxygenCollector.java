@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -54,9 +55,18 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDes
     @Override
     public ActionResultType onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        INamedContainerProvider container = new SimpleNamedContainerProvider((w, p, pl) -> new ContainerOxygenCollector(w, p, (TileEntityOxygenCollector) worldIn.getTileEntity(pos)), new TranslationTextComponent("container.oxygen_collector.name"));
-        NetworkHooks.openGui((ServerPlayerEntity) playerIn, container);
+        if (!worldIn.isRemote)
+        {
+            NetworkHooks.openGui((ServerPlayerEntity) playerIn, getContainer(state, worldIn, pos), buf -> buf.writeBlockPos(pos));
+        }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
     @Nullable
@@ -72,10 +82,16 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDes
         return true;
     }
 
+//    @Override
+//    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+//    {
+//        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+//    }
+
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing()), 3);
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     @OnlyIn(Dist.CLIENT)

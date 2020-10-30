@@ -6,8 +6,8 @@
         "variant=tin_slab_2":  { "model": "galacticraftcore:block/deco_block_1_model" },
         "variant=moon_slab":  { "model": "galacticraftcore:block/moon_stone_model" },
         "variant=moon_bricks_slab":  { "model": "galacticraftcore:block/moon_dungeon_brick_model" },
-        "variant=mars_slab":  { "model": "galacticraftplanets:cobblestone_model" },
-        "variant=mars_bricks_slab":  { "model": "galacticraftplanets:dungeon_brick_model" },
-        "variant=asteroids_slab":  { "model": "galacticraftplanets:asteroid_deco_model" }
+        "variant=mars_slab":  { "model": "galacticraftplanets:block/cobblestone_model" },
+        "variant=mars_bricks_slab":  { "model": "galacticraftplanets:block/dungeon_brick_model" },
+        "variant=asteroids_slab":  { "model": "galacticraftplanets:block/asteroid_deco_model" }
     }
 }

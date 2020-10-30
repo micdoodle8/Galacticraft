@@ -23,18 +23,26 @@ import micdoodle8.mods.galacticraft.planets.PlanetFluids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlockNames;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerMethaneSynthesizer;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -50,7 +58,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper
+public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandlerWrapper, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_PLANETS + ":" + MarsBlockNames.methaneSynthesizer)
     public static TileEntityType<TileEntityMethaneSynthesizer> TYPE;
@@ -747,5 +755,17 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     private int getMethaneProvide()
     {
         return Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.liquidTank.getFluidAmount());
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerMethaneSynthesizer(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.methane_synthesizer");
     }
 }

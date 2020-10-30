@@ -1,139 +1,19 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "galacticraftplanets:walkway",
-        "transform": "forge:default-block"
-    },
-    "variants": {
-        "down=false,east=false,north=false,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-		
-        "down=false,east=false,north=true,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway_n", "y": 0 },
-        "down=false,east=true,north=false,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway_n", "y": 90 },
-        "down=false,east=false,north=false,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway_n", "y": 180 },
-        "down=false,east=false,north=false,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway_n", "y": 270 },
-		
-        "down=false,east=false,north=true,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway_ns", "y": 0 },
-        "down=false,east=true,north=false,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway_ns", "y": 90 },
-		
-        "down=false,east=true,north=true,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway_nes", "y": 0 },
-        "down=false,east=true,north=false,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway_nes", "y": 90 },
-        "down=false,east=false,north=true,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway_nes", "y": 180 },
-        "down=false,east=true,north=true,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway_nes", "y": 270 },
-		
-        "down=false,east=true,north=true,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway_ne", "y": 0 },
-        "down=false,east=true,north=false,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway_ne", "y": 90 },
-        "down=false,east=false,north=false,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway_ne", "y": 180 },
-        "down=false,east=false,north=true,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway_ne", "y": 270 },
-		
-        "down=false,east=true,north=true,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway_nesw", "y": 0 },
-		
-		
-        "down=false,east=false,north=false,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen" },
-		
-        "down=false,east=false,north=true,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_n", "y": 0 },
-        "down=false,east=true,north=false,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_n", "y": 90 },
-        "down=false,east=false,north=false,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_n", "y": 180 },
-        "down=false,east=false,north=false,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_n", "y": 270 },
-		
-        "down=true,east=false,north=true,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_nd", "y": 0 },
-        "down=true,east=true,north=false,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_nd", "y": 90 },
-        "down=true,east=false,north=false,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_nd", "y": 180 },
-        "down=true,east=false,north=false,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nd", "y": 270 },
-		
-        "down=false,east=false,north=true,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_ns", "y": 0 },
-        "down=false,east=true,north=false,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_ns", "y": 90 },
-		
-        "down=true,east=false,north=true,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_nsd", "y": 0 },
-        "down=true,east=true,north=false,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nsd", "y": 90 },
-		
-        "down=false,east=true,north=true,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_nes", "y": 0 },
-        "down=false,east=true,north=false,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nes", "y": 90 },
-        "down=false,east=false,north=true,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nes", "y": 180 },
-        "down=false,east=true,north=true,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nes", "y": 270 },
-		
-        "down=true,east=true,north=true,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_nesd", "y": 0 },
-        "down=true,east=true,north=false,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nesd", "y": 90 },
-        "down=true,east=false,north=true,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nesd", "y": 180 },
-        "down=true,east=true,north=true,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nesd", "y": 270 },
-		
-        "down=false,east=true,north=true,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_ne", "y": 0 },
-        "down=false,east=true,north=false,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_ne", "y": 90 },
-        "down=false,east=false,north=false,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_ne", "y": 180 },
-        "down=false,east=false,north=true,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_ne", "y": 270 },
-		
-        "down=true,east=true,north=true,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_ned", "y": 0 },
-        "down=true,east=true,north=false,south=true,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_ned", "y": 90 },
-        "down=true,east=false,north=false,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_ned", "y": 180 },
-        "down=true,east=false,north=true,south=false,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_ned", "y": 270 },
-		
-        "down=false,east=true,north=true,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_nesw", "y": 0 },
-		
-        "down=true,east=false,north=false,south=false,type=walkway_pipe,west=false": { "model": "galacticraftplanets:walkway_oxygen_d", "y": 0 },
-		
-        "down=true,east=true,north=true,south=true,type=walkway_pipe,west=true": { "model": "galacticraftplanets:walkway_oxygen_neswd", "y": 0 },
-		
-		
-        "down=false,east=false,north=false,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire" },
-		
-        "down=false,east=false,north=true,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_n", "y": 0 },
-        "down=false,east=true,north=false,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_n", "y": 90 },
-        "down=false,east=false,north=false,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_n", "y": 180 },
-        "down=false,east=false,north=false,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_n", "y": 270 },
-		
-        "down=true,east=false,north=true,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_nd", "y": 0 },
-        "down=true,east=true,north=false,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_nd", "y": 90 },
-        "down=true,east=false,north=false,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_nd", "y": 180 },
-        "down=true,east=false,north=false,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nd", "y": 270 },
-		
-        "down=false,east=false,north=true,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_ns", "y": 0 },
-        "down=false,east=true,north=false,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_ns", "y": 90 },
-		
-        "down=true,east=false,north=true,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_nsd", "y": 0 },
-        "down=true,east=true,north=false,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nsd", "y": 90 },
-		
-        "down=false,east=true,north=true,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_nes", "y": 0 },
-        "down=false,east=true,north=false,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nes", "y": 90 },
-        "down=false,east=false,north=true,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nes", "y": 180 },
-        "down=false,east=true,north=true,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nes", "y": 270 },
-		
-        "down=true,east=true,north=true,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_nesd", "y": 0 },
-        "down=true,east=true,north=false,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nesd", "y": 90 },
-        "down=true,east=false,north=true,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nesd", "y": 180 },
-        "down=true,east=true,north=true,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nesd", "y": 270 },
-		
-        "down=false,east=true,north=true,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_ne", "y": 0 },
-        "down=false,east=true,north=false,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_ne", "y": 90 },
-        "down=false,east=false,north=false,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_ne", "y": 180 },
-        "down=false,east=false,north=true,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_ne", "y": 270 },
-		
-        "down=true,east=true,north=true,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_ned", "y": 0 },
-        "down=true,east=true,north=false,south=true,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_ned", "y": 90 },
-        "down=true,east=false,north=false,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_ned", "y": 180 },
-        "down=true,east=false,north=true,south=false,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_ned", "y": 270 },
-		
-        "down=false,east=true,north=true,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_nesw", "y": 0 },
-		
-        "down=true,east=false,north=false,south=false,type=walkway_wire,west=false": { "model": "galacticraftplanets:walkway_wire_d", "y": 0 },
-		
-        "down=true,east=true,north=true,south=true,type=walkway_wire,west=true": { "model": "galacticraftplanets:walkway_wire_neswd", "y": 0 },
-
-
-
-        "down=true,east=false,north=false,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=true,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=false,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=false,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=false,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=true,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=false,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=true,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=false,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=true,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=true,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=true,south=false,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=false,south=true,type=walkway,west=false": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=false,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=false,north=true,south=false,type=walkway,west=true": { "model": "galacticraftplanets:walkway" },
-        "down=true,east=true,north=true,south=true,type=walkway,west=true": { "model": "galacticraftplanets:walkway" }
-    }
+    "multipart": [
+        {   "when": { "up": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway" }
+        },
+        {   "when": { "north": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_n", "uvlock": true }
+        },
+        {   "when": { "east": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_n", "y": 90, "uvlock": true }
+        },
+        {   "when": { "south": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_n", "y": 180, "uvlock": true }
+        },
+        {   "when": { "west": "true" },
+            "apply": { "model": "galacticraftplanets:block/walkway_n", "y": 270, "uvlock": true }
+        }
+    ]
 }

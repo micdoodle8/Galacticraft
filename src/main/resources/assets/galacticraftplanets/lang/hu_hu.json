@@ -1,6 +1,6 @@
 {
   "container.entry_pod": "Érkezőkapszula",
-  "container.launchcontroller": "Távvezérlo",
+  "container.launch_controller": "Távvezérlo",
   "container.mars_lander": "Landing Balloons ##NEEDS TRANSLATE##",
   "container.short_range_telepad": "Rövidtávú Teleporter",
   "container.tile_terraformer": "Növényülteto",
@@ -279,12 +279,12 @@
   "block.galacticraftplanets.treasure_t2": "2-Es Szintu Kincsesláda",
   "block.galacticraftplanets.treasure_t3.description": "Tier 3 Treasure Chests are currently unused. ##NEEDS TRANSLATE##",
   "block.galacticraftplanets.treasure_t3": "3-As Szintű Kincsesláda",
-  "block.galacticraftplanets.walkway.walkway.description": "Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.",
-  "block.galacticraftplanets.walkway.walkway": "Staza",
-  "block.galacticraftplanets.walkway.walkway_pipe.description": "Staze s cijevima za kisik se koriste za pokretanje kisika ispod potpuno čvrste prohodne površine.",
-  "block.galacticraftplanets.walkway.walkway_pipe": "Staza s Cijevima za Zrakom",
-  "block.galacticraftplanets.walkway.walkway_wire.description": "Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.",
-  "block.galacticraftplanets.walkway.walkway_wire": "Staza s Cijevima za Strujom",
+  "block.galacticraftplanets.walkway.description": "Staze se koriste za dekorativne svrhe te za pokretanje energije/zraka ispod igrača.",
+  "block.galacticraftplanets.walkway": "Staza",
+  "block.galacticraftplanets.walkway_fluid.description": "Staze s cijevima za kisik se koriste za pokretanje kisika ispod potpuno čvrste prohodne površine.",
+  "block.galacticraftplanets.walkway_fluid": "Staza s Cijevima za Zrakom",
+  "block.galacticraftplanets.walkway_wire.description": "Staze s cijevima za struju se koriste za pokretanje struje ispod potpuno čvrste prohodne površine.",
+  "block.galacticraftplanets.walkway_wire": "Staza s Cijevima za Strujom",
   "block.galacticraftplanets.wall_gc.mars": "Mars Cobblestone Wall ##NEEDS TRANSLATE##",
   "block.galacticraftplanets.wall_gc.mars_bricks": "Mars Dungeon Brick Wall ##NEEDS TRANSLATE##"
 }

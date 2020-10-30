@@ -1,6 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "galacticraftcore:block/landing_pad_full_model" },
+        "": { "model": "galacticraftcore:block/landing_pad_full_model" },
         "type=rocket": { "model": "galacticraftcore:block/landing_pad_full_model" },
         "type=buggy": { "model": "galacticraftcore:block/buggy_pad_full_model" }
     }

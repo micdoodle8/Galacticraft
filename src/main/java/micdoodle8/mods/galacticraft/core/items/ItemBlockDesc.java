@@ -71,7 +71,7 @@ public class ItemBlockDesc extends BlockItem
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)
                         {
-                            tooltip.add(TextFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                            tooltip.add(TextFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                         }
                     }
                 }
@@ -83,7 +83,7 @@ public class ItemBlockDesc extends BlockItem
                         float powerDrawn = ((TileBaseElectricBlock) te).storage.getMaxExtract();
                         if (powerDrawn > 0)
                         {
-                            tooltip.add(TextFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw.name", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
+                            tooltip.add(TextFormatting.GREEN + GCCoreUtil.translateWithFormat("item_desc.powerdraw", EnergyDisplayHelper.getEnergyDisplayS(powerDrawn * 20)));
                         }
                     }
                 }*/

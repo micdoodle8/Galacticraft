@@ -11,10 +11,15 @@ import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase;
+import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -22,11 +27,13 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class TileEntityCargoLoader extends TileEntityCargoBase implements ISidedInventory, ILandingPadAttachable, ILockable
+public class TileEntityCargoLoader extends TileEntityCargoBase implements ISidedInventory, ILandingPadAttachable, ILockable, INamedContainerProvider
 {
     @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.cargoLoader)
     public static TileEntityType<TileEntityCargoLoader> TYPE;
@@ -334,5 +341,17 @@ public class TileEntityCargoLoader extends TileEntityCargoBase implements ISided
     public boolean getLocked()
     {
         return this.locked;
+    }
+
+    @Override
+    public Container createMenu(int containerId, PlayerInventory playerInv, PlayerEntity player)
+    {
+        return new ContainerCargoLoader(containerId, playerInv, this);
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TranslationTextComponent("container.cargo_loader");
     }
 }

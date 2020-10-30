@@ -30,8 +30,8 @@ public class GuiElectricFurnace extends GuiContainerGC<ContainerElectricFurnace>
     public GuiElectricFurnace(ContainerElectricFurnace container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);
-//        super(new ContainerElectricFurnace(playerInv, furnace), playerInv, new TranslationTextComponent(furnace.getTierGC() == 1 ? "tile.machine.2.name" : "tile.machine.7.name"));
-        this.furnace = furnace;
+//        super(new ContainerElectricFurnace(playerInv, furnace), playerInv, new TranslationTextComponent(furnace.getTierGC() == 1 ? "tile.machine.2" : "tile.machine.7"));
+        this.furnace = container.getFurnace();
         texture = furnace.tierGC == 2 ? arcFurnaceTexture : electricFurnaceTexture;
     }
 
@@ -63,14 +63,14 @@ public class GuiElectricFurnace extends GuiContainerGC<ContainerElectricFurnace>
 
         if (this.furnace.processTicks > 0)
         {
-            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
+            displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running");
         }
         else
         {
-            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
+            displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle");
         }
 
-        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 97, 52, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.status") + ": ", 97, 52, 4210752);
         this.font.drawString(this.furnace.getGUIstatus(null, displayText, true), 107, 62, 4210752);
 //		this.font.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
 //		this.font.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);

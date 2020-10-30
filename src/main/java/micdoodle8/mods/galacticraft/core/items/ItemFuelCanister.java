@@ -69,7 +69,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortable
     {
         if (stack.getMaxDamage() - stack.getDamage() > 0)
         {
-            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + (stack.getMaxDamage() - stack.getDamage())));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel") + ": " + (stack.getMaxDamage() - stack.getDamage())));
         }
     }
 
