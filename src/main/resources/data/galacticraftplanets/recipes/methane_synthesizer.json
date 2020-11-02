@@ -1,0 +1,35 @@
+{
+  "result": {
+    "item": "galacticraftplanets:methane_synthesizer"
+  },
+  "pattern": [
+    "TVT",
+    "FWF",
+    "CXO"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "galacticraftcore:furnace_electric"
+    },
+    "T": {
+      "item": "galacticraftcore:oxygen_tank_heavy_full",
+      "data": 2700
+    },
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "F": {
+      "item": "galacticraftcore:fluid_pipe"
+    },
+    "W": {
+      "item": "galacticraftplanets:fluid_manip"
+    },
+    "X": {
+      "item": "galacticraftcore:compressed_bronze"
+    },
+    "O": {
+      "item": "galacticraftcore:oxygen_compressor"
+    }
+  }
+}

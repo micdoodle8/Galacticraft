@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:telemetry"
+  },
+  "pattern": [
+    "XFX",
+    "XWX",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "galacticraftcore:frequency_module"
+    },
+    "W": {
+      "tag": "forge:wafers/basic"
+    },
+    "X": {
+      "tag": "forge:plates/tin"
+    },
+    "Y": {
+      "tag": "forge:plates/copper"
+    }
+  }
+}

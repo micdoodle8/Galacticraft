@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftplanets:cryogenic_chamber"
+  },
+  "pattern": [
+    "XYX",
+    "XZX",
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    },
+    "Y": {
+      "item": "galacticraftplanets:reinforced_plate_t2"
+    },
+    "Z": {
+      "tag": "minecraft:beds"
+    }
+  }
+}

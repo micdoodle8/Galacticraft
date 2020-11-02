@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:platform",
+    "count": 4
+  },
+  "pattern": [
+    "PAP",
+    "BXB",
+    "PAP"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:wafers/basic"
+    },
+    "A": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "B": {
+      "tag": "forge:plates/steel"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  }
+}

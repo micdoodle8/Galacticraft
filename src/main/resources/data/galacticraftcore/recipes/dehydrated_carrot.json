@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:dehydrated_carrot"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister_tin"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

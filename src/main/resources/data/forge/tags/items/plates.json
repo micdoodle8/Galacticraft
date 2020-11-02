@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:plates/aluminum",
+    "#forge:plates/bronze",
+    "#forge:plates/copper",
+    "#forge:plates/iron",
+    "#forge:plates/meteoric_iron",
+    "#forge:plates/steel",
+    "#forge:plates/tin"
+  ]
+}

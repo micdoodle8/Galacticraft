@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:dehydrated_apple"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister_tin"
+    },
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

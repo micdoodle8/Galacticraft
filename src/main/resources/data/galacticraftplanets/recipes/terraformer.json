@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "galacticraftplanets:terraformer"
+  },
+  "pattern": [
+    "XWX",
+    "XZX",
+    "WVW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    },
+    "W": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    },
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    },
+    "Z": {
+      "item": "galacticraftcore:canister_tin"
+    }
+  }
+}

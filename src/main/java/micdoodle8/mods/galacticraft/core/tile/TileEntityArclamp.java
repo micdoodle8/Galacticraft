@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //ITileClientUpdates for changing in facing;  IPacketReceiver for initial transfer of NBT Data (airToRestore)
 public class TileEntityArclamp extends TileEntity implements ITickableTileEntity, ITileClientUpdates, IPacketReceiver
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.arcLamp)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.arcLamp)
     public static TileEntityType<TileEntityArclamp> TYPE;
 
     private static final int LIGHTRANGE = 14;

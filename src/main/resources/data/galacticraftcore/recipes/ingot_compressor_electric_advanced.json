@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:ingot_compressor_electric_advanced"
+  },
+  "pattern": [
+    "WXW",
+    "WYW",
+    "VZV"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:aluminum_wire"
+    },
+    "W": {
+      "tag": "forge:plates/steel"
+    },
+    "X": {
+      "item": "minecraft:anvil"
+    },
+    "Y": {
+      "tag": "forge:plates/meteoric_iron"
+    },
+    "Z": {
+      "tag": "forge:wafers/advanced"
+    }
+  }
+}

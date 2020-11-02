@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:canned_beef"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister_tin"
+    },
+    {
+      "item": "galacticraftcore:beef_patty_raw"
+    },
+    {
+      "item": "galacticraftcore:beef_patty_raw"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

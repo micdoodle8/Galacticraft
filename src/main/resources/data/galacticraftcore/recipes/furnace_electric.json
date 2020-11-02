@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:furnace_electric"
+  },
+  "pattern": [
+    "XXX",
+    "XZX",
+    "WYW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "tag": "forge:plates/aluminum"
+    },
+    "X": {
+      "tag": "forge:plates/steel"
+    },
+    "Y": {
+      "tag": "forge:wafers/basic"
+    },
+    "Z": {
+      "item": "minecraft:furnace"
+    }
+  }
+}

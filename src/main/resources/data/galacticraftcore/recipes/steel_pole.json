@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_pole",
+    "count": 2
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

@@ -23,10 +23,10 @@
 //
 //    public enum EnumTieredMachineType implements EnumMachineBase, IStringSerializable
 //    {
-//        STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier1.description", "tile.machine.1"),
-//        ELECTRIC_FURNACE(4, "electric_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier1.description", "tile.machine.2"),
-//        STORAGE_CLUSTER(8, "cluster_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier2.description", "tile.machine.8"),
-//        ARC_FURNACE(12, "arc_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier2.description", "tile.machine.7");
+//        STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage.description", "tile.machine.1"),
+//        ELECTRIC_FURNACE(4, "electric_furnace", TileEntityElectricFurnace::new, "tile.furnace_electric.description", "tile.machine.2"),
+//        STORAGE_CLUSTER(8, "cluster_storage", TileEntityEnergyStorageModule::new, "tile.energy_cluster.description", "tile.machine.8"),
+//        ARC_FURNACE(12, "arc_furnace", TileEntityElectricFurnace::new, "tile.furnace_arc.description", "tile.machine.7");
 //
 //        private final int meta;
 //        private final String name;

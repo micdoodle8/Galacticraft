@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:fuel_loader"
+  },
+  "pattern": [
+    "XXX",
+    "XZX",
+    "WYW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "tag": "forge:plates/tin"
+    },
+    "X": {
+      "tag": "forge:plates/copper"
+    },
+    "Y": {
+      "tag": "forge:wafers/basic"
+    },
+    "Z": {
+      "item": "galacticraftcore:canister_tin"
+    }
+  }
+}

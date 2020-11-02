@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_shovel"
+  },
+  "pattern": [
+    " Y ",
+    " X ",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:rods/wooden"
+    },
+    "Y": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

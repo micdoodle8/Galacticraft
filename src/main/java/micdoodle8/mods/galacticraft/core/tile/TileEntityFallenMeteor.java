@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntityType;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TileEntityFallenMeteor extends TileEntityAdvanced
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fallenMeteor)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.fallenMeteor)
     public static TileEntityType<TileEntityFallenMeteor> TYPE;
 
     public static final int MAX_HEAT_LEVEL = 5000;

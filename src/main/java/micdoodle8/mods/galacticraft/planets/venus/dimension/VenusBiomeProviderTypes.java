@@ -1,21 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.venus.dimension;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.storage.WorldInfo;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 

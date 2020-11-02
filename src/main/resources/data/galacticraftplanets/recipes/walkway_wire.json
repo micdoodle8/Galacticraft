@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftplanets:walkway_wire",
+    "count": 5
+  },
+  "pattern": [
+    "XXX",
+    "YXY",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    }
+  }
+}

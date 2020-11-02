@@ -96,7 +96,7 @@ public class PlayerClient implements IPlayerClient
 //                    player.motionY = stats.getPlatformVelocity(player.getPosY());
 //                    player.motionX = 0D;
 //                    player.motionZ = 0D;
-//                } TODO Freefall handler
+//                }
             }
         }
 

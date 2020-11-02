@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
@@ -17,14 +17,13 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityFake extends TileEntity
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fakeBlock)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.fakeBlock)
     public static TileEntityType<TileEntityFake> TYPE;
     //NOTE: No need for networking in 1.8+: see comment in initialiseMultiTiles()
 

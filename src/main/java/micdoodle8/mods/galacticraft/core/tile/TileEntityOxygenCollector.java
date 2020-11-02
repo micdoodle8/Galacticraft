@@ -2,14 +2,13 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCollector;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +34,7 @@ import java.util.EnumSet;
 
 public class TileEntityOxygenCollector extends TileEntityOxygen implements INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenCollector)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.oxygenCollector)
     public static TileEntityType<TileEntityOxygenCollector> TYPE;
 
     public boolean active;

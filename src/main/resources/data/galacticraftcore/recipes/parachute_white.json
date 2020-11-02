@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:parachute_white"
+  },
+  "pattern": [
+    "XXX",
+    "Y Y",
+    " Y "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:canvas"
+    },
+    "Y": {
+      "tag": "forge:string"
+    }
+  }
+}

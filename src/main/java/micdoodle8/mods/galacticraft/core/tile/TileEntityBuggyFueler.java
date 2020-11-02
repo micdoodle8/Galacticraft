@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.entity.IDockable;
 import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import net.minecraft.block.BlockState;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class TileEntityBuggyFueler extends TileEntityFake implements IMultiBlock, IFuelable, IFuelDock, ICargoEntity
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.buggyPadFull)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.buggyPadFull)
     public static TileEntityType<TileEntityBuggyFueler> TYPE;
 
     public TileEntityBuggyFueler()

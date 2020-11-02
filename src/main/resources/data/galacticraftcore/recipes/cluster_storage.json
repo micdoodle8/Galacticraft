@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:cluster_storage"
+  },
+  "pattern": [
+    "BSB",
+    "SWS",
+    "BSB"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:machine_tiered"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "tag": "forge:wafers/advanced"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftplanets:beam_core"
+  },
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:redstone"
+    },
+    "Y": {
+      "tag": "forge:plates/iron"
+    },
+    "Z": {
+      "item": "minecraft:glass_pane"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class TileEntityNasaWorkbench extends TileEntityFake implements IMultiBlock
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.nasaWorkbench)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.nasaWorkbench)
     public static TileEntityType<TileEntityNasaWorkbench> TYPE;
 
     private boolean initialised;

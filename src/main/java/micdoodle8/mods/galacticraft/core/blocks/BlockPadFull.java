@@ -27,41 +27,41 @@ import javax.annotation.Nullable;
 
 public class BlockPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
-    public static final EnumProperty<EnumLandingPadFullType> PAD_TYPE = EnumProperty.create("type", EnumLandingPadFullType.class);
+//    public static final EnumProperty<EnumLandingPadFullType> PAD_TYPE = EnumProperty.create("type", EnumLandingPadFullType.class);
     private final VoxelShape AABB = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D);
 
-    public enum EnumLandingPadFullType implements IStringSerializable
-    {
-        ROCKET_PAD(0, "rocket"),
-        BUGGY_PAD(1, "buggy");
-
-        private final int meta;
-        private final String name;
-
-        EnumLandingPadFullType(int meta, String name)
-        {
-            this.meta = meta;
-            this.name = name;
-        }
-
-        public int getMeta()
-        {
-            return this.meta;
-        }
-
-        private final static EnumLandingPadFullType[] values = values();
-
-        public static EnumLandingPadFullType byMetadata(int meta)
-        {
-            return values[meta % values.length];
-        }
-
-        @Override
-        public String getName()
-        {
-            return this.name;
-        }
-    }
+//    public enum EnumLandingPadFullType implements IStringSerializable
+//    {
+//        ROCKET_PAD(0, "rocket"),
+//        BUGGY_PAD(1, "buggy");
+//
+//        private final int meta;
+//        private final String name;
+//
+//        EnumLandingPadFullType(int meta, String name)
+//        {
+//            this.meta = meta;
+//            this.name = name;
+//        }
+//
+//        public int getMeta()
+//        {
+//            return this.meta;
+//        }
+//
+//        private final static EnumLandingPadFullType[] values = values();
+//
+//        public static EnumLandingPadFullType byMetadata(int meta)
+//        {
+//            return values[meta % values.length];
+//        }
+//
+//        @Override
+//        public String getName()
+//        {
+//            return this.name;
+//        }
+//    }
 
     public BlockPadFull(Properties builder)
     {
@@ -203,9 +203,9 @@ public class BlockPadFull extends BlockAdvancedTile implements IPartialSealableB
 //        return this.getDefaultState().with(PAD_TYPE, EnumLandingPadFullType.byMetadata(meta));
 //    }
 
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(PAD_TYPE);
-    }
+//    @Override
+//    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+//    {
+//        builder.add(PAD_TYPE);
+//    }
 }

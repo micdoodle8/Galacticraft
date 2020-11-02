@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "minecraft:cobblestone",
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftplanets:asteroid_rock_1"
+    },
+    {
+      "item": "galacticraftplanets:asteroid_rock_2"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

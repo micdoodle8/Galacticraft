@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftplanets:thermal_chestplate_t2"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:thermal_fabric"
+    }
+  }
+}

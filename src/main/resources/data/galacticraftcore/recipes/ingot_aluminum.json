@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftcore:ingot_aluminum",
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:block_aluminum_gc"
+    }
+  }
+}

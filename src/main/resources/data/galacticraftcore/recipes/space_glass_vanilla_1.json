@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:space_glass_vanilla",
+    "data": 1,
+    "count": 5
+  },
+  "pattern": [
+    "YXY",
+    "XXX",
+    "YXY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:space_glass_vanilla"
+    },
+    "Y": {
+      "item": "galacticraftcore:deco_block_1"
+    }
+  }
+}

@@ -157,4 +157,10 @@ public class ItemSchematic extends Item implements ISchematicItem, ISortable
         SchematicRegistry.registerTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/items/schematic_buggy.png"));
         SchematicRegistry.registerTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/items/schematic_rocket_t2.png"));
     }
+
+    @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        return "item.galacticraftcore.schematic";
+    }
 }

@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockAdvancedTile;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
+import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
@@ -12,8 +16,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -63,7 +69,7 @@ public class ItemBlockDesc extends BlockItem
             }
             else
             {
-                /*if (this.getBlock() instanceof BlockTileGC) TODO Other GC blocks
+                /*if (this.getBlock() instanceof BlockTileGC)
                 {
                     TileEntity te = ((BlockTileGC) this.getBlock()).createTileEntity(null, getBlock().getStateFromMeta(stack.getDamage() & 12));
                     if (te instanceof TileBaseElectricBlock)

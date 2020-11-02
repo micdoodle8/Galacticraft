@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -26,7 +25,7 @@ import java.util.EnumSet;
 
 public class TileEntityOxygenCompressor extends TileEntityOxygen implements INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenCompressor)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.oxygenCompressor)
     public static TileEntityType<TileEntityOxygenCompressor> TYPE;
 
     public static final int TANK_TRANSFER_SPEED = 2;

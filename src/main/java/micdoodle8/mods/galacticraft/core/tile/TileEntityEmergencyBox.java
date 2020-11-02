@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.*;
-import micdoodle8.mods.galacticraft.core.blocks.BlockEmergencyBox;
 import micdoodle8.mods.galacticraft.core.items.ItemEmergencyKit;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -43,7 +42,7 @@ import java.util.List;
 
 public class TileEntityEmergencyBox extends TileEntity implements ITickableTileEntity, IPacketReceiver
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.emergencyBox)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.emergencyBox)
     public static TileEntityType<TileEntityEmergencyBox> TYPE;
 
     private static final float SPEED = 4F;
@@ -398,7 +397,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBoxKit.getDefaultState(), 3);
                         this.openW = false;
                         this.openS = false;
                         this.openE = false;
@@ -424,7 +423,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBoxKit.getDefaultState(), 3);
                         this.openN = false;
                         this.openS = false;
                         this.openE = false;
@@ -450,7 +449,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBoxKit.getDefaultState(), 3);
                         this.openN = false;
                         this.openW = false;
                         this.openE = false;
@@ -476,7 +475,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickableTileE
                     if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState().with(BlockEmergencyBox.KIT, true), 3);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBoxKit.getDefaultState(), 3);
                         this.openN = false;
                         this.openW = false;
                         this.openS = false;

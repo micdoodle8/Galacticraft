@@ -233,7 +233,7 @@ public class BlockSlimelingEgg extends Block implements IShiftDescription, ISort
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
+        return GCCoreUtil.translate("block.galacticraftplanets.slimeling_egg.description");
     }
 
     @Override

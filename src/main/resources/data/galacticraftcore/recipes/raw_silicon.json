@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftcore:raw_silicon",
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:block_silicon_gc"
+    }
+  }
+}

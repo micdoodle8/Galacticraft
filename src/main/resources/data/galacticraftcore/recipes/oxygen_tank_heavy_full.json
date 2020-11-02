@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_tank_heavy_full",
+    "data": 2700
+  },
+  "pattern": [
+    "ZZZ",
+    "XXX",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:canister_tin"
+    },
+    "Y": {
+      "tag": "forge:plates/steel"
+    },
+    "Z": {
+      "item": "minecraft:red_wool"
+    }
+  }
+}

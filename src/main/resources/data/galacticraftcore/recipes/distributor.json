@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:distributor"
+  },
+  "pattern": [
+    "WXW",
+    "YZY",
+    "WXW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "tag": "forge:plates/steel"
+    },
+    "X": {
+      "item": "galacticraftcore:air_fan"
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Z": {
+      "tag": "forge:plates/aluminum"
+    }
+  }
+}

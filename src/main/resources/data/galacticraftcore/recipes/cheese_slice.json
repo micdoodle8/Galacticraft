@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "galacticraftcore:cheese_slice",
+    "count": 6
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:cheese"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

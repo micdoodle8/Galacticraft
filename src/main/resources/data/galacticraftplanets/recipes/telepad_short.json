@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftplanets:telepad_short"
+  },
+  "pattern": [
+    "XWX",
+    "ZYZ",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "item": "galacticraftplanets:beam_core"
+    },
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "minecraft:redstone"
+    },
+    "Z": {
+      "item": "minecraft:ender_pearl"
+    }
+  }
+}

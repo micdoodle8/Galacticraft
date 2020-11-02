@@ -208,7 +208,7 @@ public class VenusBlocks
         register(r, Registry.BLOCK.getKey(solarArrayModule), new ItemBlockDesc(solarArrayModule, props));
         register(r, Registry.BLOCK.getKey(solarArrayController), new ItemBlockDesc(solarArrayController, props));
         register(r, Registry.BLOCK.getKey(laserTurret), new ItemBlockDesc(laserTurret, props));
-        register(r, Registry.BLOCK.getKey(crashedProbe), new BlockItem(crashedProbe, props));
+        register(r, Registry.BLOCK.getKey(crashedProbe), new ItemBlockDesc(crashedProbe, props));
         register(r, Registry.BLOCK.getKey(scorchedRock), new BlockItem(scorchedRock, props));
     }
 

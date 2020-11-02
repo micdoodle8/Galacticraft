@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "galacticraftcore:block_meteoric_iron_gc"
+  },
+  "pattern": [
+    "YYY",
+    "YYY",
+    "YYY"
+  ],
+  "key": {
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    }
+  }
+}

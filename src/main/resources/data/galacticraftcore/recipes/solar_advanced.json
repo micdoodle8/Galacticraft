@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "galacticraftcore:solar_advanced",
+    "data": 4
+  },
+  "pattern": [
+    "XYX",
+    "XZX",
+    "VWV"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    },
+    "W": {
+      "tag": "forge:wafers/advanced"
+    },
+    "X": {
+      "tag": "forge:plates/steel"
+    },
+    "Y": {
+      "item": "galacticraftcore:solar_module_1"
+    },
+    "Z": {
+      "item": "galacticraftcore:steel_pole"
+    }
+  }
+}

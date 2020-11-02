@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEmergencyBox;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEmergencyBox;
 import net.minecraft.block.BlockState;
@@ -221,8 +222,8 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
     @Override
     public void render(TileEntityEmergencyBox emergencyBox, float partialTicks, MatrixStack matStack, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
-        BlockState b = emergencyBox.getWorld().getBlockState(emergencyBox.getPos());
-        if (!(b.getBlock() instanceof BlockEmergencyBox))
+        BlockState state = emergencyBox.getBlockState();
+        if (!(state.getBlock() instanceof BlockEmergencyBox))
         {
             return;
         }
@@ -237,7 +238,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         flapD.angle = emergencyBox.getAngleD(partialTicks);
         float height = Math.max(Math.max(flapA.angle, flapB.angle), Math.max(flapC.angle, flapD.angle)) / 90F;
 
-        if (height > 0F && b.get(BlockEmergencyBox.KIT))
+        if (height > 0F && state.getBlock() == GCBlocks.emergencyBoxKit)
         {
 //            GlStateManager.pushMatrix();
             matStack.push();

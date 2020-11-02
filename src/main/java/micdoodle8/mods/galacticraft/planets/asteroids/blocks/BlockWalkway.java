@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -290,20 +291,7 @@ public class BlockWalkway extends BlockTransmitter implements IShiftDescription,
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-//        if (meta == EnumWalkwayType.WALKWAY.getMeta())
-//        {
-//            return GCCoreUtil.translate("tile.walkway.walkway.description");
-//        }
-//        else if (meta == EnumWalkwayType.WALKWAY_WIRE.getMeta())
-//        {
-//            return GCCoreUtil.translate("tile.walkway.walkway_wire.description");
-//        }
-//        else if (meta == EnumWalkwayType.WALKWAY_PIPE.getMeta())
-//        {
-//            return GCCoreUtil.translate("tile.walkway.walkway_pipe.description");
-//        } TODO Shift descriptions
-
-        return "";
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

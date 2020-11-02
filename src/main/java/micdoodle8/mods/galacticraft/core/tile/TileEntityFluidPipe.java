@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -33,7 +33,7 @@ import javax.annotation.Nonnull;
 
 public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements IColorable
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fluidPipe)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.fluidPipe)
     public static TileEntityType<TileEntityFluidPipe> TYPE;
 
     public FluidTankGC buffer = new FluidTankGC(1000, this);

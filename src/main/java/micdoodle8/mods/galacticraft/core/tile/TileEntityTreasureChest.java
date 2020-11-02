@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.Annotations;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -16,8 +16,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerProvider;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -46,7 +44,7 @@ import java.util.Random;
 
 public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickableTileEntity, IInventory, IKeyable, ISidedInventory, IChestLid, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.treasureChestTier1)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.treasureChestTier1)
     public static TileEntityType<TileEntityTreasureChest> TYPE;
 
     public boolean adjacentChestChecked;

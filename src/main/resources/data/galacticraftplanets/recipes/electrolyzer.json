@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "galacticraftplanets:electrolyzer"
+  },
+  "pattern": [
+    "TVT",
+    "FWF",
+    "BXB"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:compressed_copper"
+    },
+    "T": {
+      "item": "galacticraftcore:oxygen_tank_heavy_full",
+      "data": 2700
+    },
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "F": {
+      "item": "galacticraftcore:fluid_pipe"
+    },
+    "W": {
+      "item": "galacticraftplanets:fluid_manip"
+    },
+    "X": {
+      "item": "galacticraftcore:compressed_bronze"
+    }
+  }
+}

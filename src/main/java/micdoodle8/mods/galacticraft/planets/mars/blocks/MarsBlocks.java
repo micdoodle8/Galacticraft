@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import micdoodle8.mods.galacticraft.core.*;
+import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlockNames;
@@ -164,18 +165,18 @@ public class MarsBlocks
         register(r, Registry.BLOCK.getKey(stone), new BlockItem(stone, props));
         register(r, Registry.BLOCK.getKey(deshBlock), new BlockItem(deshBlock, props));
         register(r, Registry.BLOCK.getKey(dungeonBrick), new BlockItem(dungeonBrick, props));
-        register(r, Registry.BLOCK.getKey(vine), new BlockItem(vine, props));
-        register(r, Registry.BLOCK.getKey(slimelingEggRed), new BlockItem(slimelingEggRed, props));
-        register(r, Registry.BLOCK.getKey(slimelingEggBlue), new BlockItem(slimelingEggBlue, props));
-        register(r, Registry.BLOCK.getKey(slimelingEggYellow), new BlockItem(slimelingEggYellow, props));
-        register(r, Registry.BLOCK.getKey(treasureChestTier2), new BlockItem(treasureChestTier2, props));
-        register(r, Registry.BLOCK.getKey(cryoChamber), new BlockItem(cryoChamber, props));
-        register(r, Registry.BLOCK.getKey(launchController), new BlockItem(launchController, props));
-        register(r, Registry.BLOCK.getKey(terraformer), new BlockItem(terraformer, props));
-        register(r, Registry.BLOCK.getKey(methaneSynthesizer), new BlockItem(methaneSynthesizer, props));
-        register(r, Registry.BLOCK.getKey(gasLiquefier), new BlockItem(gasLiquefier, props));
-        register(r, Registry.BLOCK.getKey(electrolyzer), new BlockItem(electrolyzer, props));
-        register(r, Registry.BLOCK.getKey(creeperEgg), new BlockItem(creeperEgg, props));
+        register(r, Registry.BLOCK.getKey(vine), new ItemBlockDesc(vine, props));
+        register(r, Registry.BLOCK.getKey(slimelingEggRed), new ItemBlockDesc(slimelingEggRed, props));
+        register(r, Registry.BLOCK.getKey(slimelingEggBlue), new ItemBlockDesc(slimelingEggBlue, props));
+        register(r, Registry.BLOCK.getKey(slimelingEggYellow), new ItemBlockDesc(slimelingEggYellow, props));
+        register(r, Registry.BLOCK.getKey(treasureChestTier2), new ItemBlockDesc(treasureChestTier2, props));
+        register(r, Registry.BLOCK.getKey(cryoChamber), new ItemBlockDesc(cryoChamber, props));
+        register(r, Registry.BLOCK.getKey(launchController), new ItemBlockDesc(launchController, props));
+        register(r, Registry.BLOCK.getKey(terraformer), new ItemBlockDesc(terraformer, props));
+        register(r, Registry.BLOCK.getKey(methaneSynthesizer), new ItemBlockDesc(methaneSynthesizer, props));
+        register(r, Registry.BLOCK.getKey(gasLiquefier), new ItemBlockDesc(gasLiquefier, props));
+        register(r, Registry.BLOCK.getKey(electrolyzer), new ItemBlockDesc(electrolyzer, props));
+        register(r, Registry.BLOCK.getKey(creeperEgg), new ItemBlockDesc(creeperEgg, props));
         register(r, Registry.BLOCK.getKey(bossSpawner), new BlockItem(bossSpawner, props.group(null)));
     }
 

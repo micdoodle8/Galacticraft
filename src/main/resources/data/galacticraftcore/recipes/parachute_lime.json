@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "galacticraftcore:parachute_lime"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:lime_dye"
+    },
+    {
+      "tag": "galacticraftcore:parachutes"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

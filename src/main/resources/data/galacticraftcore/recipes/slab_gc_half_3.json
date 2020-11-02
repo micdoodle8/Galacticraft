@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftcore:slab_gc_half",
+    "data": 3,
+    "count": 6
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:moon_dungeon_brick"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:tin_stairs_2",
+    "count": 4
+  },
+  "pattern": [
+    "  X",
+    " XX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:deco_block_1"
+    }
+  }
+}

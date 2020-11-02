@@ -71,6 +71,22 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortable
     }*/
 
     @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        if (stack.getMaxDamage() == stack.getDamage())
+        {
+            return "item.galacticraftcore.empty_liquid_canister";
+        }
+
+        if (stack.getDamage() == 1)
+        {
+            return "item.galacticraftcore.oil_canister";
+        }
+
+        return "item.galacticraftcore.oil_canister_partial";
+    }
+
+    @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         if (stack.getMaxDamage() - stack.getDamage() > 0)

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:solar_module_0",
+    "count": 2
+  },
+  "pattern": [
+    "XXX",
+    "YYY",
+    "ZZZ"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass"
+    },
+    "Y": {
+      "tag": "forge:wafers/solar"
+    },
+    "Z": {
+      "item": "galacticraftcore:aluminum_wire"
+    }
+  }
+}

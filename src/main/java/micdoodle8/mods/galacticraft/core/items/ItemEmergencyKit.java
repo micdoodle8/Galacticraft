@@ -120,7 +120,7 @@ public class ItemEmergencyKit extends ItemDesc implements ISortable
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("item.emergency_kit.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

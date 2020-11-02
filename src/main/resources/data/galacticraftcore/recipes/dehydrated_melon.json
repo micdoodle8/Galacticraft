@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:dehydrated_melon"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister_tin"
+    },
+    {
+      "item": "minecraft:melon"
+    },
+    {
+      "item": "minecraft:melon"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

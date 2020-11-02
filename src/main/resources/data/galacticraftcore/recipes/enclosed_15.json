@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:enclosed",
+    "data": 15
+  },
+  "pattern": [
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:deco_block_1"
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    }
+  }
+}

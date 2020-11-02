@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftplanets:fluid_manip"
+  },
+  "pattern": [
+    "MXM",
+    "SWS",
+    "MXM"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:slimeballs"
+    },
+    "W": {
+      "item": "galacticraftcore:wafer_advanced"
+    },
+    "X": {
+      "item": "galacticraftcore:air_fan"
+    },
+    "M": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    }
+  }
+}

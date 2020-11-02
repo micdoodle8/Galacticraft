@@ -115,7 +115,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate(getTranslationKey());
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

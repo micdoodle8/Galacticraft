@@ -1,17 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client;
 
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.fx.*;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.particle.SuspendedTownParticle;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

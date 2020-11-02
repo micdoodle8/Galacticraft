@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_storage_module"
+  },
+  "pattern": [
+    "SSS",
+    "BBB",
+    "SSS"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:oxygen_tank_heavy_full",
+      "data": 2700
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

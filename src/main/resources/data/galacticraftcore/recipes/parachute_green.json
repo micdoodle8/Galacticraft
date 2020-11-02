@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "galacticraftcore:parachute_green"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:green_dye"
+    },
+    {
+      "tag": "galacticraftcore:parachutes"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftplanets:heavy_nose_cone"
+  },
+  "pattern": [
+    " Y ",
+    " X ",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:reinforced_plate_t3"
+    },
+    "Y": {
+      "item": "minecraft:redstone_torch"
+    }
+  }
+}

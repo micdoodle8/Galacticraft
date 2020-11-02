@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerFuelLoader;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
@@ -49,7 +48,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, ILandingPadAttachable, IMachineSides, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fuelLoader)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.fuelLoader)
     public static TileEntityType<TileEntityFuelLoader> TYPE;
 
     private final int tankCapacity = 12000;

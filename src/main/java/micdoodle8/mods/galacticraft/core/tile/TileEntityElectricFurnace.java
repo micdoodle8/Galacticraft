@@ -1,15 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -37,7 +35,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 {
     public static class TileEntityElectricFurnaceT1 extends TileEntityElectricFurnace
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.furnaceElectric)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.furnaceElectric)
         public static TileEntityType<TileEntityElectricFurnaceT1> TYPE;
 
         public TileEntityElectricFurnaceT1()
@@ -49,7 +47,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 
     public static class TileEntityElectricFurnaceT2 extends TileEntityElectricFurnace
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.furanceArc)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.furanceArc)
         public static TileEntityType<TileEntityElectricFurnaceT2> TYPE;
 
         public TileEntityElectricFurnaceT2()

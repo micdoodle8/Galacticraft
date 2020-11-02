@@ -147,7 +147,7 @@ public class BlockTerraformer extends BlockTileGC implements IShiftDescription, 
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("tile.terraformer.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

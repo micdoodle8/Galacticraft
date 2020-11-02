@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "galacticraftcore:beef_patty_raw",
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:beef"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

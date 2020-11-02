@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:standard_wrench"
+  },
+  "pattern": [
+    "  Y",
+    " X ",
+    "X  "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:plates/bronze"
+    },
+    "Y": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

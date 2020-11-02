@@ -156,7 +156,7 @@ public class BlockCryoChamber extends BlockTileGC implements IShiftDescription, 
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("tile.cryo_chamber.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

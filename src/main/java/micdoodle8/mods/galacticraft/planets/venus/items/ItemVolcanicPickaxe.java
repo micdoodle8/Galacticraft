@@ -11,6 +11,7 @@ import net.minecraft.block.StructureBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
@@ -44,7 +45,7 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortable, IShif
     {
         if (this.showDescription(stack))
         {
-            if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
+            if (InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), 340))
             {
                 List<String> descString = Minecraft.getInstance().fontRenderer.listFormattedStringToWidth(this.getShiftDescription(stack), 150);
                 for (String string : descString)
@@ -175,7 +176,7 @@ public class ItemVolcanicPickaxe extends PickaxeItem implements ISortable, IShif
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("item.volcanic_pickaxe.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

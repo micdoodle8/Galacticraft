@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "galacticraftcore:furnace_arc"
+  },
+  "pattern": [
+    "XXX",
+    "XZX",
+    "WYW"
+  ],
+  "key": {
+    "W": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    },
+    "X": {
+      "item": "galacticraftcore:heavy_plating"
+    },
+    "Y": {
+      "tag": "forge:wafers/advanced"
+    },
+    "Z": {
+      "item": "galacticraftcore:furnace_electric"
+    }
+  }
+}

@@ -159,7 +159,7 @@ public class BlockSolarAdvanced extends BlockTileGC implements IShiftDescription
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("tile.solar_adv.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

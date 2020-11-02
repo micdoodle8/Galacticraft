@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
 import micdoodle8.mods.galacticraft.core.client.screen.DrawGameScreen;
@@ -16,18 +16,15 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static net.minecraft.util.Direction.*;
-
 public class TileEntityScreen extends TileEntityAdvanced implements ITileClientUpdates
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.screen)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.screen)
     public static TileEntityType<TileEntityScreen> TYPE;
 
     public static float FRAMEBORDER = 0.098F;  //used for rendering

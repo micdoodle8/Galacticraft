@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "galacticraftplanets:walkway_fluid"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftplanets:walkway"
+    },
+    {
+      "item": "galacticraftcore:fluid_pipe"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedDetector;
@@ -15,7 +15,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityPlayerDetector extends TileEntity implements ITickableTileEntity
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.concealedDetector)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.concealedDetector)
     public static TileEntityType<TileEntityPlayerDetector> TYPE;
 
     private int ticks = 24;

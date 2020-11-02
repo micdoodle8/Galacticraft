@@ -56,4 +56,11 @@ public class ItemStrangeSeed extends Item implements ISortable
 //    {
 //        return par1;
 //    }
+
+
+    @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        return "item.galacticraftplanets.strange_seed";
+    }
 }

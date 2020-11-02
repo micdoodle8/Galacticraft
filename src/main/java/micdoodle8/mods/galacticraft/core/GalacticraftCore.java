@@ -17,13 +17,15 @@ import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.api.world.BiomeGC;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
-import micdoodle8.mods.galacticraft.core.items.ISortable;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenCelestial;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenText;
-import micdoodle8.mods.galacticraft.core.dimension.*;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
+import micdoodle8.mods.galacticraft.core.dimension.GCDimensions;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeMoon;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeOverworld;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
-import micdoodle8.mods.galacticraft.core.entities.*;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -36,22 +38,27 @@ import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
+import micdoodle8.mods.galacticraft.core.recipe.ConditionEnabled;
+import micdoodle8.mods.galacticraft.core.recipe.IngredientAdvancedMetalSerializer;
+import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
-import micdoodle8.mods.galacticraft.core.tile.*;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
-//import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.block.Block;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.data.RecipeProvider;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -61,11 +68,15 @@ import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.*;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -81,10 +92,10 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 //@Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
@@ -162,6 +173,7 @@ public class GalacticraftCore
         modBus.addListener(this::clientSetup);
         modBus.addListener(this::onModConfigEvent);
         modBus.addGenericListener(ContainerType.class, GCContainers::initContainers);
+        modBus.addGenericListener(IRecipeSerializer.class, GalacticraftCore::registerRecipeSerializers);
         GCFluids.FLUIDS.register(modBus);
         ConnectionEvents.register(MinecraftForge.EVENT_BUS);
         TabRegistry.registerEventListeners(MinecraftForge.EVENT_BUS);
@@ -170,6 +182,13 @@ public class GalacticraftCore
         GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.0F);
         GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(13F, 13F)).setRelativeOrbitTime(1 / 0.01F);
         GalacticraftCore.satelliteSpaceStation = (Satellite) new Satellite("spacestation.overworld").setParentBody(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(9F, 9F)).setRelativeOrbitTime(1 / 0.05F);
+    }
+
+    public static void registerRecipeSerializers(RegistryEvent.Register<IRecipeSerializer<?>> evt)
+    {
+//        GCBlocks.register(evt.getRegistry(), "replacable", new OreRecipeUpdatable.Serializer());
+        CraftingHelper.register(new ResourceLocation("galacticraftcore", "advanced_metal"), IngredientAdvancedMetalSerializer.INSTANCE);
+        CraftingHelper.register(ConditionEnabled.Serializer.INSTANCE);
     }
 
     private void clientSetup(FMLClientSetupEvent event)
@@ -475,6 +494,36 @@ public class GalacticraftCore
             setupSortedTab(blocksList, galacticraftBlocksTab);
             setupSortedTab(itemList, galacticraftItemsTab);
         });
+
+//        {
+//            {
+//                Path outputFolder = Paths.get("/home/mitch/Seafile/Dev-MC/Minecraft-Repos/1.15.2/Galacticraft/src/main/resources/data/");
+//                DataGenerator datagenerator = new DataGenerator(outputFolder, Collections.EMPTY_LIST);
+//                datagenerator.addProvider(new GCRecipeProvider(datagenerator));
+//                try
+//                {
+//                    datagenerator.run();
+//                }
+//                catch (IOException e)
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+    }
+
+    private static class GCRecipeProvider extends RecipeProvider
+    {
+        public GCRecipeProvider(DataGenerator generatorIn)
+        {
+            super(generatorIn);
+        }
+
+        @Override
+        protected void registerRecipes(Consumer<IFinishedRecipe> consumer)
+        {
+            super.registerRecipes(consumer);
+        }
     }
 
     private void setupSortedTab(List<ResourceLocation> list, CreativeTabGC creativeTab)
@@ -822,47 +871,13 @@ public class GalacticraftCore
 //        info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
 //    } TODO
 
-    //    @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
-//    public static class RegistrationHandler
-//    {
-//        @SubscribeEvent
-//        public static void registerBlocks(RegistryEvent.Register<Block> event)
-//        {
-//            GCBlocks.registerBlocks(event.getRegistry());
-//            CompatibilityManager.registerMicroBlocks();
-//        }
-//
-//        @SubscribeEvent
-//        public static void registerItems(RegistryEvent.Register<Item> event)
-//        {
-//            // First, the final steps of block registration
-//            IForgeRegistry<Block> blockRegistry = RegistryManager.ACTIVE.getRegistry(GameData.BLOCKS);
-//            GCBlocks.doOtherModsTorches(blockRegistry);
-//            BlockGrating.createForgeFluidVersions(blockRegistry);
-//
-//            GCItems.registerItems(event.getRegistry());
-//
-//            //RegisterSorted for blocks cannot be run until all the items have been registered
-//            if (GCCoreUtil.getEffectiveSide() == LogicalSide.CLIENT)
-//            {
-//                for (Item item : GalacticraftCore.itemListTrue)
-//                {
-//                    GCItems.registerSorted(item);
-//                }
-//                for (Block block : GalacticraftCore.blocksList)
-//                {
-//                    GCBlocks.registerSorted(block);
-//                }
-//            }
-//
-//            GCBlocks.oreDictRegistrations();
-//            GCItems.oreDictRegistrations();
-//        }
-//
-//        @SubscribeEvent(priority = EventPriority.LOWEST)
-//        public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
-//        {
-//            RecipeManagerGC.addUniversalRecipes();
+    @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
+    public static class RegistrationHandler
+    {
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public static void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> evt)
+        {
+            RecipeManagerGC.addUniversalRecipes();
 //            RecipeManagerGC.setConfigurableRecipes();
 //            if (isPlanetsLoaded)
 //            {
@@ -870,17 +885,8 @@ public class GalacticraftCore
 //            	RecipeManagerMars.addUniversalRecipes();
 //            	RecipeManagerVenus.addUniversalRecipes();
 //            }
-//        }
-//
-//        @SubscribeEvent
-//        public static void registerModels(ModelRegistryEvent event)
-//        {
-//            proxy.registerVariants();
-//            if (isPlanetsLoaded)
-//            {
-//                GalacticraftPlanets.proxy.registerVariants();
-//            }
-//        }
+        }
+    }
 //
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event)

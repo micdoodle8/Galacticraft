@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ores/aluminum",
+    "#forge:ores/cheese",
+    "#forge:ores/copper",
+    "#forge:ores/sapphire",
+    "#forge:ores/silicon",
+    "#forge:ores/tin"
+  ]
+}

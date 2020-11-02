@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_helmet"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

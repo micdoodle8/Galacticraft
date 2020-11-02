@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_detector"
+  },
+  "pattern": [
+    "WWW",
+    "YVY",
+    "ZUZ"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "U": {
+      "tag": "forge:plates/aluminum"
+    },
+    "V": {
+      "tag": "forge:wafers/basic"
+    },
+    "W": {
+      "tag": "forge:plates/steel"
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Z": {
+      "tag": "forge:dusts/redstone"
+    }
+  }
+}

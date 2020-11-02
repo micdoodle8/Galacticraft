@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -20,6 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ItemOxygenTank extends Item implements ISortable, IClickableItem
@@ -67,7 +69,22 @@ public class ItemOxygenTank extends Item implements ISortable, IClickableItem
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.tank.oxygen_remaining") + ": " + (stack.getMaxDamage() - stack.getDamage())));
+        float damagePercent = (1.0F - stack.getDamage() / (float)stack.getMaxDamage()) * 100.0F;
+        DecimalFormat df = new DecimalFormat("#.##");
+        String percentageStr = df.format(damagePercent) + "%" + EnumColor.WHITE;
+        if (damagePercent < 20.0F)
+        {
+            percentageStr = EnumColor.RED + percentageStr;
+        }
+        else if (damagePercent < 80.0F)
+        {
+            percentageStr = EnumColor.YELLOW + percentageStr;
+        }
+        else
+        {
+            percentageStr = EnumColor.DARK_GREEN + percentageStr;
+        }
+        tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.tank.oxygen_remaining") + ": " + (stack.getMaxDamage() - stack.getDamage()) + " (" + percentageStr + ")"));
     }
 
     @Override

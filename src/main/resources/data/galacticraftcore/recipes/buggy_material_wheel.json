@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:buggy_material_wheel"
+  },
+  "pattern": [
+    " W ",
+    "WXW",
+    " W "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "tag": "forge:leather"
+    },
+    "X": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

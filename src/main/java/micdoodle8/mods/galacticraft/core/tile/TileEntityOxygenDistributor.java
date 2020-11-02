@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -15,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerLaserTurret;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,7 +44,7 @@ import java.util.List;
 
 public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBubbleProviderColored, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDistributor)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.oxygenDistributor)
     public static TileEntityType<TileEntityOxygenDistributor> TYPE;
 
     public boolean active;

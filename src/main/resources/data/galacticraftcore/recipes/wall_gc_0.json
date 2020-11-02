@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftcore:wall_gc",
+    "count": 6
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:deco_block_0"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:ingot_compressor"
+  },
+  "pattern": [
+    "WXW",
+    "WYW",
+    "WZW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "X": {
+      "item": "minecraft:anvil"
+    },
+    "Y": {
+      "tag": "forge:ingots/copper"
+    },
+    "Z": {
+      "tag": "forge:wafers/basic"
+    }
+  }
+}

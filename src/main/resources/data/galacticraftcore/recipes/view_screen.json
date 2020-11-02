@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:view_screen"
+  },
+  "pattern": [
+    "XYX",
+    "YGY",
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "X": {
+      "tag": "forge:plates/steel"
+    },
+    "Y": {
+      "tag": "forge:wafers/basic"
+    }
+  }
+}

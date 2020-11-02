@@ -1,0 +1,23 @@
+{
+"result": {
+    "item": "galacticraftplanets:solar_module_2",
+    "count": 3
+  },
+  "pattern": [
+    "XXX",
+    "YYY",
+    "ZZZ"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass"
+    },
+    "Y": {
+      "tag": "forge:wafers/solar_thin"
+    },
+    "Z": {
+      "item": "galacticraftcore:aluminum_wire"
+    }
+  }
+}

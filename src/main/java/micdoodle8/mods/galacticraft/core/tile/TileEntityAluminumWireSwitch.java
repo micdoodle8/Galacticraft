@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
@@ -22,7 +22,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 {
     public static class TileEntityAluminumWireSwitchableT1 extends TileEntityAluminumWireSwitch
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.aluminumWireSwitchable)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.aluminumWireSwitchable)
         public static TileEntityType<TileEntityAluminumWireSwitchableT1> TYPE;
 
         public TileEntityAluminumWireSwitchableT1()
@@ -33,7 +33,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 
     public static class TileEntityAluminumWireSwitchableT2 extends TileEntityAluminumWireSwitch
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.aluminumWireSwitchableHeavy)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.aluminumWireSwitchableHeavy)
         public static TileEntityType<TileEntityAluminumWireSwitchableT2> TYPE;
 
         public TileEntityAluminumWireSwitchableT2()

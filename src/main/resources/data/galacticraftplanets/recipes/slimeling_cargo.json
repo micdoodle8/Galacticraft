@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftplanets:slimeling_cargo"
+  },
+  "pattern": [
+    "XWX",
+    "XYX",
+    " Z "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "item": "minecraft:diamond"
+    },
+    "X": {
+      "item": "minecraft:leather"
+    },
+    "Y": {
+      "tag": "forge:slimeballs"
+    },
+    "Z": {
+      "item": "minecraft:chest"
+    }
+  }
+}

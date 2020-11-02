@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:titanium_block"
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_ingot"
+    }
+  }
+}

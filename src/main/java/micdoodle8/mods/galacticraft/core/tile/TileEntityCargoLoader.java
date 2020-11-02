@@ -7,11 +7,10 @@ import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase.ContainerCargoLoader;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.BlockState;
@@ -35,7 +34,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityCargoLoader extends TileEntityCargoBase implements ISidedInventory, ILandingPadAttachable, ILockable, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.cargoLoader)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.cargoLoader)
     public static TileEntityType<TileEntityCargoLoader> TYPE;
 
     public boolean outOfItems;

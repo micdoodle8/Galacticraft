@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_tank_med_full",
+    "data": 1800
+  },
+  "pattern": [
+    "ZZ",
+    "XX",
+    "YY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:canister_tin"
+    },
+    "Y": {
+      "tag": "forge:plates/tin"
+    },
+    "Z": {
+      "item": "minecraft:orange_wool"
+    }
+  }
+}

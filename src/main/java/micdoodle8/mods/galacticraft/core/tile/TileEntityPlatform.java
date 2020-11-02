@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class TileEntityPlatform extends TileEntity implements ITickableTileEntity
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.platform)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.platform)
     public static TileEntityType<TileEntityPlatform> TYPE;
 
     private static final int MAXRANGE = 16;
@@ -558,7 +558,7 @@ public class TileEntityPlatform extends TileEntity implements ITickableTileEntit
         double depth = velocityY < 0D ? 0.179D : 0D;
         AxisAlignedBB bb = new AxisAlignedBB(x - size, y - depth, z - size, x + size, y + height, z + size);
         BlockPlatform.ignoreCollisionTests = true;
-        boolean obstructed = this.world.getCollisionShapes(p, bb) != VoxelShapes.empty();
+        boolean obstructed = this.world.getCollisionShapes(p, bb).count() > 0;
         BlockPlatform.ignoreCollisionTests = false;
         return obstructed;
     }

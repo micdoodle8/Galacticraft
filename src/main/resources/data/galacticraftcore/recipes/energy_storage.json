@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftcore:energy_storage"
+  },
+  "pattern": [
+    "SSS",
+    "BBB",
+    "SSS"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:battery",
+      "data": 100
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

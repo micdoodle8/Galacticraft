@@ -6,11 +6,10 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCargoBase.ContainerCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.BlockState;
@@ -32,7 +31,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityCargoUnloader extends TileEntityCargoBase implements ILandingPadAttachable, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.cargoUnloader)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.cargoUnloader)
     public static TileEntityType<TileEntityCargoUnloader> TYPE;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)

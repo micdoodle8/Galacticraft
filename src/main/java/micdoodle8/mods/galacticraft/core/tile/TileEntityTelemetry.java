@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -51,7 +51,7 @@ import java.util.stream.Stream;
 
 public class TileEntityTelemetry extends TileEntity implements ITickableTileEntity
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.telemetry)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.telemetry)
     public static TileEntityType<TileEntityTelemetry> TYPE;
 
     //    public Class<?> clientClass;

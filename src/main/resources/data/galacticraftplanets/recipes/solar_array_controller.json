@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftplanets:solar_array_controller"
+  },
+  "pattern": [
+    "X X",
+    "YZY",
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:plates/steel"
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    },
+    "Z": {
+      "tag": "forge:wafers/advanced"
+    }
+  }
+}

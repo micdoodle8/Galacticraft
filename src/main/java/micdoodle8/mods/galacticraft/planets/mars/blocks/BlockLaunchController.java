@@ -110,7 +110,7 @@ public class BlockLaunchController extends BlockTileGC implements IShiftDescript
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("tile.launch_controller.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

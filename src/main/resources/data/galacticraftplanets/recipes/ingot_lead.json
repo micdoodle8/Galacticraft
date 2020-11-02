@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftplanets:ingot_lead",
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:lead_block"
+    }
+  }
+}

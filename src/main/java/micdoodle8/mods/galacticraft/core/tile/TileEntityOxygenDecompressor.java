@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
@@ -27,7 +26,7 @@ import java.util.EnumSet;
 
 public class TileEntityOxygenDecompressor extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenDecompressor)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.oxygenDecompressor)
     public static TileEntityType<TileEntityOxygenDecompressor> TYPE;
 
     public static final int OUTPUT_PER_TICK = 100;

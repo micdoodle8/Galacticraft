@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftcore:slab_gc_half",
+    "count": 6
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:deco_block_0"
+    }
+  }
+}

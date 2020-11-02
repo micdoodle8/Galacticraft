@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_concentrator"
+  },
+  "pattern": [
+    "ZWZ",
+    "WYW",
+    "ZXZ"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "tag": "forge:plates/tin"
+    },
+    "X": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Y": {
+      "item": "galacticraftcore:canister_tin"
+    },
+    "Z": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

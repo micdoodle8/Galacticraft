@@ -1,15 +1,13 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
-import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerPainter;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerRefinery;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -46,7 +44,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityRefinery extends TileBaseElectricBlockWithInventory implements ISidedInventory, IFluidHandlerWrapper, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.refinery)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.refinery)
     public static TileEntityType<TileEntityRefinery> TYPE;
 
     private final int tankCapacity = 24000;

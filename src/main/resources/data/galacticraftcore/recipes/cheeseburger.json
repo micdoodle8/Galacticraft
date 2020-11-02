@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftcore:cheeseburger"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:food",
+      "data": 4
+    },
+    {
+      "item": "galacticraftcore:food",
+      "data": 7
+    },
+    {
+      "item": "galacticraftcore:food",
+      "data": 5
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

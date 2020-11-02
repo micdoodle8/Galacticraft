@@ -259,6 +259,26 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 ////    }
 
     @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    {
+        if (ignoreCollisionTests)
+        {
+            return VoxelShapes.empty();
+        }
+
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileEntityPlatform)
+        {
+            if (((TileEntityPlatform) tile).noCollide())
+            {
+                return VoxelShapes.empty();
+            }
+        }
+
+        return super.getCollisionShape(state, worldIn, pos, context);
+    }
+
+    @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         if (worldIn instanceof World && ((World) worldIn).dimension instanceof IZeroGDimension)

@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IItemElectricBase;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -32,7 +32,7 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
 {
     public static class TileEntityEnergyStorageModuleT1 extends TileEntityEnergyStorageModule
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.storageModule)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.energyStorage)
         public static TileEntityType<TileEntityEnergyStorageModuleT1> TYPE;
 
         public TileEntityEnergyStorageModuleT1()
@@ -45,7 +45,7 @@ public abstract class TileEntityEnergyStorageModule extends TileBaseUniversalEle
 
     public static class TileEntityEnergyStorageModuleT2 extends TileEntityEnergyStorageModule
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.storageModule)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.energyStorage)
         public static TileEntityType<TileEntityEnergyStorageModuleT2> TYPE;
 
         public TileEntityEnergyStorageModuleT2()

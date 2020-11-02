@@ -22,216 +22,216 @@ import static micdoodle8.mods.galacticraft.core.GCBlocks.register;
 @ObjectHolder(Constants.MOD_ID_CORE)
 public class GCItems
 {
-    @ObjectHolder(ItemNames.oxTankLight)
+    @ObjectHolder(GCItemNames.oxTankLight)
     public static Item oxTankLight;
-    @ObjectHolder(ItemNames.oxTankMedium)
+    @ObjectHolder(GCItemNames.oxTankMedium)
     public static Item oxTankMedium;
-    @ObjectHolder(ItemNames.oxTankHeavy)
+    @ObjectHolder(GCItemNames.oxTankHeavy)
     public static Item oxTankHeavy;
-    @ObjectHolder(ItemNames.oxMask)
+    @ObjectHolder(GCItemNames.oxMask)
     public static Item oxMask;
-    @ObjectHolder(ItemNames.rocketTierOne)
+    @ObjectHolder(GCItemNames.rocketTierOne)
     public static Item rocketTierOne;
-    @ObjectHolder(ItemNames.rocketTierOneCargo1)
+    @ObjectHolder(GCItemNames.rocketTierOneCargo1)
     public static Item rocketTierOneCargo1;
-    @ObjectHolder(ItemNames.rocketTierOneCargo2)
+    @ObjectHolder(GCItemNames.rocketTierOneCargo2)
     public static Item rocketTierOneCargo2;
-    @ObjectHolder(ItemNames.rocketTierOneCargo3)
+    @ObjectHolder(GCItemNames.rocketTierOneCargo3)
     public static Item rocketTierOneCargo3;
-    @ObjectHolder(ItemNames.rocketTierOneCreative)
+    @ObjectHolder(GCItemNames.rocketTierOneCreative)
     public static Item rocketTierOneCreative;
-    @ObjectHolder(ItemNames.sensorGlasses)
+    @ObjectHolder(GCItemNames.sensorGlasses)
     public static Item sensorGlasses;
-    @ObjectHolder(ItemNames.sensorLens)
+    @ObjectHolder(GCItemNames.sensorLens)
     public static Item sensorLens;
-    @ObjectHolder(ItemNames.steelPickaxe)
+    @ObjectHolder(GCItemNames.steelPickaxe)
     public static Item steelPickaxe;
-    @ObjectHolder(ItemNames.steelAxe)
+    @ObjectHolder(GCItemNames.steelAxe)
     public static Item steelAxe;
-    @ObjectHolder(ItemNames.steelHoe)
+    @ObjectHolder(GCItemNames.steelHoe)
     public static Item steelHoe;
-    @ObjectHolder(ItemNames.steelSpade)
+    @ObjectHolder(GCItemNames.steelSpade)
     public static Item steelSpade;
-    @ObjectHolder(ItemNames.steelSword)
+    @ObjectHolder(GCItemNames.steelSword)
     public static Item steelSword;
-    @ObjectHolder(ItemNames.steelHelmet)
+    @ObjectHolder(GCItemNames.steelHelmet)
     public static Item steelHelmet;
-    @ObjectHolder(ItemNames.steelChestplate)
+    @ObjectHolder(GCItemNames.steelChestplate)
     public static Item steelChestplate;
-    @ObjectHolder(ItemNames.steelLeggings)
+    @ObjectHolder(GCItemNames.steelLeggings)
     public static Item steelLeggings;
-    @ObjectHolder(ItemNames.steelBoots)
+    @ObjectHolder(GCItemNames.steelBoots)
     public static Item steelBoots;
-    @ObjectHolder(ItemNames.oxygenVent)
+    @ObjectHolder(GCItemNames.oxygenVent)
     public static Item oxygenVent;
-    @ObjectHolder(ItemNames.oxygenFan)
+    @ObjectHolder(GCItemNames.oxygenFan)
     public static Item oxygenFan;
-    @ObjectHolder(ItemNames.oxygenConcentrator)
+    @ObjectHolder(GCItemNames.oxygenConcentrator)
     public static Item oxygenConcentrator;
     //    @ObjectHolder(ItemNames.rocketEngine) public static Item rocketEngine;
-    @ObjectHolder(ItemNames.heavyPlatingTier1)
+    @ObjectHolder(GCItemNames.heavyPlatingTier1)
     public static Item heavyPlatingTier1;
-    @ObjectHolder(ItemNames.partNoseCone)
+    @ObjectHolder(GCItemNames.partNoseCone)
     public static Item partNoseCone;
-    @ObjectHolder(ItemNames.partFins)
+    @ObjectHolder(GCItemNames.partFins)
     public static Item partFins;
-    @ObjectHolder(ItemNames.buggy)
+    @ObjectHolder(GCItemNames.buggy)
     public static Item buggy;
-    @ObjectHolder(ItemNames.buggyInventory1)
+    @ObjectHolder(GCItemNames.buggyInventory1)
     public static Item buggyInventory1;
-    @ObjectHolder(ItemNames.buggyInventory2)
+    @ObjectHolder(GCItemNames.buggyInventory2)
     public static Item buggyInventory2;
-    @ObjectHolder(ItemNames.buggyInventory3)
+    @ObjectHolder(GCItemNames.buggyInventory3)
     public static Item buggyInventory3;
-    @ObjectHolder(ItemNames.flag)
+    @ObjectHolder(GCItemNames.flag)
     public static Item flag;
-    @ObjectHolder(ItemNames.oxygenGear)
+    @ObjectHolder(GCItemNames.oxygenGear)
     public static Item oxygenGear;
-    @ObjectHolder(ItemNames.canvas)
+    @ObjectHolder(GCItemNames.canvas)
     public static Item canvas;
-    @ObjectHolder(ItemNames.flagPole)
+    @ObjectHolder(GCItemNames.flagPole)
     public static Item flagPole;
-    @ObjectHolder(ItemNames.oilCanister)
+    @ObjectHolder(GCItemNames.oilCanister)
     public static Item oilCanister;
-    @ObjectHolder(ItemNames.fuelCanister)
+    @ObjectHolder(GCItemNames.fuelCanister)
     public static Item fuelCanister;
-    @ObjectHolder(ItemNames.oxygenCanisterInfinite)
+    @ObjectHolder(GCItemNames.oxygenCanisterInfinite)
     public static Item oxygenCanisterInfinite;
-    @ObjectHolder(ItemNames.schematicBuggy)
+    @ObjectHolder(GCItemNames.schematicBuggy)
     public static Item schematicBuggy;
-    @ObjectHolder(ItemNames.schematicRocketT2)
+    @ObjectHolder(GCItemNames.schematicRocketT2)
     public static Item schematicRocketT2;
-    @ObjectHolder(ItemNames.key)
+    @ObjectHolder(GCItemNames.key)
     public static Item key;
     //    @ObjectHolder(ItemNames.foodItem) public static Item foodItem;
-    @ObjectHolder(ItemNames.battery)
+    @ObjectHolder(GCItemNames.battery)
     public static Item battery;
-    @ObjectHolder(ItemNames.infiniteBatery)
+    @ObjectHolder(GCItemNames.infiniteBatery)
     public static Item infiniteBatery;
-    @ObjectHolder(ItemNames.wrench)
+    @ObjectHolder(GCItemNames.wrench)
     public static Item wrench;
-    @ObjectHolder(ItemNames.cheeseCurd)
+    @ObjectHolder(GCItemNames.cheeseCurd)
     public static Item cheeseCurd;
-    @ObjectHolder(ItemNames.meteoricIronRaw)
+    @ObjectHolder(GCItemNames.meteoricIronRaw)
     public static Item meteoricIronRaw;
-    @ObjectHolder(ItemNames.cheeseBlock)
+    @ObjectHolder(GCItemNames.cheeseBlock)
     public static Item cheeseBlock;
-    @ObjectHolder(ItemNames.prelaunchChecklist)
+    @ObjectHolder(GCItemNames.prelaunchChecklist)
     public static Item prelaunchChecklist;
-    @ObjectHolder(ItemNames.dungeonFinder)
+    @ObjectHolder(GCItemNames.dungeonFinder)
     public static Item dungeonFinder;
     //    @ObjectHolder(ItemNames.ic2compat) public static Item ic2compat;
-    @ObjectHolder(ItemNames.emergencyKit)
+    @ObjectHolder(GCItemNames.emergencyKit)
     public static Item emergencyKit;
-    @ObjectHolder(ItemNames.solarModule0)
+    @ObjectHolder(GCItemNames.solarModule0)
     public static Item solarModule0;
-    @ObjectHolder(ItemNames.solarModule1)
+    @ObjectHolder(GCItemNames.solarModule1)
     public static Item solarModule1;
-    @ObjectHolder(ItemNames.rawSilicon)
+    @ObjectHolder(GCItemNames.rawSilicon)
     public static Item rawSilicon;
-    @ObjectHolder(ItemNames.ingotCopper)
+    @ObjectHolder(GCItemNames.ingotCopper)
     public static Item ingotCopper;
-    @ObjectHolder(ItemNames.ingotTin)
+    @ObjectHolder(GCItemNames.ingotTin)
     public static Item ingotTin;
-    @ObjectHolder(ItemNames.ingotAluminum)
+    @ObjectHolder(GCItemNames.ingotAluminum)
     public static Item ingotAluminum;
-    @ObjectHolder(ItemNames.compressedCopper)
+    @ObjectHolder(GCItemNames.compressedCopper)
     public static Item compressedCopper;
-    @ObjectHolder(ItemNames.compressedTin)
+    @ObjectHolder(GCItemNames.compressedTin)
     public static Item compressedTin;
-    @ObjectHolder(ItemNames.compressedAluminum)
+    @ObjectHolder(GCItemNames.compressedAluminum)
     public static Item compressedAluminum;
-    @ObjectHolder(ItemNames.compressedSteel)
+    @ObjectHolder(GCItemNames.compressedSteel)
     public static Item compressedSteel;
-    @ObjectHolder(ItemNames.compressedBronze)
+    @ObjectHolder(GCItemNames.compressedBronze)
     public static Item compressedBronze;
-    @ObjectHolder(ItemNames.compressedIron)
+    @ObjectHolder(GCItemNames.compressedIron)
     public static Item compressedIron;
-    @ObjectHolder(ItemNames.compressedWaferSolar)
+    @ObjectHolder(GCItemNames.compressedWaferSolar)
     public static Item compressedWaferSolar;
-    @ObjectHolder(ItemNames.compressedWaferBasic)
+    @ObjectHolder(GCItemNames.compressedWaferBasic)
     public static Item compressedWaferBasic;
-    @ObjectHolder(ItemNames.compressedWaferAdvanced)
+    @ObjectHolder(GCItemNames.compressedWaferAdvanced)
     public static Item compressedWaferAdvanced;
-    @ObjectHolder(ItemNames.frequencyModule)
+    @ObjectHolder(GCItemNames.frequencyModule)
     public static Item frequencyModule;
-    @ObjectHolder(ItemNames.ambientThermalController)
+    @ObjectHolder(GCItemNames.ambientThermalController)
     public static Item ambientThermalController;
-    @ObjectHolder(ItemNames.buggyMaterialWheel)
+    @ObjectHolder(GCItemNames.buggyMaterialWheel)
     public static Item buggyMaterialWheel;
-    @ObjectHolder(ItemNames.buggyMaterialSeat)
+    @ObjectHolder(GCItemNames.buggyMaterialSeat)
     public static Item buggyMaterialSeat;
-    @ObjectHolder(ItemNames.buggyMaterialStorage)
+    @ObjectHolder(GCItemNames.buggyMaterialStorage)
     public static Item buggyMaterialStorage;
-    @ObjectHolder(ItemNames.canisterTin)
+    @ObjectHolder(GCItemNames.canisterTin)
     public static Item canisterTin;
-    @ObjectHolder(ItemNames.canisterCopper)
+    @ObjectHolder(GCItemNames.canisterCopper)
     public static Item canisterCopper;
-    @ObjectHolder(ItemNames.dehydratedApple)
+    @ObjectHolder(GCItemNames.dehydratedApple)
     public static Item dehydratedApple;
-    @ObjectHolder(ItemNames.dehydratedCarrot)
+    @ObjectHolder(GCItemNames.dehydratedCarrot)
     public static Item dehydratedCarrot;
-    @ObjectHolder(ItemNames.dehydratedMelon)
+    @ObjectHolder(GCItemNames.dehydratedMelon)
     public static Item dehydratedMelon;
-    @ObjectHolder(ItemNames.dehydratedPotato)
+    @ObjectHolder(GCItemNames.dehydratedPotato)
     public static Item dehydratedPotato;
-    @ObjectHolder(ItemNames.cheeseSlice)
+    @ObjectHolder(GCItemNames.cheeseSlice)
     public static Item cheeseSlice;
-    @ObjectHolder(ItemNames.burgerBun)
+    @ObjectHolder(GCItemNames.burgerBun)
     public static Item burgerBun;
-    @ObjectHolder(ItemNames.beefPattyRaw)
+    @ObjectHolder(GCItemNames.beefPattyRaw)
     public static Item beefPattyRaw;
-    @ObjectHolder(ItemNames.beefPattyCooked)
+    @ObjectHolder(GCItemNames.beefPattyCooked)
     public static Item beefPattyCooked;
-    @ObjectHolder(ItemNames.cheeseburger)
+    @ObjectHolder(GCItemNames.cheeseburger)
     public static Item cheeseburger;
-    @ObjectHolder(ItemNames.cannedBeef)
+    @ObjectHolder(GCItemNames.cannedBeef)
     public static Item cannedBeef;
-    @ObjectHolder(ItemNames.meteorChunk)
+    @ObjectHolder(GCItemNames.meteorChunk)
     public static Item meteorChunk;
-    @ObjectHolder(ItemNames.meteorChunkHot)
+    @ObjectHolder(GCItemNames.meteorChunkHot)
     public static Item meteorChunkHot;
-    @ObjectHolder(ItemNames.ingotMeteoricIron)
+    @ObjectHolder(GCItemNames.ingotMeteoricIron)
     public static Item ingotMeteoricIron;
-    @ObjectHolder(ItemNames.compressedMeteoricIron)
+    @ObjectHolder(GCItemNames.compressedMeteoricIron)
     public static Item compressedMeteoricIron;
-    @ObjectHolder(ItemNames.lunarSapphire)
+    @ObjectHolder(GCItemNames.lunarSapphire)
     public static Item lunarSapphire;
-    @ObjectHolder(ItemNames.parachutePlain)
+    @ObjectHolder(GCItemNames.parachuteWhite)
     public static Item parachutePlain;
-    @ObjectHolder(ItemNames.parachuteBlack)
+    @ObjectHolder(GCItemNames.parachuteBlack)
     public static Item parachuteBlack;
-    @ObjectHolder(ItemNames.parachuteBlue)
+    @ObjectHolder(GCItemNames.parachuteLightBlue)
     public static Item parachuteBlue;
-    @ObjectHolder(ItemNames.parachuteLime)
+    @ObjectHolder(GCItemNames.parachuteLime)
     public static Item parachuteLime;
-    @ObjectHolder(ItemNames.parachuteBrown)
+    @ObjectHolder(GCItemNames.parachuteBrown)
     public static Item parachuteBrown;
-    @ObjectHolder(ItemNames.parachuteDarkBlue)
+    @ObjectHolder(GCItemNames.parachuteBlue)
     public static Item parachuteDarkBlue;
-    @ObjectHolder(ItemNames.parachuteDarkGray)
+    @ObjectHolder(GCItemNames.parachuteGray)
     public static Item parachuteDarkGray;
-    @ObjectHolder(ItemNames.parachuteDarkGreen)
+    @ObjectHolder(GCItemNames.parachuteGreen)
     public static Item parachuteDarkGreen;
-    @ObjectHolder(ItemNames.parachuteGray)
+    @ObjectHolder(GCItemNames.parachuteLightGray)
     public static Item parachuteGray;
-    @ObjectHolder(ItemNames.parachuteMagenta)
+    @ObjectHolder(GCItemNames.parachuteMagenta)
     public static Item parachuteMagenta;
-    @ObjectHolder(ItemNames.parachuteOrange)
+    @ObjectHolder(GCItemNames.parachuteOrange)
     public static Item parachuteOrange;
-    @ObjectHolder(ItemNames.parachutePink)
+    @ObjectHolder(GCItemNames.parachutePink)
     public static Item parachutePink;
-    @ObjectHolder(ItemNames.parachutePurple)
+    @ObjectHolder(GCItemNames.parachutePurple)
     public static Item parachutePurple;
-    @ObjectHolder(ItemNames.parachuteRed)
+    @ObjectHolder(GCItemNames.parachuteRed)
     public static Item parachuteRed;
-    @ObjectHolder(ItemNames.parachuteTeal)
+    @ObjectHolder(GCItemNames.parachuteTeal)
     public static Item parachuteTeal;
-    @ObjectHolder(ItemNames.parachuteYellow)
+    @ObjectHolder(GCItemNames.parachuteYellow)
     public static Item parachuteYellow;
-    @ObjectHolder(ItemNames.rocketEngineT1)
+    @ObjectHolder(GCItemNames.rocketEngineT1)
     public static Item rocketEngineT1;
-    @ObjectHolder(ItemNames.rocketBoosterT1)
+    @ObjectHolder(GCItemNames.rocketBoosterT1)
     public static Item rocketBoosterT1;
 
 //    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
@@ -251,113 +251,113 @@ public class GCItems
     public static void registerItems(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();
-        register(r, new ItemOxygenTank(1, defaultBuilder().maxDamage(900)), ItemNames.oxTankLight);
-        register(r, new ItemOxygenTank(2, defaultBuilder().maxDamage(1800)), ItemNames.oxTankMedium);
-        register(r, new ItemOxygenTank(3, defaultBuilder().maxDamage(2700)), ItemNames.oxTankHeavy);
-        register(r, new ItemOxygenMask(defaultBuilder().maxStackSize(1)), ItemNames.oxMask);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOne);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCargo1);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCargo2);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCargo3);
-        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.rocketTierOneCreative);
-        register(r, new ItemSensorGlasses(defaultBuilder()), ItemNames.sensorGlasses);
-        register(r, new ItemPickaxeGC(defaultBuilder()), ItemNames.steelPickaxe);
-        register(r, new ItemAxeGC(defaultBuilder()), ItemNames.steelAxe);
-        register(r, new ItemHoeGC(defaultBuilder()), ItemNames.steelHoe);
-        register(r, new ItemShovelGC(defaultBuilder()), ItemNames.steelSpade);
-        register(r, new ItemSwordGC(defaultBuilder()), ItemNames.steelSword);
-        register(r, new ArmorItemGC(EquipmentSlotType.HEAD, defaultBuilder()), ItemNames.steelHelmet);
-        register(r, new ArmorItemGC(EquipmentSlotType.CHEST, defaultBuilder()), ItemNames.steelChestplate);
-        register(r, new ArmorItemGC(EquipmentSlotType.LEGS, defaultBuilder()), ItemNames.steelLeggings);
-        register(r, new ArmorItemGC(EquipmentSlotType.FEET, defaultBuilder()), ItemNames.steelBoots);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.oxygenVent);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.oxygenFan);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.oxygenConcentrator);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.heavyPlatingTier1);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketEngineT1);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rocketBoosterT1);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.partFins);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.partNoseCone);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.sensorLens);
-        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggy);
-        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggyInventory1);
-        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggyInventory2);
-        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), ItemNames.buggyInventory3);
-        register(r, new ItemFlag(defaultBuilder().maxDamage(0)), ItemNames.flag);
-        register(r, new ItemOxygenGear(defaultBuilder()), ItemNames.oxygenGear);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.canvas);
-        register(r, new ItemOilCanister(defaultBuilder().maxDamage(ItemCanisterGeneric.EMPTY_CAPACITY)), ItemNames.oilCanister);
-        register(r, new ItemFuelCanister(defaultBuilder().maxDamage(ItemCanisterGeneric.EMPTY_CAPACITY)), ItemNames.fuelCanister);
-        register(r, new ItemCanisterOxygenInfinite(defaultBuilder()), ItemNames.oxygenCanisterInfinite);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.flagPole);
-        register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicBuggy);
-        register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), ItemNames.schematicRocketT2);
-        register(r, new ItemKey(defaultBuilder()), ItemNames.key);
+        register(r, new ItemOxygenTank(1, defaultBuilder().maxDamage(900)), GCItemNames.oxTankLight);
+        register(r, new ItemOxygenTank(2, defaultBuilder().maxDamage(1800)), GCItemNames.oxTankMedium);
+        register(r, new ItemOxygenTank(3, defaultBuilder().maxDamage(2700)), GCItemNames.oxTankHeavy);
+        register(r, new ItemOxygenMask(defaultBuilder().maxStackSize(1)), GCItemNames.oxMask);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOne);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOneCargo1);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOneCargo2);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOneCargo3);
+        register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOneCreative);
+        register(r, new ItemSensorGlasses(defaultBuilder()), GCItemNames.sensorGlasses);
+        register(r, new ItemPickaxeGC(defaultBuilder()), GCItemNames.steelPickaxe);
+        register(r, new ItemAxeGC(defaultBuilder()), GCItemNames.steelAxe);
+        register(r, new ItemHoeGC(defaultBuilder()), GCItemNames.steelHoe);
+        register(r, new ItemShovelGC(defaultBuilder()), GCItemNames.steelSpade);
+        register(r, new ItemSwordGC(defaultBuilder()), GCItemNames.steelSword);
+        register(r, new ArmorItemGC(EquipmentSlotType.HEAD, defaultBuilder()), GCItemNames.steelHelmet);
+        register(r, new ArmorItemGC(EquipmentSlotType.CHEST, defaultBuilder()), GCItemNames.steelChestplate);
+        register(r, new ArmorItemGC(EquipmentSlotType.LEGS, defaultBuilder()), GCItemNames.steelLeggings);
+        register(r, new ArmorItemGC(EquipmentSlotType.FEET, defaultBuilder()), GCItemNames.steelBoots);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.oxygenVent);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.oxygenFan);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.oxygenConcentrator);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.heavyPlatingTier1);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.rocketEngineT1);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.rocketBoosterT1);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.partFins);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.partNoseCone);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.sensorLens);
+        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), GCItemNames.buggy);
+        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), GCItemNames.buggyInventory1);
+        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), GCItemNames.buggyInventory2);
+        register(r, new ItemBuggy(defaultBuilder().maxStackSize(1)), GCItemNames.buggyInventory3);
+        register(r, new ItemFlag(defaultBuilder().maxDamage(0)), GCItemNames.flag);
+        register(r, new ItemOxygenGear(defaultBuilder()), GCItemNames.oxygenGear);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.canvas);
+        register(r, new ItemOilCanister(defaultBuilder().maxDamage(ItemCanisterGeneric.EMPTY_CAPACITY)), GCItemNames.oilCanister);
+        register(r, new ItemFuelCanister(defaultBuilder().maxDamage(ItemCanisterGeneric.EMPTY_CAPACITY)), GCItemNames.fuelCanister);
+        register(r, new ItemCanisterOxygenInfinite(defaultBuilder()), GCItemNames.oxygenCanisterInfinite);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.flagPole);
+        register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.schematicBuggy);
+        register(r, new ItemSchematic(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.schematicRocketT2);
+        register(r, new ItemKey(defaultBuilder()), GCItemNames.key);
 //        register(r, new ItemFood(defaultBuilder()), ItemNames.foodItem);
-        register(r, new ItemBattery(defaultBuilder().maxDamage(ItemElectricBase.DAMAGE_RANGE)), ItemNames.battery);
-        register(r, new ItemBatteryInfinite(defaultBuilder()), ItemNames.infiniteBatery);
-        register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunk);
-        register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), ItemNames.meteorChunkHot);
-        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256)), ItemNames.wrench);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(1).saturation(0.1F).fastToEat().build())), ItemNames.cheeseCurd);
+        register(r, new ItemBattery(defaultBuilder().maxDamage(ItemElectricBase.DAMAGE_RANGE)), GCItemNames.battery);
+        register(r, new ItemBatteryInfinite(defaultBuilder()), GCItemNames.infiniteBatery);
+        register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), GCItemNames.meteorChunk);
+        register(r, new ItemMeteorChunk(defaultBuilder().maxStackSize(16)), GCItemNames.meteorChunkHot);
+        register(r, new ItemUniversalWrench(defaultBuilder().maxDamage(256)), GCItemNames.wrench);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(1).saturation(0.1F).fastToEat().build())), GCItemNames.cheeseCurd);
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
-        register(r, new ItemBase(defaultBuilder()), ItemNames.meteoricIronRaw);
-        register(r, new ItemPreLaunchChecklist(defaultBuilder()), ItemNames.prelaunchChecklist);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.dungeonFinder);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.meteoricIronRaw);
+        register(r, new ItemPreLaunchChecklist(defaultBuilder()), GCItemNames.prelaunchChecklist);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.dungeonFinder);
 //        register(r, new ItemIC2Compat(defaultBuilder()), ItemNames.ic2compat); TODO
-        register(r, new ItemEmergencyKit(defaultBuilder().maxDamage(0)), ItemNames.emergencyKit);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.solarModule0);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.solarModule1);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.rawSilicon);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.ingotCopper);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.ingotTin);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.ingotAluminum);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedCopper);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedTin);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedAluminum);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedSteel);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedBronze);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedIron);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedWaferSolar);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedWaferBasic);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedWaferAdvanced);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.frequencyModule);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.ambientThermalController);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.buggyMaterialWheel);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.buggyMaterialSeat);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.buggyMaterialStorage);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.canisterTin);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.canisterCopper);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(8).saturation(0.3F).build())), ItemNames.dehydratedApple);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(8).saturation(0.6F).build())), ItemNames.dehydratedCarrot);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(4).saturation(0.3F).build())), ItemNames.dehydratedMelon);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(2).saturation(0.3F).build())), ItemNames.dehydratedPotato);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(2).saturation(0.1F).build())), ItemNames.cheeseSlice);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(4).saturation(0.8F).build())), ItemNames.burgerBun);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(2).saturation(0.3F).build())), ItemNames.beefPattyRaw);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(4).saturation(0.6F).build())), ItemNames.beefPattyCooked);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(14).saturation(1.0F).build())), ItemNames.cheeseburger);
-        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(8).saturation(0.6F).build())), ItemNames.cannedBeef);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.ingotMeteoricIron);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.compressedMeteoricIron);
-        register(r, new ItemBase(defaultBuilder()), ItemNames.lunarSapphire);
+        register(r, new ItemEmergencyKit(defaultBuilder().maxDamage(0)), GCItemNames.emergencyKit);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.solarModule0);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.solarModule1);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.rawSilicon);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.ingotCopper);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.ingotTin);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.ingotAluminum);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedCopper);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedTin);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedAluminum);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedSteel);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedBronze);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedIron);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedWaferSolar);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedWaferBasic);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedWaferAdvanced);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.frequencyModule);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.ambientThermalController);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.buggyMaterialWheel);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.buggyMaterialSeat);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.buggyMaterialStorage);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.canisterTin);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.canisterCopper);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(8).saturation(0.3F).build())), GCItemNames.dehydratedApple);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(8).saturation(0.6F).build())), GCItemNames.dehydratedCarrot);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(4).saturation(0.3F).build())), GCItemNames.dehydratedMelon);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(2).saturation(0.3F).build())), GCItemNames.dehydratedPotato);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(2).saturation(0.1F).build())), GCItemNames.cheeseSlice);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(4).saturation(0.8F).build())), GCItemNames.burgerBun);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(2).saturation(0.3F).build())), GCItemNames.beefPattyRaw);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(4).saturation(0.6F).build())), GCItemNames.beefPattyCooked);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(14).saturation(1.0F).build())), GCItemNames.cheeseburger);
+        register(r, new ItemBase(defaultBuilder().food((new Food.Builder()).hunger(8).saturation(0.6F).build())), GCItemNames.cannedBeef);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.ingotMeteoricIron);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.compressedMeteoricIron);
+        register(r, new ItemBase(defaultBuilder()), GCItemNames.lunarSapphire);
         Item.Properties parachuteProps = defaultBuilder().maxDamage(0).maxStackSize(1);
-        register(r, new ItemParaChute(DyeColor.WHITE, parachuteProps), ItemNames.parachutePlain);
-        register(r, new ItemParaChute(DyeColor.BLACK, parachuteProps), ItemNames.parachuteBlack);
-        register(r, new ItemParaChute(DyeColor.LIGHT_BLUE, parachuteProps), ItemNames.parachuteBlue);
-        register(r, new ItemParaChute(DyeColor.LIME, parachuteProps), ItemNames.parachuteLime);
-        register(r, new ItemParaChute(DyeColor.BROWN, parachuteProps), ItemNames.parachuteBrown);
-        register(r, new ItemParaChute(DyeColor.BLUE, parachuteProps), ItemNames.parachuteDarkBlue);
-        register(r, new ItemParaChute(DyeColor.GRAY, parachuteProps), ItemNames.parachuteDarkGray);
-        register(r, new ItemParaChute(DyeColor.GREEN, parachuteProps), ItemNames.parachuteDarkGreen);
-        register(r, new ItemParaChute(DyeColor.LIGHT_GRAY, parachuteProps), ItemNames.parachuteGray);
-        register(r, new ItemParaChute(DyeColor.MAGENTA, parachuteProps), ItemNames.parachuteMagenta);
-        register(r, new ItemParaChute(DyeColor.ORANGE, parachuteProps), ItemNames.parachuteOrange);
-        register(r, new ItemParaChute(DyeColor.PINK, parachuteProps), ItemNames.parachutePink);
-        register(r, new ItemParaChute(DyeColor.PURPLE, parachuteProps), ItemNames.parachutePurple);
-        register(r, new ItemParaChute(DyeColor.RED, parachuteProps), ItemNames.parachuteRed);
-        register(r, new ItemParaChute(DyeColor.CYAN, parachuteProps), ItemNames.parachuteTeal);
-        register(r, new ItemParaChute(DyeColor.YELLOW, parachuteProps), ItemNames.parachuteYellow);
+        register(r, new ItemParaChute(DyeColor.WHITE, parachuteProps), GCItemNames.parachuteWhite);
+        register(r, new ItemParaChute(DyeColor.BLACK, parachuteProps), GCItemNames.parachuteBlack);
+        register(r, new ItemParaChute(DyeColor.LIGHT_BLUE, parachuteProps), GCItemNames.parachuteLightBlue);
+        register(r, new ItemParaChute(DyeColor.LIME, parachuteProps), GCItemNames.parachuteLime);
+        register(r, new ItemParaChute(DyeColor.BROWN, parachuteProps), GCItemNames.parachuteBrown);
+        register(r, new ItemParaChute(DyeColor.BLUE, parachuteProps), GCItemNames.parachuteBlue);
+        register(r, new ItemParaChute(DyeColor.GRAY, parachuteProps), GCItemNames.parachuteGray);
+        register(r, new ItemParaChute(DyeColor.GREEN, parachuteProps), GCItemNames.parachuteGreen);
+        register(r, new ItemParaChute(DyeColor.LIGHT_GRAY, parachuteProps), GCItemNames.parachuteLightGray);
+        register(r, new ItemParaChute(DyeColor.MAGENTA, parachuteProps), GCItemNames.parachuteMagenta);
+        register(r, new ItemParaChute(DyeColor.ORANGE, parachuteProps), GCItemNames.parachuteOrange);
+        register(r, new ItemParaChute(DyeColor.PINK, parachuteProps), GCItemNames.parachutePink);
+        register(r, new ItemParaChute(DyeColor.PURPLE, parachuteProps), GCItemNames.parachutePurple);
+        register(r, new ItemParaChute(DyeColor.RED, parachuteProps), GCItemNames.parachuteRed);
+        register(r, new ItemParaChute(DyeColor.CYAN, parachuteProps), GCItemNames.parachuteTeal);
+        register(r, new ItemParaChute(DyeColor.YELLOW, parachuteProps), GCItemNames.parachuteYellow);
 
 //        GCItems.registerHarvestLevels();
 //

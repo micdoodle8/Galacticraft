@@ -64,6 +64,17 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortable
     }*/
 
     @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        if (stack.getDamage() == 1)
+        {
+            return "item.galacticraftcore.fuel_canister";
+        }
+
+        return "item.galacticraftcore.fuel_canister_partial";
+    }
+
+    @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {

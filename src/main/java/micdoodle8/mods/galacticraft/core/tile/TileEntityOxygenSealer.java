@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenDecompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenSealer;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -43,7 +42,7 @@ import java.util.List;
 
 public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileClientUpdates, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenSealer)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.oxygenSealer)
     public static TileEntityType<TileEntityOxygenSealer> TYPE;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:glowstone_torch",
+    "count": 4
+  },
+  "pattern": [
+    "Y",
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:rods/wooden"
+    },
+    "Y": {
+      "tag": "forge:dusts/glowstone"
+    }
+  }
+}

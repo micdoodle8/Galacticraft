@@ -4,11 +4,10 @@ import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerDeconstructor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerPainter;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
@@ -43,7 +42,7 @@ import java.util.*;
 
 public class TileEntityPainter extends TileEntityInventory implements IDisableableMachine, IPacketReceiver, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.painter)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.painter)
     public static TileEntityType<TileEntityPainter> TYPE;
 
     private static final int RANGE_DEFAULT = 96;

@@ -1,0 +1,40 @@
+{
+  "result": {
+    "item": "galacticraftplanets:orion_drive"
+  },
+  "pattern": [
+    "ABC",
+    "DOE",
+    "FGH"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "forge:ores/diamond"
+    },
+    "B": {
+      "tag": "forge:ores/lapis"
+    },
+    "C": {
+      "tag": "forge:ores/gold"
+    },
+    "D": {
+      "tag": "forge:ores/redstone"
+    },
+    "E": {
+      "tag": "forge:ores/coal"
+    },
+    "F": {
+      "tag": "forge:ores/cheese"
+    },
+    "G": {
+      "tag": "forge:ores/desh"
+    },
+    "H": {
+      "tag": "forge:ores/ilmenite"
+    },
+    "O": {
+      "item": "galacticraftplanets:beam_core"
+    }
+  }
+}

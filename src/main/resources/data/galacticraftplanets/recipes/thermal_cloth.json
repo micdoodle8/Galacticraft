@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftplanets:thermal_cloth"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "minecraft:wool"
+    },
+    "Y": {
+      "item": "minecraft:redstone"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/parachute_blue"
+        "layer0": "galacticraftcore:items/parachute_darkblue"
     },
     "display": {
         "thirdperson": {

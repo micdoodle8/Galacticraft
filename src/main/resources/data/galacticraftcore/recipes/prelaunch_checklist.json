@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "galacticraftcore:prelaunch_checklist"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:red_dye"
+    },
+    {
+      "item": "galacticraftcore:canvas"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

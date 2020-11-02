@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAirLockWall;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class TileEntityAirLockController extends TileEntityAdvanced
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.airLockController)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.airLockController)
     public static TileEntityType<TileEntityAirLockController> TYPE;
 
     @NetworkedField(targetSide = LogicalSide.CLIENT)

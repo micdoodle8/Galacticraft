@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:emergency_box"
+  },
+  "pattern": [
+    "XYX",
+    "Y Y",
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:glowstone_torch"
+    },
+    "Y": {
+      "item": "galacticraftcore:compressed_tin"
+    }
+  }
+}

@@ -1,17 +1,15 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Util;
@@ -26,7 +24,7 @@ import java.util.List;
 
 public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanced
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.bossSpawner)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.bossSpawner)
     public static TileEntityType<TileEntityDungeonSpawner<?>> TYPE;
 
     public Class<E> bossClass;

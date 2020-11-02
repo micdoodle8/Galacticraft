@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
@@ -41,7 +41,7 @@ import java.util.List;
 
 public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHandlerWrapper
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.fluidTank)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.fluidTank)
     public static TileEntityType<TileEntityFluidTank> TYPE;
 
     public FluidTankGC fluidTank = new FluidTankGC(16000, this);

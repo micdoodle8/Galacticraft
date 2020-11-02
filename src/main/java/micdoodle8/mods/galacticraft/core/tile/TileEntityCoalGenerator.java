@@ -2,12 +2,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Blocks;
@@ -32,7 +31,7 @@ import java.util.EnumSet;
 
 public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource implements IInventoryDefaults, ISidedInventory, IConnector, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.coalGenerator)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.coalGenerator)
     public static TileEntityType<TileEntityCoalGenerator> TYPE;
 
     //New energy rates:

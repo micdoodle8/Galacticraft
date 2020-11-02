@@ -366,18 +366,18 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
     @Override
     public String getShiftDescription(ItemStack item)
     {
-        switch (item.getDamage())
-        {
-        case 0:
-            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire.description");
-        case 1:
-            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_heavy.description");
-        case 2:
-            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_switch.description");
-        case 3:
-            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_switch_heavy.description");
-        }
-        return "";
+//        switch (item.getDamage())
+//        {
+//        case 0:
+//            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire.description");
+//        case 1:
+//            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_heavy.description");
+//        case 2:
+//            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_switch.description");
+//        case 3:
+//            return GCCoreUtil.translate("tile.aluminum_wire.alu_wire_switch_heavy.description");
+//        }
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

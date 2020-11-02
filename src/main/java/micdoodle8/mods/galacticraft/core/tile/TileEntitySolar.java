@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -23,17 +23,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.container.BeaconContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +43,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -56,7 +52,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
 {
     public static class TileEntitySolarT1 extends TileEntitySolar
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.solarPanel)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.solarPanel)
         public static TileEntityType<TileEntitySolarT1> TYPE;
 
         public TileEntitySolarT1()
@@ -78,7 +74,7 @@ public abstract class TileEntitySolar extends TileBaseUniversalElectricalSource 
 
     public static class TileEntitySolarT2 extends TileEntitySolar
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.solarPanelAdvanced)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.solarPanelAdvanced)
         public static TileEntityType<TileEntitySolarT2> TYPE;
 
         public TileEntitySolarT2()

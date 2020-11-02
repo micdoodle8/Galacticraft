@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftplanets:atomic_battery"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "lead_ingot"
+    },
+    "Y": {
+      "item": "galacticraftplanets:radioisotope_core"
+    }
+  }
+}

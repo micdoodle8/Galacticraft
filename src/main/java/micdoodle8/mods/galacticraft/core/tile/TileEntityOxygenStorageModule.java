@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
@@ -31,7 +30,7 @@ import java.util.Set;
 
 public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IMachineSides, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.oxygenStorageModule)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.oxygenStorageModule)
     public static TileEntityType<TileEntityOxygenStorageModule> TYPE;
 
     public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();

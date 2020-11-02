@@ -170,7 +170,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenCompressor) ? GCCoreUtil.translate("tile.oxygen_compressor.description") : GCCoreUtil.translate("tile.oxygen_decompressor.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

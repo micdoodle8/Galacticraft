@@ -2,15 +2,13 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
-import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricIngotCompressor;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -37,15 +35,13 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides, INamedContainerProvider
 {
     public static class TileEntityElectricIngotCompressorT1 extends TileEntityElectricIngotCompressor
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.ingotCompressorElectric)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.ingotCompressorElectric)
         public static TileEntityType<TileEntityElectricIngotCompressorT1> TYPE;
 
         public TileEntityElectricIngotCompressorT1()
@@ -60,7 +56,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
     public static class TileEntityElectricIngotCompressorT2 extends TileEntityElectricIngotCompressor
     {
-        @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.ingotCompressorElectricAdvanced)
+        @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.ingotCompressorElectricAdvanced)
         public static TileEntityType<TileEntityElectricIngotCompressorT2> TYPE;
 
         public TileEntityElectricIngotCompressorT2()

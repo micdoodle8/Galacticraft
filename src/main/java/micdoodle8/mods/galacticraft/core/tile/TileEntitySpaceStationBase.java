@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.LinkedList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
@@ -19,7 +19,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntitySpaceStationBase extends TileEntityFake implements IMultiBlock
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.spaceStationBase)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.spaceStationBase)
     public static TileEntityType<TileEntitySpaceStationBase> TYPE;
 
     public TileEntitySpaceStationBase()

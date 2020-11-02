@@ -1,0 +1,40 @@
+{
+  "result": {
+    "item": "galacticraftcore:painter"
+  },
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "forge:dyes/red"
+    },
+    "B": {
+      "tag": "forge:dyes/magenta"
+    },
+    "C": {
+      "tag": "forge:dyes/blue"
+    },
+    "D": {
+      "tag": "forge:dyes/orange"
+    },
+    "E": {
+      "tag": "forge:plates/steel"
+    },
+    "F": {
+      "tag": "forge:dyes/cyan"
+    },
+    "G": {
+      "tag": "forge:dyes/yellow"
+    },
+    "H": {
+      "tag": "forge:dyes/lime"
+    },
+    "I": {
+      "tag": "forge:dyes/green"
+    }
+  }
+}

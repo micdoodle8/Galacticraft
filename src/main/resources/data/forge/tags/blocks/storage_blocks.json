@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:storage_blocks/aluminum",
+    "#forge:storage_blocks/copper",
+    "#forge:storage_blocks/silicon",
+    "#forge:storage_blocks/tin"
+  ]
+}

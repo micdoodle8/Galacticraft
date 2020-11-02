@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
@@ -31,7 +31,7 @@ import java.util.List;
 
 public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IScaleableFuelLevel
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.parachest)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.parachest)
     public static TileEntityType<TileEntityParaChest> TYPE;
 
     private final int tankCapacity = 5000;

@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftcore:deco_block_0",
+    "count": 4
+  },
+  "pattern": [
+    "XX ",
+    "XXY",
+    "   "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:stone"
+    },
+    "Y": {
+      "tag": "forge:plates/tin"
+    }
+  }
+}

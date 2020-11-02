@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:ambient_thermal_controller"
+  },
+  "pattern": [
+    "WVW",
+    "YXY",
+    "YZY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "W": {
+      "tag": "forge:dusts/redstone"
+    },
+    "X": {
+      "tag": "forge:plates/steel"
+    },
+    "Y": {
+      "tag": "forge:plates/bronze"
+    },
+    "Z": {
+      "tag": "forge:wafers/basic"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:dehydrated_potato"
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister_tin"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

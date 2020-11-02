@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "galacticraftcore:sensor_glasses"
+  },
+  "pattern": [
+    "ZWZ",
+    "Z Z",
+    "XYX"
+  ],
+  "key": {
+    "W": {
+      "tag": "forge:gems/diamond"
+    },
+    "X": {
+      "item": "galacticraftcore:sensor_lens"
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    },
+    "Z": {
+      "tag": "forge:string"
+    }
+  }
+}

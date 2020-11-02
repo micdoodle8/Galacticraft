@@ -95,7 +95,7 @@ public class BlockCargoUnloader extends BlockAdvancedTile implements IShiftDescr
     @Override
     public String getShiftDescription(ItemStack stack)
     {
-        return GCCoreUtil.translate("tile.cargo_unloader.description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override

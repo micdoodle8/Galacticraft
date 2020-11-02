@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.Optional;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.core.BlockNames;
+import micdoodle8.mods.galacticraft.core.GCBlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCrafting;
@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -38,7 +37,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory, IInventorySettable, INamedContainerProvider
 {
-    @ObjectHolder(Constants.MOD_ID_CORE + ":" + BlockNames.crafting)
+    @ObjectHolder(Constants.MOD_ID_CORE + ":" + GCBlockNames.crafting)
     public static TileEntityType<TileEntityCrafting> TYPE;
 
     private static final int SIZEINVENTORY = 9;

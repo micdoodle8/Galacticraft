@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftplanets:beam_reflector"
+  },
+  "pattern": [
+    " Y ",
+    "ZX ",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "galacticraftplanets:beam_core"
+    },
+    "Z": {
+      "item": "minecraft:lever"
+    }
+  }
+}

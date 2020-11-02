@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftplanets:beam_receiver"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "galacticraftplanets:beam_core"
+    }
+  }
+}

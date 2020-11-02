@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:titanium_chestplate"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    }
+  }
+}

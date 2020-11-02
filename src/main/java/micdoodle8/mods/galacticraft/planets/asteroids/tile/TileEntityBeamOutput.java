@@ -4,11 +4,8 @@ import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
-import micdoodle8.mods.galacticraft.core.BlockNames;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
-import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlockNames;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,7 +20,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.LinkedList;
 

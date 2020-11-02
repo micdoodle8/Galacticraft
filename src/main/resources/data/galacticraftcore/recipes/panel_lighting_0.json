@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:panel_lighting"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XZX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "Y": {
+      "item": "galacticraftcore:glowstone_torch"
+    },
+    "Z": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

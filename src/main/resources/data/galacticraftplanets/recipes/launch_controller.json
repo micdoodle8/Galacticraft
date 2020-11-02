@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "galacticraftplanets:launch_controller"
+  },
+  "pattern": [
+    "ZVZ",
+    "YXY",
+    "ZWZ"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:frequency_module"
+    },
+    "W": {
+      "item": "galacticraftcore:aluminum_wire"
+    },
+    "X": {
+      "item": "galacticraftcore:wafer_advanced"
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    },
+    "Z": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_sword"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "Y"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    },
+    "Y": {
+      "item": "galacticraftplanets:desh_stick"
+    }
+  }
+}

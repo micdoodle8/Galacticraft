@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "galacticraftcore:meteor_chunk",
+    "count": 3
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:meteoric_iron_raw"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

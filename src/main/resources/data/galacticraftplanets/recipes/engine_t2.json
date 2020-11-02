@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftplanets:engine_t2"
+  },
+  "pattern": [
+    " YV",
+    "XWX",
+    "XZX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "minecraft:stone_button"
+    },
+    "W": {
+      "item": "galacticraftcore:canister_tin"
+    },
+    "X": {
+      "item": "galacticraftplanets:reinforced_plate_t3"
+    },
+    "Y": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "Z": {
+      "item": "galacticraftcore:air_vent"
+    }
+  }
+}

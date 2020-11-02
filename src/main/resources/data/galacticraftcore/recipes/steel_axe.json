@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_axe"
+  },
+  "pattern": [
+    "YY ",
+    "YX ",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:rods/wooden"
+    },
+    "Y": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

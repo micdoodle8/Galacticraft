@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:burger_bun",
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

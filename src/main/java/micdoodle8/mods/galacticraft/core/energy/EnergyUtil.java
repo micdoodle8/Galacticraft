@@ -698,7 +698,7 @@ public class EnergyUtil
         {
             try
             {
-                EnergyUtil.mekCapabilities = Class.forName("mekanism.common.capabilities.Capabilities");
+                EnergyUtil.mekCapabilities = Class.forName("galacticraft.common.capabilities.Capabilities");
             }
             catch (Exception ignore)
             {

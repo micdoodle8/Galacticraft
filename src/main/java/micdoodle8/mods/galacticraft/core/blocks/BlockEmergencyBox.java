@@ -24,18 +24,9 @@ import net.minecraft.world.World;
 
 public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, IPartialSealableBlock, ISortable
 {
-    public static final BooleanProperty KIT = BooleanProperty.create("kit");
-
     public BlockEmergencyBox(Properties builder)
     {
         super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(KIT, false));
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-    {
-        builder.add(KIT);
     }
 
 //    @Override
@@ -122,7 +113,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
         {
             if (!world.isRemote)
             {
-                ((TileEntityEmergencyBox) tile).click(player, hit.getFace(), state.get(KIT));
+                ((TileEntityEmergencyBox) tile).click(player, hit.getFace(), state.getBlock() instanceof BlockEmergencyBoxKit);
             }
             return ActionResultType.SUCCESS;
         }

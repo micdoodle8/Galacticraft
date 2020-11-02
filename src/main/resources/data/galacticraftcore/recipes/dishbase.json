@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:dishbase"
+  },
+  "pattern": [
+    "XFX",
+    " X ",
+    "WYW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "galacticraftcore:frequency_module"
+    },
+    "W": {
+      "tag": "forge:wafers/advanced"
+    },
+    "X": {
+      "tag": "forge:plates/aluminum"
+    },
+    "Y": {
+      "tag": "forge:storage_blocks/iron"
+    }
+  }
+}

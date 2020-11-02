@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftcore:ingot_copper",
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:block_copper_gc"
+    }
+  }
+}

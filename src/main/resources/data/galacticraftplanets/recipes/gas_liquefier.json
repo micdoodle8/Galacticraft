@@ -1,0 +1,40 @@
+{
+  "result": {
+    "item": "galacticraftplanets:gas_liquefier"
+  },
+  "pattern": [
+    "TVS",
+    "FWS",
+    "PXO"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "galacticraftcore:oxygen_compressor",
+      "data": 4
+    },
+    "S": {
+      "item": "galacticraftcore:oxygen_tank_med_full",
+      "data": 1800
+    },
+    "T": {
+      "item": "galacticraftcore:oxygen_tank_heavy_full",
+      "data": 2700
+    },
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "F": {
+      "item": "galacticraftcore:fluid_pipe"
+    },
+    "W": {
+      "item": "galacticraftplanets:fluid_manip"
+    },
+    "X": {
+      "item": "galacticraftcore:compressed_bronze"
+    },
+    "O": {
+      "item": "galacticraftcore:oxygen_compressor"
+    }
+  }
+}

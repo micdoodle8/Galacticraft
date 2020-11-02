@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:landing_pad",
+    "count": 9
+  },
+  "pattern": [
+    "YYY",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "Y": {
+      "tag": "forge:plates/iron"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:deconstructor"
+  },
+  "pattern": [
+    "WCW",
+    "VAV",
+    "WBW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:anvil"
+    },
+    "B": {
+      "item": "minecraft:furnace"
+    },
+    "C": {
+      "item": "minecraft:shears"
+    },
+    "V": {
+      "item": "galacticraftcore:aluminum_wire"
+    },
+    "W": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

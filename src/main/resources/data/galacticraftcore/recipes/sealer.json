@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:sealer"
+  },
+  "pattern": [
+    "UZU",
+    "YXY",
+    "UZU"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "U": {
+      "tag": "forge:plates/aluminum"
+    },
+    "X": {
+      "item": "galacticraftcore:air_fan"
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Z": {
+      "tag": "forge:plates/steel"
+    }
+  }
+}

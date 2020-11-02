@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:canister",
+    "count": 2
+  },
+  "pattern": [
+    "XXX",
+    "X  ",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "galacticraftcore:condition",
+      "sub_cond": "can_alt"
+    }
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:ingots/tin"
+    }
+  }
+}
