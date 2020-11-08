@@ -433,6 +433,11 @@ public class BlockVec3 implements Cloneable
      */
     public TileEntity getTileEntityOnSide(World world, EnumFacing side)
     {
+        if (side == null)
+        {
+            return null;
+        }
+        
         int x = this.x;
         int y = this.y;
         int z = this.z;
