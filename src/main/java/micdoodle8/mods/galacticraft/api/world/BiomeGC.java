@@ -17,19 +17,19 @@ import net.minecraft.world.biome.Biome;
  */
 public abstract class BiomeGC extends Biome implements IMobSpawnBiome
 {
-    public final boolean isAdaptiveBiome;
+//    public final boolean isAdaptiveBiome;
 
     protected BiomeGC(Biome.Builder biomeBuilder)
     {
         super(biomeBuilder);
         GalacticraftCore.biomesList.add(this);
-        this.isAdaptiveBiome = false;
+//        this.isAdaptiveBiome = false;
     }
 
     protected BiomeGC(Biome.Builder biomeBuilder, boolean adaptive)
     {
         super(biomeBuilder);
-        this.isAdaptiveBiome = adaptive;
+//        this.isAdaptiveBiome = adaptive;
     }
 
     /**

@@ -1,10 +1,10 @@
-package micdoodle8.mods.galacticraft.planets.venus.dimension;
+package micdoodle8.mods.galacticraft.core.dimension;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
 
-public enum VenusVoronoiZoomLayer implements IAreaTransformer1
+public enum GCVoronoiZoomLayer implements IAreaTransformer1
 {
     INSTANCE;
 

@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,8 +129,8 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                     {
                         try
                         {
-                            Constructor<?> c = this.bossClass.getConstructor(World.class);
-                            this.boss = (IBoss) c.newInstance(this.world);
+                            Method m = this.bossClass.getDeclaredMethod("create", World.class);
+                            this.boss = (IBoss) m.invoke(null, this.world);
                             ((Entity) this.boss).setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                         }
                         catch (Exception e)

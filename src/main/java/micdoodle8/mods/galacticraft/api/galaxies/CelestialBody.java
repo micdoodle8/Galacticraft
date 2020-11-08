@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import com.google.common.collect.Maps;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.world.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
@@ -14,6 +13,7 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class CelestialBody implements Comparable<CelestialBody>
@@ -194,6 +194,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this.autoRegisterDimension;
     }
 
+    @Nullable
     public DimensionType getDimensionType()
     {
         return this.dimensionType;
@@ -336,12 +337,12 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         for (Biome b : biomes)
         {
             this.biomeInfo.add(b);
-            if (b instanceof BiomeGC && ((BiomeGC) b).isAdaptiveBiome)
-            {
-                this.biomesToGenerate.add(BiomeAdaptive.register(registry, index++, (BiomeGC) b));
-                adaptiveBiomes.add((BiomeGC) b);
-            }
-            else
+//            if (b instanceof BiomeGC && ((BiomeGC) b).isAdaptiveBiome)
+//            {
+////                this.biomesToGenerate.add(BiomeAdaptive.register(registry, index++, (BiomeGC) b));
+//                adaptiveBiomes.add((BiomeGC) b);
+//            }
+//            else
             {
                 this.biomesToGenerate.add(b);
             }

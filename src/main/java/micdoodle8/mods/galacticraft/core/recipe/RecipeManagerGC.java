@@ -277,10 +277,10 @@ public class RecipeManagerGC
 //        }
 
         final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>(4, 1.0F);
-        spaceStationRequirements.put("ingotTin", 32);
+        spaceStationRequirements.put(new ResourceLocation("forge", "ingots/tin"), 32);
         spaceStationRequirements.put(new ResourceLocation("forge", "ingots/aluminum"), 16);
-        spaceStationRequirements.put(new ItemStack(GCItems.compressedWaferAdvanced), 1);
-        spaceStationRequirements.put(Items.IRON_INGOT, 24);
+        spaceStationRequirements.put(new ResourceLocation("forge", "wafers/advanced"), 1);
+        spaceStationRequirements.put(new ResourceLocation("forge", "ingots/iron"), 24);
         GalacticraftRegistry.registerSpaceStation(new SpaceStationType(/*GCDimensions.SPACE_STATION_MOD_DIMENSION, */DimensionType.OVERWORLD, new SpaceStationRecipe(spaceStationRequirements)));
 
         //EmergencyKit

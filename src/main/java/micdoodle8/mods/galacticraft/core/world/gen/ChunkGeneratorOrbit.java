@@ -30,7 +30,6 @@ public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
     @Override
     public void generateSurface(WorldGenRegion region, IChunk chunk)
     {
-
     }
 
     @Override
@@ -43,9 +42,10 @@ public class ChunkGeneratorOrbit extends ChunkGenerator<OrbitGenSettings>
     public void makeBase(IWorld worldIn, IChunk chunkIn)
     {
         ChunkPos chunkPos = chunkIn.getPos();
-        int x = chunkPos.x * 16;
-        int z = chunkPos.z * 16;
-        spaceStation.place(world, new BlockPos(x - 10, 62, z - 3));
+        if (chunkPos.x == 0 && chunkPos.z == 0)
+        {
+            spaceStation.place(chunkIn, new BlockPos(0, 62, 0));
+        }
     }
 
     @Override

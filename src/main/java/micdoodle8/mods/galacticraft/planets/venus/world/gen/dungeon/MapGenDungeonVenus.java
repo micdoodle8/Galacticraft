@@ -49,7 +49,7 @@ public class MapGenDungeonVenus extends Structure<DungeonConfigurationVenus>
     @Override
     public String getStructureName()
     {
-        return "GC_Dungeon";
+        return "GC_Dungeon_Venus";
     }
 
     @Override

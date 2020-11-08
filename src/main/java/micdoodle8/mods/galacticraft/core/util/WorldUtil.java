@@ -136,7 +136,7 @@ public class WorldUtil
 
     public static ResourceLocation getSpaceStationRes(UUID owner)
     {
-        return new ResourceLocation(Constants.MOD_ID_CORE, "spacestation_" + owner);
+        return new ResourceLocation(Constants.SS_PREFiX + owner);
     }
 
     public static boolean doesSpaceStationExist(PlayerEntity owner)
@@ -152,7 +152,7 @@ public class WorldUtil
         if (DimensionType.byName(id) == null)
         {
             type = DimensionManager.registerDimension(id, GCDimensions.SPACE_STATION_MOD_DIMENSION, new PacketBuffer(Unpooled.buffer()), true);
-            type.setRegistryName(id);
+//            type.setRegistryName(id);
             DimensionManager.keepLoaded(type, keepLoaded);
             WorldUtil.registeredSpaceStations.add(type);
             return type;
@@ -304,9 +304,9 @@ public class WorldUtil
 
         for (DimensionType element : WorldUtil.registeredSpaceStations)
         {
-            final SpaceStationWorldData data = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, element.getRegistryName(), null);
+            final SpaceStationWorldData data = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, element.getRegistryName(), null, null);
 
-            if (!ConfigManagerCore.spaceStationsRequirePermission.get() || data.getAllowedAll() || data.getAllowedPlayers().contains(PlayerUtil.getName(playerBase)) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
+            if (!ConfigManagerCore.spaceStationsRequirePermission.get() || data.getAllowedAll() || data.getAllowedPlayers().contains(playerBase.getUniqueID()) || ArrayUtils.contains(playerBase.server.getPlayerList().getOppedPlayerNames(), playerBase.getName()))
             {
                 //Satellites always reachable from their own homeworld or from its other satellites
                 if (playerBase != null)
@@ -321,7 +321,7 @@ public class WorldUtil
                     if (playerBase.world.getDimension() instanceof IOrbitDimension)
                     {
                         //Player is currently on another space station around the same planet
-                        final SpaceStationWorldData dataCurrent = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, playerBase.dimension.getRegistryName(), null);
+                        final SpaceStationWorldData dataCurrent = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, playerBase.dimension.getRegistryName(), null, null);
                         if (dataCurrent.getHomePlanet() == data.getHomePlanet())
                         {
                             temp.add(element);
@@ -467,8 +467,8 @@ public class WorldUtil
                 //This no longer checks whether a WorldProvider can be created, for performance reasons (that causes the dimension to load unnecessarily at map building stage)
                 if (playerBase != null)
                 {
-                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, id.getRegistryName(), null);
-                    map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + id + "$" + data.getHomePlanet(), id);
+                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData((ServerWorld) playerBase.world, id.getRegistryName(), null, null);
+                    map.put(celestialBody.getName() + "$" + data.getOwner() + "$" + data.getSpaceStationName() + "$" + id.getRegistryName().toString() + "$" + data.getHomePlanet().getRegistryName().toString(), id);
                 }
             }
             else
@@ -554,7 +554,7 @@ public class WorldUtil
         {
             for (File var5 : var2)
             {
-                if (var5.getName().startsWith("spacestation_") && var5.getName().endsWith(".dat"))
+                if (var5.getName().startsWith(Constants.SS_PREFiX) && var5.getName().endsWith(".dat"))
                 {
                     try
                     {
@@ -562,8 +562,9 @@ public class WorldUtil
                         // during dimension registration, to find out what each space station's dimension IDs are.
 
                         String name = var5.getName();
-                        SpaceStationWorldData worldDataTemp = new SpaceStationWorldData(name);
-                        name = name.substring(13, name.length() - 4);
+                        String id = name;
+                        SpaceStationWorldData worldDataTemp = new SpaceStationWorldData(id);
+                        name = name.substring(Constants.SS_PREFiX.length(), name.length() - 4);
                         UUID ownerID = UUID.fromString(name);
                         ResourceLocation registeredID = getSpaceStationRes(ownerID);
 //                        int registeredID = Integer.parseInt(name);
@@ -577,46 +578,15 @@ public class WorldUtil
                         int index = Collections.binarySearch(ConfigManagerCore.staticLoadDimensions.get(), registeredID.toString());
 
 //                        DimensionType providerID = index >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
-                        boolean registrationOK = false;
                         if (DimensionType.byName(registeredID) == null)
                         {
                             createNewSpaceStation(ownerID, false);
-//                            DimensionManager.registerDimension(registeredID, WorldUtil.getDimensionTypeById(registeredID));
-                            registrationOK = true;
                         }
-                        else if (GalacticraftRegistry.isDimensionTypeIDRegistered(worldDataTemp.getDimensionType()))
+                        DimensionType type = DimensionType.byName(registeredID);
+                        WorldUtil.registeredSpaceStations.add(type);
+                        if (index >= 0) // Keep loaded
                         {
-                            registrationOK = registeredID == worldDataTemp.getDimensionType().getRegistryName();
-//                            if (!registrationOK)
-//                            {
-////                                try {
-////                                    Class sponge = Class.forName("org.spongepowered.common.world.WorldManager");
-////                                    Field dtDI = sponge.getDeclaredField("dimensionTypeByDimensionId");
-////                                    dtDI.setAccessible(true);
-////                                    Int2ObjectMap<DimensionType> result = (Int2ObjectMap<DimensionType>) dtDI.get(null);
-////                                    if (result != null)
-////                                    {
-////                                        result.put(registeredID, WorldUtil.getDimensionTypeById(worldDataTemp.getDimensionType()));
-////                                        GCLog.info("Re-registered dimension type " + worldDataTemp.getDimensionType());
-////                                    } TODO Is this still needed for sponge?
-//                                    registrationOK = true;
-////                                } catch (ClassNotFoundException ignore) { }
-////                                catch (Exception e) { e.printStackTrace(); }
-//                            }
-                        }
-                        if (registrationOK)
-                        {
-                            DimensionType type = DimensionType.byName(registeredID);
-                            WorldUtil.registeredSpaceStations.add(type);
-                            if (index >= 0)
-                            {
-                                theServer.getWorld(type);
-                            }
-//                            WorldUtil.dimNames.put(registeredID, "Space Station " + registeredID);
-                        }
-                        else
-                        {
-                            GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
+                            theServer.getWorld(type);
                         }
                     }
                     catch (Exception e)

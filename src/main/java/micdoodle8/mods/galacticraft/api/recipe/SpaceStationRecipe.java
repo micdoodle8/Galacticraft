@@ -44,6 +44,14 @@ public class SpaceStationRecipe
                     this.input.put(item, amount);
                 }
             }
+            else if (obj instanceof ResourceLocation)
+            {
+                Collection<Item> items = ItemTags.getCollection().getOrCreate((ResourceLocation) obj).getAllElements();
+                for (Item item : items)
+                {
+                    this.input.put(item, amount);
+                }
+            }
             else if (obj instanceof ArrayList)
             {
                 this.input.put(obj, amount);

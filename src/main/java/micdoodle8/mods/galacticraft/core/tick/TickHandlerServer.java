@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
@@ -41,6 +42,7 @@ import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -50,6 +52,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
 public class TickHandlerServer
 {
     private static final Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<>();
@@ -64,7 +67,7 @@ public class TickHandlerServer
     public static LinkedList<TileEntityFluidTransmitter> oxygenTransmitterUpdates = new LinkedList<TileEntityFluidTransmitter>();
     public static LinkedList<TileBaseConductor> energyTransmitterUpdates = new LinkedList<TileBaseConductor>();
     private static final CopyOnWriteArrayList<ScheduledDimensionChange> scheduledDimensionChanges = new CopyOnWriteArrayList<ScheduledDimensionChange>();
-    private final int MAX_BLOCKS_PER_TICK = 50000;
+    private static final int MAX_BLOCKS_PER_TICK = 50000;
     //    private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static final List<FluidNetwork> fluidNetworks = Lists.newArrayList();
     public static int timerHoustonCommand;
@@ -235,7 +238,7 @@ public class TickHandlerServer
     }
 
     @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event)
+    public static void onServerTick(TickEvent.ServerTickEvent event)
     {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 //        Prevent issues when clients switch to LAN servers
@@ -524,7 +527,7 @@ public class TickHandlerServer
     }
 
     @SubscribeEvent
-    public void onWorldTick(TickEvent.WorldTickEvent event)
+    public static void onWorldTick(TickEvent.WorldTickEvent event)
     {
         if (event.phase == TickEvent.Phase.START)
         {
@@ -535,7 +538,7 @@ public class TickHandlerServer
             if (changeList != null && !changeList.isEmpty())
             {
                 int blockCount = 0;
-                int blockCountMax = Math.max(this.MAX_BLOCKS_PER_TICK, changeList.size() / 4);
+                int blockCountMax = Math.max(MAX_BLOCKS_PER_TICK, changeList.size() / 4);
                 List<ScheduledBlockChange> newList = new ArrayList<ScheduledBlockChange>(Math.max(0, changeList.size() - blockCountMax));
 
                 for (ScheduledBlockChange change : changeList)
@@ -551,7 +554,7 @@ public class TickHandlerServer
                             BlockPos changePosition = change.getChangePosition();
                             Block block = world.getBlockState(changePosition).getBlock();
                             //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
-                            if (changePosition != null && (block instanceof AirBlock || block == Blocks.FIRE))
+                            if (block instanceof AirBlock || block == Blocks.FIRE)
                             {
                                 world.setBlockState(changePosition, change.getChangeState(), change.getChangeUpdateFlag());
                             }

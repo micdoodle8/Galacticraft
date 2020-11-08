@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.Dynamic;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.world.gen.GCFeatures;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class MapGenDungeon extends Structure<DungeonConfiguration>
+public class StructureDungeon extends Structure<DungeonConfiguration>
 {
 //    private DungeonConfiguration configuration;
 
@@ -40,7 +42,7 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
 //        }
 //    }
 
-    public MapGenDungeon(Function<Dynamic<?>, ? extends DungeonConfiguration> func)
+    public StructureDungeon(Function<Dynamic<?>, ? extends DungeonConfiguration> func)
     {
         super(func);
     }
@@ -48,13 +50,13 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
     @Override
     public String getStructureName()
     {
-        return "GC_Dungeon";
+        return Constants.MOD_ID_CORE + ":gc_dungeon";
     }
 
     @Override
     public IStartFactory getStartFactory()
     {
-        return MapGenDungeon.Start::new;
+        return StructureDungeon.Start::new;
     }
 
     @Override
@@ -164,7 +166,7 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
         @Override
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn)
         {
-            DungeonConfiguration dungeonConfig = generator.getStructureConfig(biomeIn, GCFeatures.MOON_DUNGEON.get());
+            DungeonConfiguration dungeonConfig = generator.getStructureConfig(biomeIn, GCFeatures.MOON_DUNGEON);
             startPiece = new DungeonStart((World) generator.world, dungeonConfig, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             startPiece.buildComponent(startPiece, this.components, rand);
             List<StructurePiece> list = startPiece.attachedComponents;
@@ -177,6 +179,10 @@ public class MapGenDungeon extends Structure<DungeonConfiguration>
             }
 
             this.recalculateStructureSize();
+        }
+
+        public boolean isValid() {
+            return true;
         }
     }
 

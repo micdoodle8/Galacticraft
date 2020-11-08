@@ -17,7 +17,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.obj.GCModelCache;
-import micdoodle8.mods.galacticraft.core.client.render.entities.RenderTier1Rocket;
+import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.*;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
@@ -573,11 +573,11 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public static void registerEntityRenderers()
     {
         RenderingRegistry.registerEntityRenderingHandler(GCEntities.ROCKET_T1, RenderTier1Rocket::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, RenderEvolvedSpider::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, RenderEvolvedZombie::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, RenderEvolvedCreeper::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, RenderEvolvedSkeleton::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, RenderEvolvedSkeletonBoss::new);
+        RenderingRegistry.registerEntityRenderingHandler(GCEntities.EVOLVED_SPIDER, RenderEvolvedSpider::new);
+        RenderingRegistry.registerEntityRenderingHandler(GCEntities.EVOLVED_ZOMBIE, RenderEvolvedZombie::new);
+        RenderingRegistry.registerEntityRenderingHandler(GCEntities.EVOLVED_CREEPER, RenderEvolvedCreeper::new);
+        RenderingRegistry.registerEntityRenderingHandler(GCEntities.EVOLVED_SKELETON, RenderEvolvedSkeleton::new);
+        RenderingRegistry.registerEntityRenderingHandler(GCEntities.SKELETON_BOSS, RenderEvolvedSkeletonBoss::new);
 //        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, RenderMeteor::new);
 //        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, RenderFlag::new);
 //        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, RenderParaChest::new);

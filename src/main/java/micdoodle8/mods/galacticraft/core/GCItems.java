@@ -251,9 +251,9 @@ public class GCItems
     public static void registerItems(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();
-        register(r, new ItemOxygenTank(1, defaultBuilder().maxDamage(900)), GCItemNames.oxTankLight);
-        register(r, new ItemOxygenTank(2, defaultBuilder().maxDamage(1800)), GCItemNames.oxTankMedium);
-        register(r, new ItemOxygenTank(3, defaultBuilder().maxDamage(2700)), GCItemNames.oxTankHeavy);
+        register(r, new ItemOxygenTank(defaultBuilder().maxDamage(900)), GCItemNames.oxTankLight);
+        register(r, new ItemOxygenTank(defaultBuilder().maxDamage(1800)), GCItemNames.oxTankMedium);
+        register(r, new ItemOxygenTank(defaultBuilder().maxDamage(2700)), GCItemNames.oxTankHeavy);
         register(r, new ItemOxygenMask(defaultBuilder().maxStackSize(1)), GCItemNames.oxMask);
         register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOne);
         register(r, new ItemTier1Rocket(defaultBuilder().maxDamage(0).maxStackSize(1)), GCItemNames.rocketTierOneCargo1);
@@ -303,7 +303,7 @@ public class GCItems
 //		GCItems.cheeseBlock = new ItemBlockCheese(GCBlocks.cheeseBlock, "cheeseBlock");
         register(r, new ItemBase(defaultBuilder()), GCItemNames.meteoricIronRaw);
         register(r, new ItemPreLaunchChecklist(defaultBuilder()), GCItemNames.prelaunchChecklist);
-        register(r, new ItemBase(defaultBuilder()), GCItemNames.dungeonFinder);
+        register(r, new ItemDungeonFinder(defaultBuilder()), GCItemNames.dungeonFinder);
 //        register(r, new ItemIC2Compat(defaultBuilder()), ItemNames.ic2compat); TODO
         register(r, new ItemEmergencyKit(defaultBuilder().maxDamage(0)), GCItemNames.emergencyKit);
         register(r, new ItemBase(defaultBuilder()), GCItemNames.solarModule0);

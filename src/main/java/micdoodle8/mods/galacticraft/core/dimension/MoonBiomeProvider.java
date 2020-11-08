@@ -1,11 +1,12 @@
-package micdoodle8.mods.galacticraft.planets.venus.dimension;
+package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import micdoodle8.mods.galacticraft.core.dimension.GCVoronoiZoomLayer;
-import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.BiomeVenus;
-import micdoodle8.mods.galacticraft.planets.venus.dimension.biome.GenLayerVenusBiomes;
+import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonGenSettings;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoonFlat;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoonHills;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoonSuperFlat;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
@@ -23,39 +24,39 @@ import net.minecraft.world.storage.WorldInfo;
 import java.util.Set;
 import java.util.function.LongFunction;
 
-public class VenusBiomeProvider extends BiomeProvider
+public class MoonBiomeProvider extends BiomeProvider
 {
     private final Layer noiseLayer;
     private final Layer blockLayer;
 
     protected final Set<BlockState> surfaceBlocks = Sets.newHashSet();
 
-    public VenusBiomeProvider(final VenusBiomeProviderSettings settings)
+    public MoonBiomeProvider(final MoonBiomeProviderSettings settings)
     {
         super(ImmutableSet.of(
-                BiomeVenus.venusFlat,
-                BiomeVenus.venusMountain,
-                BiomeVenus.venusValley
+                BiomeMoonFlat.moonBiomeFlat,
+                BiomeMoonHills.moonBiomeHills,
+                BiomeMoonSuperFlat.moonBiomeSuperFlat
         ));
         final WorldInfo info = settings.getWorldInfo();
-        final VenusGenSettings generatorSettings = settings.getGeneratorSettings();
-        final Layer[] layers = buildVenusProcedure(info.getSeed(), info.getGenerator(), generatorSettings);
+        final MoonGenSettings generatorSettings = settings.getGeneratorSettings();
+        final Layer[] layers = buildMoonProcedure(info.getSeed(), info.getGenerator(), generatorSettings);
         noiseLayer = layers[0];
         blockLayer = layers[1];
     }
 
-    private static Layer[] buildVenusProcedure(long seed, WorldType type, VenusGenSettings settings)
+    private static Layer[] buildMoonProcedure(long seed, WorldType type, MoonGenSettings settings)
     {
-        final ImmutableList<IAreaFactory<LazyArea>> immutablelist = buildVenusProcedure(type, settings, procedure -> new LazyAreaLayerContext(25, seed, procedure));
+        final ImmutableList<IAreaFactory<LazyArea>> immutablelist = buildMoonProcedure(type, settings, procedure -> new LazyAreaLayerContext(25, seed, procedure));
         final Layer noiseLayer = new Layer(immutablelist.get(0));
         final Layer blockLayer = new Layer(immutablelist.get(1));
         return new Layer[]{noiseLayer, blockLayer};
     }
 
-    private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildVenusProcedure(final WorldType type, final VenusGenSettings settings, final LongFunction<C> context)
+    private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildMoonProcedure(final WorldType type, final MoonGenSettings settings, final LongFunction<C> context)
     {
         IExtendedNoiseRandom<T> r = context.apply(1);
-        IAreaFactory<T> mainLayer = GenLayerVenusBiomes.INSTANCE.apply(r);
+        IAreaFactory<T> mainLayer = GenLayerMoonBiomes.INSTANCE.apply(r);
         IAreaFactory<T> zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1000L), mainLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1001L), zoomLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(1002L), zoomLayer);

@@ -343,7 +343,7 @@ public class DimensionOverworldOrbit extends DimensionSpaceStation implements IO
     @Override
     public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
-        return null;
+        return new Vec3d(0.0, 0.0, 0.0);
     }
 
     @Override

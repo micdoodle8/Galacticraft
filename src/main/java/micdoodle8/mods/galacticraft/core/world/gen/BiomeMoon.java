@@ -2,38 +2,42 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGC;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomBoss;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
+import net.minecraft.block.Block;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.ReplaceBlockConfig;
+import net.minecraft.world.gen.placement.CountRangeConfig;
+import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
 
 public class BiomeMoon extends BiomeGC
 {
-    public static final BiomeMoon moonBiome = new BiomeMoon();
-    //    public static final Biome moonFlat = new BiomeFlatMoon(new BiomeProperties("Moon").setBaseHeight(1.5F).setHeightVariation(0.4F).setRainfall(0.0F));
+    public OreFeatureConfig.FillerBlockType FILLER_TYPE_MOON = OreFeatureConfig.FillerBlockType.create("MOON_STONE", "moon_stone", (state) -> {
+        if (state == null) {
+            return false;
+        } else {
+            return state.getBlock() == GCBlocks.moonStone;
+        }
+    });
 
-    BiomeMoon()
+    public BiomeMoon(Builder biomeBuilder, boolean isAdaptive)
     {
-        super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(GCBlocks.moonTurf.getDefaultState(), GCBlocks.moonDirt.getDefaultState(), GCBlocks.moonDirt.getDefaultState())).precipitation(Biome.RainType.NONE).category(Category.NONE).depth(1.5F).scale(0.4F).temperature(0.0F).downfall(0.0F).waterColor(4159204).waterFogColor(329011).parent(null), true);
+        super(biomeBuilder, isAdaptive);
+        this.addStructure(GCFeatures.MOON_DUNGEON.withConfiguration(new DungeonConfiguration(GCBlocks.moonDungeonBrick.getDefaultState(), 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class)));
+        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, GCFeatures.MOON_DUNGEON.withConfiguration(new DungeonConfiguration(GCBlocks.moonDungeonBrick.getDefaultState(), 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class)).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
     }
 
-//    @Override
-//    public BiomeDecorator createBiomeDecorator()
-//    {
-//        return getModdedBiomeDecorator(new BiomeDecoratorMoon());
-//    }
-
-    @Override
-    public float getSpawningChance()
+    protected void addDefaultFeatures()
     {
-        return 0.1F;
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(FILLER_TYPE_MOON, GCBlocks.oreCopperMoon.getDefaultState(), 4)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(26, 0, 0, 60))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(FILLER_TYPE_MOON, GCBlocks.oreTinMoon.getDefaultState(), 4)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(23, 0, 0, 60))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(FILLER_TYPE_MOON, GCBlocks.oreCheeseMoon.getDefaultState(), 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(14, 0, 0, 85))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(FILLER_TYPE_MOON, GCBlocks.moonDirt.getDefaultState(), 32)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 200))));
+        this.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GCFeatures.SAPPHIRE_ORE.withConfiguration(new ReplaceBlockConfig(GCBlocks.moonStone.getDefaultState(), GCBlocks.oreSapphire.getDefaultState())).withPlacement(GCFeatures.SAPPHIRE_ORE_PLACEMENT.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
     }
-
-//    @Override
-//    public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
-//    {
-//        this.fillerBlock = MoonChunkGenerator.BLOCK_LOWER;
-//        this.topBlock = MoonChunkGenerator.BLOCK_TOP;
-//        super.genTerrainBlocks(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
-//    }
 }

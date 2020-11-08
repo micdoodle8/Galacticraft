@@ -37,6 +37,7 @@ public class DungeonStart extends EntranceCrater
     @Override
     public void buildComponent(StructurePiece componentIn, List<StructurePiece> listIn, Random rand)
     {
+        System.out.println((boundingBox.maxX + boundingBox.minX) / 2 + " " + 100 + " " + (boundingBox.maxZ + boundingBox.minZ) / 2);
         boolean validAttempt = false;
         final int maxAttempts = 10;
         int attempts = 0;

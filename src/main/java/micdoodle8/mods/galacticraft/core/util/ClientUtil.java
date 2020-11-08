@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -216,13 +217,13 @@ public class ClientUtil
         ((IRenderTypeBuffer.Impl) buffer).finish(renderType);
     }
 //
-//    public static void copyModelAngles(ModelRenderer source, ModelRenderer dest)
-//    {
-//        dest.rotateAngleX = source.rotateAngleX;
-//        dest.rotateAngleY = source.rotateAngleY;
-//        dest.rotateAngleZ = source.rotateAngleZ;
-//        dest.rotationPointX = source.rotationPointX;
-//        dest.rotationPointY = source.rotationPointY;
-//        dest.rotationPointZ = source.rotationPointZ;
-//    }
+    public static void copyModelAngles(ModelRenderer source, ModelRenderer dest)
+    {
+        dest.rotateAngleX = source.rotateAngleX;
+        dest.rotateAngleY = source.rotateAngleY;
+        dest.rotateAngleZ = source.rotateAngleZ;
+        dest.rotationPointX = source.rotationPointX;
+        dest.rotationPointY = source.rotationPointY;
+        dest.rotationPointZ = source.rotationPointZ;
+    }
 }

@@ -5,6 +5,7 @@ import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -44,6 +45,7 @@ public class DungeonConfiguration implements IFeatureConfig
 
     public CompoundNBT writeToNBT(CompoundNBT tagCompound)
     {
+        Minecraft.getInstance().mouseHelper.ungrabMouse();
         tagCompound.putString("brickBlock", this.brickBlock.getBlock().getRegistryName().toString());
 //        tagCompound.putInt("brickBlockMeta", this.brickBlock.getBlock().getMetaFromState(this.brickBlock));
         tagCompound.putInt("yPosition", this.yPosition);
@@ -53,6 +55,7 @@ public class DungeonConfiguration implements IFeatureConfig
         tagCompound.putInt("roomHeight", this.roomHeight);
         tagCompound.putString("bossRoom", this.bossRoom.getName());
         tagCompound.putString("treasureRoom", this.treasureRoom.getName());
+        Minecraft.getInstance().mouseHelper.grabMouse(); // TODO Remove
         return tagCompound;
     }
 
@@ -60,6 +63,7 @@ public class DungeonConfiguration implements IFeatureConfig
     {
         try
         {
+            Minecraft.getInstance().mouseHelper.ungrabMouse();
             this.brickBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(tagCompound.getString("brickBlock"))).getDefaultState();
             this.yPosition = tagCompound.getInt("yPosition");
             this.hallwayLengthMin = tagCompound.getInt("hallwayLengthMin");
@@ -68,6 +72,7 @@ public class DungeonConfiguration implements IFeatureConfig
             this.roomHeight = tagCompound.getInt("roomHeight");
             this.bossRoom = Class.forName(tagCompound.getString("bossRoom"));
             this.treasureRoom = Class.forName(tagCompound.getString("treasureRoom"));
+            Minecraft.getInstance().mouseHelper.grabMouse(); // TODO Remove
         }
         catch (Exception e)
         {

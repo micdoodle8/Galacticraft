@@ -2,22 +2,25 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 public enum EnumCraterSize
 {
-    SMALL(8, 12, 14),
-    MEDIUM(13, 17, 8),
-    LARGE(18, 25, 2),
-    EXTREME(26, 30, 1);
+    SMALL(8, 12, 5, 3),
+    MEDIUM(13, 17, 4, 4),
+    LARGE(18, 25, 3, 6),
+    EXTREME(26, 30, 2, 8),
+    DINOSAUR_KILLER(45, 80, 1, 10);
 
     public final int MIN_SIZE;
     public final int MAX_SIZE;
     private final int PROBABILITY;
+    public final int DEPTH;
 
     public static EnumCraterSize[] sizeArray;
 
-    EnumCraterSize(int min, int max, int prob)
+    EnumCraterSize(int min, int max, int prob, int depth)
     {
         this.MIN_SIZE = min;
         this.MAX_SIZE = max;
         this.PROBABILITY = prob;
+        this.DEPTH = depth;
     }
 
     static

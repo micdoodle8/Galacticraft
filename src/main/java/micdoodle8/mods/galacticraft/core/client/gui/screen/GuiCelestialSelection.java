@@ -605,7 +605,6 @@ public class GuiCelestialSelection extends Screen
             {
                 try
                 {
-                    int dimension;
                     DimensionType dimensionID;
 
                     if (this.selectedBody instanceof Satellite)
@@ -624,28 +623,27 @@ public class GuiCelestialSelection extends Screen
                             return;
                         }
                         dimensionID = mapping;
-                        Dimension spacestation = WorldUtil.getProviderForDimensionClient(dimensionID);
-                        if (spacestation != null)
-                        {
-                            dimension = spacestation.getType().getId();
-//                            dimension = "Space Station " + mapping;
-                        }
-                        else
-                        {
-                            GCLog.severe("Failed to find a spacestation with dimension " + dimensionID);
-                            return;
-                        }
+//                        Dimension spacestation = WorldUtil.getProviderForDimensionClient(dimensionID);
+//                        if (spacestation != null)
+//                        {
+//                            dimension = spacestation.getType().getId();
+////                            dimension = "Space Station " + mapping;
+//                        }
+//                        else
+//                        {
+//                            GCLog.severe("Failed to find a spacestation with dimension " + dimensionID);
+//                            return;
+//                        }
 
                         this.minecraft.gameSettings.thirdPersonView = 0;
                     }
                     else
                     {
                         dimensionID = this.selectedBody.getDimensionType();
-                        dimension = dimensionID.getId();
 //                        dimension = WorldUtil.getDimensionName(WorldUtil.getProviderForDimensionClient(dimensionID));
                     }
 
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{dimension}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_TELEPORT_ENTITY, GCCoreUtil.getDimensionType(minecraft.world), new Object[]{dimensionID}));
                     minecraft.displayGuiScreen(new GuiTeleporting(dimensionID));
                 }
                 catch (Exception e)
@@ -768,7 +766,7 @@ public class GuiCelestialSelection extends Screen
         {
             if (x >= RHS - 95 && x < RHS && y > TOP + 181 + canCreateOffset && y < TOP + 182 + 12 + canCreateOffset)
             {
-                if (this.selectedBody != null)
+                if (this.selectedBody != null && this.selectedBody.getDimensionType() != null)
                 {
                     SpaceStationRecipe recipe = WorldUtil.getSpaceStationRecipe(this.selectedBody.getDimensionType());
                     if (recipe != null && this.canCreateSpaceStation(this.selectedBody))

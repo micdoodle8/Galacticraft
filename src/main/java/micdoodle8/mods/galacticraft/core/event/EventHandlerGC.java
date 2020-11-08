@@ -85,20 +85,25 @@ import net.minecraftforge.forgespi.language.ILifecycleEvent;
 import java.lang.reflect.Field;
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
 public class EventHandlerGC
 {
     public static Map<Block, Item> bucketList = new HashMap<Block, Item>(4, 1F);
     public static boolean bedActivated;
 
+    private static final List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
+
+    private static Field volumeField;
+    private static Field pitchField;
+
     @SubscribeEvent
-    public void playerJoinWorld(EntityJoinWorldEvent event)
+    public static void playerJoinWorld(EntityJoinWorldEvent event)
     {
         TickHandlerServer.markWorldNeedsUpdate(GCCoreUtil.getDimensionType(event.getWorld()));
     }
 
     @SubscribeEvent
-    public void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
+    public static void onRocketLaunch(EntitySpaceshipBase.RocketLaunchEvent event)
     {
 //        if (!event.getEntity().world.isRemote && event.getEntity().world.getDimension().dimensionId == 0)
 //        {
@@ -140,7 +145,7 @@ public class EventHandlerGC
 //    } TODO Chunkloading
 
     @SubscribeEvent
-    public void onEntityDamaged(LivingHurtEvent event)
+    public static void onEntityDamaged(LivingHurtEvent event)
     {
         if (event.getSource().damageType.equals(DamageSource.ON_FIRE.damageType))
         {
@@ -162,7 +167,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void onEntityFall(LivingFallEvent event)
+    public static void onEntityFall(LivingFallEvent event)
     {
         if (event.getEntityLiving() instanceof PlayerEntity)
         {
@@ -182,7 +187,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
+    public static void blockBreakSpeed(PlayerEvent.BreakSpeed event)
     {
         PlayerEntity p = event.getPlayer();
         if (!p.onGround && p.world.getDimension() instanceof IZeroGDimension && !ConfigManagerCore.hardMode.get() && event.getOriginalSpeed() < 5.0F)
@@ -192,7 +197,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void onPlayerLeftClickedBlock(PlayerInteractEvent.LeftClickBlock event)
+    public static void onPlayerLeftClickedBlock(PlayerInteractEvent.LeftClickBlock event)
     {
         //Skip events triggered from Thaumcraft Golems and other non-players
         if (event.getPlayer() == null || event.getPlayer().inventory == null || event.getPos() == null || (event.getPos().getX() == 0 && event.getPos().getY() == 0 && event.getPos().getZ() == 0))
@@ -223,7 +228,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void onPlayerRightClickedBlock(PlayerInteractEvent.RightClickBlock event)
+    public static void onPlayerRightClickedBlock(PlayerInteractEvent.RightClickBlock event)
     {
         //Skip events triggered from Thaumcraft Golems and other non-players
         if (event.getPlayer() == null || event.getPlayer().inventory == null || event.getPos() == null || (event.getPos().getX() == 0 && event.getPos().getY() == 0 && event.getPos().getZ() == 0))
@@ -317,7 +322,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void entityLivingEvent(LivingEvent.LivingUpdateEvent event)
+    public static void entityLivingEvent(LivingEvent.LivingUpdateEvent event)
     {
         final LivingEntity entityLiving = event.getEntityLiving();
         if (entityLiving instanceof ServerPlayerEntity)
@@ -357,7 +362,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
+    public static void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
     {
         if (event.getEntity() instanceof EntityMeteor)
         {
@@ -638,7 +643,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void schematicUnlocked(Unlock event)
+    public static void schematicUnlocked(Unlock event)
     {
         GCPlayerStats stats = GCPlayerStats.get(event.player);
 
@@ -667,7 +672,7 @@ public class EventHandlerGC
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void schematicFlipEvent(FlipPage event)
+    public static void schematicFlipEvent(FlipPage event)
     {
         ISchematicPage page = null;
 
@@ -852,7 +857,7 @@ public class EventHandlerGC
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onLeaveBedButtonClicked(SleepCancelledEvent event)
+    public static void onLeaveBedButtonClicked(SleepCancelledEvent event)
     {
         PlayerEntity player = Minecraft.getInstance().player;
 
@@ -873,7 +878,7 @@ public class EventHandlerGC
     }
 
     @SubscribeEvent
-    public void onZombieSummonAid(ZombieEvent.SummonAidEvent event)
+    public static void onZombieSummonAid(ZombieEvent.SummonAidEvent event)
     {
         if (event.getEntity() instanceof EntityEvolvedZombie)
         {
@@ -892,7 +897,7 @@ public class EventHandlerGC
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void overrideSkyColor(EntityViewRenderEvent.FogColors event)
+    public static void overrideSkyColor(EntityViewRenderEvent.FogColors event)
     {
         ClientPlayerEntity entity = Minecraft.getInstance().player;
         ClientWorld worldclient = Minecraft.getInstance().world;
@@ -916,14 +921,9 @@ public class EventHandlerGC
         }
     }
 
-    private final List<SoundPlayEntry> soundPlayList = new ArrayList<SoundPlayEntry>();
-
-    private static Field volumeField;
-    private static Field pitchField;
-
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onSoundPlayed(PlaySoundEvent event)
+    public static void onSoundPlayed(PlaySoundEvent event)
     {
         //The event.result starts off equal to event.sound, but could have been altered or set to null by another mod
         if (event.getResultSound() == null)
@@ -985,13 +985,13 @@ public class EventHandlerGC
                         }
 
                         //First check for duplicate firing of PlaySoundEvent17 on this handler's own playing of a reduced volume sound (see below)
-                        for (int i = 0; i < this.soundPlayList.size(); i++)
+                        for (int i = 0; i < soundPlayList.size(); i++)
                         {
-                            SoundPlayEntry entry = this.soundPlayList.get(i);
+                            SoundPlayEntry entry = soundPlayList.get(i);
 
                             if (entry.name.equals(event.getName()) && entry.x == x && entry.y == y && entry.z == z && entry.volume == volume)
                             {
-                                this.soundPlayList.remove(i);
+                                soundPlayList.remove(i);
                                 return;
                             }
                         }
@@ -999,7 +999,7 @@ public class EventHandlerGC
                         //If it's not a duplicate: play the same sound but at reduced volume
                         float newVolume = volume / Math.max(0.01F, ((IGalacticraftDimension) player.world.getDimension()).getSoundVolReductionAmount());
 
-//                        this.soundPlayList.add(new SoundPlayEntry(event.getName(), x, y, z, newVolume));
+//                        soundPlayList.add(new SoundPlayEntry(event.getName(), x, y, z, newVolume));
 //                        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(event.getResultSound().getSoundLocation());
 //                        if (soundEvent != null)
 //                        {

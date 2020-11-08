@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
-import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonChunkGenerator;
-import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonGenSettings;
 import micdoodle8.mods.galacticraft.core.dimension.chunk.OrbitGenSettings;
-import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkGeneratorOrbit;
 import net.minecraft.world.World;

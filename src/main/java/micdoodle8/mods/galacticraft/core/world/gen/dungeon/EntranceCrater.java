@@ -35,12 +35,6 @@ public class EntranceCrater extends SizedPiece
     }
 
     @Override
-    protected void readAdditional(CompoundNBT tagCompound)
-    {
-
-    }
-
-    @Override
     public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn)
     {
         BlockState block1;

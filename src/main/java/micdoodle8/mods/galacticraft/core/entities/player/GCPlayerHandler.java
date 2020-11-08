@@ -22,7 +22,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.StructureDungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -1224,7 +1224,7 @@ public class GCPlayerHandler
 
     protected void sendDungeonDirectionPacket(ServerPlayerEntity player, GCPlayerStats stats)
     {
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DUNGEON_DIRECTION, GCCoreUtil.getDimensionType(player.world), new Object[]{MapGenDungeon.directionToNearestDungeon((ServerWorld) player.world, player.getPosX() + player.getMotion().x, player.getPosZ() + player.getMotion().z)}), player);
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DUNGEON_DIRECTION, GCCoreUtil.getDimensionType(player.world), new Object[]{StructureDungeon.directionToNearestDungeon((ServerWorld) player.world, player.getPosX() + player.getMotion().x, player.getPosZ() + player.getMotion().z)}), player);
     }
 
     public static void sendGearUpdatePacket(ServerPlayerEntity player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType)

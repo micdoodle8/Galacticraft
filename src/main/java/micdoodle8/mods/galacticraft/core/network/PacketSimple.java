@@ -30,6 +30,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
+import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
@@ -99,14 +100,14 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
     {
         // SERVER
         S_RESPAWN_PLAYER(LogicalSide.SERVER, String.class),
-        S_TELEPORT_ENTITY(LogicalSide.SERVER, Integer.class),
+        S_TELEPORT_ENTITY(LogicalSide.SERVER, DimensionType.class),
         S_IGNITE_ROCKET(LogicalSide.SERVER),
         S_OPEN_SCHEMATIC_PAGE(LogicalSide.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_OPEN_FUEL_GUI(LogicalSide.SERVER, String.class),
         S_UPDATE_SHIP_YAW(LogicalSide.SERVER, Float.class),
         S_UPDATE_SHIP_PITCH(LogicalSide.SERVER, Float.class),
         S_SET_ENTITY_FIRE(LogicalSide.SERVER, Integer.class),
-        S_BIND_SPACE_STATION_ID(LogicalSide.SERVER, Integer.class),
+        S_BIND_SPACE_STATION_ID(LogicalSide.SERVER, DimensionType.class),
         S_UNLOCK_NEW_SCHEMATIC(LogicalSide.SERVER),
         S_UPDATE_DISABLEABLE_BUTTON(LogicalSide.SERVER, BlockPos.class, Integer.class),
         S_ON_FAILED_CHEST_UNLOCK(LogicalSide.SERVER, Integer.class),
@@ -324,11 +325,11 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                     {
                         String[] values = str.split("\\$");
 
-                        int homePlanetID = Integer.parseInt(values[4]);
+                        DimensionType homePlanetID = DimensionType.byName(new ResourceLocation(values[4]));
 
                         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
                         {
-                            if (satellite.getParentPlanet().getDimensionType().getId() == homePlanetID)
+                            if (satellite.getParentPlanet().getDimensionType() == homePlanetID)
                             {
                                 celestialBody = satellite;
                                 break;
@@ -337,10 +338,10 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
 
                         if (!spaceStationData.containsKey(homePlanetID))
                         {
-                            spaceStationData.put(DimensionType.getById(homePlanetID), new HashMap<String, GuiCelestialSelection.StationDataGUI>());
+                            spaceStationData.put(homePlanetID, new HashMap<String, GuiCelestialSelection.StationDataGUI>());
                         }
 
-                        spaceStationData.get(homePlanetID).put(values[1], new GuiCelestialSelection.StationDataGUI(values[2], DimensionType.getById(Integer.parseInt(values[3]))));
+                        spaceStationData.get(homePlanetID).put(values[1], new GuiCelestialSelection.StationDataGUI(values[2], DimensionType.byName(new ResourceLocation(values[3]))));
 
 //                        spaceStationNames.put(values[1], values[2]);
 //                        spaceStationIDs.put(values[1], Integer.parseInt(values[3]));
@@ -796,7 +797,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             playerBase.connection.sendPacket(new SRespawnPacket(player.dimension, WorldInfo.byHashing(player.world.getWorldInfo().getSeed()), player.world.getWorldInfo().getGenerator(), playerBase.interactionManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
-            TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, DimensionType.getById((Integer) PacketSimple.this.data.get(0))));
+            TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, (DimensionType) PacketSimple.this.data.get(0)));
             stats.setUsingPlanetSelectionGui(false);
             break;
         case S_IGNITE_ROCKET:
@@ -881,7 +882,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
             }
             break;
         case S_BIND_SPACE_STATION_ID:
-            DimensionType homeID = DimensionType.getById((Integer) this.data.get(0));
+            DimensionType homeID = (DimensionType) this.data.get(0);
             if ((!stats.getSpaceStationDimensionData().containsKey(homeID) || stats.getSpaceStationDimensionData().get(homeID) == DimensionType.THE_NETHER || stats.getSpaceStationDimensionData().get(homeID) == DimensionType.OVERWORLD)
                     && !ConfigManagerCore.disableSpaceStationCreation.get())
             {
@@ -889,7 +890,11 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>, IG
                 {
                     GCTriggers.CREATE_SPACE_STATION.trigger(playerBase);
 //                    WorldUtil.bindSpaceStationToNewDimension(playerBase.world, playerBase, homeID);
-                    WorldUtil.createNewSpaceStation(playerBase.getUniqueID(), false);
+                    DimensionType createdStation = WorldUtil.createNewSpaceStation(playerBase.getUniqueID(), false);
+                    SpaceStationWorldData.getStationData((ServerWorld) player.world, createdStation.getRegistryName(), homeID, player);
+//                    dimNames.put(newID, "Space Station " + newID);
+                    stats.getSpaceStationDimensionData().put(homeID, createdStation);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionType(player.world), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), playerBase);
                 }
             }
             break;

@@ -1,25 +1,62 @@
-//package micdoodle8.mods.galacticraft.core.command;
-//
-//import micdoodle8.mods.galacticraft.api.entity.IRocketType;
-//import micdoodle8.mods.galacticraft.core.GCItems;
-//import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-//import micdoodle8.mods.galacticraft.core.util.EnumColor;
-//import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-//import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-//import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-//import net.minecraft.command.CommandBase;
-//import net.minecraft.command.CommandException;
-//import net.minecraft.command.ICommandSender;
-//import net.minecraft.command.WrongUsageException;
-//import net.minecraft.entity.player.ServerPlayerEntity;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.server.MinecraftServer;
-//import net.minecraft.util.NonNullList;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.ServerWorld;
-//
-//public class CommandPlanetTeleport extends CommandBase
-//{
+package micdoodle8.mods.galacticraft.core.command;
+
+import com.google.common.collect.ImmutableList;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import micdoodle8.mods.galacticraft.api.entity.IRocketType;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
+
+import java.util.Collection;
+
+public class CommandPlanetTeleport
+{
+    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+        LiteralCommandNode<CommandSource> literalcommandnode = dispatcher.register(Commands.literal("dimensiontp").requires((src) -> src.hasPermissionLevel(2)).executes((ctx) -> {
+            ServerPlayerEntity player = ctx.getSource().asPlayer();
+            return teleport(ImmutableList.of(player), ctx.getSource().getWorld());
+        }).then(Commands.argument("targets", EntityArgument.entities()).executes((ctx) -> {
+            return teleport(EntityArgument.getPlayers(ctx, "targets"), ctx.getSource().getWorld());
+        })));
+    }
+
+    private static int teleport(Collection<ServerPlayerEntity> targets, ServerWorld world)
+    {
+        for (ServerPlayerEntity target : targets)
+        {
+//        ServerWorld worldserver = server.getWorld(GCCoreUtil.getDimensionID(server.worlds[0]));
+            BlockPos spawnPoint = world.getSpawnPoint();
+            GCPlayerStats stats = GCPlayerStats.get(target);
+            stats.setRocketStacks(NonNullList.withSize(2, ItemStack.EMPTY));
+            stats.setRocketItem(EntityTier1Rocket.getItemFromType(IRocketType.EnumRocketType.DEFAULT));
+//        stats.setRocketItem(GCItems.rocketTierOne);
+            stats.setFuelLevel(1000);
+            stats.setCoordsTeleportedFromX(spawnPoint.getX());
+            stats.setCoordsTeleportedFromZ(spawnPoint.getZ());
+
+            try
+            {
+                WorldUtil.toCelestialSelection(target, stats, Integer.MAX_VALUE);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                throw e;
+            }
+        }
+
+        return targets.size();
+    }
+
 //    @Override
 //    public String getUsage(ICommandSender var1)
 //    {
@@ -95,4 +132,4 @@
 //            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getUsage(sender)), new Object[0]);
 //        }
 //    }
-//}
+}

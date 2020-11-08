@@ -296,15 +296,15 @@ public class GalacticraftRegistry
 //
 //        return type;
 //    } TODO ?
-    public static DimensionType getDimensionTypeID(int index)
-    {
-        return GalacticraftRegistry.dimensionTypeIDs.get(index);
-    }
-
-    public static boolean isDimensionTypeIDRegistered(DimensionType typeId)
-    {
-        return GalacticraftRegistry.dimensionTypeIDs.contains(typeId);
-    }
+//    public static DimensionType getDimensionTypeID(int index)
+//    {
+//        return GalacticraftRegistry.dimensionTypeIDs.get(index);
+//    }
+//
+//    public static boolean isDimensionTypeIDRegistered(DimensionType typeId)
+//    {
+//        return GalacticraftRegistry.dimensionTypeIDs.contains(typeId);
+//    }
 
     /**
      * Register an IGameScreen so the Display Screen can access it

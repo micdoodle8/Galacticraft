@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ItemOxygenTank extends Item implements ISortable, IClickableItem
 {
-    public ItemOxygenTank(int tier, Item.Properties builder)
+    public ItemOxygenTank(Item.Properties builder)
     {
         super(builder);
 //        this.setMaxStackSize(1);
