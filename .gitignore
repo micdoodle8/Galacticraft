@@ -224,6 +224,4 @@ dependencies/main/resources/META-INF/MANIFEST.MF
 dependencies/main/java/micdoodle8/mods/miccore/*
 dependencies/main/java/codechicken/core/CCUpdateChecker.java
 
-#gradle
-gradle/wrapper/
-gradlew
+!gradlew.bat
