@@ -152,7 +152,7 @@ publish
 
 # Others
 [Bb]in
-[Oo]bj
+#[Oo]bj
 sql
 TestResults
 *.Cache
