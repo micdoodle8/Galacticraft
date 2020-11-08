@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -9,6 +10,8 @@ import java.util.Random;
 
 public class RoomEmpty extends SizedPiece
 {
+    private boolean generated = false;
+
     public RoomEmpty()
     {
     }
@@ -28,6 +31,8 @@ public class RoomEmpty extends SizedPiece
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
     {
+        if (CompatibilityManager.isSpongeLoaded() && generated) return true;
+        generated = true;
         for (int i = 0; i <= this.sizeX; i++)
         {
             for (int j = 0; j <= this.sizeY; j++)
