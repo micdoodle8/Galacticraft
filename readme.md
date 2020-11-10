@@ -1,3 +1,5 @@
+**Notice:** This project has been moved to [TeamGalacticraft/Galacticraft](https://github.com/TeamGalacticraft/Galacticraft).
+
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/6842258/25335525/4f21552e-28eb-11e7-91bb-de5e1ef602da.jpg"></p>
 
 Galacticraft [![Join our Discord!](https://img.shields.io/discord/449966345665249290.svg?color=blue&label=Discord&logo=discord&style=flat-square)](https://discord.gg/YBVne7R) [![Support the devs!](https://img.shields.io/badge/Patreon-Support-orange.svg?style=flat-square)](https://www.patreon.com/micdoodle8)
