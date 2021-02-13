@@ -112,3 +112,5 @@ Opossum_:capeRainbow
 TeenSarlacc:capeDarkGray
 chemf:capeMagenta
 ROMVoid:capeYellow
+MechanicPluto24:capeLime
+ProGamerDoggo:capeRainbow
