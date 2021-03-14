@@ -561,19 +561,19 @@ public class GCPlayerHandler
             {
                 if (thermalPaddingHelm.getItem() instanceof IItemThermal)
                 {
-                    lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength();
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingHelm.getItem()).getThermalStrength(player);
                 }
                 if (thermalPaddingChestplate.getItem() instanceof IItemThermal)
                 {
-                    lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength();
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingChestplate.getItem()).getThermalStrength(player);
                 }
                 if (thermalPaddingLeggings.getItem() instanceof IItemThermal)
                 {
-                    lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength();
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingLeggings.getItem()).getThermalStrength(player);
                 }
                 if (thermalPaddingBoots.getItem() instanceof IItemThermal)
                 {
-                    lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
+                    lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength(player);
                 }
                 lowestThermalStrength /= 4.0F;
                 lowestThermalStrength = Math.abs(lowestThermalStrength);  //It shouldn't be negative, but just in case!
