@@ -114,3 +114,4 @@ chemf:capeMagenta
 ROMVoid:capeYellow
 MechanicPluto24:capeLime
 ProGamerDoggo:capeRainbow
+FeLiX5906:capeRainbow
