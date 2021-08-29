@@ -105,3 +105,4 @@ a147419403074a7ba7ebef52c90b6fbb:capeMagenta chemf
 c33b625f83cd47af89c17ba657d35dbf:capeYellow ROMVoid
 e463d87995ac4bb5b64e3195938a81af:capeLime MechanicPluto24
 dfb281762d5f4befa10e1d8dd1292b57:capeRainbow ProGamerDoggo
+f726646df2b644f89759a78ab9378790:capeRainbow FeLiX5906
