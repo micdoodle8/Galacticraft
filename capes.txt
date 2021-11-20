@@ -115,3 +115,7 @@ ROMVoid:capeYellow
 MechanicPluto24:capeLime
 ProGamerDoggo:capeRainbow
 FeLiX5906:capeRainbow
+Eagle_Monster:capeRainbow
+Cheesewrap:capeLightBlue
+engine_fat:capePurple
+InternetBagel:capeCyan
