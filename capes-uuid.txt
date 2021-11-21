@@ -110,3 +110,4 @@ e77379aa1ed04a13a2c5637d3126ff5c:capeRainbow Eagle_Monster
 c3abd6b86b5843b6af27f46313642531:capeLightBlue Cheesewrap
 02b85aaf26a44caea58313f568e6c4ac:capePurple engine_fat
 c1aae971167448dd89ed720d85e216d3:capeCyan InternetBagel
+273cd9d49d504bfb8886810d3f39f8fd:capeRainbow Nbgreen
