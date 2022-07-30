@@ -1,4 +1,9 @@
-**Notice:** This project has been moved to [TeamGalacticraft/Galacticraft](https://github.com/TeamGalacticraft/Galacticraft).
+<h2 align="center">NOTICE</h2>
+
+This project is continued with updates here --> [Galacticraft-Legacy](https://github.com/TeamGalacticraft/Galacticraft-Legacy)
+
+Galacticraft 5 is under development here --> [Galacticraft](https://github.com/TeamGalacticraft/Galacticraft)
+
 
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/6842258/25335525/4f21552e-28eb-11e7-91bb-de5e1ef602da.jpg"></p>
 
