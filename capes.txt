@@ -121,3 +121,4 @@ engine_fat:capePurple
 InternetBagel:capeCyan
 Nbgreen:capeRainbow
 Ult1mateM1ner:capeBlue
+Modzyyy:capeRainbow

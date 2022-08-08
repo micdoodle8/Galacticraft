@@ -112,3 +112,4 @@ c3abd6b86b5843b6af27f46313642531:capeLight_Blue Cheesewrap
 c1aae971167448dd89ed720d85e216d3:capeCyan InternetBagel
 273cd9d49d504bfb8886810d3f39f8fd:capeRainbow Nbgreen
 7cfcd9242c774ee6ac764742b667220e:capeBlue Ult1mateM1ner
+4bc08d4db0ce48f5a64744ca1b400fd1:capeRainbow Modzyyy
