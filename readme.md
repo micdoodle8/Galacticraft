@@ -18,7 +18,11 @@ Full documentation is at our wiki: [wiki.micdoodle8.com](https://wiki.micdoodle8
 
 ## Download Galacticraft
 
-Download recent and latest Galacticraft for Minecraft 1.12.2, Minecraft 1.11.2, Minecraft 1.10.2, Minecraft 1.8.9 and Minecraft 1.7.10 at the [Galacticraft download site](https://micdoodle8.com/mods/galacticraft/downloads)
+### `1.12.2-4.0.2.282` and Newer
+> [![curseforge](https://cdn.jsdelivr.net/npm/@romvoid/rombadge@1/assets/cozy/available/curseforge_vector.svg)](https://www.curseforge.com/minecraft/mc-mods/galacticraft-legacy)
+
+### `1.12.2-4.0.2.280` and Older *(also `1.11.x`, `1.10.x`, `1.8.x`, `1.7.x`, `1.6.x`, `1.5.x`)*
+> [![micdoodledevhub](https://cdn.jsdelivr.net/npm/@romvoid/rombadge@1/assets/cozy/available/micdoodle_vector.svg)](https://micdoodle8.com/mods/galacticraft/downloads)
 
 ------
 
