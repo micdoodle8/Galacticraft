@@ -126,3 +126,4 @@ speedcrafter442:capeBlue
 supertroopa:capeBrown
 Maximus_Meridiuz:capeRainbow
 DuckyProgrammer:capeLime
+BonnieRobloxRIP:capeOrange
