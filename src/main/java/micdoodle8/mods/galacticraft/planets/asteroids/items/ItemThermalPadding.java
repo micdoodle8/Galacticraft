@@ -77,7 +77,7 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
     }
 
     @Override
-    public int getThermalStrength()
+    public int getThermalStrength(EntityPlayer player)
     {
         return 1;
     }

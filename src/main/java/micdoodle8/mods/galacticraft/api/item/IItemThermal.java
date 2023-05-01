@@ -7,7 +7,7 @@ public interface IItemThermal
     /**
      * The thermal strength of this armor. Value for first tier thermal padding is 1.
      */
-    int getThermalStrength();
+    int getThermalStrength(EntityPlayer player);
 
     /**
      * Returns whether the provided itemstack is valid for the armor slot:
